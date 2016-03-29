@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,6 +60,9 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     private EditText mInputEdit;
     private View mAddRip;
     private SecurAddFromMsmHandler mSecurNumHandler = new SecurAddFromMsmHandler();
+    private CheckBox mCheckB;
+    //短信备份复选框是否勾选
+    private boolean mIsCheckB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,8 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         mListContact.setOnItemClickListener(this);
         mAddButton = (Button) findViewById(R.id.sec_add_number_BT);
         mAddRip = findViewById(R.id.sec_add_number_RP);
+        mCheckB = (CheckBox) findViewById(R.id.checkBx);
+        mIsCheckB = mCheckB.isChecked();
 
         mInputEdit = (EditText) findViewById(R.id.sec_input_numberEV);
         LostSecurityManagerImpl securityManager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);

@@ -88,6 +88,7 @@ public class AppMasterApplication extends Application {
 
 //        Debug.startMethodTracing("Nexus6.trace");
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        //TODO 首次启动加载数据(获取上次版本号)
         String lastVer = pref.getLastVersion();
         try {
             sLastVersion = Integer.parseInt(lastVer);
@@ -100,6 +101,7 @@ public class AppMasterApplication extends Application {
         mHandler = new Handler();
 
         sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE);
+        //TODO 首次启动加载数据（获取使用的主题）
         usedThemePackage = sharedPreferences.getString("packageName", Constants.DEFAULT_THEME);
 
         // For android L and above, daemon service is not work, so disable it

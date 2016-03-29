@@ -22,6 +22,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
@@ -60,6 +63,13 @@ public class GestureLockFragment extends LockFragment implements
     private ImageView mAppIcon;
     private ImageView mAppIconTop;
     private ImageView mAppIconBottom;
+
+    private View mViewBottom;
+    private ImageView mIvBottom;
+    private TextView mTvBottom;
+    private View mAirSigTouchView;
+    private int mShowType;
+
     private int mBottomIconRes = 0;
     private int mTopIconRes = 0;
     private FrameLayout mFlPreview;
@@ -131,7 +141,43 @@ public class GestureLockFragment extends LockFragment implements
                 checkApplyTheme();
             }
         }
+
+        mViewBottom = findViewById(R.id.switch_bottom_content);
+        mViewBottom.setOnClickListener(this);
+        mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
+        mTvBottom = (TextView) findViewById(R.id.switch_bottom);
+        mAirSigTouchView = findViewById(R.id.airsig_lock);
+        initAirSig();
+
         LeoEventBus.getDefaultBus().register(this);
+    }
+
+    private void initAirSig() {
+        boolean isAirsigOn = PreferenceTable.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
+
+        if (true) {
+            mViewBottom.setVisibility(View.VISIBLE);
+            int unlockType = PreferenceTable.getInstance().
+                    getInt(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+            if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                mLockPatternView.setVisibility(View.VISIBLE);
+                mAirSigTouchView.setVisibility(View.GONE);
+                mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+                mIvBottom.setBackgroundResource(
+                        R.drawable.reset_pass_number);
+            } else {
+                mLockPatternView.setVisibility(View.GONE);
+                mAirSigTouchView.setVisibility(View.VISIBLE);
+                mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
+                mIvBottom.setBackgroundResource(
+                        R.drawable.reset_pass_gesture);
+            }
+        } else {
+            mViewBottom.setVisibility(View.GONE);
+        }
     }
 
     public void onEventMainThread(SubmaineAnimEvent event) {
@@ -254,7 +300,7 @@ public class GestureLockFragment extends LockFragment implements
             bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
         } else if (mPackageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
             bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
-        } else if(mActivity != null){
+        } else if (mActivity != null) {
             bd = AppUtil.getAppIcon(
                     mActivity.getPackageManager(), mPackageName);
         }
@@ -431,8 +477,30 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     @Override
-    public void onClick(View arg0) {
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.switch_bottom_content:
+                switchUnlockType();
+                break;
+        }
+    }
 
+    private void switchUnlockType() {
+        if (mShowType == AirSigSettingActivity.NOMAL_UNLOCK) {
+            mLockPatternView.setVisibility(View.GONE);
+            mAirSigTouchView.setVisibility(View.VISIBLE);
+            mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
+            mIvBottom.setBackgroundResource(
+                    R.drawable.reset_pass_gesture);
+        } else {
+            mLockPatternView.setVisibility(View.VISIBLE);
+            mAirSigTouchView.setVisibility(View.GONE);
+            mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+            mIvBottom.setBackgroundResource(
+                    R.drawable.reset_pass_number);
+        }
     }
 
     public View getIconView() {

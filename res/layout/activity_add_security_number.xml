@@ -1,20 +1,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:leo="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+                xmlns:leo="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/add_privacy_contact_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cb" />
+        android:background="@color/cb"/>
+
+    <CheckBox
+        android:id="@+id/checkBx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_privacy_contact_title_bar"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:button="@drawable/send_msm_selector"
+        android:checked="true"
+        android:padding="10dp"
+        android:text="@string/secur_add_numb_tip"
+        android:textColor="@color/black"/>
 
     <LinearLayout
         android:id="@+id/security_input_number_LT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/add_privacy_contact_title_bar"
+        android:layout_below="@id/checkBx"
         android:orientation="vertical">
 
         <TextView
@@ -24,7 +37,7 @@
             android:paddingTop="17dp"
             android:text="@string/secur_input_number"
             android:textColor="#666666"
-            android:textSize="14dp" />
+            android:textSize="14dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -46,7 +59,7 @@
                 android:inputType="phone"
                 android:paddingLeft="16dp"
                 android:textColor="@drawable/privacy_contact_edit_edittext_selecter"
-                android:textSize="14dp" />
+                android:textSize="14dp"/>
 
             <com.leo.appmaster.ui.MaterialRippleLayout
                 android:id="@+id/sec_add_number_RP"
@@ -73,7 +86,7 @@
                     android:minWidth="70dp"
                     android:text="@string/secur_input_add_bt"
                     android:textColor="@color/white"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"/>
             </com.leo.appmaster.ui.MaterialRippleLayout>
         </RelativeLayout>
 
@@ -89,74 +102,88 @@
             />
     </LinearLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/security_input_number_LT"
-        android:layout_marginTop="8dp"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/add_bt"
+        android:layout_below="@id/security_input_number_LT">
 
-        <ListView
-            android:id="@+id/add_contactLV"
+        <FrameLayout
+            android:id="@+id/number_fl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@null"
-            android:overScrollMode="never"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:scrollbars="none" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:background="@color/white">
 
-        <com.leo.appmaster.privacycontact.ContactSideBar
-            android:id="@+id/contact_sidrbar"
-            android:layout_width="25dp"
-            android:layout_height="fill_parent"
-            android:layout_gravity="right|center"
-            android:visibility="gone"></com.leo.appmaster.privacycontact.ContactSideBar>
+            <ListView
+                android:id="@+id/add_contactLV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:overScrollMode="never"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:scrollbars="none"/>
 
-        <LinearLayout
-            android:id="@+id/add_contact_default_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
+            <com.leo.appmaster.privacycontact.ContactSideBar
+                android:id="@+id/contact_sidrbar"
+                android:layout_width="25dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right|center"
+                android:visibility="gone"></com.leo.appmaster.privacycontact.ContactSideBar>
 
-            <ImageView
-                android:layout_width="@dimen/privacy_default_image_width"
-                android:layout_height="@dimen/privacy_default_image_height"
-                android:src="@drawable/contact_default" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/add_contact_default_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/privacy_add_contact_default_text"
-                android:textColor="#d3d3d4"
-                android:textSize="18dp" />
-        </LinearLayout>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
+                <ImageView
+                    android:layout_width="@dimen/privacy_default_image_width"
+                    android:layout_height="@dimen/privacy_default_image_height"
+                    android:src="@drawable/contact_default"/>
 
-    </FrameLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_add_contact_default_text"
+                    android:textColor="#d3d3d4"
+                    android:textSize="18dp"/>
+            </LinearLayout>
+        </FrameLayout>
 
-    <ProgressBar
-        android:id="@+id/progressbar_loading"
-        style="@style/theme_loading"
-        android:layout_width="30dp"
-        android:layout_height="110dp"
-        android:layout_centerInParent="true"
-        android:paddingBottom="80dp"
-        android:visibility="gone" />
+        <ProgressBar
+            android:id="@+id/progressbar_loading"
+            style="@style/theme_loading"
+            android:layout_width="30dp"
+            android:layout_height="110dp"
+            android:layout_centerInParent="true"
+            android:paddingBottom="80dp"
+            android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/contact_dialog"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:background="@drawable/show_head_toast_bg"
-        android:gravity="center"
-        android:textColor="#ffffffff"
-        android:textSize="30dip"
-        android:visibility="invisible" />
+        <TextView
+            android:id="@+id/contact_dialog"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@drawable/show_head_toast_bg"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="30dip"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/add_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/security_guide_button_text"
+        ></Button>
 
 </RelativeLayout>

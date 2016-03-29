@@ -1039,9 +1039,9 @@
     <string name="airsig_clean">清除资料</string>
 
     <!-- For verify activity -->
-    <string name="airsig_verify_title">验证簽字</string>
-    <string name="airsig_verify_forgot_signature">忘记簽字？</string>
-    <string name="airsig_verify_press_hint">按此开始簽字验证</string>
+    <string name="airsig_verify_title">验证签字</string>
+    <string name="airsig_verify_forgot_signature">忘记签字？</string>
+    <string name="airsig_verify_press_hint">按此开始签字验证</string>
     <string name="airsig_verify_match">验证通过</string>
     <string name="airsig_verify_not_match">未通过</string>
     <string name="airsig_verify_not_match_times_left">未通过\n您还可以再试 %d 次</string>
@@ -1063,12 +1063,12 @@
     <string name="airsig_training_step_choose_word_title">请先想好\n要设定的字</string>
     <string name="airsig_training_step_choose_word_detail">选字建议:\n姓名中的一个字或英文名</string>
     <string name="airsig_training_step_choose_word_next">我想好了</string>
-    <string name="airsig_training_step_how_to_setup_detail">如何簽字:\n1.按住 2.写字 3.放开</string>
+    <string name="airsig_training_step_how_to_setup_detail">如何签字:\n1.按住 2.写字 3.放开</string>
     <string name="airsig_training_step_how_to_setup_next">开始写字</string>
     <string name="airsig_training_step_first_writing_hint">1.按住 2.写字 3.放开</string>
-    <string name="airsig_training_step_write_again">请再次簽写解锁字\n让系统辨识写字特征</string>
+    <string name="airsig_training_step_write_again">请再次签写解锁字\n让系统辨识写字特征</string>
     <string name="airsig_training_progress_hint">特征辨识</string>
-    <string name="airsig_training_progress_message">辨识未完成\n请继续簽写</string>
+    <string name="airsig_training_progress_message">辨识未完成\n请继续签写</string>
     <string name="airsig_training_step_completed">辨识完成</string>
     <string name="airsig_training_step_completed_postive_button">开始使用</string>
     <string name="airsig_training_step_completed_negative_button">重选喜欢的字</string>
@@ -1091,16 +1091,16 @@
     <string name="airsig_training_err_few_wrist1">1.请用手机一角当笔尖写字</string>
     <string name="airsig_training_err_few_wrist2">2.随性的写，写潦草一点</string>
     <string name="airsig_training_err_second_signature_too_different_title">您写字的特征\n不固定，请保持稳定</string>
-    <string name="airsig_training_err_second_signature_too_different_detail">建议:\n请看簽字教学或重新设定</string>
+    <string name="airsig_training_err_second_signature_too_different_detail">建议:\n请看签字教学或重新设定</string>
     <string name="airsig_training_err_second_signature_too_different_postive_button">重新设定</string>
-    <string name="airsig_training_err_second_signature_too_different_negative_button">看簽字教学</string>
+    <string name="airsig_training_err_second_signature_too_different_negative_button">看签字教学</string>
     <string name="airsig_training_err_different_signature_title">此次特征与前几次\n差异太大，不列入纪录</string>
     <string name="airsig_training_err_different_signature_detail">建议:\n请保持稳定，继续辨识</string>
     <string name="airsig_training_err_different_signature_postive_button">继续辨识</string>
-    <string name="airsig_training_err_different_signature_negative_button">看簽字教学</string>
+    <string name="airsig_training_err_different_signature_negative_button">看签字教学</string>
     <string name="airsig_training_err_training_failed_title">您写字的特征\n不固定，请保持稳定</string>
-    <string name="airsig_training_err_training_failed_detail">建议:\n请看簽字教学并重新设定</string>
-    <string name="airsig_training_err_training_failed_postive_button">看簽字教学</string>
+    <string name="airsig_training_err_training_failed_detail">建议:\n请看签字教学并重新设定</string>
+    <string name="airsig_training_err_training_failed_postive_button">看签字教学</string>
     <string name="airsig_training_err_training_failed_negative_button">重新设定</string>
     <string name="airsig_training_err_others">有东西坏了</string>
 
@@ -1118,25 +1118,25 @@
     <string name="airsig_training_dialog_confirm_exit_detail">尚未完成设定，您确定要离开？</string>
     <string name="airsig_training_dialog_confirm_exit_postive_button">离开</string>
     <string name="airsig_training_dialog_confirm_exit_negative_button">取消</string>
-    <string name="airsig_training_dialog_confirm_reset_title">重置簽名</string>
-    <string name="airsig_training_dialog_confirm_reset_detail">是否重置簽名，重新设定</string>
+    <string name="airsig_training_dialog_confirm_reset_title">重置签名</string>
+    <string name="airsig_training_dialog_confirm_reset_detail">是否重置签名，重新设定</string>
     <string name="airsig_training_dialog_confirm_reset_postive_button">重置</string>
     <string name="airsig_training_dialog_confirm_reset_negative_button">取消</string>
 
     <!-- Text for help -->
     <string name="airsig_training_help_title">全新解锁体验\n用个人写字特征，取代复杂密码</string>
-    <string name="airsig_training_help_button">簽字教学</string>
-    <string name="airsig_training_help_bottom_text">快速了解如何簽字</string>
+    <string name="airsig_training_help_button">签字教学</string>
+    <string name="airsig_training_help_bottom_text">快速了解如何签字</string>
 
     <!-- For tutorial activity -->
-    <string name="airsig_tutorial_title">簽字教学</string>
+    <string name="airsig_tutorial_title">签字教学</string>
 
     <!-- Text for input signature -->
     <string name="airsig_tutorial_textview_toucharea">按此蓝色区域任一处\n开始写字</string>
     <string name="airsig_tutorial_toucharea_pressed">写完后\n拇指请离开萤幕</string>
 
     <!-- Text for tutorial steps -->
-    <string name="airsig_tutorial_step_how_to_write_detail">如何簽字:\n1.按住 2.写字 3.放开</string>
+    <string name="airsig_tutorial_step_how_to_write_detail">如何签字:\n1.按住 2.写字 3.放开</string>
     <string name="airsig_tutorial_step_how_to_write_next">开始导引教学</string>
     <string name="airsig_tutorial_step_write_practice1">1.拇指按住蓝色区域</string>
     <string name="airsig_tutorial_step_write_practice2">2.用手机一角当笔尖写字</string>
@@ -1173,5 +1173,23 @@
     <string name="airsig_settings_high_secure">高安全模式</string>
     <string name="airsig_settings_generic">一般模式</string>
     <string name="airsig_settings_control">控制模式</string>
+
+    <!--3.6手机防盗-->
+    <string name="secur_deta_title_bar">防盗功能详情</string>
+    <string name="secur_deta_title">可向被盗手机发送以下指令，执行对应操作</string>
+    <string name="secur_add_numb_tip">防盗指令将会以短信形式发送到预留号码。您可以用预留号码发送防盗指令控制手机。</string>
+
+    <string name="airsig_settings_activity_title">签字解锁</string>
+    <string name="airsig_settings_activity_set_one_on">开启签字</string>
+    <string name="airsig_settings_activity_set_one_off">关闭签字</string>
+    <string name="airsig_settings_activity_set_two">更改签字手势</string>
+    <string name="airsig_settings_activity_toast">设定成功！将默认使用签字解锁</string>
+    <string name="airsig_settings_activity_dialog">关闭签字解锁后则无法通过手机签字解锁应用，确定关闭？</string>
+    <string name="airsig_settings_activity_two_set_title">设置默认解锁方式</string>
+    <string name="airsig_settings_activity_two_set">手势/密码解锁</string>
+    <string name="airsig_settings_activity_two_set_dialog">当前未开启签字解锁，是否立即开启？</string>
+    <string name="airsig_settings_lock_fragment_normal">切换为手势解锁</string>
+    <string name="airsig_settings_lock_fragment_airsig">切换为Airsig解锁</string>
+
 
 </resources>

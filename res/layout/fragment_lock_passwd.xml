@@ -88,7 +88,7 @@
         android:layout_marginTop="@dimen/pas_four_icon_m_top"
         android:gravity="center"
         android:orientation="horizontal">
-<!--         android:layout_marginTop="@dimen/layout_passwd_marginTop" -->
+        <!--         android:layout_marginTop="@dimen/layout_passwd_marginTop" -->
 
         <ImageView
             android:id="@+id/tv_passwd_1"
@@ -396,87 +396,62 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 展开的半屏广告 -->
-    <!--
-    <RelativeLayout 
-        android:id="@+id/rl_halfscreenAD2"
-        android:layout_height="200dp"
-       android:layout_alignParentBottom="true"       
-		android:layout_width="match_parent"
-		android:background="@color/app_usage_text"     
-		android:visibility="gone"   
-        >
-        <ImageView 
-            android:id="@+id/iv_adscaledown"
-            android:layout_height="30dp"
-            android:layout_width="30dp"
-            android:background="@drawable/arrow_down_icon"
-            />
-        
-        
-    </RelativeLayout>
-    -->
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl_halfSreenBannerAD2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="60dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="@color/white"-->
+        <!--android:visibility="gone">-->
 
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_adicon2"-->
+            <!--android:layout_width="48dp"-->
+            <!--android:layout_height="48dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="12dp" />-->
 
-    <!-- 点击会展开半屏广告的banner -->
+        <!--<TextView-->
+            <!--android:id="@+id/tv_appname2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="15dp"-->
+            <!--android:layout_marginLeft="70dp"-->
+            <!--android:layout_marginRight="60dp"-->
+            <!--android:layout_marginTop="6dp"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:textSize="12dp" />-->
 
-    <RelativeLayout
-        android:id="@+id/rl_halfSreenBannerAD2"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:visibility="gone">
+        <!--<TextView-->
+            <!--android:id="@+id/tv_appdesc2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:layout_below="@id/tv_appname2"-->
+            <!--android:layout_marginLeft="70dp"-->
+            <!--android:layout_marginRight="60dp"-->
+            <!--android:layout_marginTop="6dp"-->
+            <!--android:ellipsize="marquee"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:maxLines="2"-->
+            <!--android:textColor="#333333"-->
+            <!--android:textSize="10dp" />-->
 
-        <ImageView
-            android:id="@+id/iv_adicon2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="12dp" />
-
-        <TextView
-            android:id="@+id/tv_appname2"
-            android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="6dp"
-            android:gravity="center_vertical"
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/tv_appdesc2"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_below="@id/tv_appname2"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="6dp"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:maxLines="2"
-            android:textColor="#333333"
-            android:textSize="10dp" />
-
-        <ImageView
-            android:id="@+id/iv_adopen"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/bt_ad_halfscreen_open" />
-    </RelativeLayout>
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_adopen"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:src="@drawable/bt_ad_halfscreen_open" />-->
+    <!--</RelativeLayout>-->
 
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="1px"
         android:layout_height="1px" />
 
-        <SurfaceView
+    <SurfaceView
         android:layout_width="1px"
-         android:layout_height="1px"
-        />
+        android:layout_height="1px" />
 
 </RelativeLayout>

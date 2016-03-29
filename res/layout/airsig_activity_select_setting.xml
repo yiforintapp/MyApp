@@ -38,17 +38,19 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:maxLines="2"
-                android:text="@string/airsig_settings_activity_set_one_on"
+                android:text="@string/airsig_settings_activity_title"
                 android:textColor="@color/c2"
                 android:textSize="16dp" />
 
             <ImageView
+                android:id="@+id/iv_bg_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/arrow_faq" />
+                android:background="@drawable/select_box_done"
+                android:visibility="gone" />
         </com.leo.appmaster.ui.RippleView>
     </RelativeLayout>
 
@@ -80,17 +82,19 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:maxLines="2"
-                android:text="@string/airsig_settings_activity_set_two"
+                android:text="@string/airsig_settings_activity_two_set"
                 android:textColor="@color/c2"
                 android:textSize="16dp" />
 
             <ImageView
+                android:id="@+id/iv_bg_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/arrow_faq" />
+                android:background="@drawable/select_box_done"
+                android:visibility="gone" />
         </com.leo.appmaster.ui.RippleView>
     </RelativeLayout>
 

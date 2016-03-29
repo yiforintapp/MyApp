@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.leo.appmaster.ui.CommonToolbar>
+
+    <TextView
+        android:id="@+id/instruct_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar"
+        android:text="@string/secur_deta_title"/>
+
+    <ListView
+        android:id="@+id/instruct_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/secur_bt"
+        android:layout_below="@id/instruct_title"
+        android:listSelector="#00000000"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:divider="@null"
+        android:clickable="false">
+    </ListView>
+
+    <Button
+        android:id="@+id/secur_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/secur_open_bt"/>
+</RelativeLayout>

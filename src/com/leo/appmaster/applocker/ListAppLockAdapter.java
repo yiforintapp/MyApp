@@ -1,8 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -22,7 +19,9 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppInfo;
-import com.leo.appmaster.ui.MaterialRippleLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by qili on 15-10-10.
@@ -63,11 +62,13 @@ public class ListAppLockAdapter extends BaseAdapter {
         if (info.label.equals(Constants.LABLE_LIST)) {
             view = layoutInflater.inflate(R.layout.home_more_label_item, null);
             TextView textView = (TextView) view.findViewById(R.id.more_label_tv);
-            String text;
-            if (i == 0) {
+            String text = "";
+            if (Constants.SWITCH_LIST.equals(info.titleName)) {
                 text = mContext.getString(R.string.app_lock_list_switch_title_one);
-            } else {
-                text = mContext.getString(R.string.app_lock_list_switch_title_two);
+            } else if (Constants.RECENT_DOWNLOAD_LIST.equals(info.titleName)) {
+                text = "新增应用"/*mContext.getString(R.string.app_lock_list_switch_title_two)*/;
+            } else if (Constants.OTHERS_LOCK_LIST.equals(info.titleName)) {
+                text = "其他应用";
             }
             textView.setText(text);
             return view;
@@ -207,6 +208,7 @@ public class ListAppLockAdapter extends BaseAdapter {
         if (isNeedLabel) {
             AppInfo labelInfo = new AppInfo();
             labelInfo.label = Constants.LABLE_LIST;
+            labelInfo.titleName = Constants.SWITCH_LIST;
             switchList.add(labelInfo);
         }
 
@@ -252,11 +254,11 @@ public class ListAppLockAdapter extends BaseAdapter {
         }
 
 
-        if (isNeedLabel) {
-            AppInfo labelInfo2 = new AppInfo();
-            labelInfo2.label = Constants.LABLE_LIST;
-            switchList.add(labelInfo2);
-        }
+//        if (isNeedLabel) {
+//            AppInfo labelInfo2 = new AppInfo();
+//            labelInfo2.label = Constants.LABLE_LIST;
+//            switchList.add(labelInfo2);
+//        }
 
         return switchList;
     }

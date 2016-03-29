@@ -18,6 +18,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
@@ -306,24 +307,22 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
             PreferenceTable table = PreferenceTable.getInstance();
             switch (itemId) {
                 case R.string.hp_hide_img:
-//                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidpic");
-//                    int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
-//                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
-//                    table.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
-//                    intent = new Intent(activity, ImageHideMainActivity.class);
-//                    activity.startActivity(intent);
-
-                    intent = new Intent(activity, AirSigActivity.class);
+                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidpic");
+                    int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
+                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count+1);
+                    table.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+                    intent = new Intent(activity, ImageHideMainActivity.class);
                     activity.startActivity(intent);
-
                     // 隐藏图片
                     break;
                 case R.string.hp_hide_video:
-                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidvideo");
-                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
-                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
-                    table.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-                    intent = new Intent(activity, VideoHideMainActivity.class);
+//                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidvideo");
+//                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
+//                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
+//                    table.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+//                    intent = new Intent(activity, VideoHideMainActivity.class);
+//                    activity.startActivity(intent);
+                    intent = new Intent(activity, AirSigActivity.class);
                     activity.startActivity(intent);
                     // 隐藏视频
                     break;
@@ -368,9 +367,11 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     break;
                 case R.string.hp_helper_shot:
                     // 快捷小助手
-                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "home_shortcutsAssistant");
-                    Intent qhintent = new Intent(activity, QuickHelperActivity.class);
-                    startActivity(qhintent);
+//                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "home_shortcutsAssistant");
+//                    Intent qhintent = new Intent(activity, QuickHelperActivity.class);
+//                    startActivity(qhintent);
+                    intent = new Intent(activity, AirSigSettingActivity.class);
+                    activity.startActivity(intent);
                     break;
                 /*case R.string.game_box_one:
                     SDKWrapper.showGameBoxHome(getActivity());

@@ -75,6 +75,7 @@ public class AppBusinessManager {
     public void init() {
         LeoLog.e(TAG, "business init");
         loadInitData();
+        //TODO 首次启动加载数据（进入）
         syncServerGestureData(true);
         // syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);
         // syncOtherRecommend(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
@@ -217,8 +218,9 @@ public class AppBusinessManager {
         final AppMasterPreference pref = AppMasterPreference
                 .getInstance(mContext);
         final long curTime = System.currentTimeMillis();
-
+        //TODO 首次启动加载
         long lastSyncTime = pref.getLastSyncBusinessTime();
+        //TODO 首次启动加载
         if (lastSyncTime == 0
                 || (curTime - pref.getLastSyncBusinessTime()) >= DELAY_12_HOUR) {
             mErrorTryCount = 0;
@@ -233,6 +235,7 @@ public class AppBusinessManager {
                             if (response != null) {
                                 try {
                                     if (response != null) {
+                                        //TODO 首次启动加载数据
                                         pref.setLastSyncBusinessTime(System
                                                 .currentTimeMillis());
                                         if (!noModify) {
@@ -243,6 +246,7 @@ public class AppBusinessManager {
                                             syncGestureData(
                                                     BusinessItemInfo.CONTAIN_QUICK_GESTURE,
                                                     list);
+                                            //TODO 首次启动加载数据（进入）
                                             pref.setLastBusinessRedTipShow(false);
                                         } else {
                                             LeoLog.d(TAG,

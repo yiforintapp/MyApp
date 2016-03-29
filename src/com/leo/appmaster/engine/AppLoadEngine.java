@@ -250,7 +250,7 @@ public class AppLoadEngine extends BroadcastReceiver {
         mListeners = new ArrayList<AppChangeListener>(1);
 
         divideRecommendedAppAndNum();
-
+        //TODO 首次启动加载数据
         List<String> list = AppMasterPreference.getInstance(mContext)
                 .getRecommendList();
         if (list != null) {
@@ -258,7 +258,7 @@ public class AppLoadEngine extends BroadcastReceiver {
         } else {
             mRecommendLocklist = Arrays.asList(sLocalLockArray);
         }
-
+        //TODO 首次启动加载数据
         List<String> listNum = AppMasterPreference.getInstance(mContext)
                 .getRecommendNumList();
         if (listNum != null && listNum.size() > 0) {
@@ -339,6 +339,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 
     public static synchronized AppLoadEngine getInstance(Context context) {
         if (mInstance == null) {
+            //TODO 首次启动加载数据（进入）
             mInstance = new AppLoadEngine(context);
         }
         return mInstance;
