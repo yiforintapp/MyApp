@@ -330,9 +330,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         Intent intent1 = new Intent(getActivity(), TestDemo.class);
                         startActivity(intent1);
                     }
-//                    Intent intent1 = new Intent(getActivity(), AppLockListActivity.class);
-//                    intent1.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
-//                    startActivity(intent1);
                     break;
                 case R.id.home_lost_tab:
                     // 骚扰拦截
