@@ -30,7 +30,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // about lock
     private static final String PREF_AUTO_SWITCH = "auto_switch";
     private static final String PREF_APPLICATION_LIST = "application_list";
-    private static final String PREF_LOCK_TYPE = "lock_type";
+    public static final String PREF_LOCK_TYPE = "lock_type";
     private static final String PREF_PASSWORD = "password";
     private static final String PREF_GESTURE = "gesture";
     private static final String PREF_LOCK_POLICY = "lock_policy";

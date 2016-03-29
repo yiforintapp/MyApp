@@ -1,5 +1,7 @@
 package com.leo.appmaster.db;
 
+import com.leo.appmaster.AppMasterPreference;
+
 /**
  * Created by Jasper on 2016/3/26.
  */
@@ -7,13 +9,27 @@ public abstract class ISettings {
     static final int PRIORITY_HIGH = 0;
     static final int PRIORITY_LOW = 1;
 
-    static final String[] GROUP_HIGH = new String[] {
-            "last_version","last_sync_business_time","last_business_red_tip"
-            ,"lock_type","first_install_app","lock_remind","have_ever_load_apps"
-            ,"last_alarm_set_time","need_cut_backup_uninstall_and_privacycontract"
-            ,"remove_unlock_all_shortcut","update_quick_gesture_user","update_recovery_defatult_data"
-            ,"last_guide_version","first_use_new_version","unlock_count","google_play_guide_tip_show"
-            ,"splash_skip_url","splash_skip_to_client","splash_delay_time","unlock_success_tip_random"
+    static final String[] GROUP_HIGH = new String[]{
+            AppMasterPreference.PREF_LAST_VERSION,
+            AppMasterPreference.PREF_LAST_SYNC_BUSINESS_TIME,
+            AppMasterPreference.PREF_LAST_BUSINESS_RED_TIP,
+            AppMasterPreference.PREF_LOCK_TYPE,
+            AppMasterPreference.PREF_FIRST_INSTALL_APP,
+            AppMasterPreference.PREF_LOCK_REMIND,
+            AppMasterPreference.PREF_HAVE_EVER_LOAD_APPS,
+            AppMasterPreference.PREF_LAST_ALARM_SET_TIME,
+            AppMasterPreference.PREF_NEED_CUT_BACKUP_UNINSTALL_AND_PRIVACYCONTRACT,
+            AppMasterPreference.PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG,
+            AppMasterPreference.PREF_UPDATE_QUICK_GESTURE_USER,
+            AppMasterPreference.PREF_UPDATE_RECOVERY_DEFAULT_DATA,
+            AppMasterPreference.PREF_LAST_GUIDE_VERSION,
+            AppMasterPreference.PREF_FIRST_USE_APP,
+            AppMasterPreference.PREF_UNLOCK_COUNT,
+            AppMasterPreference.PREF_GUIDE_TIP_SHOW,
+            AppMasterPreference.PREF_SPLASH_SKIP_URL,
+            AppMasterPreference.PREF_SPLASH_SKIP_TO_CLIENT,
+            AppMasterPreference.PREF_SPLASH_DElAY_TIME,
+            AppMasterPreference.PREF_UNLOCK_SUCCESS_TIP_RANDOM
     };
 
     public abstract void set(String key, String value);
