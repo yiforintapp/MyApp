@@ -28,6 +28,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -63,6 +66,14 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private ImageView iv_delete, iv_delete_bottom;
     private ImageView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
     private TextView mPasswdTip, mPasswdHint;
+
+    private View mPassLockView;
+    private View mViewBottom;
+    private ImageView mIvBottom;
+    private TextView mTvBottom;
+    private View mAirSigTouchView;
+    private int mShowType;
+
     private String mTempPasswd = "";
 
     private String[] mPasswds = {
@@ -205,6 +216,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
         mPasswdTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 
+
         if (isShowTipFromScreen) {
             mPasswdTip.setVisibility(View.VISIBLE);
         } else {
@@ -273,9 +285,74 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 }
             }
         }
+
+        mPassLockView = findViewById(R.id.psw_lock);
+        mViewBottom = findViewById(R.id.switch_bottom_content);
+        mViewBottom.setOnClickListener(this);
+        mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
+        mTvBottom = (TextView) findViewById(R.id.switch_bottom);
+        mAirSigTouchView = findViewById(R.id.airsig_lock);
+
         clearPasswd();
+        initAirSig();
         LeoEventBus.getDefaultBus().register(this);
     }
+
+    private void initAirSig() {
+        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
+
+        if (isAirsigOn && isAirsigReady) {
+            mViewBottom.setVisibility(View.VISIBLE);
+            int unlockType = LeoPreference.getInstance().
+                    getInt(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+
+
+            if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                mPassLockView.setVisibility(View.VISIBLE);
+                mAirSigTouchView.setVisibility(View.GONE);
+                mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+                mIvBottom.setBackgroundResource(
+                        R.drawable.reset_pass_gesture);
+            } else {
+                mPassLockView.setVisibility(View.GONE);
+                mAirSigTouchView.setVisibility(View.VISIBLE);
+                mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
+                mIvBottom.setBackgroundResource(
+                        R.drawable.reset_pass_number);
+            }
+        } else {
+            mViewBottom.setVisibility(View.GONE);
+        }
+    }
+
+//    private void showUI(boolean show) {
+//        if (show) {
+//            //1
+//
+//        } else {
+//            //1
+//            int oneType = mPasswdTip.getVisibility();
+//            mPasswdTip.setTag(oneType);
+//            mPasswdTip.setVisibility(View.GONE);
+//            //2
+//            int twoType = mPasswdHint.getVisibility();
+//            mPasswdHint.setTag(twoType);
+//            mPasswdHint.setVisibility(View.GONE);
+//            //3
+//            int threeType = mFourPoint.getVisibility();
+//            mFourPoint.setTag(threeType);
+//            mFourPoint.setVisibility(View.GONE);
+//            //4
+//            int fourType = mKeyBoard.getVisibility();
+//            mKeyBoard.setTag(fourType);
+//            mKeyBoard.setVisibility(View.GONE);
+//
+//            mAirSigTouchView.setVisibility(View.VISIBLE);
+//        }
+//    }
 
     public void onEventMainThread(LockThemeChangeEvent event) {
 
@@ -620,8 +697,31 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             case R.id.tv_ok:
                 checkPasswd();
                 break;
+            case R.id.switch_bottom_content:
+                switchUnlockType();
+                break;
             default:
                 break;
+        }
+    }
+
+    private void switchUnlockType() {
+        if (mShowType == AirSigSettingActivity.NOMAL_UNLOCK) {
+            mPassLockView.setVisibility(View.GONE);
+            mAirSigTouchView.setVisibility(View.VISIBLE);
+            mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+
+            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
+            mIvBottom.setBackgroundResource(
+                    R.drawable.reset_pass_number);
+        } else {
+            mPassLockView.setVisibility(View.VISIBLE);
+            mAirSigTouchView.setVisibility(View.GONE);
+            mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+
+            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+            mIvBottom.setBackgroundResource(
+                    R.drawable.reset_pass_gesture);
         }
     }
 
