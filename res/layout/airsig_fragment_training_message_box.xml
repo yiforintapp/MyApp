@@ -42,6 +42,16 @@
 	        android:background="@android:color/transparent"
 	        android:textColor="@color/airsig_training_message_box_button"
 	        android:visibility="gone" />
+        
+        <ImageView
+	        android:id="@+id/imageHintIcon"
+	        android:layout_toLeftOf="@+id/button_positive"
+	        android:layout_width="12dp"
+	        android:layout_height="12dp"
+	        android:layout_marginRight="1dp"
+	        android:layout_centerVertical="true" 
+	        android:src="@drawable/airsig_red_dot"
+	        android:visibility="gone" />
     
     </RelativeLayout>
     

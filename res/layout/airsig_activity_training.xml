@@ -1,155 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/airsig_background_gray"
     android:clipChildren="false"
     android:fitsSystemWindows="true"
-    tools:context="com.airsig.android_sdk.TrainingActivity">
-
-    <RelativeLayout
+    tools:context="com.airsig.android_sdk.TrainingActivity" >
+    
+    <RelativeLayout 
         android:id="@+id/contentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/viewMessageBox"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/airsig_small_message_box_height"
-                android:layout_marginBottom="0dp"
-                android:layout_marginLeft="@dimen/airsig_horizontal_margin"
-                android:layout_marginRight="@dimen/airsig_horizontal_margin"
-                android:layout_marginTop="@dimen/airsig_vertical_margin"
-                android:background="@drawable/airsig_training_card"
-                android:clipChildren="true"
-                android:padding="0dp" />
-
-            <RelativeLayout
-                android:id="@+id/viewTouchBox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/airsig_vertical_margin"
-                android:layout_marginLeft="@dimen/airsig_horizontal_margin"
-                android:layout_marginRight="@dimen/airsig_horizontal_margin"
-                android:layout_marginTop="@dimen/airsig_vertical_margin"
-                android:background="@drawable/airsig_training_card"
-                android:padding="0dp">
-
-                <LinearLayout
-                    android:id="@+id/viewTouchArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginLeft="3dp"
-                    android:layout_marginRight="3dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/airsig_training_toucharea"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textTouchAreaMessage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra"
-                        android:text="@string/airsig_training_textview_toucharea"
-                        android:textColor="@color/airsig_text_white"
-                        android:textSize="@dimen/airsig_textsize_content" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageThumb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:src="@drawable/airsig_img_thumb"
-            android:visibility="invisible" />
-
-        <ProgressBar
-            android:id="@+id/progressBarWaiting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
+	    android:layout_height="match_parent">
+    
+	    <LinearLayout
+	        android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:orientation="vertical" >
+	        
+	        <RelativeLayout
+	            android:id="@+id/viewMessageBox"
+		        android:layout_width="match_parent"
+		        android:layout_height="@dimen/airsig_small_message_box_height"
+		        android:layout_marginLeft="@dimen/airsig_horizontal_margin"
+		        android:layout_marginRight="@dimen/airsig_horizontal_margin"
+		        android:layout_marginTop="@dimen/airsig_vertical_margin"
+		        android:layout_marginBottom="0dp"
+		        android:padding="0dp"
+		        android:background="@drawable/airsig_training_card"
+		        android:clipChildren="true" />
+		    
+		    <RelativeLayout
+		        android:id="@+id/viewTouchBox"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:layout_marginLeft="@dimen/airsig_horizontal_margin"
+		        android:layout_marginRight="@dimen/airsig_horizontal_margin"
+		        android:layout_marginTop="@dimen/airsig_vertical_margin"
+		        android:layout_marginBottom="@dimen/airsig_vertical_margin"
+		        android:padding="0dp"
+		        android:background="@drawable/airsig_training_card" >
+		        
+		        <View
+		            android:id="@+id/viewTouchBoxZone"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:background="@android:color/transparent" />
+		        
+		        <RelativeLayout
+		            android:id="@+id/viewTouchAreaBackground"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:orientation="vertical"
+			        android:layout_marginTop="5dp"
+			        android:layout_marginLeft="3dp"
+			        android:layout_marginRight="3dp"
+			        android:layout_marginBottom="0dp"
+			        android:background="@drawable/airsig_training_toucharea" >
+			        
+		            <View
+		            android:id="@+id/viewTouchArea"
+			        android:layout_width="match_parent"
+			        android:layout_height="match_parent"
+			        android:background="@android:color/transparent" />
+		            
+		            <TextView
+		                android:id="@+id/textTouchAreaMessage" 
+		                android:layout_width="match_parent"
+			        	android:layout_height="match_parent"
+			        	android:gravity="center"
+			        	android:background="@android:color/transparent" 
+			        	android:textColor="@color/airsig_text_white"
+			        	android:textSize="@dimen/airsig_textsize_content"
+			        	android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra"
+			        	android:text="@string/airsig_training_textview_toucharea" />
+			        
+		        </RelativeLayout>
+		        
+		    </RelativeLayout>
+	        
+	    </LinearLayout>
+	    
+	    <ImageView
+	        android:id="@+id/imageThumb"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_centerVertical="true"
+	        android:background="@android:color/transparent"
+	        android:src="@drawable/airsig_img_thumb"
+	        android:visibility="invisible" />
+		
+		<ProgressBar
+	        android:id="@+id/progressBarWaiting"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerInParent="true"
+	        android:visibility="invisible" />
+	
+	</RelativeLayout>
+	
+    <RelativeLayout 
         android:id="@+id/helpPage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:background="@drawable/airsig_alert"
-        android:visibility="invisible">
-
+	    android:layout_height="match_parent"
+	    android:layout_margin="10dp"
+	    android:background="@drawable/airsig_alert"
+	    android:visibility="invisible">
+	
         <ImageView
             android:id="@+id/helpPageIcon"
             android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/airsig_intro_pic02" />
-
+	        android:layout_height="150dp"
+	        android:layout_marginTop="70dp"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:background="@android:color/transparent"
+	        android:src="@drawable/airsig_intro_pic02" />
+        
         <TextView
             android:id="@+id/helpPageText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_below="@+id/helpPageIcon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="37dp"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="37dp"
+	        android:layout_marginLeft="50dp"
+	        android:layout_marginRight="50dp"
+	        android:layout_centerHorizontal="true"
+	        android:gravity="start"
             android:background="@android:color/transparent"
-            android:gravity="start"
-            android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra"
-            android:text="@string/airsig_training_help_title"
             android:textColor="@color/airsig_text_gray"
-            android:textSize="@dimen/airsig_textsize_content_small" />
-
-        <Button
+        	android:textSize="@dimen/airsig_textsize_content_small"
+        	android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra"
+            android:text="@string/airsig_training_help_title" />
+        
+        <Button 
             android:id="@+id/helpPageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
             android:layout_below="@+id/helpPageText"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="39dp"
-            android:background="@drawable/airsig_button_positive_small"
-            android:minWidth="100dp"
-            android:text="@string/airsig_training_help_button"
-            android:textColor="@color/airsig_text_white"
-            android:textSize="@dimen/airsig_textsize_button" />
-
-        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:minWidth="100dp"
+	        android:layout_height="30dp"
+	        android:layout_marginTop="39dp"
+	        android:layout_centerHorizontal="true"
+            android:background="@drawable/airsig_button_positive_small"
+            android:textColor="@color/airsig_text_white"
+            android:textSize="@dimen/airsig_textsize_button"
+            android:text="@string/airsig_training_help_button"
+            />
+        
+        <TextView
             android:layout_below="@+id/helpPageButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginLeft="50dp"
+	        android:layout_marginRight="50dp"
+	        android:layout_centerHorizontal="true"
+	        android:gravity="start"
             android:background="@android:color/transparent"
-            android:gravity="start"
-            android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra"
-            android:text="@string/airsig_training_help_bottom_text"
             android:textColor="@color/airsig_text_gray"
-            android:textSize="@dimen/airsig_textsize_content_small" />
-
-    </RelativeLayout>
-
+        	android:textSize="@dimen/airsig_textsize_content_small"
+        	android:lineSpacingExtra="@dimen/airsig_text_lineSpacingExtra"
+            android:text="@string/airsig_training_help_bottom_text" />
+	
+	</RelativeLayout>
+	
 </RelativeLayout>

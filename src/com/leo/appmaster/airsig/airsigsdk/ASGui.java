@@ -142,6 +142,14 @@ public class ASGui {
 	public ASSetting getSetting() {
 		return mSetting;
 	}
+	
+	/**
+	 * Check if the license is still valid
+	 * @return Return true if the license is still valid
+	 */
+	public boolean isValidLicense() {
+		return ASEngine.getSharedInstance().isValidLicense();
+	}
 
 	/**
 	 * Check the required sensor (gyroscope, linear accelerometer and gravity sensor) status of current
