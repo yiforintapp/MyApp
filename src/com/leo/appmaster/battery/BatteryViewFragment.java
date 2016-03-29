@@ -47,6 +47,7 @@ import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.CircleImageViewTwo;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
@@ -80,6 +81,7 @@ import java.util.TimerTask;
 public class BatteryViewFragment extends BaseFragment implements View.OnTouchListener, BatteryTestViewLayout.ScrollBottomListener, View.OnClickListener {
 
     private static final String TAG = "BatteryViewFragment";
+    private static final String GPLINK = "play.google.com";
     private final int ANIMATION_TIME = 300;
     private final int MOVE_UP = 1;
     private final int MOVE_DOWN = 2;
@@ -1273,6 +1275,18 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         }
 
         Uri content_url = Uri.parse(url);
+        LeoLog.d("startBrowser", "content_url is : " + content_url);
+        String host = content_url.getHost();
+        LeoLog.d("startBrowser", "host is : " + host);
+
+        if (host.contains(GPLINK)) {
+            boolean hasGp = AppUtil.isInstallPkgName(mActivity, Constants.PKG_GOOLEPLAY);
+            if (hasGp) {
+                intent.setPackage(Constants.PKG_GOOLEPLAY);
+                LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
+            }
+        }
         intent.setData(content_url);
         try {
             IntrudeSecurityManager.sEnterBrowser = true;
@@ -2413,7 +2427,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", mAdSource,  null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", mAdSource, null);
         }
 
         @Override
