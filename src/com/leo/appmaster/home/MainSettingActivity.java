@@ -13,6 +13,10 @@ import android.widget.TextView;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.activity.PrivacyOptionActivity;
+import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.db.LeoPreference;
@@ -117,7 +121,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rv_setting_change_lock_type:
-
+                goToChangeLockType();
                 break;
             case R.id.rv_setting_sign_lock:
 
@@ -126,13 +130,13 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
 
                 break;
             case R.id.rv_setting_pswprotect:
-
+                goToPswProtect();
                 break;
             case R.id.rv_setting_pswtip:
-
+                goToPswTip();
                 break;
             case R.id.rv_setting_privacy_listen:
-
+                goToPrivacyListen();
                 break;
             case R.id.rv_setting_advanced_protect:
                 if (mCbAdvancedProtect.isChecked()) {
@@ -144,6 +148,27 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
             default:
                 break;
         }
+    }
+
+    private void goToChangeLockType() {
+        Intent intent = new Intent(this, LockSettingActivity.class);
+        intent.putExtra("reset_passwd", true);
+        startActivity(intent);
+    }
+
+    private void goToPswProtect() {
+        Intent intent = new Intent(this, PasswdProtectActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToPswTip() {
+        Intent intent = new Intent(this, PasswdTipActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToPrivacyListen() {
+        Intent intent = new Intent(this, PrivacyOptionActivity.class);
+        startActivity(intent);
     }
 
     private void requestDeviceAdmin() {
