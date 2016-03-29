@@ -55,7 +55,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_setting);
-        mPt = PreferenceTable.getInstance();
+//        mPt = PreferenceTable.getInstance();
         initUI();
     }
 
