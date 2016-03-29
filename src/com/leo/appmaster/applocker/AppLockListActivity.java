@@ -146,8 +146,10 @@ public class AppLockListActivity extends BaseActivity implements
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
             boolean mIsFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", true);
+            boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
             LeoLog.e("mIsFirstEnterFromMain", "mIsFirstEnterFromMain: " + mIsFirstEnterFromMain);
-            if (isFromConfrim && ((mAppList != null && mAppList.size() > 0) || mIsFirstEnterFromMain)) {
+            if (isFromConfrim && ((mAppList != null && mAppList.size() > 0)
+                              || (mIsFirstEnterFromMain && isFirstEnterFromIcon))) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if(switchs != null && switchs.size() > 0) {
                     mPosition = + (switchs.size() + 1);

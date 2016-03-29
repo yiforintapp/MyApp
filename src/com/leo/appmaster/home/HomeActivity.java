@@ -1331,6 +1331,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         } else {
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName2);
+            mLockManager.filterSelfOneMinites();
             startActivity(intent);
         }
     }
