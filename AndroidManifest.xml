@@ -975,6 +975,7 @@
             android:name=".phoneSecurity.AddSecurityNumberActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/activity_theme"/>
         <activity
             android:name=".activity.DebugActivity"

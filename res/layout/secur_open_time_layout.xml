@@ -16,6 +16,7 @@
         android:src="@drawable/theft_circle"/>
 
     <RelativeLayout
+        android:id="@+id/secur_prot_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

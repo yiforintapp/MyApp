@@ -129,11 +129,15 @@ public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnC
     }
 
     private void openSecurityHandler() {
-        Intent intent = new Intent(PhoneSecurityGuideActivity.this, PhoneSecurityActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(this, AddSecurityNumberActivity.class);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         /*从该处进入，之前保存的号码清空*/
-        mgr.addPhoneSecurityNumber(null);
+//        mgr.addPhoneSecurityNumber(null);
         finish();
     }
 

@@ -133,4 +133,8 @@ public class InstructListAdapter extends BaseAdapter {
         }
         return convertView;
     }
+
+    public void setData(List<InstructModel> list) {
+        mList = list;
+    }
 }
