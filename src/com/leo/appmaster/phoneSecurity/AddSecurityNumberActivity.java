@@ -78,10 +78,13 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
         mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
+        mOpenSecurBt = (Button) findViewById(R.id.add_bt);
+        mOpenSecurBt.setOnClickListener(this);
         if (TextUtils.isEmpty(extData)) {
             mTtileBar.setToolbarTitle(R.string.secur_add_number_title);
         } else {
             mTtileBar.setToolbarTitle(extData);
+            mOpenSecurBt.setText(this.getResources().getString(R.string.secur_mody_sure_bt));
         }
         mPhoneContact = new ArrayList<ContactBean>();
         mAddPrivacyContact = new ArrayList<ContactBean>();
@@ -100,8 +103,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         mAddRip = findViewById(R.id.sec_add_number_RP);
         mCheckB = (CheckBox) findViewById(R.id.checkBx);
         mIsCheckB = mCheckB.isChecked();
-        mOpenSecurBt = (Button) findViewById(R.id.add_bt);
-        mOpenSecurBt.setOnClickListener(this);
+        mCheckB.setOnCheckedChangeListener(this);
         mInputEdit = (EditText) findViewById(R.id.sec_input_numberEV);
         LostSecurityManagerImpl securityManager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         /*是否添加了防盗号码*/
