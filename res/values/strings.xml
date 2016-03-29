@@ -1178,7 +1178,19 @@
     <string name="secur_deta_title_bar">防盗功能详情</string>
     <string name="secur_deta_title">可向被盗手机发送以下指令，执行对应操作</string>
     <string name="secur_add_numb_tip">防盗指令将会以短信形式发送到预留号码。您可以用预留号码发送防盗指令控制手机。</string>
-    <string name ="secur_add_"></string>
+    <string name="secur_add_num">输入手机号</string>
+    <string name="secur_mody_num">更改</string>
+    <string name="secur_close">关闭防盗</string>
+    <string name="secur_normal_function">基本功能</string>
+    <string name="secur_instr_tip">如何防盗？</string>
+    <string name="secur_adv_function">高级功能</string>
+    <string name="secur_fun_open">已开启</string>
+    <string name="secur_fun_close">未开启</string>
+    <string name="secur_mody_num_title">修改预留号码</string>
+    <string name="secur_mody_mum_sure">确认</string>
+    <string name="secur_close_tip_content">关闭防盗，您的手机将失去保护，确认关闭吗？</string>
+    <string name="secur_close_tip_bt_cancel">取消</string>
+    <string name="secur_close_tip_bt_sure">确认</string>
 
     <string name="airsig_settings_activity_title">签字解锁</string>
     <string name="airsig_settings_activity_set_one_on">开启签字</string>
