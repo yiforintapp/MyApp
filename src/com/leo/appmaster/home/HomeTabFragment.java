@@ -13,14 +13,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.callfilter.TestDemo;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -34,6 +34,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,7 +281,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         FragmentActivity activity = getActivity();
         if (activity != null) {
-            PreferenceTable table = PreferenceTable.getInstance();
+            LeoPreference table = LeoPreference.getInstance();
             switch (view.getId()) {
                 case R.id.home_app_lock_tv:
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");
@@ -322,20 +323,20 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     }
                     break;
                 case R.id.home_wifi_tab:
-//                     wifi安全
-//                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
-//                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
-//                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2+1);
-//                    Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
-//                    startActivity(mIntent);
-//                    if (DBG) {
-//                        Intent intent1 = new Intent(getActivity(), TestDemo.class);
-//                        startActivity(intent1);
-//                    }
-                    Intent intent1 = new Intent(getActivity(), AppLockListActivity.class);
-                    intent1.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
-                    HomeActivity.mIsFirstEnterFromMain = true;
-                    startActivity(intent1);
+                     //wifi安全
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
+                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
+                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2+1);
+                    Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
+                    startActivity(mIntent);
+                    if (DBG) {
+                        Intent intent1 = new Intent(getActivity(), TestDemo.class);
+                        startActivity(intent1);
+                    }
+//                    Intent intent1 = new Intent(getActivity(), AppLockListActivity.class);
+//                    intent1.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
+//                    HomeActivity.mIsFirstEnterFromMain = true;
+//                    startActivity(intent1);
                     break;
                 case R.id.home_lost_tab:
                     // 骚扰拦截
