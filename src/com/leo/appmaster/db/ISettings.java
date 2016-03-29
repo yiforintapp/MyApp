@@ -17,13 +17,14 @@ public abstract class ISettings {
     };
 
     public abstract void set(String key, String value);
-    public abstract int get(String key, String def);
+    public abstract String get(String key, String def);
 
-    public boolean isHighPriority(String key) {
+    static boolean isHighPriority(String key) {
         return false;
     }
 
-    public boolean isEncrypto() {
+    static boolean isEncrypto() {
         return false;
     }
+
 }

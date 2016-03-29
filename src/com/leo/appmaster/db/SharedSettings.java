@@ -11,7 +11,7 @@ public class SharedSettings extends ISettings {
     }
 
     @Override
-    public int get(String key, String def) {
-        return 0;
+    public String get(String key, String def) {
+        return null;
     }
 }
