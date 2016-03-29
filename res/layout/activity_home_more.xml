@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cbg">
+    android:background="@color/white">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_main"
@@ -24,17 +24,15 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="11dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_home_more_intruder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -46,7 +44,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip1"
                         android:gravity="left">
 
                         <TextView
@@ -61,33 +59,45 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip1"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:id="@+id/iv_setting_arrow1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_home_more_findlost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -99,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip2"
                         android:gravity="left">
 
                         <TextView
@@ -114,31 +124,41 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip2"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
+            <View
+                android:background="#f0f3f7"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_home_more_screenview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -150,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip3"
                         android:gravity="left">
 
                         <TextView
@@ -165,33 +185,49 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip3"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
+
             </RelativeLayout>
+
+            <View
+                android:background="#f0f3f7"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_to_hide"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/rl_callfilter_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_home_more_callfilter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -203,7 +239,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip4"
                         android:gravity="left">
 
                         <TextView
@@ -218,33 +254,44 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip4"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
+
             <RelativeLayout
                 android:id="@+id/rl_wifi_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_home_more_wifi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -256,7 +303,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip5"
                         android:gravity="left">
 
                         <TextView
@@ -271,33 +318,42 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip5"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
+            <View
+                android:background="#f0f3f7"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
             <RelativeLayout
                 android:id="@+id/rl_flow_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_home_more_flow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -309,7 +365,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip6"
                         android:gravity="left">
 
                         <TextView
@@ -324,33 +380,44 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip6"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
+
             <RelativeLayout
                 android:id="@+id/rl_battery_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="1px"
-                android:layout_marginRight="8dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_home_more_battery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="1px"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -362,7 +429,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
-                        android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
+                        android:layout_toLeftOf="@+id/rl_content_tip7"
                         android:gravity="left">
 
                         <TextView
@@ -377,31 +444,45 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip7"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
+
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="11dp"
-                android:background="@color/white">
+                android:layout_height="wrap_content">
 
                 <com.leo.appmaster.ui.RippleView
                     android:id="@+id/rv_home_more_setting"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
                     app:rippleAlpha="1"
                     app:rippleColor="@color/home_tab_pressed"
                     app:rippleDuration="250"
@@ -428,18 +509,32 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip8"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="20dp"
-                        android:src="@drawable/icn_settings_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
 
             </RelativeLayout>
+
+            <View
+                android:background="#cbcbcb"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
 
         </LinearLayout>
 

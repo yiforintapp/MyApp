@@ -15,8 +15,10 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 
@@ -24,7 +26,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
  * Created by chenfs on 16-3-28.
  */
 public class MainSettingActivity extends BaseActivity implements View.OnClickListener {
-    private PreferenceTable mPt;
+    private LeoPreference mLp;
 
     private static final int STRID_OPENED = R.string.has_opened;
     private static final int STRID_DID_NOT_OPEN = R.string.did_not_open;
@@ -34,7 +36,9 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     private static final int STRID_ADVANCED_PROTECT_OFF = R.string.forbid_uninstall_off;
     private static final int STRID_DIALOG_TITLE_ADVANCED_PROTECT = R.string.title_close_advanced_protect;
     private static final int STRID_DIALOG_CONTENT_ADVANCED_PROTECT = R.string.content_close_advanced_protect;
+    private static final int STRID_SETTING = R.string.setting;
 
+    private CommonToolbar mCtbMain;
 
     private RippleView mRvChangeGstOrPsw;
     private RippleView mRvSignatureLock;
@@ -55,7 +59,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_setting);
-//        mPt = PreferenceTable.getInstance();
+        mLp = LeoPreference.getInstance();
         initUI();
     }
 
@@ -73,6 +77,8 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+
+
     private void updateSwitch() {
         if (isOldAdminActive() || isNewAdminActive()) {
             mCbAdvancedProtect.setChecked(true);
@@ -84,6 +90,8 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initUI() {
+        mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
+        mCtbMain.setToolbarTitle(STRID_SETTING);
         mRvChangeGstOrPsw = (RippleView) findViewById(R.id.rv_setting_change_lock_type);
         mRvChangeGstOrPsw.setOnClickListener(this);
         mRvSignatureLock = (RippleView) findViewById(R.id.rv_setting_sign_lock);
