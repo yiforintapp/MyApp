@@ -1204,5 +1204,12 @@
     <string name="airsig_settings_lock_fragment_normal">切换为手势解锁</string>
     <string name="airsig_settings_lock_fragment_airsig">切换为Airsig解锁</string>
 
+    <string name="change_gesture_or_password">更改手势/数字密码</string>
+    <string name="gesture_or_password">手势/数字密码</string>
+    <string name="did_not_open">未开启</string>
+    <string name="has_opened">已开启</string>
+
+    <string name="title_close_advanced_protect">关闭高级保护</string>
+    <string name="content_close_advanced_protect">关闭高级保护后，手机防盗，系统锁屏入侵防护等功能不可用，隐私卫士也可以被随意卸载</string>
 
 </resources>
