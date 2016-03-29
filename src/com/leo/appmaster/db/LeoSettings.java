@@ -1,38 +1,45 @@
 package com.leo.appmaster.db;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Created by Jasper on 2016/3/26.
  */
 public class LeoSettings {
+    private static final byte[] LOCK = new byte[1];
     public static final int BOOL_TRUE = 1;
     public static final int BOOL_FALSE = 0;
 
     private static ISettings mDatabase = new DatabaseSettings();
     private static ISettings mPreference = new SharedSettings();
 
-    public static void initialize() {
-
-    }
-
-    private static File getPreferencesDir() {
+    public static synchronized void initialize() {
         Context ctx = AppMasterApplication.getInstance();
         File file = ctx.getSharedPrefsFile(ctx.getPackageName() + "_preferences");
         if (!file.exists()) {
-            return null;
+            return;
         }
 
-        AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
-//        pref.
-        return null;
-    }
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        Map<String, ?> values = preferences.getAll();
+        for (String s : values.keySet()) {
+            Object obj = values.get(s);
+            if (obj != null) {
+                LeoSettings.setString(s, String.valueOf(obj));
+            }
+        }
 
+        file.delete();
+
+    }
 
     public static void setInteger(String key, int value) {
         setString(key, value + "");

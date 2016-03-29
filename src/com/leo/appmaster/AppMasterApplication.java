@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -85,6 +86,7 @@ public class AppMasterApplication extends Application {
             System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
         } catch (Exception e) {
         }
+        LeoSettings.initialize();
 
 //        Debug.startMethodTracing("Nexus6.trace");
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
