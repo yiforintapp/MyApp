@@ -32,6 +32,7 @@ public class ListAppLockAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater layoutInflater;
     private LockManager mLockManager;
+    private boolean mNewAppExist; // 是否有新增应用
 
     public ListAppLockAdapter(Context mContext) {
         this.mContext = mContext;
@@ -66,9 +67,13 @@ public class ListAppLockAdapter extends BaseAdapter {
             if (Constants.SWITCH_LIST.equals(info.titleName)) {
                 text = mContext.getString(R.string.app_lock_list_switch_title_one);
             } else if (Constants.RECENT_DOWNLOAD_LIST.equals(info.titleName)) {
-                text = "新增应用"/*mContext.getString(R.string.app_lock_list_switch_title_two)*/;
+                text = "新增应用";
             } else if (Constants.OTHERS_LOCK_LIST.equals(info.titleName)) {
-                text = "其他应用";
+                if (mNewAppExist) {
+                    text = "其他应用";
+                } else {
+                    text = "全部应用";
+                }
             }
             textView.setText(text);
             return view;
@@ -97,6 +102,10 @@ public class ListAppLockAdapter extends BaseAdapter {
                 return view;
             }
         }
+    }
+
+    public void setNewAppExist(boolean isExist) {
+        mNewAppExist = isExist;
     }
 
     public static String makePosRight(AppInfo info) {

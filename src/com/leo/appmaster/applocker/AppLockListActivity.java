@@ -36,7 +36,7 @@ import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -144,10 +144,13 @@ public class AppLockListActivity extends BaseActivity implements
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
-            if (mAppList != null && mAppList.size() > 0) {
+            if (isFromConfrim && ((mAppList != null && mAppList.size() > 0) || HomeActivity.mIsFirstEnterFromMain)) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if(switchs != null && switchs.size() > 0) {
                     mPosition = + (switchs.size() + 1);
+                }
+                if (HomeActivity.mIsFirstEnterFromMain) {
+                    HomeActivity.mIsFirstEnterFromMain = false;
                 }
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
@@ -287,9 +290,9 @@ public class AppLockListActivity extends BaseActivity implements
     private void inLockListGuideTip() {
         if (!isFromConfrim) {
             if (!isGuideEnough()) {
-                int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+                int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
                 guideCount = guideCount + 1;
-                LeoPreference.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
+                PreferenceTable.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
             }
             boolean isGuideEnough = isGuideEnough();
             if (!isGuideEnough) {
@@ -386,10 +389,17 @@ public class AppLockListActivity extends BaseActivity implements
 
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
-        boolean processed = LeoPreference.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
-        if (!processed) {
+        if (isFromConfrim && HomeActivity.mIsFirstEnterFromMain && !HomeActivity.mHasEnterFromIcon) {
             mAppList.clear();
         }
+
+        LeoLog.e("mResaultList", "mIsFirstEnterFromIcon:" + HomeActivity.mIsFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim );
+        if (!isFromConfrim && HomeActivity.mIsFirstEnterFromIcon) {
+            mAppList.clear();
+            HomeActivity.mIsFirstEnterFromIcon = false;
+            HomeActivity.mHasEnterFromIcon = true;
+        }
+        lm.ignore();
 //        AppItemInfo appItemInfo = new AppItemInfo();
 //        appItemInfo.packageName = "com.android.settings";
 //        appItemInfo.label = "设置";
@@ -398,6 +408,10 @@ public class AppLockListActivity extends BaseActivity implements
 //        appItemInfo1.packageName = "com.android.dialer";
 //        mAppList.add(appItemInfo);
 //        mAppList.add(appItemInfo1);
+        LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size());
+        for (AppItemInfo appItemInfo: mAppList) {
+            LeoLog.e("mResaultList", appItemInfo.packageName);
+        }
         if (mAppList != null && mAppList.size() > 0) {
             for (int i = 0; i < mAppList.size(); i++) {
                 Iterator<AppInfo> iterator = mUnlockRecommendList.iterator();
@@ -415,6 +429,7 @@ public class AppLockListActivity extends BaseActivity implements
             labelInfoDownload.titleName = Constants.RECENT_DOWNLOAD_LIST;
             mResaultList.add(labelInfoDownload);
             mResaultList.addAll(mAppList);
+            mLockAdapter.setNewAppExist(true);
         }
 //        if (mUnlockRecommendList != null && mUnlockRecommendList.size() > 0) {
 //            AppInfo labelInfoRecommend = new AppInfo();
@@ -1093,7 +1108,7 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private boolean isGuideEnough() {
-        int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+        int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
         /*进入应用锁，引导强制提示3*/
         return guideCount > IN_LOCK_GUIDE_COUNT;
     }

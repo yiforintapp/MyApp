@@ -155,6 +155,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 
     private boolean mHidePicFinish = true;
+    public static boolean mIsFirstEnterFromMain;
+    public static boolean mIsFirstEnterFromIcon;
+    public static boolean mHasEnterFromIcon;
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
