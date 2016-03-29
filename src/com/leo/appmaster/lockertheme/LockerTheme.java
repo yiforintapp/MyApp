@@ -271,7 +271,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             mViewPager.setCurrentItem(1);
             pref.setLocalThemeSerialNumber(pref.getOnlineThemeSerialNumber());
         }
-//            PreferenceTable.getInstance().putBoolean(Constants.IS_CLICK_LOCK_TAB, false);
+//            LeoPreference.getInstance().putBoolean(Constants.IS_CLICK_LOCK_TAB, false);
 //        }
 
         // form statusbar

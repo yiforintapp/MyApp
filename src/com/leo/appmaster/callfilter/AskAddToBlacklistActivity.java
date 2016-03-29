@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -465,12 +465,12 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             });
         }
         String title = getString(R.string.addto_blacklist_share_dialog_title);
-        final PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
+        final LeoPreference shareLeoPreference = LeoPreference.getInstance();
         boolean isDialogContentEmpty = TextUtils.isEmpty(
-                sharePreferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT));
+                shareLeoPreference.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT));
         String content = "";
         if (!isDialogContentEmpty) {
-            content = sharePreferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT);
+            content = shareLeoPreference.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT);
         } else {
             content = getString(R.string.addto_blacklist_share_dialog_content);
         }
@@ -498,7 +498,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                     mShareDialog = null;
                 }
                 SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block_share");
-                shareApps(sharePreferenceTable);
+                shareApps(shareLeoPreference);
             }
         });
         if (mShareDialog.getWindow() != null) {
@@ -509,20 +509,20 @@ public class AskAddToBlacklistActivity extends BaseActivity {
 
 
     /** 分享应用 */
-    private  void shareApps(PreferenceTable preferenceTable) {
+    private  void shareApps(LeoPreference leoPreference) {
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mLockManager.filterSelfOneMinites();
         boolean isContentEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT));
+                leoPreference.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT));
         boolean isUrlEmpty = TextUtils.isEmpty(
-                preferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL));
+                leoPreference.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL));
 
         StringBuilder shareBuilder = new StringBuilder();
         if (!isContentEmpty && !isUrlEmpty) {
             try {
-                shareBuilder.append(String.format(preferenceTable.getString(
+                shareBuilder.append(String.format(leoPreference.getString(
                                 PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT),
-                        mPhoneNumber, preferenceTable.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL)));
+                        mPhoneNumber, leoPreference.getString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL)));
 
             } catch (Exception e) {
                 shareBuilder.append(getResources().getString(

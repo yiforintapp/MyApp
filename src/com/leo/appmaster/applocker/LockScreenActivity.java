@@ -75,7 +75,7 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -183,7 +183,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private ImageView mAdIcon, mAdIconRedTip;
     // private View switch_bottom_content;
     private ImageView mADAnimalEntry;
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
     private BaseSelfDurationToast mPermissionGuideToast;
     private TextView mTvPermissionTip;
     private View mVPermissionTip;
@@ -273,7 +273,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
         mISManager = (IntrudeSecurityManager) MgrContext
                 .getManager(MgrContext.MGR_INTRUDE_SECURITY);
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
         mPDManager = (PrivacyDataManager) MgrContext
                 .getManager(MgrContext.MGR_PRIVACY_DATA);
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);

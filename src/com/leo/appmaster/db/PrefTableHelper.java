@@ -21,7 +21,7 @@ public class PrefTableHelper {
      * @return
      */
     public static boolean showInsideApp() {
-        return PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SHOW_INSIDE_APP, false);
+        return LeoPreference.getInstance().getBoolean(PrefConst.KEY_SHOW_INSIDE_APP, false);
     }
 
     /**
@@ -30,7 +30,7 @@ public class PrefTableHelper {
      * @return
      */
     public static boolean showIgnoreBtn() {
-        return PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SHOW_IGNORE_COC, false);
+        return LeoPreference.getInstance().getBoolean(PrefConst.KEY_SHOW_IGNORE_COC, false);
     }
 
     /**
@@ -38,7 +38,7 @@ public class PrefTableHelper {
      * @return
      */
     public static int getIgnoreTs() {
-        return PreferenceTable.getInstance().getInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, 24);
+        return LeoPreference.getInstance().getInt(PrefConst.KEY_SHOW_IGNORE_COC_TS, 24);
     }
 
     /**
@@ -46,7 +46,7 @@ public class PrefTableHelper {
      * @return
      */
     public static int getBoostTs() {
-        return PreferenceTable.getInstance().getInt(PrefConst.KEY_SHOW_BOOST_TS, 3);
+        return LeoPreference.getInstance().getInt(PrefConst.KEY_SHOW_BOOST_TS, 3);
     }
 
     /**
@@ -54,7 +54,7 @@ public class PrefTableHelper {
      * @return
      */
     public static double getBoostMem() {
-        return PreferenceTable.getInstance().getDouble(PrefConst.KEY_SHOW_BOOST_MEM, 0.7);
+        return LeoPreference.getInstance().getDouble(PrefConst.KEY_SHOW_BOOST_MEM, 0.7);
     }
 
     private static final boolean DBG = false;
@@ -62,7 +62,7 @@ public class PrefTableHelper {
         if (DBG) {
             return true;
         }
-        long lastBoostTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_LAST_BOOST_TS, 0);
+        long lastBoostTs = LeoPreference.getInstance().getLong(PrefConst.KEY_LAST_BOOST_TS, 0);
         if (lastBoostTs == 0) {
             return true;
         }
@@ -91,7 +91,7 @@ public class PrefTableHelper {
      * @return
      */
     public static int getAdProbability() {
-        return PreferenceTable.getInstance().getInt(
+        return LeoPreference.getInstance().getInt(
                 ADShowTypeRequestManager.AD_PROBABILITY, ADShowTypeRequestManager.AD_PROBABILITY_MAX);
     }
 }

@@ -22,7 +22,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.mgr.MgrContext;
@@ -55,7 +55,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private RelativeLayout mNoHidePictureHint;
     private RippleView mRvAdd;
     private ProgressBar loadingBar;
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
     private final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
     private LEOAlarmDialog mDialogAskCreateShotcut;
 
@@ -150,7 +150,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_hide);
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
         initImageLoder();
         handleIntent();
         initUI();

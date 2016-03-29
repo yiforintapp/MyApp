@@ -14,12 +14,11 @@ import android.os.SystemClock;
 import android.util.Pair;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.SecurityScoreEvent;
 import com.leo.appmaster.home.HomeColor;
@@ -235,7 +234,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     }
 
     private boolean addIntruderSocreAutoly() {
-        boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
+        boolean intruderAdded = LeoPreference.getInstance().getBoolean(
                 PrefConst.KEY_INTRUDER_ADDED, false);
         IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         return !ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && intruderAdded;
@@ -270,7 +269,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
         @Override
         public void run() {
-            long lastNotify = PreferenceTable.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);
+            long lastNotify = LeoPreference.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);
             long currentTs = System.currentTimeMillis();
             boolean isSameDay = TimeUtil.isSameDay(lastNotify, currentTs);
             if (!isSameDay) {
@@ -288,12 +287,12 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         }
         long currentTs = System.currentTimeMillis();
 
-        long lastDecTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_DECREASE_TIME, 0);
+        long lastDecTs = LeoPreference.getInstance().getLong(PrefConst.KEY_DECREASE_TIME, 0);
         if (!TimeUtil.isSameDay(currentTs, lastDecTs)) {
             LeoLog.i(TAG, "checkOrNotifyDecScore, not in the same day.");
             // 跟之前的时间不在同一天，清0减少的分数
             resetDecScore();
-            PreferenceTable.getInstance().putLong(PrefConst.KEY_DECREASE_TIME, currentTs);
+            LeoPreference.getInstance().putLong(PrefConst.KEY_DECREASE_TIME, currentTs);
         }
         int oldScore = mScoreMap.get(description);
         int decScore = oldScore - securityScore;
@@ -313,7 +312,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         int scoreAfterDec = mSecurityScore - decScore;
         LeoLog.i(TAG, "checkOrNotifyDecScore, totalDecScore: " + totalDecScore + ", scoreAfterDec: " + scoreAfterDec);
         if (scoreAfterDec < 70 || totalDecScore > 20) {
-            long lastNotify = PreferenceTable.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);
+            long lastNotify = LeoPreference.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);
             AppMasterApplication application = AppMasterApplication.getInstance();
             boolean isForeground = application.isVisible();
             boolean isSameDay = TimeUtil.isSameDay(lastNotify, currentTs);
@@ -341,12 +340,12 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
     private void notifyDecreaseScore() {
         long currentTs = System.currentTimeMillis();
-        PreferenceTable.getInstance().putLong(PrefConst.KEY_NOTIFY_TIME, currentTs);
+        LeoPreference.getInstance().putLong(PrefConst.KEY_NOTIFY_TIME, currentTs);
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        boolean notifyApp = preferenceTable.getBoolean(PrefConst.KEY_NOTIFY_APP, true);
-        boolean notifyPic = preferenceTable.getBoolean(PrefConst.KEY_NOTIFY_PIC, true);
-        boolean notifyVid = preferenceTable.getBoolean(PrefConst.KEY_NOTIFY_VID, true);
+        LeoPreference leoPreference = LeoPreference.getInstance();
+        boolean notifyApp = leoPreference.getBoolean(PrefConst.KEY_NOTIFY_APP, true);
+        boolean notifyPic = leoPreference.getBoolean(PrefConst.KEY_NOTIFY_PIC, true);
+        boolean notifyVid = leoPreference.getBoolean(PrefConst.KEY_NOTIFY_VID, true);
 
         LeoLog.i(TAG, "notifyDecreaseScore, start to notify, notifyApp: " + notifyApp + " | notifyPic: "
                 + notifyPic + " | notifyVid: " + notifyVid);

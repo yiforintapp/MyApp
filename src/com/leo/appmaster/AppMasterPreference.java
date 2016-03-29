@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
+/**
+ * 旧版本已数据存储，新版本不再继续使用，新数据统一使用LeoSettings
+ */
+@Deprecated
 public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // about lock

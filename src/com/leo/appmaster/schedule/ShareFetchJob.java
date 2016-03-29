@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -36,14 +36,14 @@ public class ShareFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
         LeoLog.e("onFetchSuccess", response + "");
         if (response == null) {
             LeoLog.i(TAG, "response: " + response);
 
-            setPhoneShareEmpty(preferenceTable);
-            setIntruderShareEmpty(preferenceTable);
-            setCallFilterShareEmpty(preferenceTable);
+            setPhoneShareEmpty(leoPreference);
+            setIntruderShareEmpty(leoPreference);
+            setCallFilterShareEmpty(leoPreference);
 
             return;
         }
@@ -57,49 +57,49 @@ public class ShareFetchJob extends FetchScheduleJob {
             if (!isPhoneShareNull) {  // 手机防盗页分享
                 JSONObject priWifiMaster = object.getJSONObject(PrefConst.KEY_PHONE_SHARE);
                 setValue(priWifiMaster, "content",
-                        PrefConst.KEY_PHONE_SHARE_CONTENT, preferenceTable);
+                        PrefConst.KEY_PHONE_SHARE_CONTENT, leoPreference);
                 setValue(priWifiMaster, "url",
-                        PrefConst.KEY_PHONE_SHARE_URL, preferenceTable);
+                        PrefConst.KEY_PHONE_SHARE_URL, leoPreference);
             } else {
-                setPhoneShareEmpty(preferenceTable);
+                setPhoneShareEmpty(leoPreference);
             }
 
             boolean isIntruderShareNull = object.isNull(PrefConst.KEY_INTRUDER_SHARE); // 判断key是否存在
             if (!isIntruderShareNull) { // 入侵者防护页分享
                 JSONObject priGrade = object.getJSONObject(PrefConst.KEY_INTRUDER_SHARE);
                 setValue(priGrade, "content",
-                        PrefConst.KEY_INTRUDER_SHARE_CONTENT, preferenceTable);
+                        PrefConst.KEY_INTRUDER_SHARE_CONTENT, leoPreference);
                 setValue(priGrade, "url",
-                        PrefConst.KEY_INTRUDER_SHARE_URL, preferenceTable);
+                        PrefConst.KEY_INTRUDER_SHARE_URL, leoPreference);
 
             } else {
-                setIntruderShareEmpty(preferenceTable);
+                setIntruderShareEmpty(leoPreference);
             }
 
             boolean isCallFilterShareNull = object.isNull(PrefConst.KEY_CALL_FILTER_SHARE); // 判断key是否存在
             if (!isCallFilterShareNull) { // 骚扰拦截分享
                 JSONObject priFb = object.getJSONObject(PrefConst.KEY_CALL_FILTER_SHARE);
                 setValue(priFb, "content",
-                        PrefConst.KEY_CALL_FILTER_SHARE_CONTENT, preferenceTable);
+                        PrefConst.KEY_CALL_FILTER_SHARE_CONTENT, leoPreference);
                 setValue(priFb, "url",
-                        PrefConst.KEY_CALL_FILTER_SHARE_URL, preferenceTable);
+                        PrefConst.KEY_CALL_FILTER_SHARE_URL, leoPreference);
 
             } else {
-                setCallFilterShareEmpty(preferenceTable);
+                setCallFilterShareEmpty(leoPreference);
             }
 
             boolean isBlackListShareNull = object.isNull(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE); // 判断key是否存在
             if (!isBlackListShareNull) { // 加入黑名单弹窗分享
                 JSONObject blackList = object.getJSONObject(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE);
                 setValue(blackList, "content",
-                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT, preferenceTable);
+                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT, leoPreference);
                 setValue(blackList, "url",
-                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL, preferenceTable);
+                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL, leoPreference);
                 setValue(blackList, "dialogcontent",
-                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT, preferenceTable);
+                        PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT, leoPreference);
 
             } else {
-                setBlackListShareEmpty(preferenceTable);
+                setBlackListShareEmpty(leoPreference);
             }
 
         } catch (JSONException e) {
@@ -110,27 +110,27 @@ public class ShareFetchJob extends FetchScheduleJob {
     }
 
     /** 手机防盗分享数据置空 */
-    private void setPhoneShareEmpty(PreferenceTable preferenceTable) {
-        preferenceTable.putString(PrefConst.KEY_PHONE_SHARE_CONTENT, "");
-        preferenceTable.putString(PrefConst.KEY_PHONE_SHARE_URL, "");
+    private void setPhoneShareEmpty(LeoPreference leoPreference) {
+        leoPreference.putString(PrefConst.KEY_PHONE_SHARE_CONTENT, "");
+        leoPreference.putString(PrefConst.KEY_PHONE_SHARE_URL, "");
     }
 
     /** 入侵者防护分享数据置空 */
-    private void setIntruderShareEmpty(PreferenceTable preferenceTable) {
-        preferenceTable.putString(PrefConst.KEY_INTRUDER_SHARE_CONTENT, "");
-        preferenceTable.putString(PrefConst.KEY_INTRUDER_SHARE_URL, "");
+    private void setIntruderShareEmpty(LeoPreference leoPreference) {
+        leoPreference.putString(PrefConst.KEY_INTRUDER_SHARE_CONTENT, "");
+        leoPreference.putString(PrefConst.KEY_INTRUDER_SHARE_URL, "");
     }
 
     /** 骚扰拦截分享数据置空 */
-    private void setCallFilterShareEmpty(PreferenceTable preferenceTable) {
-        preferenceTable.putString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT, "");
-        preferenceTable.putString(PrefConst.KEY_CALL_FILTER_SHARE_URL, "");
+    private void setCallFilterShareEmpty(LeoPreference leoPreference) {
+        leoPreference.putString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT, "");
+        leoPreference.putString(PrefConst.KEY_CALL_FILTER_SHARE_URL, "");
     }
 
     /** 加入黑名单弹窗分享 */
-    private void setBlackListShareEmpty(PreferenceTable preferenceTable) {
-        preferenceTable.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT, "");
-        preferenceTable.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL, "");
-        preferenceTable.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT, "");
+    private void setBlackListShareEmpty(LeoPreference leoPreference) {
+        leoPreference.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_CONTENT, "");
+        leoPreference.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_URL, "");
+        leoPreference.putString(PrefConst.KEY_ADD_TO_BLACKLIST_SHARE_DIALOG_CONTENT, "");
     }
 }

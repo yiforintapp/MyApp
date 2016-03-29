@@ -25,7 +25,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.mgr.MgrContext;
@@ -72,7 +72,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private ImageLoader mImageLoader;
     private AppMasterPreference mSpSaveDir;
     private ProgressBar loadingBar;
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
 
     public static boolean mIsFromConfirm;
 
@@ -126,7 +126,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         setContentView(R.layout.activity_video_hide_main);
         initImageLoder();
         initUI();
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
         getDirFromSp();
         handleIntent();
     }

@@ -20,25 +20,20 @@ import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.phoneSecurity.MTKSendMsmHandler;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
-import com.leo.appmaster.utils.SimDetecter;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
 import java.util.ArrayList;
@@ -267,7 +262,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkNewTheme() {
-//        boolean isClickLockTab = PreferenceTable.getInstance().
+//        boolean isClickLockTab = LeoPreference.getInstance().
 //                getBoolean(Constants.IS_CLICK_LOCK_TAB, false);
         String locSerial = AppMasterPreference.getInstance(mActivity)
                 .getLocalThemeSerialNumber();
@@ -286,7 +281,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         FragmentActivity activity = getActivity();
         if (activity != null) {
-            PreferenceTable table = PreferenceTable.getInstance();
+            LeoPreference table = LeoPreference.getInstance();
             switch (view.getId()) {
                 case R.id.home_app_lock_tv:
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");

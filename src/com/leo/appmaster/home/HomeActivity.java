@@ -53,8 +53,8 @@ import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.MsgCenterTable;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.GradeEvent;
@@ -110,7 +110,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     //    private MobvistaAdWall mWallAd;
     private int mMenuTextColorId;
     private Handler mHandler = new Handler();
-    private PreferenceTable mPt = PreferenceTable.getInstance();
+    private LeoPreference mPt = LeoPreference.getInstance();
     public static int mHomeAdSwitchOpen = -1;
 
     private IntrudeSecurityManager mISManger;
@@ -1302,33 +1302,33 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         IoUtils.commitSafely(ft);
 //        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
         if (fragment instanceof PrivacyNewAppFragment) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
-            boolean appConsumed = preferenceTable.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
-            boolean appLockHandler = preferenceTable.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+            boolean appConsumed = leoPreference.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+            boolean appLockHandler = leoPreference.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
             if (!appConsumed) {
-                preferenceTable.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
+                leoPreference.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
             }
             if (!appLockHandler) {
-                preferenceTable.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
+                leoPreference.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
             }
         } else if ((fragment instanceof PrivacyNewPicFragment)
                 || (fragment instanceof FolderPicFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_PIC);
-            boolean picConsumed = preferenceTable.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
+            boolean picConsumed = leoPreference.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
             if (!picConsumed) {
-                preferenceTable.putBoolean(PrefConst.KEY_PIC_COMSUMED, true);
-                preferenceTable.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, true);
+                leoPreference.putBoolean(PrefConst.KEY_PIC_COMSUMED, true);
+                leoPreference.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, true);
                 mMoreFragment.updateHideRedTip();
             }
         } else if ((fragment instanceof PrivacyNewVideoFragment)
                 || (fragment instanceof FolderVidFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_VID);
-            boolean vidConsumed = preferenceTable.getBoolean(PrefConst.KEY_VID_COMSUMED, false);
+            boolean vidConsumed = leoPreference.getBoolean(PrefConst.KEY_VID_COMSUMED, false);
             if (!vidConsumed) {
-                preferenceTable.putBoolean(PrefConst.KEY_VID_COMSUMED, true);
-                preferenceTable.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, true);
+                leoPreference.putBoolean(PrefConst.KEY_VID_COMSUMED, true);
+                leoPreference.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, true);
                 mMoreFragment.updateHideRedTip();
             }
         }
@@ -1355,14 +1355,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 //        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(
 //                MgrContext.MGR_INTRUDE_SECURITY);
-//        boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
+//        boolean intruderAdded = LeoPreference.getInstance().getBoolean(
 //                PrefConst.KEY_INTRUDER_ADDED, false);
 //        int intruderScore = 0;
 //        if (!ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && !intruderAdded) {
 //            // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
 //            intruderScore = ism.getMaxScore();
 //            mPrivacyHelper.increaseScore(MgrContext.MGR_INTRUDE_SECURITY, intruderScore);
-//            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
+//            LeoPreference.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
 //        }
 
         if (increaseScore > 0) {
@@ -1534,7 +1534,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     /*高级保护开启首页提示*/
     private void openAdvanceProtectDialogHandler() {
         String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-        boolean isTip = PreferenceTable.getInstance().getBoolean(key, true);
+        boolean isTip = LeoPreference.getInstance().getBoolean(key, true);
 
         if (isAdminActive() && isTip) {
             /**
@@ -1565,7 +1565,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     AppMasterPreference.getInstance(HomeActivity.this)
                             .setAdvanceProtectOpenSuccessDialogTip(false);
                     String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-                    PreferenceTable.getInstance().putBoolean(key, false);
+                    LeoPreference.getInstance().putBoolean(key, false);
                 }
             });
         }
@@ -1581,7 +1581,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //                        mMessageDialog = null;
 //                    }
 //                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-//                    PreferenceTable.getInstance().putBoolean(key, false);
+//                    LeoPreference.getInstance().putBoolean(key, false);
 //                }
 //            });
 //        }
@@ -1594,17 +1594,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     /*首页引导*/
     private void showHomeGuide() {
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        boolean pulledEver = preferenceTable.getBoolean(PrefConst.KEY_MORE_PULLED, false);
-        boolean picReddot = preferenceTable.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
-        boolean vidReddot = preferenceTable.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-        boolean homeGuide = preferenceTable.getBoolean(PrefConst.KEY_HOME_GUIDE, false);
+        LeoPreference leoPreference = LeoPreference.getInstance();
+        boolean pulledEver = leoPreference.getBoolean(PrefConst.KEY_MORE_PULLED, false);
+        boolean picReddot = leoPreference.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
+        boolean vidReddot = leoPreference.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+        boolean homeGuide = leoPreference.getBoolean(PrefConst.KEY_HOME_GUIDE, false);
         if (!pulledEver && (picReddot || vidReddot) && !homeGuide) {
             if (mMoreFragment != null) {
                 mMoreFragment.cancelUpArrowAnim();
             }
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
-            preferenceTable.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
+            leoPreference.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
             GuideFragment.setHomeGuideShowStatus(true);
         }
     }

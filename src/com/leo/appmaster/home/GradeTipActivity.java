@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -32,7 +32,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
     private String mContent;
     private String mUrl;
     private TextView mText;
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
 
     private String mFromWhere; // 用于打点
 
@@ -54,7 +54,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         mTvMakeSureClick.setOnClickListener(this);
         mFeedbackSureClick.setOnClickListener(this);
 
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
         mContent = getIntent().getStringExtra("content");
         mUrl = getIntent().getStringExtra("url");
         mFromWhere = getIntent().getStringExtra("fromWhere");

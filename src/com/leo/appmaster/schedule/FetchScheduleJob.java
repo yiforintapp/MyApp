@@ -11,7 +11,7 @@ import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.LeoLog;
 
 import org.json.JSONArray;
@@ -270,19 +270,19 @@ public abstract class FetchScheduleJob extends ScheduleJob {
      * 存储卡片需要的数据
      */
     protected void setValue(JSONObject object, String key,
-                            String prefKey, PreferenceTable preferenceTable) {
+                            String prefKey, LeoPreference leoPreference) {
         try {
             if (!object.isNull(key)) {
                 if (TextUtils.isEmpty(object.getString(key))) {
-                    preferenceTable.putString(prefKey, "");
+                    leoPreference.putString(prefKey, "");
                 } else {
-                    preferenceTable.putString(prefKey, object.getString(key));
+                    leoPreference.putString(prefKey, object.getString(key));
                 }
             } else {
-                preferenceTable.putString(prefKey, "");
+                leoPreference.putString(prefKey, "");
             }
         } catch (JSONException e) {
-            preferenceTable.putString(prefKey, "");
+            leoPreference.putString(prefKey, "");
         }
     }
 

@@ -22,7 +22,7 @@ import com.leo.appmaster.battery.RemainTimeHelper;
 import com.leo.appmaster.battery.RemainingTimeEstimator;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.db.PrefTableHelper;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -45,7 +45,7 @@ import java.util.List;
  * Created by stone on 16/1/13.
  */
 public class BatteryManagerImpl extends BatteryManager {
-    private PreferenceTable mPt = PreferenceTable.getInstance();
+    private LeoPreference mPt = LeoPreference.getInstance();
     private static final String TAG = MgrContext.MGR_BATTERY;
 
 

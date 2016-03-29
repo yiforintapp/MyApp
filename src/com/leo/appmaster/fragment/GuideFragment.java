@@ -8,20 +8,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.ObjectAnimator;
 
@@ -288,14 +283,14 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.pic_vid_edit_rt:
                 mRootView.setVisibility(View.GONE);
-                PreferenceTable pre = PreferenceTable.getInstance();
+                LeoPreference pre = LeoPreference.getInstance();
                 pre.putBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, true);
 
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic_bub_cnts");
                 break;
             case R.id.video_edit_rt:
                 mRootView.setVisibility(View.GONE);
-                PreferenceTable preTab = PreferenceTable.getInstance();
+                LeoPreference preTab = LeoPreference.getInstance();
                 preTab.putBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, true);
 
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_bub_cnts");

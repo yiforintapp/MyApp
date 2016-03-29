@@ -405,7 +405,7 @@ public class CheckNewBootstrap extends Bootstrap {
                         pref.setOnlineThemeSerialNumber(serialNumber);
 
                         if (hasNewTheme) {
-//                            PreferenceTable.getInstance().putBoolean(Constants.IS_CLICK_LOCK_TAB, false);
+//                            LeoPreference.getInstance().putBoolean(Constants.IS_CLICK_LOCK_TAB, false);
                             LeoLog.d(TAG, "checkNewTheme  hasNewTheme!");
                             String title = null;
                             String content = null;

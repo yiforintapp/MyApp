@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -114,7 +114,7 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> implements 
     protected void onProcessClick() {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_hide_cnts");
         mActivity.onProcessClick(this);
-        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_VID, true);
+        LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_VID, true);
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {

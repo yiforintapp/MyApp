@@ -25,7 +25,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
@@ -228,7 +228,7 @@ public class QuickHelperActivity extends BaseActivity {
                 ivIcon.setBackgroundResource(drawableId);
                 tvName.setText(getResources().getString(mMapDrawableToName.get(drawableId)));
                 tvDesc.setText(getResources().getString(mMapDrawableToDesc.get(drawableId)));
-                final PreferenceTable table = PreferenceTable.getInstance();
+                final LeoPreference table = LeoPreference.getInstance();
                 rvAdd.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {

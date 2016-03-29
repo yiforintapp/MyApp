@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -182,12 +182,12 @@ public class IntruderGalleryActivity extends BaseActivity {
                             IntruderGalleryActivity.this.finish();
                         }
                         dialog.dismiss();
-                        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-//                        boolean hasLateast = preferenceTable.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
-                        long pathHash = preferenceTable.getLong(PrefConst.KEY_LATEAST_PATH, -1);
+                        LeoPreference leoPreference = LeoPreference.getInstance();
+//                        boolean hasLateast = leoPreference.getBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                        long pathHash = leoPreference.getLong(PrefConst.KEY_LATEAST_PATH, -1);
                         if (currentItem == 0 && pathHash != -1) {
-//                            preferenceTable.putBoolean(PrefConst.KEY_HAS_LATEAST, false);
-                            preferenceTable.putLong(PrefConst.KEY_LATEAST_PATH, -1);
+//                            leoPreference.putBoolean(PrefConst.KEY_HAS_LATEAST, false);
+                            leoPreference.putLong(PrefConst.KEY_LATEAST_PATH, -1);
                         }
                     }
                 });

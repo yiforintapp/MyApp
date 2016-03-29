@@ -15,7 +15,7 @@ import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.callfilter.StrangerInfo;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.db.BlacklistTab;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.utils.LeoLog;
@@ -803,25 +803,25 @@ public class CallFilterManagerImpl extends CallFilterManager {
 
     @Override
     public boolean getFilterOpenState() {
-        PreferenceTable pre = PreferenceTable.getInstance();
+        LeoPreference pre = LeoPreference.getInstance();
         return pre.getBoolean(PrefConst.KEY_FIL_OP_STA, true);
     }
 
     @Override
     public void setFilterOpenState(boolean flag) {
-        PreferenceTable pre = PreferenceTable.getInstance();
+        LeoPreference pre = LeoPreference.getInstance();
         pre.putBoolean(PrefConst.KEY_FIL_OP_STA, flag);
     }
 
     @Override
     public boolean getFilterNotiOpState() {
-        PreferenceTable pre = PreferenceTable.getInstance();
+        LeoPreference pre = LeoPreference.getInstance();
         return pre.getBoolean(PrefConst.KEY_FIL_NOTI_STATE, true);
     }
 
     @Override
     public void setFilterNotiOpState(boolean flag) {
-        PreferenceTable pre = PreferenceTable.getInstance();
+        LeoPreference pre = LeoPreference.getInstance();
         pre.putBoolean(PrefConst.KEY_FIL_NOTI_STATE, flag);
     }
 
@@ -918,50 +918,50 @@ public class CallFilterManagerImpl extends CallFilterManager {
 
     @Override
     public long getCallDurationMax() {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         return pt.getLong(PrefConst.KEY_FIL_TIME_PAR, 0);
     }
 
     @Override
     public long setCallDurationMax(long duration) {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         pt.putLong(PrefConst.KEY_FIL_TIME_PAR, duration);
         return 0;
     }
 
     @Override
     public int getStraNotiTipParam() {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         return pt.getInt(PrefConst.KEY_STRA_NOTI_PAR, -1);
     }
 
     @Override
     public void setStraNotiTipParam(int params) {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         pt.putInt(PrefConst.KEY_STRA_NOTI_PAR, params);
     }
 
     @Override
     public int getBlackMarkTipParam() {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         return pt.getInt(PrefConst.KEY_BLK_MARK_TIP, -1);
     }
 
     @Override
     public void setBlackMarkTipParam(int number) {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         pt.putInt(PrefConst.KEY_BLK_MARK_TIP, number);
     }
 
     @Override
     public int getFilterUserNumber() {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         return pt.getInt(PrefConst.KEY_FILTER_USER, -1);
     }
 
     @Override
     public int getFilterTipFroUser() {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         return pt.getInt(PrefConst.KEY_FILTER_TIP_USER, -1);
     }
 
@@ -994,49 +994,49 @@ public class CallFilterManagerImpl extends CallFilterManager {
 
     @Override
     public int getSerBlackTipCount() {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         return pt.getInt(PrefConst.KEY_BLACK_TIP, -1);
     }
 
     @Override
     public int getSerMarkTipCount() {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         return pt.getInt(PrefConst.KEY_MARKER_TIP, -1);
     }
 
     @Override
     public void setSerMarkTipNum(int num) {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         pt.putInt(PrefConst.KEY_MARKER_TIP, num);
     }
 
     @Override
     public void setSerBlackTipNum(int num) {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         pt.putInt(PrefConst.KEY_BLACK_TIP, num);
     }
 
     @Override
     public void setFilterTipFroUser(int number) {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         pt.putInt(PrefConst.KEY_FILTER_TIP_USER, number);
     }
 
     @Override
     public void setFilterUserNumber(int number) {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         pt.putInt(PrefConst.KEY_FILTER_USER, number);
     }
 
     @Override
     public void setSerBlackFilePath(String filePath) {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         pt.putString(PrefConst.KEY_SER_BLK_PATH, filePath);
     }
 
     @Override
     public String getSerBlackFilePath() {
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         return pt.getString(PrefConst.KEY_SER_BLK_PATH);
     }
 

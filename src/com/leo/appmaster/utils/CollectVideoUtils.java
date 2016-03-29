@@ -7,13 +7,12 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.imageloader.utils.IoUtils;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
@@ -41,7 +40,7 @@ public class CollectVideoUtils {
         }
 
         //条件2：每个用户只上传一次
-        PreferenceTable pt = PreferenceTable.getInstance();
+        LeoPreference pt = LeoPreference.getInstance();
         boolean isReport = pt.getBoolean(PrefConst.KEY_REPORT_VIDEO_SIZE, false);
         if (isReport) {
             LeoLog.d("getAllVideo", "-----------report finish...");

@@ -27,7 +27,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.intruderprotection.ShowToast;
 import com.leo.appmaster.mgr.LockManager;
@@ -97,7 +97,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private LEOAnimationDialog mAdvanceTipDialog;
 
     private LEOAlarmDialog mShareDialog;
-    private PreferenceTable mPreference;
+    private LeoPreference mPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -275,7 +275,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 }
             }
         });
-        mPreference = PreferenceTable.getInstance();
+        mPreference = LeoPreference.getInstance();
 
         mBottonNumberView1 = (SecurityNumberView) findViewById(R.id.phone_security_operation_one);
         mBottonNumberView2 = (SecurityNumberView) findViewById(R.id.phone_security_operation_two);
@@ -1074,17 +1074,17 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private void shareApps() {
         SDKWrapper.addEvent(PhoneSecurityActivity.this, SDKWrapper.P1, "theft", "theft_share");
         mLockManager.filterSelfOneMinites();
-        PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
+        LeoPreference shareLeoPreference = LeoPreference.getInstance();
         boolean isContentEmpty = TextUtils.isEmpty(
-                sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_CONTENT));
+                shareLeoPreference.getString(PrefConst.KEY_PHONE_SHARE_CONTENT));
         boolean isUrlEmpty = TextUtils.isEmpty(
-                sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_URL));
+                shareLeoPreference.getString(PrefConst.KEY_PHONE_SHARE_URL));
 
         StringBuilder shareBuilder = new StringBuilder();
         if (!isContentEmpty && !isUrlEmpty) {
-            shareBuilder.append(sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_CONTENT))
+            shareBuilder.append(shareLeoPreference.getString(PrefConst.KEY_PHONE_SHARE_CONTENT))
                     .append(" ")
-                    .append(sharePreferenceTable.getString(PrefConst.KEY_PHONE_SHARE_URL));
+                    .append(shareLeoPreference.getString(PrefConst.KEY_PHONE_SHARE_URL));
         } else {
             shareBuilder.append(getResources().getString(R.string.phone_share_content))
                     .append(" ")

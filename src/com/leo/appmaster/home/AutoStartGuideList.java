@@ -14,7 +14,7 @@ import android.view.WindowManager;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -420,7 +420,7 @@ public class AutoStartGuideList extends WhiteList {
 
     /*Samsung 5.1.1 sys 电池优化权限提示*/
     public static synchronized boolean samSungSysTip(Context context, String key) {
-        PreferenceTable prefer = PreferenceTable.getInstance();
+        LeoPreference prefer = LeoPreference.getInstance();
         int countFlag = prefer.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
         boolean isCountEnough = countFlag > SAMSUNG_TIP_COUNT;
         boolean samSung = isSamSungGuideModel(context);
@@ -448,7 +448,7 @@ public class AutoStartGuideList extends WhiteList {
 
     private static void showSamSungDialog(final Context context, String key) {
         final Context contextApp = context.getApplicationContext();
-        PreferenceTable prefer = PreferenceTable.getInstance();
+        LeoPreference prefer = LeoPreference.getInstance();
         boolean appLockHandler = prefer.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
         if (appLockHandler) {
             prefer.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
@@ -536,19 +536,19 @@ public class AutoStartGuideList extends WhiteList {
     }
 
     public static void saveSamSungAppLock() {
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        int countFlag = preferenceTable.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
+        LeoPreference leoPreference = LeoPreference.getInstance();
+        int countFlag = leoPreference.getInt(PrefConst.KEY_LOCK_SAMSUNG_TIP, 1);
         boolean isCountEnough = countFlag > SAMSUNG_TIP_COUNT;
         if (isCountEnough) {
             return;
         }
-        boolean appConsumed = preferenceTable.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
-        boolean appLockHandler = preferenceTable.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
+        boolean appConsumed = leoPreference.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
+        boolean appLockHandler = leoPreference.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
         if (!appConsumed) {
-            preferenceTable.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
+            leoPreference.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
         }
         if (!appLockHandler) {
-            preferenceTable.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
+            leoPreference.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
         }
     }
 

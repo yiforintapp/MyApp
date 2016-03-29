@@ -3,7 +3,7 @@ package com.leo.appmaster.applocker.lockswitch;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 
 
 /**
@@ -19,11 +19,11 @@ public abstract class SwitchGroup {
     public final static String SCREEN_SHOWED = "screen_showed";
 
     public AppMasterApplication mContext;
-    public PreferenceTable mPreTable;
+    public LeoPreference mPreTable;
 
     SwitchGroup() {
         mContext = AppMasterApplication.getInstance();
-        mPreTable = PreferenceTable.getInstance();
+        mPreTable = LeoPreference.getInstance();
     }
 
     protected abstract void switchOn(LockMode mode);

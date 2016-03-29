@@ -36,7 +36,7 @@ import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -287,9 +287,9 @@ public class AppLockListActivity extends BaseActivity implements
     private void inLockListGuideTip() {
         if (!isFromConfrim) {
             if (!isGuideEnough()) {
-                int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+                int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
                 guideCount = guideCount + 1;
-                PreferenceTable.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
+                LeoPreference.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
             }
             boolean isGuideEnough = isGuideEnough();
             if (!isGuideEnough) {
@@ -1093,7 +1093,7 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private boolean isGuideEnough() {
-        int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+        int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
         /*进入应用锁，引导强制提示3*/
         return guideCount > IN_LOCK_GUIDE_COUNT;
     }

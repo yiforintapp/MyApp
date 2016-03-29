@@ -6,16 +6,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.db.IntruderPhotoTable;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.intruderprotection.CameraUtils;
-import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
@@ -27,7 +24,7 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
     private IntruderPhotoTable iptable = new IntruderPhotoTable();
     // private AppMasterPreference sp =
     // AppMasterPreference.getInstance(mContext);
-    private PreferenceTable pt = PreferenceTable.getInstance();
+    private LeoPreference pt = LeoPreference.getInstance();
 
     /**
      * 获取当前模块的安全得分

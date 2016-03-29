@@ -4,16 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.provider.Contacts;
 import android.text.TextUtils;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.battery.BatteryAppItem;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -90,7 +87,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
             return;
         }
         // 以字符串的形式存储
-        PreferenceTable.getInstance().putString(PrefConst.KEY_SS_RECOMMEND_LIST, response.toString());
+        LeoPreference.getInstance().putString(PrefConst.KEY_SS_RECOMMEND_LIST, response.toString());
     }
 
     private static int parseJsonArrayAndCache(String key, JSONArray array, boolean isApp)
@@ -255,7 +252,7 @@ public class ScreenRecommentJob extends FetchScheduleJob {
     }
 
     private static void loadAndParseData() {
-        String dataString = PreferenceTable.getInstance().getString(PrefConst.KEY_SS_RECOMMEND_LIST);
+        String dataString = LeoPreference.getInstance().getString(PrefConst.KEY_SS_RECOMMEND_LIST);
         if (!TextUtils.isEmpty(dataString)) {
             try {
                 JSONObject object = new JSONObject(dataString);

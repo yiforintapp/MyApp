@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import com.airsig.airsigengmulti.ASEngine;
 import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
@@ -33,22 +32,19 @@ import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
-import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.TaskProtectService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.db.AppMasterDBHelper;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.mgr.DeviceManager;
-import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
-import com.leo.appmaster.mgr.impl.WifiSecurityManagerImpl;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -270,6 +266,7 @@ public class InitCoreBootstrap extends Bootstrap {
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
         //TODO 首次启动加载数据
+        LeoPreference leoPreference = LeoPreference.getInstance();
         String lastVercode = pref.getLastVersion();
         int versionCode = PhoneInfo.getVersionCode(mApp);
         LeoLog.i("value", "lastVercode=" + lastVercode);
@@ -278,7 +275,7 @@ public class InitCoreBootstrap extends Bootstrap {
             //TODO 首次启动加载数据
             //新安装用户，去除应用备份，应用卸载及隐私联系人相关的功能
             pref.setIsNeedCutBackupUninstallAndPrivacyContact(true);
-            preferenceTable.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
+            leoPreference.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
             // first install
             // AM-2911: remove device administration at first install
             removeDeviceAdmin();
@@ -331,7 +328,7 @@ public class InitCoreBootstrap extends Bootstrap {
                 //TODO 首次启动加载数据
                 recoveryUpdateTipDefaultData();
                 if (lastCode < Utilities.LESS_THIRTY_VERSION_CODE) {
-                    preferenceTable.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
+                    leoPreference.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
                 }
             }
         }
@@ -400,7 +397,7 @@ public class InitCoreBootstrap extends Bootstrap {
     private void installBoostShortcut() {
 //        boolean isInstalllIswipe = ISwipUpdateRequestManager
 //               .isInstallIsiwpe(AppMasterApplication.getInstance());
-//        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+//        LeoPreference preferenceTable = LeoPreference.getInstance();
 //        preferenceTable.putBoolean(PrefConst.IS_BOOST_CREAT, isInstalllIswipe);
 //        if (!isInstalllIswipe) {
         Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);

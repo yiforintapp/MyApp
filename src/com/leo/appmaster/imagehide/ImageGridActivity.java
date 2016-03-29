@@ -25,7 +25,7 @@ import android.widget.ProgressBar;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
@@ -308,7 +308,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 }
             });
             mBottomBar.setVisibility(View.GONE);
-            PreferenceTable pre = PreferenceTable.getInstance();
+            LeoPreference pre = LeoPreference.getInstance();
             mPicGuide = pre.getBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, false);
             if (!mPicGuide) {
                 mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.pic_guide);
@@ -328,7 +328,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     private void cancelGuide() {
         if (mGuideFragment != null) {
             mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.PIC_GUIDE);
-            PreferenceTable pre = PreferenceTable.getInstance();
+            LeoPreference pre = LeoPreference.getInstance();
             pre.putBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, true);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "hidpic_bub_cnts");
         }

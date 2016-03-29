@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -147,7 +147,7 @@ public class CallFilterToast {
                         // 记录控件距离屏幕左上角的坐标
                         LeoLog.d("testToastMove", "finger up");
                         LeoLog.d("testToastMove", "view place y : " + mParams.y);
-                        PreferenceTable.getInstance().putInt(TOAST_Y, mParams.y);
+                        LeoPreference.getInstance().putInt(TOAST_Y, mParams.y);
                         break;
                 }
 
@@ -338,7 +338,7 @@ public class CallFilterToast {
         mWM = (WindowManager) context.getApplicationContext()
                 .getSystemService(Context.WINDOW_SERVICE);
 
-        mToastY = PreferenceTable.getInstance().getInt(TOAST_Y, 0);
+        mToastY = LeoPreference.getInstance().getInt(TOAST_Y, 0);
     }
 
 

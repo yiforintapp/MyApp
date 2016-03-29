@@ -34,7 +34,7 @@ import android.view.WindowManager;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
@@ -451,16 +451,16 @@ public final class Utilities {
 
     public static void goFiveStar(Context context, boolean isFromCard, boolean isFromPrivacy) {
         String url = Constants.RATING_ADDRESS_BROWSER;
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
         if (isFromCard && isFromPrivacy) {
-            if (preferenceTable.getString(PrefConst.KEY_PRI_GRADE_URL) != null &&
-                    preferenceTable.getString(PrefConst.KEY_PRI_GRADE_URL).length() > 0) {
-                url = preferenceTable.getString(PrefConst.KEY_PRI_GRADE_URL);
+            if (leoPreference.getString(PrefConst.KEY_PRI_GRADE_URL) != null &&
+                    leoPreference.getString(PrefConst.KEY_PRI_GRADE_URL).length() > 0) {
+                url = leoPreference.getString(PrefConst.KEY_PRI_GRADE_URL);
             }
         } else if (isFromCard && !isFromPrivacy) {
-            if (preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_URL) != null &&
-                    preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_URL).length() > 0) {
-                url = preferenceTable.getString(PrefConst.KEY_WIFI_GRADE_URL);
+            if (leoPreference.getString(PrefConst.KEY_WIFI_GRADE_URL) != null &&
+                    leoPreference.getString(PrefConst.KEY_WIFI_GRADE_URL).length() > 0) {
+                url = leoPreference.getString(PrefConst.KEY_WIFI_GRADE_URL);
             }
         }
         Intent intent = null;
@@ -550,16 +550,16 @@ public final class Utilities {
     public static void goFaceBook(Context context, boolean isFromPrivacy) {
         Intent intentLikeUs = null;
         String url = Constants.FACEBOOK_PG_URL;
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
         if (isFromPrivacy) {
-            if (preferenceTable.getString(PrefConst.KEY_PRI_FB_URL) != null &&
-                    preferenceTable.getString(PrefConst.KEY_PRI_FB_URL).length() > 0) {
-                url = preferenceTable.getString(PrefConst.KEY_PRI_FB_URL);
+            if (leoPreference.getString(PrefConst.KEY_PRI_FB_URL) != null &&
+                    leoPreference.getString(PrefConst.KEY_PRI_FB_URL).length() > 0) {
+                url = leoPreference.getString(PrefConst.KEY_PRI_FB_URL);
             }
         } else {
-            if (preferenceTable.getString(PrefConst.KEY_WIFI_FB_URL) != null &&
-                    preferenceTable.getString(PrefConst.KEY_WIFI_FB_URL).length() > 0) {
-                url = preferenceTable.getString(PrefConst.KEY_WIFI_FB_URL);
+            if (leoPreference.getString(PrefConst.KEY_WIFI_FB_URL) != null &&
+                    leoPreference.getString(PrefConst.KEY_WIFI_FB_URL).length() > 0) {
+                url = leoPreference.getString(PrefConst.KEY_WIFI_FB_URL);
             }
         }
         if (AppUtil.appInstalled(context.getApplicationContext(),
@@ -639,29 +639,29 @@ public final class Utilities {
      * 前往Gp或亚马逊云
      */
     public static void gotoGpOrBrowser(Context context, String from, boolean isFromPrivacy) {
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference leoPreference = LeoPreference.getInstance();
         if (isFromPrivacy) {  //点击隐私页按钮
             if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
 
-                selectType(preferenceTable, PrefConst.KEY_SWIFTY_TYPE, PrefConst.KEY_SWIFTY_GP_URL,
+                selectType(leoPreference, PrefConst.KEY_SWIFTY_TYPE, PrefConst.KEY_SWIFTY_GP_URL,
                         PrefConst.KEY_SWIFTY_URL, "", context);
 
             } else { //点击wifimaster
 
-                selectType(preferenceTable, PrefConst.KEY_PRI_WIFIMASTER_TYPE,
+                selectType(leoPreference, PrefConst.KEY_PRI_WIFIMASTER_TYPE,
                         PrefConst.KEY_PRI_WIFIMASTER_GP_URL, PrefConst.KEY_PRI_WIFIMASTER_URL,
                         "", context);
             }
         } else {
             if (Constants.IS_CLICK_SWIFTY.equals(from)) {  // 点击swifty
 
-                selectType(preferenceTable, PrefConst.KEY_WIFI_SWIFTY_TYPE,
+                selectType(leoPreference, PrefConst.KEY_WIFI_SWIFTY_TYPE,
                         PrefConst.KEY_WIFI_SWIFTY_GP_URL, PrefConst.KEY_WIFI_SWIFTY_URL,
                         "", context);
 
             } else { //点击wifimaster
 
-                selectType(preferenceTable, PrefConst.KEY_WIFI_WIFIMASTER_TYPE,
+                selectType(leoPreference, PrefConst.KEY_WIFI_WIFIMASTER_TYPE,
                         PrefConst.KEY_WIFI_WIFIMASTER_GP_URL, PrefConst.KEY_WIFI_WIFIMASTER_URL,
                         "", context);
             }
@@ -669,13 +669,13 @@ public final class Utilities {
     }
 
 
-    public static void selectType(PreferenceTable preferenceTable, String type, String gpUrl,
+    public static void selectType(LeoPreference leoPreference, String type, String gpUrl,
                                   String url, String pkgName, Context context) {
 
         if (Constants.BROWSER_URL_TYPE.equals(
-                preferenceTable.getString(type))) { // 使用浏览器
+                leoPreference.getString(type))) { // 使用浏览器
 
-            String browserUrl = preferenceTable.getString(url);
+            String browserUrl = leoPreference.getString(url);
             if (!TextUtils.isEmpty(browserUrl) && browserUrl.indexOf(APP_URL_KEY) != -1) {
                 try {
                     // "#Intent;component=com.leo.appmaster/.wifiSecurity.WifiSecurityActivity;end"
@@ -687,47 +687,47 @@ public final class Utilities {
                     e.printStackTrace();
                 }
             } else {
-                browserType(preferenceTable, url, pkgName, context);
+                browserType(leoPreference, url, pkgName, context);
             }
 
         } else if (Constants.GP_URL_TYPE.equals(
-                preferenceTable.getString(type))) {  // 使用gp
+                leoPreference.getString(type))) {  // 使用gp
 
-            gpType(preferenceTable, gpUrl, url, pkgName, context);
+            gpType(leoPreference, gpUrl, url, pkgName, context);
         }
     }
 
-    private static void browserType(PreferenceTable preferenceTable,
+    private static void browserType(LeoPreference leoPreference,
                                     String key, String pkgName, Context context) {
 
-        if (preferenceTable.getString(key) != null &&
-                preferenceTable.getString(key).length() > 0) {
+        if (leoPreference.getString(key) != null &&
+                leoPreference.getString(key).length() > 0) {
 
-            String browserUrl = preferenceTable.getString(key);
+            String browserUrl = leoPreference.getString(key);
             gotoBrowser(browserUrl, pkgName, context);
         } else { // 使用包名跳转gp商店
             gotoGpByPkg(pkgName, context);
         }
     }
 
-    private static void gpType(PreferenceTable preferenceTable, String gpUrlKey,
+    private static void gpType(LeoPreference leoPreference, String gpUrlKey,
                                String urlKey, String pkgName, Context context) {
 
         String browserUrl;
-        if (preferenceTable.getString(gpUrlKey) != null &&
-                preferenceTable.getString(gpUrlKey).length() > 0) {
-            String gpUrl = preferenceTable.getString(gpUrlKey);
+        if (leoPreference.getString(gpUrlKey) != null &&
+                leoPreference.getString(gpUrlKey).length() > 0) {
+            String gpUrl = leoPreference.getString(gpUrlKey);
 
-            if (preferenceTable.getString(urlKey) != null &&
-                    preferenceTable.getString(urlKey).length() > 0) {
+            if (leoPreference.getString(urlKey) != null &&
+                    leoPreference.getString(urlKey).length() > 0) {
 
-                browserUrl = preferenceTable.getString(urlKey);
+                browserUrl = leoPreference.getString(urlKey);
             } else {
                 browserUrl = "";
             }
             gotoGp(gpUrl, browserUrl, pkgName, context);
         } else {
-            browserType(preferenceTable, urlKey, pkgName, context);
+            browserType(leoPreference, urlKey, pkgName, context);
         }
     }
 

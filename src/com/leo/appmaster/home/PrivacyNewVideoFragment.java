@@ -13,7 +13,7 @@ import android.widget.ListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -106,7 +106,7 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
     private void setLabelCount(int count) {
         if (isDetached() || isRemoving() || getActivity() == null) return;
 
-        boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_VID, false);
+        boolean processed = LeoPreference.getInstance().getBoolean(PrefConst.KEY_SCANNED_VID, false);
         int stringId = R.string.pri_pro_new_vid;
         if (!processed) {
             stringId = R.string.scan_find_vid;
@@ -121,7 +121,7 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
     protected void onProcessClick() {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_hide_cnts");
         mActivity.onProcessClick(this);
-        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_VID, true);
+        LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_VID, true);
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {

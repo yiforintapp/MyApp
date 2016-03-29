@@ -17,7 +17,7 @@ import android.text.TextUtils;
 
 import com.leo.analytics.LeoAgent;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
@@ -275,7 +275,7 @@ public class PhoneSecurityManager {
                  /*查询是否触发为防盗指令*/
                 if (instructs.contains(body)) {
                     try {
-                        long beforeId = PreferenceTable.getInstance().getLong(PrefConst.KEY_INSTRU_MSM_ID, -1);
+                        long beforeId = LeoPreference.getInstance().getLong(PrefConst.KEY_INSTRU_MSM_ID, -1);
                         if (beforeId > 0) {
                             if (msmId <= beforeId) {
                                 /*执行完毕删除该信息*/
@@ -295,7 +295,7 @@ public class PhoneSecurityManager {
                     LeoLog.i(TAG, "删除本次执行过的未删除的指令：" + resultCount);
                     if (resultCount <= 0) {
                         /*存储执行指令短信id*/
-                        PreferenceTable.getInstance().putLong(PrefConst.KEY_INSTRU_MSM_ID, msmId);
+                        LeoPreference.getInstance().putLong(PrefConst.KEY_INSTRU_MSM_ID, msmId);
                     }
                     LeoLog.i(TAG, "可以执行指令，信息内容：" + body);
                     new Thread(new Runnable() {
@@ -493,10 +493,10 @@ public class PhoneSecurityManager {
             public void run() {
                 LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                 boolean isUseSecur = mgr.isUsePhoneSecurity();
-                boolean lockExecuStatue = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, false);
+                boolean lockExecuStatue = LeoPreference.getInstance().getBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, false);
                 if (isUseSecur && lockExecuStatue) {
                     mgr.executeLockPhone(false, null, true);
-                    PreferenceTable.getInstance().putBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, false);
+                    LeoPreference.getInstance().putBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, false);
                     LeoLog.i(TAG, "解锁成功去除所有模式加锁！");
                 }
             }
@@ -511,7 +511,7 @@ public class PhoneSecurityManager {
             public void run() {
                 LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                 boolean isUseSecur = mgr.isUsePhoneSecurity();
-                boolean lockExecuStatue = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, false);
+                boolean lockExecuStatue = LeoPreference.getInstance().getBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, false);
                 if (isUseSecur && lockExecuStatue) {
                     mgr.executeLockPhone(true, packageName, false);
                 }

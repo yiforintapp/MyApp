@@ -15,7 +15,6 @@ import com.leo.appmaster.callfilter.CallFilterConstants;
 import com.leo.appmaster.callfilter.CallFilterUtils;
 import com.leo.appmaster.cloud.crypto.CryptoUtils;
 import com.leo.appmaster.db.BlacklistTab;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.mgr.MgrContext;

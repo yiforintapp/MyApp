@@ -11,12 +11,11 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Message;
 
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
 import com.leo.appmaster.mgr.DeviceManager;
-import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.ui.SelfDurationToast;
@@ -29,7 +28,6 @@ import com.leo.appmaster.wifiSecurity.WifiSettingActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class WifiSecurityManagerImpl extends WifiSecurityManager {
@@ -299,7 +297,7 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
         if (Utilities.isAppOnTop(mContext)) {
             LeoLog.d("testWifiPart", "App on Top");
             if (!Utilities.isActivityOnTop(mContext, WifiSecurityActivity.class.getName())) {
-                boolean isShouldShow = PreferenceTable.getInstance().
+                boolean isShouldShow = LeoPreference.getInstance().
                         getBoolean(WifiSettingActivity.IS_SHOW_WIFI_SAFE, true);
                 if (isShouldShow) {
                     LeoLog.d("testWifiPart", "ready to show Toast");
@@ -308,7 +306,7 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
             }
         } else {
             LeoLog.d("testWifiPart", "App Not on Top");
-            boolean isShouldShow = PreferenceTable.getInstance().
+            boolean isShouldShow = LeoPreference.getInstance().
                     getBoolean(WifiSettingActivity.IS_SHOW_WIFI_SAFE, true);
             if (isShouldShow) {
                 LeoLog.d("testWifiPart", "ready to show Toast");
@@ -359,7 +357,7 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
 
     private boolean isScanAlready(String wifiName) {
         boolean isScan = false;
-        String wifiNames = PreferenceTable.getInstance().getString(SCAN_WIFI_NAME);
+        String wifiNames = LeoPreference.getInstance().getString(SCAN_WIFI_NAME);
         LeoLog.d("testScanWifi", "wifiNames : " + wifiNames);
         if (wifiNames != null) {
             String[] nameStrings = wifiNames.split(";");
@@ -377,14 +375,14 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
 
     private void saveWifiName(String wifiName) {
         if (wifiName != null) {
-            String wifiNames = PreferenceTable.getInstance().getString(SCAN_WIFI_NAME);
+            String wifiNames = LeoPreference.getInstance().getString(SCAN_WIFI_NAME);
             LeoLog.d("testScanWifi", "wifiNames : " + wifiNames);
             if (wifiNames != null) {
                 wifiNames = wifiNames + ";" + wifiName;
             } else {
                 wifiNames = wifiName;
             }
-            PreferenceTable.getInstance().putString(SCAN_WIFI_NAME, wifiNames);
+            LeoPreference.getInstance().putString(SCAN_WIFI_NAME, wifiNames);
             LeoLog.d("testScanWifi", "save wifiNames : " + wifiNames);
         }
     }

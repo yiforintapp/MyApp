@@ -21,7 +21,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
@@ -51,7 +51,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     private String mIsFromPushNotif = "";
     private CallFilterFragmentHoler[] mFragmentHolders = new CallFilterFragmentHoler[2];
     private LEOAlarmDialog mShareDialog;
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
     private LEOAlarmDialog mDialogAskCreateShotcut;
     private static final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
 
@@ -65,7 +65,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         mNeedToHomeWhenFinish = getIntent().getBooleanExtra("needToHomeWhenFinish", false);
         mIsFromPushNotif = getIntent().getStringExtra("from");
         SDKWrapper.addEvent(this, SDKWrapper.P1, "block", "block_cnts");
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
     }
     
     @Override
@@ -166,14 +166,14 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
         if (from != null && from != "") {
             return;
         }
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        int currentTimes = preferenceTable.getInt(PrefConst.ENTER_CALL_FILTER_TIMES, 1);
-        int limitTimes = preferenceTable.getInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10);
+        LeoPreference leoPreference = LeoPreference.getInstance();
+        int currentTimes = leoPreference.getInt(PrefConst.ENTER_CALL_FILTER_TIMES, 1);
+        int limitTimes = leoPreference.getInt(PrefConst.KEY_CALL_FILTER_SHARE_TIMES, 10);
         if (currentTimes < limitTimes) {  // 小于限制次数
-            preferenceTable.putInt(PrefConst.ENTER_CALL_FILTER_TIMES, currentTimes + 1);
+            leoPreference.putInt(PrefConst.ENTER_CALL_FILTER_TIMES, currentTimes + 1);
             return;
         }
-        if (preferenceTable.getBoolean(PrefConst.CALL_FILTER_SHOW, false)) {
+        if (leoPreference.getBoolean(PrefConst.CALL_FILTER_SHOW, false)) {
             return;
         }
         if (mShareDialog == null) {
@@ -214,7 +214,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
             }
         });
         mShareDialog.show();
-        preferenceTable.putBoolean(PrefConst.CALL_FILTER_SHOW, true);
+        leoPreference.putBoolean(PrefConst.CALL_FILTER_SHOW, true);
     }
 
 
@@ -222,17 +222,17 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     private void shareApps() {
         SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "block", "block_share");
         mLockManager.filterSelfOneMinites();
-        PreferenceTable sharePreferenceTable = PreferenceTable.getInstance();
+        LeoPreference shareLeoPreference = LeoPreference.getInstance();
         boolean isContentEmpty = TextUtils.isEmpty(
-                sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT));
+                shareLeoPreference.getString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT));
         boolean isUrlEmpty = TextUtils.isEmpty(
-                sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_URL));
+                shareLeoPreference.getString(PrefConst.KEY_CALL_FILTER_SHARE_URL));
 
         StringBuilder shareBuilder = new StringBuilder();
         if (!isContentEmpty && !isUrlEmpty) {
-            shareBuilder.append(sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT))
+            shareBuilder.append(shareLeoPreference.getString(PrefConst.KEY_CALL_FILTER_SHARE_CONTENT))
                         .append(" ")
-                        .append(sharePreferenceTable.getString(PrefConst.KEY_CALL_FILTER_SHARE_URL));
+                        .append(shareLeoPreference.getString(PrefConst.KEY_CALL_FILTER_SHARE_URL));
         } else {
             shareBuilder.append(getResources().getString(R.string.callfilter_share_content))
                         .append(" ")

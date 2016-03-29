@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationRequest;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -24,9 +23,8 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
@@ -44,16 +42,9 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.SimDetecter;
 import com.leo.appmaster.utils.Utilities;
 
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class LostSecurityManagerImpl extends LostSecurityManager {
     public static final Boolean DBG = true;
@@ -76,7 +67,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     @Override
     public int getUsePhoneSecurityCount() {
         int count = 0;
-        int number = PreferenceTable.getInstance().getInt(PrefConst.KEY_USE_SECUR_NUMBER, 0);
+        int number = LeoPreference.getInstance().getInt(PrefConst.KEY_USE_SECUR_NUMBER, 0);
         if (number <= 0) {
             count = PhoneSecurityConstants.USE_SECUR_NUMBER;
         } else {
@@ -90,9 +81,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     public boolean setUsePhoneSecurityConut(int count) {
 
         try {
-            int number = PreferenceTable.getInstance().getInt(PrefConst.KEY_USE_SECUR_NUMBER, 0);
+            int number = LeoPreference.getInstance().getInt(PrefConst.KEY_USE_SECUR_NUMBER, 0);
             if (count > 0 && number != count) {
-                PreferenceTable.getInstance().putInt(PrefConst.KEY_USE_SECUR_NUMBER, count);
+                LeoPreference.getInstance().putInt(PrefConst.KEY_USE_SECUR_NUMBER, count);
             }
             return true;
         } catch (Exception e) {
@@ -103,15 +94,15 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public boolean isUsePhoneSecurity() {
-        return PreferenceTable.getInstance().getBoolean(PrefConst.KEY_PHONE_SECURITY_STATE, false);
+        return LeoPreference.getInstance().getBoolean(PrefConst.KEY_PHONE_SECURITY_STATE, false);
     }
 
     @Override
     public boolean setUsePhoneSecurity(boolean securityState) {
 
         try {
-            boolean flag = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_PHONE_SECURITY_STATE, false);
-            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_PHONE_SECURITY_STATE, securityState);
+            boolean flag = LeoPreference.getInstance().getBoolean(PrefConst.KEY_PHONE_SECURITY_STATE, false);
+            LeoPreference.getInstance().putBoolean(PrefConst.KEY_PHONE_SECURITY_STATE, securityState);
             if (!flag && securityState) {
                 notifySecurityChange();
             }
@@ -126,7 +117,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     public int addPhoneSecurityNumber(ContactBean contact) {
         try {
             if (contact == null) {
-                PreferenceTable.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, "");
+                LeoPreference.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, "");
                 return PhoneSecurityConstants.ADD_SECUR_NUMBER_FAIL;
             }
             String selfNumber = getSelfPhoneNumnber();
@@ -142,7 +133,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             phone.append(name);
             phone.append(":");
             phone.append(contact.getContactNumber());
-            PreferenceTable.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, phone.toString());
+            LeoPreference.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, phone.toString());
             return PhoneSecurityConstants.ADD_SECUR_NUMBER_SUCESS;
         } catch (Exception e) {
 
@@ -164,7 +155,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                     return false;
                 }
             }
-            PreferenceTable.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, phoneNumber);
+            LeoPreference.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, phoneNumber);
             return true;
         } catch (Exception e) {
             return false;
@@ -377,7 +368,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         /**
          * 保护时间以小时为单位
          */
-        PreferenceTable preferTable = PreferenceTable.getInstance();
+        LeoPreference preferTable = LeoPreference.getInstance();
         int[] securityTime = new int[2];
         /*获取系统当前时间*/
         long currentTime = System.currentTimeMillis();
@@ -421,7 +412,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     public void setOpenSecurityTime() {
         long currentTime = System.currentTimeMillis();
                 /*保存开启手机防盗的当前时间*/
-        PreferenceTable.getInstance().putFloat(PrefConst.KEY_OPEN_PHONE_SECRITY_TIME, currentTime);
+        LeoPreference.getInstance().putFloat(PrefConst.KEY_OPEN_PHONE_SECRITY_TIME, currentTime);
     }
 
     @Override
@@ -558,9 +549,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                          /*将所列表加入到锁模式中*/
                         lockManager.addPkg2Mode(addLockList, mode);
                         if (!isLockListener) {
-                            boolean lockExecuStatue = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, false);
+                            boolean lockExecuStatue = LeoPreference.getInstance().getBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, false);
                             if (!lockExecuStatue) {
-                                PreferenceTable.getInstance().putBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, true);
+                                LeoPreference.getInstance().putBoolean(PrefConst.KEY_LOCK_INSTUR_EXECU_STATUE, true);
                             }
                         }
                     } else {
@@ -716,7 +707,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public String getPhoneSecurityNumber() {
-        String number = PreferenceTable.getInstance().getString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER);
+        String number = LeoPreference.getInstance().getString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER);
         return number;
     }
 
@@ -746,7 +737,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             /*判断sim卡是否发生了变化*/
             TelephonyManager teleManger = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             String currentSimIMEI = teleManger.getSimSerialNumber();
-            String imei = PreferenceTable.getInstance().getString(PrefConst.KEY_SIM_IMEI);
+            String imei = LeoPreference.getInstance().getString(PrefConst.KEY_SIM_IMEI);
             if (!Utilities.isEmpty(imei)) {
                 if (!imei.equals(currentSimIMEI)) {
                     //sim卡发生了变化
@@ -777,15 +768,15 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         try {
             TelephonyManager teleManger = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             String currentSimIMEI = teleManger.getSimSerialNumber();
-            String imeiBefor = PreferenceTable.getInstance().getString(PrefConst.KEY_SIM_IMEI);
+            String imeiBefor = LeoPreference.getInstance().getString(PrefConst.KEY_SIM_IMEI);
             if (!Utilities.isEmpty(imeiBefor)) {
                 if (!imeiBefor.equals(currentSimIMEI)) {
                     LeoLog.i(TAG, "保存sim卡IMEI：" + currentSimIMEI);
-                    PreferenceTable.getInstance().putString(PrefConst.KEY_SIM_IMEI, currentSimIMEI);
+                    LeoPreference.getInstance().putString(PrefConst.KEY_SIM_IMEI, currentSimIMEI);
                 }
             } else {
                 LeoLog.i(TAG, "保存sim卡IMEI：" + currentSimIMEI);
-                PreferenceTable.getInstance().putString(PrefConst.KEY_SIM_IMEI, currentSimIMEI);
+                LeoPreference.getInstance().putString(PrefConst.KEY_SIM_IMEI, currentSimIMEI);
             }
             return true;
         } catch (Exception e) {

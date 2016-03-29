@@ -2,7 +2,7 @@ package com.leo.appmaster.battery;
 
 import java.util.ArrayList;
 
-import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -63,7 +63,7 @@ public class RemainTimeHelper {
     private void loadPreferenceList(int scale) {
         for (int i=0; i<scale; i++) {
             PeriodUnit pu = new PeriodUnit();
-            String data = PreferenceTable.getInstance().getString(RT_PREFERENCE_KEY + i);
+            String data = LeoPreference.getInstance().getString(RT_PREFERENCE_KEY + i);
             if (data == null || data.length()<=0) {
                 pu.count = 1;
                 pu.second = INITIAL_TIME_IN_SECOND;
@@ -73,7 +73,7 @@ public class RemainTimeHelper {
             if (pu == null) {
                 // 保存的记录损坏
                 pu = new PeriodUnit(INITIAL_TIME_IN_SECOND, 1);
-                PreferenceTable.getInstance().putString(RT_PREFERENCE_KEY + i, pu.toString());
+                LeoPreference.getInstance().putString(RT_PREFERENCE_KEY + i, pu.toString());
             }
             mPreferenceList.add(pu);
         }
@@ -85,7 +85,7 @@ public class RemainTimeHelper {
             PeriodUnit pu = mPreferenceList.get(level);
             pu.second = (pu.second*pu.count+period)/(pu.count+1);
             pu.count += 1;
-            PreferenceTable.getInstance().putString(RT_PREFERENCE_KEY+level, pu.toString());
+            LeoPreference.getInstance().putString(RT_PREFERENCE_KEY+level, pu.toString());
 
             // debug
             // dumpToDisk();

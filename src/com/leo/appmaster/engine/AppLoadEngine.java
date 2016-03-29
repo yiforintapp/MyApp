@@ -45,8 +45,8 @@ import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.BusinessAppInstallTracker;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LockRecommentTable;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.home.AutoStartGuideList;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -820,10 +820,10 @@ public class AppLoadEngine extends BroadcastReceiver {
 
     private void showNewAddAppNoti(String packageName) {
         LeoLog.d("testBackupNoti", packageName + " come to it");
-        String newApp = PreferenceTable.getInstance().getString(Constants.NEW_APP_NUM);
+        String newApp = LeoPreference.getInstance().getString(Constants.NEW_APP_NUM);
         if (newApp == null) {
             LeoLog.d("testBackupNoti", "saveApp == null");
-            PreferenceTable.getInstance().putString(Constants.NEW_APP_NUM, packageName);
+            LeoPreference.getInstance().putString(Constants.NEW_APP_NUM, packageName);
         } else {
             LeoLog.d("testBackupNoti", "saveApp : " + newApp);
             String[] newAppList = newApp.split(";");
@@ -860,7 +860,7 @@ public class AppLoadEngine extends BroadcastReceiver {
             }
         }
         LeoLog.d("testBackupNoti", "save result  : " + result);
-        PreferenceTable.getInstance().putString(Constants.NEW_APP_NUM, result);
+        LeoPreference.getInstance().putString(Constants.NEW_APP_NUM, result);
     }
 
     private List<String> checkIsBackup(String[] text) {

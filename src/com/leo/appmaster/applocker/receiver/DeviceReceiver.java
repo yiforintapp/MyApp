@@ -5,39 +5,11 @@ import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.hardware.Camera;
-import android.os.Environment;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.IntruderPhotoInfo;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
-import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
-import com.leo.appmaster.intruderprotection.WaterMarkUtils;
-import com.leo.appmaster.mgr.IntrudeSecurityManager;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.utils.BitmapUtils;
-import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PrefConst;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class DeviceReceiver extends DeviceAdminReceiver {
 
