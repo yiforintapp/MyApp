@@ -10,8 +10,8 @@ import android.widget.ListView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -36,6 +36,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     private List<LockMode> mModeList;
     private ListSuccessAdapter mListAdapter;
     public CommonTitleBar mTitleBar;
+    private LeoPreference mTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         mLockListView = (ListView) findViewById(R.id.recomment_lock_list);
         mListAdapter = new ListSuccessAdapter(this);
         mLockListView.setAdapter(mListAdapter);
+        mTable = LeoPreference.getInstance();
 
         mLockList = new ArrayList<AppInfo>();
         mModeList = new ArrayList<LockMode>();
@@ -134,7 +136,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                             AppLockListActivity.class);
                     intent.putExtra("from_lock_more", true);
                     intent.putExtra("first_lock_size", mLockList.size());
-                    HomeActivity.mIsFirstEnterFromIcon = true;
+                    mTable.putBoolean("FirstEnterFromTab", true);
 //                    intent.putExtra("enter_from_lockmode", true);
                     this.startActivity(intent);
                 } else if (target == 1) {
@@ -148,7 +150,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                                 AppLockListActivity.class);
                         intent.putExtra("from_lock_more", true);
                         intent.putExtra("first_lock_size", mLockList.size());
-                        HomeActivity.mIsFirstEnterFromIcon = true;
+                        mTable.putBoolean("FirstEnterFromTab", true);
                         this.startActivity(intent);
                     } else {
                         intent = new Intent(this,
@@ -222,7 +224,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         if (target == 0) {
             intent = new Intent(this, AppLockListActivity.class);
             intent.putExtra("first_lock_size", mLockList.size());
-            HomeActivity.mIsFirstEnterFromIcon = true;
+            mTable.putBoolean("FirstEnterFromTab", true);
             try {
                 this.startActivity(intent);
             } catch (Exception e) {

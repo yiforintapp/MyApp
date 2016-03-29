@@ -37,7 +37,6 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.db.LeoPreference;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -125,6 +124,7 @@ public class AppLockListActivity extends BaseActivity implements
 
     private List<AppItemInfo> mAppList;
     private int mPosition = 1; // 用来定位
+    private LeoPreference mLeoPreference;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -145,13 +145,14 @@ public class AppLockListActivity extends BaseActivity implements
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
-            if (isFromConfrim && ((mAppList != null && mAppList.size() > 0) || HomeActivity.mIsFirstEnterFromMain)) {
+            boolean mIsFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", false);
+            if (isFromConfrim && ((mAppList != null && mAppList.size() > 0) || mIsFirstEnterFromMain)) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if(switchs != null && switchs.size() > 0) {
                     mPosition = + (switchs.size() + 1);
                 }
-                if (HomeActivity.mIsFirstEnterFromMain) {
-                    HomeActivity.mIsFirstEnterFromMain = false;
+                if (mIsFirstEnterFromMain) {
+                    mLeoPreference.putBoolean("FirstEnterFromMain", false);
                 }
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
@@ -185,6 +186,7 @@ public class AppLockListActivity extends BaseActivity implements
 
         wifiSwitch = new WifiLockSwitch();
         blueToothSwitch = new BlueToothLockSwitch();
+        mLeoPreference = LeoPreference.getInstance();
 
         AppLoadEngine.getInstance(this).registerAppChangeListener(this);
         LeoEventBus.getDefaultBus().register(this);
@@ -390,15 +392,18 @@ public class AppLockListActivity extends BaseActivity implements
 
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
-        if (isFromConfrim && HomeActivity.mIsFirstEnterFromMain && !HomeActivity.mHasEnterFromIcon) {
+        boolean isFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", false);
+        boolean hasEnterFromTab =  mLeoPreference.getBoolean("HasEnterFromTab", false);
+        if (isFromConfrim && isFirstEnterFromMain && !hasEnterFromTab) {
             mAppList.clear();
         }
 
-        LeoLog.e("mResaultList", "mIsFirstEnterFromIcon:" + HomeActivity.mIsFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim );
-        if (!isFromConfrim && HomeActivity.mIsFirstEnterFromIcon) {
+        boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", false);
+        LeoLog.e("mResaultList", "isFirstEnterFromIcon:" + isFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim );
+        if (!isFromConfrim && isFirstEnterFromIcon) {
             mAppList.clear();
-            HomeActivity.mIsFirstEnterFromIcon = false;
-            HomeActivity.mHasEnterFromIcon = true;
+            mLeoPreference.putBoolean("FirstEnterFromTab", false);
+            mLeoPreference.putBoolean("HasEnterFromTab", true);
         }
         lm.ignore();
 //        AppItemInfo appItemInfo = new AppItemInfo();
@@ -420,6 +425,14 @@ public class AppLockListActivity extends BaseActivity implements
                     AppInfo info = iterator.next();
                     if (mAppList.get(i).packageName.equals(info.packageName)) {
                         iterator.remove();
+                        break;
+                    }
+                }
+                Iterator<AppInfo> iterator1 = mUnlockNormalList.iterator();
+                while (iterator1.hasNext()) {
+                    AppInfo info = iterator1.next();
+                    if (mAppList.get(i).packageName.equals(info.packageName)) {
+                        iterator1.remove();
                         break;
                     }
                 }
@@ -1109,7 +1122,7 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private boolean isGuideEnough() {
-        int guideCount = PreferenceTable.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+        int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
         /*进入应用锁，引导强制提示3*/
         return guideCount > IN_LOCK_GUIDE_COUNT;
     }

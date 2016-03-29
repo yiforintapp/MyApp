@@ -262,7 +262,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkNewTheme() {
-//        boolean isClickLockTab = PreferenceTable.getInstance().
+//        boolean isClickLockTab = LeoPreference.getInstance().
 //                getBoolean(Constants.IS_CLICK_LOCK_TAB, false);
         String locSerial = AppMasterPreference.getInstance(mActivity)
                 .getLocalThemeSerialNumber();
@@ -295,9 +295,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         mLockManager.updateMode(curMode);
                     } else {
                         Intent intent = new Intent(getActivity(), AppLockListActivity.class);
-//                        intent.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
-//                        HomeActivity.mIsFirstEnterFromMain = true;
-                        HomeActivity.mIsFirstEnterFromIcon = true;
+                        table.putBoolean("FirstEnterFromTab", true);
                         startActivity(intent);
                     }
                     break;
@@ -335,7 +333,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     }
 //                    Intent intent1 = new Intent(getActivity(), AppLockListActivity.class);
 //                    intent1.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
-//                    HomeActivity.mIsFirstEnterFromMain = true;
+//                    table.putBoolean("FirstEnterFromMain", true);
 //                    startActivity(intent1);
                     break;
                 case R.id.home_lost_tab:
