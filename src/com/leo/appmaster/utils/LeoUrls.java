@@ -1,5 +1,7 @@
 package com.leo.appmaster.utils;
 
+import android.net.Uri;
+
 /**
  * Created by Jasper on 2015/12/21.
  */
@@ -24,4 +26,9 @@ public class LeoUrls {
 
     public static final String PATH_BATTERY_RECOMMEND = "/appmaster/screensaver";
     public static final String URL_BATTERY_RECOMMEND = HTTP + DOMAIN + PATH_BATTERY_RECOMMEND;
+
+
+    //APP Indexing url
+    public static final Uri DEEPLINK_APP_URL = Uri.parse("android-app://com.leo.appmaster/http/leomaster.com");
+    public static final Uri DEEPLINK_WEB_URL = Uri.parse("http://leomaster.com");
 }
