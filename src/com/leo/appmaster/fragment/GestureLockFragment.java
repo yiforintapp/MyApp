@@ -153,12 +153,12 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     private void initAirSig() {
-        boolean isAirsigOn = PreferenceTable.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
 
         if (true) {
             mViewBottom.setVisibility(View.VISIBLE);
-            int unlockType = PreferenceTable.getInstance().
+            int unlockType = LeoPreference.getInstance().
                     getInt(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
             if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
                 mLockPatternView.setVisibility(View.VISIBLE);

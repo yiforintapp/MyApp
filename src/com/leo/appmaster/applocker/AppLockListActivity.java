@@ -386,7 +386,7 @@ public class AppLockListActivity extends BaseActivity implements
 
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
-        boolean processed = PreferenceTable.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
+        boolean processed = LeoPreference.getInstance().getBoolean(PrefConst.KEY_SCANNED_APP, false);
         if (!processed) {
             mAppList.clear();
         }

@@ -12,6 +12,7 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.battery.BatterySettingActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
@@ -47,7 +48,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout mRlFlowManagement;
     private RelativeLayout mRlBatteryManagement;
 
-    private PreferenceTable mPt;
+    private LeoPreference mPt;
 
     private boolean mIsHasCallFilterRecords = false;
     /**
@@ -60,7 +61,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_more);
         initUI();
-        mPt = PreferenceTable.getInstance();
+        mPt = LeoPreference.getInstance();
         tryShowOldEntry();
     }
 

@@ -264,7 +264,7 @@ public class InitCoreBootstrap extends Bootstrap {
         //TODO 首次启动加载数据（进入）
         judgeLockAlert();
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        LeoPreference preferenceTable = LeoPreference.getInstance();
         //TODO 首次启动加载数据
         LeoPreference leoPreference = LeoPreference.getInstance();
         String lastVercode = pref.getLastVersion();

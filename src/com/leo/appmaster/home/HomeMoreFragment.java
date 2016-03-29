@@ -29,6 +29,7 @@ import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.fragment.GuideFragment;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;

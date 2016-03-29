@@ -6,6 +6,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.battery.BatterySettingActivity;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -71,7 +72,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void fillData() {
-        boolean isAirsigOn = PreferenceTable.getInstance().getBoolean(AIRSIG_SWITCH, false);
+        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AIRSIG_SWITCH, false);
         if (isAirsigOn) {
             mTvSetOne.setText(getString(R.string.airsig_settings_activity_set_one_off));
             mTvSetTwo.setTextColor(getResources().getColor(R.color.c2));
@@ -148,7 +149,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void switchAirsig() {
-        boolean isAirsigOn = PreferenceTable.getInstance().getBoolean(AIRSIG_SWITCH, false);
+        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
         if (isAirsigOn) {
             //dialog to close
@@ -161,7 +162,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    PreferenceTable.getInstance().putBoolean(AIRSIG_SWITCH, false);
+                    LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, false);
                     mTvSetOne.setText(getString(R.string.airsig_settings_activity_set_one_on));
                     mTvSetTwo.setTextColor(getResources().getColor(R.color.cgy));
                     rpBtnTwo.setFocusable(false);
@@ -174,7 +175,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             }
         } else if (isAirsigReady) {
             //open
-            PreferenceTable.getInstance().putBoolean(AIRSIG_SWITCH, true);
+            LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, true);
             mTvSetOne.setText(getString(R.string.airsig_settings_activity_set_one_off));
             mTvSetTwo.setTextColor(getResources().getColor(R.color.c2));
             rpBtnTwo.setFocusable(true);

@@ -12,6 +12,7 @@ import com.airsig.airsigengmulti.ASEngine;
 import com.leo.appmaster.R;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.airsig.airsigsdk.ASSetting;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -68,9 +69,9 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
 
 
     private void fillData() {
-        int unlockType = PreferenceTable.getInstance().getInt(UNLOCK_TYPE, NOMAL_UNLOCK);
+        int unlockType = LeoPreference.getInstance().getInt(UNLOCK_TYPE, NOMAL_UNLOCK);
         if (unlockType == AIRSIG_UNLOCK) {
-            boolean isAirsigOn = PreferenceTable.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+            boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
             if (isAirsigOn) {
                 mIvShowOne.setVisibility(View.VISIBLE);
                 mIvShowTwo.setVisibility(View.GONE);
@@ -104,20 +105,20 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
                 if (mIvShowTwo.getVisibility() == View.VISIBLE) return;
                 mIvShowOne.setVisibility(View.GONE);
                 mIvShowTwo.setVisibility(View.VISIBLE);
-                PreferenceTable.getInstance().putInt(UNLOCK_TYPE,NOMAL_UNLOCK);
+                LeoPreference.getInstance().putInt(UNLOCK_TYPE,NOMAL_UNLOCK);
                 break;
         }
     }
 
     private void openAirSig() {
-        boolean isAirsigOn = PreferenceTable.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
 
         if (isAirsigOn) {
             //select
             mIvShowOne.setVisibility(View.VISIBLE);
             mIvShowTwo.setVisibility(View.GONE);
-            PreferenceTable.getInstance().putInt(UNLOCK_TYPE, AIRSIG_UNLOCK);
+            LeoPreference.getInstance().putInt(UNLOCK_TYPE, AIRSIG_UNLOCK);
         } else if (isAirsigReady) {
             //dialog to ask open or not
             showAigSigDialog(true);
@@ -139,10 +140,10 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
             public void onClick(DialogInterface dialog, int which) {
 
                 if (isAirsigReady) {
-                    PreferenceTable.getInstance().putBoolean(AirSigActivity.AIRSIG_SWITCH, true);
+                    LeoPreference.getInstance().putBoolean(AirSigActivity.AIRSIG_SWITCH, true);
                     mIvShowOne.setVisibility(View.VISIBLE);
                     mIvShowTwo.setVisibility(View.GONE);
-                    PreferenceTable.getInstance().putInt(UNLOCK_TYPE, AIRSIG_UNLOCK);
+                    LeoPreference.getInstance().putInt(UNLOCK_TYPE, AIRSIG_UNLOCK);
                 } else {
                     setAirsig();
                 }
