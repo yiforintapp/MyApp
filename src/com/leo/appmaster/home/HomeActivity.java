@@ -76,6 +76,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
@@ -155,6 +156,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 
     private boolean mHidePicFinish = true;
+    private LEOAlarmDialog mUninstallDialog;  // 卸载提示对话框
+    private boolean mClickUninstall; // 是否点击卸载按钮
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
@@ -318,6 +321,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mPicHideSuccess = false;
         mVidHideSuccess = false;
         mNeedDialogShow = true;
+        mClickUninstall = false;
     }
 
     public void onEventMainThread(AppUnlockEvent event) {
@@ -863,6 +867,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             LeoEventBus.getDefaultBus().register(this);
         }
 
+        if (mClickUninstall) {
+            showUninstallDialog(false, "开启高级保护", "当前高级保护未开启,手机防盗-清除数据功能,系统锁屏入侵防护功能不可用，是否i立即开启？");
+            mClickUninstall = false;
+        }
+
     }
 
     private void addUninstallPgTOMenueItem() {
@@ -1256,27 +1265,88 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }
+        showUninstallDialog(true, "卸载隐私卫士", "卸载隐私卫士前需关闭高级保护权限，可能会导致手机防盗、系统锁屏入侵防护等功能不可用。确认卸载？");
+        return false;
+    }
+
+    private void showUninstallDialog(final boolean isUninstall, String title, String content) {
+        if (mUninstallDialog == null) {
+            mUninstallDialog = new LEOAlarmDialog(this);
+            mUninstallDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mUninstallDialog != null) {
+                        mUninstallDialog = null;
+                    }
+                }
+            });
+        }
+        mUninstallDialog.setTitle(title);
+        mUninstallDialog.setContent(content);
+        if (!isUninstall) {
+            mUninstallDialog.setRightBtnStr("开启");
+        }
+        mUninstallDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mUninstallDialog != null && mUninstallDialog.isShowing()) {
+                    mUninstallDialog.dismiss();
+                    mUninstallDialog = null;
+                }
+            }
+        });
+        mUninstallDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mUninstallDialog != null && mUninstallDialog.isShowing()) {
+                    mUninstallDialog.dismiss();
+                    mUninstallDialog = null;
+                }
+                if (isUninstall) {
+                    unRegisterAdmin(true);
+                    mClickUninstall = true;
+                    showSystemUninstall();
+                } else {
+                    unRegisterAdmin(false);
+                }
+            }
+        });
+        mUninstallDialog.show();
+    }
+
+    // 取消注册或者重新注册设备管理器
+    private void unRegisterAdmin(boolean isRegister) {
+        DevicePolicyManager manager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
+        ComponentName mAdminName = new ComponentName(this, DeviceReceiver.class);
+        ComponentName mAdminName2 = new ComponentName(this, DeviceReceiverNewOne.class);
+        if (isRegister) {
+            if (manager.isAdminActive(mAdminName)) {
+                manager.removeActiveAdmin(mAdminName);
+            }
+            if (manager.isAdminActive(mAdminName2)) {
+                manager.removeActiveAdmin(mAdminName2);
+            }
+        } else {
+            Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName2);
+            startActivity(intent);
+        }
+    }
+
+    private void showSystemUninstall() {
         try {
-//            if (DeviceReceiver.isActive(this)) {
-//                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiver.getComponentName(this));
-//            }
-//            if (DeviceReceiverNewOne .isActive(this)) {
-//                ((DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE)).removeActiveAdmin(DeviceReceiverNewOne.getComponentName(this));
-//            }
             Uri uri = Uri.fromParts("package", this.getPackageName(), null);
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_DELETE);
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            // 从卸载入口过去，10秒内不对设置加锁
-            mLockManager.filterPackage("com.android.settings", 10 * 1000);
+//            // 从卸载入口过去，10秒内不对设置加锁
+//            mLockManager.filterPackage("com.android.settings", 10 * 1000);
             mLockManager.filterSelfOneMinites();
             startActivity(intent);
-            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public void onListScroll(int scrollHeight) {

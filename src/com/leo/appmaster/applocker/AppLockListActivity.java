@@ -393,18 +393,16 @@ public class AppLockListActivity extends BaseActivity implements
 
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
+
         boolean isFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", true);
-        boolean hasEnterFromTab =  mLeoPreference.getBoolean("HasEnterFromTab", false);
-        if (isFromConfrim && isFirstEnterFromMain && !hasEnterFromTab) {
+        boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
+        if (isFromConfrim && isFirstEnterFromMain && isFirstEnterFromIcon) {
             mAppList.clear();
         }
-
-        boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
         LeoLog.e("mResaultList", "isFirstEnterFromIcon:" + isFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim);
-        if (!isFromConfrim && isFirstEnterFromIcon) {
+        if (!isFromConfrim && isFirstEnterFromIcon && isFirstEnterFromMain) {
             mAppList.clear();
             mLeoPreference.putBoolean("FirstEnterFromTab", false);
-            mLeoPreference.putBoolean("HasEnterFromTab", true);
         }
         lm.ignore();
 //        AppItemInfo appItemInfo = new AppItemInfo();
@@ -417,7 +415,7 @@ public class AppLockListActivity extends BaseActivity implements
 //        mAppList.add(appItemInfo1);
         LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size());
         for (AppItemInfo appItemInfo: mAppList) {
-            LeoLog.e("mResaultList", appItemInfo.packageName);
+            LeoLog.e("mResaultList", appItemInfo.topPos + "");
         }
         if (mAppList != null && mAppList.size() > 0) {
             for (int i = 0; i < mAppList.size(); i++) {
