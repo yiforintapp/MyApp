@@ -9,7 +9,6 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.UFOActivity;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -34,7 +33,7 @@ public class PreferenceTable extends BaseTable {
     private static final int BOOL_TRUE = 1;
     private static final int BOOL_FALSE = 0;
 
-    private HashMap<String, String> mValues;
+    private HashMap<String, Object> mValues;
     private Executor mSerialExecutor;
 
     private boolean mLoaded;
@@ -52,14 +51,12 @@ public class PreferenceTable extends BaseTable {
     }
 
     public PreferenceTable() {
-        mValues = new HashMap<String, String>();
+        mValues = new HashMap<String, Object>();
         mSerialExecutor = ThreadManager.newSerialExecutor();
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
-                synchronized (PreferenceTable.this) {
-                    loadPreference();
-                }
+                loadPreference();
             }
         });
     }
@@ -127,13 +124,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public int getInt(String key, int def) {
-        String value = getString(key, null);
+        Object value = getString(key, null);
         if (value == null) {
             return def;
         }
 
         try {
-            return Integer.parseInt(value);
+            return Integer.parseInt(value.toString());
         } catch (NumberFormatException e) {
         }
 
@@ -141,13 +138,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public long getLong(String key, long def) {
-        String value = getString(key, null);
+        Object value = getString(key, null);
         if (value == null) {
             return def;
         }
 
         try {
-            return Long.parseLong(value);
+            return Long.parseLong(value.toString());
         } catch (NumberFormatException e) {
         }
 
@@ -155,13 +152,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public double getDouble(String key, double def) {
-        String value = getString(key, null);
+        Object value = getString(key, null);
         if (value == null) {
             return def;
         }
 
         try {
-            return Double.parseDouble(value);
+            return Double.parseDouble(value.toString());
         } catch (NumberFormatException e) {
         }
 
@@ -169,13 +166,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public float getFloat(String key, float def) {
-        String value = getString(key, null);
+        Object value = getString(key, null);
         if (value == null) {
             return def;
         }
 
         try {
-            return Float.parseFloat(value);
+            return Float.parseFloat(value.toString());
         } catch (NumberFormatException e) {
         }
 
@@ -190,8 +187,8 @@ public class PreferenceTable extends BaseTable {
 
     public synchronized String getString(String key, String def) {
 //        awaitLoadedLocked();
-        String v = mValues.get(key);
-        return v != null ? v : def;
+        Object v = mValues.get(key);
+        return v != null ? v.toString() : def;
     }
 
     public void putInt(String key, int value) {
@@ -214,7 +211,7 @@ public class PreferenceTable extends BaseTable {
         putString(key, value + "");
     }
 
-    public synchronized void putString(final String key, String value) {
+    public void putString(final String key, String value) {
         if (TextUtils.isEmpty(key) || value == null) return;
 
         // true和false统一转为 1 和 0
@@ -223,8 +220,6 @@ public class PreferenceTable extends BaseTable {
         } else if (value.equals("false")) {
             value = String.valueOf(BOOL_FALSE);
         }
-        mValues.put(key, value);
-
         final String finalValue = value;
         mSerialExecutor.execute(new Runnable() {
             @Override
@@ -234,85 +229,78 @@ public class PreferenceTable extends BaseTable {
         });
     }
 
-    public synchronized void putBundleMap(final Map<String, Object> map, final ISettings.OnBundleSavedListener listener) {
+    public void putBundleMap(final Map<String, Object> map, final ISettings.OnBundleSavedListener listener) {
         if (map == null || map.size() == 0) {
             return;
         }
 
-        for (String key : map.keySet()) {
-            String value = String.valueOf(map.get(key));
-
-            // true和false统一转为 1 和 0
-            boolean change = false;
-            if (value.equals("true")) {
-                value = String.valueOf(BOOL_TRUE);
-                change = true;
-            } else if (value.equals("false")) {
-                value = String.valueOf(BOOL_FALSE);
-                change = true;
-            }
-            if (change) {
-                map.put(key, value);
-            }
-            mValues.put(key, value);
-        }
-        if (BuildProperties.isApiLevel14()) {
-            try {
-                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
-                final SharedPreferences.Editor editor = sp.edit();
-                for (String key : map.keySet()) {
-                    String value = String.valueOf(map.get(key));
-                    editor.putString(key, value);
-                }
-                mSerialExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        editor.commit();
-                        if (listener != null) {
-                            listener.onBundleSaved();
-                        }
-                    }
-                });
-            } catch (Exception e) {
-            }
-        } else {
-            final SQLiteDatabase db = getHelper().getWritableDatabase();
-            if (db == null) return;
-
-            LeoLog.d(TAG, "<ls> putBundleMap database before exe.");
-            mSerialExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    LeoLog.d(TAG, "<ls> putBundleMap database before update db.");
-                    db.beginTransaction();
+        mValues.putAll(map);
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (BuildProperties.isApiLevel14()) {
                     try {
-                        ContentValues contentValues = new ContentValues();
-                        for (String key : map.keySet()) {
-                            // true和false统一转为 1 和 0
-                            String value = String.valueOf(map.get(key));
-                            contentValues.put(COL_KEY, key);
-                            contentValues.put(COL_VALUE, value);
-                            int rows = db.update(TABLE_NAME, contentValues, COL_KEY + " = ? ", new String[]{key});
-                            if (rows <= 0) {
-                                db.insert(TABLE_NAME, null, contentValues);
+                        mSerialExecutor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
+                                final SharedPreferences.Editor editor = sp.edit();
+                                for (String key : map.keySet()) {
+                                    String value = String.valueOf(map.get(key));
+                                    editor.putString(key, value);
+
+                                    checkBooleanAndChange(key, value);
+                                }
+                                editor.commit();
+                                if (listener != null) {
+                                    listener.onBundleSaved();
+                                }
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
+                } else {
+                    final SQLiteDatabase db = getHelper().getWritableDatabase();
+                    if (db == null) return;
+
+                    LeoLog.d(TAG, "<ls> putBundleMap database before exe.");
+                    mSerialExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            LeoLog.d(TAG, "<ls> putBundleMap database before update db.");
+                            db.beginTransaction();
+                            try {
+                                ContentValues contentValues = new ContentValues();
+                                for (String key : map.keySet()) {
+                                    // true和false统一转为 1 和 0
+                                    String value = String.valueOf(map.get(key));
+                                    contentValues.put(COL_KEY, key);
+                                    contentValues.put(COL_VALUE, value);
+                                    int rows = db.update(TABLE_NAME, contentValues, COL_KEY + " = ? ", new String[]{key});
+                                    if (rows <= 0) {
+                                        db.insert(TABLE_NAME, null, contentValues);
+                                    }
+                                    checkBooleanAndChange(key, value);
+                                }
+                                db.setTransactionSuccessful();
+                                if (listener != null) {
+                                    listener.onBundleSaved();
+                                }
+                                LeoLog.d(TAG, "<ls> putBundleMap database after update db.");
+                            } catch (Exception e) {
+                                LeoLog.e(TAG, "<ls> putBundleMap ex.", e);
+                            } finally {
+                                db.endTransaction();
                             }
                         }
-                        db.setTransactionSuccessful();
-                        if (listener != null) {
-                            listener.onBundleSaved();
-                        }
-                        LeoLog.d(TAG, "<ls> putBundleMap database after update db.");
-                    } catch (Exception e) {
-                        LeoLog.e(TAG, "<ls> putBundleMap ex.", e);
-                    } finally {
-                        db.endTransaction();
-                    }
+                    });
                 }
-            });
-        }
+            }
+        }, 2000);
     }
 
     private void insertOrUpdate(String key, String value) {
+        mValues.put(key, value);
         if (BuildProperties.isApiLevel14()) {
             try {
                 SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
@@ -334,6 +322,14 @@ public class PreferenceTable extends BaseTable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void checkBooleanAndChange(String key, String value) {
+        if ("true".equals(value)) {
+            mValues.put(key, String.valueOf(BOOL_TRUE));
+        } else if ("false".equals(value)) {
+            mValues.put(key, String.valueOf(BOOL_FALSE));
         }
     }
 

@@ -92,10 +92,6 @@ public class InitCoreBootstrap extends Bootstrap {
 
         AppBackupRestoreManager.getInstance(mApp);
 
-        start = SystemClock.elapsedRealtime();
-        initImageLoader();
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, initImageLoader: " + (end - start));
 
         registerPackageChangedBroadcast();
 

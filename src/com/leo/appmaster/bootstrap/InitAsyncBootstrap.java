@@ -6,6 +6,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
@@ -23,6 +24,9 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.ImageLoaderConfiguration;
 
 /**
  * 异步初始化，旧版本的startInitTask
@@ -68,11 +72,29 @@ public class InitAsyncBootstrap extends Bootstrap {
 
         BlacklistTab.getInstance().initEncryptList();
 
-
         //airSig
         initAirSig();
 
+        initImageLoader();
+
         return true;
+    }
+
+    private void initImageLoader() {
+        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
+        ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(mApp);
+        builder.taskExecutor(ThreadManager.getNetworkExecutor());
+        builder.taskExecutorForCachedImages(ThreadManager.getAsyncExecutor());
+        builder.threadPoolSize(Constants.MAX_THREAD_POOL_SIZE);
+        builder.threadPriority(Thread.NORM_PRIORITY);
+        builder.memoryCacheSizePercentage(8);
+        builder.defaultDisplayImageOptions(options);
+//        if (AppMasterConfig.LOGGABLE) {
+//            builder.writeDebugLogs();
+//        }
+        builder.diskCacheSize(Constants.MAX_DISK_CACHE_SIZE); // 100 Mb
+        builder.denyCacheImageMultipleSizesInMemory();
+        ImageLoader.getInstance().init(builder.build());
     }
 
     private void initAirSig() {

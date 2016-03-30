@@ -81,7 +81,7 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
-//        Debug.startMethodTracing("MotoG.trace");
+//        Debug.startMethodTracing("MotoG4.trace");
         sInstance = this;
         // Use old sor
         try {
