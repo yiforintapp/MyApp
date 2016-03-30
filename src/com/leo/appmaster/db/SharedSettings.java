@@ -42,7 +42,7 @@ public class SharedSettings extends ISettings {
     }
 
     @Override
-    public void setBundleMap(Map<String, Object> map) {
+    public void setBundleMap(Map<String, Object> map, OnBundleSavedListener listener) {
         if (map == null || map.size() == 0) {
             return;
         }
@@ -61,6 +61,9 @@ public class SharedSettings extends ISettings {
         }
         if (editor != null) {
             commitAsync(editor);
+        }
+        if (listener != null) {
+            listener.onBundleSaved();
         }
     }
 

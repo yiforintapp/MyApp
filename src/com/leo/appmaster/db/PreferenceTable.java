@@ -247,7 +247,7 @@ public class PreferenceTable extends BaseTable {
         }
     }
 
-    public synchronized void putBundleMap(final Map<String, Object> map) {
+    public synchronized void putBundleMap(final Map<String, Object> map, final ISettings.OnBundleSavedListener listener) {
         if (map == null || map.size() == 0) {
             return;
         }
@@ -281,6 +281,9 @@ public class PreferenceTable extends BaseTable {
                     @Override
                     public void run() {
                         editor.commit();
+                        if (listener != null) {
+                            listener.onBundleSaved();
+                        }
                     }
                 });
             } catch (Exception e) {
@@ -305,6 +308,9 @@ public class PreferenceTable extends BaseTable {
                             }
                         }
                         db.setTransactionSuccessful();
+                        if (listener != null) {
+                            listener.onBundleSaved();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {

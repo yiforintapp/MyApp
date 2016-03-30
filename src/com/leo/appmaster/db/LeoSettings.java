@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.utils.LeoLog;
 
 import java.io.File;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import java.util.Map;
  * Created by Jasper on 2016/3/26.
  */
 public class LeoSettings {
+    private static final String TAG = "LeoSettings";
     private static final byte[] LOCK = new byte[1];
     public static final String BOOL_TRUE = "true";
     public static final String BOOL_FALSE = "false";
@@ -22,9 +24,12 @@ public class LeoSettings {
     private static ISettings mDatabase = new DatabaseSettings();
     private static ISettings mPreference = new SharedSettings();
 
+    private static boolean sDatabaseInited;
+    private static boolean sPreferenceInited;
+
     public static synchronized void initialize() {
         Context ctx = AppMasterApplication.getInstance();
-        File file = ctx.getSharedPrefsFile(ctx.getPackageName() + "_preferences");
+        final File file = ctx.getSharedPrefsFile(ctx.getPackageName() + "_preferences");
         if (!file.exists()) {
             return;
         }
@@ -47,13 +52,37 @@ public class LeoSettings {
         }
 
         if (highPriority.size() > 0) {
-            mPreference.setBundleMap(highPriority);
+            mPreference.setBundleMap(highPriority, new ISettings.OnBundleSavedListener() {
+                @Override
+                public void onBundleSaved() {
+                    sPreferenceInited = true;
+                    deleteIfNeeded(file);
+                }
+            });
         }
         if (normal.size() > 0) {
-            mDatabase.setBundleMap(normal);
+            mDatabase.setBundleMap(normal, new ISettings.OnBundleSavedListener() {
+                @Override
+                public void onBundleSaved() {
+                    sDatabaseInited = true;
+                    deleteIfNeeded(file);
+                }
+            });
         }
-        file.delete();
+    }
 
+    private synchronized static void deleteIfNeeded(File file) {
+        if (file == null) {
+            return;
+        }
+        if (sPreferenceInited && sDatabaseInited) {
+            try {
+                file.delete();
+                LeoLog.d(TAG, "deleteIfNeeded, file: " + file.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void setInteger(String key, int value) {
@@ -78,10 +107,6 @@ public class LeoSettings {
 
     public static void setString(String key, String value) {
         getSettings(key).set(key, value);
-    }
-
-    public static void setBundleMap(Map<String, Object> map) {
-
     }
 
     public static long getLong(String key, long def) {

@@ -24,7 +24,7 @@ public class DatabaseSettings extends ISettings {
     }
 
     @Override
-    public void setBundleMap(Map<String, Object> map) {
-        preferenceTable.putBundleMap(map);
+    public void setBundleMap(Map<String, Object> map, OnBundleSavedListener listener) {
+        preferenceTable.putBundleMap(map, listener);
     }
 }
