@@ -58,32 +58,62 @@ public class SharedSettings extends ISettings {
 
     @Override
     public boolean getBoolean(String key, boolean def) {
-        Boolean v = (Boolean)mValues.get(key);
-        return v != null ? v : def;
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Boolean.parseBoolean(v) : def;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return def;
     }
 
     @Override
     public int getInteger(String key, int def) {
-        Integer v = (Integer)mValues.get(key);
-        return v != null ? v : def;
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Integer.parseInt(v) : def;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return def;
     }
 
     @Override
     public long getLong(String key, long def) {
-        Long v = (Long)mValues.get(key);
-        return v != null ? v : def;
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Long.parseLong(v) : def;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return def;
     }
 
     @Override
     public float getFloat(String key, float def) {
-        Float v = (Float)mValues.get(key);
-        return v != null ? v : def;
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Float.parseFloat(v) : def;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return def;
     }
 
     @Override
     public double getDouble(String key, double def) {
-        Double v = (Double)mValues.get(key);
-        return v != null ? v : def;
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Double.parseDouble(v) : def;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return def;
     }
 
     @Override
