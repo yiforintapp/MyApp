@@ -235,36 +235,32 @@ public class MobvistaEngine {
 			return;
 		}
 
-		/*MobvistaAdNative nativeAd = MobvistaAd.newNativeController(mAppContext, unitId, placementId);
-        LeoLog.d(TAG, "create new MobvistaAdNative and start to load");
-        try {
-            // 这个地方执行导致crash，直接catch住
-            nativeAd.loadAd(new AdListenerImpl(unitId));
-            LeoLog.i(TAG, "loadSingleMobAd -> ad[" + unitId + "], cost time = "
-                    + (SystemClock.elapsedRealtime() - start));
-            mMobVistaLoadingNative.put(unitId, new MobVistaLoadingNative(nativeAd, SystemClock.elapsedRealtime()));
-        } catch (Throwable thr) {
-            MobvistaListener listener = mMobVistaListeners.get(unitId);
-            if (listener != null) {
-                listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, "Mobvista execute throwable.");
-            }
-            doReleaseInner(unitId);
-            return;
-        }*/
     }
 
+	/**
+	 * 请求多模板的广告
+	 * @param unitId
+	 * @param listener
+	 */
 	public void loadMobvistaTemplate(final String unitId, final MobvistaListener listener) {
 		if (unitId != null && listener != null) {
+			//通过unitId 申请广告
 			Map<String, Object> properties = MvNativeHandler.getNativeProperties(unitId);
 
+			//注入facebook的placementId
 			properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));
+			//通过这个配置产生一个广告调用对象
 			final MvNativeHandler templateNativeHandler = new MvNativeHandler(properties, mAppContext);
 			
+			//支持大图模板，请求一条大图广告（只支持1条）
 			templateNativeHandler.addTemplate(new MvNativeHandler.Template(
 					MobVistaConstans.TEMPLATE_BIG_IMG, 1));
+			//支持多图模板，请求3条多图。（支持1-10条）
 			templateNativeHandler.addTemplate(new MvNativeHandler.Template(
 					MobVistaConstans.TEMPLATE_MULTIPLE_IMG, 3));
+			//设置在没有应用市场情况下，必须浏览器来承接响应
 			templateNativeHandler.setMustBrowser(true);
+			//设置多模板广告请求的监听
 			templateNativeHandler.setAdListener(new MvNativeHandler.NativeAdListener() {
 				@Override
 				public void onAdLoaded(List<Campaign> campaigns, int template) {
@@ -297,6 +293,7 @@ public class MobvistaEngine {
 				public void onAdClick(Campaign campaign) {
 					if (listener != null) {
 						listener.onMobvistaClick(campaign, unitId);
+						mMobVistaCacheMap.remove(unitId);
 					}
 					// 点击之后，重新load此位置的广告
 					LeoLog.i(TAG, "reload the clicked template");
@@ -308,11 +305,22 @@ public class MobvistaEngine {
 				}
 			});
 
-			templateNativeHandler.load();
+			try {
+				templateNativeHandler.load();
+			} catch (Exception e) {
+				e.printStackTrace();
+				/* 发生了问题，释放多模板广告对象 */
+				releaseTemplate(unitId);
+
+				/* 并且告诉广告调用者， 请求广告的时候发生了问题。 */
+				if (listener != null) {
+					listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, "a error was occured on load template ad");
+				}
+			}
 		}
 	}
 	
-	public void preloadNative(final String unitId) {
+	public void preloadTemplateNative(final String unitId) {
 		Map<String, Object> proloadMap = new HashMap<String, Object>();
 		/* 设置layout类型 */
 		proloadMap.put(MobVistaConstans.PROPERTIES_LAYOUT_TYPE, MobVistaConstans.LAYOUT_NATIVE);
@@ -327,6 +335,7 @@ public class MobvistaEngine {
 		List<MvNativeHandler.Template> list = new ArrayList<MvNativeHandler.Template>();
 		/* 设置一张大图 */
 		list.add(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));
+		/* 设置多模板广告请求的监听 */
 		list.add(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_MULTIPLE_IMG, 3));
 		
 		proloadMap.put(MobVistaConstans.NATIVE_INFO, MvNativeHandler.getTemplateString(list));
@@ -696,6 +705,7 @@ public class MobvistaEngine {
 			}
 			// 点击之后，重新load此位置的广告
 			LeoLog.i(TAG, "reload the clicked Ad");
+			//Mobvista 7.x sdk 已经修复持有这个activity 的内存泄漏的问题，所以无需要再每次点击后进行对广告对象的释放操作。
 //			if(m != null && m.nativeAd != null) {
 //				try {
 //					MobvistaAd.release();
@@ -734,8 +744,9 @@ public class MobvistaEngine {
 
 
 	public void proloadTemplate(String unitId) {
+		/* 使用sdk提供的预加载的功能，管理多模板广告的前期加载 */
 		if (!TextUtils.isEmpty(unitId)) {
-			preloadNative(unitId);
+			preloadTemplateNative(unitId);
 		}
 	}
 	
