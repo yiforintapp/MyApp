@@ -64,6 +64,7 @@ public class CommonSettingItem extends RelativeLayout {
         mRvMain.setOnClickListener(l);
     }
 
+
     /*  <ImageView
     android:id="@+id/iv_arrow"
     android:layout_width="wrap_content"

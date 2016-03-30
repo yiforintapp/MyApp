@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.leo.appmaster.Constants;
@@ -53,7 +52,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     private RippleView mRvPrivacyListen;
 //    private RippleView mRvAdvancedProtect;
 
-    private CommonSettingItem mCstAdvancedProtect;
+    private CommonSettingItem mCsiAdvancedProtect;
 
 //    private CheckBox mCbAdvancedProtect;
 
@@ -84,24 +83,21 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-
-
     private void updateSwitch() {
         updateAdvancedProtectSwitch();
     }
 
     private void updateAdvancedProtectSwitch() {
         if (isOldAdminActive() || isNewAdminActive()) {
-            mCstAdvancedProtect.setChecked(true);
-            mCstAdvancedProtect.setSummary(STRID_ADVANCED_PROTECT_ON);
-
+            mCsiAdvancedProtect.setChecked(true);
+            mCsiAdvancedProtect.setSummary(STRID_ADVANCED_PROTECT_ON);
 //            mCbAdvancedProtect.setChecked(true);
 //            mTvAdvancedProtectSmr.setText(STRID_ADVANCED_PROTECT_ON);
         } else {
 //            mCbAdvancedProtect.setChecked(false);
 //            mTvAdvancedProtectSmr.setText(STRID_ADVANCED_PROTECT_OFF);
-            mCstAdvancedProtect.setChecked(false);
-            mCstAdvancedProtect.setSummary(STRID_ADVANCED_PROTECT_OFF);
+            mCsiAdvancedProtect.setChecked(false);
+            mCsiAdvancedProtect.setSummary(STRID_ADVANCED_PROTECT_OFF);
         }
     }
 
@@ -122,10 +118,19 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         mRvPrivacyListen.setOnClickListener(this);
 //        mRvAdvancedProtect = (RippleView) findViewById(R.id.rv_setting_advanced_protect);
 //        mRvAdvancedProtect.setOnClickListener(this);
-        mCstAdvancedProtect = (CommonSettingItem) findViewById(R.id.csi_advanced_protect);
-        mCstAdvancedProtect.setType(CommonSettingItem.TYPE_CHECKBOX);
-        mCstAdvancedProtect.setRippleViewOnClickLinstener(this);
-        mCstAdvancedProtect.setTitle(STRID_ADVANCED_PROTECT_TITLE);
+        mCsiAdvancedProtect = (CommonSettingItem) findViewById(R.id.csi_advanced_protect);
+        mCsiAdvancedProtect.setType(CommonSettingItem.TYPE_CHECKBOX);
+        mCsiAdvancedProtect.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCsiAdvancedProtect.isChecked()) {
+                    showConfirmDialog();
+                } else {
+                    requestDeviceAdmin();
+                }
+            }
+        });
+        mCsiAdvancedProtect.setTitle(STRID_ADVANCED_PROTECT_TITLE);
 //        mCbAdvancedProtect = (CheckBox) findViewById(R.id.cb_setting_advanced_protect);
 
         mTvSignatureLockOpenOrNot = (TextView) findViewById(R.id.tv_sign_lock_summary);
@@ -154,23 +159,10 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
             case R.id.rv_setting_privacy_listen:
                 goToPrivacyListen();
                 break;
-//            case R.id.rv_setting_advanced_protect:
-//                if (mCbAdvancedProtect.isChecked()) {
-//                    showConfirmDialog();
-//                } else {
-//                    requestDeviceAdmin();
-//                }
-//                break;
-            case CommonSettingItem.ID_RIPPLE_VIEW_MAIN:
-                if (mCstAdvancedProtect.isChecked()) {
-                    showConfirmDialog();
-                } else {
-                    requestDeviceAdmin();
-                }
-                break;
             default:
                 break;
         }
+
     }
 
     private void goToChangeLockType() {
