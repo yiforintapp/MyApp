@@ -37,7 +37,9 @@ public abstract class ISettings {
             AppMasterPreference.PREF_SPLASH_SKIP_URL,
             AppMasterPreference.PREF_SPLASH_SKIP_TO_CLIENT,
             AppMasterPreference.PREF_SPLASH_DElAY_TIME,
-            AppMasterPreference.PREF_UNLOCK_SUCCESS_TIP_RANDOM
+            AppMasterPreference.PREF_UNLOCK_SUCCESS_TIP_RANDOM,
+            AppMasterPreference.PREF_SPLASH_START_SHOW_TIME,
+            AppMasterPreference.PREF_SPLASH_END_SHOW_TIME
     };
     static Map<String, String> sGroupHigh = null;
 
@@ -52,10 +54,20 @@ public abstract class ISettings {
         }
     }
 
-    public abstract void set(String key, String value);
-    public abstract String get(String key, String def);
+    public abstract void setBoolean(String key, boolean value);
+    public abstract void setInteger(String key, int value);
+    public abstract void setDouble(String key, double value);
+    public abstract void setFloat(String key, float value);
+    public abstract void setLong(String key, long value);
+    public abstract void setString(String key, String value);
+    public abstract boolean getBoolean(String key, boolean def);
+    public abstract int getInteger(String key, int def);
+    public abstract long getLong(String key, long def);
+    public abstract float getFloat(String key, float def);
+    public abstract double getDouble(String key, double def);
+    public abstract String getString(String key, String def);
 
-    public abstract void setBundleMap(Map<String, Object> map);
+    protected abstract void setBundleMap(Map<String, Object> map, OnBundleSavedListener listener);
 
     static boolean isHighPriority(String key) {
         return sGroupHigh.containsKey(key);
@@ -65,4 +77,7 @@ public abstract class ISettings {
         return false;
     }
 
+    public interface OnBundleSavedListener {
+        public void onBundleSaved();
+    }
 }

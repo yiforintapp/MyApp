@@ -66,6 +66,9 @@ public class GestureLockFragment extends LockFragment implements
         OnPatternListener, OnClickListener {
     private LockPatternView mLockPatternView;
     private boolean mNeedIntruderProtection = false;
+    private final static int DISMISSRESULT = 1;
+
+
     // GP包
     public static final String GPPACKAGE = "com.android.vending";
     // ----------------------
@@ -97,11 +100,22 @@ public class GestureLockFragment extends LockFragment implements
 
     private boolean mCameraReleased = false;
 
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case DISMISSRESULT:
+                    mTvResult.setVisibility(View.INVISIBLE);
+                    break;
+            }
+        }
+    };
+
+
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_lock_gesture;
     }
-
 
     @Override
     protected void onInitUI() {
@@ -276,19 +290,10 @@ public class GestureLockFragment extends LockFragment implements
                 if (match) {
                     ((LockScreenActivity) mActivity).onUnlockSucceed();
                 } else {
-                    //dismiss result tv 3s later
-//                    resetResult();
+                    //dismiss result tv 1.5s later
+                    mHandler.sendEmptyMessageDelayed(DISMISSRESULT, 1000);
                 }
 
-            }
-        });
-    }
-
-    private void resetResult() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTvResult.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -303,6 +308,7 @@ public class GestureLockFragment extends LockFragment implements
                     // Touch Area
                     mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea_pressed));
                     mTvMessage.setVisibility(View.INVISIBLE);
+                    mTvResult.setVisibility(View.INVISIBLE);
                 } else {
                     mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea));
                     mTvMessage.setVisibility(View.VISIBLE);

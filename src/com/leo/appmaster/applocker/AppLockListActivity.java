@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,11 +53,14 @@ import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.BaseSelfDurationToast;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.Utilities;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -125,7 +129,7 @@ public class AppLockListActivity extends BaseActivity implements
     private List<AppItemInfo> mAppList;
     private int mPosition = 1; // 用来定位
     private LeoPreference mLeoPreference;
-
+    private BaseSelfDurationToast mPermissionGuideToast;
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -145,17 +149,10 @@ public class AppLockListActivity extends BaseActivity implements
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
-            boolean mIsFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", true);
-            boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
-            LeoLog.e("mIsFirstEnterFromMain", "mIsFirstEnterFromMain: " + mIsFirstEnterFromMain);
-            if (isFromConfrim && ((mAppList != null && mAppList.size() > 0)
-                    || (mIsFirstEnterFromMain && isFirstEnterFromIcon))) {
+            if (isFromConfrim && (mAppList != null && mAppList.size() > 0)) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if (switchs != null && switchs.size() > 0) {
                     mPosition = +(switchs.size() + 1);
-                }
-                if (mIsFirstEnterFromMain) {
-                    mLeoPreference.putBoolean("FirstEnterFromMain", false);
                 }
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
@@ -397,30 +394,14 @@ public class AppLockListActivity extends BaseActivity implements
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
 
-        boolean isFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", true);
-        boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
-        if (isFromConfrim && isFirstEnterFromMain && isFirstEnterFromIcon) {
+        LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size()
+                + "mLockedList:" + mLockedList.size() + "mUnlockList:" + mUnlockList.size());
+        if (mAppList.size() == mUnlockList.size()) {
             mAppList.clear();
-        }
-        LeoLog.e("mResaultList", "isFirstEnterFromIcon:" + isFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim);
-        if (!isFromConfrim && isFirstEnterFromIcon && isFirstEnterFromMain) {
-            mAppList.clear();
-            mLeoPreference.putBoolean("FirstEnterFromTab", false);
         }
         lm.ignore();
-//        AppItemInfo appItemInfo = new AppItemInfo();
-//        appItemInfo.packageName = "com.android.settings";
-//        appItemInfo.label = "设置";
-//        appItemInfo.topPos = 10000;
-//        AppItemInfo appItemInfo1 = new AppItemInfo();
-//        appItemInfo1.packageName = "com.android.dialer";
-//        mAppList.add(appItemInfo);
-//        mAppList.add(appItemInfo1);
-        LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size());
-        for (AppItemInfo appItemInfo : mAppList) {
-            LeoLog.e("mResaultList", appItemInfo.topPos + "");
-        }
         if (mAppList != null && mAppList.size() > 0) {
+            Collections.sort(mAppList, new DefalutAppComparator());
             for (int i = 0; i < mAppList.size(); i++) {
                 Iterator<AppInfo> iterator = mUnlockRecommendList.iterator();
                 while (iterator.hasNext()) {
@@ -851,6 +832,38 @@ public class AppLockListActivity extends BaseActivity implements
                         }
                     } catch (Exception e) {
                     }
+                }
+                try {
+                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if (mPermissionGuideToast == null) {
+                                mPermissionGuideToast = new BaseSelfDurationToast(AppLockListActivity.this);
+                            }
+                            mPermissionGuideToast.setDuration(1000 * 5);
+                            if (Utilities.hasNavigationBar(AppLockListActivity.this)) {
+                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission_navigationbar);
+                            } else {
+                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
+                            }
+                            mPermissionGuideToast.setMatchParent();
+                            mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, DipPixelUtil.dip2px(AppLockListActivity.this, 14));
+                            View v = LayoutInflater.from(AppLockListActivity.this).inflate(R.layout.toast_permission_guide, null);
+                            ImageView ivClose = (ImageView) v.findViewById(R.id.iv_permission_guide_close);
+                            ivClose.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (mPermissionGuideToast != null) {
+                                        mPermissionGuideToast.hide();
+                                    }
+                                }
+                            });
+                            mPermissionGuideToast.setView(v);
+                            mPermissionGuideToast.show();
+                        }
+                    }, 200);
+                } catch (Exception e) {
                 }
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_use");

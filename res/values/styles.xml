@@ -4,6 +4,7 @@
     <style name="activity_theme" mce_bogus="1" parent="@android:style/Theme.NoTitleBar">
         <item name="android:windowAnimationStyle">@style/activity_theme_animation</item>
         <item name="android:excludeFromRecents">true</item>
+        <item name="android:windowBackground">@color/cb</item>
     </style>
 
     <style name="ThemeWidthActionBar" parent="android:Theme.Holo.Light.DarkActionBar">

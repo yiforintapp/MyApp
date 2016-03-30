@@ -27,22 +27,103 @@ public class SharedSettings extends ISettings {
     }
 
     @Override
-    public void set(String key, String value) {
-        mValues.put(key, value);
-        commitAsync(preferences.edit().putString(key, value));
+    public void setBoolean(String key, boolean value) {
+        commitAsync(key, value);
     }
 
     @Override
-    public String get(String key, String def) {
-        Object object = mValues.get(key);
-        if (object != null) {
-            return String.valueOf(object);
+    public void setInteger(String key, int value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public void setDouble(String key, double value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public void setFloat(String key, float value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public void setLong(String key, long value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public void setString(String key, String value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public boolean getBoolean(String key, boolean def) {
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Boolean.parseBoolean(v) : def;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return preferences.getString(key, def);
+
+        return def;
     }
 
     @Override
-    public void setBundleMap(Map<String, Object> map) {
+    public int getInteger(String key, int def) {
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Integer.parseInt(v) : def;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return def;
+    }
+
+    @Override
+    public long getLong(String key, long def) {
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Long.parseLong(v) : def;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return def;
+    }
+
+    @Override
+    public float getFloat(String key, float def) {
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Float.parseFloat(v) : def;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return def;
+    }
+
+    @Override
+    public double getDouble(String key, double def) {
+        try {
+            String v = (String)mValues.get(key);
+            return v != null ? Double.parseDouble(v) : def;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        return def;
+    }
+
+    @Override
+    public String getString(String key, String def) {
+        String v = (String)mValues.get(key);
+        return v != null ? v : def;
+    }
+
+    @Override
+    public void setBundleMap(Map<String, Object> map, OnBundleSavedListener listener) {
         if (map == null || map.size() == 0) {
             return;
         }
@@ -60,17 +141,29 @@ public class SharedSettings extends ISettings {
             }
         }
         if (editor != null) {
-            commitAsync(editor);
+            final SharedPreferences.Editor finalEditor = editor;
+            mSerialExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    finalEditor.commit();
+                }
+            });
+        }
+        if (listener != null) {
+            listener.onBundleSaved();
         }
     }
 
-    public void commitAsync(final SharedPreferences.Editor editor) {
-        if (editor == null)
+    public void commitAsync(final String key, final Object value) {
+        if (key == null || value == null) {
             return;
-
+        }
+        mValues.put(key, value);
         mSerialExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(key, value.toString());
                 editor.commit();
             }
         });

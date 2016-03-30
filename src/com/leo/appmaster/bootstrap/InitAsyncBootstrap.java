@@ -1,9 +1,13 @@
 
 package com.leo.appmaster.bootstrap;
 
+import com.airsig.airsigengmulti.ASEngine;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
+import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.db.LeoPreference;
@@ -64,9 +68,20 @@ public class InitAsyncBootstrap extends Bootstrap {
 
         BlacklistTab.getInstance().initEncryptList();
 
+
+        //airSig
+        initAirSig();
+
         return true;
     }
 
+    private void initAirSig() {
+        ASSetting setting = new ASSetting();
+        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
+
+
+        ASGui.getSharedInstance(AppMasterApplication.getInstance(), null, setting, null); // Database is in /data/data/...
+    }
 
     @Override
     public String getClassTag() {

@@ -22,6 +22,7 @@ import java.util.concurrent.Executor;
  * Created by Jasper on 2016/3/29.
  */
 public class PreferenceTable extends BaseTable {
+    private static final String TAG = "PreferenceTable";
     private static final byte[] LOCK = new byte[1];
     private static PreferenceTable sInstance;
 
@@ -50,7 +51,7 @@ public class PreferenceTable extends BaseTable {
         return sInstance;
     }
 
-    PreferenceTable() {
+    public PreferenceTable() {
         mValues = new HashMap<String, String>();
         mSerialExecutor = ThreadManager.newSerialExecutor();
         ThreadManager.executeOnFileThread(new Runnable() {
@@ -66,6 +67,7 @@ public class PreferenceTable extends BaseTable {
     public void loadPreference() {
         if (mLoaded) return;
 
+        LeoLog.d(TAG, "start to load loadPreference");
         // 确保能读取数据之前，数据库已经ready
         getHelper().getReadableDatabase();
         if (BuildProperties.isApiLevel14()) {
@@ -102,6 +104,7 @@ public class PreferenceTable extends BaseTable {
         }
 
         mLoaded = true;
+        LeoLog.d(TAG, "end to load loadPreference");
     }
 
     @Override
@@ -126,7 +129,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public int getInt(String key, int def) {
-        String value = getString(key);
+        String value = getString(key, null);
         if (value == null) {
             return def;
         }
@@ -140,7 +143,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public long getLong(String key, long def) {
-        String value = getString(key);
+        String value = getString(key, null);
         if (value == null) {
             return def;
         }
@@ -154,7 +157,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public double getDouble(String key, double def) {
-        String value = getString(key);
+        String value = getString(key, null);
         if (value == null) {
             return def;
         }
@@ -168,7 +171,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public float getFloat(String key, float def) {
-        String value = getString(key);
+        String value = getString(key, null);
         if (value == null) {
             return def;
         }
@@ -187,9 +190,10 @@ public class PreferenceTable extends BaseTable {
         return value == BOOL_TRUE;
     }
 
-    public synchronized String getString(String key) {
+    public synchronized String getString(String key, String def) {
         awaitLoadedLocked();
-        return mValues.get(key);
+        String v = mValues.get(key);
+        return v != null ? v : def;
     }
 
     public void putInt(String key, int value) {
@@ -224,30 +228,15 @@ public class PreferenceTable extends BaseTable {
         mValues.put(key, value);
 
         final String finalValue = value;
-        if (BuildProperties.isApiLevel14()) {
-            if (mSerialExecutor == null) {
-                mSerialExecutor = ThreadManager.newSerialExecutor();
+        mSerialExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                insertOrUpdate(key, finalValue);
             }
-            mSerialExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    insertOrUpdate(key, finalValue);
-                }
-            });
-        } else {
-            if (mSerialExecutor == null) {
-                mSerialExecutor = ThreadManager.newSerialExecutor();
-            }
-            mSerialExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    insertOrUpdate(key, finalValue);
-                }
-            });
-        }
+        });
     }
 
-    public synchronized void putBundleMap(final Map<String, Object> map) {
+    public synchronized void putBundleMap(final Map<String, Object> map, final ISettings.OnBundleSavedListener listener) {
         if (map == null || map.size() == 0) {
             return;
         }
@@ -281,6 +270,9 @@ public class PreferenceTable extends BaseTable {
                     @Override
                     public void run() {
                         editor.commit();
+                        if (listener != null) {
+                            listener.onBundleSaved();
+                        }
                     }
                 });
             } catch (Exception e) {
@@ -305,6 +297,9 @@ public class PreferenceTable extends BaseTable {
                             }
                         }
                         db.setTransactionSuccessful();
+                        if (listener != null) {
+                            listener.onBundleSaved();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
@@ -330,36 +325,14 @@ public class PreferenceTable extends BaseTable {
             contentValues.put(COL_KEY, key);
             contentValues.put(COL_VALUE, value);
             try {
-                if (isKeyExist(key)) {
-                    db.update(TABLE_NAME, contentValues, COL_KEY + " = ?", new String[]{key});
-                } else {
+                int rows = db.update(TABLE_NAME, contentValues, COL_KEY + " = ?", new String[]{key});
+                if (rows <= 0) {
                     db.insert(TABLE_NAME, null, contentValues);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    private boolean isKeyExist(String key) {
-        SQLiteDatabase sd = getHelper().getReadableDatabase();
-        if (sd == null) {
-            return false;
-        }
-        Cursor cursor = null;
-        try {
-            cursor = sd.query(TABLE_NAME, new String[]{COL_KEY}, COL_KEY + " = ?",
-                    new String[]{key}, null, null, null);
-            if (cursor != null) {
-                return cursor.getCount() > 0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            IoUtils.closeSilently(cursor);
-        }
-
-        return false;
     }
 
     private void awaitLoadedLocked() {

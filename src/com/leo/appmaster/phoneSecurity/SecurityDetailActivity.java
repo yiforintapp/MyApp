@@ -1,13 +1,21 @@
 package com.leo.appmaster.phoneSecurity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
+import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
 
@@ -17,6 +25,7 @@ public class SecurityDetailActivity extends Activity implements View.OnClickList
     private ListView mListView;
     private Button mBtn;
     private InstructListAdapter mAdapter;
+    private LEOAlarmDialog mBackupInstrDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +58,7 @@ public class SecurityDetailActivity extends Activity implements View.OnClickList
         switch (id) {
             case R.id.secur_bt:
                 //backup instruct button
+                backupInstructsDialog();
                 break;
             default:
                 break;
@@ -91,5 +101,63 @@ public class SecurityDetailActivity extends Activity implements View.OnClickList
         return instructs;
     }
 
+    private void backupInstructsDialog() {
+
+        if (mBackupInstrDialog == null) {
+            mBackupInstrDialog = new LEOAlarmDialog(this);
+            mBackupInstrDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mBackupInstrDialog != null) {
+                        mBackupInstrDialog = null;
+                    }
+
+                }
+            });
+        }
+        mBackupInstrDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                boolean isExistSim = mgr.getIsExistSim();
+                if (isExistSim) {
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            final LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+                            String numberNmae = lostMgr.getPhoneSecurityNumber();
+                            if (!Utilities.isEmpty(numberNmae)) {
+                                String[] number = numberNmae.split(":");
+                                if (number != null) {
+                                    mgr.sendMessage(number[1], getSendMessageInstructs(), MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
+                                }
+                            }
+                            if (mBackupInstrDialog != null) {
+                                mBackupInstrDialog.cancel();
+                            }
+                        }
+                    });
+                } else {
+                    String failStr = SecurityDetailActivity.this.getResources().getString(
+                            R.string.privacy_message_item_send_message_fail);
+                    Toast.makeText(SecurityDetailActivity.this, failStr, Toast.LENGTH_SHORT).show();
+                    if (mBackupInstrDialog != null) {
+                        mBackupInstrDialog.cancel();
+                    }
+                }
+            }
+        });
+        String content = getString(R.string.backup_instr_dialog_content);
+        mBackupInstrDialog.setDialogIconVisibility(false);
+        mBackupInstrDialog.setContent(content);
+        mBackupInstrDialog.show();
+    }
+
+    /*获取发送短信的指令集介绍*/
+    private String getSendMessageInstructs() {
+        String content = getResources().getString(R.string.secur_backup_msm);
+        return content;
+    }
 
 }

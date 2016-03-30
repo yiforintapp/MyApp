@@ -85,9 +85,7 @@ public class InitCoreBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
-        AppMasterDBHelper.getInstance(mApp).getReadableDatabase();
         long start = SystemClock.elapsedRealtime();
-        //TODO 首次启动加载数据（进入）
         AppLoadEngine.getInstance(mApp);
         long end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, AppLoadEngine.getInstance: " + (end - start));
@@ -107,7 +105,6 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
 
         start = SystemClock.elapsedRealtime();
-        //TODO 首次启动加载数据（进入）
         AppBusinessManager.getInstance(mApp).init();
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, AppBusinessManager.getInstance.init: " + (end - start));
@@ -115,7 +112,6 @@ public class InitCoreBootstrap extends Bootstrap {
         // init lock manager
         start = SystemClock.elapsedRealtime();
         LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        //TODO 首次启动加载数据
         lockManager.init();
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, LockManager.getInstance.init: " + (end - start));
@@ -126,17 +122,12 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i(TAG, "cost, registerReceiveMessageCallIntercept: " + (end - start));
 
         AppMasterPreference preference = AppMasterPreference.getInstance(mApp);
-        //TODO 首次启动加载数据
         if (preference.getIsFirstInstallApp()) {
             SplashActivity.deleteImage();
-            //TODO 首次启动加载数据
             preference.setIsFirstInstallApp(false);
         }
-        //TODO 首次启动加载数据（进入）
         checkUpdateFinish();
-        //TODO 首次启动加载数据
         initSplashDelayTime();
-        //TODO 首次启动加载数据
         UIHelper.getInstance(mApp).mRandomCount = preference.getUnlockSucessRandom();
 
         PrivacyHelper.getInstance(mApp).caculateSecurityScore();
@@ -156,19 +147,9 @@ public class InitCoreBootstrap extends Bootstrap {
             TaskProtectService.scheduleService(mApp);
         }
 
-        //airSig
-        initAirSig();
-
         return true;
     }
 
-    private void initAirSig() {
-        ASSetting setting = new ASSetting();
-        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
-
-
-        ASGui.getSharedInstance(AppMasterApplication.getInstance(), null, setting, null); // Database is in /data/data/...
-    }
 
     @Override
     public String getClassTag() {
@@ -261,18 +242,15 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void checkUpdateFinish() {
-        //TODO 首次启动加载数据（进入）
         judgeLockAlert();
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
         LeoPreference preferenceTable = LeoPreference.getInstance();
-        //TODO 首次启动加载数据
         LeoPreference leoPreference = LeoPreference.getInstance();
         String lastVercode = pref.getLastVersion();
         int versionCode = PhoneInfo.getVersionCode(mApp);
         LeoLog.i("value", "lastVercode=" + lastVercode);
         LeoLog.i("value", "versionCode=" + versionCode);
         if (TextUtils.isEmpty(lastVercode)) {
-            //TODO 首次启动加载数据
             //新安装用户，去除应用备份，应用卸载及隐私联系人相关的功能
             pref.setIsNeedCutBackupUninstallAndPrivacyContact(true);
             leoPreference.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
@@ -280,20 +258,16 @@ public class InitCoreBootstrap extends Bootstrap {
             // AM-2911: remove device administration at first install
             removeDeviceAdmin();
             if (versionCode == 34) {
-                //TODO 首次启动加载数据(进入)
                 // remove unlock-all shortcut v2.1
                 tryRemoveUnlockAllShortcut(mApp);
             } else if (versionCode >= 41) {
                 installBoostShortcut();
             }
-            //TODO 首次启动加载数据
             pref.setIsUpdateQuickGestureUser(false);
-            //TODO 首次启动加载数据（进入）
             setUpdateTipData();
             /* 新用户保存引导号 */
             int currentGuideVersion = mApp.getResources().getInteger(
                     R.integer.guide_page_version);
-            //TODO 首次启动加载数据
             pref.setLastGuideVersion(currentGuideVersion);
         } else {
 //            if(DeviceReceiverNewOne.isActive(AppMasterApplication.getInstance()) && (!pref.getHasAutoSwitch()) && (Integer.parseInt(lastVercode) < 70)) {
@@ -313,26 +287,19 @@ public class InitCoreBootstrap extends Bootstrap {
                 }
                 int currentGuideVersion = mApp.getResources().getInteger(
                         R.integer.guide_page_version);
-                //TODO 首次启动加载数据
                 int lastGuideVersion = pref.getLastGuideVersion();
                 /* 升级是否需要显示引导页，需要手动配置：true-显示，false-不显示 */
-                //TODO 首次启动加载数据（进入）
                 updateShowGuidePage(lastCode < 46 || (currentGuideVersion > lastGuideVersion && currentGuideVersion > 1));
-                //TODO 首次启动加载数据
                 pref.setLastGuideVersion(currentGuideVersion);
-                //TODO 首次启动加载数据
                 pref.setIsUpdateQuickGestureUser(true);
                 // 每次升级都重新刷新googleplay提示规则
-                //TODO 首次启动加载数据（进入）
                 uninitGooglePlayScorTip();
-                //TODO 首次启动加载数据
                 recoveryUpdateTipDefaultData();
                 if (lastCode < Utilities.LESS_THIRTY_VERSION_CODE) {
                     leoPreference.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
                 }
             }
         }
-        //TODO 首次启动加载数据
         pref.setLastVersion(String.valueOf(versionCode));
         tryRemoveUnlockAllShortcut(mApp);
     }
@@ -340,7 +307,6 @@ public class InitCoreBootstrap extends Bootstrap {
     /* case1对于老用户: 恢复“每次发现更新升级，恢复升级提示为默认值”的该方法是否执行的默认值 */
     private void recoveryUpdateTipDefaultData() {
         LeoLog.i(UIHelper.TAG, "重置‘是否恢复发现升级提示’标识的默认值");
-        //TODO 首次启动加载数据
         AppMasterPreference.getInstance(mApp)
                 .setUpdateRecoveryDefaultData(false);
     }
@@ -351,27 +317,22 @@ public class InitCoreBootstrap extends Bootstrap {
      */
     private void setUpdateTipData() {
         LeoLog.i(UIHelper.TAG, "设置‘是否恢复发现升级提示’标识的值为true");
-        //TODO 首次启动加载数据
         AppMasterPreference.getInstance(mApp)
                 .setUpdateRecoveryDefaultData(true);
     }
 
     private void updateShowGuidePage(boolean flag) {
-        //TODO 首次启动加载数据
         AppMasterPreference.getInstance(mApp).setGuidePageFirstUse(flag);
     }
 
     private void uninitGooglePlayScorTip() {
-        //TODO 首次启动加载数据
         /* 解锁次数设置为初始状态 */
         AppMasterPreference.getInstance(mApp).setUnlockCount(0);
-        //TODO 首次启动加载数据
         /* googlepaly评分提示设置为初始状态 */
         AppMasterPreference.getInstance(mApp).setGoogleTipShowed(false);
     }
 
     private void tryRemoveUnlockAllShortcut(Context ctx) {
-        //TODO 首次启动加载数据
         if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
             // remove unlock all shortcut
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
@@ -388,7 +349,6 @@ public class InitCoreBootstrap extends Bootstrap {
             shortcut.putExtra("duplicate", false);
             shortcut.putExtra("from_shortcut", true);
             ctx.sendBroadcast(shortcut);
-            //TODO 首次启动加载数据
             AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
         }
 
@@ -415,7 +375,6 @@ public class InitCoreBootstrap extends Bootstrap {
 
     private void judgeLockAlert() {
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
-        //TODO 首次启动加载数据
         if (pref.isReminded()) {
             return;
         }
@@ -425,14 +384,12 @@ public class InitCoreBootstrap extends Bootstrap {
         if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(mApp))) { // is
             // new
             // version
-            //TODO 首次启动加载数据
             pref.setHaveEverAppLoaded(false);
             intent = new Intent(mApp, LockReceiver.class);
             intent.setAction(LockReceiver.ALARM_LOCK_ACTION);
 
             calendar = Calendar.getInstance();
             calendar.setTime(new Date());
-            //TODO 首次启动加载数据
             pref.setLastAlarmSetTime(calendar.getTimeInMillis());
             calendar.add(Calendar.DATE, Constants.LOCK_TIP_INTERVAL_OF_DATE);
             PendingIntent pi = PendingIntent.getBroadcast(mApp, 0, intent,
@@ -449,7 +406,6 @@ public class InitCoreBootstrap extends Bootstrap {
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
                         + Constants.LOCK_TIP_INTERVAL_OF_MS - detal, pi);
-                //TODO 首次启动加载数据
                 pref.setLastAlarmSetTime(calendar.getTimeInMillis());
             } else {
                 mApp.sendBroadcast(intent);
@@ -460,9 +416,7 @@ public class InitCoreBootstrap extends Bootstrap {
     /* 初始化闪屏时间,需要在app启动时初始化 */
     private void initSplashDelayTime() {
         AppMasterApplication mApp = AppMasterApplication.getInstance();
-        //TODO 首次启动加载数据
         SplashBootstrap.mIsEmptyForSplashUrl = isEmptySplashUrl();
-        //TODO 首次启动加载数据
         /* 闪屏延时时间 */
         SplashBootstrap.mSplashDelayTime = AppMasterPreference.getInstance(mApp)
                 .getSplashDelayTime();
@@ -471,9 +425,7 @@ public class InitCoreBootstrap extends Bootstrap {
     /* 闪屏跳转连接是否为空：true-链接为空，false-链接不为空 */
     private boolean isEmptySplashUrl() {
         AppMasterApplication mApp = AppMasterApplication.getInstance();
-        //TODO 首次启动加载数据
         String splashSkipUrl = AppMasterPreference.getInstance(mApp).getSplashSkipUrl();
-        //TODO 首次启动加载数据
         String splashSkipToClient = AppMasterPreference.getInstance(mApp).getSplashSkipToClient();
 
         return TextUtils.isEmpty(splashSkipUrl) && TextUtils.isEmpty(splashSkipToClient);

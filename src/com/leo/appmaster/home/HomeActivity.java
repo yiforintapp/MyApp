@@ -1286,7 +1286,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mUninstallDialog.setTitle(title);
         mUninstallDialog.setContent(content);
         if (!isUninstall) {
-            mUninstallDialog.setRightBtnStr("开启");
+            mUninstallDialog.setRightBtnStr(getResources().getString(R.string.open_weizhuang_dialog_sure));
         }
         mUninstallDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
             @Override
