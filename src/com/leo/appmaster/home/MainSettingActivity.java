@@ -21,21 +21,19 @@ import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonSettingItem;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 
 /**
  * Created by chenfs on 16-3-28.
  */
 public class MainSettingActivity extends BaseActivity implements View.OnClickListener {
-    private LeoPreference mLp;
-
     private final int STRID_OPENED = R.string.has_opened;
     private final int STRID_DID_NOT_OPEN = R.string.did_not_open;
-    private final int STRID_SIGN_LOCK = R.string.airsig_settings_activity_title;
+    private final int STRID_SIGNATURE_LOCK = R.string.airsig_settings_activity_title;
     private final int STRID_GESTURE_OR_PSW = R.string.gesture_or_password;
     private final int STRID_ADVANCED_PROTECT_ON = R.string.forbid_uninstall_on;
     private final int STRID_ADVANCED_PROTECT_OFF = R.string.forbid_uninstall_off;
@@ -43,24 +41,21 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     private final int STRID_DIALOG_CONTENT_ADVANCED_PROTECT = R.string.content_close_advanced_protect;
     private final int STRID_SETTING = R.string.setting;
     private final int STRID_ADVANCED_PROTECT_TITLE = R.string.forbid_uninstall;
+    private final int STRID_PRIVACY_LISTEN = R.string.home_menu_privacy;
+    private final int STRID_PSWTIP = R.string.passwd_notify;
+    private final int STRID_PSW_QUESTION = R.string.passwd_protect;
+    private final int STRID_DEFAULT_LOCK_TYPE = R.string.airsig_settings_activity_two_set_title;
+    private final int STRID_CHANGE_LOCK_TYPE = R.string.change_gesture_or_password;
 
     private CommonToolbar mCtbMain;
 
-    private RippleView mRvChangeGstOrPsw;
-    private RippleView mRvSignatureLock;
-    private RippleView mRvDefaultLockType;
-    private RippleView mRvPswQuestion;
-    private RippleView mRvPswTip;
-    private RippleView mRvPrivacyListen;
-//    private RippleView mRvAdvancedProtect;
-
+    private CommonSettingItem mCsiChangeGstOrPsw;
+    private CommonSettingItem mCsiSignatureLock;
+    private CommonSettingItem mCsiDefaultLockType;
+    private CommonSettingItem mCsiPswQuestion;
+    private CommonSettingItem mCsiPswTip;
+    private CommonSettingItem mCsiPrivacyListen;
     private CommonSettingItem mCsiAdvancedProtect;
-
-//    private CheckBox mCbAdvancedProtect;
-
-    private TextView mTvSignatureLockOpenOrNot;
-    private TextView mTvDefaultLock;
-//    private TextView mTvAdvancedProtectSmr;
 
     private LEOAlarmDialog mConfrimCloseDialog;
 
@@ -68,7 +63,6 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_setting);
-        mLp = LeoPreference.getInstance();
         initUI();
     }
 
@@ -94,11 +88,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         if (isOldAdminActive() || isNewAdminActive()) {
             mCsiAdvancedProtect.setChecked(true);
             mCsiAdvancedProtect.setSummary(STRID_ADVANCED_PROTECT_ON);
-//            mCbAdvancedProtect.setChecked(true);
-//            mTvAdvancedProtectSmr.setText(STRID_ADVANCED_PROTECT_ON);
         } else {
-//            mCbAdvancedProtect.setChecked(false);
-//            mTvAdvancedProtectSmr.setText(STRID_ADVANCED_PROTECT_OFF);
             mCsiAdvancedProtect.setChecked(false);
             mCsiAdvancedProtect.setSummary(STRID_ADVANCED_PROTECT_OFF);
         }
@@ -107,22 +97,73 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     private void initUI() {
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
         mCtbMain.setToolbarTitle(STRID_SETTING);
-        mRvChangeGstOrPsw = (RippleView) findViewById(R.id.rv_setting_change_lock_type);
-        mRvChangeGstOrPsw.setOnClickListener(this);
-        mRvSignatureLock = (RippleView) findViewById(R.id.rv_setting_sign_lock);
-        mRvSignatureLock.setOnClickListener(this);
-        mRvDefaultLockType = (RippleView) findViewById(R.id.rv_setting_default_lock);
-        mRvDefaultLockType.setOnClickListener(this);
-        mRvPswQuestion = (RippleView) findViewById(R.id.rv_setting_pswprotect);
-        mRvPswQuestion.setOnClickListener(this);
-        mRvPswTip = (RippleView) findViewById(R.id.rv_setting_pswtip);
-        mRvPswTip.setOnClickListener(this);
-        mRvPrivacyListen = (RippleView) findViewById(R.id.rv_setting_privacy_listen);
-        mRvPrivacyListen.setOnClickListener(this);
-//        mRvAdvancedProtect = (RippleView) findViewById(R.id.rv_setting_advanced_protect);
-//        mRvAdvancedProtect.setOnClickListener(this);
+
+        //更改手势/数字密码部分
+        mCsiChangeGstOrPsw = (CommonSettingItem) findViewById(R.id.csi_change_lock_type);
+        mCsiChangeGstOrPsw.setTitle(STRID_CHANGE_LOCK_TYPE);
+        mCsiChangeGstOrPsw.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToChangeLockType();
+            }
+        });
+
+        //签字解锁部分
+        mCsiSignatureLock = (CommonSettingItem) findViewById(R.id.csi_signature_lock);
+        mCsiSignatureLock.setTitle(STRID_SIGNATURE_LOCK);
+        mCsiSignatureLock.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToOpenAirSig();
+            }
+        });
+
+        //设置默认解锁方式部分
+        mCsiDefaultLockType = (CommonSettingItem) findViewById(R.id.csi_default_lock);
+        mCsiDefaultLockType.setTitle(STRID_DEFAULT_LOCK_TYPE);
+        mCsiDefaultLockType.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoSetAirSigLock();
+            }
+        });
+        //密码问题部分
+        mCsiPswQuestion = (CommonSettingItem) findViewById(R.id.csi_pswprotect);
+        mCsiPswQuestion.setTitle(STRID_PSW_QUESTION);
+        mCsiPswQuestion.setSummaryVisable(false);
+        mCsiPswQuestion.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPswProtect();
+            }
+        });
+
+        //密码提示部分
+        mCsiPswTip = (CommonSettingItem) findViewById(R.id.csi_pswtip);
+        mCsiPswTip.setTitle(STRID_PSWTIP);
+        mCsiPswTip.setSummaryVisable(false);
+        mCsiPswTip.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPswTip();
+            }
+        });
+
+        //智能隐私监控部分
+        mCsiPrivacyListen = (CommonSettingItem) findViewById(R.id.csi_privacy_listen);
+        mCsiPrivacyListen.setTitle(STRID_PRIVACY_LISTEN);
+        mCsiPrivacyListen.setSummaryVisable(false);
+        mCsiPrivacyListen.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPrivacyListen();
+            }
+        });
+
+        //高级保护部分
         mCsiAdvancedProtect = (CommonSettingItem) findViewById(R.id.csi_advanced_protect);
         mCsiAdvancedProtect.setType(CommonSettingItem.TYPE_CHECKBOX);
+        mCsiAdvancedProtect.setTitle(STRID_ADVANCED_PROTECT_TITLE);
         mCsiAdvancedProtect.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,35 +174,18 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
                 }
             }
         });
-        mCsiAdvancedProtect.setTitle(STRID_ADVANCED_PROTECT_TITLE);
-//        mCbAdvancedProtect = (CheckBox) findViewById(R.id.cb_setting_advanced_protect);
 
-        mTvSignatureLockOpenOrNot = (TextView) findViewById(R.id.tv_sign_lock_summary);
-        mTvDefaultLock = (TextView) findViewById(R.id.tv_default_lock_summary);
-//        mTvAdvancedProtectSmr = (TextView) findViewById(R.id.tv_advanced_protect_summary);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rv_setting_change_lock_type:
-                goToChangeLockType();
-                break;
-            case R.id.rv_setting_sign_lock:
-                goToOpenAirSig();
-                break;
-            case R.id.rv_setting_default_lock:
-                gotoSetAirSigLock();
-                break;
-            case R.id.rv_setting_pswprotect:
-                goToPswProtect();
-                break;
-            case R.id.rv_setting_pswtip:
-                goToPswTip();
-                break;
-            case R.id.rv_setting_privacy_listen:
-                goToPrivacyListen();
-                break;
+//            case R.id.rv_setting_sign_lock:
+//                goToOpenAirSig();
+//                break;
+//            case R.id.rv_setting_privacy_listen:
+//                goToPrivacyListen();
+//                break;
             default:
                 break;
         }
