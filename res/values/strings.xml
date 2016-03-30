@@ -1192,8 +1192,9 @@
     <string name="secur_close_tip_bt_cancel">取消</string>
     <string name="secur_close_tip_bt_sure">确认</string>
     <string name="secur_save_num">预留号码:</string>
-    <string name="secur_open_sucess_toast">手机防盗开启成功，已将防盗指令发送给预留号码</string>
+    <string name="secur_open_sucess_send_msm_toast">手机防盗开启成功，已将防盗指令发送给预留号码</string>
     <string name="secur_mody_sure_bt">确认</string>
+    <string name="secur_open_sucess_toast">手机防盗开启成功</string>
 
     <string name="airsig_settings_activity_title">签字解锁</string>
     <string name="airsig_settings_activity_set_one_on">开启签字</string>

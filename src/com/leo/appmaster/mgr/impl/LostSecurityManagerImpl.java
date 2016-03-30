@@ -47,7 +47,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class LostSecurityManagerImpl extends LostSecurityManager {
-    public static final Boolean DBG = true;
+    public static final Boolean DBG = false;
     public static final String TAG = "LostSecurityManagerImpl";
     private static final long WAIT_TIME_OUT = 5 * 1000;
     private static boolean mIsLocation;
