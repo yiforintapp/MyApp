@@ -29,6 +29,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
@@ -354,7 +355,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 @Override
                 public void run() {
                     MobvistaEngine.getInstance(mActivity).loadMobvista(
-                            Constants.UNIT_ID_67, new MobvistaListener() {
+                            Constants.UNIT_ID_67, ADEngineWrapper.AD_TYPE_NATIVE, new MobvistaListener() {
 
                                 @Override
                                 public void onMobvistaFinished(int code, final List<Campaign> campaign, String msg) {

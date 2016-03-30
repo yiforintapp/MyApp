@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.utils.LeoLog;
@@ -21,7 +22,7 @@ public class MobvistaProxyActivity extends Activity implements MobvistaListener 
         super.onCreate(arg0);
         
         LeoLog.i("MobvistaProxyActivity", "proxy oncrete.");
-        MobvistaEngine.getInstance(this).loadMobvista("", this);
+        MobvistaEngine.getInstance(this).loadMobvista("", ADEngineWrapper.AD_TYPE_NATIVE, this);
         
         finish();
     }

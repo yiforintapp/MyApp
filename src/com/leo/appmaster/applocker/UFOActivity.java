@@ -21,6 +21,7 @@ import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -269,7 +270,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private void loadAD() {
         LeoLog.e("poha","loading ad...");
         mAdEngine = MobvistaEngine.getInstance(this);
-        mAdEngine.loadMobvista(Constants.UNIT_ID_58, new MobvistaListener() {
+        mAdEngine.loadMobvista(Constants.UNIT_ID_58, ADEngineWrapper.AD_TYPE_NATIVE, new MobvistaListener() {
             @Override
             public void onMobvistaFinished(int code, List<Campaign> campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK&&campaign!=null) {

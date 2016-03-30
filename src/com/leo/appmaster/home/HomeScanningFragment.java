@@ -455,7 +455,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (amp.getADAfterScan() == 1) {
             /* 3.3.2 封装Max与Mob SDK */
             mDidLoadAd = true;
-            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, AD_AFTER_SCAN,
+            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, AD_AFTER_SCAN, ADEngineWrapper.AD_TYPE_NATIVE,
                     new ADEngineWrapper.WrappedAdListener() {
                         @Override
                         public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {

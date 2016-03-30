@@ -408,7 +408,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         mShouldLoadAd = (amp.getADIntruder() == 1);
         if (mShouldLoadAd) {
-			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, new ADEngineWrapper.WrappedAdListener() {
+			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
 				@Override
 				public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
 					if (code == MobvistaEngine.ERR_OK) {

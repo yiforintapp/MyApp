@@ -22,6 +22,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.appmanage.FlowActivity;
@@ -266,7 +267,8 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         if (amp.getADWifiScan() == 1) {
             mDidLoadAd = true;
             LeoLog.d("MobvistaEngine", "Wifi result position start to load ad");
-            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, new MobvistaListener() {
+            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, ADEngineWrapper.AD_TYPE_NATIVE,
+			new MobvistaListener() {
 
                 @Override
                 public void onMobvistaFinished(int code, final List<Campaign> campaign, String msg) {
