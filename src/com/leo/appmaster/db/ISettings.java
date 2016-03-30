@@ -37,7 +37,9 @@ public abstract class ISettings {
             AppMasterPreference.PREF_SPLASH_SKIP_URL,
             AppMasterPreference.PREF_SPLASH_SKIP_TO_CLIENT,
             AppMasterPreference.PREF_SPLASH_DElAY_TIME,
-            AppMasterPreference.PREF_UNLOCK_SUCCESS_TIP_RANDOM
+            AppMasterPreference.PREF_UNLOCK_SUCCESS_TIP_RANDOM,
+            AppMasterPreference.PREF_SPLASH_START_SHOW_TIME,
+            AppMasterPreference.PREF_SPLASH_END_SHOW_TIME
     };
     static Map<String, String> sGroupHigh = null;
 

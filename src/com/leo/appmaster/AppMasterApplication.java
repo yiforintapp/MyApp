@@ -86,7 +86,9 @@ public class AppMasterApplication extends Application {
             System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
         } catch (Exception e) {
         }
+        long start = SystemClock.elapsedRealtime();
         LeoSettings.initialize();
+        LeoLog.d(TAG, "initialize cost: " + (SystemClock.elapsedRealtime() - start));
 
 //        Debug.startMethodTracing("Nexus6.trace");
         AppMasterPreference pref = AppMasterPreference.getInstance(this);

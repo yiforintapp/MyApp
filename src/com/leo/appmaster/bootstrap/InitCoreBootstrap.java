@@ -85,7 +85,6 @@ public class InitCoreBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
-        AppMasterDBHelper.getInstance(mApp).getReadableDatabase();
         long start = SystemClock.elapsedRealtime();
         AppLoadEngine.getInstance(mApp);
         long end = SystemClock.elapsedRealtime();
@@ -147,8 +146,6 @@ public class InitCoreBootstrap extends Bootstrap {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             TaskProtectService.scheduleService(mApp);
         }
-
-
 
         return true;
     }
