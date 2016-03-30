@@ -316,13 +316,11 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     // 隐藏图片
                     break;
                 case R.string.hp_hide_video:
-//                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidvideo");
-//                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
-//                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
-//                    table.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-//                    intent = new Intent(activity, VideoHideMainActivity.class);
-//                    activity.startActivity(intent);
-                    intent = new Intent(activity, AirSigActivity.class);
+                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidvideo");
+                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
+                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
+                    table.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
+                    intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
                     // 隐藏视频
                     break;
@@ -367,11 +365,9 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                     break;
                 case R.string.hp_helper_shot:
                     // 快捷小助手
-//                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "home_shortcutsAssistant");
-//                    Intent qhintent = new Intent(activity, QuickHelperActivity.class);
-//                    startActivity(qhintent);
-                    intent = new Intent(activity, AirSigSettingActivity.class);
-                    activity.startActivity(intent);
+                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "home_shortcutsAssistant");
+                    Intent qhintent = new Intent(activity, QuickHelperActivity.class);
+                    startActivity(qhintent);
                     break;
                 /*case R.string.game_box_one:
                     SDKWrapper.showGameBoxHome(getActivity());

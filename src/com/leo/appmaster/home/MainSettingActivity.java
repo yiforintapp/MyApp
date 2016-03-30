@@ -13,6 +13,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.PrivacyOptionActivity;
+import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
@@ -61,6 +63,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
 //    private TextView mTvAdvancedProtectSmr;
 
     private LEOAlarmDialog mConfrimCloseDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,10 +148,10 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
                 goToChangeLockType();
                 break;
             case R.id.rv_setting_sign_lock:
-
+                goToOpenAirSig();
                 break;
             case R.id.rv_setting_default_lock:
-
+                gotoSetAirSigLock();
                 break;
             case R.id.rv_setting_pswprotect:
                 goToPswProtect();
@@ -163,6 +166,16 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
 
+    }
+
+    private void gotoSetAirSigLock() {
+        Intent intent = new Intent(this, AirSigSettingActivity.class);
+        startActivity(intent);
+    }
+
+    private void goToOpenAirSig() {
+        Intent intent = new Intent(this, AirSigActivity.class);
+        startActivity(intent);
     }
 
     private void goToChangeLockType() {
@@ -188,12 +201,12 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
 
     private void requestDeviceAdmin() {
         Intent intent = null;
-        ComponentName component = new ComponentName(this,DeviceReceiver.class);
+        ComponentName component = new ComponentName(this, DeviceReceiver.class);
         mLockManager.filterSelfOneMinites();
         mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
         intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,component);
-        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,getString(R.string.device_admin_extra));
+        intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, component);
+        intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getString(R.string.device_admin_extra));
         try {
             startActivity(intent);
         } catch (Exception e) {
@@ -217,15 +230,15 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
                         updateSwitch();
                         mConfrimCloseDialog.dismiss();
                     }
-                },500);
+                }, 500);
             }
         });
         mConfrimCloseDialog.show();
     }
 
     private void removeActiveAdmin() {
-        ComponentName component = new ComponentName(this,DeviceReceiver.class);
-        ComponentName component2 = new ComponentName(this,DeviceReceiverNewOne.class);
+        ComponentName component = new ComponentName(this, DeviceReceiver.class);
+        ComponentName component2 = new ComponentName(this, DeviceReceiverNewOne.class);
         DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
         if (isOldAdminActive()) {
             dpm.removeActiveAdmin(component);
