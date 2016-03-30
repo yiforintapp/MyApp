@@ -1181,7 +1181,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 
     private void sdcHideImgToast() {
         String toast = this.getResources().getString(R.string.img_hide_cpy_toast);
-        Toast.makeText(this, toast, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
     }
 
 }
