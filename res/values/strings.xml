@@ -1225,4 +1225,6 @@
     <string name="lock_app_list_all_app">全部应用</string>
     <string name="lock_app_list_other_app">其他应用</string>
 
+    <string name="img_hide_cpy_toast">当前从SD卡读取内容，可能过程较长</string>
+
 </resources>

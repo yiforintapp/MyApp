@@ -69,6 +69,15 @@ public class FileOperationUtil {
     public static final int COPY_HIDE = 1;
 
     private static int mHideTpye = -1;
+    private static boolean mIsSdcCypTip = false;
+
+    public static boolean isIsSdcCypTip() {
+        return mIsSdcCypTip;
+    }
+
+    public static void setIsSdcCypTip(boolean isSdcCypTip) {
+        FileOperationUtil.mIsSdcCypTip = isSdcCypTip;
+    }
 
     public static int getHideTpye() {
         return mHideTpye;
@@ -285,13 +294,15 @@ public class FileOperationUtil {
      */
     public static synchronized String hideImageFile(Context ctx,
                                                     String filePath, String newName, long fileSize) {
-        String str = FileOperationUtil.getDirPathFromFilepath(filePath);
-        String fileName = FileOperationUtil.getNameFromFilepath(filePath);
+//        String str = FileOperationUtil.getDirPathFromFilepath(filePath);
+//        String fileName = FileOperationUtil.getNameFromFilepath(filePath);
 
         if (filePath == null || newName == null) {
             LeoLog.e("RenameFile", "Rename: null parameter");
             return null;
         }
+
+        String newPath;
 
         String[] paths = getSdCardPaths(ctx);
         int position = -1;
@@ -306,12 +317,11 @@ public class FileOperationUtil {
             }
         }
 
-        String newPath;
         File file = new File(filePath);
         if (position == -1) {
             newPath = filePath + Constants.CRYPTO_SUFFIX;
         } else {
-            String p = paths[position];
+//            String p = paths[position];
             newPath = FileOperationUtil.makePath(paths[position],
                     FileOperationUtil.getDirPathFromFilepath(filePath), newName);
         }

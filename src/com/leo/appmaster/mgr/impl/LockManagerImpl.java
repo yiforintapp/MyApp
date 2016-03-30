@@ -149,7 +149,6 @@ public class LockManagerImpl extends LockManager {
 
     public void init() {
         LeoLog.d(TAG, "init");
-        //TODO 首次启动加载数据
         startLockService();
         mScreenListener = new ScreenOnOffListener() {
             @Override
@@ -185,7 +184,6 @@ public class LockManagerImpl extends LockManager {
         });
 
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
-        //TODO 首次启动加载数据
         if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             sendFirstUseLockModeToISwipe();
         }
@@ -1061,10 +1059,8 @@ public class LockManagerImpl extends LockManager {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         TaskDetectService service = TaskDetectService.getService();
         if (service != null) {
-            //TODO 首次启动加载数据
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 service.startDetect();
-                //TODO 首次启动加载数据
                 amp.setDoubleCheck(null);
             }
         } else {

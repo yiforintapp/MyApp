@@ -21,6 +21,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -942,12 +943,13 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                     final String flag = isSuccess;
                     final PhotoItem photoItem = list.get(0);
                     int hideType = FileOperationUtil.getHideTpye();
+                    final ArrayList<PhotoItem> deleteListClone = deleteList;
                     final boolean isCopyType = (hideType == FileOperationUtil.COPY_HIDE);
                     ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
                         @Override
                         public void run() {
-                            boolean isNoMemery = (flag != FileOperationUtil.HIDE_PIC_NO_MEMERY);
-                            if (isNoMemery && isCopyType) {
+                            boolean isHideImg = (deleteListClone != null && deleteListClone.size() > 0);
+                            if (isHideImg && isCopyType) {
                                 String path = photoItem.getPath();
                                 File file = new File(path);
                                 boolean isExsit = file.exists();
@@ -1159,5 +1161,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         }
     }
 
+    private void sdcHideImgToast() {
+        String toast = this.getResources().getString(R.string.img_hide_cpy_toast);
+        Toast.makeText(this, toast, Toast.LENGTH_LONG).show();
+    }
 
 }
