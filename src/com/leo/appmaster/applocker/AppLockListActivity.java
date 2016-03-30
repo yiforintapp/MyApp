@@ -145,17 +145,10 @@ public class AppLockListActivity extends BaseActivity implements
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
-            boolean mIsFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", true);
-            boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
-            LeoLog.e("mIsFirstEnterFromMain", "mIsFirstEnterFromMain: " + mIsFirstEnterFromMain);
-            if (isFromConfrim && ((mAppList != null && mAppList.size() > 0)
-                    || (mIsFirstEnterFromMain && isFirstEnterFromIcon))) {
+            if (isFromConfrim && (mAppList != null && mAppList.size() > 0)) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if (switchs != null && switchs.size() > 0) {
                     mPosition = +(switchs.size() + 1);
-                }
-                if (mIsFirstEnterFromMain) {
-                    mLeoPreference.putBoolean("FirstEnterFromMain", false);
                 }
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
@@ -397,30 +390,14 @@ public class AppLockListActivity extends BaseActivity implements
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
 
-        boolean isFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", true);
-        boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
-        if (isFromConfrim && isFirstEnterFromMain && isFirstEnterFromIcon) {
+        LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size()
+                + "mLockedList:" + mLockedList.size() + "mUnlockList:" + mUnlockList.size());
+        if (mAppList.size() == mUnlockList.size()) {
             mAppList.clear();
-        }
-        LeoLog.e("mResaultList", "isFirstEnterFromIcon:" + isFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim);
-        if (!isFromConfrim && isFirstEnterFromIcon && isFirstEnterFromMain) {
-            mAppList.clear();
-            mLeoPreference.putBoolean("FirstEnterFromTab", false);
         }
         lm.ignore();
-//        AppItemInfo appItemInfo = new AppItemInfo();
-//        appItemInfo.packageName = "com.android.settings";
-//        appItemInfo.label = "设置";
-//        appItemInfo.topPos = 10000;
-//        AppItemInfo appItemInfo1 = new AppItemInfo();
-//        appItemInfo1.packageName = "com.android.dialer";
-//        mAppList.add(appItemInfo);
-//        mAppList.add(appItemInfo1);
-        LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size());
-        for (AppItemInfo appItemInfo : mAppList) {
-            LeoLog.e("mResaultList", appItemInfo.topPos + "");
-        }
         if (mAppList != null && mAppList.size() > 0) {
+            Collections.sort(mAppList, new DefalutAppComparator());
             for (int i = 0; i < mAppList.size(); i++) {
                 Iterator<AppInfo> iterator = mUnlockRecommendList.iterator();
                 while (iterator.hasNext()) {
