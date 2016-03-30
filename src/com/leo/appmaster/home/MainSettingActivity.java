@@ -20,7 +20,6 @@ import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
-import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonSettingItem;
@@ -121,6 +120,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         //更改手势/数字密码部分
         mCsiChangeGstOrPsw = (CommonSettingItem) findViewById(R.id.csi_change_lock_type);
         mCsiChangeGstOrPsw.setTitle(STRID_CHANGE_LOCK_TYPE);
+        mCsiChangeGstOrPsw.setSummaryVisable(false);
         mCsiChangeGstOrPsw.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
