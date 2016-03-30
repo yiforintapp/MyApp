@@ -20,8 +20,8 @@ import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.db.LeoPreference;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.ui.CommonSettingItem;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -32,15 +32,16 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 public class MainSettingActivity extends BaseActivity implements View.OnClickListener {
     private LeoPreference mLp;
 
-    private static final int STRID_OPENED = R.string.has_opened;
-    private static final int STRID_DID_NOT_OPEN = R.string.did_not_open;
-    private static final int STRID_SIGN_LOCK = R.string.airsig_settings_activity_title;
-    private static final int STRID_GESTURE_OR_PSW = R.string.gesture_or_password;
-    private static final int STRID_ADVANCED_PROTECT_ON = R.string.forbid_uninstall_on;
-    private static final int STRID_ADVANCED_PROTECT_OFF = R.string.forbid_uninstall_off;
-    private static final int STRID_DIALOG_TITLE_ADVANCED_PROTECT = R.string.title_close_advanced_protect;
-    private static final int STRID_DIALOG_CONTENT_ADVANCED_PROTECT = R.string.content_close_advanced_protect;
-    private static final int STRID_SETTING = R.string.setting;
+    private final int STRID_OPENED = R.string.has_opened;
+    private final int STRID_DID_NOT_OPEN = R.string.did_not_open;
+    private final int STRID_SIGN_LOCK = R.string.airsig_settings_activity_title;
+    private final int STRID_GESTURE_OR_PSW = R.string.gesture_or_password;
+    private final int STRID_ADVANCED_PROTECT_ON = R.string.forbid_uninstall_on;
+    private final int STRID_ADVANCED_PROTECT_OFF = R.string.forbid_uninstall_off;
+    private final int STRID_DIALOG_TITLE_ADVANCED_PROTECT = R.string.title_close_advanced_protect;
+    private final int STRID_DIALOG_CONTENT_ADVANCED_PROTECT = R.string.content_close_advanced_protect;
+    private final int STRID_SETTING = R.string.setting;
+    private final int STRID_ADVANCED_PROTECT_TITLE = R.string.forbid_uninstall;
 
     private CommonToolbar mCtbMain;
 
@@ -50,13 +51,15 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     private RippleView mRvPswQuestion;
     private RippleView mRvPswTip;
     private RippleView mRvPrivacyListen;
-    private RippleView mRvAdvancedProtect;
+//    private RippleView mRvAdvancedProtect;
 
-    private CheckBox mCbAdvancedProtect;
+    private CommonSettingItem mCstAdvancedProtect;
+
+//    private CheckBox mCbAdvancedProtect;
 
     private TextView mTvSignatureLockOpenOrNot;
     private TextView mTvDefaultLock;
-    private TextView mTvAdvancedProtectSmr;
+//    private TextView mTvAdvancedProtectSmr;
 
     private LEOAlarmDialog mConfrimCloseDialog;
     @Override
@@ -84,12 +87,21 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
 
 
     private void updateSwitch() {
+        updateAdvancedProtectSwitch();
+    }
+
+    private void updateAdvancedProtectSwitch() {
         if (isOldAdminActive() || isNewAdminActive()) {
-            mCbAdvancedProtect.setChecked(true);
-            mTvAdvancedProtectSmr.setText(STRID_ADVANCED_PROTECT_ON);
+            mCstAdvancedProtect.setChecked(true);
+            mCstAdvancedProtect.setSummary(STRID_ADVANCED_PROTECT_ON);
+
+//            mCbAdvancedProtect.setChecked(true);
+//            mTvAdvancedProtectSmr.setText(STRID_ADVANCED_PROTECT_ON);
         } else {
-            mCbAdvancedProtect.setChecked(false);
-            mTvAdvancedProtectSmr.setText(STRID_ADVANCED_PROTECT_OFF);
+//            mCbAdvancedProtect.setChecked(false);
+//            mTvAdvancedProtectSmr.setText(STRID_ADVANCED_PROTECT_OFF);
+            mCstAdvancedProtect.setChecked(false);
+            mCstAdvancedProtect.setSummary(STRID_ADVANCED_PROTECT_OFF);
         }
     }
 
@@ -108,13 +120,17 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         mRvPswTip.setOnClickListener(this);
         mRvPrivacyListen = (RippleView) findViewById(R.id.rv_setting_privacy_listen);
         mRvPrivacyListen.setOnClickListener(this);
-        mRvAdvancedProtect = (RippleView) findViewById(R.id.rv_setting_advanced_protect);
-        mRvAdvancedProtect.setOnClickListener(this);
-        mCbAdvancedProtect = (CheckBox) findViewById(R.id.cb_setting_advanced_protect);
+//        mRvAdvancedProtect = (RippleView) findViewById(R.id.rv_setting_advanced_protect);
+//        mRvAdvancedProtect.setOnClickListener(this);
+        mCstAdvancedProtect = (CommonSettingItem) findViewById(R.id.csi_advanced_protect);
+        mCstAdvancedProtect.setType(CommonSettingItem.TYPE_CHECKBOX);
+        mCstAdvancedProtect.setRippleViewOnClickLinstener(this);
+        mCstAdvancedProtect.setTitle(STRID_ADVANCED_PROTECT_TITLE);
+//        mCbAdvancedProtect = (CheckBox) findViewById(R.id.cb_setting_advanced_protect);
 
         mTvSignatureLockOpenOrNot = (TextView) findViewById(R.id.tv_sign_lock_summary);
         mTvDefaultLock = (TextView) findViewById(R.id.tv_default_lock_summary);
-        mTvAdvancedProtectSmr = (TextView) findViewById(R.id.tv_advanced_protect_summary);
+//        mTvAdvancedProtectSmr = (TextView) findViewById(R.id.tv_advanced_protect_summary);
     }
 
     @Override
@@ -138,8 +154,15 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
             case R.id.rv_setting_privacy_listen:
                 goToPrivacyListen();
                 break;
-            case R.id.rv_setting_advanced_protect:
-                if (mCbAdvancedProtect.isChecked()) {
+//            case R.id.rv_setting_advanced_protect:
+//                if (mCbAdvancedProtect.isChecked()) {
+//                    showConfirmDialog();
+//                } else {
+//                    requestDeviceAdmin();
+//                }
+//                break;
+            case CommonSettingItem.ID_RIPPLE_VIEW_MAIN:
+                if (mCstAdvancedProtect.isChecked()) {
                     showConfirmDialog();
                 } else {
                     requestDeviceAdmin();

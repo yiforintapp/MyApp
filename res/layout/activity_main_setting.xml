@@ -431,7 +431,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp"/>
 
-            <RelativeLayout
+            <com.leo.appmaster.ui.CommonSettingItem
+                android:id="@+id/csi_advanced_protect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!--<RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -503,7 +508,7 @@
                     </RelativeLayout>
 
                 </com.leo.appmaster.ui.RippleView>
-            </RelativeLayout>
+            </RelativeLayout>-->
 
             <View
                 android:background="#cbcbcb"
