@@ -82,6 +82,26 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
 
     private void updateSwitch() {
         updateAdvancedProtectSwitch();
+        updateAirSig();
+    }
+
+    private void updateAirSig() {
+        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+
+        if (isAirsigOn) {
+
+        } else {
+
+        }
+
+        int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE,
+                AirSigSettingActivity.NOMAL_UNLOCK);
+
+        if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+
+        } else {
+
+        }
     }
 
     private void updateAdvancedProtectSwitch() {
