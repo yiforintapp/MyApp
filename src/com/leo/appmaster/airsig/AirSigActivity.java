@@ -5,6 +5,7 @@ import com.airsig.airsigengmulti.ASEngine;
 import com.leo.appmaster.R;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
@@ -34,7 +35,8 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case SET_DONE:
-                    LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, true);
+//                    LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, true);
+                    LeoSettings.setBoolean(AIRSIG_SWITCH, true);
                     switchOn();
                     showMessage(getString(R.string.airsig_settings_activity_toast));
                     break;
@@ -82,7 +84,8 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void fillData() {
-        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AIRSIG_SWITCH, false);
+//        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AIRSIG_SWITCH, false);
+        boolean isAirsigOn = LeoSettings.getBoolean(AIRSIG_SWITCH, false);
         if (isAirsigOn) {
             switchOn();
         } else {
@@ -139,7 +142,8 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void switchAirsig() {
-        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AIRSIG_SWITCH, false);
+//        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AIRSIG_SWITCH, false);
+        boolean isAirsigOn = LeoSettings.getBoolean(AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
         if (isAirsigOn) {
             //dialog to close
@@ -152,7 +156,8 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, false);
+//                    LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, false);
+                    LeoSettings.setBoolean(AIRSIG_SWITCH, false);
                     switchOff();
                     mConfirmCloseDialog.dismiss();
                 }
@@ -162,7 +167,8 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             }
         } else if (isAirsigReady) {
             //open
-            LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, true);
+//            LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, true);
+            LeoSettings.setBoolean(AIRSIG_SWITCH, true);
             switchOn();
         } else {
             //set Airsig

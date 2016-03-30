@@ -38,6 +38,7 @@ import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.SubmaineAnimEvent;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
@@ -176,13 +177,12 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     private void initAirSig() {
-        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
 
         if (isAirsigOn && isAirsigReady) {
             mViewBottom.setVisibility(View.VISIBLE);
-            int unlockType = LeoPreference.getInstance().
-                    getInt(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+            int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
             if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
                 mLockPatternView.setVisibility(View.VISIBLE);
                 mAirSigTouchView.setVisibility(View.GONE);
