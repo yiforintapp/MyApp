@@ -65,6 +65,10 @@ public class LeoSettings {
         getSettings(key).set(key, value);
     }
 
+    public static void setBundleMap(Map<String, Object> map) {
+
+    }
+
     public static long getLong(String key, long def) {
         String value = getString(key, null);
         if (value == null) {
