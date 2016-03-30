@@ -55,6 +55,8 @@ public abstract class ISettings {
     public abstract void set(String key, String value);
     public abstract String get(String key, String def);
 
+    public abstract void setBundleMap(Map<String, Object> map);
+
     static boolean isHighPriority(String key) {
         return sGroupHigh.containsKey(key);
     }
