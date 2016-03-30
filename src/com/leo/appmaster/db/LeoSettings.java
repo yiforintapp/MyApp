@@ -86,89 +86,51 @@ public class LeoSettings {
     }
 
     public static void setInteger(String key, int value) {
-        setString(key, value + "");
+        getSettings(key).setInteger(key, value);
     }
 
     public static void setLong(String key, long value) {
-        setString(key, value + "");
+        getSettings(key).setLong(key, value);
     }
 
     public static void setFloat(String key, float value) {
-        setString(key, value + "");
+        getSettings(key).setFloat(key, value);
     }
 
     public static void setDouble(String key, double value) {
-        setString(key, value + "");
+        getSettings(key).setDouble(key, value);
     }
 
     public static void setBoolean(String key, boolean value) {
-        setString(key, value ? BOOL_TRUE : BOOL_FALSE);
+        getSettings(key).setBoolean(key, value);
     }
 
     public static void setString(String key, String value) {
-        getSettings(key).set(key, value);
+        getSettings(key).setString(key, value);
     }
 
     public static long getLong(String key, long def) {
-        String value = getString(key, null);
-        if (value == null) {
-            return def;
-        }
-
-        try {
-            return Long.valueOf(value);
-        } catch (NumberFormatException e) {
-        }
-        return def;
+        return getSettings(key).getLong(key, def);
     }
 
     public static float getFloat(String key, float def) {
-        String value = getString(key, null);
-        if (value == null) {
-            return def;
-        }
-
-        try {
-            return Float.valueOf(value);
-        } catch (NumberFormatException e) {
-        }
-        return def;
+        return getSettings(key).getFloat(key, def);
     }
 
     public static double getDouble(String key, double def) {
-        String value = getString(key, null);
-        if (value == null) {
-            return def;
-        }
-
-        try {
-            return Double.valueOf(value);
-        } catch (NumberFormatException e) {
-        }
-        return def;
+        return getSettings(key).getDouble(key, def);
     }
 
     public static boolean getBoolean(String key, boolean def) {
-        String value = getString(key, def ? BOOL_TRUE : BOOL_FALSE);
-
-        return BOOL_TRUE.equals(value);
+        return getSettings(key).getBoolean(key, def);
     }
 
     public static String getString(String key, String def) {
-        return getSettings(key).get(key, def);
+        return getSettings(key).getString(key, def);
     }
 
     public static int getInteger(String key, int def) {
-        String value = getString(key, null);
-        if (value == null) {
-            return def;
-        }
-
-        try {
-            return Integer.valueOf(value);
-        } catch (NumberFormatException e) {
-        }
-        return def;
+        return getSettings(key).getInteger(key, def);
     }
 
     private static ISettings getSettings(String key) {

@@ -126,7 +126,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public int getInt(String key, int def) {
-        String value = getString(key);
+        String value = getString(key, null);
         if (value == null) {
             return def;
         }
@@ -140,7 +140,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public long getLong(String key, long def) {
-        String value = getString(key);
+        String value = getString(key, null);
         if (value == null) {
             return def;
         }
@@ -154,7 +154,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public double getDouble(String key, double def) {
-        String value = getString(key);
+        String value = getString(key, null);
         if (value == null) {
             return def;
         }
@@ -168,7 +168,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public float getFloat(String key, float def) {
-        String value = getString(key);
+        String value = getString(key, null);
         if (value == null) {
             return def;
         }
@@ -187,9 +187,10 @@ public class PreferenceTable extends BaseTable {
         return value == BOOL_TRUE;
     }
 
-    public synchronized String getString(String key) {
+    public synchronized String getString(String key, String def) {
         awaitLoadedLocked();
-        return mValues.get(key);
+        String v = mValues.get(key);
+        return v != null ? v : def;
     }
 
     public void putInt(String key, int value) {

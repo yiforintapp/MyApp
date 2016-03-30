@@ -52,8 +52,18 @@ public abstract class ISettings {
         }
     }
 
-    public abstract void set(String key, String value);
-    public abstract String get(String key, String def);
+    public abstract void setBoolean(String key, boolean value);
+    public abstract void setInteger(String key, int value);
+    public abstract void setDouble(String key, double value);
+    public abstract void setFloat(String key, float value);
+    public abstract void setLong(String key, long value);
+    public abstract void setString(String key, String value);
+    public abstract boolean getBoolean(String key, boolean def);
+    public abstract int getInteger(String key, int def);
+    public abstract long getLong(String key, long def);
+    public abstract float getFloat(String key, float def);
+    public abstract double getDouble(String key, double def);
+    public abstract String getString(String key, String def);
 
     protected abstract void setBundleMap(Map<String, Object> map, OnBundleSavedListener listener);
 

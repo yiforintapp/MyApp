@@ -27,18 +27,69 @@ public class SharedSettings extends ISettings {
     }
 
     @Override
-    public void set(String key, String value) {
-        mValues.put(key, value);
-        commitAsync(preferences.edit().putString(key, value));
+    public void setBoolean(String key, boolean value) {
+        commitAsync(key, value);
     }
 
     @Override
-    public String get(String key, String def) {
-        Object object = mValues.get(key);
-        if (object != null) {
-            return String.valueOf(object);
-        }
-        return preferences.getString(key, def);
+    public void setInteger(String key, int value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public void setDouble(String key, double value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public void setFloat(String key, float value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public void setLong(String key, long value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public void setString(String key, String value) {
+        commitAsync(key, value);
+    }
+
+    @Override
+    public boolean getBoolean(String key, boolean def) {
+        Boolean v = (Boolean)mValues.get(key);
+        return v != null ? v : def;
+    }
+
+    @Override
+    public int getInteger(String key, int def) {
+        Integer v = (Integer)mValues.get(key);
+        return v != null ? v : def;
+    }
+
+    @Override
+    public long getLong(String key, long def) {
+        Long v = (Long)mValues.get(key);
+        return v != null ? v : def;
+    }
+
+    @Override
+    public float getFloat(String key, float def) {
+        Float v = (Float)mValues.get(key);
+        return v != null ? v : def;
+    }
+
+    @Override
+    public double getDouble(String key, double def) {
+        Double v = (Double)mValues.get(key);
+        return v != null ? v : def;
+    }
+
+    @Override
+    public String getString(String key, String def) {
+        String v = (String)mValues.get(key);
+        return v != null ? v : def;
     }
 
     @Override
@@ -60,20 +111,29 @@ public class SharedSettings extends ISettings {
             }
         }
         if (editor != null) {
-            commitAsync(editor);
+            final SharedPreferences.Editor finalEditor = editor;
+            mSerialExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    finalEditor.commit();
+                }
+            });
         }
         if (listener != null) {
             listener.onBundleSaved();
         }
     }
 
-    public void commitAsync(final SharedPreferences.Editor editor) {
-        if (editor == null)
+    public void commitAsync(final String key, final Object value) {
+        if (key == null || value == null) {
             return;
-
+        }
+        mValues.put(key, value);
         mSerialExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(key, value.toString());
                 editor.commit();
             }
         });
