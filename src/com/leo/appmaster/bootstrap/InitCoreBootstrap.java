@@ -148,19 +148,11 @@ public class InitCoreBootstrap extends Bootstrap {
             TaskProtectService.scheduleService(mApp);
         }
 
-        //airSig
-        initAirSig();
+
 
         return true;
     }
 
-    private void initAirSig() {
-        ASSetting setting = new ASSetting();
-        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
-
-
-        ASGui.getSharedInstance(AppMasterApplication.getInstance(), null, setting, null); // Database is in /data/data/...
-    }
 
     @Override
     public String getClassTag() {
