@@ -149,10 +149,10 @@ public class AppLockListActivity extends BaseActivity implements
             boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", true);
             LeoLog.e("mIsFirstEnterFromMain", "mIsFirstEnterFromMain: " + mIsFirstEnterFromMain);
             if (isFromConfrim && ((mAppList != null && mAppList.size() > 0)
-                              || (mIsFirstEnterFromMain && isFirstEnterFromIcon))) {
+                    || (mIsFirstEnterFromMain && isFirstEnterFromIcon))) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
-                if(switchs != null && switchs.size() > 0) {
-                    mPosition = + (switchs.size() + 1);
+                if (switchs != null && switchs.size() > 0) {
+                    mPosition = +(switchs.size() + 1);
                 }
                 if (mIsFirstEnterFromMain) {
                     mLeoPreference.putBoolean("FirstEnterFromMain", false);
@@ -256,11 +256,11 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList = new ArrayList<AppInfo>();
         mUnlockRecommendList = new ArrayList<AppInfo>();
         mUnlockNormalList = new ArrayList<AppInfo>();
-        if(wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
-            mWifiAndBluetoothLockCount ++;
+        if (wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            mWifiAndBluetoothLockCount++;
         }
-        if(blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
-            mWifiAndBluetoothLockCount ++;
+        if (blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            mWifiAndBluetoothLockCount++;
         }
 
         mGuideTip = findViewById(R.id.guide_tip_layout);
@@ -294,17 +294,15 @@ public class AppLockListActivity extends BaseActivity implements
      * 进入应用锁列表，引导提示
      */
     private void inLockListGuideTip() {
-        if (!isFromConfrim) {
-            if (!isGuideEnough()) {
-                int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
-                guideCount = guideCount + 1;
-                LeoPreference.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
-            }
-            boolean isGuideEnough = isGuideEnough();
-            if (!isGuideEnough) {
-                if (mWhiteMode != -1 || needAppGuide()) {
-                    openHelp(true, false);
-                }
+        if (!isGuideEnough()) {
+            int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+            guideCount = guideCount + 1;
+            LeoPreference.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
+        }
+        boolean isGuideEnough = isGuideEnough();
+        if (!isGuideEnough) {
+            if (mWhiteMode != -1 || needAppGuide()) {
+                openHelp(true, false);
             }
         }
     }
@@ -390,7 +388,7 @@ public class AppLockListActivity extends BaseActivity implements
             Collections.sort(mUnlockNormalList, new DefalutAppComparator());
         } catch (Exception e) {
         }
-        mLockListCount =mLockedList.size();
+        mLockListCount = mLockedList.size();
         mResaultList = new ArrayList<AppInfo>();
         ArrayList<AppInfo> resaultUnlock = new ArrayList<AppInfo>(mUnlockRecommendList);
         resaultUnlock.addAll(mUnlockNormalList);
@@ -419,7 +417,7 @@ public class AppLockListActivity extends BaseActivity implements
 //        mAppList.add(appItemInfo);
 //        mAppList.add(appItemInfo1);
         LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size());
-        for (AppItemInfo appItemInfo: mAppList) {
+        for (AppItemInfo appItemInfo : mAppList) {
             LeoLog.e("mResaultList", appItemInfo.topPos + "");
         }
         if (mAppList != null && mAppList.size() > 0) {
@@ -1065,14 +1063,14 @@ public class AppLockListActivity extends BaseActivity implements
         LeoLog.e("HomeActivity", mLockedList.size() + "");
         int count = 0;
         if (wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
-            count ++;
+            count++;
         }
         if (blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
-            count ++;
+            count++;
         }
         if (((mFromSuccessListCount != 0 && mLockedList.size() >= mFromSuccessListCount)
                 || (mFromSuccessListCount == 0 && mLockedList.size() > mLockListCount)
-                ||  count > mWifiAndBluetoothLockCount)
+                || count > mWifiAndBluetoothLockCount)
                 && !isFromConfrim) {
             LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP, true));
         }
