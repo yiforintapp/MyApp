@@ -882,7 +882,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 
             //恢复隐藏方式默认值
             FileOperationUtil.setHideTpye(FileOperationUtil.DEF_HIDE);
-
+            FileOperationUtil.setIsSdcCypTip(false);
             if (mClickList != null && mClickList.size() > 0) {
                 ArrayList<PhotoItem> list = (ArrayList<PhotoItem>) mClickList.clone();
                 Iterator<PhotoItem> iterator = list.iterator();
@@ -931,7 +931,25 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                                     "pic_hid_fal");
                             isSuccess = FileOperationUtil.HIDE_PIC_PATH_EMPTY;
                         }
+
+                        //从外置卡隐藏图片toast提示
+                        boolean isSdCpy = FileOperationUtil.isIsSdcCypTip();
+                        if (!isSdCpy) {
+                            int hideType = FileOperationUtil.getHideTpye();
+                            boolean isCopyType = (hideType == FileOperationUtil.COPY_HIDE);
+                            LeoLog.d("testHidePic", "isCopyType:" + isCopyType);
+                            if (isCopyType) {
+                                ThreadManager.executeOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sdcHideImgToast();
+                                    }
+                                });
+                            }
+                            FileOperationUtil.setIsSdcCypTip(true);
+                        }
                     }
+
                     if (deleteList.size() > 0) {
                         mPicturesList.removeAll(deleteList);
                         for (PhotoItem photoItem : deleteList) {
