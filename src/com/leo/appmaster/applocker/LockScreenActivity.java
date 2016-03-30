@@ -1420,14 +1420,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 										mBannerContainer.setAdapter(mAdapterCycle);
 										if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
                                         /* 第一个广告直接出现 */
-											mBannerContainer.setCurrentItem(1, false);
-											mAdapterCycle.setLasterSlectedPage(1);
-											mBannerContainer.setVisibility(View.VISIBLE);
-											showAdAnimaiton(unitId);
-											delayBannerHideAnim();
-											hideIconAndPswTips();
+                                            mBannerContainer.setCurrentItem(1, false);
+                                            mAdapterCycle.setLasterSlectedPage(1);
+                                            mBannerContainer.setVisibility(View.VISIBLE);
+                                            showAdAnimaiton(unitId);
+                                            // 3.6版本，6秒后消失的逻辑去掉
+                                            // delayBannerHideAnim();
+                                            hideIconAndPswTips();
 
-										} else {
+                                        } else {
                                         /* 广告隐藏在右边 */
 											mBannerContainer.setVisibility(View.VISIBLE);
 											mBannerContainer.setCurrentItem(0, false);

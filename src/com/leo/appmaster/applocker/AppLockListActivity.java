@@ -340,6 +340,9 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockNormalList.clear();
         mUnlockList.clear();
         mLockedList.clear();
+        if (mLockedList != null) {
+            mLockAdapter.setNewAppExist(false);
+        }
         if (mAppList != null && mAppList.size() > 0) {
             mAppList.clear();
         }

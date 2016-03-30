@@ -29,6 +29,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.intruderprotection.ShowToast;
 import com.leo.appmaster.mgr.LockManager;
@@ -48,7 +49,7 @@ import com.leo.appmaster.utils.Utilities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhoneSecurityActivity extends BaseActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class PhoneSecurityActivity extends BaseActivity implements OnClickListener {
     private static final String TAG = "PhoneSecurityActivity";
     private CommonToolbar mCommonBar;
     private RelativeLayout mSecurOpenRT;
@@ -78,6 +79,9 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private TextView mInstruTipTv;
     private Button mAdvBt;
     private Button mSecurNumModyBt;
+    private TextView mSecurNumTv;
+    private LeoPreference mPreference;
+    private boolean mIsOpenBtResum = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,17 +93,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
 
     @Override
     protected void onResume() {
-        showUIHanlder();
-        LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-        boolean isOpPro = lostMgr.isOpenAdvanceProtect();
-        if (isOpPro) {
-            List<InstructModel> instrData = loadAdvOpenInstructData(true);
-            if (instrData != null && instrData.size() > 0) {
-                mAdvAdapter.setData(instrData);
-                mAdvAdapter.notifyDataSetChanged();
-            }
-            mAdvBt.setVisibility(View.GONE);
-        }
+        onResumHandler();
         super.onResume();
     }
 
@@ -108,20 +102,40 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         super.onBackPressed();
     }
 
-    /*界面UI显示处理*/
-    private void showUIHanlder() {
+    /**
+     * onResum中处理
+     */
+    private void onResumHandler() {
         LostSecurityManagerImpl securMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         int[] protectTime = securMgr.getPhoneProtectTime();
         mDayTv.setText(String.valueOf(protectTime[0]));
         mHourTv.setText(String.valueOf(protectTime[1]));
         securTimeAnim(mShowProtTimeLt);
-//        mSecurPhNumCv.smoothScrollTo(SCROLL_X, SCROLL_Y);
+        String securNumber = securMgr.getPhoneSecurityNumber();
+        String[] contact = null;
+        if (!Utilities.isEmpty(securNumber)) {
+            contact = securNumber.split(":");
+            mSecurNumTv.setText(contact[1]);
+        }
+        boolean isOpPro = securMgr.isOpenAdvanceProtect();
+        if (isOpPro) {
+            List<InstructModel> instrData = loadAdvOpenInstructData(true);
+            if (instrData != null && instrData.size() > 0) {
+                mAdvAdapter.setData(instrData);
+                mAdvAdapter.notifyDataSetChanged();
+            }
+            mAdvBt.setVisibility(View.GONE);
+            if (mIsOpenBtResum) {
+                openAdvanceProtectDialogTip();
+            }
+        }
     }
 
     /**
      * 初始化数据
      */
     private void initData() {
+        mPreference = LeoPreference.getInstance();
         List<InstructModel> normalInstrs = loadNormalInstructData();
         if (normalInstrs != null && normalInstrs.size() > 0) {
             mNormalAdapter = new InstructListAdapter(this, normalInstrs, InstructListAdapter.FLAG_OPEN_SUC_INSTR_LIST);
@@ -132,6 +146,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             mAdvAdapter = new InstructListAdapter(this, advInstrs, InstructListAdapter.FLAG_OPEN_SUC_INSTR_LIST);
             mAdvGv.setAdapter(mAdvAdapter);
         }
+        showShareDialog();
+        frmScanHandler();
     }
 
     /**
@@ -166,7 +182,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             }
         });
 
-        //TODO 界面更新
         mSecurOpenRT = (RelativeLayout) findViewById(R.id.show_time_lt);
         /*显示保护时间UI*/
         mShowProtTimeLt = (ImageView) mSecurOpenRT.findViewById(R.id.show_time_anim);
@@ -200,6 +215,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mAdvBt.setOnClickListener(this);
         mSecurNumModyBt = (Button) findViewById(R.id.secur_mody_bt);
         mSecurNumModyBt.setOnClickListener(this);
+        mSecurNumTv = (TextView) findViewById(R.id.secur_num_tv);
     }
 
     /**
@@ -250,166 +266,10 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         return noOpenInstrs;
     }
 
-//
-//    /**
-//     * 设置手机防盗的UI显示情况
-//     *
-//     * @param flag1          开启起防盗，操作的流程LT,显示状态
-//     * @param flag2          高级保护功能，操作流程RT,显示状态
-//     * @param flag3          手机防盗'未打开'后顶部RT,显示状态
-//     * @param flag4          手机防盗'打开'后顶部RT,显示状态
-//     * @param flag5          添加防盗手机号LT,显示状态
-//     * @param flag6          已经添加防盗手机号LT,显示状态
-//     * @param flag7          手机防盗完成页面,显示状态
-//     * @param isSendMsmCheck 备份短信指令
-//     */
-//    private void setSecurShowUI(boolean flag1, boolean flag2, boolean flag3, boolean flag4, boolean flag5, boolean flag6, boolean flag7, boolean isSendMsmCheck) {
-//        mAdvanChekBox.setVisibility(View.GONE);
-//        /*开启起防盗，操作的流程LT,显示状态*/
-//        if (flag1) {
-//            mOpenSecurLT.setVisibility(View.VISIBLE);
-//        } else {
-//            mOpenSecurLT.setVisibility(View.INVISIBLE);
-//        }
-//
-//        /*高级保护功能，操作流程RT,显示状态*/
-//        if (flag2) {
-//            mAdvOpenRT.setVisibility(View.VISIBLE);
-//            mAdvanChekBox.setVisibility(View.VISIBLE);
-//        } else {
-//            mAdvOpenRT.setVisibility(View.INVISIBLE);
-//        }
-//
-//        /*手机防盗'未打开'后顶部RT,显示状态*/
-//        if (flag3) {
-//            mSecurNoOpenTopRT.setVisibility(View.VISIBLE);
-//        } else {
-//            mSecurNoOpenTopRT.setVisibility(View.GONE);
-//        }
-//        /*手机防盗'打开'后顶部RT,显示状态*/
-//        if (flag4) {
-//            mSecurOpenRT.setVisibility(View.VISIBLE);
-//        } else {
-//            mSecurOpenRT.setVisibility(View.GONE);
-//        }
-//        /*未添加防盗手机号LT,显示状态*/
-//        if (flag5) {
-//            mNoAddSecurNumber.setVisibility(View.VISIBLE);
-//        } else {
-//            mNoAddSecurNumber.setVisibility(View.INVISIBLE);
-//        }
-//        /*已经添加防盗手机号LT,显示状态*/
-//        if (flag6) {
-//            mAddSecurNumber.setVisibility(View.VISIBLE);
-//        } else {
-//            mAddSecurNumber.setVisibility(View.INVISIBLE);
-//        }
-//        /*手机防盗完成页面*/
-//        if (flag7) {
-//            mSecurFinishRT.setVisibility(View.VISIBLE);
-//        } else {
-//            mSecurFinishRT.setVisibility(View.INVISIBLE);
-//        }
-//        /*备份短信指令checkbox*/
-//        if (isSendMsmCheck) {
-//            mCheckBox.setVisibility(View.VISIBLE);
-//        } else {
-//            mCheckBox.setVisibility(View.GONE);
-//        }
-//
-//    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.secur_bottom_BT:
-//                final LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//                if (!isOpenSecurBt) {
-//                    String securNumber = lostMgr.getPhoneSecurityNumber();
-//                    if (mBottomNumber[0].equals(mCurrentProcNumber)) {
-//                        /**第一步*/
-//                        SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_frt_next");
-//                        toProcTwo();
-//                    } else if (mBottomNumber[1].equals(mCurrentProcNumber)) {
-//                        /**第二步*/
-//                        boolean isOpenProtect = lostMgr.isOpenAdvanceProtect();
-//                        if (mAdvanProCheckStatus && !isOpenProtect) {
-//                            startDeviceItent(true);
-//                        } else {
-//                            toSecurFinish();
-//                        }
-//                        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
-//                        psm.setIsAdvOpenTip(true);
-//                        /*打点上报*/
-//                        if (mAdvanProCheckStatus) {
-//                            SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_snd_protect");
-//                        } else {
-//                            SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_snd_noProtect");
-//                        }
-//                    } else if (mBottomNumber[2].equals(mCurrentProcNumber)) {
-//                        /**第三步*/
-//                        mSecurPhNumCv.smoothScrollTo(SCROLL_X, SCROLL_Y);
-//                        boolean isOpenAdv = lostMgr.isOpenAdvanceProtect();
-//                        if (!isOpenAdv) {
-//                            loadInstructListData(true);
-//                        } else {
-//                            loadInstructListData(false);
-//                        }
-//                        mInstructAdapter.notifyDataSetInvalidated();
-//                        if (isOpenAdv) {
-//                            mNoAdvFinishTimeLt.setVisibility(View.GONE);
-//                        } else {
-//                            mNoAdvFinishTimeLt.setVisibility(View.VISIBLE);
-//                        }
-//                       /*是否添加了防盗号码*/
-//                        String[] contact = null;
-//                        if (!Utilities.isEmpty(securNumber)) {
-//                            contact = securNumber.split(":");
-//                        }
-//                        setSecurShowUI(true, false, true, true, false, true, false, false);
-//                        if (contact[0].equals(contact[1])) {
-//                            mOpenSecurNumberTv.setVisibility(View.GONE);
-//                            mOpenSecurNameTv.setText(contact[1]);
-//                        } else {
-//                            mOpenSecurNumberTv.setVisibility(View.VISIBLE);
-//                            mOpenSecurNameTv.setText(contact[0]);
-//                            mOpenSecurNumberTv.setText(contact[1]);
-//                        }
-//                        if (mButPointLt.getVisibility() == View.VISIBLE) {
-//                            mButPointLt.setVisibility(View.GONE);
-//                        }
-//                        mButton.setText(getResources().getString(R.string.secur_open_bt));
-//                        isOpenSecurBt = true;
-//                        int[] protectTime = lostMgr.getPhoneProtectTime();
-//                        mDayTv.setText(String.valueOf(protectTime[0]));
-//                        mHourTv.setText(String.valueOf(protectTime[1]));
-//                        if (!mBottomNumber[0].equals(mCurrentProcNumber)) {
-//                            mCurrentProcNumber = mBottomNumber[0];
-//                        }
-//                        mNoAddSecurNumber.setVisibility(View.GONE);
-//                        securTimeAnim(mShowProtTimeLt);
-//                    }
-//                } else {
-//                    backupInstructsDialog();
-//                    SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_backup");
-//                }
-//                break;
-//            case R.id.secur_add_number_RT:
-//                startAddSecurNumberIntent();
-//                break;
-//            case R.id.modify_secur_number_BT:
-//                startAddSecurNumberIntent();
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft_use", "theft_cnts_changeContact");
-//                break;
-//            case R.id.secur_modify_bt:
-//                startAddSecurNumberIntent();
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft_use", "theft_cnts_changeContact");
-//                break;
-//            case R.id.open_sucur_adv_bt:
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_instant");
-//                startDeviceItent(false);
-//                PhoneSecurityManager.getInstance(PhoneSecurityActivity.this).setIsAdvOpenTip(true);
-//                break;
             case R.id.help_bt:
                 if (mHelpRt.getVisibility() == View.VISIBLE) {
                     mHelpRt.setVisibility(View.GONE);
@@ -449,6 +309,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 }
                 break;
             case R.id.secur_open_adv:
+                mIsOpenBtResum = true;
                 startDeviceItent();
                 break;
             case R.id.secur_mody_bt:
@@ -494,45 +355,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         }
     }
 
-    /*进入完成页面*/
-//    private void toSecurFinish() {
-//        LeoLog.i(TAG, "go to finish ！");
-//        SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_suc_arv");
-//        frmScanHandler();
-//        LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//        boolean isOpenAdvan = lostMgr.isOpenAdvanceProtect();
-//        if (isOpenAdvan) {
-//            loadCompOpenInstructs();
-//        } else {
-//            loadNoOpenInstructData(false);
-//        }
-//        mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.cb));
-//        mCurrentProcNumber = mBottomNumber[2];
-////        setSecurShowUI(false, false, false, false, false, false, true, false);
-//        mOperFinish.setImageResource(R.drawable.theft_step);
-//        mAdvanChekBox.setVisibility(View.GONE);
-//        mOperTwoPoint.setImageResource(R.drawable.theft_step_point);
-//        mCommonBar.setToolbarTitle(R.string.secur_open_suc);
-//        mButton.setText(getResources().getString(R.string.secur_finish_bt_text));
-//        if (isOpenAdvan) {
-//            mFinishTipTv.setText(getResources().getString(R.string.secur_finish_complate_text));
-//            mFinishTipIV.setImageResource(R.drawable.theft_complete_img);
-//        } else {
-//            mFinishTipTv.setText(getResources().getString(R.string.secur_finish_no_complate_tip));
-//            mFinishTipIV.setImageResource(R.drawable.theft_function_img);
-//            showShareDialog();
-//        }
-//        LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//        /*设置手机防盗为开启状态*/
-//        mgr.setUsePhoneSecurity(true);
-//        /*设置开启保护的时间*/
-//        mgr.setOpenSecurityTime();
-//
-//        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
-//        if (psm.isIsAdvOpenTip()) {
-//            psm.setIsAdvOpenTip(false);
-//        }
-//    }
 
     /*来自扫描页面,加分提示处理*/
     private void frmScanHandler() {
@@ -540,6 +362,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         boolean isFromScanTmp = psm.getIsFromScan();
         if (isFromScanTmp) {
             ShowToast.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE, this);
+            psm.setIsFromScan(false);
         }
     }
 
@@ -551,168 +374,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         view.startAnimation(operatingAnim);
 
     }
-
-//    /*到开启步骤2*/
-//    private void toProcTwo() {
-//        loadNoOpenInstructData(true);
-//        loadOpenInstructData();
-//        final LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//        boolean isOpenProtect = lostMgr.isOpenAdvanceProtect();
-//        String securNumber = lostMgr.getPhoneSecurityNumber();
-//        boolean isExistSecurNumber = false;
-//        if (mBottomNumber[0].equals(mCurrentProcNumber)) {
-//            LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//            boolean isExistSim = mgr.getIsExistSim();
-//            if (isExistSim) {
-//                ThreadManager.executeOnAsyncThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (mCheckStatus) {
-//                            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-//                            String numberNmae = lostMgr.getPhoneSecurityNumber();
-//                            if (!Utilities.isEmpty(numberNmae)) {
-//                                String[] number = numberNmae.split(":");
-//                                if (number != null) {
-//                                    mgr.sendMessage(number[1], getSendMessageInstructs(), MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
-//                                }
-//                            }
-//                        }
-//                    }
-//                });
-//            } else {
-//                String failStr = this.getResources().getString(
-//                        R.string.privacy_message_item_send_message_fail);
-//                Toast.makeText(this, failStr, Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//        if (!Utilities.isEmpty(securNumber)) {
-//            isExistSecurNumber = true;
-//        }
-//        if (isExistSecurNumber) {
-//            if (isOpenProtect) {
-//               /*进入完成界面*/
-//                toSecurFinish();
-//            } else {
-//                mOperTwoPoint.setImageResource(R.drawable.theft_step_point);
-//                mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.cb));
-////                setSecurShowUI(false, true, false, false, false, false, false, false);
-//                isShowAdvProtectUi = true;
-//                mCurrentProcNumber = mBottomNumber[1];
-//                mCommonBar.setToolbarTitle(R.string.secur_advan_title);
-//                mAdvanChekBox.setVisibility(View.VISIBLE);
-//                LeoLog.i(TAG, "go to 2 !");
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_snd_arv");
-//            }
-//        } else {
-//            shakeAddSecurButton(mAddNumberBt);
-//            PhoneSecurityUtils.setVibrate(PhoneSecurityActivity.this, 200);
-//            String toastTip = getResources().getString(R.string.no_add_secur_number_toast_tip);
-//            mNoSecurNumTip.setVisibility(View.VISIBLE);
-//            Toast.makeText(PhoneSecurityActivity.this, toastTip, Toast.LENGTH_SHORT).show();
-//            SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_frt_nextNoTel");
-//        }
-//    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//        switch (buttonView.getId()) {
-//            case R.id.phone_security_number_backup_CB:
-//                mCheckStatus = isChecked;
-//                break;
-//            case R.id.open_advance_CB:
-//                mAdvanProCheckStatus = isChecked;
-//                break;
-//        }
-    }
-
-//    private void backupInstructsDialog() {
-//
-//        if (mBackupInstrDialog == null) {
-//            mBackupInstrDialog = new LEOAlarmDialog(this);
-//            mBackupInstrDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialog) {
-//                    if (mBackupInstrDialog != null) {
-//                        mBackupInstrDialog = null;
-//                    }
-//
-//                }
-//            });
-//        }
-//        mBackupInstrDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//                boolean isExistSim = mgr.getIsExistSim();
-//                if (isExistSim) {
-//                    ThreadManager.executeOnAsyncThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            final LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//                            PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
-//                            String numberNmae = lostMgr.getPhoneSecurityNumber();
-//                            if (!Utilities.isEmpty(numberNmae)) {
-//                                String[] number = numberNmae.split(":");
-//                                if (number != null) {
-//                                    mgr.sendMessage(number[1], getSendMessageInstructs(), MTKSendMsmHandler.BACKUP_SECUR_INSTRUCT_ID);
-//                                }
-//                            }
-//                            if (mBackupInstrDialog != null) {
-//                                mBackupInstrDialog.cancel();
-//                            }
-//                        }
-//                    });
-//                } else {
-//                    String failStr = PhoneSecurityActivity.this.getResources().getString(
-//                            R.string.privacy_message_item_send_message_fail);
-//                    Toast.makeText(PhoneSecurityActivity.this, failStr, Toast.LENGTH_SHORT).show();
-//                    if (mBackupInstrDialog != null) {
-//                        mBackupInstrDialog.cancel();
-//                    }
-//                }
-//            }
-//        });
-//        String content = getString(R.string.backup_instr_dialog_content);
-//        mBackupInstrDialog.setDialogIconVisibility(false);
-//        mBackupInstrDialog.setContent(content);
-//        mBackupInstrDialog.show();
-//    }
-
-    /*从步骤2返回到步骤1*/
-//    private void returnToProcOne() {
-//        mCommonBar.setToolbarTitle(R.string.phone_security_open);
-//        mOperTwoPoint.setImageResource(R.drawable.theft_step_point_dis);
-//        mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.c5));
-//        LostSecurityManagerImpl securityManager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//                     /*是否添加了防盗号码*/
-//        String securNumber = securityManager.getPhoneSecurityNumber();
-//        String[] contact = null;
-//        if (!Utilities.isEmpty(securNumber)) {
-//            contact = securNumber.split(":");
-//        }
-//        if (mButPointLt.getVisibility() == View.GONE) {
-//            mButPointLt.setVisibility(View.VISIBLE);
-//        }
-////        setSecurShowUI(true, false, true, false, false, true, false, true);
-//        mAddSecurNumber.setVisibility(View.VISIBLE);
-//        if (contact != null) {
-//            if (contact[0].equals(contact[1])) {
-//                mNoNameSecurNumber.setVisibility(View.VISIBLE);
-//                mExistSecurName.setVisibility(View.GONE);
-//                mNoNameSecurNumber.setText(contact[1]);
-//            } else {
-//                mNoNameSecurNumber.setVisibility(View.GONE);
-//                mExistSecurName.setVisibility(View.VISIBLE);
-//                mSecurName.setText(contact[0]);
-//                mSecurNumber.setText(contact[1]);
-//            }
-//        }
-//        mButton.setText(getResources().getString(R.string.secur_bottom_bt_text));
-//        mCurrentProcNumber = "1";
-//        mAdvanChekBox.setVisibility(View.GONE);
-//        LeoLog.i(TAG, "go to 1 !");
-//        SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_frt_arv");
-//    }
 
     /*未填写防盗号码，摇晃动画*/
     private void shakeAddSecurButton(View view) {
@@ -748,71 +409,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             mKnowMdContent.setText(content);
         }
     }
-
-    /*开启高级保护弹窗*/
-//    private void openAdvanceProtectDialogTip() {
-//        if (mAdvanceTipDialog == null) {
-//            mAdvanceTipDialog = new LEOAnimationDialog(this);
-//            mAdvanceTipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialog) {
-//                    if (mAdvanceTipDialog != null) {
-//                        mAdvanceTipDialog = null;
-//                        showShareDialog();
-//                    }
-//                }
-//            });
-//        }
-//        String content = getString(R.string.prot_open_suc_tip_cnt);
-//        mAdvanceTipDialog.setContent(content);
-//        mAdvanceTipDialog.show();
-//        PhoneSecurityManager.getInstance(PhoneSecurityActivity.this).setIsAdvOpenTip(false);
-//    }
-
-//    private void showShareDialog() {
-//        if (mPreference.getBoolean(PrefConst.PHONE_SECURITY_SHOW, false)) {
-//            return;
-//        }
-//        if (mShareDialog == null) {
-//            mShareDialog = new LEOAlarmDialog(PhoneSecurityActivity.this);
-//            mShareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialog) {
-//                    if (mShareDialog != null) {
-//                        mShareDialog = null;
-//                    }
-//                }
-//            });
-//        }
-//        String content = getString(R.string.phone_share_dialog_content);
-//        String shareButton = getString(R.string.share_dialog_btn_query);
-//        String cancelButton = getString(R.string.share_dialog_query_btn_cancel);
-//        mShareDialog.setContent(content);
-//        mShareDialog.setLeftBtnStr(cancelButton);
-//        mShareDialog.setRightBtnStr(shareButton);
-//        mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                SDKWrapper.addEvent(PhoneSecurityActivity.this, SDKWrapper.P1, "theft", "theft_noShare");
-//                if (mShareDialog != null && mShareDialog.isShowing()) {
-//                    mShareDialog.dismiss();
-//                    mShareDialog = null;
-//                }
-//            }
-//        });
-//        mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int i) {
-//                if (mShareDialog != null && mShareDialog.isShowing()) {
-//                    mShareDialog.dismiss();
-//                    mShareDialog = null;
-//                }
-//                shareApps();
-//            }
-//        });
-//        mShareDialog.show();
-//        mPreference.putBoolean(PrefConst.PHONE_SECURITY_SHOW, true);
-//    }
 
     /**
      * 分享应用
@@ -891,4 +487,77 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         }
     }
 
+    private void showShareDialog() {
+        if (mPreference.getBoolean(PrefConst.PHONE_SECURITY_SHOW, false)) {
+            return;
+        }
+        if (mShareDialog == null) {
+            mShareDialog = new LEOAlarmDialog(PhoneSecurityActivity.this);
+            mShareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mShareDialog != null) {
+                        mShareDialog = null;
+                    }
+                }
+            });
+        }
+        String content = getString(R.string.phone_share_dialog_content);
+        String shareButton = getString(R.string.share_dialog_btn_query);
+        String cancelButton = getString(R.string.share_dialog_query_btn_cancel);
+        mShareDialog.setContent(content);
+        mShareDialog.setLeftBtnStr(cancelButton);
+        mShareDialog.setRightBtnStr(shareButton);
+        mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                SDKWrapper.addEvent(PhoneSecurityActivity.this, SDKWrapper.P1, "theft", "theft_noShare");
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+            }
+        });
+        mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (mShareDialog != null && mShareDialog.isShowing()) {
+                    mShareDialog.dismiss();
+                    mShareDialog = null;
+                }
+                shareApps();
+            }
+        });
+        mShareDialog.show();
+        mPreference.putBoolean(PrefConst.PHONE_SECURITY_SHOW, true);
+    }
+
+    /**
+     * 开启高级保护弹窗
+     */
+    private void openAdvanceProtectDialogTip() {
+        boolean isTip = PhoneSecurityManager.getInstance(PhoneSecurityActivity.this).isIsAdvOpenTip();
+        if (isTip) {
+            return;
+        }
+        if (mAdvanceTipDialog == null) {
+            mAdvanceTipDialog = new LEOAnimationDialog(this);
+            mAdvanceTipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mAdvanceTipDialog != null) {
+                        mAdvanceTipDialog = null;
+                        mIsOpenBtResum = false;
+                    }
+                }
+            });
+        }
+        String content = getString(R.string.prot_open_suc_tip_cnt);
+        mAdvanceTipDialog.setContent(content);
+        if (!this.isFinishing() && mAdvanceTipDialog != null) {
+            mAdvanceTipDialog.show();
+            mIsOpenBtResum = false;
+        }
+        PhoneSecurityManager.getInstance(PhoneSecurityActivity.this).setIsAdvOpenTip(false);
+    }
 }
