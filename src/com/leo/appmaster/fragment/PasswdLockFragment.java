@@ -20,10 +20,13 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.airsig.airsigengmulti.ASEngine;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -73,6 +76,9 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private TextView mTvBottom;
     private View mAirSigTouchView;
     private int mShowType;
+    private TextView mTvMessage;
+    private TextView mTvResult;
+    private ProgressBar mProgressBar;
 
     private String mTempPasswd = "";
 
@@ -128,7 +134,12 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
+        if (null != ASEngine.getSharedInstance()) {
+            ASEngine.getSharedInstance().startSensors();
+        }
     }
+
+
 
     public void removeCamera() {
         try {
@@ -292,6 +303,15 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
         mTvBottom = (TextView) findViewById(R.id.switch_bottom);
         mAirSigTouchView = findViewById(R.id.airsig_lock);
+        mAirSigTouchView.setOnTouchListener(new ImageButton.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTouchThumb(v, event);
+            }
+        });
+        mTvResult = (TextView) findViewById(R.id.textResultMessage);
+        mTvMessage = (TextView) findViewById(R.id.textTouchAreaMessage);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBarWaiting);
 
         clearPasswd();
         initAirSig();
@@ -328,31 +348,113 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         }
     }
 
-//    private void showUI(boolean show) {
-//        if (show) {
-//            //1
-//
-//        } else {
-//            //1
-//            int oneType = mPasswdTip.getVisibility();
-//            mPasswdTip.setTag(oneType);
-//            mPasswdTip.setVisibility(View.GONE);
-//            //2
-//            int twoType = mPasswdHint.getVisibility();
-//            mPasswdHint.setTag(twoType);
-//            mPasswdHint.setVisibility(View.GONE);
-//            //3
-//            int threeType = mFourPoint.getVisibility();
-//            mFourPoint.setTag(threeType);
-//            mFourPoint.setVisibility(View.GONE);
-//            //4
-//            int fourType = mKeyBoard.getVisibility();
-//            mKeyBoard.setTag(fourType);
-//            mKeyBoard.setVisibility(View.GONE);
-//
-//            mAirSigTouchView.setVisibility(View.VISIBLE);
-//        }
-//    }
+    private boolean onTouchThumb(final View v, final MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            pressThumb(true);
+            ASEngine.getSharedInstance().startRecordingSensor(null);
+            return true;
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            showWaiting(true);
+            ASEngine.getSharedInstance().completeRecordSensorToIdentifyAction(null, new ASEngine.OnIdentifySignatureResultListener() {
+                @Override
+                public void onResult(ASEngine.ASAction action, ASEngine.ASError error) {
+                    showWaiting(false);
+                    pressThumb(false);
+
+                    if (null != action) {
+                        showMatch(true, null);
+                    } else if (null != error) {
+                        switch (error) {
+                            case NOT_FOUND:
+                                if (error.userData.containsKey(ASEngine.ASError.KEY_VERIFICATION_TIMES_LEFT)) {
+                                    int timesLeft = ((Integer) error.userData.get(ASEngine.ASError.KEY_VERIFICATION_TIMES_LEFT)).intValue();
+                                    if (timesLeft == 0) {
+                                        if (error.userData.containsKey(ASEngine.ASError.KEY_VERIFY_BLOCKED_SECONDS)) {
+                                            showMatch(false, String.format(getString(R.string.airsig_verify_too_many_fails_wait), error.userData.get(ASEngine.ASError.KEY_VERIFY_BLOCKED_SECONDS)));
+                                        } else {
+//                                            alertTooManyFails();
+                                        }
+                                    } else {
+                                        showMatch(false, String.format(getString(R.string.airsig_verify_not_match_times_left), timesLeft));
+                                    }
+                                } else {
+                                    showMatch(false, null);
+                                }
+                                break;
+                            case VERIFY_TOO_MANY_FAILED_TRIALS:
+                                if (error.userData.containsKey(ASEngine.ASError.KEY_VERIFY_BLOCKED_SECONDS)) {
+                                    showMatch(false, String.format(getString(R.string.airsig_verify_too_many_fails_wait), error.userData.get(ASEngine.ASError.KEY_VERIFY_BLOCKED_SECONDS)));
+                                } else {
+//                                    alertTooManyFails();
+                                }
+                                break;
+                            default:
+                                showMatch(false, null);
+                                break;
+                        }
+                    }
+                }
+            });
+            return true;
+        }
+        return false;
+    }
+
+    private void showMatch(final boolean match, final String message) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // show result
+                if (null != message && message.length() > 0) {
+                    mTvResult.setText(message);
+                } else {
+                    mTvResult.setText(match ? R.string.airsig_verify_match : R.string.airsig_verify_not_match);
+                }
+                mTvResult.setTextColor(getResources().getColor(match ? R.color.airsig_text_bright_blue : R.color.airsig_text_bright_red));
+                mTvResult.setVisibility(View.VISIBLE);
+
+
+                // Callback
+                if (match) {
+                    ((LockScreenActivity) mActivity).onUnlockSucceed();
+                } else {
+                    //dismiss result tv 3s later
+//                    resetResult();
+                }
+
+            }
+        });
+    }
+
+    private void pressThumb(final boolean pressed) {
+        if (mActivity == null) return;
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (pressed) {
+                    // Touch Area
+                    mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea_pressed));
+                    mTvMessage.setVisibility(View.INVISIBLE);
+                } else {
+                    mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea));
+                    mTvMessage.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void showWaiting(final boolean show) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (show) {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                } else {
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
 
     public void onEventMainThread(LockThemeChangeEvent event) {
 
@@ -640,6 +742,10 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             tv8Bottom.setImageResource(R.drawable.digital_bg_normal);
             tv9Bottom.setImageResource(R.drawable.digital_bg_normal);
             tv0Bottom.setImageResource(R.drawable.digital_bg_normal);
+        }
+
+        if (null != ASEngine.getSharedInstance()) {
+            ASEngine.getSharedInstance().stopSensors();
         }
 
         super.onPause();
