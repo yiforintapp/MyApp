@@ -507,7 +507,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     }
 
     private void showShareDialog() {
-        if (mPreference.getBoolean(PrefConst.PHONE_SECURITY_SHOW, false)) {
+        boolean isShareTip = mPreference.getBoolean(PrefConst.PHONE_SECURITY_SHOW, false);
+        if (isShareTip) {
             return;
         }
         if (mShareDialog == null) {
@@ -547,7 +548,9 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 shareApps();
             }
         });
-        mShareDialog.show();
+        if (!this.isFinishing()) {
+            mShareDialog.show();
+        }
         mPreference.putBoolean(PrefConst.PHONE_SECURITY_SHOW, true);
     }
 
