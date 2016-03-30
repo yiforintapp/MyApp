@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.UFOActivity;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -210,28 +211,104 @@ public class PreferenceTable extends BaseTable {
         putString(key, value + "");
     }
 
-    public synchronized void putString(final String key, final String value) {
+    public synchronized void putString(final String key, String value) {
         if (TextUtils.isEmpty(key) || value == null) return;
+
+        // true和false统一转为 1 和 0
+        if (value.equals("true")) {
+            value = String.valueOf(BOOL_TRUE);
+        } else if (value.equals("false")) {
+            value = String.valueOf(BOOL_FALSE);
+        }
+        mValues.put(key, value);
+
+        final String finalValue = value;
         if (BuildProperties.isApiLevel14()) {
-            mValues.put(key, value);
             if (mSerialExecutor == null) {
                 mSerialExecutor = ThreadManager.newSerialExecutor();
             }
             mSerialExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    insertOrUpdate(key, value);
+                    insertOrUpdate(key, finalValue);
                 }
             });
         } else {
-            mValues.put(key, value);
             if (mSerialExecutor == null) {
                 mSerialExecutor = ThreadManager.newSerialExecutor();
             }
             mSerialExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    insertOrUpdate(key, value);
+                    insertOrUpdate(key, finalValue);
+                }
+            });
+        }
+    }
+
+    public synchronized void putBundleMap(final Map<String, Object> map) {
+        if (map == null || map.size() == 0) {
+            return;
+        }
+
+        for (String key : map.keySet()) {
+            String value = String.valueOf(map.get(key));
+
+            // true和false统一转为 1 和 0
+            boolean change = false;
+            if (value.equals("true")) {
+                value = String.valueOf(BOOL_TRUE);
+                change = true;
+            } else if (value.equals("false")) {
+                value = String.valueOf(BOOL_FALSE);
+                change = true;
+            }
+            if (change) {
+                map.put(key, value);
+            }
+            mValues.put(key, value);
+        }
+        if (BuildProperties.isApiLevel14()) {
+            try {
+                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
+                final SharedPreferences.Editor editor = sp.edit();
+                for (String key : map.keySet()) {
+                    String value = String.valueOf(map.get(key));
+                    editor.putString(key, value);
+                }
+                mSerialExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        editor.commit();
+                    }
+                });
+            } catch (Exception e) {
+            }
+        } else {
+            final SQLiteDatabase db = getHelper().getWritableDatabase();
+            if (db == null) return;
+
+            mSerialExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    db.beginTransaction();
+                    try {
+                        ContentValues contentValues = new ContentValues();
+                        for (String key : map.keySet()) {
+                            // true和false统一转为 1 和 0
+                            String value = String.valueOf(map.get(key));
+                            contentValues.put(key, value);
+                            int rows = db.update(TABLE_NAME, contentValues, key + " = ? ", new String[]{key});
+                            if (rows <= 0) {
+                                db.insert(TABLE_NAME, null, contentValues);
+                            }
+                        }
+                        db.setTransactionSuccessful();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        db.endTransaction();
+                    }
                 }
             });
         }
