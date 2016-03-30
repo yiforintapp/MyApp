@@ -53,7 +53,7 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 
 public class PasswdLockFragment extends LockFragment implements OnClickListener, OnTouchListener {
-
+    private final static int DISMISSRESULT = 1;
     private boolean mNeedIntruderProtection = false;
     private ImageView mAppIcon;
     private ImageView mAppIconTop;
@@ -122,6 +122,16 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mIsCamouflageLockSuccess/* 伪装是否解锁成功 */;
 
     /*-------------------end-------------------*/
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case DISMISSRESULT:
+                    mTvResult.setVisibility(View.INVISIBLE);
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -417,8 +427,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 if (match) {
                     ((LockScreenActivity) mActivity).onUnlockSucceed();
                 } else {
-                    //dismiss result tv 3s later
-//                    resetResult();
+                    //dismiss result tv 1.5s later
+                    mHandler.sendEmptyMessageDelayed(DISMISSRESULT, 1000);
                 }
 
             }
@@ -434,6 +444,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     // Touch Area
                     mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea_pressed));
                     mTvMessage.setVisibility(View.INVISIBLE);
+                    mTvResult.setVisibility(View.INVISIBLE);
                 } else {
                     mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea));
                     mTvMessage.setVisibility(View.VISIBLE);
