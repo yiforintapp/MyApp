@@ -25,13 +25,6 @@ public class DatabaseSettings extends ISettings {
 
     @Override
     public void setBundleMap(Map<String, Object> map) {
-        for (String key : map.keySet()) {
-            Object value = map.get(key);
-            if (value == null) {
-                continue;
-            }
-
-            preferenceTable.putString(key, String.valueOf(value));
-        }
+        preferenceTable.putBundleMap(map);
     }
 }

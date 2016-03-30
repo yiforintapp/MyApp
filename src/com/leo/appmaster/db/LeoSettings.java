@@ -8,6 +8,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,13 +31,27 @@ public class LeoSettings {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         Map<String, ?> values = preferences.getAll();
+
+        Map<String, Object> highPriority = new HashMap<String, Object>();
+        Map<String, Object> normal = new HashMap<String, Object>();
         for (String s : values.keySet()) {
             Object obj = values.get(s);
-            if (obj != null) {
-                LeoSettings.setString(s, String.valueOf(obj));
+            if (obj == null) {
+                continue;
+            }
+            if (ISettings.isHighPriority(s)) {
+                highPriority.put(s, obj);
+            } else {
+                normal.put(s, obj);
             }
         }
 
+        if (highPriority.size() > 0) {
+            mPreference.setBundleMap(highPriority);
+        }
+        if (normal.size() > 0) {
+            mDatabase.setBundleMap(normal);
+        }
         file.delete();
 
     }
