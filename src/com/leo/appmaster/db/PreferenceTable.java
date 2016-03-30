@@ -52,6 +52,7 @@ public class PreferenceTable extends BaseTable {
 
     PreferenceTable() {
         mValues = new HashMap<String, String>();
+        mSerialExecutor = ThreadManager.newSerialExecutor();
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
