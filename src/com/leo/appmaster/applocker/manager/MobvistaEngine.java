@@ -264,7 +264,7 @@ public class MobvistaEngine {
 					MobVistaConstans.TEMPLATE_BIG_IMG, 1));
 			templateNativeHandler.addTemplate(new MvNativeHandler.Template(
 					MobVistaConstans.TEMPLATE_MULTIPLE_IMG, 3));
-			
+			templateNativeHandler.setMustBrowser(true);
 			templateNativeHandler.setAdListener(new MvNativeHandler.NativeAdListener() {
 				@Override
 				public void onAdLoaded(List<Campaign> campaigns, int template) {
@@ -412,10 +412,15 @@ public class MobvistaEngine {
 	public void registerTemplateView(View view, int index, String unitId) {
 		if (view != null) {
 			MobvistaAdData data = mMobVistaCacheMap.get(unitId);
-			Campaign campaign = data.campaigns.get(index);
-			
-			MvNativeHandler nativeHander = data.nativeAd;
-			nativeHander.registerView(view, campaign);
+			if (data != null && data.campaigns != null) {
+
+				Campaign campaign = data.campaigns.get(index);
+
+				MvNativeHandler nativeHander = data.nativeAd;
+				if (nativeHander != null) {
+					nativeHander.registerView(view, campaign);
+				}
+			}
 			
 			
 		}
