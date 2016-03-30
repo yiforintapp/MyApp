@@ -377,7 +377,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 //            public void run() {
 //                Debug.stopMethodTracing();
 //            }
-//        }, 1000);
+//        }, 2000);
     }
 
     private void splashDelayShow() {

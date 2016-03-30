@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
@@ -80,6 +81,7 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
+//        Debug.startMethodTracing("MotoG.trace");
         sInstance = this;
         // Use old sor
         try {
@@ -90,7 +92,6 @@ public class AppMasterApplication extends Application {
         LeoSettings.initialize();
         LeoLog.d(TAG, "initialize cost: " + (SystemClock.elapsedRealtime() - start));
 
-//        Debug.startMethodTracing("Nexus6.trace");
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String lastVer = pref.getLastVersion();
         try {

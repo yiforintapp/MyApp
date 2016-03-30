@@ -68,8 +68,6 @@ public class PreferenceTable extends BaseTable {
         if (mLoaded) return;
 
         LeoLog.d(TAG, "start to load loadPreference");
-        // 确保能读取数据之前，数据库已经ready
-        getHelper().getReadableDatabase();
         if (BuildProperties.isApiLevel14()) {
             try {
                 SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
@@ -191,7 +189,7 @@ public class PreferenceTable extends BaseTable {
     }
 
     public synchronized String getString(String key, String def) {
-        awaitLoadedLocked();
+//        awaitLoadedLocked();
         String v = mValues.get(key);
         return v != null ? v : def;
     }
@@ -281,17 +279,20 @@ public class PreferenceTable extends BaseTable {
             final SQLiteDatabase db = getHelper().getWritableDatabase();
             if (db == null) return;
 
+            LeoLog.d(TAG, "<ls> putBundleMap database before exe.");
             mSerialExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
+                    LeoLog.d(TAG, "<ls> putBundleMap database before update db.");
                     db.beginTransaction();
                     try {
                         ContentValues contentValues = new ContentValues();
                         for (String key : map.keySet()) {
                             // true和false统一转为 1 和 0
                             String value = String.valueOf(map.get(key));
-                            contentValues.put(key, value);
-                            int rows = db.update(TABLE_NAME, contentValues, key + " = ? ", new String[]{key});
+                            contentValues.put(COL_KEY, key);
+                            contentValues.put(COL_VALUE, value);
+                            int rows = db.update(TABLE_NAME, contentValues, COL_KEY + " = ? ", new String[]{key});
                             if (rows <= 0) {
                                 db.insert(TABLE_NAME, null, contentValues);
                             }
@@ -300,8 +301,9 @@ public class PreferenceTable extends BaseTable {
                         if (listener != null) {
                             listener.onBundleSaved();
                         }
+                        LeoLog.d(TAG, "<ls> putBundleMap database after update db.");
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        LeoLog.e(TAG, "<ls> putBundleMap ex.", e);
                     } finally {
                         db.endTransaction();
                     }
