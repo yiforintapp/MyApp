@@ -89,18 +89,18 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
 
         if (isAirsigOn) {
-
+            mCsiSignatureLock.setSummary(STRID_OPENED);
         } else {
-
+            mCsiSignatureLock.setSummary(STRID_DID_NOT_OPEN);
         }
 
         int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE,
                 AirSigSettingActivity.NOMAL_UNLOCK);
 
         if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
-
+            mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
         } else {
-
+            mCsiDefaultLockType.setSummary(STRID_SIGNATURE_LOCK);
         }
     }
 
