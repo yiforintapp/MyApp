@@ -81,6 +81,9 @@ public abstract class Bootstrap {
             case STEP_BACKGROUND_DELAY:
                 step = new BackgroundDelayBootstrap();
                 break;
+            case STEP_FOREGROUND_DELAY:
+                step = new ForegroundDelayBootstrap();
+                break;
             default:
                 break;
         }

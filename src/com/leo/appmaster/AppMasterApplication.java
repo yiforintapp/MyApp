@@ -49,6 +49,7 @@ public class AppMasterApplication extends Application {
     private static int[] mRootSteps = {
             Bootstrap.STEP_FOREGROUND,
             Bootstrap.STEP_BACKGROUND,
+            Bootstrap.STEP_FOREGROUND_DELAY,
             Bootstrap.STEP_BACKGROUND_DELAY
     };
 
@@ -81,7 +82,7 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
-//        Debug.startMethodTracing("MotoG4.trace");
+//        Debug.startMethodTracing("vivo1.trace");
         sInstance = this;
         // Use old sor
         try {
