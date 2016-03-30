@@ -2,7 +2,7 @@
 <manifest package="com.leo.appmaster"
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="70"
+          android:versionCode="71"
           android:versionName="@string/version_name">
 
     <uses-sdk
