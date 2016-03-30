@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class LeoSettings {
     private static final byte[] LOCK = new byte[1];
-    public static final int BOOL_TRUE = 1;
-    public static final int BOOL_FALSE = 0;
+    public static final String BOOL_TRUE = "true";
+    public static final String BOOL_FALSE = "false";
 
     private static ISettings mDatabase = new DatabaseSettings();
     private static ISettings mPreference = new SharedSettings();
@@ -58,7 +58,7 @@ public class LeoSettings {
     }
 
     public static void setBoolean(String key, boolean value) {
-        setInteger(key, value ? BOOL_TRUE : BOOL_FALSE);
+        setString(key, value ? BOOL_TRUE : BOOL_FALSE);
     }
 
     public static void setString(String key, String value) {
@@ -109,9 +109,9 @@ public class LeoSettings {
     }
 
     public static boolean getBoolean(String key, boolean def) {
-        int value = getInteger(key, def ? BOOL_TRUE : BOOL_FALSE);
+        String value = getString(key, def ? BOOL_TRUE : BOOL_FALSE);
 
-        return value == BOOL_TRUE;
+        return BOOL_TRUE.equals(value);
     }
 
     public static String getString(String key, String def) {
