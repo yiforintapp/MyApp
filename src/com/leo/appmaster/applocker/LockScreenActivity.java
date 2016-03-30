@@ -1430,7 +1430,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                             mAdapterCycle.setLasterSlectedPage(1);
                                             mBannerContainer.setVisibility(View.VISIBLE);
                                             showAdAnimaiton(unitId);
-                                            delayBannerHideAnim();
+                                            // 3.6版本，6秒后消失的逻辑去掉
+                                            // delayBannerHideAnim();
                                             hideIconAndPswTips();
 
                                         } else {
