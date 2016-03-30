@@ -245,12 +245,6 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             boolean flag = addSecurNumberHandler(number);
             if (flag) {
                 Intent intent = new Intent(AddSecurityNumberActivity.this, PhoneSecurityActivity.class);
-                try {
-                    startActivity(intent);
-                    AddSecurityNumberActivity.this.finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
                 LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                 //设置手机防盗为开启状态
@@ -262,6 +256,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                 final String sendNum = number;
                 boolean isExistSim = mgr.getIsExistSim();
                 if (isExistSim && mIsCheckB) {
+                    intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT,PhoneSecurityActivity.FROM_ADD_NUM_MSM);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
@@ -275,7 +270,15 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                                 R.string.privacy_message_item_send_message_fail);
                         Toast.makeText(this, failStr, Toast.LENGTH_SHORT).show();
                     }
+                    intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT,PhoneSecurityActivity.FROM_ADD_NUM_NO_MSM);
                 }
+                try {
+                    startActivity(intent);
+                    AddSecurityNumberActivity.this.finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             } else {
                 return;
             }

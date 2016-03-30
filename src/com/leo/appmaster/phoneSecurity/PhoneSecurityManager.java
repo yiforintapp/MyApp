@@ -158,15 +158,6 @@ public class PhoneSecurityManager {
         this.mIsExecuteSecur = mIsExecuteSecur;
     }
 
-    public void setIsFromScan(boolean isFromScan) {
-        mIsFromScan = isFromScan;
-    }
-
-    public boolean getIsFromScan() {
-        return mIsFromScan;
-    }
-
-
     public boolean isStopAlert() {
         return mStopAlert;
     }

@@ -51,6 +51,12 @@ import java.util.List;
 
 public class PhoneSecurityActivity extends BaseActivity implements OnClickListener {
     private static final String TAG = "PhoneSecurityActivity";
+
+    public static final String FROM_SECUR_INTENT = "FROM_SECUR_INTENT";
+    public static final int FROM_SECUR_GUIDE_INTENT = 1;
+    public static final int FROM_ADD_NUM_MSM = 2;
+    public static final int FROM_ADD_NUM_NO_MSM = 3;
+
     private CommonToolbar mCommonBar;
     private RelativeLayout mSecurOpenRT;
     private LEOAlarmDialog mBackupInstrDialog;
@@ -87,8 +93,34 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_security);
+        fromIntentHandler();
         initUI();
         initData();
+    }
+
+    private void fromIntentHandler() {
+        Intent intent = this.getIntent();
+        int fromId = intent.getIntExtra(FROM_SECUR_INTENT, 0);
+        switch (fromId) {
+            case FROM_SECUR_GUIDE_INTENT:
+                String toastStrGuide = this.getResources().getString(R.string.secur_open_sucess_toast);
+                openSecurToast(toastStrGuide);
+                break;
+            case FROM_ADD_NUM_MSM:
+                String toastStrMsm = this.getResources().getString(R.string.secur_open_sucess_send_msm_toast);
+                openSecurToast(toastStrMsm);
+                break;
+            case FROM_ADD_NUM_NO_MSM:
+                String toastStrNoMsm = this.getResources().getString(R.string.secur_open_sucess_toast);
+                openSecurToast(toastStrNoMsm);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void openSecurToast(String toastStr) {
+        Toast.makeText(this, toastStr, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -147,7 +179,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             mAdvGv.setAdapter(mAdvAdapter);
         }
         showShareDialog();
-        frmScanHandler();
     }
 
     /**
@@ -354,18 +385,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             e.printStackTrace();
         }
     }
-
-
-    /*来自扫描页面,加分提示处理*/
-    private void frmScanHandler() {
-        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
-        boolean isFromScanTmp = psm.getIsFromScan();
-        if (isFromScanTmp) {
-            ShowToast.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE, this);
-            psm.setIsFromScan(false);
-        }
-    }
-
 
     /*保护时间动画*/
     private void securTimeAnim(View view) {
