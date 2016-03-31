@@ -39,31 +39,6 @@ public class ADEngineWrapper {
 
     private Map<String, Iterator<Integer>> mRandomMap = new HashMap<String, Iterator<Integer>>();
 
-	
-
-
-	public static interface WrappedTemplateAdListener {
-		/**
-		 * 模板广告请求成功
-		 * @param code 返回码，如ERR_PARAMS_NULL
-		 * @param campaigns 请求成功的广告结构体集合，失败为null
-		 * @param msg 请求失败sdk返回的描述，成功为null
-		 */
-		public void onWrappedAdLoadFinished(int code, List<Campaign> campaigns, String msg);
-
-		/**
-		 * 模板广告被点击
-		 * @param campaign
-		 * @param unitID
-		 */
-		public void onWrappedAdClick(Campaign campaign, String unitID);
-
-		/**
-		 * 请求模板广告失败
-		 * @param message
-		 */
-		public void onAdLoadError(String message);
-	}
 
     public static interface WrappedAdListener {
         /**
