@@ -1014,7 +1014,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         return bd;
     }
 
-    private void setAppInfoBackground(Drawable drawable) {
+    public void setAppInfoBackground(Drawable drawable) {
         if (drawable != null) {
             int h = drawable.getIntrinsicHeight() * 9 / 10;
             int w = h * 3 / 5;

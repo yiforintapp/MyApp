@@ -133,6 +133,23 @@ public class GestureLockFragment extends LockFragment implements
         }
         mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
 
+        mViewBottom = findViewById(R.id.switch_bottom_content);
+        mViewBottom.setOnClickListener(this);
+        mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
+        mTvBottom = (TextView) findViewById(R.id.switch_bottom);
+        mAirSigTouchView = findViewById(R.id.airsig_lock);
+        mAirSigTouchView.setOnTouchListener(new ImageButton.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTouchThumb(v, event);
+            }
+        });
+        mTvResult = (TextView) findViewById(R.id.textResultMessage);
+        mTvMessage = (TextView) findViewById(R.id.textTouchAreaMessage);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBarWaiting);
+
+        initAirSig();
+
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
             mAppIcon.setVisibility(View.VISIBLE);
@@ -168,23 +185,6 @@ public class GestureLockFragment extends LockFragment implements
                 checkApplyTheme();
             }
         }
-
-        mViewBottom = findViewById(R.id.switch_bottom_content);
-        mViewBottom.setOnClickListener(this);
-        mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
-        mTvBottom = (TextView) findViewById(R.id.switch_bottom);
-        mAirSigTouchView = findViewById(R.id.airsig_lock);
-        mAirSigTouchView.setOnTouchListener(new ImageButton.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return onTouchThumb(v, event);
-            }
-        });
-        mTvResult = (TextView) findViewById(R.id.textResultMessage);
-        mTvMessage = (TextView) findViewById(R.id.textTouchAreaMessage);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBarWaiting);
-
-        initAirSig();
 
         LeoEventBus.getDefaultBus().register(this);
     }
@@ -484,11 +484,15 @@ public class GestureLockFragment extends LockFragment implements
 
         if (themeRes != null) {
             if (layoutBgRes > 0) {
-                //TODO 整个背景的引用
-                RelativeLayout layout = (RelativeLayout) getActivity().findViewById(
-                        R.id.activity_lock_layout);
-                Drawable bgDrawable = themeRes.getDrawable(layoutBgRes);
-                layout.setBackgroundDrawable(bgDrawable);
+                if (mShowType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                    //TODO 整个背景的引用
+                    RelativeLayout layout = (RelativeLayout) getActivity().findViewById(
+                            R.id.activity_lock_layout);
+                    Drawable bgDrawable = themeRes.getDrawable(layoutBgRes);
+                    layout.setBackgroundDrawable(bgDrawable);
+                } else {
+                    changeBg(true);
+                }
             }
         }
 
@@ -652,6 +656,7 @@ public class GestureLockFragment extends LockFragment implements
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_pass_gesture);
+            changeBg(true);
         } else {
             mLockPatternView.setVisibility(View.VISIBLE);
             mAirSigTouchView.setVisibility(View.GONE);
@@ -659,7 +664,41 @@ public class GestureLockFragment extends LockFragment implements
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_pass_number);
+            changeBg(false);
         }
+    }
+
+    RelativeLayout bgLayout;
+
+    private void changeBg(boolean isNormalbg) {
+
+        bgLayout = (RelativeLayout) getActivity().findViewById(
+                R.id.activity_lock_layout);
+        if (isNormalbg) {
+            LockScreenActivity activity = (LockScreenActivity) mActivity;
+            activity.setAppInfoBackground(getBd(mPackageName));
+        } else if (needChangeTheme()) {
+            LeoLog.d("testLockBg", "come in needChangeTheme");
+            String pkgName = AppMasterApplication.getSelectedTheme();
+            Context themeContext = LeoResources.getThemeContext(getActivity(), pkgName);// com.leo.appmaster:drawable/multi_theme_lock_bg
+            Resources themeRes = themeContext.getResources();
+            int layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable",
+                    ResourceName.THEME_GESTRUE_BG);
+            if (layoutBgRes <= 0) {
+                layoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable",
+                        ResourceName.THEME_GENERAL_BG);
+            }
+
+            if (themeRes != null) {
+                if (layoutBgRes > 0) {
+                    LeoLog.d("testLockBg", "change bg");
+                    //TODO 整个背景的引用
+                    Drawable bgDrawable = themeRes.getDrawable(layoutBgRes);
+                    bgLayout.setBackgroundDrawable(bgDrawable);
+                }
+            }
+        }
+
     }
 
     public View getIconView() {
