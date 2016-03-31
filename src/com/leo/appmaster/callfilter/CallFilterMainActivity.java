@@ -70,42 +70,42 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
     
     @Override
     public void onBackPressed() {
-        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
-            mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, true);
-            if (mDialogAskCreateShotcut == null) {
-                mDialogAskCreateShotcut = new LEOAlarmDialog(this);
-            }
-            mDialogAskCreateShotcut.setTitleVisiable(false);
-            mDialogAskCreateShotcut.setDialogIcon(R.drawable.qh_call_filter);
-            mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_callfilter));
-            mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
-            mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
-            mDialogAskCreateShotcut.setRightBtnListener(new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "assistant", "shortcut_block");
-                    Intent intent = new Intent();
-                    intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_CALL_FILTER);
-                    intent.putExtra("from_quickhelper", true);
-                    QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_callfilter), R.drawable.qh_call_filter, intent, CallFilterMainActivity.this);
-                    Toast.makeText(CallFilterMainActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();
-                    mDialogAskCreateShotcut.dismiss();
-                }
-            });
-            mDialogAskCreateShotcut.setLeftBtnListener(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "assistant", "shortcut_block_no");
-                    mDialogAskCreateShotcut.dismiss();
-                }
-            });
-            mDialogAskCreateShotcut.show();
-        } else {
+//        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
+//            mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, true);
+//            if (mDialogAskCreateShotcut == null) {
+//                mDialogAskCreateShotcut = new LEOAlarmDialog(this);
+//            }
+//            mDialogAskCreateShotcut.setTitleVisiable(false);
+//            mDialogAskCreateShotcut.setDialogIcon(R.drawable.qh_call_filter);
+//            mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_callfilter));
+//            mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
+//            mDialogAskCreateShotcut.setRightBtnStr(getString(R.string.ask_create_shortcut_button_right));
+//            mDialogAskCreateShotcut.setRightBtnListener(new DialogInterface.OnClickListener() {
+//
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "assistant", "shortcut_block");
+//                    Intent intent = new Intent();
+//                    intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                    intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_CALL_FILTER);
+//                    intent.putExtra("from_quickhelper", true);
+//                    QuickHelperUtils.createQuickHelper(getString(R.string.quick_helper_callfilter), R.drawable.qh_call_filter, intent, CallFilterMainActivity.this);
+//                    Toast.makeText(CallFilterMainActivity.this, getString(R.string.quick_help_add_toast), Toast.LENGTH_SHORT).show();
+//                    mDialogAskCreateShotcut.dismiss();
+//                }
+//            });
+//            mDialogAskCreateShotcut.setLeftBtnListener(new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    SDKWrapper.addEvent(CallFilterMainActivity.this, SDKWrapper.P1, "assistant", "shortcut_block_no");
+//                    mDialogAskCreateShotcut.dismiss();
+//                }
+//            });
+//            mDialogAskCreateShotcut.show();
+//        } else {
             super.onBackPressed();
-        }
+//        }
     }
 
     private void initUI() {
