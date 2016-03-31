@@ -65,6 +65,7 @@ import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.LEOAdManager;
 import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
+import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
@@ -77,6 +78,7 @@ import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -548,7 +550,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //        if (mHasClickGoGrantPermission) {
 //            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
 //        }
-        tryShowNoPermissionTip();
+
+        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        if(!isAirsigOn){
+            tryShowNoPermissionTip();
+        }
 
         // handleLoadAd();
 
