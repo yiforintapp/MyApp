@@ -89,6 +89,8 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
     private long mLastScanTs;
 
+//    private
+
     private PrivacyHelper(Context context) {
         mContext = context.getApplicationContext();
         mScoreMap = new HashMap<String, Integer>();

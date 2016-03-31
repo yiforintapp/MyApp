@@ -67,6 +67,7 @@ import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
@@ -107,17 +108,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private float mDrawerOffset;
     private List<MenuItem> mMenuItems;
     private MenuAdapter mMenuAdapter;
-    //    private ImageView mAdIcon;
-    //    private MobvistaAdWall mWallAd;
     private int mMenuTextColorId;
     private Handler mHandler = new Handler();
     private LeoPreference mPt = LeoPreference.getInstance();
-    public static int mHomeAdSwitchOpen = -1;
 
     private IntrudeSecurityManager mISManger;
-    private boolean mShowIswipeFromNotfi;
-
-//    public HomeMoreFragment mMoreFragment;
     private HomePrivacyFragment mPrivacyFragment;
     private HomeTabFragment mTabFragment;
     private GuideFragment mGuideFragment;
@@ -175,6 +170,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private View mTabWhiteBg;
     private boolean mEnterScan;
+
+    private Privacy mLockPrivacy;
+    private Privacy mImagePrivacy;
+    private Privacy mVideoPrivacy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
