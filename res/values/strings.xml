@@ -1233,5 +1233,6 @@
     <string name="home_det_app_str">个新应用</string>
     <string name="home_det_img_str">张新图片</string>
     <string name="home_det_vid_str">个新视频</string>
+    <string name="home_det_tip">建议开启手机防盗</string>
 
 </resources>
