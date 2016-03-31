@@ -36,6 +36,9 @@ public class PreferenceTable extends BaseTable {
     private HashMap<String, Object> mValues;
     private Executor mSerialExecutor;
 
+    private SharedPreferences mPrefs;
+    private HashMap<String, Object> mBackupValues;
+
     private boolean mLoaded;
 
     static PreferenceTable getInstance() {
@@ -52,7 +55,9 @@ public class PreferenceTable extends BaseTable {
 
     public PreferenceTable() {
         mValues = new HashMap<String, Object>();
+        mBackupValues = new HashMap<String, Object>();
         mSerialExecutor = ThreadManager.newSerialExecutor();
+        mPrefs = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
@@ -67,8 +72,7 @@ public class PreferenceTable extends BaseTable {
         LeoLog.d(TAG, "start to load loadPreference");
         if (BuildProperties.isApiLevel14()) {
             try {
-                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
-                Map<String, ?> all = sp.getAll();
+                Map<String, ?> all = mPrefs.getAll();
                 for (String key : all.keySet()) {
                     mValues.put(key, (String) all.get(key));
                 }
@@ -105,10 +109,7 @@ public class PreferenceTable extends BaseTable {
     @Override
     public void createTable(SQLiteDatabase db) {
         if (BuildProperties.isApiLevel14()) return;
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                "( _id INTEGER PRIMARY KEY," +
-                COL_KEY + " TEXT," +
-                COL_VALUE + " TEXT);");
+        createDatabase(db);
     }
 
     @Override
@@ -116,11 +117,17 @@ public class PreferenceTable extends BaseTable {
         if (BuildProperties.isApiLevel14()) return;
         if (oldVersion <= 7 && newVersion >= 8) {
             // 版本8才加入此表
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                    "( _id INTEGER PRIMARY KEY," +
-                    COL_KEY + " TEXT," +
-                    COL_VALUE + " TEXT);");
+            createDatabase(db);
         }
+    }
+
+    private void createDatabase(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                "( _id INTEGER PRIMARY KEY," +
+                COL_KEY + " TEXT," +
+                COL_VALUE + " TEXT);");
+
+        db.execSQL("CREATE INDEX IF NOT EXISTS data_idx on pref_data(key);");
     }
 
     public int getInt(String key, int def) {
@@ -188,7 +195,34 @@ public class PreferenceTable extends BaseTable {
     public synchronized String getString(String key, String def) {
 //        awaitLoadedLocked();
         Object v = mValues.get(key);
-        return v != null ? v.toString() : def;
+        if (mLoaded) {
+            return v != null ? v.toString() : def;
+        }
+
+        if (BuildProperties.isApiLevel14()) {
+            return mPrefs.getString(key, def);
+        } else {
+            SQLiteDatabase db = getHelper().getReadableDatabase();
+            if (db == null) {
+                return def;
+            }
+
+            Cursor cursor = null;
+            try {
+                cursor = db.query(TABLE_NAME, new String[]{COL_VALUE}, COL_KEY + " = ?",
+                        new String[]{key}, null, null, null);
+                if (cursor != null && cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
+                    return value != null ? value.toString() : def;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+        return def;
     }
 
     public void putInt(String key, int value) {
@@ -243,8 +277,7 @@ public class PreferenceTable extends BaseTable {
                         mSerialExecutor.execute(new Runnable() {
                             @Override
                             public void run() {
-                                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
-                                final SharedPreferences.Editor editor = sp.edit();
+                                final SharedPreferences.Editor editor = mPrefs.edit();
                                 for (String key : map.keySet()) {
                                     String value = String.valueOf(map.get(key));
                                     editor.putString(key, value);
@@ -303,8 +336,7 @@ public class PreferenceTable extends BaseTable {
         mValues.put(key, value);
         if (BuildProperties.isApiLevel14()) {
             try {
-                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
-                sp.edit().putString(key, value).commit();
+                mPrefs.edit().putString(key, value).commit();
             } catch (Exception e) {
             }
         } else {
