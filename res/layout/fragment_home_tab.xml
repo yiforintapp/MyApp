@@ -42,7 +42,7 @@
                             android:layout_width="@dimen/home_tab_ic_size"
                             android:layout_height="@dimen/home_tab_ic_size"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_home_tab_applock" />
+                            android:src="@drawable/icon_home_app" />
 
                         <TextView
                             style="@style/LockListTabText"
@@ -67,13 +67,13 @@
             android:background="@color/home_tab_divider" />
 
         <RelativeLayout
-            android:id="@+id/home_wifi_tab"
+            android:id="@+id/home_img"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/rl_home_tab_wifi"
+                android:id="@+id/rl_home_tab_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
@@ -81,16 +81,16 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/home_ic_wifi_img"
+                    android:id="@+id/home_ic_img_img"
                     android:layout_width="@dimen/home_tab_ic_size"
                     android:layout_height="@dimen/home_tab_ic_size"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_home_tab_wifi" />
+                    android:src="@drawable/icon_home_pic" />
 
                 <TextView
                     style="@style/HomeTabText"
-                    android:layout_below="@id/home_ic_wifi_img"
-                    android:text="@string/home_tab_wifi" />
+                    android:layout_below="@id/home_ic_img_img"
+                    android:text="@string/hp_hide_img" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -107,13 +107,13 @@
         android:layout_weight="1">
 
         <RelativeLayout
-            android:id="@+id/home_lost_tab"
+            android:id="@+id/home_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/rl_home_tab_findlost"
+                android:id="@+id/rl_home_tab_video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
@@ -121,16 +121,16 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/home_ic_lost_img"
+                    android:id="@+id/home_ic_video"
                     android:layout_width="@dimen/home_tab_ic_size"
                     android:layout_height="@dimen/home_tab_ic_size"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_home_callfilter" />
+                    android:src="@drawable/icon_home_video" />
 
                 <TextView
                     style="@style/HomeTabText"
-                    android:layout_below="@id/home_ic_lost_img"
-                    android:text="@string/call_filter_name" />
+                    android:layout_below="@id/home_ic_video"
+                    android:text="@string/hp_hide_video" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -140,13 +140,13 @@
             android:background="@drawable/home_area_divider" />
 
         <RelativeLayout
-            android:id="@+id/home_intruder_tv"
+            android:id="@+id/home_more"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/rl_home_tab_intruder_protection"
+                android:id="@+id/rl_home_tab_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
@@ -154,16 +154,16 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/home_ic_intruder_img"
+                    android:id="@+id/home_ic_more"
                     android:layout_width="@dimen/home_tab_ic_size"
                     android:layout_height="@dimen/home_tab_ic_size"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/ic_home_tab_antilost" />
+                    android:src="@drawable/icon_home_more" />
 
                 <TextView
                     style="@style/HomeTabText"
-                    android:layout_below="@id/home_ic_intruder_img"
-                    android:text="@string/home_tab_lost" />
+                    android:layout_below="@id/home_ic_more"
+                    android:text="@string/home_more" />
             </RelativeLayout>
         </RelativeLayout>
 

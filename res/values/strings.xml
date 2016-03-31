@@ -1226,5 +1226,6 @@
     <string name="lock_app_list_other_app">其他应用</string>
 
     <string name="img_hide_cpy_toast">当前从外置存储卡读取内容，可能过程较长</string>
+    <string name="home_more">更多</string>
 
 </resources>
