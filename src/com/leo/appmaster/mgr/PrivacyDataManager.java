@@ -189,4 +189,6 @@ public abstract class PrivacyDataManager extends Manager {
 
     public abstract int getVidShouldScore(int newVidNum);
 
+    public abstract int getHidePicTotalCount();
+    public abstract int getHideVidTotalCount();
 }

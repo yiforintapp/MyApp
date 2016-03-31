@@ -584,13 +584,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             //wifi && blue
 
             mAppScore = lm.getSecurityScore(mAppList);
-            mPrivacyHelper.onSecurityChange(MgrContext.MGR_APPLOCKER, mAppScore);
-//            updateNewAppList();
-//            com.leo.tools.animator.ObjectAnimator appAnim = mController.getNewAppAnim();
-//            if (appAnim != null) {
-//                appAnim.end();
-//                appAnim.cancel();
-//            }
             LeoLog.i(TAG, "appList, cost: " + (SystemClock.elapsedRealtime() - start));
         }
     });
@@ -607,9 +600,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mPicScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.photoItems.size());
 
             mPhotoList.inDifferentDir = DataUtils.differentDirPic(photoItems);
-            if (mVideoScanFinish) {
-                mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
-            }
 //            com.leo.tools.animator.ObjectAnimator picAnim = mController.getNewPicAnim();
 //            if (picAnim != null) {
 //                picAnim.end();
@@ -629,9 +619,6 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             mVidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
             LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
 
-            if (mPhotoScanFinish) {
-                mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, mPicScore + mVidScore);
-            }
 //            updateNewVidList();
 //            com.leo.tools.animator.ObjectAnimator vidAnim = mController.getNewVidAnim();
 //            if (vidAnim != null) {

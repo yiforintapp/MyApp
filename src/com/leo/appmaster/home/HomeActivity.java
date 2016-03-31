@@ -311,8 +311,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            mWallAd = null;
 //        }
 
-        // 重置隐私等级减少的分数
-        PrivacyHelper.getInstance(this).resetDecScore();
         ImageLoader.getInstance().clearMemoryCache();
         unregisterReceiver(mLocaleReceiver);
         mAppLockSuccess = false;
@@ -1438,9 +1436,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            LeoPreference.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
 //        }
 
-        if (increaseScore > 0) {
-            mPrivacyHelper.increaseScore(mgr, increaseScore);
-        }
         mProcessedMgr = mgr;
 //        increaseScore += intruderScore;
         mProcessedScore = increaseScore;
@@ -1472,20 +1467,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onIgnoreClick(int increaseScore, String mgr) {
-        LeoLog.d(TAG, "onIgnoreClick, increaseScore: " + increaseScore + " | mgr: " + mgr);
-        int score = mPrivacyHelper.getSecurityScore(mgr);
-        int totalScore = mPrivacyHelper.getSecurityScore();
-        Manager manager = MgrContext.getManager(mgr);
-        if (score > manager.getMaxScore() || (totalScore + increaseScore) > 100) {
-            increaseScore = 0;
-        }
-        if (increaseScore > 0) {
-            mPrivacyHelper.increaseScore(mgr, increaseScore);
-        }
-        LeoLog.d(TAG, "onIgnoreClick, increaseScore again: " + increaseScore);
+//        LeoLog.d(TAG, "onIgnoreClick, increaseScore: " + increaseScore + " | mgr: " + mgr);
+//        int score = mPrivacyHelper.getSecurityScore(mgr);
+//        int totalScore = mPrivacyHelper.getSecurityScore();
+//        Manager manager = MgrContext.getManager(mgr);
+//        if (score > manager.getMaxScore() || (totalScore + increaseScore) > 100) {
+//            increaseScore = 0;
+//        }
+//        LeoLog.d(TAG, "onIgnoreClick, increaseScore again: " + increaseScore);
 //        mPrivacyFragment.startIncreaseSocreAnim(increaseScore);
 //        mPrivacyFragment.increaseStepAnim();
-        jumpToNextFragment(false);
+//        jumpToNextFragment(false);
     }
 
     public void resetToolbarColor() {

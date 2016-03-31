@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.videohide.VideoItemBean;
 
 import java.util.List;
@@ -41,5 +42,35 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
     @Override
     public int getProceedStringId() {
         return 0;
+    }
+
+    @Override
+    public int getNotificationTextId() {
+        return 0;
+    }
+
+    @Override
+    public int getNotificationSummaryId() {
+        return 0;
+    }
+
+    @Override
+    public int getNotificationIconId() {
+        return 0;
+    }
+
+    @Override
+    public int getPrivacyLimit() {
+        return PrefTableHelper.getVideoPrivacyLimit();
+    }
+
+    @Override
+    public int getPrivacyType() {
+        return PrivacyHelper.PRIVACY_HIDE_VID;
+    }
+
+    @Override
+    public String getReportDescription() {
+        return "prilevel_notice_vid";
     }
 }

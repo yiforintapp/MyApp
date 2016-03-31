@@ -94,4 +94,28 @@ public class PrefTableHelper {
         return LeoPreference.getInstance().getInt(
                 ADShowTypeRequestManager.AD_PROBABILITY, ADShowTypeRequestManager.AD_PROBABILITY_MAX);
     }
+
+    /**
+     * 获取弹应用隐私通知的个数
+     * @return
+     */
+    public static int getLockPrivacyLimit() {
+        return LeoSettings.getInteger(PrefConst.KEY_PRIVACY_APP_LIMIT, 5);
+    }
+
+    /**
+     * 获取弹应用隐私通知的个数
+     * @return
+     */
+    public static int getImagePrivacyLimit() {
+        return LeoSettings.getInteger(PrefConst.KEY_PRIVACY_IMAGE_LIMIT, 15);
+    }
+
+    /**
+     * 获取弹应用隐私通知的个数
+     * @return
+     */
+    public static int getVideoPrivacyLimit() {
+        return LeoSettings.getInteger(PrefConst.KEY_PRIVACY_VIDEO_LIMIT, 3);
+    }
 }

@@ -61,7 +61,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             MediaStore.Files.FileColumns._ID, //
     };
 
-    private Handler mHandler = new Handler();
     private MediaStoreChangeObserver mMediaStoreChangeObserver;
     private static int mScore = 0;
     private int mScanAddPicNum = 0;
@@ -1005,6 +1004,32 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             vidScore = newVidNum * SPA_VID;
         }
         return vidScore;
+    }
+
+    @Override
+    public int getHidePicTotalCount() {
+        Uri uri = MediaStore.Files.getContentUri("external");
+        String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaStore.MediaColumns.DATA
+                + " LIKE '%.leotmi'";
+
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, new String[]{MediaStore.MediaColumns._ID}, selection, null,
+                    MediaStore.MediaColumns.DATE_ADDED + " desc");
+            return cursor.getCount();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public int getHideVidTotalCount() {
+        return 0;
     }
 
     @Override
