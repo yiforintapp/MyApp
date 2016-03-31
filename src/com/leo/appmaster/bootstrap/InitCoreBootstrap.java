@@ -111,11 +111,6 @@ public class InitCoreBootstrap extends Bootstrap {
         MobvistaEngine.getInstance(mApp);
         LeoLog.d(TAG, "MobvistaEngine init cost: " + (SystemClock.elapsedRealtime() - start));
 
-        //init DeviceImp
-        WifiSecurityManager wifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
-        DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
-        deviceManager.init();
-
         // start a protection JobScheduler service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             TaskProtectService.scheduleService(mApp);

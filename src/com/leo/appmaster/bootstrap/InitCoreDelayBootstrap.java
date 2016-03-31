@@ -13,6 +13,8 @@ import android.telephony.TelephonyManager;
 import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
@@ -49,6 +51,10 @@ public class InitCoreDelayBootstrap extends Bootstrap {
         AppBusinessManager.getInstance(mApp).init();
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, AppBusinessManager.getInstance.init: " + (end - start));
+
+        //init DeviceImp
+        DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
+        deviceManager.init();
         return false;
     }
 
