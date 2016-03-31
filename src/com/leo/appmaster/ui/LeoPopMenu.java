@@ -115,8 +115,12 @@ public class LeoPopMenu {
         // mLeoPopMenu.showAsDropDown(anchorView, 0, 0);
         try {
             if (mStyles != null && mStyles.direction == DIRECTION_DOWN) {
+                LeoLog.i("pop","show at Location");
                 mLeoPopMenu.showAtLocation(anchorView, Gravity.NO_GRAVITY, 0, 0);
             } else {
+                if (anchorView != null) {
+                    LeoLog.i("pop","show as DropDown ;" + anchorView.getHeight());
+                }
                 mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
             }
         } catch (Exception e) {

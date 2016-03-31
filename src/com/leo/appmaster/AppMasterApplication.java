@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
@@ -23,6 +24,7 @@ import android.view.WindowManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -47,6 +49,7 @@ public class AppMasterApplication extends Application {
     private static int[] mRootSteps = {
             Bootstrap.STEP_FOREGROUND,
             Bootstrap.STEP_BACKGROUND,
+            Bootstrap.STEP_FOREGROUND_DELAY,
             Bootstrap.STEP_BACKGROUND_DELAY
     };
 
@@ -79,16 +82,18 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
+//        Debug.startMethodTracing("vivo1.trace");
         sInstance = this;
         // Use old sor
         try {
             System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
         } catch (Exception e) {
         }
+        long start = SystemClock.elapsedRealtime();
+        LeoSettings.initialize();
+        LeoLog.d(TAG, "initialize cost: " + (SystemClock.elapsedRealtime() - start));
 
-//        Debug.startMethodTracing("Nexus6.trace");
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        //TODO 首次启动加载数据(获取上次版本号)
         String lastVer = pref.getLastVersion();
         try {
             sLastVersion = Integer.parseInt(lastVer);
@@ -101,7 +106,6 @@ public class AppMasterApplication extends Application {
         mHandler = new Handler();
 
         sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE);
-        //TODO 首次启动加载数据（获取使用的主题）
         usedThemePackage = sharedPreferences.getString("packageName", Constants.DEFAULT_THEME);
 
         // For android L and above, daemon service is not work, so disable it

@@ -126,7 +126,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         nm = (NotificationManager) mContext
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         // buildUpdatedNotification();
-        buildDownloadNotification();
+//        buildDownloadNotification();
     }
 
     public void setOnProgressListener(OnStateChangeListener l) {

@@ -6,6 +6,7 @@
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">0dp</dimen>
     <dimen name="ges_Pattern_m_top">38dp</dimen>
+    <dimen name="ges_Pattern_air_sig_m_top">50dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
     <dimen name="hide_album_image_frame_width">128dp</dimen>
     <dimen name="hide_album_image_frame_left">18dp</dimen>
@@ -19,6 +20,7 @@
     <dimen name="digital_item_marginTop">5dp</dimen>
     <dimen name="digital_item_marginBottom">5dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
+    <dimen name="air_sig_lock_patten_height">280dp</dimen>
     <dimen name="layout_four_passwd_marginTop">10dp</dimen>
     <dimen name="circle_count_text_size">46dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>

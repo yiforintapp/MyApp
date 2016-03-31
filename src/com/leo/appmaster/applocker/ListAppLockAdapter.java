@@ -67,12 +67,12 @@ public class ListAppLockAdapter extends BaseAdapter {
             if (Constants.SWITCH_LIST.equals(info.titleName)) {
                 text = mContext.getString(R.string.app_lock_list_switch_title_one);
             } else if (Constants.RECENT_DOWNLOAD_LIST.equals(info.titleName)) {
-                text = "新增应用";
+                text = mContext.getString(R.string.lock_app_list_new_app);
             } else if (Constants.OTHERS_LOCK_LIST.equals(info.titleName)) {
                 if (mNewAppExist) {
-                    text = "其他应用";
+                    text = mContext.getString(R.string.lock_app_list_other_app);
                 } else {
-                    text = "全部应用";
+                    text = mContext.getString(R.string.lock_app_list_all_app);
                 }
             }
             textView.setText(text);

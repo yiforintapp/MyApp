@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,11 +53,14 @@ import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.BaseSelfDurationToast;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.Utilities;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -125,7 +129,7 @@ public class AppLockListActivity extends BaseActivity implements
     private List<AppItemInfo> mAppList;
     private int mPosition = 1; // 用来定位
     private LeoPreference mLeoPreference;
-
+    private BaseSelfDurationToast mPermissionGuideToast;
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -145,14 +149,10 @@ public class AppLockListActivity extends BaseActivity implements
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
-            boolean mIsFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", false);
-            if (isFromConfrim && ((mAppList != null && mAppList.size() > 0) || mIsFirstEnterFromMain)) {
+            if (isFromConfrim && (mAppList != null && mAppList.size() > 0)) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
-                if(switchs != null && switchs.size() > 0) {
-                    mPosition = + (switchs.size() + 1);
-                }
-                if (mIsFirstEnterFromMain) {
-                    mLeoPreference.putBoolean("FirstEnterFromMain", false);
+                if (switchs != null && switchs.size() > 0) {
+                    mPosition = +(switchs.size() + 1);
                 }
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
@@ -253,11 +253,11 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList = new ArrayList<AppInfo>();
         mUnlockRecommendList = new ArrayList<AppInfo>();
         mUnlockNormalList = new ArrayList<AppInfo>();
-        if(wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
-            mWifiAndBluetoothLockCount ++;
+        if (wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            mWifiAndBluetoothLockCount++;
         }
-        if(blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
-            mWifiAndBluetoothLockCount ++;
+        if (blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
+            mWifiAndBluetoothLockCount++;
         }
 
         mGuideTip = findViewById(R.id.guide_tip_layout);
@@ -291,17 +291,15 @@ public class AppLockListActivity extends BaseActivity implements
      * 进入应用锁列表，引导提示
      */
     private void inLockListGuideTip() {
-        if (!isFromConfrim) {
-            if (!isGuideEnough()) {
-                int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
-                guideCount = guideCount + 1;
-                LeoPreference.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
-            }
-            boolean isGuideEnough = isGuideEnough();
-            if (!isGuideEnough) {
-                if (mWhiteMode != -1 || needAppGuide()) {
-                    openHelp(true, false);
-                }
+        if (!isGuideEnough()) {
+            int guideCount = LeoPreference.getInstance().getInt(PrefConst.KEY_IN_LOCK_GUIDE, 0);
+            guideCount = guideCount + 1;
+            LeoPreference.getInstance().putInt(PrefConst.KEY_IN_LOCK_GUIDE, guideCount);
+        }
+        boolean isGuideEnough = isGuideEnough();
+        if (!isGuideEnough) {
+            if (mWhiteMode != -1 || needAppGuide()) {
+                openHelp(true, false);
             }
         }
     }
@@ -337,6 +335,9 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockNormalList.clear();
         mUnlockList.clear();
         mLockedList.clear();
+        if (mLockedList != null) {
+            mLockAdapter.setNewAppExist(false);
+        }
         if (mAppList != null && mAppList.size() > 0) {
             mAppList.clear();
         }
@@ -384,7 +385,7 @@ public class AppLockListActivity extends BaseActivity implements
             Collections.sort(mUnlockNormalList, new DefalutAppComparator());
         } catch (Exception e) {
         }
-        mLockListCount =mLockedList.size();
+        mLockListCount = mLockedList.size();
         mResaultList = new ArrayList<AppInfo>();
         ArrayList<AppInfo> resaultUnlock = new ArrayList<AppInfo>(mUnlockRecommendList);
         resaultUnlock.addAll(mUnlockNormalList);
@@ -392,32 +393,13 @@ public class AppLockListActivity extends BaseActivity implements
 
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
-        boolean isFirstEnterFromMain = mLeoPreference.getBoolean("FirstEnterFromMain", false);
-        boolean hasEnterFromTab =  mLeoPreference.getBoolean("HasEnterFromTab", false);
-        if (isFromConfrim && isFirstEnterFromMain && !hasEnterFromTab) {
-            mAppList.clear();
-        }
 
-        boolean isFirstEnterFromIcon = mLeoPreference.getBoolean("FirstEnterFromTab", false);
-        LeoLog.e("mResaultList", "isFirstEnterFromIcon:" + isFirstEnterFromIcon + ";;;isFromConfrim: " + isFromConfrim );
-        if (!isFromConfrim && isFirstEnterFromIcon) {
+        LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size()
+                + "mLockedList:" + mLockedList.size() + "mUnlockList:" + mUnlockList.size());
+        if (mAppList.size() == mUnlockList.size()) {
             mAppList.clear();
-            mLeoPreference.putBoolean("FirstEnterFromTab", false);
-            mLeoPreference.putBoolean("HasEnterFromTab", true);
         }
         lm.ignore();
-//        AppItemInfo appItemInfo = new AppItemInfo();
-//        appItemInfo.packageName = "com.android.settings";
-//        appItemInfo.label = "设置";
-//        appItemInfo.topPos = 10000;
-//        AppItemInfo appItemInfo1 = new AppItemInfo();
-//        appItemInfo1.packageName = "com.android.dialer";
-//        mAppList.add(appItemInfo);
-//        mAppList.add(appItemInfo1);
-        LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size());
-        for (AppItemInfo appItemInfo: mAppList) {
-            LeoLog.e("mResaultList", appItemInfo.packageName);
-        }
         if (mAppList != null && mAppList.size() > 0) {
             for (int i = 0; i < mAppList.size(); i++) {
                 Iterator<AppInfo> iterator = mUnlockRecommendList.iterator();
@@ -547,8 +529,10 @@ public class AppLockListActivity extends BaseActivity implements
                 return;
             }
         }
-        if (mUnlockRecommendList.size() > 0) {
-            if (mAppList.size() > 0) {
+        if (mUnlockRecommendList.size() > 0
+                || mLockedList.size() > 0
+                || mUnlockNormalList.size() > 0) {
+            if (mAppList != null && mAppList.size() > 0) {
                 if (i == 2 + switchs.size() + mAppList.size()) {
                     return;
                 }
@@ -558,25 +542,6 @@ public class AppLockListActivity extends BaseActivity implements
                 }
             }
         }
-//        if (mUnlockNormalList.size() > 0 || mLockedList.size() > 0) {
-//            if (mAppList.size() > 0 && mUnlockRecommendList.size() > 0) {
-//                if (i == 3 + switchs.size() + mAppList.size() + mUnlockRecommendList.size()) {
-//                    return;
-//                }
-//            } else if (mAppList.size() == 0 && mUnlockRecommendList.size() == 0) {
-//                if (i == 1 + switchs.size()) {
-//                    return;
-//                }
-//            } else if (mAppList.size() > 0 && mUnlockRecommendList.size() == 0) {
-//                if (i == 2 + switchs.size() + mAppList.size()) {
-//                    return;
-//                }
-//            } else if (mAppList.size() == 0 && mUnlockRecommendList.size() > 0) {
-//                if (i == 2 + switchs.size() + mUnlockRecommendList.size()) {
-//                    return;
-//                }
-//            }
-//        }
 
         ListLockItem lockImageView = (ListLockItem) view.findViewById(R.id.content_item_all);
         LockMode curMode = mLockManager.getCurLockMode();
@@ -850,6 +815,38 @@ public class AppLockListActivity extends BaseActivity implements
                     } catch (Exception e) {
                     }
                 }
+                try {
+                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if (mPermissionGuideToast == null) {
+                                mPermissionGuideToast = new BaseSelfDurationToast(AppLockListActivity.this);
+                            }
+                            mPermissionGuideToast.setDuration(1000 * 5);
+                            if (Utilities.hasNavigationBar(AppLockListActivity.this)) {
+                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission_navigationbar);
+                            } else {
+                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
+                            }
+                            mPermissionGuideToast.setMatchParent();
+                            mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, DipPixelUtil.dip2px(AppLockListActivity.this, 14));
+                            View v = LayoutInflater.from(AppLockListActivity.this).inflate(R.layout.toast_permission_guide, null);
+                            ImageView ivClose = (ImageView) v.findViewById(R.id.iv_permission_guide_close);
+                            ivClose.setOnClickListener(new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (mPermissionGuideToast != null) {
+                                        mPermissionGuideToast.hide();
+                                    }
+                                }
+                            });
+                            mPermissionGuideToast.setView(v);
+                            mPermissionGuideToast.show();
+                        }
+                    }, 200);
+                } catch (Exception e) {
+                }
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_use");
                 break;
@@ -1061,14 +1058,14 @@ public class AppLockListActivity extends BaseActivity implements
         LeoLog.e("HomeActivity", mLockedList.size() + "");
         int count = 0;
         if (wifiSwitch.isLockNow(mLockManager.getCurLockMode())) {
-            count ++;
+            count++;
         }
         if (blueToothSwitch.isLockNow(mLockManager.getCurLockMode())) {
-            count ++;
+            count++;
         }
         if (((mFromSuccessListCount != 0 && mLockedList.size() >= mFromSuccessListCount)
                 || (mFromSuccessListCount == 0 && mLockedList.size() > mLockListCount)
-                ||  count > mWifiAndBluetoothLockCount)
+                || count > mWifiAndBluetoothLockCount)
                 && !isFromConfrim) {
             LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP, true));
         }

@@ -21,6 +21,7 @@ import java.util.concurrent.Executor;
  * Created by Jasper on 2016/3/29.
  */
 public class PreferenceTable extends BaseTable {
+    private static final String TAG = "PreferenceTable";
     private static final byte[] LOCK = new byte[1];
     private static PreferenceTable sInstance;
 
@@ -32,7 +33,7 @@ public class PreferenceTable extends BaseTable {
     private static final int BOOL_TRUE = 1;
     private static final int BOOL_FALSE = 0;
 
-    private HashMap<String, String> mValues;
+    private HashMap<String, Object> mValues;
     private Executor mSerialExecutor;
 
     private boolean mLoaded;
@@ -49,14 +50,13 @@ public class PreferenceTable extends BaseTable {
         return sInstance;
     }
 
-    PreferenceTable() {
-        mValues = new HashMap<String, String>();
+    public PreferenceTable() {
+        mValues = new HashMap<String, Object>();
+        mSerialExecutor = ThreadManager.newSerialExecutor();
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
-                synchronized (PreferenceTable.this) {
-                    loadPreference();
-                }
+                loadPreference();
             }
         });
     }
@@ -64,8 +64,7 @@ public class PreferenceTable extends BaseTable {
     public void loadPreference() {
         if (mLoaded) return;
 
-        // 确保能读取数据之前，数据库已经ready
-        getHelper().getReadableDatabase();
+        LeoLog.d(TAG, "start to load loadPreference");
         if (BuildProperties.isApiLevel14()) {
             try {
                 SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
@@ -100,6 +99,7 @@ public class PreferenceTable extends BaseTable {
         }
 
         mLoaded = true;
+        LeoLog.d(TAG, "end to load loadPreference");
     }
 
     @Override
@@ -124,13 +124,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public int getInt(String key, int def) {
-        String value = getString(key);
+        Object value = getString(key, null);
         if (value == null) {
             return def;
         }
 
         try {
-            return Integer.parseInt(value);
+            return Integer.parseInt(value.toString());
         } catch (NumberFormatException e) {
         }
 
@@ -138,13 +138,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public long getLong(String key, long def) {
-        String value = getString(key);
+        Object value = getString(key, null);
         if (value == null) {
             return def;
         }
 
         try {
-            return Long.parseLong(value);
+            return Long.parseLong(value.toString());
         } catch (NumberFormatException e) {
         }
 
@@ -152,13 +152,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public double getDouble(String key, double def) {
-        String value = getString(key);
+        Object value = getString(key, null);
         if (value == null) {
             return def;
         }
 
         try {
-            return Double.parseDouble(value);
+            return Double.parseDouble(value.toString());
         } catch (NumberFormatException e) {
         }
 
@@ -166,13 +166,13 @@ public class PreferenceTable extends BaseTable {
     }
 
     public float getFloat(String key, float def) {
-        String value = getString(key);
+        Object value = getString(key, null);
         if (value == null) {
             return def;
         }
 
         try {
-            return Float.parseFloat(value);
+            return Float.parseFloat(value.toString());
         } catch (NumberFormatException e) {
         }
 
@@ -185,9 +185,10 @@ public class PreferenceTable extends BaseTable {
         return value == BOOL_TRUE;
     }
 
-    public synchronized String getString(String key) {
-        awaitLoadedLocked();
-        return mValues.get(key);
+    public synchronized String getString(String key, String def) {
+//        awaitLoadedLocked();
+        Object v = mValues.get(key);
+        return v != null ? v.toString() : def;
     }
 
     public void putInt(String key, int value) {
@@ -210,34 +211,96 @@ public class PreferenceTable extends BaseTable {
         putString(key, value + "");
     }
 
-    public synchronized void putString(final String key, final String value) {
+    public void putString(final String key, String value) {
         if (TextUtils.isEmpty(key) || value == null) return;
-        if (BuildProperties.isApiLevel14()) {
-            mValues.put(key, value);
-            if (mSerialExecutor == null) {
-                mSerialExecutor = ThreadManager.newSerialExecutor();
-            }
-            mSerialExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    insertOrUpdate(key, value);
-                }
-            });
-        } else {
-            mValues.put(key, value);
-            if (mSerialExecutor == null) {
-                mSerialExecutor = ThreadManager.newSerialExecutor();
-            }
-            mSerialExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    insertOrUpdate(key, value);
-                }
-            });
+
+        // true和false统一转为 1 和 0
+        if (value.equals("true")) {
+            value = String.valueOf(BOOL_TRUE);
+        } else if (value.equals("false")) {
+            value = String.valueOf(BOOL_FALSE);
         }
+        final String finalValue = value;
+        mSerialExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                insertOrUpdate(key, finalValue);
+            }
+        });
+    }
+
+    public void putBundleMap(final Map<String, Object> map, final ISettings.OnBundleSavedListener listener) {
+        if (map == null || map.size() == 0) {
+            return;
+        }
+
+        mValues.putAll(map);
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (BuildProperties.isApiLevel14()) {
+                    try {
+                        mSerialExecutor.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
+                                final SharedPreferences.Editor editor = sp.edit();
+                                for (String key : map.keySet()) {
+                                    String value = String.valueOf(map.get(key));
+                                    editor.putString(key, value);
+
+                                    checkBooleanAndChange(key, value);
+                                }
+                                editor.commit();
+                                if (listener != null) {
+                                    listener.onBundleSaved();
+                                }
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
+                } else {
+                    final SQLiteDatabase db = getHelper().getWritableDatabase();
+                    if (db == null) return;
+
+                    LeoLog.d(TAG, "<ls> putBundleMap database before exe.");
+                    mSerialExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            LeoLog.d(TAG, "<ls> putBundleMap database before update db.");
+                            db.beginTransaction();
+                            try {
+                                ContentValues contentValues = new ContentValues();
+                                for (String key : map.keySet()) {
+                                    // true和false统一转为 1 和 0
+                                    String value = String.valueOf(map.get(key));
+                                    contentValues.put(COL_KEY, key);
+                                    contentValues.put(COL_VALUE, value);
+                                    int rows = db.update(TABLE_NAME, contentValues, COL_KEY + " = ? ", new String[]{key});
+                                    if (rows <= 0) {
+                                        db.insert(TABLE_NAME, null, contentValues);
+                                    }
+                                    checkBooleanAndChange(key, value);
+                                }
+                                db.setTransactionSuccessful();
+                                if (listener != null) {
+                                    listener.onBundleSaved();
+                                }
+                                LeoLog.d(TAG, "<ls> putBundleMap database after update db.");
+                            } catch (Exception e) {
+                                LeoLog.e(TAG, "<ls> putBundleMap ex.", e);
+                            } finally {
+                                db.endTransaction();
+                            }
+                        }
+                    });
+                }
+            }
+        }, 2000);
     }
 
     private void insertOrUpdate(String key, String value) {
+        mValues.put(key, value);
         if (BuildProperties.isApiLevel14()) {
             try {
                 SharedPreferences sp = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
@@ -252,9 +315,8 @@ public class PreferenceTable extends BaseTable {
             contentValues.put(COL_KEY, key);
             contentValues.put(COL_VALUE, value);
             try {
-                if (isKeyExist(key)) {
-                    db.update(TABLE_NAME, contentValues, COL_KEY + " = ?", new String[]{key});
-                } else {
+                int rows = db.update(TABLE_NAME, contentValues, COL_KEY + " = ?", new String[]{key});
+                if (rows <= 0) {
                     db.insert(TABLE_NAME, null, contentValues);
                 }
             } catch (Exception e) {
@@ -263,25 +325,12 @@ public class PreferenceTable extends BaseTable {
         }
     }
 
-    private boolean isKeyExist(String key) {
-        SQLiteDatabase sd = getHelper().getReadableDatabase();
-        if (sd == null) {
-            return false;
+    private void checkBooleanAndChange(String key, String value) {
+        if ("true".equals(value)) {
+            mValues.put(key, String.valueOf(BOOL_TRUE));
+        } else if ("false".equals(value)) {
+            mValues.put(key, String.valueOf(BOOL_FALSE));
         }
-        Cursor cursor = null;
-        try {
-            cursor = sd.query(TABLE_NAME, new String[]{COL_KEY}, COL_KEY + " = ?",
-                    new String[]{key}, null, null, null);
-            if (cursor != null) {
-                return cursor.getCount() > 0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            IoUtils.closeSilently(cursor);
-        }
-
-        return false;
     }
 
     private void awaitLoadedLocked() {

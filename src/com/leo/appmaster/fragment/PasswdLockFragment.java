@@ -20,18 +20,25 @@ import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.airsig.airsigengmulti.ASEngine;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
@@ -46,7 +53,7 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 
 public class PasswdLockFragment extends LockFragment implements OnClickListener, OnTouchListener {
-
+    private final static int DISMISSRESULT = 1;
     private boolean mNeedIntruderProtection = false;
     private ImageView mAppIcon;
     private ImageView mAppIconTop;
@@ -63,6 +70,16 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private ImageView iv_delete, iv_delete_bottom;
     private ImageView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
     private TextView mPasswdTip, mPasswdHint;
+
+    private View mPassLockView;
+    private View mViewBottom;
+    private ImageView mIvBottom;
+    private TextView mTvBottom;
+    private View mAirSigTouchView;
+    private TextView mTvMessage;
+    private TextView mTvResult;
+    private ProgressBar mProgressBar;
+
     private String mTempPasswd = "";
 
     private String[] mPasswds = {
@@ -105,6 +122,16 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     /*-------------------end-------------------*/
 
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case DISMISSRESULT:
+                    mTvResult.setVisibility(View.INVISIBLE);
+                    break;
+            }
+        }
+    };
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,7 +144,11 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
+        if (null != ASEngine.getSharedInstance()) {
+            ASEngine.getSharedInstance().startSensors();
+        }
     }
+
 
     public void removeCamera() {
         try {
@@ -205,6 +236,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
         mPasswdTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 
+
         if (isShowTipFromScreen) {
             mPasswdTip.setVisibility(View.VISIBLE);
         } else {
@@ -273,8 +305,164 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 }
             }
         }
+
+        mPassLockView = findViewById(R.id.psw_lock);
+        mViewBottom = findViewById(R.id.switch_bottom_content);
+        mViewBottom.setOnClickListener(this);
+        mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
+        mTvBottom = (TextView) findViewById(R.id.switch_bottom);
+        mAirSigTouchView = findViewById(R.id.airsig_lock);
+        mAirSigTouchView.setOnTouchListener(new ImageButton.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTouchThumb(v, event);
+            }
+        });
+        mTvResult = (TextView) findViewById(R.id.textResultMessage);
+        mTvMessage = (TextView) findViewById(R.id.textTouchAreaMessage);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBarWaiting);
+
         clearPasswd();
+        initAirSig();
         LeoEventBus.getDefaultBus().register(this);
+    }
+
+    private void initAirSig() {
+        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
+
+        if (isAirsigOn && isAirsigReady) {
+            mViewBottom.setVisibility(View.VISIBLE);
+            int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+
+            if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                mPassLockView.setVisibility(View.VISIBLE);
+                mAirSigTouchView.setVisibility(View.GONE);
+                mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+                mIvBottom.setBackgroundResource(
+                        R.drawable.reset_pass_gesture);
+            } else {
+                mPassLockView.setVisibility(View.GONE);
+                mAirSigTouchView.setVisibility(View.VISIBLE);
+                mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
+                mIvBottom.setBackgroundResource(
+                        R.drawable.reset_pass_number);
+            }
+        } else {
+            mViewBottom.setVisibility(View.GONE);
+        }
+    }
+
+
+    private boolean onTouchThumb(final View v, final MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            pressThumb(true);
+            ASEngine.getSharedInstance().startRecordingSensor(null);
+            return true;
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            showWaiting(true);
+            ASEngine.getSharedInstance().completeRecordSensorToIdentifyAction(null, new ASEngine.OnIdentifySignatureResultListener() {
+                @Override
+                public void onResult(ASEngine.ASAction action, ASEngine.ASError error) {
+                    showWaiting(false);
+                    pressThumb(false);
+
+                    if (null != action) {
+                        showMatch(true, null);
+                    } else if (null != error) {
+                        switch (error) {
+                            case NOT_FOUND:
+                                if (error.userData.containsKey(ASEngine.ASError.KEY_VERIFICATION_TIMES_LEFT)) {
+                                    int timesLeft = ((Integer) error.userData.get(ASEngine.ASError.KEY_VERIFICATION_TIMES_LEFT)).intValue();
+                                    if (timesLeft == 0) {
+                                        if (error.userData.containsKey(ASEngine.ASError.KEY_VERIFY_BLOCKED_SECONDS)) {
+                                            showMatch(false, String.format(getString(R.string.airsig_verify_too_many_fails_wait), error.userData.get(ASEngine.ASError.KEY_VERIFY_BLOCKED_SECONDS)));
+                                        } else {
+//                                            alertTooManyFails();
+                                        }
+                                    } else {
+                                        showMatch(false, String.format(getString(R.string.airsig_verify_not_match_times_left), timesLeft));
+                                    }
+                                } else {
+                                    showMatch(false, null);
+                                }
+                                break;
+                            case VERIFY_TOO_MANY_FAILED_TRIALS:
+                                if (error.userData.containsKey(ASEngine.ASError.KEY_VERIFY_BLOCKED_SECONDS)) {
+                                    showMatch(false, String.format(getString(R.string.airsig_verify_too_many_fails_wait), error.userData.get(ASEngine.ASError.KEY_VERIFY_BLOCKED_SECONDS)));
+                                } else {
+//                                    alertTooManyFails();
+                                }
+                                break;
+                            default:
+                                showMatch(false, null);
+                                break;
+                        }
+                    }
+                }
+            });
+            return true;
+        }
+        return false;
+    }
+
+    private void showMatch(final boolean match, final String message) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // show result
+                if (null != message && message.length() > 0) {
+                    mTvResult.setText(message);
+                } else {
+                    mTvResult.setText(match ? R.string.airsig_verify_match : R.string.airsig_verify_not_match);
+                }
+                mTvResult.setTextColor(getResources().getColor(match ? R.color.airsig_text_bright_blue : R.color.airsig_text_bright_red));
+                mTvResult.setVisibility(View.VISIBLE);
+
+
+                // Callback
+                if (match) {
+                    ((LockScreenActivity) mActivity).onUnlockSucceed();
+                } else {
+                    //dismiss result tv 1.5s later
+                    mHandler.sendEmptyMessageDelayed(DISMISSRESULT, 1000);
+                }
+
+            }
+        });
+    }
+
+    private void pressThumb(final boolean pressed) {
+        if (mActivity == null) return;
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (pressed) {
+                    // Touch Area
+                    mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea_pressed));
+                    mTvMessage.setVisibility(View.INVISIBLE);
+                    mTvResult.setVisibility(View.INVISIBLE);
+                } else {
+                    mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea));
+                    mTvMessage.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void showWaiting(final boolean show) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (show) {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                } else {
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     public void onEventMainThread(LockThemeChangeEvent event) {
@@ -565,6 +753,10 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             tv0Bottom.setImageResource(R.drawable.digital_bg_normal);
         }
 
+        if (null != ASEngine.getSharedInstance()) {
+            ASEngine.getSharedInstance().stopSensors();
+        }
+
         super.onPause();
     }
 
@@ -620,8 +812,31 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             case R.id.tv_ok:
                 checkPasswd();
                 break;
+            case R.id.switch_bottom_content:
+                switchUnlockType();
+                break;
             default:
                 break;
+        }
+    }
+
+    private void switchUnlockType() {
+        if (mShowType == AirSigSettingActivity.NOMAL_UNLOCK) {
+            mPassLockView.setVisibility(View.GONE);
+            mAirSigTouchView.setVisibility(View.VISIBLE);
+            mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+
+            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
+            mIvBottom.setBackgroundResource(
+                    R.drawable.reset_pass_number);
+        } else {
+            mPassLockView.setVisibility(View.VISIBLE);
+            mAirSigTouchView.setVisibility(View.GONE);
+            mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+
+            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+            mIvBottom.setBackgroundResource(
+                    R.drawable.reset_pass_gesture);
         }
     }
 

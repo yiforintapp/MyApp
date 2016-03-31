@@ -63,17 +63,56 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/ges_Pattern_m_top" />
 
+
     <RelativeLayout
         android:id="@+id/airsig_lock"
-        android:layout_width="@dimen/lockPatternView_height"
-        android:layout_height="@dimen/lockPatternView_height"
+        android:layout_width="@dimen/air_sig_lock_patten_height"
+        android:layout_height="@dimen/air_sig_lock_patten_height"
         android:layout_below="@id/tv_gesture_tip"
         android:layout_centerHorizontal="true"
-        android:background="@color/white"
-        android:layout_marginTop="@dimen/ges_Pattern_m_top"
+        android:layout_marginTop="@dimen/ges_Pattern_air_sig_m_top"
+        android:background="@drawable/airsig_verify_toucharea"
         android:visibility="gone">
 
+        <TextView
+            android:id="@+id/textResultMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:lineSpacingExtra="1dp"
+            android:text="@string/airsig_verify_press_hint"
+            android:textSize="@dimen/airsig_textsize_content"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/textTouchAreaMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textResultMessage"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:lineSpacingExtra="1dp"
+            android:text="@string/airsig_verify_press_hint"
+            android:textColor="@color/airsig_text_white"
+            android:textSize="@dimen/airsig_textsize_content" />
+
+        <ImageView
+            android:id="@+id/imageThumb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/airsig_img_thumb" />
+
+        <ProgressBar
+            android:id="@+id/progressBarWaiting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="invisible" />
     </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/switch_bottom_content"

@@ -158,7 +158,7 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
     private static final String[] TABLES = {
             "com.leo.appmaster.db.MsgCenterTable",
             "com.leo.appmaster.db.IntruderPhotoTable",
-            "com.leo.appmaster.db.LeoPreference",
+            "com.leo.appmaster.db.PreferenceTable",
             "com.leo.appmaster.db.InstalledAppTable",
             "com.leo.appmaster.db.LockRecommentTable",
             "com.leo.appmaster.db.BlacklistTab"

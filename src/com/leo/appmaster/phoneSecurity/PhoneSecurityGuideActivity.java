@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -47,25 +48,11 @@ public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnC
      */
     private void intentHandler() {
         Intent intent = getIntent();
-        fromScanIntentHandler(intent);
         String fromWhere = intent.getStringExtra(Constants.FROM_WHERE);
         if (fromWhere != null && fromWhere.equals(Constants.FROM_PUSH)) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh", "push_theft_cnts");
             LeoLog.d("testFromWhere", "PhoneSecurityGuideActivity from push");
         }
-    }
-
-    /*来自扫描结果页的Intent处理*/
-    private void fromScanIntentHandler(Intent intent) {
-        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(this);
-        /*进入该Acitity初始化来自数据*/
-        psm.setIsFromScan(false);
-        Boolean isFromScan = intent.getBooleanExtra(Constants.EXTRA_IS_FROM_SCAN, false);
-        boolean isFromScanTmp = psm.getIsFromScan();
-        if (isFromScan != isFromScanTmp) {
-            psm.setIsFromScan(isFromScan);
-        }
-        intent.removeExtra(Constants.EXTRA_IS_FROM_SCAN);
     }
 
     private boolean isFormHome() {
@@ -129,11 +116,27 @@ public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnC
     }
 
     private void openSecurityHandler() {
-        Intent intent = new Intent(PhoneSecurityGuideActivity.this, PhoneSecurityActivity.class);
-        startActivity(intent);
+        Intent intent = null;
         LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-        /*从该处进入，之前保存的号码清空*/
-        mgr.addPhoneSecurityNumber(null);
+        //获取预留的防盗号码查看是否为空
+        String securNum = mgr.getPhoneSecurityNumber();
+        if (!TextUtils.isEmpty(securNum)) {
+            /*
+             *预留号码不为空说明上次有开启过防盗，本次使用上次预留号码直接开启
+             */
+            mgr.setUsePhoneSecurity(true);
+            mgr.setOpenSecurityTime();
+            intent = new Intent(this, PhoneSecurityActivity.class);
+            intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT,PhoneSecurityActivity.FROM_SECUR_GUIDE_INTENT);
+        } else {
+            //首次开启
+            intent = new Intent(this, AddSecurityNumberActivity.class);
+        }
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         finish();
     }
 
