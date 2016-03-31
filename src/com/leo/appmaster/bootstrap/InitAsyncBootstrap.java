@@ -42,12 +42,11 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        initImageLoader();
         PrivacyTrickUtil.clearOtherApps(mApp);
         AppLoadEngine.getInstance(mApp).preloadAllBaseInfo();
         quickGestureTipInit();
-        ((ThirdAppManager) MgrContext.
-                getManager(MgrContext.MGR_THIRD_APP)).
-                getBackupList(AppBackupRestoreManager.BACKUP_PATH);
+        ((ThirdAppManager) MgrContext.getManager(MgrContext.MGR_THIRD_APP)).getBackupList(AppBackupRestoreManager.BACKUP_PATH);
 //        AppBackupRestoreManager.getInstance(mApp).getBackupList(saveFileName);
         PrivacyContactManager.getInstance(mApp).getPrivateContacts();
         // GP check
@@ -74,9 +73,6 @@ public class InitAsyncBootstrap extends Bootstrap {
 
         //airSig
         initAirSig();
-
-        initImageLoader();
-
         return true;
     }
 
