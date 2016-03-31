@@ -401,7 +401,6 @@ public class AppLockListActivity extends BaseActivity implements
         }
         lm.ignore();
         if (mAppList != null && mAppList.size() > 0) {
-            Collections.sort(mAppList, new DefalutAppComparator());
             for (int i = 0; i < mAppList.size(); i++) {
                 Iterator<AppInfo> iterator = mUnlockRecommendList.iterator();
                 while (iterator.hasNext()) {
