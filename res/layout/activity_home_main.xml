@@ -15,22 +15,23 @@
 
             <fragment
                 android:id="@+id/home_anim_ft"
-                android:name="com.leo.appmaster.home.HomePrivacyFragment"
+                android:name="com.leo.appmaster.home.HomeDetectFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="@dimen/home_det_height" />
 
-            <View
+<!--            <View
                 android:id="@+id/home_tab_white_bg"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/home_tab_height"
                 android:layout_alignParentBottom="true"
-                android:background="@color/white" />
+                android:background="@color/white" />-->
 
             <fragment
                 android:id="@+id/home_tab_ft"
                 android:name="com.leo.appmaster.home.HomeTabFragment"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/home_tab_height"
+                android:layout_height="match_parent"
+                android:layout_below="@id/home_anim_ft"
                 android:layout_alignParentBottom="true" />
 
         </RelativeLayout>

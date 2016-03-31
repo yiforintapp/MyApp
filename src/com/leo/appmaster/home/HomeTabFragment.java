@@ -295,6 +295,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     intent = new Intent(activity, HomeMoreActivity.class);
                     activity.startActivity(intent);
                     // 更多
+//                    Intent intent1 = new Intent(mActivity,PhoneSecurityActivity.class);
+//                    startActivity(intent1);
                     break;
             }
         }

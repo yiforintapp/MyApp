@@ -378,5 +378,9 @@
     <integer name="airsig_message_box_animation_duration">400</integer>
 
     <dimen name="secur_open_ui_iv_width">126dp</dimen>
-
+    <!--首页-->
+    <dimen name="home_det_result_tv2_margin">3dp</dimen>
+    <dimen name="home_det_result_tv1_margin">10.3dp</dimen>
+    <dimen name="home_det_result_tv1_padding">5dp</dimen>
+    <dimen name="home_det_height">350dp</dimen>
 </resources>

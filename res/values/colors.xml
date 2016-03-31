@@ -196,4 +196,5 @@
     <color name="airsig_arcprogress_finished_start">#38BEEF</color>
     <color name="airsig_arcprogress_finished_end">#3BFFDA</color>
     <color name="airsig_arcprogress_text">#09455B</color>
+    <color name="home_det_bg">#323b76</color>
 </resources>
