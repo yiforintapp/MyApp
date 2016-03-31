@@ -48,17 +48,20 @@
                 android:layout_gravity="left"
                 android:layout_marginTop="98dp">
 
-                <!--<com.leo.appmaster.ui.DrawSafelyImageView
+                <com.leo.appmaster.ui.DrawSafelyImageView
                     android:id="@+id/iv_ad_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"/>-->
+                    android:visibility="gone"
+                    android:scaleType="fitXY"/>
                 <include 
+                    android:id="@+id/template_zone"
                     layout="@layout/mul_template_ad_mul_content" />
 
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/ad_info_zone"
                 android:layout_width="@dimen/ad_content_width"
                 android:layout_height="50dp"
                 android:layout_gravity="left"

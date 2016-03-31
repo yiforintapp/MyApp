@@ -161,16 +161,6 @@ public class ADEngineWrapper {
      * 请求广告数据
      */
     public void loadAd (final int source, final String unitId, final int adType, final WrappedAdListener listener) {
-		if (source == AppMasterPreference.AD_SDK_SOURCE_USE_3TH && adType == AD_TYPE_TEMPLATE) {
-			if (listener == null) {
-				listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, "call back is null.");
-				return;
-			}
-			
-			loadMobTemplate(unitId, listener);
-			return;
-		} 
-		
         if (!isHitProbability(unitId)) {
             // 未命中显示概率，不显示广告
             if (listener != null) {
@@ -179,7 +169,17 @@ public class ADEngineWrapper {
             return;
         }
 
-        loadAdForce(source, unitId, adType, listener);
+		if (source == AppMasterPreference.AD_SDK_SOURCE_USE_3TH && adType == AD_TYPE_TEMPLATE) {
+			if (listener == null) {
+				listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, "call back is null.");
+				return;
+			}
+
+			loadMobTemplate(unitId, listener);
+			return;
+		}
+
+		loadAdForce(source, unitId, adType, listener);
     }
 
     private void loadAdForce(final int source, final String unitId, final int adType,  final WrappedAdListener listener) {

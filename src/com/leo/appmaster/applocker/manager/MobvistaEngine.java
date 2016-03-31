@@ -706,14 +706,15 @@ public class MobvistaEngine {
 			// 点击之后，重新load此位置的广告
 			LeoLog.i(TAG, "reload the clicked Ad");
 			//Mobvista 7.x sdk 已经修复持有这个activity 的内存泄漏的问题，所以无需要再每次点击后进行对广告对象的释放操作。
-//			if(m != null && m.nativeAd != null) {
-//				try {
-//					MobvistaAd.release();
-//					mMobVistaCacheMap.clear();
-//					
-//				} catch (Exception e) {
-//				}
-//			}
+			if(m != null && m.nativeAd != null) {
+				try {
+					//MobvistaAd.release();
+					//MobVistaSDK.
+					mMobVistaCacheMap.clear();
+					
+				} catch (Exception e) {
+				}
+			}
 			loadSingleMobAd(mUnitId);
 			if(!Constants.UNIT_ID_59.equals(mUnitId)) {
 				loadSingleMobAd(Constants.UNIT_ID_59);
