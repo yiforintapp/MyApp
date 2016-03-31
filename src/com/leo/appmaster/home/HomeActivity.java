@@ -14,7 +14,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.net.Uri;
@@ -209,7 +208,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         PhoneSecurityFetchJob.startImmediately();
         registerLocaleChange();
 
-        openAdvanceProtectDialogHandler();
 //        if (AppMasterConfig.LOGGABLE) {
 //            printSignature();
 //        }
@@ -843,6 +841,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
+        openAdvanceProtectDialogHandler();  //和其他对话框可能同时出现
         showGradeDialog();
         judgeShowGradeTip();
         /* 分析是否需要升级红点显示 */

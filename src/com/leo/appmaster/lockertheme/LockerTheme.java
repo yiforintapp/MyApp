@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,7 +40,9 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.R;
+import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.ThemeChanageListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -76,6 +79,7 @@ import java.util.List;
 public class LockerTheme extends BaseActivity implements OnClickListener, ThemeChanageListener,
         OnRefreshListener2<ListView> {
     private static final String TAG = "LockerTheme";
+    private static final String AIRSIGTIPS = "airsig_tip";
 
     private ViewPager mViewPager;
     private PullToRefreshListView localThemeList;
@@ -117,6 +121,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
     private static final int LOAD_INIT = 100;
     private static final int LOAD_MORE = 101;
+
+    private View mViewAirSigTip;
 
     private EventHandler mHandler;
     private String mFromTheme;
@@ -598,6 +604,23 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             }
         });
         mPagerTab.setViewPager(mViewPager);
+
+        mViewAirSigTip = findViewById(R.id.airsig_tip);
+        initAirSigTip();
+    }
+
+    private void initAirSigTip() {
+        int showTimes = LeoSettings.getInteger(AIRSIGTIPS, 0);
+        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        if (showTimes < 3 && isAirsigOn) {
+            showTips(showTimes);
+        }
+    }
+
+    private void showTips(int showTimes) {
+        mViewAirSigTip.setVisibility(View.VISIBLE);
+        showTimes += 1;
+        LeoSettings.setInteger(AIRSIGTIPS, showTimes);
     }
 
     private void onLoadMoreThemeFinish(boolean succeed, Object object) {

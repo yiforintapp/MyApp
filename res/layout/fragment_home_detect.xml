@@ -37,4 +37,42 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/shield_view"></include>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lt_home_det_tip"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/home_det_tip_height"
+        android:layout_alignParentBottom="true"
+        android:background="#3d000000">
+
+        <ImageView
+            android:id="@+id/det_tip_icon_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/home_det_tip_icon_marg_left"
+            android:src="@drawable/icon_home_security"/>
+
+        <TextView
+            android:id="@+id/det_tip_txt_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/home_det_tip_txt_marg_left"
+            android:layout_marginRight="@dimen/home_det_tip_txt_marg_right"
+            android:layout_toLeftOf="@+id/det_tip_arrow_iv"
+            android:layout_toRightOf="@id/det_tip_icon_iv"
+            android:text="@string/home_det_tip"
+            android:textColor="#fe8600"
+            android:textSize="13dp"/>
+
+        <ImageView
+            android:id="@+id/det_tip_arrow_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/home_det_tip_arrow_marg_right"
+            android:src="@drawable/icon_home_arrow"/>
+    </RelativeLayout>
 </RelativeLayout>

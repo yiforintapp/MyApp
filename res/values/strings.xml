@@ -1233,5 +1233,9 @@
     <string name="home_det_app_str">个新应用</string>
     <string name="home_det_img_str">张新图片</string>
     <string name="home_det_vid_str">个新视频</string>
+    <string name="home_det_tip">建议开启手机防盗</string>
+
+    <string name="airsig_tip_toast_text">主题暂不适用于签字解锁哦</string>
+
 
 </resources>

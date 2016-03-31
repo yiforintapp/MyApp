@@ -344,7 +344,7 @@ public class GestureLockFragment extends LockFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if (null != ASEngine.getSharedInstance()) {
+        if (null != ASEngine.getSharedInstance() && ASGui.getSharedInstance().isSensorAvailable()) {
             ASEngine.getSharedInstance().startSensors();
         }
     }

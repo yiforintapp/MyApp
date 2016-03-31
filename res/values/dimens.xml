@@ -383,4 +383,9 @@
     <dimen name="home_det_result_tv1_margin">10.3dp</dimen>
     <dimen name="home_det_result_tv1_padding">5dp</dimen>
     <dimen name="home_det_height">350dp</dimen>
+    <dimen name="home_det_tip_height">46dp</dimen>
+    <dimen name="home_det_tip_icon_marg_left">17dp</dimen>
+    <dimen name="home_det_tip_txt_marg_left">10dp</dimen>
+    <dimen name="home_det_tip_txt_marg_right">15dp</dimen>
+    <dimen name="home_det_tip_arrow_marg_right">15dp</dimen>
 </resources>
