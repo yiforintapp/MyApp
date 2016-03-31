@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.home.MenuFaqBrowserActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -44,6 +45,7 @@ import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LeoUrls;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 
 import java.util.ArrayList;
@@ -176,9 +178,17 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         mCategory = (TextView) findViewById(R.id.feedback_category_title);
 
         mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
-        for (int i = 0; i < sCategoryIds.length; i++) {
-            mCategories.add(getString(sCategoryIds[i]));
+
+        if ( LeoPreference.getInstance().getBoolean(PrefConst.KEY_IS_OLD_USER, true)) {
+            for (int i = 0; i < sCategoryIds.length; i++) {
+                mCategories.add(getString(sCategoryIds[i]));
+            }
+        } else {
+            for (int i = 0; i < sNewCategoryIds.length; i++) {
+                mCategories.add(getString(sNewCategoryIds[i]));
+            }
         }
+
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {

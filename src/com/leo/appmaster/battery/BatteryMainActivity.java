@@ -185,7 +185,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                     });
                 }
                 mLpmMore.setPopMenuItems(BatteryMainActivity.this, getPopMenuItems(), getMenuIcons());
-                mLpmMore.showPopMenu(BatteryMainActivity.this, mCtbMain.getSecOptionImageView(), null, null);
+                mLpmMore.showPopMenu(BatteryMainActivity.this, mCtbMain.getOptionImageView(), null, null);
                 mLpmMore.setListViewDivider(null);
 //                Map<Integer,String> iconIdToString = new HashMap<Integer,String> ();
 //                if(mBtrManager.getBatteryNotiStatus()) {
@@ -229,65 +229,6 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         return icons;
     }
 
-
-//    private void initPopMenu() {
-//        if (mLpmMore != null) {
-//            return;
-//        }
-//        mLpmMore = new LeoHomePopMenu();
-//
-//        if (mLeoPopMenu == null) {
-//            mLeoPopMenu = new LeoHomePopMenu();
-//            mLeoPopMenu.setPopItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view,
-//                                        int position, long id) {
-//                    setPopWindowItemClick(position);
-////                            mLeoPopMenu.dismissSnapshotList();
-//                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mLeoPopMenu.dismissSnapshotList();
-//                        }
-//                    }, 300);
-//                }
-//            });
-//        }
-//        mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
-//        mLeoPopMenu.showPopMenu(this,
-//                mTtileBar.findViewById(R.id.tv_option_image), null, null);
-//        mLeoPopMenu.setListViewDivider(null);
-//        AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
-//                true);
-//        mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
-//
-//
-//
-//
-//
-//
-//
-//        mLpmMore.setAnimation(R.style.RightEnterAnim);
-//        mLpmMore.setPopItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (position == 0) {
-//                    if (mBtrManager.getBatteryNotiStatus()) {
-//                        mBtrManager.setBatteryNotiStatus(false);
-//                    } else {
-//                        mBtrManager.setBatteryNotiStatus(true);
-//                    }
-//                }
-//                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mLpmMore.dismissSnapshotList();
-//                    }
-//                }, 500);
-//            }
-//        });
-//        mLpmMore.setListViewDivider(null);
-//    }
 
     @Override
     public void onBackPressed() {

@@ -67,9 +67,9 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void tryShowOldEntry() {
-        boolean isOld = LeoSettings.getBoolean(PrefConst.KEY_IS_OLD_USER, false);
+        boolean isOld = LeoPreference.getInstance().getBoolean(PrefConst.KEY_IS_OLD_USER, true);
         Toast.makeText(this,"is old user? : " + isOld, Toast.LENGTH_LONG).show();
-        if (!LeoSettings.getBoolean(PrefConst.KEY_IS_OLD_USER, false)) {
+        if (!isOld) {
             mRlWifi.setVisibility(View.GONE);
             mRlFlowManagement.setVisibility(View.GONE);
             mRlBatteryManagement.setVisibility(View.GONE);
@@ -193,7 +193,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     private void goToCallfilter() {
         int count = LeoSettings.getInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
-        LeoSettings.setInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
+        LeoSettings.setInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count + 1);
         Intent callFilter = new Intent(this, CallFilterMainActivity.class);
         if (mIsHasCallFilterRecords) {
             callFilter.putExtra("needMoveToTab2", true);
