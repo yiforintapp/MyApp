@@ -1218,9 +1218,9 @@
     <string name="content_close_advanced_protect">关闭高级保护后，手机防盗，系统锁屏入侵防护等功能不可用，隐私卫士也可以被随意卸载</string>
 
     <string name="uninstall_dialog_title">卸载隐私卫士</string>
-    <string name="uninstall_dialog_content">卸载隐私卫士前需关闭高级保护权限，可能会导致手机防盗、系统锁屏入侵防护等功能不可用。确认卸载？</string>
+    <string name="uninstall_dialog_content">卸载隐私卫士前需关闭高级保护权限，可能会导致部分功能不可用。确认关闭？</string>
     <string name="open_admin_title">开启高级保护</string>
-    <string name="open_admin_content">当前高级保护未开启,手机防盗-清除数据功能,系统锁屏入侵防护功能不可用，是否立即开启？</string>
+    <string name="open_admin_content">当前高级保护未开启，手机防盗的清除数据功能，系统锁屏入侵防护功能不可用。是否立即开启？</string>
     <string name="lock_app_list_new_app">新增应用</string>
     <string name="lock_app_list_all_app">全部应用</string>
     <string name="lock_app_list_other_app">其他应用</string>

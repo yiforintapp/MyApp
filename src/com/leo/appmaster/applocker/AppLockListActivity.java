@@ -394,18 +394,18 @@ public class AppLockListActivity extends BaseActivity implements
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mAppList = lm.getNewAppList();
 
-        LeoLog.e("mResaultList", "mAppList:" + mAppList.size() + "list: " + list.size()
-                + "mLockedList:" + mLockedList.size() + "mUnlockList:" + mUnlockList.size());
         if (mAppList.size() == mUnlockList.size()) {
-            mAppList.clear();
+//            mAppList.clear();
         }
         lm.ignore();
         if (mAppList != null && mAppList.size() > 0) {
             for (int i = 0; i < mAppList.size(); i++) {
+                AppItemInfo appInfo = mAppList.get(i);
+                appInfo.topPos = ListAppLockAdapter.fixPosEqules(appInfo);
                 Iterator<AppInfo> iterator = mUnlockRecommendList.iterator();
                 while (iterator.hasNext()) {
                     AppInfo info = iterator.next();
-                    if (mAppList.get(i).packageName.equals(info.packageName)) {
+                    if (appInfo.packageName.equals(info.packageName)) {
                         iterator.remove();
                         break;
                     }
@@ -413,13 +413,14 @@ public class AppLockListActivity extends BaseActivity implements
                 Iterator<AppInfo> iterator1 = mUnlockNormalList.iterator();
                 while (iterator1.hasNext()) {
                     AppInfo info = iterator1.next();
-                    if (mAppList.get(i).packageName.equals(info.packageName)) {
+                    if (appInfo.packageName.equals(info.packageName)) {
                         iterator1.remove();
                         break;
                     }
                 }
-
             }
+            Collections.sort(mAppList, new RecommentAppLockListActivity.DefalutAppComparator());
+
             AppInfo labelInfoDownload = new AppInfo();
             labelInfoDownload.label = Constants.LABLE_LIST;
             labelInfoDownload.titleName = Constants.RECENT_DOWNLOAD_LIST;
@@ -719,6 +720,7 @@ public class AppLockListActivity extends BaseActivity implements
             }
         }
     }
+
 
 
     public static class DefalutAppComparator implements Comparator<AppInfo> {
