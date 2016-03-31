@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import com.leo.appmaster.R;
 import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.model.AppItemInfo;
 
@@ -31,32 +32,32 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
 
     @Override
     public int getFoundStringId() {
-        return 0;
+        return R.string.hd_found_app;
     }
 
     @Override
     public int getAddedStringId() {
-        return 0;
+        return R.string.hd_new_app;
     }
 
     @Override
     public int getProceedStringId() {
-        return 0;
+        return R.string.hd_locked_app;
     }
 
     @Override
     public int getNotificationTextId() {
-        return 0;
+        return R.string.hd_lock_privacy_title;
     }
 
     @Override
     public int getNotificationSummaryId() {
-        return 0;
+        return R.string.hd_lock_privacy_summary;
     }
 
     @Override
     public int getNotificationIconId() {
-        return 0;
+        return R.drawable.noti_lock;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import com.leo.appmaster.R;
 import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.imagehide.PhotoItem;
 
@@ -31,32 +32,32 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
 
     @Override
     public int getFoundStringId() {
-        return 0;
+        return R.string.hd_found_pic;
     }
 
     @Override
     public int getAddedStringId() {
-        return 0;
+        return R.string.hd_new_pic;
     }
 
     @Override
     public int getProceedStringId() {
-        return 0;
+        return R.string.hd_hide_pic;
     }
 
     @Override
     public int getNotificationTextId() {
-        return 0;
+        return R.string.hd_hide_pic_privacy_title;
     }
 
     @Override
     public int getNotificationSummaryId() {
-        return 0;
+        return R.string.hd_hide_pic_privacy_summary;
     }
 
     @Override
     public int getNotificationIconId() {
-        return 0;
+        return R.drawable.noti_pic;
     }
 
     @Override
