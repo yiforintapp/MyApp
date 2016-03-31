@@ -22,12 +22,37 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal">
 
-        <com.leo.appmaster.home.HomeDetectShieldView
+        <ImageView
             android:id="@+id/shield_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:background="@drawable/shield_blue_top"/>
+            android:background="@drawable/bg_home_shield"/>
+
+        <ImageView
+            android:id="@+id/shield_left_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/shield_right_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/shield_top_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/shield_center_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            />
 
         <include
             android:id="@+id/det_result_ly"
@@ -36,8 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/shield_view"></include>
-    </RelativeLayout>
 
+    </RelativeLayout>
+    <!--中间建议提示banner-->
     <RelativeLayout
         android:id="@+id/lt_home_det_tip"
         android:layout_width="match_parent"

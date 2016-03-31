@@ -10,7 +10,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center_vertical"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
+        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:background="@drawable/strip_home_ok1">
 
         <TextView
             android:layout_width="wrap_content"
