@@ -395,7 +395,7 @@ public class AppLockListActivity extends BaseActivity implements
         mAppList = lm.getNewAppList();
 
         if (mAppList.size() == mUnlockList.size()) {
-//            mAppList.clear();
+            mAppList.clear();
         }
         lm.ignore();
         if (mAppList != null && mAppList.size() > 0) {
