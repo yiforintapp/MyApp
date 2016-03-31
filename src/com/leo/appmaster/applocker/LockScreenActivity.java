@@ -65,6 +65,7 @@ import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.LEOAdManager;
 import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -2298,8 +2299,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 listItems.add(resources.getString(R.string.find_passwd));
             }
         }
-        listItems.add(resources.getString(R.string.unlock_theme));
-        listItems.add(resources.getString(R.string.setting_hide_lockline));
+
+        int type = mLockFragment.getUnlockType();
+        if(type == AirSigSettingActivity.NOMAL_UNLOCK){
+            listItems.add(resources.getString(R.string.unlock_theme));
+            listItems.add(resources.getString(R.string.setting_hide_lockline));
+        }
+
         listItems.add(resources.getString(R.string.help_setting_tip_title));
 
         return listItems;
@@ -2310,12 +2316,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
             icons.add(R.drawable.forget_password_icon);
         }
-        icons.add(R.drawable.theme_icon_black);
-        if (AppMasterPreference.getInstance(this).getIsHideLine()) {
-            icons.add(R.drawable.show_locus_icon);
-        } else {
-            icons.add(R.drawable.hide_locus_icon);
+
+        int type = mLockFragment.getUnlockType();
+        if(type == AirSigSettingActivity.NOMAL_UNLOCK){
+            icons.add(R.drawable.theme_icon_black);
+            if (AppMasterPreference.getInstance(this).getIsHideLine()) {
+                icons.add(R.drawable.show_locus_icon);
+            } else {
+                icons.add(R.drawable.hide_locus_icon);
+            }
         }
+
         icons.add(R.drawable.help_tip_icon);
         return icons;
     }
