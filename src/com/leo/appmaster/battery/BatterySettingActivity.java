@@ -23,9 +23,7 @@ import com.leo.appmaster.utils.Utilities;
 public class BatterySettingActivity extends BaseActivity implements View.OnClickListener {
     private CommonToolbar mTitleBar;
     private ImageView checkBox;
-    private ImageView checkBoxTwo;
     private RippleView rpBtn;
-    private RippleView rpBtnTwo;
     private ImageView checkBoxThree;
     private RippleView rpBtnThree;
     private String mFromWhere;
@@ -85,11 +83,11 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
         }
 
         boolean isBatteryNotiOpen = mBtrManager.getBatteryNotiStatus();
-        if (isBatteryNotiOpen) {
-            checkBoxTwo.setImageResource(R.drawable.switch_on);
-        } else {
-            checkBoxTwo.setImageResource(R.drawable.switch_off);
-        }
+//        if (isBatteryNotiOpen) {
+//            checkBoxTwo.setImageResource(R.drawable.switch_on);
+//        } else {
+//            checkBoxTwo.setImageResource(R.drawable.switch_off);
+//        }
 
     }
 
@@ -107,8 +105,7 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
 
         rpBtn = (RippleView) findViewById(R.id.rv_item_screenview);
         rpBtn.setOnClickListener(this);
-        rpBtnTwo = (RippleView) findViewById(R.id.rv_item_noti);
-        rpBtnTwo.setOnClickListener(this);
+//        rpBtnTwo.setOnClickListener(this);
 
         rpBtnThree = (RippleView) findViewById(R.id.rv_item_pow_sav);
         mChargeCleanTitle = (TextView) findViewById(R.id.tv_title_pow_sav);
@@ -116,7 +113,6 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
         rpBtnThree.setOnClickListener(this);
 
         checkBox = (ImageView) findViewById(R.id.iv_switch_screenview);
-        checkBoxTwo = (ImageView) findViewById(R.id.iv_switch_noti);
         checkBoxThree = (ImageView) findViewById(R.id.iv_switch_pow_sav);
     }
 
@@ -212,20 +208,20 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
                     }
                 }
                 break;
-            case R.id.rv_item_noti:
-                boolean isBatteryNotiOpen = mBtrManager.getBatteryNotiStatus();
-                if (!isBatteryNotiOpen) {
-                    checkBoxTwo.setImageResource(R.drawable.switch_on);
-                    mBtrManager.setBatteryNotiStatus(true);
-                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
-                            "batterypage", "setting_ntf_on");
-                } else {
-                    checkBoxTwo.setImageResource(R.drawable.switch_off);
-                    mBtrManager.setBatteryNotiStatus(false);
-                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
-                            "batterypage", "setting_ntf_off");
-                }
-                break;
+//            case R.id.rv_item_noti:
+//                boolean isBatteryNotiOpen = mBtrManager.getBatteryNotiStatus();
+//                if (!isBatteryNotiOpen) {
+//                    checkBoxTwo.setImageResource(R.drawable.switch_on);
+//                    mBtrManager.setBatteryNotiStatus(true);
+//                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
+//                            "batterypage", "setting_ntf_on");
+//                } else {
+//                    checkBoxTwo.setImageResource(R.drawable.switch_off);
+//                    mBtrManager.setBatteryNotiStatus(false);
+//                    SDKWrapper.addEvent(BatterySettingActivity.this, SDKWrapper.P1,
+//                            "batterypage", "setting_ntf_off");
+//                }
+//                break;
             case R.id.rv_item_pow_sav:
                 boolean isBatteryPowSavOpen = mBtrManager.getBatteryPowSavStatus();
                 if (!isBatteryPowSavOpen) {

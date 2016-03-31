@@ -170,7 +170,7 @@
                 </com.leo.appmaster.ui.RippleView>
             </RelativeLayout>
 
-            <RelativeLayout
+            <!--<RelativeLayout
                 android:id="@+id/three_content_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                         android:layout_marginRight="26dp" />
 
                 </com.leo.appmaster.ui.RippleView>
-            </RelativeLayout>
+            </RelativeLayout>-->
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

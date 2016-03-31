@@ -2227,8 +2227,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     });
                 }
                 mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
-                mLeoPopMenu.showPopMenu(this,
-                        mTtileBar.findViewById(R.id.tv_option_image), null, null);
+                mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.tv_option_image), null, null);
                 mLeoPopMenu.setListViewDivider(null);
                 AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
                         true);

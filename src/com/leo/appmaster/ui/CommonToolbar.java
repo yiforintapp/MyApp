@@ -151,6 +151,10 @@ public class CommonToolbar extends RelativeLayout implements View.OnClickListene
         mOption2Img.setImageResource(imageResource);
     }
 
+    public ImageView getSecOptionImageView() {
+        return mOption2Img;
+    }
+
     public void setToolbarTitle(int stringId) {
         mTitle.setText(stringId);
     }

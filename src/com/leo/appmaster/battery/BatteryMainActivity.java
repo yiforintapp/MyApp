@@ -3,10 +3,15 @@ package com.leo.appmaster.battery;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,15 +28,24 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.GridLayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.activity.PrivacyOptionActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
+import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.PasswdTipActivity;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
@@ -43,6 +57,8 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CircleArroundView;
 import com.leo.appmaster.ui.CircleArroundView.OnArroundFinishListener;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.LeoHomePopMenu;
+import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -83,6 +99,8 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private ImageView mIvLittleBattery;
     private TextView mTvBottomText;
     private CircleArroundView mCavMain;
+    private LeoHomePopMenu mLpmMore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +118,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         } else {
             mIvLittleBattery.setImageResource(R.drawable.batterymanage_littlebattery);
         }
-        mTvPercentValue.setText(state.level + "");             
+        mTvPercentValue.setText(state.level + "");
     }
 
     @Override
@@ -109,7 +127,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         LeoEventBus.getDefaultBus().unregister(this);
         LeoLog.d(TAG, "onDestroy()");
     }
-    
+
     private void initUI() {
 //        mCvFront = (CircleView) findViewById(R.id.cv_front);
 //        mCvBack = (CircleView) findViewById(R.id.cv_back);
@@ -131,24 +149,58 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mWvBattery.setWaveColor(0xff00ccff);
 //        mWvBattery.setWave2Color(0xff0091ff);
         mWvBattery.setWave2Color(0xff00ccff);
-        mIvShield= (ImageView) findViewById(R.id.iv_shield);
+        mIvShield = (ImageView) findViewById(R.id.iv_shield);
         mTvListTitle = (TextView) findViewById(R.id.tv_list_title);
         mRlLoadingOrEmpty = (RelativeLayout) findViewById(R.id.rl_empty_or_loading);
         mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         mRlEmpty = (RelativeLayout) findViewById(R.id.rl_empty);
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_battery);
         mCtbMain.setToolbarTitle(R.string.hp_device_power);
+        mCtbMain.setOptionImageResource(R.drawable.ic_toolbar_more);
+        mCtbMain.setOptionMenuVisible(true);
         mCtbMain.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                SDKWrapper.addEvent(BatteryMainActivity.this, SDKWrapper.P1,
-                        "batterypage", "setting");
-                Intent intent = new Intent(BatteryMainActivity.this, BatterySettingActivity.class);
-                startActivity(intent);
+                mCtbMain.setOptionImageResource(R.drawable.ic_toolbar_more);
+                if (mLpmMore == null) {
+                    mLpmMore = new LeoHomePopMenu();
+                    mLpmMore.setPopItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                            mLeoPopMenu.dismissSnapshotList();
+                            if (position == 0) {
+                                if (mBtrManager.getBatteryNotiStatus()) {
+                                    mBtrManager.setBatteryNotiStatus(false);
+                                } else {
+                                    mBtrManager.setBatteryNotiStatus(true);
+                                }
+                                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mLpmMore.dismissSnapshotList();
+                                    }
+                                }, 300);
+                            }
+                        }
+                    });
+                }
+                mLpmMore.setPopMenuItems(BatteryMainActivity.this, getPopMenuItems(), getMenuIcons());
+                mLpmMore.showPopMenu(BatteryMainActivity.this, mCtbMain.getSecOptionImageView(), null, null);
+                mLpmMore.setListViewDivider(null);
+//                Map<Integer,String> iconIdToString = new HashMap<Integer,String> ();
+//                if(mBtrManager.getBatteryNotiStatus()) {
+//                    iconIdToString.put(R.drawable.ic_launcher, getString(R.string.turn_off_battery_noti));
+//                } else {
+//                    iconIdToString.put(R.drawable.ic_launcher, getString(R.string.turn_on_battery_noti));
+//                }
+//                mLpmMore.setPopMenuItems(BatteryMainActivity.this, iconIdToString);
+//                mLpmMore.showPopMenu(BatteryMainActivity.this, mCavMain, null, null);
+////                SDKWrapper.addEvent(BatteryMainActivity.this, SDKWrapper.P1,
+//                        "batterypage", "setting");
+//                Intent intent = new Intent(BatteryMainActivity.this, BatterySettingActivity.class);
+//                startActivity(intent);
             }
         });
-        mCtbMain.setOptionImageResource(R.drawable.setup_icon);
-        mCtbMain.setOptionMenuVisible(true);
         mGvApps = (BatteryAppGridView) findViewById(R.id.gv_apps);
         mGvApps.setNumColumns(APPS_COLUMNS);
         mAdapter = new AppsAdapter();
@@ -157,12 +209,92 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mGvApps.setAdapter(mAdapter);
     }
 
+    private List<String> getPopMenuItems() {
+        List<String> listItems = new ArrayList<String>();
+        if (mBtrManager.getBatteryNotiStatus()) {
+            listItems.add(getString(R.string.turn_off_battery_noti));
+        } else {
+            listItems.add(getString(R.string.turn_on_battery_noti));
+        }
+        return listItems;
+    }
+
+    private List<Integer> getMenuIcons() {
+        List<Integer> icons = new ArrayList<Integer>();
+        if (mBtrManager.getBatteryNotiStatus()) {
+            icons.add(R.drawable.ic_launcher);
+        } else {
+            icons.add(R.drawable.ic_launcher);
+        }
+        return icons;
+    }
+
+
+//    private void initPopMenu() {
+//        if (mLpmMore != null) {
+//            return;
+//        }
+//        mLpmMore = new LeoHomePopMenu();
+//
+//        if (mLeoPopMenu == null) {
+//            mLeoPopMenu = new LeoHomePopMenu();
+//            mLeoPopMenu.setPopItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view,
+//                                        int position, long id) {
+//                    setPopWindowItemClick(position);
+////                            mLeoPopMenu.dismissSnapshotList();
+//                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mLeoPopMenu.dismissSnapshotList();
+//                        }
+//                    }, 300);
+//                }
+//            });
+//        }
+//        mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
+//        mLeoPopMenu.showPopMenu(this,
+//                mTtileBar.findViewById(R.id.tv_option_image), null, null);
+//        mLeoPopMenu.setListViewDivider(null);
+//        AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
+//                true);
+//        mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
+//
+//
+//
+//
+//
+//
+//
+//        mLpmMore.setAnimation(R.style.RightEnterAnim);
+//        mLpmMore.setPopItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (position == 0) {
+//                    if (mBtrManager.getBatteryNotiStatus()) {
+//                        mBtrManager.setBatteryNotiStatus(false);
+//                    } else {
+//                        mBtrManager.setBatteryNotiStatus(true);
+//                    }
+//                }
+//                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mLpmMore.dismissSnapshotList();
+//                    }
+//                }, 500);
+//            }
+//        });
+//        mLpmMore.setListViewDivider(null);
+//    }
+
     @Override
     public void onBackPressed() {
         if (mIsResultShowed) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "promote_back");
         }
-            super.onBackPressed();
+        super.onBackPressed();
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -181,23 +313,22 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mRlEmpty.setVisibility(View.GONE);
         mTvListTitle.setText(R.string.batterymanage_tip_loading);
     }
-    
+
     public void hideLoadingOrEmpty() {
         mRlLoadingOrEmpty.setVisibility(View.GONE);
         if (mListBatteryComsuptions != null) {
             mTvListTitle.setText(Html.fromHtml(getString(R.string.batterymanage_label_old, mListBatteryComsuptions.size())));
         }
     }
-    
+
     public void showEmpty() {
         mTvListTitle.setText(R.string.batterymanage_tip_nothing_to_boost);
         mPbLoading.setVisibility(View.GONE);
         mRlEmpty.setVisibility(View.VISIBLE);
         mRlLoadingOrEmpty.setVisibility(View.VISIBLE);
     }
-    
-    
-    
+
+
     @Override
     public void onResume() {
         mNeedToShowResult = false;
@@ -281,11 +412,11 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         }
         mAdapter.notifyDataSetChanged();
     }
-    
-    
+
+
     @Override
     public void onClick(View v) {
-         switch (v.getId()) {
+        switch (v.getId()) {
             case R.id.rv_accelerate:
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "batterypage", "savepower");
                 startBoost();
@@ -309,9 +440,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     private void startFlipAnimation() {
-        final float centerX = mIvShield.getWidth() / 2.0f;  
-        final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,  
-                centerX, DipPixelUtil.dip2px(this, 26), 0.0f, true);  
+        final float centerX = mIvShield.getWidth() / 2.0f;
+        final ThreeDimensionalRotationAnimation rotation = new ThreeDimensionalRotationAnimation(-90, 0,
+                centerX, DipPixelUtil.dip2px(this, 26), 0.0f, true);
         rotation.setDuration(680);
         rotation.setAnimationListener(new AnimationListener() {
             @Override
@@ -320,23 +451,25 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                     @Override
                     public void onArroundFinish() {
                         mIvShield.setVisibility(View.VISIBLE);
-                      startTranslateAnim();
-                      startShortenTopLayoutAnim();
-                      startShowCompleteAnim();
-                      showResultFragment();
+                        startTranslateAnim();
+                        startShortenTopLayoutAnim();
+                        startShowCompleteAnim();
+                        showResultFragment();
                     }
                 });
             }
+
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
+
             @Override
             public void onAnimationEnd(Animation animation) {
                 mIvShield.setVisibility(View.VISIBLE);
             }
         });
-        rotation.setFillAfter(false);  
-        mIvShield.startAnimation(rotation);  
+        rotation.setFillAfter(false);
+        mIvShield.startAnimation(rotation);
     }
 
     private void startShortenTopLayoutAnim() {
@@ -360,6 +493,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     /* AM-3879: fragment在activity onDestory之后不能commit修改，
     所以需要showResultFragment在onStop的时候预先调用 */
     private boolean hasResultShowed = false;
+
     protected synchronized void showResultFragment() {
         LeoLog.d(TAG, "showResultFragment() hasResultShowed = " + hasResultShowed);
         if (hasResultShowed) {
@@ -404,7 +538,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 //        PropertyValuesHolder holderY = PropertyValuesHolder.ofFloat("top", initialY, DipPixelUtil.dip2px(this, 10));
         PropertyValuesHolder holderScaleX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.70f);
         PropertyValuesHolder holderScaleY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.70f);
-        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX,  holderScaleX, holderScaleY);
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mIvShield, holderX, holderScaleX, holderScaleY);
         anim.setDuration(TRANSLATE_ANIM_DURATION);
         anim.start();
     }
@@ -483,15 +617,15 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
 
         final int count = Math.min(columnNum, remainCount);
         // LeoLog.d(TAG, "startIndex="+startIndex+"; count="+count);
-        for (int i=0 ; i<count ; i++) {
+        for (int i = 0; i < count; i++) {
             final View vv = mGvApps.getChildAt(i);   //mGvApps.getChildAt(i+startIndex);
-            if(vv == null) {
+            if (vv == null) {
                 continue;
             }
             // LeoLog.d(TAG, "index="+(i+startIndex));
-            final boolean isLastIcon = (i == count-1);
+            final boolean isLastIcon = (i == count - 1);
             vv.animate().setDuration(iconDisappearTime)
-                    .setStartDelay(i*iconGapTime)
+                    .setStartDelay(i * iconGapTime)
                     .rotation(rotateDegree)
                     .scaleX(0.0f)
                     .scaleY(0.0f)
@@ -502,7 +636,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
                             super.onAnimationEnd(animation);
                             vv.setAlpha(0.0f);
                             if (isLastIcon) {
-                                for (int j=0;j<count;j++) {
+                                for (int j = 0; j < count; j++) {
                                     mListBatteryComsuptions.remove(0);
                                 }
                                 mGvApps.postDelayed(new Runnable() {
@@ -525,6 +659,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     }
 
     private boolean mNeedToShowResult = false;
+
     private void startBatteryDismissAnim() {
         mNeedToShowResult = true;
         mTvBottomText.setText(R.string.batterymanage_boosting);
@@ -537,16 +672,16 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
             @Override
             public void onAnimationStart(Animator animation) {
             }
-            
+
             @Override
             public void onAnimationRepeat(Animator animation) {
             }
-            
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 startFlipAnimation();
             }
-            
+
             @Override
             public void onAnimationCancel(Animator animation) {
             }
@@ -557,7 +692,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     class AppsAdapter extends BaseAdapter {
         private List<BatteryComsuption> mList;
         LayoutInflater mInflater;
-        
+
         public void fillData(ArrayList<BatteryComsuption> list) {
             mList = list;
         }
@@ -565,7 +700,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         public AppsAdapter() {
             mInflater = LayoutInflater.from(BatteryMainActivity.this);
         }
-        
+
         @Override
         public int getCount() {
             return mList == null ? 0 : mList.size();
