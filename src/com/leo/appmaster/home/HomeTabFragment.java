@@ -22,6 +22,7 @@ import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -34,6 +35,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
 import java.util.ArrayList;
@@ -129,7 +131,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .create();
         mAppLockView.setOnClickListener(this);
 
-        mIntruderView = view.findViewById(R.id.home_intruder_tv);
+        mIntruderView = view.findViewById(R.id.home_video);
         MaterialRippleLayout.on(mIntruderView)
                 .rippleColor(getResources().getColor(R.color.home_tab_pressed))
                 .rippleAlpha(1f)
@@ -138,7 +140,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .create();
         mIntruderView.setOnClickListener(this);
 
-        mWifiSecurityView = view.findViewById(R.id.home_wifi_tab);
+        mWifiSecurityView = view.findViewById(R.id.home_img);
         MaterialRippleLayout.on(mWifiSecurityView)
                 .rippleColor(getResources().getColor(R.color.home_tab_pressed))
                 .rippleAlpha(1f)
@@ -147,7 +149,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .create();
         mWifiSecurityView.setOnClickListener(this);
 
-        mLostSecurityView = view.findViewById(R.id.home_lost_tab);
+        mLostSecurityView = view.findViewById(R.id.home_more);
         MaterialRippleLayout.on(mLostSecurityView)
                 .rippleColor(getResources().getColor(R.color.home_tab_pressed))
                 .rippleAlpha(1f)
@@ -158,9 +160,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         mRedDot = (ImageView) view.findViewById(R.id.have_theme_red_dot);
 
         mIvTabIcon1 = (ImageView) view.findViewById(R.id.home_ic_applcok_img);
-        mIvTabIcon2 = (ImageView) view.findViewById(R.id.home_ic_wifi_img);
-        mIvTabIcon3 = (ImageView) view.findViewById(R.id.home_ic_lost_img);
-        mIvTabIcon4 = (ImageView) view.findViewById(R.id.home_ic_intruder_img);
+        mIvTabIcon2 = (ImageView) view.findViewById(R.id.home_ic_img_img);
+        mIvTabIcon3 = (ImageView) view.findViewById(R.id.home_ic_video);
+        mIvTabIcon4 = (ImageView) view.findViewById(R.id.home_ic_more);
 
     }
 
@@ -204,26 +206,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         }
 
         mRootView.setVisibility(View.VISIBLE);
-//        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_down_to_up);
-//        animation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//                mAnimating = true;
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                mActivity.onTabAnimationFinish();
-//                mAnimating = false;
-//                listener.onShowTabListener();
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
-//        mRootView.startAnimation(animation);
     }
 
     public boolean isTabDismiss() {
@@ -282,6 +264,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         FragmentActivity activity = getActivity();
         if (activity != null) {
             LeoPreference table = LeoPreference.getInstance();
+            Intent intent = null;
             switch (view.getId()) {
                 case R.id.home_app_lock_tv:
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");
@@ -294,88 +277,24 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         curMode.haveEverOpened = true;
                         mLockManager.updateMode(curMode);
                     } else {
-                        Intent intent = new Intent(getActivity(), AppLockListActivity.class);
+                        intent = new Intent(getActivity(), AppLockListActivity.class);
                         startActivity(intent);
                     }
                     break;
-                case R.id.home_intruder_tv:
-                    // 入侵者防护
-//                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
-//                    Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
-//                    startActivity(intent);
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
-                    LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-                    boolean flag = manager.isUsePhoneSecurity();
-                    Intent intent = null;
-                    if (!flag) {
-                        intent = new Intent(activity, PhoneSecurityGuideActivity.class);
-                        intent.putExtra(PhoneSecurityConstants.KEY_FORM_HOME_SECUR, true);
-                    } else {
-                        intent = new Intent(activity, PhoneSecurityActivity.class);
-                    }
-                    try {
-                        startActivity(intent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                case R.id.home_img:
+                    // 图片隐藏
+                    intent = new Intent(activity, ImageHideMainActivity.class);
+                    activity.startActivity(intent);
                     break;
-                case R.id.home_wifi_tab:
-                     //wifi安全
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
-                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
-                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2+1);
-                    Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
-                    startActivity(mIntent);
-                    if (DBG) {
-                        Intent intent1 = new Intent(getActivity(), TestDemo.class);
-                        startActivity(intent1);
-                    }
+                case R.id.home_video:
+                     //视频隐藏
+                    intent = new Intent(activity, VideoHideMainActivity.class);
+                    activity.startActivity(intent);
                     break;
-                case R.id.home_lost_tab:
-                    // 骚扰拦截
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_sv_block");
-                    int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
-                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
-                    Intent callFilter = new Intent(activity, CallFilterMainActivity.class);
-                    if (mIsHasCallFilterRecords) {
-                        callFilter.putExtra("needMoveToTab2", true);
-                    }
-                    startActivity(callFilter);
-//                    if (/*DBG*/true) {
-//                        int[] pix = AppUtil.getScreenPix(getActivity());
-//                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//                        CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-//                        pm.setFilterUserNumber(50000);
-//                        pm.setFilterTipFroUser(3000);
-//                        pm.setSerBlackTipNum(3000);
-//                        pm.setSerMarkTipNum(50);
-//                        BlackListInfo info = new BlackListInfo();
-//                        List<BlackListInfo> lits = new ArrayList<BlackListInfo>();
-//                        info.number = "13027964843";
-//                        info.blackNum = 2258;
-//                        info.markType = 2;
-//                        info.markNum = 50000;
-//                        CallFilterHelper cm = CallFilterHelper.getInstance(AppMasterApplication.getInstance());
-//                        lits.add(info);
-////                        cm.addFilterFroParse(lits);
-//                        BlacklistTab.getInstance().addServerBlackList(lits);
-//                        LeoLog.i(TAG, "X=" + pix[0] + ",Y=" + pix[1]);
-//                    }
-//                    ThreadManager.executeOnAsyncThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            LostSecurityManager lm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-//                            try {
-//                                lm.getLocation(PhoneSecurityConstants.LOCA_ID_MSM);
-//                                PhoneSecurityManager.getInstance(mActivity).securLocateHandler();
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    });
-//
-//                    CollectVideoUtils.getAllVideoData();
-//                    SimDetecter.sendMtkDoubleSim("18790729990", "测试", SimDetecter.SIM_TYPE_1);
+                case R.id.home_more:
+                    intent = new Intent(activity, HomeMoreActivity.class);
+                    activity.startActivity(intent);
+                    // 更多
                     break;
             }
         }

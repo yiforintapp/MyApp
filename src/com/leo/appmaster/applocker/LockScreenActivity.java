@@ -65,6 +65,8 @@ import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.ad.LEOAdManager;
 import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
+import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -76,6 +78,7 @@ import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -146,49 +149,49 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
-        OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
+		OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
 
-    public static final String TAG = "LockScreenActivity";
-    //    private HomeWatcherReceiver mReceiver;
-    private static final String mPrivateLockPck = "com.leo.appmaster";
-    public static final String THEME_CHANGE = "lock_theme_change";
-    public static final String EXTRA_LOCK_MODE = "extra_lock_type";
-    public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
-    public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
-    public static final String SHOW_NOW = "mode changed_show_now";
-    public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
-    public static final int SHOW_RED_MAN = 1;
-    public static final int LARGE_BANNER_HIDE = 2;
-    public static final int AD_TYPE_SHAKE = 1;
-    public static final int AD_TYPE_JUMP = 2;
-    public static final int AD_TYPE_STAY = 3;
-    //    private static boolean sHasClickGoGrantPermission = false;
-    private static boolean mHasClickGoGrantPermission = false;
-    public int SHOW_AD_TYPE = 0;
-    private int mLockMode;
-    private String mLockedPackage;
-    private CommonTitleBar mTtileBar;
-    private TextView mLockAppTitleView;
-    private LockFragment mLockFragment;
-    private Bitmap mAppBaseInfoLayoutbg;
-    private LeoHomePopMenu mLeoPopMenu;
-    private LeoDoubleLinesInputDialog mDialog;
-    private LEOAlarmDialog mTipDialog;
-    private EditText mEtQuestion, mEtAnwser;
-    private RippleView mMrlGift;
-    private RelativeLayout mRlNoPermission;
-    private String mLockTitle;
-    // private ImageView mThemeView;
-    private ImageView mAdIcon, mAdIconRedTip;
-    // private View switch_bottom_content;
-    private ImageView mADAnimalEntry;
-    private LeoPreference mPt;
-    private BaseSelfDurationToast mPermissionGuideToast;
-    private TextView mTvPermissionTip;
-    private View mVPermissionTip;
-    /**
-     * 大banner
-     */
+	public static final String TAG = "LockScreenActivity";
+	//    private HomeWatcherReceiver mReceiver;
+	private static final String mPrivateLockPck = "com.leo.appmaster";
+	public static final String THEME_CHANGE = "lock_theme_change";
+	public static final String EXTRA_LOCK_MODE = "extra_lock_type";
+	public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
+	public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
+	public static final String SHOW_NOW = "mode changed_show_now";
+	public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
+	public static final int SHOW_RED_MAN = 1;
+	public static final int LARGE_BANNER_HIDE = 2;
+	public static final int AD_TYPE_SHAKE = 1;
+	public static final int AD_TYPE_JUMP = 2;
+	public static final int AD_TYPE_STAY = 3;
+	//    private static boolean sHasClickGoGrantPermission = false;
+	private static boolean mHasClickGoGrantPermission = false;
+	public int SHOW_AD_TYPE = 0;
+	private int mLockMode;
+	private String mLockedPackage;
+	private CommonTitleBar mTtileBar;
+	private TextView mLockAppTitleView;
+	private LockFragment mLockFragment;
+	private Bitmap mAppBaseInfoLayoutbg;
+	private LeoHomePopMenu mLeoPopMenu;
+	private LeoDoubleLinesInputDialog mDialog;
+	private LEOAlarmDialog mTipDialog;
+	private EditText mEtQuestion, mEtAnwser;
+	private RippleView mMrlGift;
+	private RelativeLayout mRlNoPermission;
+	private String mLockTitle;
+	// private ImageView mThemeView;
+	private ImageView mAdIcon, mAdIconRedTip;
+	// private View switch_bottom_content;
+	private ImageView mADAnimalEntry;
+	private LeoPreference mPt;
+	private BaseSelfDurationToast mPermissionGuideToast;
+	private TextView mTvPermissionTip;
+	private View mVPermissionTip;
+	/**
+	 * 大banner
+	 */
 //    private FrameLayout mBannerParent;
 	private ViewPager mBannerContainer;
 	private AdBannerAdapter mAdapterCycle;
@@ -233,8 +236,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	public static boolean mIsPicSaved = false;
 
 	public static boolean mHasTakePic = false;
-
-	private View adView;
+	
+	private View mAdView;
 
 
 	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
@@ -270,44 +273,44 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		long start = SystemClock.elapsedRealtime();
 		setContentView(R.layout.activity_lock_layout);
 //        registerHomeKeyReceiver()
-        LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
-        mISManager = (IntrudeSecurityManager) MgrContext
-                .getManager(MgrContext.MGR_INTRUDE_SECURITY);
-        mPt = LeoPreference.getInstance();
-        mPDManager = (PrivacyDataManager) MgrContext
-                .getManager(MgrContext.MGR_PRIVACY_DATA);
-        mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
-        handleIntent();
-        mLockManager.setPauseScreenonLock(true);
-        // for fix lock mode shortcut bug
-        if (mQuickLockMode) {
-            List<LockMode> modeList = mLockManager.getLockMode();
-            LockMode mode = null;
-            for (LockMode lockMode : modeList) {
-                if (lockMode.modeId == mQuiclModeId) {
-                    mode = lockMode;
-                    break;
-                }
-            }
-            if (mode != null) {
-                if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-                    if (mode.defaultFlag != -1) {
-                        Intent intent = new Intent(this, LockSettingActivity.class);
-                        intent.putExtra("from_quick_mode", true);
-                        intent.putExtra("just_finish", true);
-                        intent.putExtra("mode_id", mQuiclModeId);
-                        this.startActivity(intent);
-                    }
-                    finish();
-                    return;
-                }
-            } else {
-                showModeMissedTip();
-                return;
-            }
-        }
+		LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
+		mISManager = (IntrudeSecurityManager) MgrContext
+				.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+		mPt = LeoPreference.getInstance();
+		mPDManager = (PrivacyDataManager) MgrContext
+				.getManager(MgrContext.MGR_PRIVACY_DATA);
+		mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
+		handleIntent();
+		mLockManager.setPauseScreenonLock(true);
+		// for fix lock mode shortcut bug
+		if (mQuickLockMode) {
+			List<LockMode> modeList = mLockManager.getLockMode();
+			LockMode mode = null;
+			for (LockMode lockMode : modeList) {
+				if (lockMode.modeId == mQuiclModeId) {
+					mode = lockMode;
+					break;
+				}
+			}
+			if (mode != null) {
+				if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+					if (mode.defaultFlag != -1) {
+						Intent intent = new Intent(this, LockSettingActivity.class);
+						intent.putExtra("from_quick_mode", true);
+						intent.putExtra("just_finish", true);
+						intent.putExtra("mode_id", mQuiclModeId);
+						this.startActivity(intent);
+					}
+					finish();
+					return;
+				}
+			} else {
+				showModeMissedTip();
+				return;
+			}
+		}
 
-        initUI();
+		initUI();
 //        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -548,7 +551,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //        if (mHasClickGoGrantPermission) {
 //            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
 //        }
-		tryShowNoPermissionTip();
+
+		boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+		if(!isAirsigOn){
+			tryShowNoPermissionTip();
+		}
 
 		// handleLoadAd();
 
@@ -1014,7 +1021,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		return bd;
 	}
 
-	private void setAppInfoBackground(Drawable drawable) {
+	public void setAppInfoBackground(Drawable drawable) {
 		if (drawable != null) {
 			int h = drawable.getIntrinsicHeight() * 9 / 10;
 			int w = h * 3 / 5;
@@ -1152,6 +1159,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			mAppBaseInfoLayoutbg = null;
 		}
 
+//		try {
+//			if (wallAd != null) {
+//				wallAd.release();
+//				wallAd = null;
+//			}
+//		} catch (Exception e) {
+//		}
 		LeoLog.d(TAG, "onDestroy...");
 		LeoEventBus.getDefaultBus().unregister(this);
 		mLockFragment.setShowText(false);
@@ -1180,7 +1194,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 						//LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
 						// 3.3.2 封装Max与Mob SDK
 						if (mDidLoadAd) {
-							ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id, adView);
+							ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id, mAdView);
 						}
 					}
 				}
@@ -1338,15 +1352,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		 * 广告请求回调
 		 *
 		 * @param code     返回码，如ERR_PARAMS_NULL
-		 * @param campaigns 请求成功的广告结构体集合，失败为null
+		 * @param campaigns 请求成功的广告结构体，失败为null
 		 * @param msg      请求失败sdk返回的描述，成功为null
 		 */
 		@Override
-		public synchronized void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaigns, String msg) {
+		public synchronized void onWrappedAdLoadFinished(int code, final List<WrappedCampaign> campaigns, String msg) {
 			if (code != MobvistaEngine.ERR_OK) {
 				return;
 			}
-			if (campaigns != null && campaigns.size() > 0) {
+			if (campaigns != null) {
 				mAdMap.put(unitId, campaigns.get(0));
 
                         /* 开始load 广告大图 */
@@ -1420,15 +1434,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 										mBannerContainer.setAdapter(mAdapterCycle);
 										if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
                                         /* 第一个广告直接出现 */
-                                            mBannerContainer.setCurrentItem(1, false);
-                                            mAdapterCycle.setLasterSlectedPage(1);
-                                            mBannerContainer.setVisibility(View.VISIBLE);
-                                            showAdAnimaiton(unitId);
-                                            // 3.6版本，6秒后消失的逻辑去掉
-                                            // delayBannerHideAnim();
-                                            hideIconAndPswTips();
+											mBannerContainer.setCurrentItem(1, false);
+											mAdapterCycle.setLasterSlectedPage(1);
+											mBannerContainer.setVisibility(View.VISIBLE);
+											showAdAnimaiton(unitId);
+											// 3.6版本，6秒后消失的逻辑去掉
+											// delayBannerHideAnim();
+											hideIconAndPswTips();
 
-                                        } else {
+										} else {
                                         /* 广告隐藏在右边 */
 											mBannerContainer.setVisibility(View.VISIBLE);
 											mBannerContainer.setCurrentItem(0, false);
@@ -1484,7 +1498,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 						otherAdSwitcher = false;
 					}
 
-					ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID, adView);
+					ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID, mAdView);
 					mAdapterCycle.clearView();
 					mBannerContainer.removeAllViews();
 					new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -2220,8 +2234,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					});
 				}
 				mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
-				mLeoPopMenu.showPopMenu(this,
-						mTtileBar.findViewById(R.id.tv_option_image), null, null);
+				mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.tv_option_image), null, null);
 				mLeoPopMenu.setListViewDivider(null);
 				AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
 						true);
@@ -2251,15 +2264,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				mAmp.setDoubleCheck(null);
 				// wallAd.clickWall();
 				mAmp.setIsADAppwallNeedUpdate(false);
-				try {
-//                    Intent mWallIntent = wallAd.getWallIntent();
-//                    startActivity(mWallIntent);
-					/*wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
-					wallAd.preloadWall();
-					wallAd.clickWall();*/
-					MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
-				} catch (Exception e) {
-				}
+//				try {
+////                    Intent mWallIntent = wallAd.getWallIntent();
+////                    startActivity(mWallIntent);
+//					wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+//					wallAd.preloadWall();
+//					wallAd.clickWall();
+//				} catch (Exception e) {
+//				}
+				MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
 				if (!mHaveNewThings && !clickShakeIcon) {
 					AppMasterPreference.getInstance(LockScreenActivity.this).setJumpIcon(true);
 				} else {
@@ -2293,8 +2306,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				listItems.add(resources.getString(R.string.find_passwd));
 			}
 		}
-		listItems.add(resources.getString(R.string.unlock_theme));
-		listItems.add(resources.getString(R.string.setting_hide_lockline));
+
+		int type = mLockFragment.getUnlockType();
+		if(type == AirSigSettingActivity.NOMAL_UNLOCK){
+			listItems.add(resources.getString(R.string.unlock_theme));
+			listItems.add(resources.getString(R.string.setting_hide_lockline));
+		}
+
 		listItems.add(resources.getString(R.string.help_setting_tip_title));
 
 		return listItems;
@@ -2305,12 +2323,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
 			icons.add(R.drawable.forget_password_icon);
 		}
-		icons.add(R.drawable.theme_icon_black);
-		if (AppMasterPreference.getInstance(this).getIsHideLine()) {
-			icons.add(R.drawable.show_locus_icon);
-		} else {
-			icons.add(R.drawable.hide_locus_icon);
+
+		int type = mLockFragment.getUnlockType();
+		if(type == AirSigSettingActivity.NOMAL_UNLOCK){
+			icons.add(R.drawable.theme_icon_black);
+			if (AppMasterPreference.getInstance(this).getIsHideLine()) {
+				icons.add(R.drawable.show_locus_icon);
+			} else {
+				icons.add(R.drawable.hide_locus_icon);
+			}
 		}
+
 		icons.add(R.drawable.help_tip_icon);
 		return icons;
 	}
@@ -2836,8 +2859,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
 			((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
 			final View clickArea = view.findViewById(R.id.click_area);
+			mAdView = clickArea;
 			if (mWrapperEngine != null) {
-				adView = clickArea;
 				mWrapperEngine.registerView(mAdSource, clickArea, unitId);
 			}
 

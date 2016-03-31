@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -14,6 +15,7 @@ import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.battery.BatterySettingActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
@@ -49,9 +51,10 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout mRlFlowManagement;
     private RelativeLayout mRlBatteryManagement;
 
-    private LeoPreference mPt;
+    private View mVLine2;
+    private View mVLine3;
+    private View mVLine4;
 
-    private LinearLayout mLlLayoutToHide;
 
     private boolean mIsHasCallFilterRecords = false;
 
@@ -60,13 +63,19 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_more);
         initUI();
-        mPt = LeoPreference.getInstance();
         tryShowOldEntry();
     }
 
     private void tryShowOldEntry() {
-        if (!mPt.getBoolean(PrefConst.KEY_IS_OLD_USER, false)) {
-            mLlLayoutToHide.setVisibility(View.GONE);
+        boolean isOld = LeoPreference.getInstance().getBoolean(PrefConst.KEY_IS_OLD_USER, true);
+        Toast.makeText(this,"is old user? : " + isOld, Toast.LENGTH_LONG).show();
+        if (!isOld) {
+            mRlWifi.setVisibility(View.GONE);
+            mRlFlowManagement.setVisibility(View.GONE);
+            mRlBatteryManagement.setVisibility(View.GONE);
+            mVLine2.setVisibility(View.GONE);
+            mVLine3.setVisibility(View.GONE);
+            mVLine4.setVisibility(View.GONE);
         }
     }
 
@@ -101,10 +110,13 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initUI() {
-        mLlLayoutToHide = (LinearLayout) findViewById(R.id.ll_to_hide);
 
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
         mCtbMain.setToolbarTitle(R.string.lock_more);
+
+        mVLine2 = findViewById(R.id.v_line2);
+        mVLine3 = findViewById(R.id.v_line3);
+        mVLine4 = findViewById(R.id.v_line4);
 
         mRvIntruderEntry = (RippleView) findViewById(R.id.rv_home_more_intruder);
         mRvIntruderEntry.setOnClickListener(this);
@@ -173,15 +185,15 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void goToWifi() {
-        int count2 = mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
-        mPt.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2+1);
+        int count2 = LeoSettings.getInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
+        LeoSettings.setInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2 + 1);
         Intent mIntent = new Intent(this, WifiSecurityActivity.class);
         startActivity(mIntent);
     }
 
     private void goToCallfilter() {
-        int count = mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
-        mPt.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count+1);
+        int count = LeoSettings.getInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
+        LeoSettings.setInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count + 1);
         Intent callFilter = new Intent(this, CallFilterMainActivity.class);
         if (mIsHasCallFilterRecords) {
             callFilter.putExtra("needMoveToTab2", true);

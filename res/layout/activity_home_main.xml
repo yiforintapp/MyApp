@@ -65,11 +65,11 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
-    <fragment
+<!--    <fragment
         android:id="@+id/home_more_ft"
         android:name="com.leo.appmaster.home.HomeMoreFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
     <!--首次处理图片首页引导-->
     <fragment
         android:id="@+id/home_guide"

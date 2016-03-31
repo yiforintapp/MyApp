@@ -37,6 +37,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
                 case SET_DONE:
 //                    LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, true);
                     LeoSettings.setBoolean(AIRSIG_SWITCH, true);
+                    LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
                     switchOn();
                     showMessage(getString(R.string.airsig_settings_activity_toast));
                     break;
@@ -168,6 +169,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         } else if (isAirsigReady) {
             //open
 //            LeoPreference.getInstance().putBoolean(AIRSIG_SWITCH, true);
+            LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
             LeoSettings.setBoolean(AIRSIG_SWITCH, true);
             switchOn();
         } else {

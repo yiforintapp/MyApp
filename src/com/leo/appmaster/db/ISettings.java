@@ -22,6 +22,8 @@ public abstract class ISettings {
             AppMasterPreference.PREF_LAST_SYNC_BUSINESS_TIME,
             AppMasterPreference.PREF_LAST_BUSINESS_RED_TIP,
             AppMasterPreference.PREF_LOCK_TYPE,
+            AppMasterPreference.PREF_GESTURE,
+            AppMasterPreference.PREF_PASSWORD,
             AppMasterPreference.PREF_FIRST_INSTALL_APP,
             AppMasterPreference.PREF_LOCK_REMIND,
             AppMasterPreference.PREF_HAVE_EVER_LOAD_APPS,

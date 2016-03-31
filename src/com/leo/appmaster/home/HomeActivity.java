@@ -67,6 +67,7 @@ import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
@@ -107,17 +108,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private float mDrawerOffset;
     private List<MenuItem> mMenuItems;
     private MenuAdapter mMenuAdapter;
-    //    private ImageView mAdIcon;
-    //    private MobvistaAdWall mWallAd;
     private int mMenuTextColorId;
     private Handler mHandler = new Handler();
     private LeoPreference mPt = LeoPreference.getInstance();
-    public static int mHomeAdSwitchOpen = -1;
 
     private IntrudeSecurityManager mISManger;
-    private boolean mShowIswipeFromNotfi;
-
-    public HomeMoreFragment mMoreFragment;
     private HomePrivacyFragment mPrivacyFragment;
     private HomeTabFragment mTabFragment;
     private GuideFragment mGuideFragment;
@@ -175,6 +170,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private View mTabWhiteBg;
     private boolean mEnterScan;
+
+    private Privacy mLockPrivacy;
+    private Privacy mImagePrivacy;
+    private Privacy mVideoPrivacy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -400,7 +399,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             LeoLog.d(TAG, "onShieldClick, start dismiss tab.");
             mTabFragment.dismissTab();
             mPrivacyFragment.setShowColorProgress(false);
-            mMoreFragment.setEnable(false);
+//            mMoreFragment.setEnable(false);
 
             Animation comingIn = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_in);
             Animation comingOut = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_out);
@@ -516,7 +515,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mCommonToolbar.startAnimation(mComingInAnim);
 
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            mMoreFragment.cancelUpArrowAnim();
+//            mMoreFragment.cancelUpArrowAnim();
         }
     }
 
@@ -526,7 +525,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             public void onShowTabListener() {
             }
         });
-        mMoreFragment.setEnable(true);
+//        mMoreFragment.setEnable(true);
         /*首页引导*/
         showHomeGuide();
 
@@ -631,7 +630,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void initUI() {
         mTabWhiteBg = findViewById(R.id.home_tab_white_bg);
-        mMoreFragment = (HomeMoreFragment) getSupportFragmentManager().findFragmentById(R.id.home_more_ft);
+//        mMoreFragment = (HomeMoreFragment) getSupportFragmentManager().findFragmentById(R.id.home_more_ft);
         mPrivacyFragment = (HomePrivacyFragment) getSupportFragmentManager().findFragmentById(R.id.home_anim_ft);
         mTabFragment = (HomeTabFragment) getSupportFragmentManager().findFragmentById(R.id.home_tab_ft);
         mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.home_guide);
@@ -666,11 +665,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
                     color = Color.argb(a, r, g, b);
                     mToolbar.setBackgroundColor(color);
-                    mMoreFragment.setEnable(false);
+//                    mMoreFragment.setEnable(false);
                     mToolbar.setNavigationLogoResource(R.drawable.ic_toolbar_back);
                 } else {
                     mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-                    mMoreFragment.setEnable(true);
+//                    mMoreFragment.setEnable(true);
                     mToolbar.setNavigationLogoResource(R.drawable.ic_toolbar_menu);
                 }
             }
@@ -695,10 +694,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        if (mMoreFragment.isPanelOpen()) {
-            mMoreFragment.closePanel();
-            return;
-        }
+//        if (mMoreFragment.isPanelOpen()) {
+//            mMoreFragment.closePanel();
+//            return;
+//        }
 
         if (mDrawerLayout.isDrawerOpen(mMenuList)) {
             mDrawerLayout.closeDrawer(mMenuList);
@@ -1393,7 +1392,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             if (!picConsumed) {
                 leoPreference.putBoolean(PrefConst.KEY_PIC_COMSUMED, true);
                 leoPreference.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, true);
-                mMoreFragment.updateHideRedTip();
+//                mMoreFragment.updateHideRedTip();
             }
         } else if ((fragment instanceof PrivacyNewVideoFragment)
                 || (fragment instanceof FolderVidFragment)) {
@@ -1402,7 +1401,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             if (!vidConsumed) {
                 leoPreference.putBoolean(PrefConst.KEY_VID_COMSUMED, true);
                 leoPreference.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, true);
-                mMoreFragment.updateHideRedTip();
+//                mMoreFragment.updateHideRedTip();
             }
         }
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -1673,9 +1672,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         boolean vidReddot = leoPreference.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
         boolean homeGuide = leoPreference.getBoolean(PrefConst.KEY_HOME_GUIDE, false);
         if (!pulledEver && (picReddot || vidReddot) && !homeGuide) {
-            if (mMoreFragment != null) {
-                mMoreFragment.cancelUpArrowAnim();
-            }
+//            if (mMoreFragment != null) {
+//                mMoreFragment.cancelUpArrowAnim();
+//            }
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
             leoPreference.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
             GuideFragment.setHomeGuideShowStatus(true);

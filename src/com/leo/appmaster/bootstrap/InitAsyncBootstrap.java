@@ -12,6 +12,8 @@ import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.ThirdAppManager;
@@ -42,12 +44,11 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        initImageLoader();
         PrivacyTrickUtil.clearOtherApps(mApp);
         AppLoadEngine.getInstance(mApp).preloadAllBaseInfo();
         quickGestureTipInit();
-        ((ThirdAppManager) MgrContext.
-                getManager(MgrContext.MGR_THIRD_APP)).
-                getBackupList(AppBackupRestoreManager.BACKUP_PATH);
+        ((ThirdAppManager) MgrContext.getManager(MgrContext.MGR_THIRD_APP)).getBackupList(AppBackupRestoreManager.BACKUP_PATH);
 //        AppBackupRestoreManager.getInstance(mApp).getBackupList(saveFileName);
         PrivacyContactManager.getInstance(mApp).getPrivateContacts();
         // GP check
@@ -74,9 +75,6 @@ public class InitAsyncBootstrap extends Bootstrap {
 
         //airSig
         initAirSig();
-
-        initImageLoader();
-
         return true;
     }
 

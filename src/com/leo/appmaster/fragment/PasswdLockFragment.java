@@ -76,7 +76,6 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private ImageView mIvBottom;
     private TextView mTvBottom;
     private View mAirSigTouchView;
-    private int mShowType;
     private TextView mTvMessage;
     private TextView mTvResult;
     private ProgressBar mProgressBar;
@@ -149,7 +148,6 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             ASEngine.getSharedInstance().startSensors();
         }
     }
-
 
 
     public void removeCamera() {
@@ -356,6 +354,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mViewBottom.setVisibility(View.GONE);
         }
     }
+
 
     private boolean onTouchThumb(final View v, final MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {

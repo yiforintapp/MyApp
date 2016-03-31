@@ -324,7 +324,6 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoHomeActivity(){
-        mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
