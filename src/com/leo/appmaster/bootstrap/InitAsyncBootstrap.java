@@ -12,6 +12,8 @@ import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.db.BlacklistTab;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.ThirdAppManager;
