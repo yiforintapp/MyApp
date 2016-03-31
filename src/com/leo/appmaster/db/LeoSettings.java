@@ -34,6 +34,7 @@ public class LeoSettings {
             return;
         }
 
+        LeoLog.d(TAG, "<ls>start initialize....");
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         Map<String, ?> values = preferences.getAll();
 
@@ -51,24 +52,33 @@ public class LeoSettings {
             }
         }
 
+        LeoLog.d(TAG, "<ls>initialize....high size: " + highPriority.size() + " | normal size: " + normal.size());
         if (highPriority.size() > 0) {
             mPreference.setBundleMap(highPriority, new ISettings.OnBundleSavedListener() {
                 @Override
                 public void onBundleSaved() {
+                    LeoLog.d(TAG, "<ls>initialize, onBundleSaved preference...");
                     sPreferenceInited = true;
                     deleteIfNeeded(file);
                 }
             });
+        } else {
+            sPreferenceInited = true;
         }
         if (normal.size() > 0) {
             mDatabase.setBundleMap(normal, new ISettings.OnBundleSavedListener() {
                 @Override
                 public void onBundleSaved() {
+                    LeoLog.d(TAG, "<ls>initialize, onBundleSaved database...");
                     sDatabaseInited = true;
                     deleteIfNeeded(file);
                 }
             });
+        } else {
+            sDatabaseInited = true;
         }
+        deleteIfNeeded(file);
+
     }
 
     private synchronized static void deleteIfNeeded(File file) {
@@ -77,8 +87,19 @@ public class LeoSettings {
         }
         if (sPreferenceInited && sDatabaseInited) {
             try {
-                file.delete();
-                LeoLog.d(TAG, "deleteIfNeeded, file: " + file.toString());
+                if (file.exists()) {
+                    file.delete();
+                    LeoLog.d(TAG, "<ls>deleteIfNeeded, file: " + file.toString());
+                } else {
+                    LeoLog.d(TAG, "<ls>deleteIfNeeded, file is not exist.");
+                }
+                File backupFile = new File(file.getPath() + ".bak");
+                if (backupFile.exists()) {
+                    backupFile.delete();
+                    LeoLog.d(TAG, "<ls>deleteIfNeeded, backupFile: " + backupFile.toString());
+                } else {
+                    LeoLog.d(TAG, "<ls>deleteIfNeeded, backupFile is not exist.");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

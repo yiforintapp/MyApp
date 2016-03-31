@@ -70,15 +70,6 @@ import java.util.Date;
 public class InitCoreBootstrap extends Bootstrap {
     private static final String TAG = "InitCoreBootstrap";
 
-    private PrivacyMessageContentObserver mMessageObserver;
-    private PrivacyMessageContentObserver mCallLogObserver;
-    private PrivacyMessageContentObserver mContactObserver;
-    private PrivacyContactReceiver mPrivacyReceiver;
-
-    private ITelephony mITelephony;
-    private AudioManager mAudioManager;
-    public Handler mHandler = new Handler(Looper.getMainLooper());
-
     InitCoreBootstrap() {
         super();
     }
@@ -90,13 +81,6 @@ public class InitCoreBootstrap extends Bootstrap {
         long end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, AppLoadEngine.getInstance: " + (end - start));
 
-        AppBackupRestoreManager.getInstance(mApp);
-
-        start = SystemClock.elapsedRealtime();
-        initImageLoader();
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, initImageLoader: " + (end - start));
-
         registerPackageChangedBroadcast();
 
         start = SystemClock.elapsedRealtime();
@@ -104,22 +88,12 @@ public class InitCoreBootstrap extends Bootstrap {
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
 
-        start = SystemClock.elapsedRealtime();
-        AppBusinessManager.getInstance(mApp).init();
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, AppBusinessManager.getInstance.init: " + (end - start));
-
         // init lock manager
         start = SystemClock.elapsedRealtime();
         LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         lockManager.init();
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, LockManager.getInstance.init: " + (end - start));
-
-        start = SystemClock.elapsedRealtime();
-        registerReceiveMessageCallIntercept();
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, registerReceiveMessageCallIntercept: " + (end - start));
 
         AppMasterPreference preference = AppMasterPreference.getInstance(mApp);
         if (preference.getIsFirstInstallApp()) {
@@ -136,11 +110,6 @@ public class InitCoreBootstrap extends Bootstrap {
         // init MobVista SDK here
         MobvistaEngine.getInstance(mApp);
         LeoLog.d(TAG, "MobvistaEngine init cost: " + (SystemClock.elapsedRealtime() - start));
-
-        //init DeviceImp
-        WifiSecurityManager wifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
-        DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
-        deviceManager.init();
 
         // start a protection JobScheduler service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -184,53 +153,6 @@ public class InitCoreBootstrap extends Bootstrap {
         // recommend list change
         filter.addAction(AppLoadEngine.ACTION_RECOMMEND_LIST_CHANGE);
         mApp.registerReceiver(AppLoadEngine.getInstance(mApp), filter);
-    }
-
-    /**
-     * 短信拦截, 电话拦截
-     */
-    private void registerReceiveMessageCallIntercept() {
-        ContentResolver cr = mApp.getContentResolver();
-        if (cr != null) {
-            mMessageObserver = new PrivacyMessageContentObserver(mApp, mHandler,
-                    PrivacyMessageContentObserver.MESSAGE_MODEL);
-            cr.registerContentObserver(PrivacyContactUtils.SMS_INBOXS, true,
-                    mMessageObserver);
-            mCallLogObserver = new PrivacyMessageContentObserver(mApp, mHandler,
-                    PrivacyMessageContentObserver.CALL_LOG_MODEL);
-            cr.registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true, mCallLogObserver);
-            mContactObserver = new PrivacyMessageContentObserver(mApp, mHandler,
-                    PrivacyMessageContentObserver.CONTACT_MODEL);
-            cr.registerContentObserver(
-                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true,
-                    mContactObserver);
-        }
-        openEndCall();
-        mPrivacyReceiver = new PrivacyContactReceiver(mITelephony, mAudioManager);
-        IntentFilter filter = new IntentFilter();
-        filter.setPriority(Integer.MAX_VALUE);
-        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION);
-        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2);
-        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3);
-        filter.addAction(PrivacyContactUtils.CALL_RECEIVER_ACTION);
-        filter.addAction(PrivacyContactUtils.SENT_SMS_ACTION);
-        filter.addAction(PrivacyContactUtils.NEW_OUTGOING_CALL);
-        mApp.registerReceiver(mPrivacyReceiver, filter);
-    }
-
-    // 打开endCall
-    private void openEndCall() {
-        mAudioManager = (AudioManager) mApp.getSystemService(Context.AUDIO_SERVICE);
-        TelephonyManager mTelephonyManager = (TelephonyManager) mApp
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        try {
-            Method getITelephonyMethod = TelephonyManager.class.getDeclaredMethod("getITelephony",
-                    (Class[]) null);
-            getITelephonyMethod.setAccessible(true);
-            mITelephony = (ITelephony) getITelephonyMethod.invoke(mTelephonyManager,
-                    (Object[]) null);
-        } catch (Exception e) {
-        }
     }
 
     private void removeDeviceAdmin() {
