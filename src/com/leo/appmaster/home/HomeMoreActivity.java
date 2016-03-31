@@ -67,7 +67,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void tryShowOldEntry() {
-        boolean needhide = LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI,false);
+        boolean needhide = LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false);
         if (needhide) {
             mRlWifi.setVisibility(View.GONE);
             mRlFlowManagement.setVisibility(View.GONE);
@@ -81,6 +81,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+        checkCallFilterRecordCount();
     }
 
     @Override
