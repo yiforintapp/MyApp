@@ -75,7 +75,7 @@ public class HomeScanningController {
     public void startScanning() {
         LeoLog.d(TAG, "startScanning...");
         mFragment.startAnimator(mNewContactLayout);
-        mActivity.scanningFromPercent(FIRST_IN_TIME, 0, START_TIME);
+//        mActivity.scanningFromPercent(FIRST_IN_TIME, 0, START_TIME);
     }
 
     public void startItemScanning() {
@@ -153,8 +153,8 @@ public class HomeScanningController {
             mFragment.OnItemAnimationEnd(mNewInstructLayout);
 
             mNewLostAnim = getItemAnimation(mNewLostLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
+//            int currPct = mActivity.getScanningPercent();
+//            mActivity.scanningFromPercent(NEW_UP_LIMIT_LOST, currPct, NEW_PER_LOST);
             LeoLog.e(TAG, "mNewInstructAnim end");
             mNewLostAnim.start();
         } else if (animation == mNewWifiAnim) {
@@ -171,31 +171,31 @@ public class HomeScanningController {
         } else if (animation == mNewLostAnim) {
             mFragment.OnItemAnimationEnd(mNewLostLayout);
             mNewVidAnim = getItemAnimation(mNewVidLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_VID, currPct, NEW_PER_VID);
+//            int currPct = mActivity.getScanningPercent();
+//            mActivity.scanningFromPercent(NEW_UP_LIMIT_VID, currPct, NEW_PER_VID);
             LeoLog.e(TAG, "mNewLostAnim end");
             mNewVidAnim.start();
         } else if (animation == mNewVidAnim) {
             mFragment.OnItemAnimationEnd(mNewVidLayout);
             mNewPicAnim = getItemAnimation(mNewPicLayout);
-            int currPct = mActivity.getScanningPercent();
+//            int currPct = mActivity.getScanningPercent();
             LeoPreference leoPreference = LeoPreference.getInstance();
             boolean picConsumed = leoPreference.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
             int duration = picConsumed ? NEW_UP_LIMIT_PIC_PROCESSED : NEW_UP_LIMIT_PIC;
-            mActivity.scanningFromPercent(duration, currPct, NEW_PER_PIC);
+//            mActivity.scanningFromPercent(duration, currPct, NEW_PER_PIC);
             LeoLog.e(TAG, "mNewVidAnim end");
             mNewPicAnim.start();
         } else if (animation == mNewPicAnim) {
             mFragment.OnItemAnimationEnd(mNewPicLayout);
             mNewAppAnim = getItemAnimation(mNewAppLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(NEW_UP_LIMIT_APP, currPct, NEW_PER_APP);
+//            int currPct = mActivity.getScanningPercent();
+//            mActivity.scanningFromPercent(NEW_UP_LIMIT_APP, currPct, NEW_PER_APP);
             LeoLog.e(TAG, "mNewPicAnim end");
             mNewAppAnim.start();
         } else {
             mFragment.OnItemAnimationEnd(mNewAppLayout);
-            int currPct = mActivity.getScanningPercent();
-            mActivity.scanningFromPercent(300, currPct, NEW_PER_PRI + 1);
+//            int currPct = mActivity.getScanningPercent();
+//            mActivity.scanningFromPercent(300, currPct, NEW_PER_PRI + 1);
         }
     }
 

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lt_det_result_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
+            android:background="@drawable/number_home_bg1"
+            android:paddingLeft="@dimen/home_det_result_tv1_padding"
+            android:paddingRight="@dimen/home_det_result_tv1_padding"
+            android:text="10"
+            android:textColor="@color/cb2"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:text="@string/home_det_app_str"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lt_det_result_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
+            android:background="@drawable/number_home_bg1"
+            android:paddingLeft="@dimen/home_det_result_tv1_padding"
+            android:paddingRight="@dimen/home_det_result_tv1_padding"
+            android:text="10"
+            android:textColor="@color/cb2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:text="@string/home_det_img_str"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lt_det_result_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
+            android:background="@drawable/number_home_bg1"
+            android:paddingLeft="@dimen/home_det_result_tv1_padding"
+            android:paddingRight="@dimen/home_det_result_tv1_padding"
+            android:text="10"
+            android:textColor="@color/cb2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:text="@string/home_det_vid_str"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -21,6 +21,7 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
@@ -62,6 +63,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private ImageView mIvTabIcon4;
     private boolean mIsHasCallFilterRecords = false;
 
+    private ImageView mIvRedDotAtMore;
+
     private View mRootView;
     private HomeActivity mActivity;
 
@@ -87,6 +90,15 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         checkCallFilterRecordCount();
         checkNewTheme();
+        updateRedDot();
+    }
+
+    private void updateRedDot() {
+        if (!LeoSettings.getBoolean(PrefConst.KEY_IS_HOME_TAB_MORE_CONSUMED,false)) {
+            mIvRedDotAtMore.setVisibility(View.VISIBLE);
+        } else {
+            mIvRedDotAtMore.setVisibility(View.GONE);
+        }
     }
 
     private void checkCallFilterRecordCount() {
@@ -121,6 +133,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         mRootView = view;
+
+        mIvRedDotAtMore = (ImageView) view.findViewById(R.id.more_consumed_red_dot);
 
         mAppLockView = view.findViewById(R.id.home_app_lock_tv);
         MaterialRippleLayout.on(mAppLockView)
@@ -292,9 +306,12 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     activity.startActivity(intent);
                     break;
                 case R.id.home_more:
+                    LeoSettings.setBoolean(PrefConst.KEY_IS_HOME_TAB_MORE_CONSUMED,true);
                     intent = new Intent(activity, HomeMoreActivity.class);
                     activity.startActivity(intent);
                     // 更多
+//                    Intent intent1 = new Intent(mActivity,PhoneSecurityActivity.class);
+//                    startActivity(intent1);
                     break;
             }
         }
