@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.provider.MediaStore.MediaColumns;
 
 public class Constants {
+    public static final int VERSION_CODE_TO_HIDE_BATTERY_FLOW_AND_WIFI = 71;
 
     public static final String DATABASE_NAME = "appmaster.db";
     public static final int DATABASE_VERSION = 2;

@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.MenuFaqBrowserActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -179,13 +180,14 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
         mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
 
-        if ( LeoPreference.getInstance().getBoolean(PrefConst.KEY_IS_OLD_USER, true)) {
-            for (int i = 0; i < sCategoryIds.length; i++) {
-                mCategories.add(getString(sCategoryIds[i]));
-            }
-        } else {
+        boolean needhide = LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false);
+        if (needhide) {
             for (int i = 0; i < sNewCategoryIds.length; i++) {
                 mCategories.add(getString(sNewCategoryIds[i]));
+            }
+        } else {
+            for (int i = 0; i < sCategoryIds.length; i++) {
+                mCategories.add(getString(sCategoryIds[i]));
             }
         }
 

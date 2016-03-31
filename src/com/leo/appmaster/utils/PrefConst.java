@@ -5,6 +5,10 @@ package com.leo.appmaster.utils;
  * Created by Jasper on 2015/9/30.
  */
 public class PrefConst {
+
+    public static final String KEY_IS_NEW_INSTALL = "is_new_install";
+    public static final String KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI = "is_new_install";
+
     // 测试相关key
     public static final String KEY_TEST_INT = "TEST_INT";
     public static final String KEY_TEST_DOUBLE = "TEST_DOUBLE";

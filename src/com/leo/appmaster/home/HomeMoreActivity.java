@@ -67,9 +67,8 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void tryShowOldEntry() {
-        boolean isOld = LeoPreference.getInstance().getBoolean(PrefConst.KEY_IS_OLD_USER, true);
-        Toast.makeText(this,"is old user? : " + isOld, Toast.LENGTH_LONG).show();
-        if (!isOld) {
+        boolean needhide = LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false);
+        if (needhide) {
             mRlWifi.setVisibility(View.GONE);
             mRlFlowManagement.setVisibility(View.GONE);
             mRlBatteryManagement.setVisibility(View.GONE);
@@ -82,6 +81,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
+        checkCallFilterRecordCount();
     }
 
     @Override
