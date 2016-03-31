@@ -530,8 +530,10 @@ public class AppLockListActivity extends BaseActivity implements
                 return;
             }
         }
-        if (mUnlockRecommendList.size() > 0) {
-            if (mAppList.size() > 0) {
+        if (mUnlockRecommendList.size() > 0
+                || mLockedList.size() > 0
+                || mUnlockNormalList.size() > 0) {
+            if (mAppList != null && mAppList.size() > 0) {
                 if (i == 2 + switchs.size() + mAppList.size()) {
                     return;
                 }
@@ -541,25 +543,6 @@ public class AppLockListActivity extends BaseActivity implements
                 }
             }
         }
-//        if (mUnlockNormalList.size() > 0 || mLockedList.size() > 0) {
-//            if (mAppList.size() > 0 && mUnlockRecommendList.size() > 0) {
-//                if (i == 3 + switchs.size() + mAppList.size() + mUnlockRecommendList.size()) {
-//                    return;
-//                }
-//            } else if (mAppList.size() == 0 && mUnlockRecommendList.size() == 0) {
-//                if (i == 1 + switchs.size()) {
-//                    return;
-//                }
-//            } else if (mAppList.size() > 0 && mUnlockRecommendList.size() == 0) {
-//                if (i == 2 + switchs.size() + mAppList.size()) {
-//                    return;
-//                }
-//            } else if (mAppList.size() == 0 && mUnlockRecommendList.size() > 0) {
-//                if (i == 2 + switchs.size() + mUnlockRecommendList.size()) {
-//                    return;
-//                }
-//            }
-//        }
 
         ListLockItem lockImageView = (ListLockItem) view.findViewById(R.id.content_item_all);
         LockMode curMode = mLockManager.getCurLockMode();
