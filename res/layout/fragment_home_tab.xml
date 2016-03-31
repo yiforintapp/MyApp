@@ -153,17 +153,42 @@
                 android:background="@drawable/new_list_selecter"
                 android:gravity="center">
 
-                <ImageView
-                    android:id="@+id/home_ic_more"
-                    android:layout_width="@dimen/home_tab_ic_size"
-                    android:layout_height="@dimen/home_tab_ic_size"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/icon_home_more" />
+                <RelativeLayout
+                    android:id="@+id/content_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center">
 
-                <TextView
-                    style="@style/HomeTabText"
-                    android:layout_below="@id/home_ic_more"
-                    android:text="@string/home_more" />
+                    <RelativeLayout
+                        android:id="@+id/content_more_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/home_ic_more"
+                            android:layout_width="@dimen/home_tab_ic_size"
+                            android:layout_height="@dimen/home_tab_ic_size"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/icon_home_more" />
+
+                        <TextView
+                            style="@style/LockListTabText"
+                            android:layout_below="@id/home_ic_more"
+                            android:text="@string/home_more" />
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/more_consumed_red_dot"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_toRightOf="@id/content_more_red"
+                        android:src="@drawable/red_dot" />
+                </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
 
