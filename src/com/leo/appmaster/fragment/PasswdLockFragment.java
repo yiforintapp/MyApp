@@ -49,6 +49,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 
@@ -236,6 +237,22 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         mPasswdHint = (TextView) findViewById(R.id.tv_passwd_hint);
         mPasswdTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
 
+        mPassLockView = findViewById(R.id.psw_lock);
+        mViewBottom = findViewById(R.id.switch_bottom_content);
+        mViewBottom.setOnClickListener(this);
+        mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
+        mTvBottom = (TextView) findViewById(R.id.switch_bottom);
+        mAirSigTouchView = findViewById(R.id.airsig_lock);
+        mAirSigTouchView.setOnTouchListener(new ImageButton.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return onTouchThumb(v, event);
+            }
+        });
+        mTvResult = (TextView) findViewById(R.id.textResultMessage);
+        mTvMessage = (TextView) findViewById(R.id.textTouchAreaMessage);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBarWaiting);
+        initAirSig();
 
         if (isShowTipFromScreen) {
             mPasswdTip.setVisibility(View.VISIBLE);
@@ -247,7 +264,6 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
         // for multi theme
         initAnimResource();
-
         initPasswdIcon();
 
         String passwdtip = AppMasterPreference.getInstance(mActivity)
@@ -259,6 +275,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mPasswdHint.setText(mActivity.getString(R.string.passwd_hint_tip)
                     + passwdtip);
         }
+
 
         mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -306,24 +323,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             }
         }
 
-        mPassLockView = findViewById(R.id.psw_lock);
-        mViewBottom = findViewById(R.id.switch_bottom_content);
-        mViewBottom.setOnClickListener(this);
-        mIvBottom = (ImageView) findViewById(R.id.iv_reset_icon);
-        mTvBottom = (TextView) findViewById(R.id.switch_bottom);
-        mAirSigTouchView = findViewById(R.id.airsig_lock);
-        mAirSigTouchView.setOnTouchListener(new ImageButton.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return onTouchThumb(v, event);
-            }
-        });
-        mTvResult = (TextView) findViewById(R.id.textResultMessage);
-        mTvMessage = (TextView) findViewById(R.id.textTouchAreaMessage);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBarWaiting);
-
         clearPasswd();
-        initAirSig();
+
         LeoEventBus.getDefaultBus().register(this);
     }
 
@@ -568,10 +569,17 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             }
             //TODO 整个背景
             if (mLayoutBgRes > 0) {
-                RelativeLayout layout = (RelativeLayout) getActivity().findViewById(
-                        R.id.activity_lock_layout);
-                Drawable bgDrawable = mThemeRes.getDrawable(mLayoutBgRes);
-                layout.setBackgroundDrawable(bgDrawable);
+
+                if (mShowType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                    RelativeLayout layout = (RelativeLayout) getActivity().findViewById(
+                            R.id.activity_lock_layout);
+                    Drawable bgDrawable = mThemeRes.getDrawable(mLayoutBgRes);
+                    layout.setBackgroundDrawable(bgDrawable);
+                } else {
+                    changeBg(true);
+                }
+
+
             }
 
             if (mDigitalBgNormalRes > 0) {
@@ -659,6 +667,40 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     if (res > 0) {
                         mPasswdActiveDrawables[i] = mThemeRes.getDrawable(res);
                     }
+                }
+            }
+        }
+
+    }
+
+    RelativeLayout bgLayout;
+
+    private void changeBg(boolean isNormalbg) {
+
+        bgLayout = (RelativeLayout) getActivity().findViewById(
+                R.id.activity_lock_layout);
+        if (isNormalbg) {
+            LockScreenActivity activity = (LockScreenActivity) mActivity;
+            activity.setAppInfoBackground(getBd(mPackageName));
+        } else if (needChangeTheme()) {
+
+            Context themeContext = getThemepkgConotext(mThemepkgName);
+            mThemeRes = themeContext.getResources();
+
+            mLayoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable",
+                    ResourceName.THEME_DIGITAL_BG);
+            if (mLayoutBgRes <= 0) {
+                mLayoutBgRes = ThemeUtils.getValueByResourceName(themeContext, "drawable",
+                        ResourceName.THEME_GENERAL_BG);
+            }
+            //TODO 整个背景
+            if (mThemeRes != null) {
+                if (mLayoutBgRes > 0) {
+                    bgLayout = (RelativeLayout) getActivity().findViewById(
+                            R.id.activity_lock_layout);
+                    Drawable bgDrawable = mThemeRes.getDrawable(mLayoutBgRes);
+                    bgLayout.setBackgroundDrawable(bgDrawable);
+
                 }
             }
         }
@@ -829,6 +871,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_pass_number);
+            changeBg(true);
         } else {
             mPassLockView.setVisibility(View.VISIBLE);
             mAirSigTouchView.setVisibility(View.GONE);
@@ -837,6 +880,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_pass_gesture);
+            changeBg(false);
         }
     }
 
