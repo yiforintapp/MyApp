@@ -39,6 +39,7 @@ import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.mgr.DeviceManager;
@@ -173,6 +174,8 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i("value", "lastVercode=" + lastVercode);
         LeoLog.i("value", "versionCode=" + versionCode);
         if (TextUtils.isEmpty(lastVercode)) {
+            LeoSettings.setBoolean(PrefConst.KEY_IS_NEW_INSTALL, true);
+
             //新安装用户，去除应用备份，应用卸载及隐私联系人相关的功能
             pref.setIsNeedCutBackupUninstallAndPrivacyContact(true);
             leoPreference.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
@@ -192,6 +195,7 @@ public class InitCoreBootstrap extends Bootstrap {
                     R.integer.guide_page_version);
             pref.setLastGuideVersion(currentGuideVersion);
         } else {
+            LeoSettings.setBoolean(PrefConst.KEY_IS_NEW_INSTALL, false);
 //            if(DeviceReceiverNewOne.isActive(AppMasterApplication.getInstance()) && (!pref.getHasAutoSwitch()) && (Integer.parseInt(lastVercode) < 70)) {
 //                IntrudeSecurityManager m = (IntrudeSecurityManager)MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
 //                m.setSystIntruderProtectionSwitch(true);
@@ -222,8 +226,27 @@ public class InitCoreBootstrap extends Bootstrap {
                 }
             }
         }
+        handlerVisableAccordingVersionCode();
         pref.setLastVersion(String.valueOf(versionCode));
         tryRemoveUnlockAllShortcut(mApp);
+    }
+
+
+    //is new install判断是新安装还是升级的老用户
+    //PG需要有类似功能：从XX版本开始，区分新老用户以屏蔽某些功能，这些用于记录屏蔽状态的boolean标记不可以随后续的新老用户判断而重新更新
+    //即所有屏蔽状态仅仅在新安装时一次性决定
+    private void handlerVisableAccordingVersionCode() {
+        int versionCode = PhoneInfo.getVersionCode(mApp);
+        if (LeoSettings.getBoolean(PrefConst.KEY_IS_NEW_INSTALL, false)) {
+            //新安裝用户
+            if (versionCode >= Constants.VERSION_CODE_TO_HIDE_BATTERY_FLOW_AND_WIFI) {
+                //取值时，默认值要用false
+                LeoSettings.setBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI,true);
+            }
+        } else {
+            //覆盖升级
+
+        }
     }
 
     /* case1对于老用户: 恢复“每次发现更新升级，恢复升级提示为默认值”的该方法是否执行的默认值 */
