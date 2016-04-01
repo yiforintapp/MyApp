@@ -104,11 +104,16 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE,
                 AirSigSettingActivity.NOMAL_UNLOCK);
 
-        if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
-            mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
+        if (isAirsigOn) {
+            if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
+            } else {
+                mCsiDefaultLockType.setSummary(STRID_SIGNATURE_LOCK);
+            }
         } else {
-            mCsiDefaultLockType.setSummary(STRID_SIGNATURE_LOCK);
+            mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
         }
+
     }
 
     private void updateAdvancedProtectSwitch() {

@@ -28,7 +28,6 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
     public final static int AIRSIG_UNLOCK = 2;
 
     private final static int SET_DONE = 1;
-    private final static int SET_FAILED = 2;
 
     private CommonToolbar mTitleBar;
     private RippleView rpBtn;
@@ -49,9 +48,6 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
                     LeoSettings.setInteger(UNLOCK_TYPE, AIRSIG_UNLOCK);
 
                     showMessage(getString(R.string.airsig_settings_activity_toast));
-                    break;
-                case SET_FAILED:
-                    showMessage("Not Completed");
                     break;
             }
         }
@@ -222,8 +218,6 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
             public void onResult(boolean isRetrain, boolean success, ASEngine.ASAction action) {
                 if (success) {
                     mHandler.sendEmptyMessage(SET_DONE);
-                } else {
-                    mHandler.sendEmptyMessage(SET_FAILED);
                 }
             }
         });
