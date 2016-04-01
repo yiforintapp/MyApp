@@ -58,12 +58,15 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private TextView mDetDagVideoTv;
     private HomeDetectPresenter mDetectPresenter;
 
+    private int mScreenWidth;
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = getActivity();
         mDetectPresenter = new HomeDetectPresenter();
+        mScreenWidth = Utilities.getScreenSize(mContext)[0];
     }
 
     @Override
@@ -387,19 +390,28 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet appAnimatorSet = getTranslateAnim(mSfatResultAppLt);
         AnimatorSet picAnimatorSet = getTranslateAnim(mSfatResultImgLt);
         AnimatorSet vidAnimatorSet = getTranslateAnim(mSfatResultVideoLt);
+        ObjectAnimator tipsAnim = ObjectAnimator.ofFloat(mCenterTipRt, "x", -mScreenWidth, mCenterTipRt.getTranslationX());
+        tipsAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mCenterTipRt.setVisibility(View.VISIBLE);
+            }
+        });
+        tipsAnim.setDuration(400);
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(picAnimatorSet).after(280).after(appAnimatorSet);
         animatorSet.play(vidAnimatorSet).after(280).after(picAnimatorSet);
+        animatorSet.play(tipsAnim).after(1000).after(vidAnimatorSet);
         animatorSet.start();
 
     }
 
     /** 扫描结果位移动画 */
     private AnimatorSet getTranslateAnim(final View view) {
-        int[] size = Utilities.getScreenSize(getActivity());
         ObjectAnimator translateAnim = ObjectAnimator.ofFloat(
-                view, "x", -size[0], view.getTranslationY());
+                view, "x", -mScreenWidth, view.getTranslationX());
         ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
         alphaAnim.addListener(new AnimatorListenerAdapter() {
             @Override

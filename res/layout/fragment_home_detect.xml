@@ -70,7 +70,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_det_tip_height"
         android:layout_alignParentBottom="true"
-        android:background="#3d000000">
+        android:background="#3d000000"
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/det_tip_icon_iv"
