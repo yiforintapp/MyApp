@@ -67,6 +67,7 @@ import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -244,34 +245,37 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	//
 //    public boolean mIs
 
-	// 记录广告是否点击，onStart后重置为false
-	private boolean mForceLoad;
+    // 记录广告是否点击，onStart后重置为false
+    private boolean mForceLoad;
 
-	private Handler mHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			switch (msg.what) {
-				case SHOW_RED_MAN:
-					mADAnimalEntry.setBackgroundResource(R.drawable.adanimation3);
-					AnimationDrawable redmanAnimation = (AnimationDrawable)
-							mADAnimalEntry.getBackground();
-					redmanAnimation.start();
-					break;
-				case LARGE_BANNER_HIDE:
-					bannerHideAnim();
-					break;
-			}
-		}
-	};
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case SHOW_RED_MAN:
+                    mADAnimalEntry.setBackgroundResource(R.drawable.adanimation3);
+                    AnimationDrawable redmanAnimation = (AnimationDrawable)
+                            mADAnimalEntry.getBackground();
+                    redmanAnimation.start();
+                    break;
+                case LARGE_BANNER_HIDE:
+                    bannerHideAnim();
+                    break;
+            }
+        }
+    };
 
-	public void setCanTakePhoto(boolean flag) {
-		mCanTakePhoto = flag;
-	}
+    public void setCanTakePhoto(boolean flag) {
+        mCanTakePhoto = flag;
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		long start = SystemClock.elapsedRealtime();
-		setContentView(R.layout.activity_lock_layout);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        long start = SystemClock.elapsedRealtime();
+        setContentView(R.layout.activity_lock_layout);
+
+        checkIsAirSigTimeout();
+
 //        registerHomeKeyReceiver()
 		LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
 		mISManager = (IntrudeSecurityManager) MgrContext
@@ -317,96 +321,120 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                mobvistaCheck();
 //            }
 //        }, 1500);
-		checkCleanMem();
-		LeoEventBus.getDefaultBus().register(this);
-		checkOutcount();
-	}
+        checkCleanMem();
+        LeoEventBus.getDefaultBus().register(this);
+        checkOutcount();
+    }
 
-	private void mobvistaCheck() {
-		// init方法统一放到MobvistaEngine里，by lishuai
-		// mobvista ad
-		// MobvistaAd.init(this, Constants.MOBVISTA_APPID,
-		// Constants.MOBVISTA_APPKEY);
-		// -----------------Mobvista Sdk--------------------
+    public void checkIsAirSigTimeout() {
+        if (ASGui.getSharedInstance().isValidLicense()) {
+            LeoLog.d("testAirSig", "no guoqi");
+            boolean isAirSigTimeOutEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
+            //以前是否开启状态
+            boolean isAirSigOpenEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
+            if (isAirSigTimeOutEver && isAirSigOpenEver) {
+                LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, true);
+                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
+            }
+        } else {
+            LeoLog.d("testAirSig", "yes guoqi");
+            boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+            if (isAirsigOn) {
+                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, true);
+                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+            }
+            //过期关闭
+            LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+            LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, true);
+        }
+    }
 
-		// init wall controller
-		// newAdWallController(Context context,String unitid, String fbid)
-		// wallAd = MobvistaEngine.getInstance().createAdWallController(this);
-		/*wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
-		if (wallAd != null) {
-			// preload the wall data
-			wallAd.preloadWall();
-		}*/
+    private void mobvistaCheck() {
+        // init方法统一放到MobvistaEngine里，by lishuai
+        // mobvista ad
+        // MobvistaAd.init(this, Constants.MOBVISTA_APPID,
+        // Constants.MOBVISTA_APPKEY);
+        // -----------------Mobvista Sdk--------------------
+
+        // init wall controller
+        // newAdWallController(Context context,String unitid, String fbid)
+        // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+//        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+//        if (wallAd != null) {
+//            // preload the wall data
+//            wallAd.preloadWall();
+//        }
+
 		MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
-	}
+    }
 
-	public void takePicture(final CameraSurfacePreview view, final String packagename) {
-		if (BuildProperties.isApiLevel14() || mLockMode != LockManager.LOCK_MODE_FULL) {
-			return;
-		}
-		SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-				"intruder", "intruder_package_" + packagename);
-		if (view != null && mCanTakePhoto) {
-			view.takePicture(new PictureCallback() {
-				@Override
-				public void onPictureTaken(final byte[] data, Camera camera) {
-					LeoLog.i("poha", "has taken!!!");
-					mCanTakePhoto = false;
-					LeoLog.i("poha", "pic taken!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
-					mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
-					ThreadManager.executeOnAsyncThread(new Runnable() {
-						@Override
-						public void run() {
-							AppMasterApplication ama = AppMasterApplication.getInstance();
-							Bitmap bitmapt = null;
-							try {
-								bitmapt = BitmapUtils.bytes2BimapWithScale(data, LockScreenActivity.this);
-							} catch (Throwable e) {
-							}
-							//旋转原始bitmap到正确的方向
+    public void takePicture(final CameraSurfacePreview view, final String packagename) {
+        if (BuildProperties.isApiLevel14() || mLockMode != LockManager.LOCK_MODE_FULL) {
+            return;
+        }
+        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                "intruder", "intruder_package_" + packagename);
+        if (view != null && mCanTakePhoto) {
+            view.takePicture(new PictureCallback() {
+                @Override
+                public void onPictureTaken(final byte[] data, Camera camera) {
+                    LeoLog.i("poha", "has taken!!!");
+                    mCanTakePhoto = false;
+                    LeoLog.i("poha", "pic taken!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
+                    mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AppMasterApplication ama = AppMasterApplication.getInstance();
+                            Bitmap bitmapt = null;
+                            try {
+                                bitmapt = BitmapUtils.bytes2BimapWithScale(data, LockScreenActivity.this);
+                            } catch (Throwable e) {
+                            }
+                            //旋转原始bitmap到正确的方向
 
-							Matrix m = new Matrix();
-							int orientation = view.getCameraOrientation();
-							m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2, (float) bitmapt.getHeight() / 2);
-							bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth(), bitmapt.getHeight(), m, true);
-							String timeStamp = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT).format(new Date());
+                            Matrix m = new Matrix();
+                            int orientation = view.getCameraOrientation();
+                            m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2, (float) bitmapt.getHeight() / 2);
+                            bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth(), bitmapt.getHeight(), m, true);
+                            String timeStamp = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT).format(new Date());
 
-							//添加水印
-							bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp, packagename, ama);
+                            //添加水印
+                            bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp, packagename, ama);
 
-							//将bitmap压缩并保存
-							ByteArrayOutputStream baos = new ByteArrayOutputStream();
-							bitmapt.compress(Bitmap.CompressFormat.JPEG, 80, baos);
-							byte[] finalBytes = baos.toByteArray();
-							File photoSavePath = getPhotoSavePath();
-							if (photoSavePath == null) {
-								return;
-							}
-							String finalPicPath = "";
-							try {
-								LeoLog.i("poha", photoSavePath + "::save Path");
-								FileOutputStream fos = new FileOutputStream(photoSavePath);
-								fos.write(finalBytes);
-								fos.close();
-								LeoLog.i("poha", "saved!!!");
-								// 隐藏图片
-								finalPicPath = mPDManager.onHidePic(photoSavePath.getPath(), null);
-								LeoLog.i("poha", "hiden!!!");
-								FileOperationUtil.saveFileMediaEntry(finalPicPath, ama);
-								FileOperationUtil.deleteImageMediaEntry(photoSavePath.getPath(), ama);
-								LeoLog.i("poha", "finally!!!");
-								mIsPicSaved = true;
-								PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-								pdm.notifySecurityChange();
-							} catch (Exception e) {
-								LeoLog.i("poha", "exception!!   ..." + e.toString());
-								return;
-							}
+                            //将bitmap压缩并保存
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmapt.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+                            byte[] finalBytes = baos.toByteArray();
+                            File photoSavePath = getPhotoSavePath();
+                            if (photoSavePath == null) {
+                                return;
+                            }
+                            String finalPicPath = "";
+                            try {
+                                LeoLog.i("poha", photoSavePath + "::save Path");
+                                FileOutputStream fos = new FileOutputStream(photoSavePath);
+                                fos.write(finalBytes);
+                                fos.close();
+                                LeoLog.i("poha", "saved!!!");
+                                // 隐藏图片
+                                finalPicPath = mPDManager.onHidePic(photoSavePath.getPath(), null);
+                                LeoLog.i("poha", "hiden!!!");
+                                FileOperationUtil.saveFileMediaEntry(finalPicPath, ama);
+                                FileOperationUtil.deleteImageMediaEntry(photoSavePath.getPath(), ama);
+                                LeoLog.i("poha", "finally!!!");
+                                mIsPicSaved = true;
+                                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                                pdm.notifySecurityChange();
+                            } catch (Exception e) {
+                                LeoLog.i("poha", "exception!!   ..." + e.toString());
+                                return;
+                            }
 
-							IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath, packagename, timeStamp);
-							mISManager.insertInfo(info);
-							mIsPicSaved = true;
-							mPt.putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
+                            IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath, packagename, timeStamp);
+                            mISManager.insertInfo(info);
+                            mIsPicSaved = true;
+                            mPt.putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
 //                            mPt.putBoolean(PrefConst.KEY_HAS_LATEAST, true);
 							LeoLog.i("poha", "after insert, before judge!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
 							if (mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false) && mIsPicSaved) {
@@ -552,10 +580,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
 //        }
 
-		boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-		if(!isAirsigOn){
-			tryShowNoPermissionTip();
-		}
+        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        if (!isAirsigOn) {
+            tryShowNoPermissionTip();
+        }
 
 		// handleLoadAd();
 
@@ -2224,189 +2252,189 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 												int position, long id) {
 							setPopWindowItemClick(position);
 //                            mLeoPopMenu.dismissSnapshotList();
-							ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-								@Override
-								public void run() {
-									mLeoPopMenu.dismissSnapshotList();
-								}
-							}, 300);
-						}
-					});
-				}
-				mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
-				mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.tv_option_image), null, null);
-				mLeoPopMenu.setListViewDivider(null);
-				AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
-						true);
-				mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
-				break;
-			case R.id.layout_title_back_arraow:
-				onBackPressed();
-				finish();
-				break;
-			// case R.id.img_layout_right:
-			// sLockFilterFlag = true;
-			// Intent intent = new Intent(LockScreenActivity.this,
-			// LockerTheme.class);
-			// SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-			// "theme_enter", "unlock");
-			// AppMasterPreference amp =
-			// AppMasterPreference.getInstance(this);
-			// amp.setUnlocked(true);
-			// amp.setDoubleCheck(null);
-			// startActivityForResult(intent, 0);
-			// amp.setLockerScreenThemeGuide(true);
-			// break;
-			case R.id.mr_gift:
-				sLockFilterFlag = true;
-				AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
-				mAmp.setUnlocked(true);
-				mAmp.setDoubleCheck(null);
-				// wallAd.clickWall();
-				mAmp.setIsADAppwallNeedUpdate(false);
-//				try {
-////                    Intent mWallIntent = wallAd.getWallIntent();
-////                    startActivity(mWallIntent);
-//					wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
-//					wallAd.preloadWall();
-//					wallAd.clickWall();
-//				} catch (Exception e) {
-//				}
-				MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
-				if (!mHaveNewThings && !clickShakeIcon) {
-					AppMasterPreference.getInstance(LockScreenActivity.this).setJumpIcon(true);
-				} else {
-					clickShakeIcon = true;
-				}
-				AppMasterPreference.getInstance(LockScreenActivity.this).setAdClickTime(
-						System.currentTimeMillis());
-				// Send ad event for network available only
-				if (NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
-					SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-							"ad_cli", "unlocktop");
-				}
-				break;
-			default:
-				break;
-		}
-	}
+                            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mLeoPopMenu.dismissSnapshotList();
+                                }
+                            }, 300);
+                        }
+                    });
+                }
+                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
+                mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.tv_option_image), null, null);
+                mLeoPopMenu.setListViewDivider(null);
+                AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
+                        true);
+                mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
+                break;
+            case R.id.layout_title_back_arraow:
+                onBackPressed();
+                finish();
+                break;
+            // case R.id.img_layout_right:
+            // sLockFilterFlag = true;
+            // Intent intent = new Intent(LockScreenActivity.this,
+            // LockerTheme.class);
+            // SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+            // "theme_enter", "unlock");
+            // AppMasterPreference amp =
+            // AppMasterPreference.getInstance(this);
+            // amp.setUnlocked(true);
+            // amp.setDoubleCheck(null);
+            // startActivityForResult(intent, 0);
+            // amp.setLockerScreenThemeGuide(true);
+            // break;
+            case R.id.mr_gift:
+                sLockFilterFlag = true;
+                AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
+                mAmp.setUnlocked(true);
+                mAmp.setDoubleCheck(null);
+                // wallAd.clickWall();
+                mAmp.setIsADAppwallNeedUpdate(false);
+                try {
+//                    Intent mWallIntent = wallAd.getWallIntent();
+//                    startActivity(mWallIntent);
+//                    wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+//                    wallAd.preloadWall();
+//                    wallAd.clickWall();
+					MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
+                } catch (Exception e) {
+                }
+                if (!mHaveNewThings && !clickShakeIcon) {
+                    AppMasterPreference.getInstance(LockScreenActivity.this).setJumpIcon(true);
+                } else {
+                    clickShakeIcon = true;
+                }
+                AppMasterPreference.getInstance(LockScreenActivity.this).setAdClickTime(
+                        System.currentTimeMillis());
+                // Send ad event for network available only
+                if (NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                            "ad_cli", "unlocktop");
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
-	/**
-	 * setting the menu item,if has password protect then add find password item
-	 *
-	 * @return
-	 */
-	private List<String> getPopMenuItems() {
-		List<String> listItems = new ArrayList<String>();
-		Resources resources = AppMasterApplication.getInstance().getResources();
-		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-			if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
-				listItems.add(resources.getString(R.string.find_gesture));
-			} else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
-				listItems.add(resources.getString(R.string.find_passwd));
-			}
-		}
+    /**
+     * setting the menu item,if has password protect then add find password item
+     *
+     * @return
+     */
+    private List<String> getPopMenuItems() {
+        List<String> listItems = new ArrayList<String>();
+        Resources resources = AppMasterApplication.getInstance().getResources();
+        if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
+            if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
+                listItems.add(resources.getString(R.string.find_gesture));
+            } else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
+                listItems.add(resources.getString(R.string.find_passwd));
+            }
+        }
 
-		int type = mLockFragment.getUnlockType();
-		if(type == AirSigSettingActivity.NOMAL_UNLOCK){
-			listItems.add(resources.getString(R.string.unlock_theme));
-			listItems.add(resources.getString(R.string.setting_hide_lockline));
-		}
+        int type = mLockFragment.getUnlockType();
+        if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+            listItems.add(resources.getString(R.string.unlock_theme));
+            listItems.add(resources.getString(R.string.setting_hide_lockline));
+        }
 
-		listItems.add(resources.getString(R.string.help_setting_tip_title));
+        listItems.add(resources.getString(R.string.help_setting_tip_title));
 
-		return listItems;
-	}
+        return listItems;
+    }
 
-	private List<Integer> getMenuIcons() {
-		List<Integer> icons = new ArrayList<Integer>();
-		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-			icons.add(R.drawable.forget_password_icon);
-		}
+    private List<Integer> getMenuIcons() {
+        List<Integer> icons = new ArrayList<Integer>();
+        if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
+            icons.add(R.drawable.forget_password_icon);
+        }
 
-		int type = mLockFragment.getUnlockType();
-		if(type == AirSigSettingActivity.NOMAL_UNLOCK){
-			icons.add(R.drawable.theme_icon_black);
-			if (AppMasterPreference.getInstance(this).getIsHideLine()) {
-				icons.add(R.drawable.show_locus_icon);
-			} else {
-				icons.add(R.drawable.hide_locus_icon);
-			}
-		}
+        int type = mLockFragment.getUnlockType();
+        if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+            icons.add(R.drawable.theme_icon_black);
+            if (AppMasterPreference.getInstance(this).getIsHideLine()) {
+                icons.add(R.drawable.show_locus_icon);
+            } else {
+                icons.add(R.drawable.hide_locus_icon);
+            }
+        }
 
-		icons.add(R.drawable.help_tip_icon);
-		return icons;
-	}
+        icons.add(R.drawable.help_tip_icon);
+        return icons;
+    }
 
-	private void setPopWindowItemClick(int position) {
-		if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-			if (position == 0) {
-				findPasswd();
-			} else if (position == 1) {
-				onMoveToTheme();
-			} else if (position == 2) {
-				onHideLockLineClicked(position);
-			} else {
-				onHelpItemClicked();
-			}
-		} else {
-			if (position == 0) {
-				onMoveToTheme();
-			} else if (position == 1) {
-				onHideLockLineClicked(position);
-			} else if (position == 2) {
-				onHelpItemClicked();
-			}
-		}
-	}
+    private void setPopWindowItemClick(int position) {
+        if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
+            if (position == 0) {
+                findPasswd();
+            } else if (position == 1) {
+                onMoveToTheme();
+            } else if (position == 2) {
+                onHideLockLineClicked(position);
+            } else {
+                onHelpItemClicked();
+            }
+        } else {
+            if (position == 0) {
+                onMoveToTheme();
+            } else if (position == 1) {
+                onHideLockLineClicked(position);
+            } else if (position == 2) {
+                onHelpItemClicked();
+            }
+        }
+    }
 
-	private void onMoveToTheme() {
-		sLockFilterFlag = true;
-		Intent intent = new Intent(LockScreenActivity.this,
-				LockerTheme.class);
-		intent.putExtra("fromLock", true);
-		SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-				"theme_enter", "unlock");
-		AppMasterPreference amp =
-				AppMasterPreference.getInstance(this);
-		amp.setUnlocked(true);
-		amp.setDoubleCheck(null);
-		startActivityForResult(intent, 0);
-		amp.setLockerScreenThemeGuide(true);
-	}
+    private void onMoveToTheme() {
+        sLockFilterFlag = true;
+        Intent intent = new Intent(LockScreenActivity.this,
+                LockerTheme.class);
+        intent.putExtra("fromLock", true);
+        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                "theme_enter", "unlock");
+        AppMasterPreference amp =
+                AppMasterPreference.getInstance(this);
+        amp.setUnlocked(true);
+        amp.setDoubleCheck(null);
+        startActivityForResult(intent, 0);
+        amp.setLockerScreenThemeGuide(true);
+    }
 
-	private void onHideLockLineClicked(int position) {
-		String tip;
-		if (AppMasterPreference.getInstance(this).getIsHideLine()) {
-			SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "unlock_off");
-			mLeoPopMenu.updateItemIcon(position, R.drawable.hide_locus_icon);
-			AppMasterPreference.getInstance(this).setHideLine(false);
-			tip = getString(R.string.lock_line_visiable);
-		} else {
-			SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "unlock_on");
-			mLeoPopMenu.updateItemIcon(position, R.drawable.show_locus_icon);
-			AppMasterPreference.getInstance(this).setHideLine(true);
-			tip = getString(R.string.lock_line_hide);
-		}
-		if (mLockFragment instanceof GestureLockFragment) {
-			((GestureLockFragment) mLockFragment).reInvalideGestureView();
-		}
-		Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
-	}
+    private void onHideLockLineClicked(int position) {
+        String tip;
+        if (AppMasterPreference.getInstance(this).getIsHideLine()) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "unlock_off");
+            mLeoPopMenu.updateItemIcon(position, R.drawable.hide_locus_icon);
+            AppMasterPreference.getInstance(this).setHideLine(false);
+            tip = getString(R.string.lock_line_visiable);
+        } else {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "unlock_on");
+            mLeoPopMenu.updateItemIcon(position, R.drawable.show_locus_icon);
+            AppMasterPreference.getInstance(this).setHideLine(true);
+            tip = getString(R.string.lock_line_hide);
+        }
+        if (mLockFragment instanceof GestureLockFragment) {
+            ((GestureLockFragment) mLockFragment).reInvalideGestureView();
+        }
+        Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+    }
 
-	private void onHelpItemClicked() {
-		sLockFilterFlag = true;
-		AppMasterPreference ampp = AppMasterPreference.getInstance(this);
-		ampp.setLockerScreenThemeGuide(true);
-		ampp.setUnlocked(true);
-		ampp.setDoubleCheck(null);
-		Intent helpSettingIntent = new Intent(LockScreenActivity.this,
-				LockHelpSettingTip.class);
-		helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		try {
-			LockScreenActivity.this.startActivity(helpSettingIntent);
-		} catch (Exception e) {
-		}
+    private void onHelpItemClicked() {
+        sLockFilterFlag = true;
+        AppMasterPreference ampp = AppMasterPreference.getInstance(this);
+        ampp.setLockerScreenThemeGuide(true);
+        ampp.setUnlocked(true);
+        ampp.setDoubleCheck(null);
+        Intent helpSettingIntent = new Intent(LockScreenActivity.this,
+                LockHelpSettingTip.class);
+        helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        try {
+            LockScreenActivity.this.startActivity(helpSettingIntent);
+        } catch (Exception e) {
+        }
         /* SDK Event Mark */
 		SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
 	}
