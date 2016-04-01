@@ -13,12 +13,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -102,12 +108,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getAppPrivacy();
         if (privacy.isDangerous()) {
             mSfatResultAppLt.setVisibility(View.INVISIBLE);
-//            mDangerResultAppLt.setVisibility(View.VISIBLE);
+            mDangerResultAppLt.setVisibility(View.VISIBLE);
 
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
         } else {
-//            mSfatResultAppLt.setVisibility(View.VISIBLE);
+            mSfatResultAppLt.setVisibility(View.VISIBLE);
             mDangerResultAppLt.setVisibility(View.INVISIBLE);
 
             mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
@@ -123,12 +129,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getImagePrivacy();
         if (privacy.isDangerous()) {
             mSfatResultImgLt.setVisibility(View.INVISIBLE);
-//            mDangerResultImgLt.setVisibility(View.VISIBLE);
+            mDangerResultImgLt.setVisibility(View.VISIBLE);
 
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
         } else {
-//            mSfatResultImgLt.setVisibility(View.VISIBLE);
+            mSfatResultImgLt.setVisibility(View.VISIBLE);
             mDangerResultImgLt.setVisibility(View.INVISIBLE);
 
             mDetSaftImgTv.setText(privacy.getPrivacyTitleId());
@@ -144,12 +150,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getVideoPrivacy();
         if (privacy.isDangerous()) {
             mSfatResultVideoLt.setVisibility(View.INVISIBLE);
-//            mDangerResultVideoLt.setVisibility(View.VISIBLE);
+            mDangerResultVideoLt.setVisibility(View.VISIBLE);
 
             mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
         } else {
-//            mSfatResultVideoLt.setVisibility(View.VISIBLE);
+            mSfatResultVideoLt.setVisibility(View.VISIBLE);
             mDangerResultVideoLt.setVisibility(View.INVISIBLE);
 
             mDetSaftVideoTv.setText(privacy.getPrivacyTitleId());
@@ -230,28 +236,46 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.lt_det_saft_result_app:
                 //应用扫描安全结果
-                // mDetectPresenter.appSaftHandler();
+                //mDetectPresenter.appSaftHandler();
+                //break;
+            case R.id.lt_det_danger_result_app:
+                //应用扫描危险结果
+                //mDetectPresenter.appDangerHandler();
+                Intent appIntent = new Intent(mContext, AppLockListActivity.class);
+                Privacy privacy = PrivacyHelper.getAppPrivacy();
+                if (privacy.getNewCount() > 0) {
+                    appIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
+                }
+                mContext.startActivity(appIntent);
+                LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
+                break;
             case R.id.lt_det_saft_result_img:
                 //图片扫描安全结果
                 //mDetectPresenter.imageSaftHandler();
-                Intent appIntent = new Intent(mContext, AppLockListActivity.class);
-                mContext.startActivity(appIntent);
+                //break;
+            case R.id.lt_det_danger_result_img:
+                //图片扫描危险结果
+                //mDetectPresenter.imageDangerHandler();
+                Intent imageIntent = null;
+                privacy = PrivacyHelper.getImagePrivacy();
+                if (privacy.getNewCount() > 0) {
+                    imageIntent = new Intent(mContext, NewHideImageActivity.class);
+                } else {
+                    imageIntent = new Intent(mContext, ImageHideMainActivity.class);
+                }
+                mContext.startActivity(imageIntent);
+                LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
                 break;
             case R.id.lt_det_saft_result_video:
                 //视频扫描安全结果
-                mDetectPresenter.videoSaftHandler();
-                break;
-            case R.id.lt_det_danger_result_app:
-                //应用扫描危险结果
-                mDetectPresenter.appDangerHandler();
-                break;
-            case R.id.lt_det_danger_result_img:
-                //图片扫描危险结果
-                mDetectPresenter.imageDangerHandler();
-                break;
+                //mDetectPresenter.videoSaftHandler();
+                //break;
             case R.id.lt_det_danger_result_video:
                 //视频扫描危险结果
-                mDetectPresenter.videoDangerHandler();
+                //mDetectPresenter.videoDangerHandler();
+                Intent intent = new Intent(mContext, VideoHideMainActivity.class);
+                mContext.startActivity(intent);
+                LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                 break;
             case R.id.lt_home_det_tip:
                 //中间banner
