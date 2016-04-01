@@ -89,7 +89,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private RelativeLayout mRlWholeShowContent;
     private List<VideoItemBean> mNewAddVid = null;
     private NewVidAdapter mNewVidAdapter = new NewVidAdapter(this);
-
+    private boolean mHasShowNew = false;
     public static boolean mIsFromConfirm;
 
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -167,10 +167,14 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
 
     private void newLoadDone() {
+        if (mHasShowNew) {
+            mIncludeLayoutNewVid.setVisibility(View.GONE);
+        }
         if (mNewVidAdapter != null) {
             if (mNewAddVid == null || mNewAddVid.size() == 0) {
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
-            } else {
+            } else if (!mHasShowNew){
+                mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
                 mNewVidAdapter.setDataList(mNewAddVid);
                 mNewVidAdapter.notifyDataSetChanged();
@@ -246,7 +250,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     @Override
     protected void onResume() {
         super.onResume();
-
         mHandler.sendEmptyMessage(INIT_UI_DONE);
     }
 

@@ -64,6 +64,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private CommonToolbar mTtileBar;
     private RelativeLayout mNoHidePictureHint;
     private RippleView mRvAdd;
+    private boolean mHasShowNew = false;
     private ProgressBar loadingBar;
     private LeoPreference mPt;
     private final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
@@ -182,10 +183,14 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void newLoadDone() {
+        if (mHasShowNew) {
+            mIncludeLayoutNewPic.setVisibility(View.GONE);
+        }
         if (mNewPicAdapter != null) {
             if (mNewAddPic == null || mNewAddPic.size() == 0) {
                 mIncludeLayoutNewPic.setVisibility(View.GONE);
-            } else {
+            } else if (!mHasShowNew){
+                mHasShowNew = true;
                 mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
                 mNewPicAdapter.setDataList(mNewAddPic);
                 mNewPicAdapter.notifyDataSetChanged();
