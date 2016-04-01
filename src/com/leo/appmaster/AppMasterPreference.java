@@ -938,6 +938,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         LeoSettings.setString(PREF_PASSWD_TIP, tip);
     }
 
+    public void setAutoLock(boolean value) {
+        LeoSettings.setBoolean(PREF_AUTO_LOCK, value);
+    }
+
     public boolean isAutoLock() {
         return LeoSettings.getBoolean(PREF_AUTO_LOCK, true);
     }
