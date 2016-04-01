@@ -6,6 +6,7 @@ import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.LeoLog;
@@ -21,16 +22,6 @@ import org.json.JSONObject;
 public class CommentSettingsFetchJob extends FetchScheduleJob {
     private static String TAG = "CommentSettingsFetchJob";
 
-    public static void startImmediately() {
-        /*存在网络再去拉取*/
-        if (NetWorkUtil.isNetworkAvailable(AppMasterApplication.getInstance())) {
-            PhoneSecurityFetchJob job = new PhoneSecurityFetchJob();
-            FetchScheduleJob.FetchScheduleListener listener = job.newJsonObjListener();
-            Context context = AppMasterApplication.getInstance();
-            HttpRequestAgent.getInstance(context).loadCommentSettings(listener, listener);
-        }
-    }
-
     @Override
     protected void work() {
         Context context = AppMasterApplication.getInstance();
@@ -43,8 +34,6 @@ public class CommentSettingsFetchJob extends FetchScheduleJob {
         super.onFetchSuccess(response, noMidify);
         JSONObject resp = (JSONObject) response;
         try {
-
-
             /* 3.3 耗电app阈值 */
             if (!resp.isNull(BatteryManager.APP_THRESHOLD_KEY)) {
                 int appNumber = resp.getInt(BatteryManager.APP_THRESHOLD_KEY);
@@ -116,7 +105,7 @@ public class CommentSettingsFetchJob extends FetchScheduleJob {
                 LeoLog.i(TAG, "没有-屏保省电动画的内存阀值");
             }
 
-            boolean isGradeTimesNull = resp.isNull("grade_time"); // 判断key是否存在
+            boolean isGradeTimesNull = resp.isNull(PrefConst.KEY_GRADE_TIME); // 判断key是否存在
             if (!isGradeTimesNull) {
                 int gradeTimes = resp.getInt("grade_time");
                 LeoLog.i(TAG, "评分弹窗间隔小时:" + gradeTimes);
@@ -125,6 +114,32 @@ public class CommentSettingsFetchJob extends FetchScheduleJob {
                 leoPreference.putInt(PrefConst.KEY_GRADE_TIME, 72); // 获取不到默认72小时
             }
 
+            // 应用隐私通知个数
+            boolean isAppNotifyCount = resp.isNull(PrefConst.KEY_NOTIFY_APP_COUNT);
+            if (!isAppNotifyCount) {
+                int count = resp.getInt(PrefConst.KEY_NOTIFY_APP_COUNT);
+                if (count > 0) {
+                    LeoSettings.setInteger(PrefConst.KEY_NOTIFY_APP_COUNT, count);
+                }
+            }
+
+            // 应用隐私通知个数
+            boolean isImgNotifyCount = resp.isNull(PrefConst.KEY_NOTIFY_IMG_COUNT);
+            if (!isImgNotifyCount) {
+                int count = resp.getInt(PrefConst.KEY_NOTIFY_IMG_COUNT);
+                if (count > 0) {
+                    LeoSettings.setInteger(PrefConst.KEY_NOTIFY_IMG_COUNT, count);
+                }
+            }
+
+            // 应用隐私通知个数
+            boolean isVidNotifyCount = resp.isNull(PrefConst.KEY_NOTIFY_VID_COUNT);
+            if (!isVidNotifyCount) {
+                int count = resp.getInt(PrefConst.KEY_NOTIFY_VID_COUNT);
+                if (count > 0) {
+                    LeoSettings.setInteger(PrefConst.KEY_NOTIFY_VID_COUNT, count);
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

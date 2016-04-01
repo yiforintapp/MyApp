@@ -2,11 +2,8 @@ package com.leo.appmaster.privacy;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.videohide.VideoItemBean;
-
-import java.util.List;
 
 /**
  * Created by Jasper on 2016/3/31.
@@ -59,7 +56,7 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
 
     @Override
     public int getPrivacyLimit() {
-        return LeoSettings.getInteger(PrefConst.KEY_PRIVACY_VIDEO_LIMIT, 3);
+        return LeoSettings.getInteger(PrefConst.KEY_NOTIFY_VID_COUNT, 3);
     }
 
     @Override
