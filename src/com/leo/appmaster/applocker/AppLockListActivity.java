@@ -118,7 +118,7 @@ public class AppLockListActivity extends BaseActivity implements
     private ProgressBar mProgressBar;
     private ArrayList<AppInfo> mResaultList;
     private ImageView mAutoImage;
-    private boolean isFromConfrim = false;
+    private boolean mFromAppScanResult = false;
     private WifiLockSwitch wifiSwitch;
     private BlueToothLockSwitch blueToothSwitch;
 
@@ -149,7 +149,7 @@ public class AppLockListActivity extends BaseActivity implements
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
             mLockAdapter.setData(mResaultList, true);
-            if (isFromConfrim && (mAppList != null && mAppList.size() > 0)) {
+            if (mFromAppScanResult && (mAppList != null && mAppList.size() > 0)) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if (switchs != null && switchs.size() > 0) {
                     mPosition = +(switchs.size() + 1);
@@ -206,7 +206,7 @@ public class AppLockListActivity extends BaseActivity implements
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(false);
             }
 
-            isFromConfrim = intent.getBooleanExtra(Constants.FROM_CONFIRM_FRAGMENT, false);
+            mFromAppScanResult = intent.getBooleanExtra(Constants.FROM_APP_SCAN_RESULT, false);
             mFromSuccessListCount = intent.getIntExtra("first_lock_size", 0);
         }
     }
@@ -1068,7 +1068,7 @@ public class AppLockListActivity extends BaseActivity implements
         if (((mFromSuccessListCount != 0 && mLockedList.size() >= mFromSuccessListCount)
                 || (mFromSuccessListCount == 0 && mLockedList.size() > mLockListCount)
                 || count > mWifiAndBluetoothLockCount)
-                && !isFromConfrim) {
+                && !mFromAppScanResult) {
             LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_APP, true));
         }
         super.onBackPressed();
