@@ -1263,6 +1263,6 @@
     <string name="hd_add_hide_vid">添加隐藏视频</string>
 
     <string name="airsig_tip_toast_text">主题暂不适用于签字解锁哦</string>
-
+    <string name="airsig_tip_toast_update_text">签字解锁密钥已到期，升级隐私卫士后方可继续使用</string>
 
 </resources>

@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -46,8 +47,10 @@ import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
@@ -98,7 +101,7 @@ public class GestureLockFragment extends LockFragment implements
     private IntrudeSecurityManager mISManager;
 
     private boolean mCameraReleased = false;
-
+    private LEOAlarmDialog mConfirmCloseDialog;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -193,10 +196,11 @@ public class GestureLockFragment extends LockFragment implements
         boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
 
+        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+
         if (isAirsigOn && isAirsigReady) {
             mViewBottom.setVisibility(View.VISIBLE);
-            int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
-            if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+            if (!isAirSigVaild) {
                 mLockPatternView.setVisibility(View.VISIBLE);
                 mAirSigTouchView.setVisibility(View.GONE);
                 mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
@@ -204,16 +208,28 @@ public class GestureLockFragment extends LockFragment implements
                 mIvBottom.setBackgroundResource(
                         R.drawable.reset_pass_number);
             } else {
-                mLockPatternView.setVisibility(View.GONE);
-                mAirSigTouchView.setVisibility(View.VISIBLE);
-                mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
-                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
-                mIvBottom.setBackgroundResource(
-                        R.drawable.reset_pass_gesture);
+                int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+                if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                    mLockPatternView.setVisibility(View.VISIBLE);
+                    mAirSigTouchView.setVisibility(View.GONE);
+                    mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+                    mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+                    mIvBottom.setBackgroundResource(
+                            R.drawable.reset_pass_number);
+                } else {
+                    mLockPatternView.setVisibility(View.GONE);
+                    mAirSigTouchView.setVisibility(View.VISIBLE);
+                    mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+                    mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
+                    mIvBottom.setBackgroundResource(
+                            R.drawable.reset_pass_gesture);
+                }
             }
+
         } else {
             mViewBottom.setVisibility(View.GONE);
         }
+
     }
 
     private boolean onTouchThumb(final View v, final MotionEvent event) {
@@ -650,13 +666,20 @@ public class GestureLockFragment extends LockFragment implements
 
     private void switchUnlockType() {
         if (mShowType == AirSigSettingActivity.NOMAL_UNLOCK) {
-            mLockPatternView.setVisibility(View.GONE);
-            mAirSigTouchView.setVisibility(View.VISIBLE);
-            mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
-            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
-            mIvBottom.setBackgroundResource(
-                    R.drawable.reset_pass_gesture);
-            changeBg(true);
+
+            boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+            if (!isAirSigVaild) {
+                showUpdateDialog();
+            } else {
+                mLockPatternView.setVisibility(View.GONE);
+                mAirSigTouchView.setVisibility(View.VISIBLE);
+                mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
+                mIvBottom.setBackgroundResource(
+                        R.drawable.reset_pass_gesture);
+                changeBg(true);
+            }
+
         } else {
             mLockPatternView.setVisibility(View.VISIBLE);
             mAirSigTouchView.setVisibility(View.GONE);
@@ -665,6 +688,27 @@ public class GestureLockFragment extends LockFragment implements
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_pass_number);
             changeBg(false);
+        }
+    }
+
+    private void showUpdateDialog() {
+        if (mConfirmCloseDialog == null) {
+            mConfirmCloseDialog = new LEOAlarmDialog(mActivity);
+        }
+        mConfirmCloseDialog.setContent(getString(R.string.airsig_tip_toast_update_text));
+        mConfirmCloseDialog.setRightBtnStr(getString(R.string.makesure));
+        mConfirmCloseDialog.setLeftBtnStr(getString(R.string.close_batteryview_confirm_cancel));
+        mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                SDKWrapper.checkUpdate();
+
+                mConfirmCloseDialog.dismiss();
+            }
+        });
+        if (!mActivity.isFinishing()) {
+            mConfirmCloseDialog.show();
         }
     }
 

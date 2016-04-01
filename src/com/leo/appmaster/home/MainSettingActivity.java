@@ -15,6 +15,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.PrivacyOptionActivity;
 import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
@@ -85,8 +86,14 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void updateAirSig() {
+        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+        if (!isAirSigVaild) {
+            mCsiSignatureLock.setSummary(STRID_DID_NOT_OPEN);
+            mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
+            return;
+        }
+        
         boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-
         if (isAirsigOn) {
             mCsiSignatureLock.setSummary(STRID_OPENED);
         } else {
