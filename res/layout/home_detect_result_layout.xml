@@ -9,8 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
+        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:background="@drawable/strip_home_ok1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,6 +37,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@drawable/strip_home_ok2"
+        android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
+        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:gravity="center_vertical">
 
         <TextView
@@ -60,6 +65,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:background="@drawable/strip_home_ok3"
+        android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
+        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         >
 
         <TextView

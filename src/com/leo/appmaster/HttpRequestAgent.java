@@ -449,6 +449,23 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
+    /* 加载通用配置数据 */
+    public void loadCommentSettings(Listener<JSONObject> listener, ErrorListener errorListener) {
+        String object = "";
+        String settingUrl = "/appmaster/commonconfig/d.html";
+        String url = Utilities.getURL(settingUrl);
+        LeoLog.i(TAG, "通用配置链接：" + url);
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
+                errorListener);
+        request.setShouldCache(true);
+        // 最多重试3次
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
+        mRequestQueue.add(request);
+    }
+
     /**
      * 加载Swifty卡片数据
      *

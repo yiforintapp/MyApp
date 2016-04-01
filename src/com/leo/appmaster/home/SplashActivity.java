@@ -166,7 +166,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                 showSplash();
             }
         }
-        PrivacyHelper.getInstance(this).setDirty(true);
     }
 
     private void showDefaultSplash() {

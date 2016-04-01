@@ -220,7 +220,7 @@ public class MobvistaEngine {
 			properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT,
 					placementId);//Facebook id
 			properties.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId); //unit id
-			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);// 请求广告条数，不设默认为1
+			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 10);// 请求广告条数，不设默认为1
 
 			LeoLog.d(TAG, "create new MobvistaAdNative and start to load");
 			MvNativeHandler nativeHandler = new MvNativeHandler(properties, mAppContext);
@@ -244,6 +244,7 @@ public class MobvistaEngine {
 	 */
 	public void loadMobvistaTemplate(final String unitId, final MobvistaListener listener) {
 		if (unitId != null && listener != null) {
+			LeoLog.d(TAG, "有广告位 在申请广告 广告位 unit id: " + unitId);
 			//通过unitId 申请广告
 			Map<String, Object> properties = MvNativeHandler.getNativeProperties(unitId);
 
@@ -265,6 +266,7 @@ public class MobvistaEngine {
 				@Override
 				public void onAdLoaded(List<Campaign> campaigns, int template) {
 					if (campaigns != null && campaigns.size() > 0) {
+						LeoLog.i(TAG, "on template AdLoaded[" + unitId + "], campaign's size: " + campaigns.size());
 						// 将load成功的 MobvistaAdNative 对象移动到 MobvistaAdData 中
 						MobvistaAdData mobvista = new MobvistaAdData();
 						mobvista.nativeAd = templateNativeHandler;

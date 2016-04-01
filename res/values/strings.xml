@@ -1235,6 +1235,25 @@
     <string name="home_det_vid_str">个新视频</string>
     <string name="home_det_tip">建议开启手机防盗</string>
 
+    <string name="hd_found_app">发现%1d个应用</string>
+    <string name="hd_found_pic">发现%1d张图片</string>
+    <string name="hd_found_vid">发现%1d个视频</string>
+    <string name="hd_new_app">%1d个新应用</string>
+    <string name="hd_new_pic">%1d张新图片</string>
+    <string name="hd_new_vid">%1d个新视频</string>
+    <string name="hd_locked_app">%1d个加锁应用</string>
+    <string name="hd_hide_pic">%1d张隐藏图片</string>
+    <string name="hd_hide_vid">%1d个隐藏视频</string>
+    <string name="hd_lock_privacy_title">加锁私密应用</string>
+    <string name="hd_lock_privacy_summary">您新增了一些应用未加锁，可能泄露隐私哦</string>
+    <string name="hd_hide_pic_privacy_title">隐藏私密图片</string>
+    <string name="hd_hide_pic_privacy_summary">您新增了一些图片，私密图片建议隐藏起来</string>
+    <string name="hd_hide_vid_privacy_title">隐藏私密视频</string>
+    <string name="hd_hide_vid_privacy_summary">您新增了一些视频，不希望被别人看见？赶快隐藏起来吧</string>
+    <string name="hd_add_locked_app">添加加锁应用</string>
+    <string name="hd_add_hide_pic">添加隐藏图片</string>
+    <string name="hd_add_hide_vid">添加隐藏视频</string>
+
     <string name="airsig_tip_toast_text">主题暂不适用于签字解锁哦</string>
 
 

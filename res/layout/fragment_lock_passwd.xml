@@ -463,7 +463,8 @@
         android:paddingBottom="3dp"
         android:paddingLeft="9dp"
         android:paddingRight="9dp"
-        android:paddingTop="3dp">
+        android:paddingTop="3dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_reset_icon"

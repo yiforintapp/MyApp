@@ -991,197 +991,197 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		mLockFragment.setPackage(mLockedPackage);
 
         /* SDK: mark user what to unlock which app */
-		if (mLockMode == LockManager.LOCK_MODE_FULL) {
-			SDKWrapper.addEvent(this, SDKWrapper.P1, "access_locked_app",
-					mLockedPackage);
-		}
+        if (mLockMode == LockManager.LOCK_MODE_FULL) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "access_locked_app",
+                    mLockedPackage);
+        }
 
-		LeoLog.d("LockScreenActivity", "mToPackage = " + mLockedPackage);
-	}
-
-
-	private Drawable getBd(String mPackageName) {
-		//wifi && blueTooth lock
-		Drawable bd;
-		if (mPackageName.equals(SwitchGroup.WIFI_SWITCH)) {
-			bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
-		} else if (mPackageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
-			bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
-		} else {
-			bd = AppUtil.getAppIcon(
-					getPackageManager(), mPackageName);
-		}
-
-		if (bd == null) {
-			bd = AppUtil.getAppIcon(
-					getPackageManager(), getPackageName());
-		}
+        LeoLog.d("LockScreenActivity", "mToPackage = " + mLockedPackage);
+    }
 
 
-		return bd;
-	}
+    private Drawable getBd(String mPackageName) {
+        //wifi && blueTooth lock
+        Drawable bd;
+        if (mPackageName.equals(SwitchGroup.WIFI_SWITCH)) {
+            bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
+        } else if (mPackageName.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+            bd = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
+        } else {
+            bd = AppUtil.getAppIcon(
+                    getPackageManager(), mPackageName);
+        }
 
-	public void setAppInfoBackground(Drawable drawable) {
-		if (drawable != null) {
-			int h = drawable.getIntrinsicHeight() * 9 / 10;
-			int w = h * 3 / 5;
-			if (h > 0 && w > 0) {
-				mAppBaseInfoLayoutbg = Bitmap.createBitmap(w, h,
-						Bitmap.Config.ARGB_8888);
-				Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
-				canvas.drawColor(Color.WHITE);
-				drawable.setBounds(-(drawable.getIntrinsicWidth() - w) / 2,
-						-(drawable.getIntrinsicHeight() - h) / 2,
-						(drawable.getIntrinsicWidth() - w) / 2 + w,
-						(drawable.getIntrinsicHeight() - h) / 2 + h);
-				drawable.draw(canvas);
-				canvas.drawColor(Color.argb(70, 0, 0, 0));
-				try {
-					mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
-					mLockLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
-				} catch (Error e) {
-				}
-			}
-		}
-	}
+        if (bd == null) {
+            bd = AppUtil.getAppIcon(
+                    getPackageManager(), getPackageName());
+        }
 
 
-	private void setQuickLockModeTiltleBarInfo(LockMode targetMode) {
-		mTtileBar.setTitle(R.string.change_lock_mode);
-		Drawable iconDraw = targetMode.getModeDrawable();
-		if (iconDraw != null) {
-			int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
-			iconDraw.setBounds(0, 0, w, w);
-			mTtileBar.getTitleView().setCompoundDrawables(/*new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable()*/iconDraw, null, null, null);
-			mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
-		}
-	}
+        return bd;
+    }
 
-	private void setTiltleBarInfo(String pkg) {
-		mTtileBar.setTitle(AppUtil.getAppLabel(getPackageManager(), pkg));
-		Drawable iconDraw = AppUtil.getAppIconDrawble(pkg);
-		if (iconDraw != null) {
-			int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
-			iconDraw.setBounds(0, 0, w, w);
-			mTtileBar.getTitleView().setCompoundDrawables(/*new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable()*/iconDraw, null, null, null);
-			mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
-		}
-	}
-
-	private void createLoackAppInfoView(String pkg) {
-		if (mLockAppTitleView == null) {
-			mLockAppTitleView = new TextView(this);
-			mLockAppTitleView.setClickable(false);
-			mLockAppTitleView.setEllipsize(TextUtils.TruncateAt.END);
-			mLockAppTitleView.setGravity(Gravity.CENTER);
-			mLockAppTitleView.setPadding(DipPixelUtil.dip2px(this, 12), 0, DipPixelUtil.dip2px(this, 5), 0);
-			mLockAppTitleView.setSingleLine();
-			mLockAppTitleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
-			mLockAppTitleView.setTextColor(getResources().getColor(R.color.white));
-			if (mTtileBar == null) {
-				mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-			}
-			mTtileBar.getTitleContainer().addView(mLockAppTitleView);
-			mLockAppTitleView.setAlpha(0);
-		}
-
-		//wifi && bluetooth lock
-		String text;
-		Drawable iconDraw;
-		if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH)) {
-			text = this.getString(R.string.app_lock_list_switch_wifi);
-			iconDraw = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
-		} else if (mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
-			text = this.getString(R.string.app_lock_list_switch_bluetooth);
-			iconDraw = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
-		} else {
-			text = AppUtil.getAppLabel(getPackageManager(), pkg);
-			iconDraw = AppUtil.getAppIconDrawble(pkg);
-		}
-
-		mLockAppTitleView.setText(text);
-
-		if (iconDraw != null) {
-			int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
-			iconDraw.setBounds(0, 0, w, w);
-			mLockAppTitleView.setCompoundDrawables(iconDraw, null, null, null);
-			mLockAppTitleView.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
-		}
-	}
-
-	private void removeLoackAppInfoView() {
-		if (mLockAppTitleView != null) {
-			if (mTtileBar == null) {
-				mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-			}
-			mTtileBar.getTitleContainer().removeView(mLockAppTitleView);
-			mLockAppTitleView = null;
-			TextView tv = mTtileBar.getTitleView();
-			if (tv != null) {
-				tv.setAlpha(1);
-			}
-		}
-	}
-
-	private void setLockAppInfoViewVisible(boolean visible) {
-		if (mLockAppTitleView != null) {
-			TextView tv = mTtileBar.getTitleView();
-			if (visible) {
-				mLockAppTitleView.setAlpha(1);
-				if (tv != null) {
-					tv.setAlpha(0);
-				}
-			} else {
-				mLockAppTitleView.setAlpha(0);
-				if (tv != null) {
-					tv.setAlpha(1);
-				}
-			}
-		}
-	}
-
-	public void shakeIcon(Animation animation) {
-		if (mLockAppTitleView != null && mBannerContainer.getCurrentItem() > 0) {
-			mLockAppTitleView.startAnimation(animation);
-		}
-		if (mTtileBar.getTitleView().getAlpha() == 1 && mBannerContainer.getCurrentItem() > 0) {
-			mTtileBar.getTitleView().startAnimation(animation);
-		}
-	}
+    public void setAppInfoBackground(Drawable drawable) {
+        if (drawable != null) {
+            int h = drawable.getIntrinsicHeight() * 9 / 10;
+            int w = h * 3 / 5;
+            if (h > 0 && w > 0) {
+                mAppBaseInfoLayoutbg = Bitmap.createBitmap(w, h,
+                        Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
+                canvas.drawColor(Color.WHITE);
+                drawable.setBounds(-(drawable.getIntrinsicWidth() - w) / 2,
+                        -(drawable.getIntrinsicHeight() - h) / 2,
+                        (drawable.getIntrinsicWidth() - w) / 2 + w,
+                        (drawable.getIntrinsicHeight() - h) / 2 + h);
+                drawable.draw(canvas);
+                canvas.drawColor(Color.argb(70, 0, 0, 0));
+                try {
+                    mAppBaseInfoLayoutbg = FastBlur.doBlur(mAppBaseInfoLayoutbg, 25, true);
+                    mLockLayout.setBackgroundDrawable(new BitmapDrawable(mAppBaseInfoLayoutbg));
+                } catch (Error e) {
+                }
+            }
+        }
+    }
 
 
-	@Override
-	protected void onDestroy() {
-		mLockManager.setPauseScreenonLock(false);
-		super.onDestroy();
-		if (mAppBaseInfoLayoutbg != null) {
-			mAppBaseInfoLayoutbg.recycle();
-			mAppBaseInfoLayoutbg = null;
-		}
+    private void setQuickLockModeTiltleBarInfo(LockMode targetMode) {
+        mTtileBar.setTitle(R.string.change_lock_mode);
+        Drawable iconDraw = targetMode.getModeDrawable();
+        if (iconDraw != null) {
+            int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
+            iconDraw.setBounds(0, 0, w, w);
+            mTtileBar.getTitleView().setCompoundDrawables(/*new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable()*/iconDraw, null, null, null);
+            mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+        }
+    }
 
-//		try {
-//			if (wallAd != null) {
-//				wallAd.release();
-//				wallAd = null;
-//			}
-//		} catch (Exception e) {
-//		}
-		LeoLog.d(TAG, "onDestroy...");
-		LeoEventBus.getDefaultBus().unregister(this);
-		mLockFragment.setShowText(false);
+    private void setTiltleBarInfo(String pkg) {
+        mTtileBar.setTitle(AppUtil.getAppLabel(getPackageManager(), pkg));
+        Drawable iconDraw = AppUtil.getAppIconDrawble(pkg);
+        if (iconDraw != null) {
+            int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
+            iconDraw.setBounds(0, 0, w, w);
+            mTtileBar.getTitleView().setCompoundDrawables(/*new ScaleDrawable(iconDraw, Gravity.CENTER, w, w).getDrawable()*/iconDraw, null, null, null);
+            mTtileBar.getTitleView().setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+        }
+    }
 
-	}
+    private void createLoackAppInfoView(String pkg) {
+        if (mLockAppTitleView == null) {
+            mLockAppTitleView = new TextView(this);
+            mLockAppTitleView.setClickable(false);
+            mLockAppTitleView.setEllipsize(TextUtils.TruncateAt.END);
+            mLockAppTitleView.setGravity(Gravity.CENTER);
+            mLockAppTitleView.setPadding(DipPixelUtil.dip2px(this, 12), 0, DipPixelUtil.dip2px(this, 5), 0);
+            mLockAppTitleView.setSingleLine();
+            mLockAppTitleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+            mLockAppTitleView.setTextColor(getResources().getColor(R.color.white));
+            if (mTtileBar == null) {
+                mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+            }
+            mTtileBar.getTitleContainer().addView(mLockAppTitleView);
+            mLockAppTitleView.setAlpha(0);
+        }
+
+        //wifi && bluetooth lock
+        String text;
+        Drawable iconDraw;
+        if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH)) {
+            text = this.getString(R.string.app_lock_list_switch_wifi);
+            iconDraw = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_wifi);
+        } else if (mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+            text = this.getString(R.string.app_lock_list_switch_bluetooth);
+            iconDraw = AppMasterApplication.getInstance().getResources().getDrawable(R.drawable.lock_bluetooth);
+        } else {
+            text = AppUtil.getAppLabel(getPackageManager(), pkg);
+            iconDraw = AppUtil.getAppIconDrawble(pkg);
+        }
+
+        mLockAppTitleView.setText(text);
+
+        if (iconDraw != null) {
+            int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_width);
+            iconDraw.setBounds(0, 0, w, w);
+            mLockAppTitleView.setCompoundDrawables(iconDraw, null, null, null);
+            mLockAppTitleView.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.fragment_lock_tilte_icon_space));
+        }
+    }
+
+    private void removeLoackAppInfoView() {
+        if (mLockAppTitleView != null) {
+            if (mTtileBar == null) {
+                mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+            }
+            mTtileBar.getTitleContainer().removeView(mLockAppTitleView);
+            mLockAppTitleView = null;
+            TextView tv = mTtileBar.getTitleView();
+            if (tv != null) {
+                tv.setAlpha(1);
+            }
+        }
+    }
+
+    private void setLockAppInfoViewVisible(boolean visible) {
+        if (mLockAppTitleView != null) {
+            TextView tv = mTtileBar.getTitleView();
+            if (visible) {
+                mLockAppTitleView.setAlpha(1);
+                if (tv != null) {
+                    tv.setAlpha(0);
+                }
+            } else {
+                mLockAppTitleView.setAlpha(0);
+                if (tv != null) {
+                    tv.setAlpha(1);
+                }
+            }
+        }
+    }
+
+    public void shakeIcon(Animation animation) {
+        if (mLockAppTitleView != null && mBannerContainer.getCurrentItem() > 0) {
+            mLockAppTitleView.startAnimation(animation);
+        }
+        if (mTtileBar.getTitleView().getAlpha() == 1 && mBannerContainer.getCurrentItem() > 0) {
+            mTtileBar.getTitleView().startAnimation(animation);
+        }
+    }
 
 
-	@Override
-	protected void onStop() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLockManager.setPauseScreenonLock(false);
+        if (mAppBaseInfoLayoutbg != null) {
+            mAppBaseInfoLayoutbg.recycle();
+            mAppBaseInfoLayoutbg = null;
+        }
 
-		LeoLog.d(TAG, "onStop...");
+//        try {
+//            if (wallAd != null) {
+//                wallAd.release();
+//                wallAd = null;
+//            }
+//        } catch (Exception e) {
+//        }
+        LeoLog.d(TAG, "onDestroy...");
+        LeoEventBus.getDefaultBus().unregister(this);
+        mLockFragment.setShowText(false);
 
-		super.onStop();
-		if (mLockFragment != null) {
-			mLockFragment.onActivityStop();
-		}
+    }
+
+
+    @Override
+    protected void onStop() {
+
+        LeoLog.d(TAG, "onStop...");
+
+        super.onStop();
+        if (mLockFragment != null) {
+            mLockFragment.onActivityStop();
+        }
 
         /* AM-3907 规避多次添加广告 */
 		try {

@@ -123,6 +123,7 @@
         android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
         android:background="@drawable/reset_pass_frame"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:paddingBottom="3dp"
         android:paddingLeft="9dp"
         android:paddingRight="9dp"

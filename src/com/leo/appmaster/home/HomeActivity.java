@@ -63,12 +63,12 @@ import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
-import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
+import com.leo.appmaster.schedule.CommentSettingsFetchJob;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.schedule.PhoneSecurityFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -206,6 +206,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         /*手机防盗开启人数，在用户没有打开手机防盗时没此进入主页拉取一次*/
         PhoneSecurityFetchJob.startImmediately();
+        CommentSettingsFetchJob.startImmediately();
         registerLocaleChange();
 
 //        if (AppMasterConfig.LOGGABLE) {
@@ -311,8 +312,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            mWallAd = null;
 //        }
 
-        // 重置隐私等级减少的分数
-        PrivacyHelper.getInstance(this).resetDecScore();
         ImageLoader.getInstance().clearMemoryCache();
         unregisterReceiver(mLocaleReceiver);
         mAppLockSuccess = false;
@@ -1438,9 +1437,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            LeoPreference.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
 //        }
 
-        if (increaseScore > 0) {
-            mPrivacyHelper.increaseScore(mgr, increaseScore);
-        }
         mProcessedMgr = mgr;
 //        increaseScore += intruderScore;
         mProcessedScore = increaseScore;
@@ -1472,20 +1468,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onIgnoreClick(int increaseScore, String mgr) {
-        LeoLog.d(TAG, "onIgnoreClick, increaseScore: " + increaseScore + " | mgr: " + mgr);
-        int score = mPrivacyHelper.getSecurityScore(mgr);
-        int totalScore = mPrivacyHelper.getSecurityScore();
-        Manager manager = MgrContext.getManager(mgr);
-        if (score > manager.getMaxScore() || (totalScore + increaseScore) > 100) {
-            increaseScore = 0;
-        }
-        if (increaseScore > 0) {
-            mPrivacyHelper.increaseScore(mgr, increaseScore);
-        }
-        LeoLog.d(TAG, "onIgnoreClick, increaseScore again: " + increaseScore);
+//        LeoLog.d(TAG, "onIgnoreClick, increaseScore: " + increaseScore + " | mgr: " + mgr);
+//        int score = mPrivacyHelper.getSecurityScore(mgr);
+//        int totalScore = mPrivacyHelper.getSecurityScore();
+//        Manager manager = MgrContext.getManager(mgr);
+//        if (score > manager.getMaxScore() || (totalScore + increaseScore) > 100) {
+//            increaseScore = 0;
+//        }
+//        LeoLog.d(TAG, "onIgnoreClick, increaseScore again: " + increaseScore);
 //        mPrivacyFragment.startIncreaseSocreAnim(increaseScore);
 //        mPrivacyFragment.increaseStepAnim();
-        jumpToNextFragment(false);
+//        jumpToNextFragment(false);
     }
 
     public void resetToolbarColor() {

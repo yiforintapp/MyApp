@@ -344,4 +344,7 @@ public class PrefConst {
     public static final String KEY_APP_GRADE_CONTENT = "key_app_grade_content";
     public static final String KEY_APP_GRADE_URL = "key_app_grade_url";
 
+    public static final String KEY_PRIVACY_APP_LIMIT = "privacy_app_limit";
+    public static final String KEY_PRIVACY_IMAGE_LIMIT = "privacy_image_limit";
+    public static final String KEY_PRIVACY_VIDEO_LIMIT = "privacy_video_limit";
 }

@@ -17,7 +17,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.SecurityScoreEvent;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.ui.BurstDecor;
 import com.leo.appmaster.ui.HomeAnimLoadingLayer;
@@ -434,25 +433,6 @@ public class HomePrivacyFragment extends Fragment {
 //        endWaveAnim();
 //        mStopped = true;
           onScanCancel();
-    }
-
-    public void onEventMainThread(SecurityScoreEvent event) {
-        final int oldScore = mCurrentScore;
-        final int newScore = event.securityScore;
-        mCurrentScore = newScore;
-
-        LeoLog.i(TAG, "onEventMainThread, oldScore: " + oldScore + " | newScore: " + newScore +
-                " | mProgressAnimating: " + mProgressAnimating);
-        if (!mProgressAnimating) {
-            doScoreChangeAnimation(oldScore, newScore);
-        } else {
-            mScoreChangeRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    doScoreChangeAnimation(oldScore, newScore);
-                }
-            };
-        }
     }
 
     private void doScoreChangeAnimation(int fromScore, int toScore) {
