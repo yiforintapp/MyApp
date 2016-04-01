@@ -135,10 +135,11 @@ public class HomeBoostActivity extends Activity {
 						
 						imageUrl = (campaigns != null && campaigns.size() > 1)
 								? campaign.getIconUrl() : campaign.getImageUrl();
-						
-						ImageLoader.getInstance().loadImage(imageUrl, 
-								new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, w),
-										DipPixelUtil.dip2px(HomeBoostActivity.this, h)), options, sAdImageListener);
+						if (imageUrl != null && !"".equals(imageUrl)) {
+							ImageLoader.getInstance().loadImage(imageUrl,
+									new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, w),
+											DipPixelUtil.dip2px(HomeBoostActivity.this, h)), options, sAdImageListener);
+						}
 					}
 
 					mAdEngine.proloadTemplate(Constants.UNIT_ID_62);
@@ -187,7 +188,7 @@ public class HomeBoostActivity extends Activity {
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             HomeBoostActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
-                LeoLog.d("MobvistaEngine", "[HomeBoostActivity]onLoadingComplete -> " + imageUri);
+                LeoLog.d("广告图片请求好了", "[HomeBoostActivity] onLoadingComplete -> " + imageUri);
 				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_62 + " image size: " + loadedImage.getByteCount(), mAdSource, null);
 				WrappedCampaign campaign = null;
 				String imgUrl = null;
