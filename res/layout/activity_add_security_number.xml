@@ -47,8 +47,8 @@
             android:drawablePadding="@dimen/ph_secur_add_num_top_tip_drawpadd"
             android:paddingBottom="@dimen/top_tip_instr_tv_marg_botm"
             android:text="@string/secur_add_num_tip"
-            android:textSize="@dimen/f6"
-            android:textColor="@color/cb"/>
+            android:textColor="@color/cb"
+            android:textSize="@dimen/f6"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -188,15 +188,26 @@
         android:layout_centerHorizontal="true"
         android:background="@color/white">
 
-        <Button
-            android:id="@+id/add_bt"
+        <com.leo.appmaster.ui.MaterialRippleLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="@dimen/add_num_botm_bt_width"
             android:layout_height="@dimen/add_num_botm_bt_height"
+            app:rippleColor="@color/menu_ripple"
             android:layout_centerInParent="true"
-            android:background="@drawable/selector_dialog_blue_button"
-            android:text="@string/security_guide_button_text"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            ></Button>
+            app:rippleDuration="150"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <Button
+                android:id="@+id/add_bt"
+                android:layout_width="@dimen/add_num_botm_bt_width"
+                android:layout_height="@dimen/add_num_botm_bt_height"
+                android:layout_centerInParent="true"
+                android:background="@drawable/selector_dialog_blue_button"
+                android:text="@string/security_guide_button_text"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                ></Button>
+        </com.leo.appmaster.ui.MaterialRippleLayout>
     </RelativeLayout>
 </RelativeLayout>

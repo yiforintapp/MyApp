@@ -26,9 +26,9 @@
                 android:id="@+id/top_lt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:background="@color/home_det_bg"
                 android:gravity="center_horizontal"
-                android:background="@color/home_det_bg">
+                android:orientation="vertical">
 
                 <include
                     android:id="@+id/show_time_lt"
@@ -85,17 +85,30 @@
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4"/>
 
-                <Button
-                    android:id="@+id/secur_mody_bt"
+                <com.leo.appmaster.ui.MaterialRippleLayout
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="@dimen/secur_mody_bt_width"
                     android:layout_height="@dimen/secur_mody_bt_height"
                     android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="13dp"
-                    android:background="@drawable/selector_dialog_blue_button"
-                    android:text="@string/secur_mody_num"
-                    android:textColor="@color/c1"
-                    android:textSize="@dimen/f5"/>
+                    app:rippleColor="@color/menu_ripple"
+                    app:rippleDuration="150"
+                    app:rippleHover="true"
+                    app:rippleOverlay="true">
+
+                    <Button
+                        android:id="@+id/secur_mody_bt"
+                        android:layout_width="@dimen/secur_mody_bt_width"
+                        android:layout_height="@dimen/secur_mody_bt_height"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/selector_dialog_blue_button"
+                        android:text="@string/secur_mody_num"
+                        android:textColor="@color/c1"
+                        android:textSize="@dimen/f5"/>
+                </com.leo.appmaster.ui.MaterialRippleLayout>
             </RelativeLayout>
 
             <RelativeLayout
@@ -141,8 +154,8 @@
                     android:id="@+id/line2"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
-                    android:layout_marginTop="@dimen/secur_open_line2"
                     android:layout_below="@id/secur_open_normal_lv"
+                    android:layout_marginTop="@dimen/secur_open_line2"
                     android:background="@color/cfl"></TextView>
 
                 <TextView
@@ -177,18 +190,31 @@
                         android:overScrollMode="never"
                         android:scrollbars="none"></GridView>
 
-                    <Button
-                        android:id="@+id/secur_open_adv"
+                    <com.leo.appmaster.ui.MaterialRippleLayout
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:layout_width="@dimen/secur_mody_bt_width"
                         android:layout_height="@dimen/secur_mody_bt_height"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="13dp"
-                        android:layout_toRightOf="@id/secur_open_adv_lv"
-                        android:background="@drawable/selector_dialog_blue_button"
-                        android:text="@string/security_guide_button_text"
-                        android:textColor="@color/c1"
-                        android:textSize="@dimen/f5"></Button>
+                        app:rippleColor="@color/menu_ripple"
+                        app:rippleDuration="150"
+                        app:rippleHover="true"
+                        app:rippleOverlay="true">
+
+                        <Button
+                            android:id="@+id/secur_open_adv"
+                            android:layout_width="@dimen/secur_mody_bt_width"
+                            android:layout_height="@dimen/secur_mody_bt_height"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="13dp"
+                            android:layout_toRightOf="@id/secur_open_adv_lv"
+                            android:background="@drawable/selector_dialog_blue_button"
+                            android:text="@string/security_guide_button_text"
+                            android:textColor="@color/c1"
+                            android:textSize="@dimen/f5"></Button>
+                    </com.leo.appmaster.ui.MaterialRippleLayout>
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
