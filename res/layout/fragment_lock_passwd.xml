@@ -409,7 +409,7 @@
         android:layout_below="@id/iv_app_icon_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/ges_Pattern_air_sig_m_top"
-        android:background="@drawable/airsig_verify_toucharea"
+        android:background="@drawable/airsig_bg"
         android:visibility="gone">
 
         <TextView
@@ -435,13 +435,6 @@
             android:text="@string/airsig_verify_press_hint"
             android:textColor="@color/airsig_text_white"
             android:textSize="@dimen/airsig_textsize_content" />
-
-        <ImageView
-            android:id="@+id/imageThumb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/airsig_img_thumb" />
 
         <ProgressBar
             android:id="@+id/progressBarWaiting"
