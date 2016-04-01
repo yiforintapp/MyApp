@@ -78,6 +78,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 mDialogAskCreateShotcut = new LEOAlarmDialog(this);
             }
             mDialogAskCreateShotcut.setTitleVisiable(false);
+            mDialogAskCreateShotcut.setDialogIconVisibility(true);
             mDialogAskCreateShotcut.setDialogIcon(R.drawable.qh_image_icon);
             mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_imagehide));
             mDialogAskCreateShotcut.setLeftBtnStr(getString(R.string.cancel));
