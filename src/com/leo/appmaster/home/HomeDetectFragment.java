@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,6 +15,8 @@ import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.Property;
 import com.leo.tools.animator.PropertyValuesHolder;
@@ -34,6 +35,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private ImageView mShieldRightIv;
     private ImageView mShieldLeftIv;
     private ImageView mShieldCenterIv;
+    private AnimatorSet mFirstInAnim;
 
 
     @Override
@@ -52,8 +54,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initUI(view);
-
-
+        initAnim();
+        //测试
+        startFirstAnim();
+        startHomeCenterShieldAnim();
     }
 
     @Override
@@ -76,6 +80,11 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mShieldTopIv = (ImageView) view.findViewById(R.id.shield_top_iv);
         mShieldCenterIv = (ImageView) view.findViewById(R.id.shield_center_iv);
         setSfateShieldView();
+    }
+
+
+    private void initAnim() {
+        initHomeTopShieldAnim();
     }
 
     @Override
@@ -138,51 +147,60 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mShieldLeftIv.setImageResource(R.drawable.shield_blue_left);
         mShieldRightIv.setImageResource(R.drawable.shield_blue_right);
         mShieldCenterIv.setImageResource(R.drawable.shield_good);
-
-        startHomeTopShieldAnim();
-        startHomeLeftShieldAnim();
-        startHomeRightShieldAnim();
-        startHomeCenterShieldAnim();
     }
 
-    //首次进入主页Top盾牌动画
-    public void startHomeTopShieldAnim() {
+    //首次进入主页盾牌动画
+    public void initHomeTopShieldAnim() {
         int value2 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_top_offset));
         int value1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_top_y_trans)) + value2;
         PropertyValuesHolder topTransY = PropertyValuesHolder.ofFloat("translationY", value1, value2);
         PropertyValuesHolder topAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
         ObjectAnimator topAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldTopIv, topTransY, topAlpha);
-        topAnim.setDuration(FIR_IN_ANIM_TIME);
-        topAnim.start();
-    }
 
-    //首次进入主页Left盾牌动画
-    public void startHomeLeftShieldAnim() {
-        int value2 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_offset));
-        int value1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_x_trans)) + value2;
-        PropertyValuesHolder leftTransY = PropertyValuesHolder.ofFloat("translationX", value1, value2);
+        int valueLeft2 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_offset));
+        int valueLeft1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_x_trans)) + value2;
+        PropertyValuesHolder leftTransY = PropertyValuesHolder.ofFloat("translationX", valueLeft1, valueLeft2);
         PropertyValuesHolder leftAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
         ObjectAnimator leftAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldLeftIv, leftTransY, leftAlpha);
-        leftAnim.setDuration(FIR_IN_ANIM_TIME);
-        leftAnim.start();
-    }
 
-    //首次进入主页Right盾牌动画
-    public void startHomeRightShieldAnim() {
-        int value2 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_offset));
-        int value1 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_right_x_trans)) + value2;
+        int valueRight2 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_offset));
+        int valueRight1 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_right_x_trans)) + value2;
 
-        PropertyValuesHolder rightTransY = PropertyValuesHolder.ofFloat("translationX", value1, value2);
+        PropertyValuesHolder rightTransY = PropertyValuesHolder.ofFloat("translationX", valueRight1, valueRight2);
         PropertyValuesHolder rightAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
         ObjectAnimator rightAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldRightIv, rightTransY, rightAlpha);
-        rightAnim.setDuration(FIR_IN_ANIM_TIME);
-        rightAnim.start();
+
+        if (mFirstInAnim == null) {
+            mFirstInAnim = new AnimatorSet();
+        } else {
+            mFirstInAnim.cancel();
+        }
+        mFirstInAnim.playTogether(topAnim, leftAnim, rightAnim);
+        mFirstInAnim.setDuration(FIR_IN_ANIM_TIME);
+
+    }
+
+    //启动首次进入动画
+    public void startFirstAnim() {
+        if (mFirstInAnim == null) {
+            return;
+        }
+        mFirstInAnim.start();
+    }
+
+    //结束首次动画
+    public void cancelFirstAnim() {
+        if (mFirstInAnim == null) {
+            return;
+        }
+        mFirstInAnim.cancel();
     }
 
     //首次进入主页Center盾牌动画
     public void startHomeCenterShieldAnim() {
         PropertyValuesHolder centerScaleX = PropertyValuesHolder.ofFloat("scaleX", (float) 0.6, (float) 1.06);
         PropertyValuesHolder centerScaleY = PropertyValuesHolder.ofFloat("scaleY", (float) 0.6, (float) 1.06);
+
         ObjectAnimator centerAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldCenterIv, centerScaleX, centerScaleY);
         centerAnim.setDuration(FIR_IN_ANIM_TIME);
         centerAnim.setStartDelay(FIR_IN_ANIM_TIME);
