@@ -732,6 +732,83 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         return picNum;
     }
 
+    @Override
+    public int getNormalPicsNum() {
+        List<String> filterVideoTypes = getFilterVideoType();
+        Cursor cursor = null;
+
+        int num = 0;
+        String splashPath = FileOperationUtil.getSplashPath();
+
+        try {
+            cursor = MediaStore.Images.Media.query(
+                    mContext.getContentResolver(),
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES,
+                    null, MediaStore.MediaColumns.DATE_MODIFIED + " desc");
+            LeoLog.d("getPhotoAlbum", "cursor size : " + cursor.getCount());
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor.getString(1);
+                    LeoLog.d("getPhotoAlbum", "path is : " + path);
+
+                    if (path.startsWith(SYSTEM_PREFIX)) {
+                        continue;
+                    }
+
+                    if (path.contains(splashPath)) {
+                        continue;
+                    }
+
+                    boolean isFilterVideoType = false;
+                    for (String videoType : filterVideoTypes) {
+                        isFilterVideoType = isFilterVideoType(path, videoType);
+                    }
+                    if (isFilterVideoType) {
+                        continue;
+                    }
+
+                    num++;
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return num;
+    }
+
+    @Override
+    public int getHidePicsNum() {
+        int num = 0;
+        Uri uri = MediaStore.Files.getContentUri("external");
+        String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaStore.MediaColumns.DATA
+                + " LIKE '%.leotmi'";
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
+                    MediaStore.MediaColumns.DATE_ADDED + " desc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+//                    String path = cursor.getString
+//                            (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//                    LeoLog.d("testPicLoadTime", "hide album path : " + path);
+
+                    num++;
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+        return num;
+    }
+
 
     @Override
     public int haveCheckedPic() {

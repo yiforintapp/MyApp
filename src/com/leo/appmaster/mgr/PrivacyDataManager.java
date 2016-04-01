@@ -129,7 +129,14 @@ public abstract class PrivacyDataManager extends Manager {
      */
     public abstract List<PhotoItem> getAddPic();
 
+    /**
+     * 获取新增图片数
+     */
     public abstract int getAddPicNum();
+
+    public abstract int getNormalPicsNum();
+
+    public abstract int getHidePicsNum();
 
     /**
      * 已阅新增图片，更新数据

@@ -345,7 +345,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
                 mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
                 mIvBottom.setBackgroundResource(
-                        R.drawable.reset_pass_gesture);
+                        R.drawable.airsig_icon);
             } else {
                 int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
 
@@ -355,7 +355,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
                     mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
                     mIvBottom.setBackgroundResource(
-                            R.drawable.reset_pass_gesture);
+                            R.drawable.airsig_icon);
                 } else {
                     mPassLockView.setVisibility(View.GONE);
                     mAirSigTouchView.setVisibility(View.VISIBLE);
@@ -902,7 +902,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
             mIvBottom.setBackgroundResource(
-                    R.drawable.reset_pass_gesture);
+                    R.drawable.airsig_icon);
             changeBg(false);
         }
     }
