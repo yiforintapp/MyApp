@@ -41,7 +41,8 @@ public abstract class Privacy<T> {
     private int mTotalCount;
     private int mProceedCount;
 
-    private List<T> mDataList;
+    // 新增列表
+    private List<T> mNewList;
 
     private Context mContext;
 
@@ -53,7 +54,7 @@ public abstract class Privacy<T> {
      * @return
      */
     public int getNewCount() {
-        return mDataList == null ? 0 : mDataList.size();
+        return mNewList == null ? 0 : mNewList.size();
     }
 
     /**
@@ -65,16 +66,16 @@ public abstract class Privacy<T> {
     }
 
     void setNewList(List<T> dataList) {
-        if (mDataList == null) {
-            mDataList = new ArrayList<T>();
+        if (mNewList == null) {
+            mNewList = new ArrayList<T>();
         }
 
         if (dataList == null) {
             return;
         }
 
-        mDataList.clear();
-        mDataList.addAll(dataList);
+        mNewList.clear();
+        mNewList.addAll(dataList);
     }
 
     /**
@@ -88,13 +89,13 @@ public abstract class Privacy<T> {
      * @return
      */
     public List<T> getNewList() {
-        if (mDataList == null) {
-            mDataList = new ArrayList<T>();
+        if (mNewList == null) {
+            mNewList = new ArrayList<T>();
         }
-        return mDataList;
+        return mNewList;
     }
 
-    public boolean isDanger() {
+    public boolean isDangerous() {
         int status = getStatus();
         return status == STATUS_NEW_ADD || status == STATUS_FOUND;
     }
@@ -154,7 +155,6 @@ public abstract class Privacy<T> {
         return getAddStringId();
     }
 
-    public abstract int getPrivacySummaryId();
     public abstract int getNotificationTextId();
     public abstract int getNotificationSummaryId();
     public abstract int getNotificationIconId();

@@ -1,8 +1,10 @@
 package com.leo.appmaster.privacy;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
 
     @Override
     protected boolean isConsumed() {
-        return false;
+        return LeoSettings.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
     }
 
     @Override
@@ -38,12 +40,7 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
 
     @Override
     public int getAddStringId() {
-        return 0;
-    }
-
-    @Override
-    public int getPrivacySummaryId() {
-        return 0;
+        return R.string.hd_add_hide_pic;
     }
 
     @Override
@@ -63,7 +60,7 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
 
     @Override
     public int getPrivacyLimit() {
-        return PrefTableHelper.getImagePrivacyLimit();
+        return LeoSettings.getInteger(PrefConst.KEY_PRIVACY_IMAGE_LIMIT, 15);
     }
 
     @Override

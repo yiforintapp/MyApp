@@ -347,4 +347,6 @@ public class PrefConst {
     public static final String KEY_PRIVACY_APP_LIMIT = "privacy_app_limit";
     public static final String KEY_PRIVACY_IMAGE_LIMIT = "privacy_image_limit";
     public static final String KEY_PRIVACY_VIDEO_LIMIT = "privacy_video_limit";
+
+    public static final String KEY_ENTERED_LOCK = "key_entered_lock";
 }
