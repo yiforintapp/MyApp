@@ -17,6 +17,15 @@
         android:layout_marginRight="24dp"
         android:orientation="vertical">
 
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/dlg_icon"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:src="@drawable/dialog_icon" />
+
 
         <TextView
             android:id="@+id/dlg_title"

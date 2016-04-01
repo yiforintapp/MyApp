@@ -29,4 +29,10 @@
         android:layout_height="match_parent"
         android:layout="@layout/bay_pro_setting_guide" />
 
+    <ViewStub
+        android:id="@+id/uninstall_guide_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/home_uninstall_guide"/>
+
 </FrameLayout>
