@@ -18,6 +18,8 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
+import com.leo.appmaster.schedule.FetchScheduleJob;
+import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.lang.reflect.Method;
@@ -55,6 +57,8 @@ public class InitCoreDelayBootstrap extends Bootstrap {
         //init DeviceImp
         DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
         deviceManager.init();
+
+        FetchScheduleJob.startFetchJobs();
         return false;
     }
 

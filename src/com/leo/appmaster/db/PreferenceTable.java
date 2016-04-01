@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -58,12 +60,12 @@ public class PreferenceTable extends BaseTable {
         mBackupValues = new HashMap<String, Object>();
         mSerialExecutor = ThreadManager.newSerialExecutor();
         mPrefs = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
-        ThreadManager.executeOnFileThread(new Runnable() {
-            @Override
-            public void run() {
-                loadPreference();
-            }
-        });
+//        ThreadManager.executeOnFileThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                loadPreference();
+//            }
+//        });
     }
 
     public void loadPreference() {
@@ -193,11 +195,23 @@ public class PreferenceTable extends BaseTable {
     }
 
     public synchronized String getString(String key, String def) {
-//        awaitLoadedLocked();
-        Object v = mValues.get(key);
-        if (mLoaded) {
-            return v != null ? v.toString() : def;
+        if (AppMasterConfig.LOGGABLE && SystemClock.elapsedRealtime() - AppMasterApplication.sStartTs < 3000) {
+            throw new RuntimeException("database operation cannot load in 3000 before app create.");
         }
+        LeoLog.d(TAG, "<ls> getString, key: " + key);
+        if (!mLoaded) {
+            ThreadManager.executeOnFileThread(new Runnable() {
+                @Override
+                public void run() {
+                    loadPreference();
+                }
+            });
+        }
+        awaitLoadedLocked();
+//        Object v = mValues.get(key);
+//        if (mLoaded) {
+//            return v != null ? v.toString() : def;
+//        }
 
         if (BuildProperties.isApiLevel14()) {
             return mPrefs.getString(key, def);

@@ -61,6 +61,8 @@ public class AppMasterApplication extends Application {
     public static int sScreenWidth = 0;
     public static int sScreenHeight = 0;
 
+    public static long sStartTs;
+
     private Bootstrap mRootBootstrap;
 
     static {
@@ -82,7 +84,8 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
-//        Debug.startMethodTracing("vivo1.trace");
+//        Debug.startMethodTracing("vivo3.trace");
+        sStartTs = SystemClock.elapsedRealtime();
         sInstance = this;
         // Use old sor
         try {

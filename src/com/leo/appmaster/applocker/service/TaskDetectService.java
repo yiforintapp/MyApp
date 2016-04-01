@@ -123,8 +123,15 @@ public class TaskDetectService extends Service {
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
         mScheduledExecutor = ThreadManager.getAsyncExecutor();
         flowDetecTask = new FlowTask();
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, AppMasterConfig.TRAFFIC_INTERNAL,
-                TimeUnit.MILLISECONDS);
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 延时执行，防止进程启动时加载太多数据
+//                mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, AppMasterConfig.TRAFFIC_INTERNAL,
+//                        TimeUnit.MILLISECONDS);
+            }
+        }, 10 * 1000);
+
         mStartThemeServer = new StartThemeServerTask();
         mScheduledExecutor.scheduleWithFixedDelay(mStartThemeServer, 0, AppMasterConfig.START_THEME_TIME,
                 TimeUnit.MILLISECONDS);

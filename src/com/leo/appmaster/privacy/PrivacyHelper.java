@@ -214,10 +214,10 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         @Override
         public void run() {
             LeoLog.i(TAG, "<ls> ScoreTimerTask, start to check.");
-            if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
-                LeoLog.i(TAG, "<ls> home is ontop and background, so donot scan.");
-                return;
-            }
+//            if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
+//                LeoLog.i(TAG, "<ls> home is ontop and background, so donot scan.");
+//                return;
+//            }
             long currentTs = System.currentTimeMillis();
             mLastScanTs = currentTs;
 

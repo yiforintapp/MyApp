@@ -18,19 +18,19 @@ import com.leo.appmaster.mgr.WifiSecurityManager;
 
 public class BaseActivity extends Activity {
     protected LockManager mLockManager;
-    protected WifiSecurityManager mWifiManager;
+//    protected WifiSecurityManager mWifiManager;
     protected CallFilterManager mCallManger;
     private ActivityLifeCircle mLifeCircle;
-    protected BatteryManager mBatteryManager;
+//    protected BatteryManager mBatteryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
+//        mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         mCallManger = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        mBatteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
+//        mBatteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
 
         mLifeCircle = new ActivityLifeCircle(this);
         mLifeCircle.onCreate();

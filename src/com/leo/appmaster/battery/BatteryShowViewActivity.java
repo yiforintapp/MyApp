@@ -24,6 +24,7 @@ import com.leo.appmaster.eventbus.event.BatteryViewEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.mgr.BatteryManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
@@ -75,11 +76,14 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
             }
         }
     };
+    private BatteryManager mBatteryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LeoLog.d(TAG, "onCreate");
+
+        mBatteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
         //隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //隐藏状态栏

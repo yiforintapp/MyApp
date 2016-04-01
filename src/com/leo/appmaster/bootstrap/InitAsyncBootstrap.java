@@ -71,12 +71,10 @@ public class InitAsyncBootstrap extends Bootstrap {
             SDKWrapper.addEvent(mApp, SDKWrapper.P1, "gp_check", "nogp");
         }
 
-        ScreenRecommentJob.initialize();
-        FetchScheduleJob.startFetchJobs();
         saveSimIMEI();
         PrivacyContactManager.getInstance(mApp).getPrivateContacts();
 
-        MgrContext.getManager(MgrContext.MGR_BATTERY);
+//        MgrContext.getManager(MgrContext.MGR_BATTERY);
 
         BlacklistTab.getInstance().initEncryptList();
 

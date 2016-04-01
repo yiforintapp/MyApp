@@ -17,8 +17,8 @@ import com.leo.appmaster.mgr.WifiSecurityManager;
 public class BaseFragmentActivity extends FragmentActivity {
     protected LockManager mLockManager;
     private ActivityLifeCircle mLifeCircle;
-    protected WifiSecurityManager mWifiManager;
-    protected BatteryManager mBatteryManager;
+//    protected WifiSecurityManager mWifiManager;
+//    protected BatteryManager mBatteryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,8 @@ public class BaseFragmentActivity extends FragmentActivity {
         } catch (Error error) {
         }
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
-        mBatteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
+//        mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
+//        mBatteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
 
         mLifeCircle = new ActivityLifeCircle(this);
         mLifeCircle.onCreate();
