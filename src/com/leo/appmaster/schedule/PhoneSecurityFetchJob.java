@@ -26,7 +26,6 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
             FetchScheduleListener listener = job.newJsonObjListener();
             Context context = AppMasterApplication.getInstance();
             HttpRequestAgent.getInstance(context).loadPhoneSecurity(listener, listener);
-            HttpRequestAgent.getInstance(context).loadCommentSettings(listener, listener);
         }
     }
 
@@ -35,7 +34,6 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
         Context context = AppMasterApplication.getInstance();
         FetchScheduleListener listener = newJsonObjListener();
         HttpRequestAgent.getInstance(context).loadPhoneSecurity(listener, listener);
-        HttpRequestAgent.getInstance(context).loadCommentSettings(listener, listener);
     }
 
     @Override
