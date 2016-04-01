@@ -42,7 +42,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
-        android:visibility="gone">
+        android:visibility="invisible">
         <!--危险结果-->
         <TextView
             android:id="@+id/det_danger_app_num_tv"
@@ -107,7 +107,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
-        android:visibility="gone">
+        android:visibility="invisible">
         <!--危险状态-->
         <TextView
             android:id="@+id/det_danger_img_num_tv"
@@ -171,7 +171,7 @@
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:layout_below="@id/lt_det_saft_result_img"
-        android:visibility="gone"
+        android:visibility="invisible"
         >
         <!--危险状态-->
         <TextView
