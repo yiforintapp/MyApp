@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +18,6 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-import com.leo.tools.animator.Property;
 import com.leo.tools.animator.PropertyValuesHolder;
 
 public class HomeDetectFragment extends Fragment implements View.OnClickListener {
@@ -274,5 +272,23 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         centerAnim.setDuration(FIR_IN_ANIM_TIME);
         centerAnim.setStartDelay(FIR_IN_ANIM_TIME);
         centerAnim.start();
+    }
+
+    //扫描结果处理后切换动画
+    public void detectResultConversionAnim(View up1, View up2, View down1, View down2, Animator.AnimatorListener listener) {
+
+        ObjectAnimator transUp1 = ObjectAnimator.ofFloat(up1, "translationY", -100, 0);
+        ObjectAnimator transUp2 = ObjectAnimator.ofFloat(up2, "translationY", -100, 0);
+
+        ObjectAnimator transDown1 = ObjectAnimator.ofFloat(up1, "translationY", 0, 100);
+        ObjectAnimator transDown2 = ObjectAnimator.ofFloat(up2, "translationY", 0, 100);
+
+        AnimatorSet set = new AnimatorSet();
+        if (listener != null) {
+            set.addListener(listener);
+        }
+        set.playTogether(transUp1, transUp2, transDown1, transDown2);
+        set.setDuration(200);
+        set.start();
     }
 }

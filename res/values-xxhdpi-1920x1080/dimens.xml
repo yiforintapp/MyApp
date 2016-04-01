@@ -173,7 +173,7 @@
     <dimen name="sec_did_v_tp">20dp</dimen>
     <dimen name="no_op_suc_tv">20dp</dimen>
     <dimen name="no_open_suc_lv_tp">20dp</dimen>
-    <dimen name="open_suc_lv_tp">20dp</dimen>
+    <dimen name="open_suc_lv_tp">25dp</dimen>
     <dimen name="op_adv_suc_tv">150dp</dimen>
     <dimen name="open_suc_tv_pd_tp">9dp</dimen>
     <dimen name="open_suc_tv_pd_bt">16dp</dimen>
