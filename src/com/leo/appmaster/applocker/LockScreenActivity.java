@@ -1151,8 +1151,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onDestroy() {
-        mLockManager.setPauseScreenonLock(false);
         super.onDestroy();
+        mLockManager.setPauseScreenonLock(false);
         if (mAppBaseInfoLayoutbg != null) {
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;

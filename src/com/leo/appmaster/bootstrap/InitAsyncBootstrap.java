@@ -44,6 +44,9 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        //airSig
+        initAirSig();
+
         initImageLoader();
         PrivacyTrickUtil.clearOtherApps(mApp);
         AppLoadEngine.getInstance(mApp).preloadAllBaseInfo();
@@ -73,8 +76,7 @@ public class InitAsyncBootstrap extends Bootstrap {
 
         BlacklistTab.getInstance().initEncryptList();
 
-        //airSig
-        initAirSig();
+
         return true;
     }
 
