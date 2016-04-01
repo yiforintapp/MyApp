@@ -254,6 +254,7 @@ public class PreferenceTable extends BaseTable {
         } else if (value.equals("false")) {
             value = String.valueOf(BOOL_FALSE);
         }
+        mValues.put(key, value);
         final String finalValue = value;
         mSerialExecutor.execute(new Runnable() {
             @Override
@@ -333,7 +334,6 @@ public class PreferenceTable extends BaseTable {
     }
 
     private void insertOrUpdate(String key, String value) {
-        mValues.put(key, value);
         if (BuildProperties.isApiLevel14()) {
             try {
                 mPrefs.edit().putString(key, value).commit();

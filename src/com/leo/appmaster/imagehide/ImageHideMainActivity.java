@@ -49,6 +49,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private static final String TAG = "ImageHideMainActivity";
     private List<PhotoAibum> mAlbumList = null;
+    private List<PhotoItem> mNewAddPic = null;
     private GridView mGridView;
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
@@ -62,6 +63,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private final int NEW_PIC_MAX_SHOW_AMOUNT = 5;
 
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
+
+    private NewPicAdapter mNewPicAdapter = new NewPicAdapter(this);
 
     private View mIncludeLayoutNewPic;
     private GridView mGvNewPic;
@@ -142,6 +145,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void run() {
                 mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
                         getHidePicAlbum(PrivacyDataManagerImpl.CHECK_APART);
+                mNewAddPic = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).getAddPic();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -182,31 +186,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private void initUI() {
         mIncludeLayoutNewPic = findViewById(R.id.layout_newpic);
         mGvNewPic = (GridView) mIncludeLayoutNewPic.findViewById(R.id.gv_newpic);
-        mGvNewPic.setAdapter(new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return NEW_PIC_MAX_SHOW_AMOUNT;
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return 0;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic,parent,false);
-                ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
-                iv.setImageResource(R.drawable.ic_launcher);
-                return v;
-            }
-        });
-
 
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_image_hide);
@@ -287,6 +266,56 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         startActivityForResult(intent, REQUEST_CODE_OPTION);
     }
 
+
+
+    class NewPicAdapter extends BaseAdapter {
+        Context context;
+        List<PhotoItem> list = new ArrayList<PhotoItem>();
+
+        public NewPicAdapter(Context context) {
+            this.context = context;
+        }
+
+        public void setDataList(List<PhotoItem> alist) {
+            list.clear();
+            this.list.addAll(alist);
+        }
+
+        @Override
+        public int getCount() {
+            if (mNewAddPic == null) {
+                return 0;
+            }
+            return Math.min(NEW_PIC_MAX_SHOW_AMOUNT,mNewAddPic.size());
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic,parent,false);
+            ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
+//            iv.setImageResource(R.drawable.m);
+            return v;
+        }
+    }
+
+
+
+
+
+
+
+
+
     class HideAlbumAdapt extends BaseAdapter {
         Context context;
         List<PhotoAibum> list = new ArrayList<PhotoAibum>();
@@ -350,5 +379,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         private ImageView img;
         private TextView txt;
     }
+
 
 }
