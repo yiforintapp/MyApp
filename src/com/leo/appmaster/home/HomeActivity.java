@@ -63,12 +63,12 @@ import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
-import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
+import com.leo.appmaster.schedule.CommentSettingsFetchJob;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.schedule.PhoneSecurityFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -206,6 +206,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         /*手机防盗开启人数，在用户没有打开手机防盗时没此进入主页拉取一次*/
         PhoneSecurityFetchJob.startImmediately();
+        CommentSettingsFetchJob.startImmediately();
         registerLocaleChange();
 
 //        if (AppMasterConfig.LOGGABLE) {
