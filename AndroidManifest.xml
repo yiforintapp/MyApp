@@ -348,6 +348,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"/>
         <activity
+            android:name=".imagehide.NewHideImageActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"/>
+        <activity
             android:name=".imagehide.ImageGalleryActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"

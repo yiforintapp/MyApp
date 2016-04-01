@@ -47,7 +47,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.activity.AboutActivity;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
@@ -62,6 +61,7 @@ import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
+import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
@@ -1237,8 +1237,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     /* 关于 */
                     /* sdk mark */
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "about");
-                    intent = new Intent(HomeActivity.this,
-                            AboutActivity.class);
+//                    intent = new Intent(HomeActivity.this,
+//                            AboutActivity.class);
+                    intent = new Intent(HomeActivity.this, NewHideImageActivity.class);
                     startActivity(intent);
                 }
             }

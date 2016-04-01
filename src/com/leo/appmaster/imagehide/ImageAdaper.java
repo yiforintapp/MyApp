@@ -1,9 +1,7 @@
-package com.leo.appmaster.home;
+package com.leo.appmaster.imagehide;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.SparseArray;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -15,6 +13,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ui.MaskImageView;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
@@ -28,7 +27,7 @@ import java.util.List;
  * 隐私等级适配器基类
  * Created by Jasper on 2015/10/15.
  */
-public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
+public abstract class ImageAdaper<T> extends BaseAdapter {
     public interface SelectionChangeListener {
         public void onSelectionChange(boolean selectAll, int selectedCount);
     }
@@ -48,7 +47,7 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
 
     protected HashMap<View, T> mItemsView;
 
-    public PrivacyNewAdaper() {
+    public ImageAdaper() {
         mDataList = new ArrayList<T>();
 //        mSelectedList = new ArrayList<T>();
 
@@ -64,7 +63,9 @@ public abstract class PrivacyNewAdaper<T> extends BaseAdapter {
             @Override
             public void run() {
                 mDataList.clear();
+                LeoLog.v("NewHideImageActivity","mDataList size " + mDataList.size());
                 mDataList.addAll(dataList);
+                LeoLog.v("NewHideImageActivity","mDataList size " + mDataList.size());
                 mSelectedArray = new byte[dataList.size()];
 
                 notifyDataSetChanged();

@@ -12,6 +12,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.imagehide.FolderHideImageFragment;
+import com.leo.appmaster.imagehide.ImageHideFragment;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -56,6 +58,29 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
             ((FolderPicFragment) fragment).setData(list.photoItems);
         } else if (fragment instanceof PrivacyNewPicFragment) {
             ((PrivacyNewPicFragment) fragment).setData(list.photoItems, "");
+        }
+
+        return fragment;
+    }
+
+    public static Fragment getNewHideImageFragment(HomeScanningFragment.PhotoList list) {
+        Fragment fragment = null;
+        if (list == null) {
+            return fragment;
+        }
+        if (list.photoItems.size() > 60) {
+            if (list.inDifferentDir) {
+                fragment = FolderHideImageFragment.newInstance();
+            } else {
+                fragment = ImageHideFragment.newInstance();
+            }
+        } else {
+            fragment = ImageHideFragment.newInstance();
+        }
+        if (fragment instanceof FolderHideImageFragment) {
+            ((FolderHideImageFragment) fragment).setData(list.photoItems);
+        } else if (fragment instanceof ImageHideFragment) {
+            ((ImageHideFragment) fragment).setData(list.photoItems, "");
         }
 
         return fragment;
