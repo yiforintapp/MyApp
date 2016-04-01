@@ -66,6 +66,9 @@
 
 
             <GridView
+                android:horizontalSpacing="0dp"
+                android:layout_marginTop="10dp"
+                android:verticalSpacing="12dp"
                 android:id="@+id/Image_hide_folder"
                 android:layout_below="@id/layout_newpic"
                 android:layout_width="match_parent"
