@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.privacy.Privacy;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.tools.animator.Animator;
@@ -84,6 +86,68 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+
+        // 刷新状态
+        reloadAppStatus();
+        reloadImageStatus();
+        reloadVideoStatus();
+    }
+
+    private void reloadAppStatus() {
+        Privacy privacy = PrivacyHelper.getAppPrivacy();
+        if (privacy.isDangerous()) {
+            mSfatResultAppLt.setVisibility(View.INVISIBLE);
+            mDangerResultAppLt.setVisibility(View.VISIBLE);
+
+            mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
+        } else {
+            mSfatResultAppLt.setVisibility(View.VISIBLE);
+            mDangerResultAppLt.setVisibility(View.INVISIBLE);
+
+            boolean numVisible = privacy.showPrivacyCount();
+            mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            if (numVisible) {
+                mDetSaftAppNumTv.setText(privacy.getPrivacyCountText());
+            }
+        }
+    }
+
+    private void reloadImageStatus() {
+        Privacy privacy = PrivacyHelper.getImagePrivacy();
+        if (privacy.isDangerous()) {
+            mSfatResultImgLt.setVisibility(View.INVISIBLE);
+            mDangerResultImgLt.setVisibility(View.VISIBLE);
+
+            mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
+        } else {
+            mSfatResultImgLt.setVisibility(View.VISIBLE);
+            mDangerResultImgLt.setVisibility(View.INVISIBLE);
+
+            boolean numVisible = privacy.showPrivacyCount();
+            mDetSaftImgNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            if (numVisible) {
+                mDetSaftImgNumTv.setText(privacy.getPrivacyCountText());
+            }
+        }
+    }
+
+    private void reloadVideoStatus() {
+        Privacy privacy = PrivacyHelper.getVideoPrivacy();
+        if (privacy.isDangerous()) {
+            mSfatResultVideoLt.setVisibility(View.INVISIBLE);
+            mDangerResultVideoLt.setVisibility(View.VISIBLE);
+
+            mDetSaftVideoNumTv.setText(privacy.getPrivacyCountText());
+        } else {
+            mSfatResultVideoLt.setVisibility(View.VISIBLE);
+            mDangerResultVideoLt.setVisibility(View.INVISIBLE);
+
+            boolean numVisible = privacy.showPrivacyCount();
+            mDetDagVideoNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            if (numVisible) {
+                mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
+            }
+        }
     }
 
     private void initUI(View view) {

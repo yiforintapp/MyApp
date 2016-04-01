@@ -109,6 +109,18 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         return sInstance;
     }
 
+    public static Privacy getAppPrivacy() {
+        return getPrivacy(PRIVACY_APP_LOCK);
+    }
+
+    public static Privacy getImagePrivacy() {
+        return getPrivacy(PRIVACY_HIDE_PIC);
+    }
+
+    public static Privacy getVideoPrivacy() {
+        return getPrivacy(PRIVACY_HIDE_VID);
+    }
+
     public static Privacy getPrivacy(int privacy) {
         switch (privacy) {
             case PRIVACY_APP_LOCK:
@@ -210,16 +222,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             long currentTs = System.currentTimeMillis();
             mLastScanTs = currentTs;
 
-            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            List<AppItemInfo> appList = lm.getNewAppList();
-            sLockPrivacy.setNewList(appList);
-
-            PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-            List<PhotoItem> picList = pdm.getAddPic();
-            sImagePrivacy.setNewList(picList);
-
-            List<VideoItemBean> vidList = pdm.getAddVid();
-            sVideoPrivacy.setNewList(vidList);
+            setPrivacyListAndCount();
 
             checkOrNotifyPrivacy(PRIVACY_APP_LOCK);
             checkOrNotifyPrivacy(PRIVACY_HIDE_PIC);
@@ -232,11 +235,16 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         List<AppItemInfo> appList = lm.getNewAppList();
         sLockPrivacy.setNewList(appList);
         sLockPrivacy.setProceedCount(lm.getLockedAppCount());
-        sLockPrivacy.setTotalCount(AppLoadEngine.getInstance(mContext).getAppCounts());
+        sLockPrivacy.setTotalCount(lm.getAllAppCount());
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        sImagePrivacy.setNewList(pdm.getAddPic());
-        sImagePrivacy.setProceedCount(pdm.getAddPicNum());
+        List<PhotoItem> picList = pdm.getAddPic();
+        sImagePrivacy.setNewList(picList);
+        sImagePrivacy.setProceedCount(pdm.getHidePicsNum());
+        sImagePrivacy.setTotalCount(pdm.getNormalPicsNum());
+
+        List<VideoItemBean> vidList = pdm.getAddVid();
+        sVideoPrivacy.setNewList(vidList);
     }
 
     private class DelayTimerTask implements Runnable {

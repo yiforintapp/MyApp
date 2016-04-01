@@ -14,11 +14,6 @@ import java.util.List;
 public class VideoPrivacy extends Privacy<VideoItemBean> {
 
     @Override
-    public int getProceedCount() {
-        return 0;
-    }
-
-    @Override
     protected boolean isConsumed() {
         return LeoSettings.getBoolean(PrefConst.KEY_VID_COMSUMED, false);
     }

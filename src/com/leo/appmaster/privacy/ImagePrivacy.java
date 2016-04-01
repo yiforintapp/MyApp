@@ -14,11 +14,6 @@ import java.util.List;
 public class ImagePrivacy extends Privacy<PhotoItem> {
 
     @Override
-    public int getProceedCount() {
-        return 0;
-    }
-
-    @Override
     protected boolean isConsumed() {
         return LeoSettings.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
     }

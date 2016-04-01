@@ -82,7 +82,9 @@ public abstract class Privacy<T> {
      * 获取已处理的个数
      * @return
      */
-    public abstract int getProceedCount();
+    public int getProceedCount() {
+        return mProceedCount;
+    }
 
     /**
      * 获取新增列表
@@ -153,6 +155,25 @@ public abstract class Privacy<T> {
         }
 
         return getAddStringId();
+    }
+
+    public String getPrivacyCountText() {
+        int status = getStatus();
+        switch (status) {
+            case STATUS_FOUND:
+                return getTotalCount() + "";
+            case STATUS_NEW_ADD:
+                return getNewCount() + "";
+            case STATUS_PROCEED:
+                return getProceedCount() + "";
+        }
+
+        return "null";
+    }
+
+    public boolean showPrivacyCount() {
+        int status = getStatus();
+        return status != STATUS_TOADD;
     }
 
     public abstract int getNotificationTextId();

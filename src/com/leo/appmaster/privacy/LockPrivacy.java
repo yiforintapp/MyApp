@@ -16,12 +16,6 @@ import java.util.List;
 public class LockPrivacy extends Privacy<AppItemInfo> {
 
     @Override
-    public int getProceedCount() {
-        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        return lm.getLockedAppCount();
-    }
-
-    @Override
     protected boolean isConsumed() {
         return LeoSettings.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
     }
