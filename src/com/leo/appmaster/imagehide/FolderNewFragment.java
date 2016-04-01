@@ -1,7 +1,6 @@
 package com.leo.appmaster.imagehide;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -27,13 +25,13 @@ import java.util.List;
 /**
  * Created by yangyuefeng on 2015/11/13.
  */
-public abstract class FolderImageFragment<T> extends Fragment implements AbsListView.OnScrollListener,
-        ExpandableListView.OnGroupClickListener, FolderImageAdapter.OnFolderClickListener,
+public abstract class FolderNewFragment<T> extends Fragment implements AbsListView.OnScrollListener,
+        ExpandableListView.OnGroupClickListener, FolderNewAdapter.OnFolderClickListener,
         View.OnClickListener {
-    private static final String TAG = FolderImageFragment.class.getSimpleName();
+    private static final String TAG = FolderNewFragment.class.getSimpleName();
     private Dictionary<Integer, Integer> mItemHeights = new Hashtable<Integer, Integer>();
 
-    protected FolderImageAdapter<T> mAdapter;
+    protected FolderNewAdapter<T> mAdapter;
     protected Activity mActivity;
     protected List<T> mDataList;
     protected ExpandableListView mListView;
@@ -160,7 +158,7 @@ public abstract class FolderImageFragment<T> extends Fragment implements AbsList
 //            FolderAdapter.ItemsWrapper<T> wrapper = (FolderAdapter.ItemsWrapper<T>)
 //                    mAdapter.getFirstVisibleGroup(firstVisibleItem);
             int group = mAdapter.getFirstVisibleGroupPosition(firstVisibleItem);
-            FolderImageAdapter.ItemsWrapper<T> wrapper = (FolderImageAdapter.ItemsWrapper<T>) mAdapter.getGroup(group);
+            FolderNewAdapter.ItemsWrapper<T> wrapper = (FolderNewAdapter.ItemsWrapper<T>) mAdapter.getGroup(group);
             if (wrapper == null) return;
             mCurrentGroup = mAdapter.getFirstVisibleGroupPosition(firstVisibleItem);
             if (mCurrentGroup != mLastGroup) {

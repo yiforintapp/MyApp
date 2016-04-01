@@ -24,15 +24,15 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/10/16.
  */
-public abstract class ImageFragment extends Fragment implements AbsListView.OnScrollListener,
-        CompoundButton.OnCheckedChangeListener, View.OnClickListener, ImageAdaper.SelectionChangeListener {
+public abstract class NewFragment extends Fragment implements AbsListView.OnScrollListener,
+        CompoundButton.OnCheckedChangeListener, View.OnClickListener, NewAdaper.SelectionChangeListener {
 
-    private static final String TAG = ImageFragment.class.getSimpleName();
+    private static final String TAG = NewFragment.class.getSimpleName();
 
 
     private Dictionary<Integer, Integer> listViewItemHeights = new Hashtable<Integer, Integer>();
     protected Activity mActivity;
-    protected ImageAdaper mAdapter;
+    protected NewAdaper mAdapter;
 
     protected Button mHideBtn;
     protected Button mSelectBtn;
@@ -56,7 +56,7 @@ public abstract class ImageFragment extends Fragment implements AbsListView.OnSc
 
     private LEOAlarmDialog mIgnoreDlg;
 
-    protected List<PhotoItem> mDataList = new ArrayList<PhotoItem>();
+    protected List mDataList;
 
     protected String mAppName;
 
@@ -201,12 +201,6 @@ public abstract class ImageFragment extends Fragment implements AbsListView.OnSc
 
     @Override
     public void onSelectionChange(boolean selectAll, int selectedCount) {
-//        if (selectAll) {
-//            mStickyCb.setChecked(true);
-//        } else {
-//            mStickyCb.setChecked(false);
-//        }
-
         if (selectedCount > 0) {
             mProcessBtn.setEnabled(true);
             mProcessClick.setEnabled(true);

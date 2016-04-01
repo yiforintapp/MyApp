@@ -7,7 +7,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.PrivacyNewAdaper;
 import com.leo.appmaster.ui.MaskImageView;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -16,10 +15,10 @@ import com.leo.imageloader.core.ImageScaleType;
 /**
  * Created by Jasper on 2015/10/16.
  */
-public class ImageHideAdapter extends ImageAdaper<PhotoItem> {
+public class NewImageAdapter extends NewAdaper<PhotoItem> {
     private ImageLoader mImageLoader;
 
-    public ImageHideAdapter() {
+    public NewImageAdapter() {
         mImageLoader = ImageLoader.getInstance();
     }
     @Override
