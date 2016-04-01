@@ -148,7 +148,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
-        if (null != ASEngine.getSharedInstance() && ASGui.getSharedInstance().isSensorAvailable()) {
+        if (null != ASEngine.getSharedInstance()) {
             ASEngine.getSharedInstance().startSensors();
         }
     }
