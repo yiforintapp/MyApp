@@ -10,6 +10,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -52,6 +53,13 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airsig_activity_select);
+
+
+        if (ASGui.getSharedInstance().isValidLicense()) {
+            LeoLog.d("testAirSig", "no");
+        } else {
+            LeoLog.d("testAirSig", "yes");
+        }
 
         initUI();
         fillData();
