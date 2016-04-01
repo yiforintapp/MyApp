@@ -1,8 +1,12 @@
 
 package com.leo.appmaster.fragment;
 
+import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.utils.LeoLog;
 
 public abstract class LockFragment extends BaseFragment {
     public int mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
@@ -58,4 +62,5 @@ public abstract class LockFragment extends BaseFragment {
     public int getUnlockType() {
         return mShowType;
     }
+
 }

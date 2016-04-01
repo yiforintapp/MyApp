@@ -7,6 +7,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
@@ -24,6 +26,7 @@ import com.leo.appmaster.schedule.FetchScheduleJob;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.DisplayImageOptions;
@@ -32,7 +35,7 @@ import com.leo.imageloader.ImageLoaderConfiguration;
 
 /**
  * 异步初始化，旧版本的startInitTask
- * 
+ *
  * @author Jasper
  */
 public class InitAsyncBootstrap extends Bootstrap {
@@ -44,6 +47,7 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+
         //airSig
         initAirSig();
 
@@ -80,6 +84,12 @@ public class InitAsyncBootstrap extends Bootstrap {
         return true;
     }
 
+    private void initAirSig() {
+        ASSetting setting = new ASSetting();
+        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
+        ASGui.getSharedInstance(AppMasterApplication.getInstance(), null, setting, null); // Database is in /data/data/...
+    }
+
     private void initImageLoader() {
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
         ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(mApp);
@@ -97,13 +107,6 @@ public class InitAsyncBootstrap extends Bootstrap {
         ImageLoader.getInstance().init(builder.build());
     }
 
-    private void initAirSig() {
-        ASSetting setting = new ASSetting();
-        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
-
-
-        ASGui.getSharedInstance(AppMasterApplication.getInstance(), null, setting, null); // Database is in /data/data/...
-    }
 
     @Override
     public String getClassTag() {
@@ -119,7 +122,7 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     /*保存sim标识*/
     private void saveSimIMEI() {
-        String simNu= LeoPreference.getInstance().getString(PrefConst.KEY_SIM_IMEI);
+        String simNu = LeoPreference.getInstance().getString(PrefConst.KEY_SIM_IMEI);
         if (Utilities.isEmpty(simNu)) {
             LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
             manager.setSimIMEI();

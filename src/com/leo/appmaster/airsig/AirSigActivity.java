@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 public class AirSigActivity extends BaseActivity implements View.OnClickListener {
     public final static String AIRSIG_SWITCH = "airsig_switch";
+    public final static String AIRSIG_OPEN_EVER = "airsig_open_ever";
+    public final static String AIRSIG_TIMEOUT_EVER = "airsig_timeout_ever";
     private final static int SET_DONE = 1;
     private final static int SET_FAILED = 2;
     private CommonToolbar mTitleBar;
@@ -53,13 +55,6 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airsig_activity_select);
-
-
-        if (ASGui.getSharedInstance().isValidLicense()) {
-            LeoLog.d("testAirSig", "no");
-        } else {
-            LeoLog.d("testAirSig", "yes");
-        }
 
         initUI();
         fillData();

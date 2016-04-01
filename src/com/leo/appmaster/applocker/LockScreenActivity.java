@@ -67,6 +67,7 @@ import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -272,6 +273,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         super.onCreate(savedInstanceState);
         long start = SystemClock.elapsedRealtime();
         setContentView(R.layout.activity_lock_layout);
+
+        checkIsAirSigTimeout();
+
 //        registerHomeKeyReceiver()
         LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
         mISManager = (IntrudeSecurityManager) MgrContext
@@ -320,6 +324,29 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
+    }
+
+    public void checkIsAirSigTimeout() {
+        if (ASGui.getSharedInstance().isValidLicense()) {
+            LeoLog.d("testAirSig", "no guoqi");
+            boolean isAirSigTimeOutEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
+            //以前是否开启状态
+            boolean isAirSigOpenEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
+            if (isAirSigTimeOutEver && isAirSigOpenEver) {
+                LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, true);
+                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
+            }
+        } else {
+            LeoLog.d("testAirSig", "yes guoqi");
+            boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+            if (isAirsigOn) {
+                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, true);
+                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+            }
+            //过期关闭
+            LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+            LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, true);
+        }
     }
 
     private void mobvistaCheck() {
@@ -552,7 +579,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //        }
 
         boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-        if(!isAirsigOn){
+        if (!isAirsigOn) {
             tryShowNoPermissionTip();
         }
 
@@ -2306,7 +2333,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         int type = mLockFragment.getUnlockType();
-        if(type == AirSigSettingActivity.NOMAL_UNLOCK){
+        if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
             listItems.add(resources.getString(R.string.unlock_theme));
             listItems.add(resources.getString(R.string.setting_hide_lockline));
         }
@@ -2323,7 +2350,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         int type = mLockFragment.getUnlockType();
-        if(type == AirSigSettingActivity.NOMAL_UNLOCK){
+        if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
             icons.add(R.drawable.theme_icon_black);
             if (AppMasterPreference.getInstance(this).getIsHideLine()) {
                 icons.add(R.drawable.show_locus_icon);
