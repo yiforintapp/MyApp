@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -76,7 +78,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private TextView mTvNewAmountTips;
     private RippleView mRvHideNew;
     private TextView mTvIgnoreNew;
-
+    private RelativeLayout mRlWholeShowContent;
 
     public static final int REQUEST_CODE_OPTION = 1001;
 
@@ -135,11 +137,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             if (mAlbumList.size() > 0) {
                 mNoHidePictureHint.setVisibility(View.GONE);
                 loadingBar.setVisibility(View.GONE);
-                mGridView.setVisibility(View.VISIBLE);
+                mRlWholeShowContent.setVisibility(View.VISIBLE);
             } else {
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
                 loadingBar.setVisibility(View.GONE);
-                mGridView.setVisibility(View.GONE);
+                mRlWholeShowContent.setVisibility(View.GONE);
             }
             if (mHideAlbumAdapt != null) {
                 mHideAlbumAdapt.setDataList(mAlbumList);
@@ -216,6 +218,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
 
     private void initUI() {
+        mRlWholeShowContent = (RelativeLayout) findViewById(R.id.rl_whole_show_content);
         mIncludeLayoutNewPic = findViewById(R.id.layout_newpic);
         mRvHideNew = (RippleView) mIncludeLayoutNewPic.findViewById(R.id.rv_hide_new);
         mRvHideNew.setOnClickListener(new OnClickListener() {
@@ -263,7 +266,25 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void hideHeadLayout() {
+        TranslateAnimation ta = new TranslateAnimation(0,0,0,- mIncludeLayoutNewPic.getHeight());
+        ta.setDuration(500);
+        ta.setFillAfter(true);
+        mRlWholeShowContent.setAnimation(ta);
+        mRlWholeShowContent.startAnimation(ta);
+        ta.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
 
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mIncludeLayoutNewPic.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
     }
 
     private void initImageLoder() {
