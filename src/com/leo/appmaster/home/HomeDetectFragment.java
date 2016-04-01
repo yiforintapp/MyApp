@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -28,7 +30,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private static final int DANGER_LEVEL = 1;
     private static final long FIR_IN_ANIM_TIME = 700;
 
-    private Context mContext;
+    private Activity mContext;
     private RelativeLayout mSfatResultAppLt;
     private RelativeLayout mSfatResultImgLt;
     private RelativeLayout mSfatResultVideoLt;
@@ -64,7 +66,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mContext = getActivity();
+        mContext = activity;
         mDetectPresenter = new HomeDetectPresenter();
         mScreenWidth = Utilities.getScreenSize(mContext)[0];
     }
@@ -228,11 +230,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.lt_det_saft_result_app:
                 //应用扫描安全结果
-                mDetectPresenter.appSaftHandler();
-                break;
+                // mDetectPresenter.appSaftHandler();
             case R.id.lt_det_saft_result_img:
                 //图片扫描安全结果
-                mDetectPresenter.imageSaftHandler();
+                //mDetectPresenter.imageSaftHandler();
+                Intent appIntent = new Intent(mContext, AppLockListActivity.class);
+                mContext.startActivity(appIntent);
                 break;
             case R.id.lt_det_saft_result_video:
                 //视频扫描安全结果

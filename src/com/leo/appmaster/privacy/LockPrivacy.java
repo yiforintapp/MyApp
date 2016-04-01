@@ -1,6 +1,10 @@
 package com.leo.appmaster.privacy;
 
+import android.app.Activity;
+import android.content.Intent;
+
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.mgr.LockManager;
@@ -78,4 +82,5 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     public String getReportDescription() {
         return "prilevel_notice_app";
     }
+
 }
