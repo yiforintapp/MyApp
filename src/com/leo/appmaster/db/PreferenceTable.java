@@ -195,9 +195,9 @@ public class PreferenceTable extends BaseTable {
     }
 
     public synchronized String getString(String key, String def) {
-        if (AppMasterConfig.LOGGABLE && SystemClock.elapsedRealtime() - AppMasterApplication.sStartTs < 3000) {
-            throw new RuntimeException("<ls> database operation cannot load in 3000 before app create.");
-        }
+//        if (AppMasterConfig.LOGGABLE && SystemClock.elapsedRealtime() - AppMasterApplication.sStartTs < 3000) {
+//            throw new RuntimeException("<ls> database operation cannot load in 3000 before app create.");
+//        }
         // LeoLog.d(TAG, "<ls> getString, key: " + key);
         awaitLoadedLocked();
         Object v = mValues.get(key);
