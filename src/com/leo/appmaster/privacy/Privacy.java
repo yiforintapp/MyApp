@@ -21,6 +21,23 @@ import java.util.List;
  */
 public abstract class Privacy<T> {
     private static final int NOTI_ID = 23456;
+
+    /**
+     * 新增
+     */
+    public static final int STATUS_NEW_ADD = 0;
+    /**
+     * 已处理
+     */
+    public static final int STATUS_PROCEED = 1;
+    /**
+     * 发现
+     */
+    public static final int STATUS_FOUND = 2;
+    /**
+     * 添加
+     */
+    public static final int STATUS_TOADD = 3;
     private int mTotalCount;
     private int mProceedCount;
 
@@ -35,7 +52,7 @@ public abstract class Privacy<T> {
      * 获取新增个数
      * @return
      */
-    public int getAddedCount() {
+    public int getNewCount() {
         return mDataList == null ? 0 : mDataList.size();
     }
 
@@ -47,7 +64,7 @@ public abstract class Privacy<T> {
         return mTotalCount;
     }
 
-    void setAddedList(List<T> dataList) {
+    void setNewList(List<T> dataList) {
         if (mDataList == null) {
             mDataList = new ArrayList<T>();
         }
@@ -66,17 +83,78 @@ public abstract class Privacy<T> {
      */
     public abstract int getProceedCount();
 
-    public List<T> getAddedList() {
+    /**
+     * 获取新增列表
+     * @return
+     */
+    public List<T> getNewList() {
         if (mDataList == null) {
             mDataList = new ArrayList<T>();
         }
         return mDataList;
     }
 
-    public abstract int getFoundStringId();
-    public abstract int getAddedStringId();
-    public abstract int getProceedStringId();
+    public boolean isDanger() {
+        int status = getStatus();
+        return status == STATUS_NEW_ADD || status == STATUS_FOUND;
+    }
 
+    public int getStatus() {
+        if (!isConsumed()) {
+            if (getProceedCount() > 0) {
+                return STATUS_PROCEED;
+            } else {
+                return STATUS_FOUND;
+            }
+        }
+
+        if (getNewCount() > 0) {
+            return STATUS_NEW_ADD;
+        }
+
+        if (getProceedCount() > 0) {
+            return STATUS_PROCEED;
+        }
+        return STATUS_TOADD;
+    }
+
+    /**
+     * 是否有消费过数据，例如进入过应用列表、图片/视频隐藏列表
+     * @return
+     */
+    protected abstract boolean isConsumed();
+
+    public abstract int getFoundStringId();
+    public abstract int getNewStringId();
+    public abstract int getProceedStringId();
+    public abstract int getAddStringId();
+
+    public int getDangerTipId() {
+        return R.string.hd_pic_danger_tip;
+    }
+
+    public int getPrivacyTitleId() {
+        int status = getStatus();
+        if (status == STATUS_PROCEED) {
+            return getProceedStringId();
+        }
+
+        if (status == STATUS_FOUND) {
+            return getFoundStringId();
+        }
+
+        if (status == STATUS_TOADD) {
+            return getAddStringId();
+        }
+
+        if (status == STATUS_NEW_ADD) {
+            return getNewStringId();
+        }
+
+        return getAddStringId();
+    }
+
+    public abstract int getPrivacySummaryId();
     public abstract int getNotificationTextId();
     public abstract int getNotificationSummaryId();
     public abstract int getNotificationIconId();

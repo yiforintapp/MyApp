@@ -10,15 +10,6 @@ import java.util.List;
  * Created by Jasper on 2016/3/31.
  */
 public class LockPrivacy extends Privacy<AppItemInfo> {
-    @Override
-    public int getAddedCount() {
-        return 0;
-    }
-
-    @Override
-    public int getTotalCount() {
-        return 0;
-    }
 
     @Override
     public int getProceedCount() {
@@ -26,8 +17,8 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     }
 
     @Override
-    public List<AppItemInfo> getAddedList() {
-        return null;
+    protected boolean isConsumed() {
+        return false;
     }
 
     @Override
@@ -36,13 +27,23 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     }
 
     @Override
-    public int getAddedStringId() {
+    public int getNewStringId() {
         return R.string.hd_new_app;
     }
 
     @Override
     public int getProceedStringId() {
         return R.string.hd_locked_app;
+    }
+
+    @Override
+    public int getAddStringId() {
+        return 0;
+    }
+
+    @Override
+    public int getPrivacySummaryId() {
+        return 0;
     }
 
     @Override

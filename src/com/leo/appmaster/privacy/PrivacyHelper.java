@@ -16,7 +16,6 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.home.HomeColor;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.LockManager;
@@ -213,14 +212,14 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             List<AppItemInfo> appList = lm.getNewAppList();
-            sLockPrivacy.setAddedList(appList);
+            sLockPrivacy.setNewList(appList);
 
             PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
             List<PhotoItem> picList = pdm.getAddPic();
-            sImagePrivacy.setAddedList(picList);
+            sImagePrivacy.setNewList(picList);
 
             List<VideoItemBean> vidList = pdm.getAddVid();
-            sVideoPrivacy.setAddedList(vidList);
+            sVideoPrivacy.setNewList(vidList);
 
             checkOrNotifyPrivacy(PRIVACY_APP_LOCK);
             checkOrNotifyPrivacy(PRIVACY_HIDE_PIC);
@@ -231,12 +230,12 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     private void setPrivacyListAndCount() {
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         List<AppItemInfo> appList = lm.getNewAppList();
-        sLockPrivacy.setAddedList(appList);
+        sLockPrivacy.setNewList(appList);
         sLockPrivacy.setProceedCount(lm.getLockedAppCount());
         sLockPrivacy.setTotalCount(AppLoadEngine.getInstance(mContext).getAppCounts());
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        sImagePrivacy.setAddedList(pdm.getAddPic());
+        sImagePrivacy.setNewList(pdm.getAddPic());
         sImagePrivacy.setProceedCount(pdm.getAddPicNum());
     }
 
@@ -280,7 +279,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         }
 
         int limit = privacy.getPrivacyLimit();
-        int addedCount = privacy.getAddedCount();
+        int addedCount = privacy.getNewCount();
         if (addedCount >= limit) {
             // 命中通知逻辑
             long lastNotify = LeoPreference.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);

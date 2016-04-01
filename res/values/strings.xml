@@ -1261,6 +1261,10 @@
     <string name="hd_add_locked_app">添加加锁应用</string>
     <string name="hd_add_hide_pic">添加隐藏图片</string>
     <string name="hd_add_hide_vid">添加隐藏视频</string>
+    <string name="hd_privacy_danger">%1d项隐私风险待处理</string>
+    <string name="hd_app_danger_tip">建议进行加锁处理</string>
+    <string name="hd_pic_danger_tip">建议进行隐藏处理</string>
+    <string name="hd_privacy_safe">隐私状况良好</string>
 
     <string name="airsig_tip_toast_text">主题暂不适用于签字解锁哦</string>
     <string name="airsig_tip_toast_update_text">签字解锁密钥已到期，升级隐私卫士后方可继续使用</string>

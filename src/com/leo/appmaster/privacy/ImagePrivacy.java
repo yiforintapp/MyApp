@@ -10,15 +10,6 @@ import java.util.List;
  * Created by Jasper on 2016/3/31.
  */
 public class ImagePrivacy extends Privacy<PhotoItem> {
-    @Override
-    public int getAddedCount() {
-        return 0;
-    }
-
-    @Override
-    public int getTotalCount() {
-        return 0;
-    }
 
     @Override
     public int getProceedCount() {
@@ -26,8 +17,8 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     }
 
     @Override
-    public List<PhotoItem> getAddedList() {
-        return null;
+    protected boolean isConsumed() {
+        return false;
     }
 
     @Override
@@ -36,13 +27,23 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     }
 
     @Override
-    public int getAddedStringId() {
+    public int getNewStringId() {
         return R.string.hd_new_pic;
     }
 
     @Override
     public int getProceedStringId() {
         return R.string.hd_hide_pic;
+    }
+
+    @Override
+    public int getAddStringId() {
+        return 0;
+    }
+
+    @Override
+    public int getPrivacySummaryId() {
+        return 0;
     }
 
     @Override
