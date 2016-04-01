@@ -2,6 +2,7 @@
 package com.leo.appmaster.phoneSecurity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -44,6 +47,8 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +64,6 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     private ProgressBar mProgressBar;
     private TextView mDialog;
     private LinearLayout mDefaultText;
-    private Button mAddButton;
     private EditText mInputEdit;
     private View mAddRip;
     private SecurAddFromMsmHandler mSecurNumHandler = new SecurAddFromMsmHandler();
@@ -67,6 +71,8 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     //短信备份复选框是否勾选
     private boolean mIsCheckB = true;
     private Button mOpenSecurBt;
+    private Animation mAddSecurNumberAnim;
+    private TextView mTopTipInstrTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +82,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         String extData = intent.getStringExtra(EXTERNAL_DATA);
         mDefaultText = (LinearLayout) findViewById(R.id.add_contact_default_tv);
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.home_det_bg);
         mTtileBar.setOptionMenuVisible(false);
         mOpenSecurBt = (Button) findViewById(R.id.add_bt);
         mOpenSecurBt.setOnClickListener(this);
@@ -99,12 +105,13 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         mContactAdapter = new ContactAdapter();
         mListContact.setAdapter(mContactAdapter);
         mListContact.setOnItemClickListener(this);
-        mAddButton = (Button) findViewById(R.id.sec_add_number_BT);
-        mAddRip = findViewById(R.id.sec_add_number_RP);
         mCheckB = (CheckBox) findViewById(R.id.checkBx);
         mIsCheckB = mCheckB.isChecked();
         mCheckB.setOnCheckedChangeListener(this);
         mInputEdit = (EditText) findViewById(R.id.sec_input_numberEV);
+        mTopTipInstrTv = (TextView) findViewById(R.id.top_tip_instr_tv);
+        mTopTipInstrTv.setOnClickListener(this);
+        mTopTipInstrTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         LostSecurityManagerImpl securityManager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         /*是否添加了防盗号码*/
         String securNumber = securityManager.getPhoneSecurityNumber();
@@ -114,23 +121,6 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         }
         if (contact != null) {
             mInputEdit.setText(contact[1]);
-        }
-        String number = mInputEdit.getText().toString();
-        if (!Utilities.isEmpty(number)) {
-            mAddButton.setClickable(true);
-            mAddButton.setOnClickListener(AddSecurityNumberActivity.this);
-            mAddButton.setBackgroundResource(R.drawable.selector_dialog_blue_button);
-            mInputEdit.setClickable(true);
-            mAddButton.setTextColor(getResources().getColor(R.color.white));
-            mAddRip.setClickable(true);
-            mAddRip.setEnabled(true);
-        } else {
-            mAddButton.setBackgroundResource(R.drawable.grey_btn_selector);
-            mAddButton.setClickable(false);
-            mInputEdit.setClickable(false);
-            mAddButton.setTextColor(getResources().getColor(R.color.c5));
-            mAddRip.setClickable(false);
-            mAddRip.setEnabled(false);
         }
 
         mContactSideBar.setOnTouchingLetterChangedListener(new OnTouchingLetterChangedListener() {
@@ -151,23 +141,6 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String number = mInputEdit.getText().toString();
-                if (Utilities.isEmpty(number)) {
-                    mAddButton.setClickable(false);
-                    mAddButton.setBackgroundResource(R.drawable.grey_btn_selector);
-                    mInputEdit.setClickable(false);
-                    mAddButton.setTextColor(getResources().getColor(R.color.c5));
-                    mAddRip.setClickable(false);
-                    mAddRip.setEnabled(false);
-                } else {
-                    mAddButton.setClickable(true);
-                    mAddButton.setOnClickListener(AddSecurityNumberActivity.this);
-                    mAddButton.setBackgroundResource(R.drawable.selector_dialog_blue_button);
-                    mInputEdit.setClickable(true);
-                    mAddButton.setTextColor(getResources().getColor(R.color.white));
-                    mAddRip.setClickable(true);
-                    mAddRip.setEnabled(true);
-                }
             }
 
             @Override
@@ -210,16 +183,8 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_choose");
         ContactBean contact = mPhoneContact.get(position);
-        LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-        int result = mgr.addPhoneSecurityNumber(contact);
-        if (result == PhoneSecurityConstants.ADD_SECUR_NUMBER_SELT) {
-            //输入的为本机号码
-            Toast.makeText(this, getResources().getString(R.string.secur_add_self_number_tip), Toast.LENGTH_SHORT).show();
-        } else if (result == PhoneSecurityConstants.ADD_SECUR_NUMBER_SUCESS) {
-            //添加成功
-            AddSecurityNumberActivity.this.finish();
-        } else {
-            //添加失败
+        if (!TextUtils.isEmpty(contact.getContactNumber())) {
+            mInputEdit.setText(contact.getContactNumber());
         }
     }
 
@@ -228,6 +193,14 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         switch (v.getId()) {
             case R.id.add_bt:
                 addSecurNumHandler();
+                break;
+            case R.id.top_tip_instr_tv:
+                Intent intentDet = new Intent(AddSecurityNumberActivity.this, SecurityDetailActivity.class);
+                try {
+                    startActivity(intentDet);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
                 break;
@@ -256,7 +229,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                 final String sendNum = number;
                 boolean isExistSim = mgr.getIsExistSim();
                 if (isExistSim && mIsCheckB) {
-                    intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT,PhoneSecurityActivity.FROM_ADD_NUM_MSM);
+                    intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT, PhoneSecurityActivity.FROM_ADD_NUM_MSM);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
@@ -270,7 +243,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                                 R.string.privacy_message_item_send_message_fail);
                         Toast.makeText(this, failStr, Toast.LENGTH_SHORT).show();
                     }
-                    intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT,PhoneSecurityActivity.FROM_ADD_NUM_NO_MSM);
+                    intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT, PhoneSecurityActivity.FROM_ADD_NUM_NO_MSM);
                 }
                 try {
                     startActivity(intent);
@@ -284,6 +257,8 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             }
         } else {
             //number is empty
+            shakeAddSecurButton(mInputEdit);
+            PhoneSecurityUtils.setVibrate(this, 200);
         }
     }
 
@@ -487,5 +462,17 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             //添加失败
         }
         return flag;
+    }
+
+    /*未填写防盗号码，摇晃动画*/
+    private void shakeAddSecurButton(View view) {
+
+        if (mAddSecurNumberAnim == null) {
+            mAddSecurNumberAnim = AnimationUtils.loadAnimation(this,
+                    R.anim.left_right_shake);
+        } else {
+            mAddSecurNumberAnim.cancel();
+        }
+        view.startAnimation(mAddSecurNumberAnim);
     }
 }

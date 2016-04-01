@@ -16,7 +16,6 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.home.HomeColor;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.LockManager;
@@ -70,10 +69,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
     private Context mContext;
 
-    private Level mPrivacyLevel = Level.LEVEL_ONE;
-
     private ExecutorService mExecutor = Executors.newSingleThreadExecutor();
-    private int mSecurityScore;
     private HashMap<String, Integer> mScoreMap;
     private HashMap<String, Integer> mDecScoreMap;
 
@@ -108,6 +104,18 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             sInstance = new PrivacyHelper(context);
         }
         return sInstance;
+    }
+
+    public static Privacy getAppPrivacy() {
+        return getPrivacy(PRIVACY_APP_LOCK);
+    }
+
+    public static Privacy getImagePrivacy() {
+        return getPrivacy(PRIVACY_HIDE_PIC);
+    }
+
+    public static Privacy getVideoPrivacy() {
+        return getPrivacy(PRIVACY_HIDE_VID);
     }
 
     public static Privacy getPrivacy(int privacy) {
@@ -170,7 +178,8 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         }
     }
 
-    public void caculateSecurityScore() {
+    public void initPrivacyStatus() {
+        LeoLog.d(TAG, "<ls> initPrivacyStatus...");
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -197,30 +206,22 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
     @Override
     public void onSecurityChange(final String description, int securityScore) {
+        LeoLog.d(TAG, "<ls> onSecurityChange, description: " + description);
         setPrivacyListAndCount();
     }
 
     private class ScoreTimerTask implements Runnable {
         @Override
         public void run() {
-            LeoLog.i(TAG, "ScoreTimerTask, start to check.");
+            LeoLog.i(TAG, "<ls> ScoreTimerTask, start to check.");
             if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
-                LeoLog.i(TAG, "home is ontop and background, so donot scan.");
+                LeoLog.i(TAG, "<ls> home is ontop and background, so donot scan.");
                 return;
             }
             long currentTs = System.currentTimeMillis();
             mLastScanTs = currentTs;
 
-            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            List<AppItemInfo> appList = lm.getNewAppList();
-            sLockPrivacy.setAddedList(appList);
-
-            PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-            List<PhotoItem> picList = pdm.getAddPic();
-            sImagePrivacy.setAddedList(picList);
-
-            List<VideoItemBean> vidList = pdm.getAddVid();
-            sVideoPrivacy.setAddedList(vidList);
+            setPrivacyListAndCount();
 
             checkOrNotifyPrivacy(PRIVACY_APP_LOCK);
             checkOrNotifyPrivacy(PRIVACY_HIDE_PIC);
@@ -231,13 +232,23 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     private void setPrivacyListAndCount() {
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         List<AppItemInfo> appList = lm.getNewAppList();
-        sLockPrivacy.setAddedList(appList);
+        sLockPrivacy.setNewList(appList);
         sLockPrivacy.setProceedCount(lm.getLockedAppCount());
-        sLockPrivacy.setTotalCount(AppLoadEngine.getInstance(mContext).getAppCounts());
+        sLockPrivacy.setTotalCount(lm.getAllAppCount());
+        LeoLog.d(TAG, "<ls> set privacy: " + sLockPrivacy.toString());
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        sImagePrivacy.setAddedList(pdm.getAddPic());
-        sImagePrivacy.setProceedCount(pdm.getAddPicNum());
+        List<PhotoItem> picList = pdm.getAddPic();
+        sImagePrivacy.setNewList(picList);
+        sImagePrivacy.setProceedCount(pdm.getHidePicsNum());
+        sImagePrivacy.setTotalCount(pdm.getNormalPicsNum());
+        LeoLog.d(TAG, "<ls> set privacy: " + sImagePrivacy.toString());
+
+        List<VideoItemBean> vidList = pdm.getAddVid();
+        sVideoPrivacy.setNewList(vidList);
+        sVideoPrivacy.setProceedCount(pdm.getHideVidsNum());
+        sVideoPrivacy.setTotalCount(pdm.getNormalVidsNum());
+        LeoLog.d(TAG, "<ls> set privacy: " + sVideoPrivacy.toString());
     }
 
     private class DelayTimerTask implements Runnable {
@@ -280,7 +291,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         }
 
         int limit = privacy.getPrivacyLimit();
-        int addedCount = privacy.getAddedCount();
+        int addedCount = privacy.getNewCount();
         if (addedCount >= limit) {
             // 命中通知逻辑
             long lastNotify = LeoPreference.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);
@@ -424,7 +435,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     }
 
     public int getSecurityScore() {
-        return mSecurityScore;
+        return 0;
     }
 
     public int getSecurityScore(String mgr) {

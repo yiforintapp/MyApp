@@ -1,7 +1,9 @@
 package com.leo.appmaster.privacy;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.PrefTableHelper;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.videohide.VideoItemBean;
 
 import java.util.List;
@@ -11,23 +13,13 @@ import java.util.List;
  */
 public class VideoPrivacy extends Privacy<VideoItemBean> {
     @Override
-    public int getAddedCount() {
-        return 0;
+    public String getTag() {
+        return "VideoPrivacy";
     }
 
     @Override
-    public int getTotalCount() {
-        return 0;
-    }
-
-    @Override
-    public int getProceedCount() {
-        return 0;
-    }
-
-    @Override
-    public List<VideoItemBean> getAddedList() {
-        return null;
+    protected boolean isConsumed() {
+        return LeoSettings.getBoolean(PrefConst.KEY_VID_COMSUMED, false);
     }
 
     @Override
@@ -36,13 +28,18 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
     }
 
     @Override
-    public int getAddedStringId() {
+    public int getNewStringId() {
         return R.string.hd_new_vid;
     }
 
     @Override
     public int getProceedStringId() {
         return R.string.hd_hide_vid;
+    }
+
+    @Override
+    public int getAddStringId() {
+        return R.string.hd_add_hide_vid;
     }
 
     @Override
@@ -62,7 +59,7 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
 
     @Override
     public int getPrivacyLimit() {
-        return PrefTableHelper.getVideoPrivacyLimit();
+        return LeoSettings.getInteger(PrefConst.KEY_PRIVACY_VIDEO_LIMIT, 3);
     }
 
     @Override

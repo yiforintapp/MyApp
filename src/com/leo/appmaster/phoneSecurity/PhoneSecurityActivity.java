@@ -82,7 +82,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private InstructListAdapter mNormalAdapter;
     private InstructListAdapter mAdvAdapter;
     private LEOAlarmDialog mSecurCloseDialg;
-    private Button mCloseBt;
+//    private Button mCloseBt;
     private TextView mInstruTipTv;
     private Button mAdvBt;
     private Button mSecurNumModyBt;
@@ -188,7 +188,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private void initUI() {
         mCommonBar = (CommonToolbar) findViewById(R.id.phone_security_commonbar);
         mCommonBar.setToolbarTitle(R.string.phone_security_open);
-        mCommonBar.setToolbarColorResource(R.color.cb);
+        mCommonBar.setToolbarColorResource(R.color.home_det_bg);
         mCommonBar.setOptionMenuVisible(true);
         mCommonBar.setOptionImageResource(R.drawable.help_icon_n);
         mHelpIcon = mCommonBar.getOptionImageView();
@@ -241,8 +241,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mNormalGv.setOnItemClickListener(this);
         mAdvGv = (GridView) findViewById(R.id.secur_open_adv_lv);
         mAdvGv.setOnItemClickListener(this);
-        mCloseBt = (Button) findViewById(R.id.secur_colse_bt);
-        mCloseBt.setOnClickListener(this);
+//        mCloseBt = (Button) findViewById(R.id.secur_colse_bt);
+//        mCloseBt.setOnClickListener(this);
         mInstruTipTv = (TextView) findViewById(R.id.secur_instru_tip_tv);
         mInstruTipTv.setOnClickListener(this);
         mAdvBt = (Button) findViewById(R.id.secur_open_adv);
@@ -331,9 +331,9 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 /*点击立即授权*/
                 new MsmPermisGuideList().executeGuide();
                 break;
-            case R.id.secur_colse_bt:
-                showSecurCloseDialog();
-                break;
+//            case R.id.secur_colse_bt:
+//                showSecurCloseDialog();
+//                break;
             case R.id.secur_instru_tip_tv:
                 startSecurInstrDetailActivity();
                 break;
@@ -399,16 +399,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         Animation operatingAnim = AnimationUtils.loadAnimation(this, R.anim.secur_protec_time_anim);
         view.startAnimation(operatingAnim);
 
-    }
-
-    /*未填写防盗号码，摇晃动画*/
-    private void shakeAddSecurButton(View view) {
-
-        if (mAddSecurNumberAnim == null) {
-            mAddSecurNumberAnim = AnimationUtils.loadAnimation(this,
-                    R.anim.left_right_shake);
-        }
-        view.startAnimation(mAddSecurNumberAnim);
     }
 
     /*防盗不能使用处理*/

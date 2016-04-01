@@ -15,6 +15,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.PrivacyOptionActivity;
 import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
@@ -25,6 +26,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonSettingItem;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * Created by chenfs on 16-3-28.
@@ -85,8 +87,14 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void updateAirSig() {
-        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+        if (!isAirSigVaild) {
+            mCsiSignatureLock.setSummary(STRID_DID_NOT_OPEN);
+            mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
+            return;
+        }
 
+        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         if (isAirsigOn) {
             mCsiSignatureLock.setSummary(STRID_OPENED);
         } else {
@@ -96,11 +104,16 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE,
                 AirSigSettingActivity.NOMAL_UNLOCK);
 
-        if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
-            mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
+        if (isAirsigOn) {
+            if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
+            } else {
+                mCsiDefaultLockType.setSummary(STRID_SIGNATURE_LOCK);
+            }
         } else {
-            mCsiDefaultLockType.setSummary(STRID_SIGNATURE_LOCK);
+            mCsiDefaultLockType.setSummary(STRID_GESTURE_OR_PSW);
         }
+
     }
 
     private void updateAdvancedProtectSwitch() {
@@ -116,6 +129,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     private void initUI() {
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
         mCtbMain.setToolbarTitle(STRID_SETTING);
+        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
 
         //更改手势/数字密码部分
         mCsiChangeGstOrPsw = (CommonSettingItem) findViewById(R.id.csi_change_lock_type);
@@ -130,23 +144,38 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
 
         //签字解锁部分
         mCsiSignatureLock = (CommonSettingItem) findViewById(R.id.csi_signature_lock);
-        mCsiSignatureLock.setTitle(STRID_SIGNATURE_LOCK);
-        mCsiSignatureLock.setRippleViewOnClickLinstener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToOpenAirSig();
-            }
-        });
-
         //设置默认解锁方式部分
         mCsiDefaultLockType = (CommonSettingItem) findViewById(R.id.csi_default_lock);
-        mCsiDefaultLockType.setTitle(STRID_DEFAULT_LOCK_TYPE);
-        mCsiDefaultLockType.setRippleViewOnClickLinstener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoSetAirSigLock();
-            }
-        });
+        if (isAigSigCanUse) {
+            //签字解锁部分
+            mCsiSignatureLock.setTitle(STRID_SIGNATURE_LOCK);
+            mCsiSignatureLock.setRippleViewOnClickLinstener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToOpenAirSig();
+                }
+            });
+
+            //设置默认解锁方式部分
+            mCsiDefaultLockType.setTitle(STRID_DEFAULT_LOCK_TYPE);
+            mCsiDefaultLockType.setRippleViewOnClickLinstener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gotoSetAirSigLock();
+                }
+            });
+            LeoLog.d("testUse", "can use");
+        } else {
+            View lineView = findViewById(R.id.line_airsig);
+            lineView.setVisibility(View.GONE);
+            View lineViewTwo = findViewById(R.id.line_airsig_two);
+            lineViewTwo.setVisibility(View.GONE);
+            mCsiSignatureLock.setVisibility(View.GONE);
+            mCsiDefaultLockType.setVisibility(View.GONE);
+            LeoLog.d("testUse", "can not use");
+        }
+
+
         //密码问题部分
         mCsiPswQuestion = (CommonSettingItem) findViewById(R.id.csi_pswprotect);
         mCsiPswQuestion.setTitle(STRID_PSW_QUESTION);

@@ -7,10 +7,10 @@
               android:visibility="gone">
 
     <View
+        android:id="@+id/top_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#99000000"/>
+        android:layout_height="100dp"
+        android:background="@color/uninstall_guide_bg"/>
 
 
     <RelativeLayout
@@ -20,7 +20,7 @@
 
         <View
             android:id="@+id/light_view"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="100dp"
             android:background="@color/transparent"/>
 
@@ -28,14 +28,14 @@
             android:id="@+id/right_view"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="#99000000"
+            android:background="@color/uninstall_guide_bg"
             android:layout_toRightOf="@+id/light_view"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_below="@+id/light_view"
-            android:background="#99000000"/>
+            android:background="@color/uninstall_guide_bg"/>
 
         <ImageView
             android:id="@+id/tips_hand"
@@ -53,7 +53,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/tips_hand"
             android:layout_below="@+id/light_view"
-            android:text="点此可卸载隐私卫士哦～"
+            android:text="@string/uninstall_guide_tips"
             android:textSize="@dimen/f4"
             android:textColor="#FFDA2E"/>
 
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#99000000"/>
+        android:background="@color/uninstall_guide_bg"/>
 
 
 </LinearLayout>

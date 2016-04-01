@@ -31,7 +31,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private static final String ANIME_PROPERTY_NAME = "translationY";
     public static final String EVENT_HOME_GUIDE_MSG = "HOME_GUIDE_MSG";
     public static final String EVETN_HOME_GUIDE_GONE = "HOME_GUIDE_GONE";
-    public static final String EVENT_HOME_UNINSTALL_GUIDE = "HOME_UNINSTALL_GUIDE";
 
     private View mRootView;
     private RelativeLayout mHomeGuideRt;
@@ -44,11 +43,15 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private TextView mBatteryText;
     private ObjectAnimator mBatteryGuideAnim;
     private LinearLayout mUninstallLayout;  // 卸载引导布局
+    private View mTopView;
+    private View mLightView; // 高亮View
+    private View mRightView;
+
 
 
     /*引导类型*/
     public enum GUIDE_TYPE {
-        HOME_MORE_GUIDE, PIC_GUIDE, VIDEO_GUIDE, BATTERY_GUIDE
+        HOME_MORE_GUIDE, PIC_GUIDE, VIDEO_GUIDE, BATTERY_GUIDE, UNINSTALL_GUIDE
     }
 
     public static GuideFragment newInstance() {
@@ -201,7 +204,23 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
+        mTopView = (View) inCloude.findViewById(R.id.top_view);
+        mLightView = (View) inCloude.findViewById(R.id.light_view);
+        mRightView = (View) inCloude.findViewById(R.id.right_view);
 
+    }
+
+    // 设置卸载引导布局属性
+    public void setUninstallParams(int topHeight, int height) {
+        ViewGroup.LayoutParams topParams = mTopView.getLayoutParams();
+        topParams.height = topHeight;
+        mTopView.setLayoutParams(topParams);
+        ViewGroup.LayoutParams lightParams = mLightView.getLayoutParams();
+        lightParams.height = height;
+        mLightView.setLayoutParams(lightParams);
+        ViewGroup.LayoutParams rightParams = mRightView.getLayoutParams();
+        rightParams.height = height;
+        mRightView.setLayoutParams(rightParams);
     }
 
     public void setEnable(boolean enable, GUIDE_TYPE type) {
@@ -268,6 +287,10 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 mBatteryText.setText(R.string.batteryview_pop_setting);
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
                 showBatteryGudeAnim(mBatteryGuideRt, mBatteryGuideRt.getTop(), tranY);
+            }
+        } else if (GUIDE_TYPE.UNINSTALL_GUIDE == type) {
+            if (mUninstallLayout != null) {
+                mUninstallLayout.setVisibility(View.VISIBLE);
             }
         }
 

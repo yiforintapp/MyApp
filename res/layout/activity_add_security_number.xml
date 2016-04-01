@@ -2,7 +2,7 @@
                 xmlns:leo="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white">
+                android:background="@color/home_det_bg">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/add_privacy_contact_title_bar"
@@ -10,109 +10,107 @@
         android:layout_height="wrap_content"
         android:background="@color/cb"/>
 
-    <CheckBox
-        android:id="@+id/checkBx"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/top_tip_lt"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/add_privacy_contact_title_bar"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:button="@drawable/send_msm_selector"
-        android:checked="true"
-        android:padding="10dp"
-        android:text="@string/secur_add_numb_tip"
-        android:textColor="@color/black"/>
+        android:layout_marginTop="@dimen/ph_secur_add_num_top_tip_marg_top"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/ph_secur_top_tip_lt_marg_left"
+        android:paddingRight="@dimen/ph_secur_top_tip_lt_marg_left">
 
-    <LinearLayout
+        <ImageView
+            android:id="@+id/tip_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_antitheft_sms"/>
+
+        <TextView
+            android:id="@+id/tip_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ph_secur_add_num_top_tip_drawpadd"
+            android:layout_toRightOf="@id/tip_iv"
+            android:text="@string/secur_add_numb_tip"
+            android:textColor="@color/c1"
+            android:textSize="@dimen/f6"/>
+
+        <TextView
+            android:id="@+id/top_tip_instr_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tip_tv"
+            android:layout_marginLeft="@dimen/ph_secur_add_num_top_tip_drawpadd"
+            android:layout_marginTop="@dimen/top_tip_instr_tv_marg_top"
+            android:layout_toRightOf="@id/tip_iv"
+            android:drawableLeft="@drawable/icon_antitheft_help"
+            android:drawablePadding="@dimen/ph_secur_add_num_top_tip_drawpadd"
+            android:paddingBottom="@dimen/top_tip_instr_tv_marg_botm"
+            android:text="@string/secur_add_num_tip"
+            android:textSize="@dimen/f6"
+            android:textColor="@color/cb"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/security_input_number_LT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/checkBx"
-        android:orientation="vertical">
+        android:layout_below="@id/top_tip_lt"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/sec_input_numberEV"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="@dimen/ph_secur_top_tip_lt_marg_left"
+            android:layout_marginRight="@dimen/ph_secur_top_tip_lt_marg_left"
+            android:background="@drawable/blue_edit_bg"
+            android:hint="@string/privacy_contact_edittext_hint"
+            android:inputType="phone"
             android:paddingLeft="16dp"
-            android:paddingTop="17dp"
-            android:text="@string/secur_input_number"
-            android:textColor="#666666"
+            android:textColor="@drawable/privacy_contact_edit_edittext_selecter"
+            android:textColorHint="@color/c4"
             android:textSize="14dp"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <CheckBox
+            android:id="@+id/checkBx"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
-
-
-            <EditText
-                android:id="@+id/sec_input_numberEV"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="12dp"
-                android:layout_toLeftOf="@+id/sec_add_number_RP"
-                android:background="@drawable/blue_edit_bg"
-                android:hint="@string/privacy_contact_edittext_hint"
-                android:inputType="phone"
-                android:paddingLeft="16dp"
-                android:textColor="@drawable/privacy_contact_edit_edittext_selecter"
-                android:textSize="14dp"/>
-
-            <com.leo.appmaster.ui.MaterialRippleLayout
-                android:id="@+id/sec_add_number_RP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="right"
-                android:layout_marginRight="16dp"
-                leo:rippleAlpha="0.5"
-                leo:rippleColor="@color/button_blue_ripple"
-                leo:rippleDuration="250"
-                leo:rippleHover="true"
-                leo:rippleOverlay="true">
-
-                <Button
-                    android:id="@+id/sec_add_number_BT"
-                    style="@style/dlg_right_button_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="42dp"
-                    android:adjustViewBounds="true"
-                    android:gravity="center"
-                    android:maxWidth="90dp"
-                    android:minWidth="70dp"
-                    android:text="@string/secur_input_add_bt"
-                    android:textColor="@color/white"
-                    android:textSize="16dp"/>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
-        </RelativeLayout>
-    </LinearLayout>
+            android:layout_below="@id/sec_input_numberEV"
+            android:layout_marginLeft="@dimen/ph_secur_top_tip_lt_marg_left"
+            android:layout_marginRight="@dimen/ph_secur_top_tip_lt_marg_left"
+            android:layout_marginTop="8dp"
+            android:button="@drawable/send_msm_selector"
+            android:checked="true"
+            android:padding="10dp"
+            android:text="@string/backup_instr_tip_str"
+            android:textColor="@color/c2"
+            android:textSize="@dimen/f5"/>
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/add_bt"
-        android:layout_below="@id/security_input_number_LT">
-        <TextView
-            android:id="@+id/lv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingTop="20dp"
-            android:text="@string/sucri_add_contact"
-            android:textColor="#666666"
-            android:textSize="14dp"
-            />
+        android:layout_below="@id/security_input_number_LT"
+        android:background="@color/white">
+
+        <View
+            android:id="@+id/line_v"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/c5">
+        </View>
+
         <FrameLayout
             android:id="@+id/number_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:background="@color/white"
-            android:layout_below="@id/lv_title">
+            android:layout_below="@id/line_v"
+            android:layout_marginTop="9dp"
+            android:background="@color/white">
 
             <ListView
                 android:id="@+id/add_contactLV"
@@ -176,13 +174,29 @@
             android:visibility="invisible"/>
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/add_bt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/botm_bt_lt"
+        android:background="@color/c5"></View>
+
+    <RelativeLayout
+        android:id="@+id/botm_bt_lt"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/add_num_secur_botm_bt_heigth"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/security_guide_button_text"
-        ></Button>
+        android:background="@color/white">
 
+        <Button
+            android:id="@+id/add_bt"
+            android:layout_width="@dimen/add_num_botm_bt_width"
+            android:layout_height="@dimen/add_num_botm_bt_height"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_dialog_blue_button"
+            android:text="@string/security_guide_button_text"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            ></Button>
+    </RelativeLayout>
 </RelativeLayout>

@@ -16,6 +16,7 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -27,7 +28,6 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
     public final static int AIRSIG_UNLOCK = 2;
 
     private final static int SET_DONE = 1;
-    private final static int SET_FAILED = 2;
 
     private CommonToolbar mTitleBar;
     private RippleView rpBtn;
@@ -49,9 +49,6 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
 
                     showMessage(getString(R.string.airsig_settings_activity_toast));
                     break;
-                case SET_FAILED:
-                    showMessage("Not Completed");
-                    break;
             }
         }
     };
@@ -61,7 +58,6 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airsig_activity_select_setting);
         initUI();
-        fillData();
     }
 
     private void initUI() {
@@ -89,18 +85,23 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+        fillData();
     }
 
 
     private void fillData() {
-//        int unlockType = LeoPreference.getInstance().getInt(UNLOCK_TYPE, NOMAL_UNLOCK);
+        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
         int unlockType = LeoSettings.getInteger(UNLOCK_TYPE, NOMAL_UNLOCK);
         if (unlockType == AIRSIG_UNLOCK) {
-//            boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
             boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
             if (isAirsigOn) {
-                mIvShowOne.setVisibility(View.VISIBLE);
-                mIvShowTwo.setVisibility(View.GONE);
+                if (isAirSigVaild) {
+                    mIvShowOne.setVisibility(View.VISIBLE);
+                    mIvShowTwo.setVisibility(View.GONE);
+                } else {
+                    mIvShowOne.setVisibility(View.GONE);
+                    mIvShowTwo.setVisibility(View.VISIBLE);
+                }
             } else {
                 mIvShowOne.setVisibility(View.GONE);
                 mIvShowTwo.setVisibility(View.VISIBLE);
@@ -138,15 +139,20 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
     }
 
     private void openAirSig() {
-//        boolean isAirsigOn = LeoPreference.getInstance().getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
+
+        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+
+        if (!isAirSigVaild) {
+            showUpdateDialog();
+            return;
+        }
 
         if (isAirsigOn) {
             //select
             mIvShowOne.setVisibility(View.VISIBLE);
             mIvShowTwo.setVisibility(View.GONE);
-//            LeoPreference.getInstance().putInt(UNLOCK_TYPE, AIRSIG_UNLOCK);
             LeoSettings.setInteger(UNLOCK_TYPE, AIRSIG_UNLOCK);
         } else if (isAirsigReady) {
             //dialog to ask open or not
@@ -187,14 +193,31 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    private void showUpdateDialog() {
+        if (mConfirmCloseDialog == null) {
+            mConfirmCloseDialog = new LEOAlarmDialog(this);
+        }
+        mConfirmCloseDialog.setContent(getString(R.string.airsig_tip_toast_update_text));
+        mConfirmCloseDialog.setRightBtnStr(getString(R.string.makesure));
+        mConfirmCloseDialog.setLeftBtnStr(getString(R.string.close_batteryview_confirm_cancel));
+        mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SDKWrapper.checkUpdate();
+                mConfirmCloseDialog.dismiss();
+            }
+        });
+        if (!isFinishing()) {
+            mConfirmCloseDialog.show();
+        }
+    }
+
     private void setAirsig() {
         ASGui.getSharedInstance().showTrainingActivity(1, new ASGui.OnTrainingResultListener() {
             @Override
             public void onResult(boolean isRetrain, boolean success, ASEngine.ASAction action) {
                 if (success) {
                     mHandler.sendEmptyMessage(SET_DONE);
-                } else {
-                    mHandler.sendEmptyMessage(SET_FAILED);
                 }
             }
         });

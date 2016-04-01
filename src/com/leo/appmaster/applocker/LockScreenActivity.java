@@ -327,26 +327,29 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     public void checkIsAirSigTimeout() {
-        if (ASGui.getSharedInstance().isValidLicense()) {
-            LeoLog.d("testAirSig", "no guoqi");
-            boolean isAirSigTimeOutEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
-            //以前是否开启状态
-            boolean isAirSigOpenEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
-            if (isAirSigTimeOutEver && isAirSigOpenEver) {
-                LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, true);
-                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
-            }
-        } else {
-            LeoLog.d("testAirSig", "yes guoqi");
-            boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-            if (isAirsigOn) {
-                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, true);
-                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
-            }
-            //过期关闭
-            LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-            LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, true);
-        }
+//        if (ASGui.getSharedInstance().isValidLicense()) {
+//            LeoLog.d("testAirSig", "no guoqi");
+//            boolean isAirSigTimeOutEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
+//            //以前是否开启状态
+//            boolean isAirSigOpenEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
+//            if (isAirSigTimeOutEver && isAirSigOpenEver) {
+//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, true);
+//                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
+//
+//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
+//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
+//            }
+//        } else {
+//            LeoLog.d("testAirSig", "yes guoqi");
+//            boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+//            if (isAirsigOn) {
+//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, true);
+//                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+//            }
+//            //过期关闭
+//            LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+//            LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, true);
+//        }
     }
 
     private void mobvistaCheck() {
@@ -2378,13 +2381,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 onHelpItemClicked();
             }
         } else {
-            if (position == 0) {
-                onMoveToTheme();
-            } else if (position == 1) {
-                onHideLockLineClicked(position);
-            } else if (position == 2) {
-                onHelpItemClicked();
+
+            int type = mLockFragment.getUnlockType();
+            if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+                if (position == 0) {
+                    onMoveToTheme();
+                } else if (position == 1) {
+                    onHideLockLineClicked(position);
+                } else if (position == 2) {
+                    onHelpItemClicked();
+                }
+            } else {
+                if (position == 0) {
+                    onHelpItemClicked();
+                }
             }
+
+
         }
     }
 

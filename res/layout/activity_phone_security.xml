@@ -2,7 +2,7 @@
                 xmlns:leo="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white">
+                android:background="@color/home_det_bg">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/phone_security_commonbar"
@@ -13,8 +13,8 @@
         android:id="@+id/secur_phone_nub_sc"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/phone_security_commonbar"
-        android:overScrollMode="never">
+        android:overScrollMode="never"
+        android:paddingTop="@dimen/secur_open_suc_top_rl_marg_top">
 
         <RelativeLayout
             android:id="@+id/secur_top_rt"
@@ -29,99 +29,147 @@
                 android:layout_centerHorizontal="true">
             </include>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/secur_instru_tip_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/show_time_lt"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/secur_top_tip_instr_tv_marg_top"
+                android:drawableLeft="@drawable/icon_antitheft_help"
+                android:drawablePadding="@dimen/ph_secur_add_num_top_tip_drawpadd"
+                android:paddingBottom="@dimen/secur_top_tip_instr_tv_padd_butm"
+                android:text="@string/secur_add_num_tip"
+                android:textColor="@color/cb"
+                android:textSize="@dimen/f6"/>
+
+            <RelativeLayout
                 android:id="@+id/secur_num_oper_lt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/show_time_lt"
-                android:orientation="horizontal">
+                android:layout_below="@id/secur_instru_tip_tv"
+                android:background="@color/white"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
 
                 <TextView
+                    android:id="@+id/secur_num_titl_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:drawableLeft="@drawable/icon_antitheft_contacts"
+                    android:drawablePadding="6dp"
                     android:text="@string/secur_save_num"
+                    android:textColor="@color/c2"
+                    android:textSize="@dimen/f4"
                     />
 
                 <TextView
                     android:id="@+id/secur_num_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="13856932225"/>
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/secur_num_titl_tv"
+                    android:text="13856932225"
+                    android:textColor="@color/c2"
+                    android:textSize="@dimen/f4"/>
 
                 <Button
                     android:id="@+id/secur_mody_bt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/secur_mody_num"/>
-
-                <Button
-                    android:id="@+id/secur_colse_bt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/secur_close"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/secur_nromal_tip_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/secur_num_oper_lt"
-                android:text="@string/secur_normal_function"/>
-
-            <TextView
-                android:id="@+id/secur_instru_tip_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/secur_num_oper_lt"
-                android:text="@string/secur_instr_tip"/>
-
-            <GridView
-                android:id="@+id/secur_open_normal_lv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/secur_nromal_tip_tv"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="@dimen/open_suc_lv_tp"
-                android:divider="@null"
-                android:listSelector="@android:color/transparent"
-                android:numColumns="4"
-                android:overScrollMode="never"
-                android:scrollbars="none"></GridView>
-
-            <TextView
-                android:id="@+id/secur_adv_tip_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/secur_open_normal_lv"
-                android:text="@string/secur_adv_function"/>
+                    android:layout_width="@dimen/secur_mody_bt_width"
+                    android:layout_height="@dimen/secur_mody_bt_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="13dp"
+                    android:background="@drawable/selector_dialog_blue_button"
+                    android:text="@string/secur_mody_num"
+                    android:textColor="@color/c1"
+                    android:textSize="@dimen/f5"/>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/secur_adv_tip_tv">
+                android:layout_height="match_parent"
+                android:layout_below="@id/secur_num_oper_lt"
+                android:background="@color/white">
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c5"></View>
+
+                <TextView
+                    android:id="@+id/secur_nromal_tip_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/line"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/secur_normal_function"
+                    android:textColor="@color/c2"
+                    android:textSize="15dp"/>
 
                 <GridView
-                    android:id="@+id/secur_open_adv_lv"
-                    android:layout_width="200dp"
+                    android:id="@+id/secur_open_normal_lv"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/secur_nromal_tip_tv"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="@dimen/open_suc_lv_tp"
                     android:divider="@null"
                     android:listSelector="@android:color/transparent"
-                    android:numColumns="3"
+                    android:numColumns="4"
                     android:overScrollMode="never"
                     android:scrollbars="none"></GridView>
 
-                <Button
-                    android:id="@+id/secur_open_adv"
+                <TextView
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_below="@id/secur_open_normal_lv"
+                    android:background="@color/cfl"></TextView>
+
+                <TextView
+                    android:id="@+id/secur_adv_tip_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/secur_open_adv_lv"
-                    android:text="@string/security_guide_button_text"
-                    ></Button>
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/secur_open_normal_lv"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/secur_adv_function"
+                    android:textColor="@color/c2"
+                    android:textSize="15dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/secur_adv_tip_tv"
+                    android:layout_marginTop="@dimen/open_suc_lv_tp">
+
+                    <GridView
+                        android:id="@+id/secur_open_adv_lv"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="3"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"></GridView>
+
+                    <Button
+                        android:id="@+id/secur_open_adv"
+                        android:layout_width="@dimen/secur_mody_bt_width"
+                        android:layout_height="@dimen/secur_mody_bt_height"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/secur_open_adv_lv"
+                        android:background="@drawable/selector_dialog_blue_button"
+                        android:text="@string/security_guide_button_text"
+                        android:textColor="@color/c1"
+                        android:textSize="@dimen/f5"></Button>
+                </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>

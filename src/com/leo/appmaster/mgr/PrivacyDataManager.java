@@ -129,7 +129,14 @@ public abstract class PrivacyDataManager extends Manager {
      */
     public abstract List<PhotoItem> getAddPic();
 
+    /**
+     * 获取新增图片数
+     */
     public abstract int getAddPicNum();
+
+    public abstract int getNormalPicsNum();
+
+    public abstract int getHidePicsNum();
 
     /**
      * 已阅新增图片，更新数据
@@ -142,6 +149,11 @@ public abstract class PrivacyDataManager extends Manager {
     public abstract List<VideoItemBean> getAddVid();
 
     public abstract int getAddVidNum();
+
+    public abstract int getNormalVidsNum();
+
+    public abstract int getHideVidsNum();
+
 
     /**
      * 已阅新增视频，更新数据
@@ -188,7 +200,4 @@ public abstract class PrivacyDataManager extends Manager {
     public abstract int getPicShouldScore(int newPicNum);
 
     public abstract int getVidShouldScore(int newVidNum);
-
-    public abstract int getHidePicTotalCount();
-    public abstract int getHideVidTotalCount();
 }

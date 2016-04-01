@@ -200,4 +200,7 @@
     <color name="airsig_arcprogress_text">#09455B</color>
     <color name="home_det_bg">#323b76</color>
     <color name="home_det_result_num_txt">#fe8f00</color>
+    <color name="cfl">#f0f3f7</color>
+
+    <color name="uninstall_guide_bg">#99000000</color>
 </resources>

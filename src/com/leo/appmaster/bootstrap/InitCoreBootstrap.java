@@ -5,51 +5,33 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
-import android.media.AudioManager;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.SystemClock;
-import android.provider.ContactsContract;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import com.airsig.airsigengmulti.ASEngine;
-import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.airsig.airsigsdk.ASGui;
-import com.leo.appmaster.airsig.airsigsdk.ASSetting;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.TaskProtectService;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
-import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
-import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
-import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
-import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -59,7 +41,6 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 
-import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -105,7 +86,7 @@ public class InitCoreBootstrap extends Bootstrap {
         initSplashDelayTime();
         UIHelper.getInstance(mApp).mRandomCount = preference.getUnlockSucessRandom();
 
-        PrivacyHelper.getInstance(mApp).caculateSecurityScore();
+        PrivacyHelper.getInstance(mApp).initPrivacyStatus();
 
         start = SystemClock.elapsedRealtime();
         // init MobVista SDK here
