@@ -1,6 +1,7 @@
 package com.leo.appmaster.imagehide;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -240,8 +241,14 @@ public abstract class FolderNewFragment<T> extends Fragment implements AbsListVi
         }
         if (mAdapter.getSelectData() != null && mAdapter.getSelectData().size() < mDataList.size()) {
             mSelectBtn.setText(R.string.app_select_all);
+            mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                    getResources().getDrawable(R.drawable.select_all_selector), null,
+                    null);
         } else {
             mSelectBtn.setText(R.string.app_select_none);
+            mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                    getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                    null);
         }
     }
 
@@ -273,10 +280,16 @@ public abstract class FolderNewFragment<T> extends Fragment implements AbsListVi
                 LeoLog.v(TAG, "selectAllGroup");
                 mAdapter.selectAllGroup();
                 mSelectBtn.setText(R.string.app_select_none);
+                mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                        getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                        null);
             } else {
                 LeoLog.v(TAG, "cancelSelectAllGroup");
                 mAdapter.deselectAllGroup();
                 mSelectBtn.setText(R.string.app_select_all);
+                mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                        getResources().getDrawable(R.drawable.select_all_selector), null,
+                        null);
             }
         }
 

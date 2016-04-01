@@ -160,6 +160,9 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     mSelectBtn.setText(R.string.app_select_all);
+                    mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
                 }
             });
         }

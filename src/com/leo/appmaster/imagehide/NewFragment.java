@@ -2,6 +2,7 @@ package com.leo.appmaster.imagehide;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -186,10 +187,17 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
                     LeoLog.v(TAG, "selectAllGroup");
                     mAdapter.selectAll();
                     mSelectBtn.setText(R.string.app_select_none);
+                    mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                            null);
                 } else {
                     LeoLog.v(TAG, "cancelSelectAllGroup");
                     mAdapter.deselectAll();
                     mSelectBtn.setText(R.string.app_select_all);
+                    mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
+
                 }
                 break;
         }

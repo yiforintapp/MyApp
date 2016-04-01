@@ -553,10 +553,11 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = LayoutInflater.from(VideoHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
-            ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(VideoHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
+            }
+            ImageView iv = (ImageView) convertView.findViewById(R.id.iv_pic);
             String path = list.get(position).getPath();
-
             String uri = null;
             if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
                 uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
@@ -564,14 +565,14 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
             mImageLoader.displayImage(uri, iv, mOptions);
-            v.setOnClickListener(new View.OnClickListener() {
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     goNewHideVActivity();
                 }
             });
 
-            return v;
+            return convertView;
         }
     }
 
