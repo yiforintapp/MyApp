@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/uninstall_guide"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:visibility="gone">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#99000000"/>
+
+
+    <RelativeLayout
+        android:id="@+id/light_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/light_view"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:background="@color/transparent"/>
+
+        <View
+            android:id="@+id/right_view"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#99000000"
+            android:layout_toRightOf="@+id/light_view"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@+id/light_view"
+            android:background="#99000000"/>
+
+        <ImageView
+            android:id="@+id/tips_hand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uninstall_tips_hand"
+            android:layout_below="@+id/light_view"
+            android:layout_marginTop="-15dp"
+            android:layout_marginLeft="26dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/tips_hand"
+            android:layout_below="@+id/light_view"
+            android:text="点此可卸载隐私卫士哦～"
+            android:textSize="@dimen/f4"
+            android:textColor="#FFDA2E"/>
+
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#99000000"/>
+
+
+</LinearLayout>

@@ -1,76 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/lt_det_result_app"
+    <RelativeLayout
+        android:id="@+id/lt_det_saft_result_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:background="@drawable/strip_home_ok1"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
+        android:paddingRight="@dimen/home_det_result_tv1_padd_right">
+        <!--安全结果-->
+        <TextView
+            android:id="@+id/det_saft_app_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
+            android:background="@drawable/number_home_bg1"
+            android:paddingLeft="@dimen/home_det_result_tv1_padding"
+            android:paddingRight="@dimen/home_det_result_tv1_padding"
+            android:text="10"
+            android:textColor="@color/cb2"/>
+
+        <TextView
+            android:id="@+id/det_saft_app_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:layout_toRightOf="@id/det_saft_app_num_tv"
+            android:textColor="@color/c150"
+            android:text="@string/home_det_app_str"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lt_det_danger_result_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/strip_home_nook1"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
-        android:background="@drawable/strip_home_ok1">
-
+        android:visibility="gone">
+        <!--危险结果-->
         <TextView
+            android:id="@+id/det_danger_app_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
-            android:background="@drawable/number_home_bg1"
+            android:background="@drawable/number_home_bg2"
             android:paddingLeft="@dimen/home_det_result_tv1_padding"
             android:paddingRight="@dimen/home_det_result_tv1_padding"
-            android:text="10"
-            android:textColor="@color/cb2"
+            android:text="12"
+            android:textColor="@color/home_det_result_num_txt"
             />
 
         <TextView
+            android:id="@+id/det_danger_app_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:layout_toRightOf="@id/det_danger_app_num_tv"
+            android:textColor="@color/c150"
             android:text="@string/home_det_app_str"/>
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/lt_det_result_img"
+    <RelativeLayout
+        android:id="@+id/lt_det_saft_result_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_below="@id/lt_det_saft_result_app"
         android:background="@drawable/strip_home_ok2"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
+        android:paddingRight="@dimen/home_det_result_tv1_padd_right">
+        <!--安全结果-->
+        <TextView
+            android:id="@+id/det_saft_img_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
+            android:background="@drawable/number_home_bg1"
+            android:paddingLeft="@dimen/home_det_result_tv1_padding"
+            android:paddingRight="@dimen/home_det_result_tv1_padding"
+            android:text="10"
+            android:textColor="@color/cb2"/>
+
+        <TextView
+            android:id="@+id/det_saft_img_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:layout_toRightOf="@id/det_saft_img_num_tv"
+            android:textColor="@color/c150"
+            android:text="@string/home_det_img_str"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lt_det_danger_result_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lt_det_saft_result_app"
+        android:background="@drawable/strip_home_nook2"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
-        android:gravity="center_vertical">
-
+        android:visibility="gone">
+        <!--危险状态-->
         <TextView
+            android:id="@+id/det_danger_img_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
-            android:background="@drawable/number_home_bg1"
+            android:background="@drawable/number_home_bg2"
             android:paddingLeft="@dimen/home_det_result_tv1_padding"
             android:paddingRight="@dimen/home_det_result_tv1_padding"
             android:text="10"
-            android:textColor="@color/cb2"/>
+            android:textColor="@color/home_det_result_num_txt"/>
 
         <TextView
+            android:id="@+id/det_danger_img_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:layout_toRightOf="@id/det_danger_img_num_tv"
+            android:textColor="@color/c150"
             android:text="@string/home_det_img_str"/>
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/lt_det_result_video"
+    <RelativeLayout
+        android:id="@+id/lt_det_saft_result_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
         android:background="@drawable/strip_home_ok3"
+        android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:layout_below="@id/lt_det_saft_result_img"
         >
-
+        <!--安全状态-->
         <TextView
+            android:id="@+id/det_saft_video_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
@@ -81,10 +151,46 @@
             android:textColor="@color/cb2"/>
 
         <TextView
+            android:id="@+id/det_saft_video_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:layout_toRightOf="@id/det_saft_video_num_tv"
+            android:textColor="@color/c150"
             android:text="@string/home_det_vid_str"/>
-    </LinearLayout>
+    </RelativeLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/lt_det_danger_result_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/strip_home_nook3"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
+        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:layout_below="@id/lt_det_saft_result_img"
+        android:visibility="gone"
+        >
+        <!--危险状态-->
+        <TextView
+            android:id="@+id/det_danger_video_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
+            android:background="@drawable/number_home_bg2"
+            android:paddingLeft="@dimen/home_det_result_tv1_padding"
+            android:paddingRight="@dimen/home_det_result_tv1_padding"
+            android:text="10"
+            android:textColor="@color/home_det_result_num_txt"/>
+
+        <TextView
+            android:id="@+id/det_danger_video_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+            android:layout_toRightOf="@id/det_danger_video_num_tv"
+            android:textColor="@color/c150"
+            android:text="@string/home_det_vid_str"/>
+    </RelativeLayout>
+
+</RelativeLayout>

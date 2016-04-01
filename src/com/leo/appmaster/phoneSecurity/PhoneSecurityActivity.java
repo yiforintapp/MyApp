@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -49,7 +50,7 @@ import com.leo.appmaster.utils.Utilities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhoneSecurityActivity extends BaseActivity implements OnClickListener {
+public class PhoneSecurityActivity extends BaseActivity implements OnClickListener, AdapterView.OnItemClickListener {
     private static final String TAG = "PhoneSecurityActivity";
 
     public static final String FROM_SECUR_INTENT = "FROM_SECUR_INTENT";
@@ -237,7 +238,9 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mSecurPhNumCv = (ScrollView) findViewById(R.id.secur_phone_nub_sc);
 
         mNormalGv = (GridView) findViewById(R.id.secur_open_normal_lv);
+        mNormalGv.setOnItemClickListener(this);
         mAdvGv = (GridView) findViewById(R.id.secur_open_adv_lv);
+        mAdvGv.setOnItemClickListener(this);
         mCloseBt = (Button) findViewById(R.id.secur_colse_bt);
         mCloseBt.setOnClickListener(this);
         mInstruTipTv = (TextView) findViewById(R.id.secur_instru_tip_tv);
@@ -332,12 +335,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 showSecurCloseDialog();
                 break;
             case R.id.secur_instru_tip_tv:
-                Intent intentDet = new Intent(PhoneSecurityActivity.this, SecurityDetailActivity.class);
-                try {
-                    startActivity(intentDet);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                startSecurInstrDetailActivity();
                 break;
             case R.id.secur_open_adv:
                 mIsOpenBtResum = true;
@@ -348,6 +346,15 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 break;
             default:
                 break;
+        }
+    }
+
+    private void startSecurInstrDetailActivity() {
+        Intent intentDet = new Intent(PhoneSecurityActivity.this, SecurityDetailActivity.class);
+        try {
+            startActivity(intentDet);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -581,5 +588,20 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             mIsOpenBtResum = false;
         }
         PhoneSecurityManager.getInstance(PhoneSecurityActivity.this).setIsAdvOpenTip(false);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        int rootId = parent.getId();
+        if (rootId == R.id.secur_open_normal_lv) {
+            startSecurInstrDetailActivity();
+        } else if (rootId == R.id.secur_open_adv_lv) {
+            LostSecurityManagerImpl securMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            boolean isOpPro = securMgr.isOpenAdvanceProtect();
+            if (!isOpPro) {
+                mIsOpenBtResum = true;
+                startDeviceItent();
+            }
+        }
     }
 }

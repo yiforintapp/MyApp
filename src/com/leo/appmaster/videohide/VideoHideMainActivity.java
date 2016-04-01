@@ -139,6 +139,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             if (mDialogAskCreateShotcut == null) {
                 mDialogAskCreateShotcut = new LEOAlarmDialog(this);
             }
+            mDialogAskCreateShotcut.setDialogIconVisibility(true);
             mDialogAskCreateShotcut.setTitleVisiable(false);
             mDialogAskCreateShotcut.setDialogIcon(R.drawable.qh_video_icon);
             mDialogAskCreateShotcut.setContent(getString(R.string.ask_create_shortcut_content_videohide));

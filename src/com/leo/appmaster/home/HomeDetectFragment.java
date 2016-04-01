@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
@@ -27,21 +28,40 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private static final long FIR_IN_ANIM_TIME = 1000;
 
     private Context mContext;
-    private LinearLayout mResultAppLt;
-    private LinearLayout mResultImgLt;
-    private LinearLayout mResultVideoLt;
+    private RelativeLayout mSfatResultAppLt;
+    private RelativeLayout mSfatResultImgLt;
+    private RelativeLayout mSfatResultVideoLt;
+    private RelativeLayout mDangerResultAppLt;
+    private RelativeLayout mDangerResultImgLt;
+    private RelativeLayout mDangerResultVideoLt;
     private RelativeLayout mCenterTipRt;
     private ImageView mShieldTopIv;
     private ImageView mShieldRightIv;
     private ImageView mShieldLeftIv;
     private ImageView mShieldCenterIv;
     private AnimatorSet mFirstInAnim;
-
+    //应用检测结果view
+    private TextView mDetSaftAppNumTv;
+    private TextView mDetSaftAppTv;
+    private TextView mDetDagAppNumTv;
+    private TextView mDetDagAppTv;
+    //图片检测结果view
+    private TextView mDetSaftImgNumTv;
+    private TextView mDetSaftImgTv;
+    private TextView mDetDagImgNumTv;
+    private TextView mDetDagImgTv;
+    //视频检测结果view
+    private TextView mDetSaftVideoNumTv;
+    private TextView mDetSaftVideoTv;
+    private TextView mDetDagVideoNumTv;
+    private TextView mDetDagVideoTv;
+    private HomeDetectPresenter mDetectPresenter;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mContext = getActivity();
+        mDetectPresenter = new HomeDetectPresenter();
     }
 
     @Override
@@ -53,6 +73,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mDetectPresenter.attachView(this);
         initUI(view);
         initAnim();
         //测试
@@ -66,19 +87,55 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     private void initUI(View view) {
-        LinearLayout rootView = (LinearLayout) view.findViewById(R.id.det_result_ly);
-        mResultAppLt = (LinearLayout) rootView.findViewById(R.id.lt_det_result_app);
-        mResultImgLt = (LinearLayout) rootView.findViewById(R.id.lt_det_result_img);
-        mResultVideoLt = (LinearLayout) rootView.findViewById(R.id.lt_det_result_video);
+        RelativeLayout resultRootView = (RelativeLayout) view.findViewById(R.id.det_result_ly);
+
+        mSfatResultAppLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_app);
+        mSfatResultImgLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_img);
+        mSfatResultVideoLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_video);
+
+        mDangerResultAppLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_danger_result_app);
+        mDangerResultImgLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_danger_result_img);
+        mDangerResultVideoLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_danger_result_video);
+
+       /* mSfatResultAppLt.setVisibility(View.INVISIBLE);
+        mSfatResultImgLt.setVisibility(View.INVISIBLE);
+        mSfatResultVideoLt.setVisibility(View.INVISIBLE);
+
+        mDangerResultAppLt.setVisibility(View.VISIBLE);
+        mDangerResultImgLt.setVisibility(View.VISIBLE);
+        mDangerResultVideoLt.setVisibility(View.VISIBLE);*/
+
+
         mCenterTipRt = (RelativeLayout) view.findViewById(R.id.lt_home_det_tip);
-        mResultAppLt.setOnClickListener(this);
-        mResultImgLt.setOnClickListener(this);
-        mResultVideoLt.setOnClickListener(this);
+        mSfatResultAppLt.setOnClickListener(this);
+        mSfatResultImgLt.setOnClickListener(this);
+        mSfatResultVideoLt.setOnClickListener(this);
+
+        mDangerResultAppLt.setOnClickListener(this);
+        mDangerResultImgLt.setOnClickListener(this);
+        mDangerResultVideoLt.setOnClickListener(this);
+
         mCenterTipRt.setOnClickListener(this);
         mShieldLeftIv = (ImageView) view.findViewById(R.id.shield_left_iv);
         mShieldRightIv = (ImageView) view.findViewById(R.id.shield_right_iv);
         mShieldTopIv = (ImageView) view.findViewById(R.id.shield_top_iv);
         mShieldCenterIv = (ImageView) view.findViewById(R.id.shield_center_iv);
+        //初始化应用检测结果
+        mDetSaftAppNumTv = (TextView) resultRootView.findViewById(R.id.det_saft_app_num_tv);
+        mDetSaftAppTv = (TextView) resultRootView.findViewById(R.id.det_saft_app_tv);
+        mDetDagAppNumTv = (TextView) resultRootView.findViewById(R.id.det_danger_app_num_tv);
+        mDetDagAppTv = (TextView) resultRootView.findViewById(R.id.det_danger_app_tv);
+        //初始化图片检测结果
+        mDetSaftImgNumTv = (TextView) resultRootView.findViewById(R.id.det_saft_img_num_tv);
+        mDetSaftImgTv = (TextView) resultRootView.findViewById(R.id.det_saft_img_tv);
+        mDetDagImgNumTv = (TextView) resultRootView.findViewById(R.id.det_danger_img_num_tv);
+        mDetDagImgTv = (TextView) resultRootView.findViewById(R.id.det_danger_img_tv);
+        //初始化图片检测结果
+        mDetSaftVideoNumTv = (TextView) resultRootView.findViewById(R.id.det_saft_video_num_tv);
+        mDetSaftVideoTv = (TextView) resultRootView.findViewById(R.id.det_saft_video_tv);
+        mDetDagVideoNumTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_num_tv);
+        mDetDagVideoTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_tv);
+
         setSfateShieldView();
     }
 
@@ -90,27 +147,39 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     @Override
     public void onDetach() {
         super.onDetach();
+        mDetectPresenter.detachView();
     }
 
     @Override
     public void onClick(View v) {
-        Activity activity = getActivity();
         switch (v.getId()) {
-            case R.id.lt_det_result_app:
-                //应用扫描结果
-                Toast.makeText(activity, "应用扫描结果", Toast.LENGTH_SHORT).show();
+            case R.id.lt_det_saft_result_app:
+                //应用扫描安全结果
+                mDetectPresenter.appSaftHandler();
                 break;
-            case R.id.lt_det_result_img:
-                //图片扫描结果
-                Toast.makeText(activity, "图片扫描结果", Toast.LENGTH_SHORT).show();
+            case R.id.lt_det_saft_result_img:
+                //图片扫描安全结果
+                mDetectPresenter.imageSaftHandler();
                 break;
-            case R.id.lt_det_result_video:
-                //视频扫描结果
-                Toast.makeText(activity, "视频扫描结果", Toast.LENGTH_SHORT).show();
+            case R.id.lt_det_saft_result_video:
+                //视频扫描安全结果
+                mDetectPresenter.videoSaftHandler();
+                break;
+            case R.id.lt_det_danger_result_app:
+                //应用扫描危险结果
+                mDetectPresenter.appDangerHandler();
+                break;
+            case R.id.lt_det_danger_result_img:
+                //图片扫描危险结果
+                mDetectPresenter.imageDangerHandler();
+                break;
+            case R.id.lt_det_danger_result_video:
+                //视频扫描危险结果
+                mDetectPresenter.videoDangerHandler();
                 break;
             case R.id.lt_home_det_tip:
                 //中间banner
-                Toast.makeText(activity, "中间banner", Toast.LENGTH_SHORT).show();
+                mDetectPresenter.centerBannerHandler();
                 break;
             default:
                 break;

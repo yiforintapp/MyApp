@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private static final String ANIME_PROPERTY_NAME = "translationY";
     public static final String EVENT_HOME_GUIDE_MSG = "HOME_GUIDE_MSG";
     public static final String EVETN_HOME_GUIDE_GONE = "HOME_GUIDE_GONE";
+    public static final String EVENT_HOME_UNINSTALL_GUIDE = "HOME_UNINSTALL_GUIDE";
 
     private View mRootView;
     private RelativeLayout mHomeGuideRt;
@@ -41,6 +43,8 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private TextView mPicText;
     private TextView mBatteryText;
     private ObjectAnimator mBatteryGuideAnim;
+    private LinearLayout mUninstallLayout;  // 卸载引导布局
+
 
     /*引导类型*/
     public enum GUIDE_TYPE {
@@ -113,6 +117,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             initPicVidEditGuide(mRootView);
             initVideoEditGuide(mRootView);
             initBatteryGuide(mRootView);
+            initUninstallGuide(mRootView);
         }
     }
 
@@ -180,6 +185,23 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             }
         });
         mBatteryText = (TextView) inCloude.findViewById(R.id.bay_edit_guide_text_tip);
+    }
+
+    private void initUninstallGuide(View view) {
+        ViewStub viewStub = (ViewStub) view.findViewById(R.id.uninstall_guide_layout);
+        if (viewStub == null) {
+            return;
+        }
+        View inCloude = viewStub.inflate();
+        mUninstallLayout = (LinearLayout) inCloude.findViewById(R.id.uninstall_guide);
+        mUninstallLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                mRootView.setVisibility(View.GONE);
+                return false;
+            }
+        });
+
     }
 
     public void setEnable(boolean enable, GUIDE_TYPE type) {

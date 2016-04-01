@@ -1216,6 +1216,11 @@
 
     <string name="title_close_advanced_protect">关闭高级保护</string>
     <string name="content_close_advanced_protect">关闭高级保护后，手机防盗，系统锁屏入侵防护等功能不可用，隐私卫士也可以被随意卸载</string>
+    <string name="new_hidden_image">隐藏新增图片</string>
+    <string name="new_image_num">新增%1$d张图片</string>
+    <string name="new_vid_num">新增%1$d个视频</string>
+    <string name="hide_complete_new_image">新增图片隐藏完成</string>
+
 
     <string name="uninstall_dialog_title">卸载隐私卫士</string>
     <string name="uninstall_dialog_content">卸载隐私卫士前需关闭高级保护权限，可能会导致部分功能不可用。确认关闭？</string>

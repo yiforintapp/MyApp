@@ -400,4 +400,6 @@
     <integer name="shield_right_x_trans">34</integer>
     <dimen name="home_det_result_tv2_padd_left">52dp</dimen>
     <dimen name="home_det_result_tv3_padd_left">75dp</dimen>
+    <dimen name="home_det_margin_left">19dp</dimen>
+    <dimen name="home_det_margin_right">20dp</dimen>
 </resources>
