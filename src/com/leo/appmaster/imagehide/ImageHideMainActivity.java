@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -58,8 +59,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private LeoPreference mPt;
     private final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
     private LEOAlarmDialog mDialogAskCreateShotcut;
+    private final int NEW_PIC_MAX_SHOW_AMOUNT = 5;
 
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
+
+    private View mIncludeLayoutNewPic;
+    private GridView mGvNewPic;
 
     public static final int REQUEST_CODE_OPTION = 1001;
 
@@ -175,6 +180,34 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void initUI() {
+        mIncludeLayoutNewPic = findViewById(R.id.layout_newpic);
+        mGvNewPic = (GridView) mIncludeLayoutNewPic.findViewById(R.id.gv_newpic);
+        mGvNewPic.setAdapter(new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return NEW_PIC_MAX_SHOW_AMOUNT;
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic,parent,false);
+                ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
+                iv.setImageResource(R.drawable.ic_launcher);
+                return v;
+            }
+        });
+
+
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_image_hide);
         mTtileBar.setOptionMenuVisible(false);

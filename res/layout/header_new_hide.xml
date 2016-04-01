@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_head_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,11 +24,15 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_launcher" />
+                android:id="@+id/iv_hide_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tips_img_icon" />
 
             <TextView
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f4"
+                android:layout_marginLeft="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="23423423423" />
@@ -35,17 +40,37 @@
 
         </LinearLayout>
 
-        <Button
-            android:layout_width="64dp"
-            android:layout_height="28dp" />
+        <com.leo.appmaster.ui.RippleView
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            app:rippleColor="@color/cm"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true"
+            >
+
+            <Button
+                android:textSize="@dimen/f4"
+                android:textColor="@color/c1"
+                android:minWidth="64dp"
+                android:text="@string/app_hide_image"
+                android:background="@drawable/blue_radius_btn_shape"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </com.leo.appmaster.ui.RippleView>
+
 
     </LinearLayout>
 
     <GridView
+        android:layout_marginTop="10dp"
         android:layout_below="@id/ll_amount_and_hide"
         android:id="@+id/gv_newpic"
+        android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:horizontalSpacing="2dp"
         android:numColumns="5"></GridView>
 
