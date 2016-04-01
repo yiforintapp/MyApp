@@ -1235,24 +1235,21 @@
 
     <string name="img_hide_cpy_toast">当前从外置存储卡读取内容，可能过程较长</string>
     <string name="home_more">更多</string>
-    <string name="home_det_app_str">个新应用</string>
-    <string name="home_det_img_str">张新图片</string>
-    <string name="home_det_vid_str">个新视频</string>
     <string name="home_det_tip">建议开启手机防盗</string>
 
     <string name="find_new_pic_tips">检测到最近新增了<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张图片</string>
     <string name="find_new_vid_tips">检测到最近新增了<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个视频</string>
     <string name="hide_immediately">立即隐藏</string>
 
-    <string name="hd_found_app">发现%1d个应用</string>
-    <string name="hd_found_pic">发现%1d张图片</string>
-    <string name="hd_found_vid">发现%1d个视频</string>
-    <string name="hd_new_app">%1d个新应用</string>
-    <string name="hd_new_pic">%1d张新图片</string>
-    <string name="hd_new_vid">%1d个新视频</string>
-    <string name="hd_locked_app">%1d个加锁应用</string>
-    <string name="hd_hide_pic">%1d张隐藏图片</string>
-    <string name="hd_hide_vid">%1d个隐藏视频</string>
+    <string name="hd_found_app">个待处理应用</string>
+    <string name="hd_found_pic">张待处理图片</string>
+    <string name="hd_found_vid">个待处理视频</string>
+    <string name="hd_new_app">个新应用</string>
+    <string name="hd_new_pic">张新图片</string>
+    <string name="hd_new_vid">个新视频</string>
+    <string name="hd_locked_app">个加锁应用</string>
+    <string name="hd_hide_pic">张隐藏图片</string>
+    <string name="hd_hide_vid">个隐藏视频</string>
     <string name="hd_lock_privacy_title">加锁私密应用</string>
     <string name="hd_lock_privacy_summary">您新增了一些应用未加锁，可能泄露隐私哦</string>
     <string name="hd_hide_pic_privacy_title">隐藏私密图片</string>

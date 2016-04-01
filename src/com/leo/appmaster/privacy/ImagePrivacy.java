@@ -12,6 +12,10 @@ import java.util.List;
  * Created by Jasper on 2016/3/31.
  */
 public class ImagePrivacy extends Privacy<PhotoItem> {
+    @Override
+    public String getTag() {
+        return "ImagePrivacy";
+    }
 
     @Override
     protected boolean isConsumed() {

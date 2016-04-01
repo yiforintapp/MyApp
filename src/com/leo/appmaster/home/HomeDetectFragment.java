@@ -99,11 +99,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mSfatResultAppLt.setVisibility(View.INVISIBLE);
             mDangerResultAppLt.setVisibility(View.VISIBLE);
 
+            mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
         } else {
             mSfatResultAppLt.setVisibility(View.VISIBLE);
             mDangerResultAppLt.setVisibility(View.INVISIBLE);
 
+            mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
             mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
             if (numVisible) {
@@ -119,10 +121,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDangerResultImgLt.setVisibility(View.VISIBLE);
 
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
+            mDetDagImgTv.setText(privacy.getPrivacyTitleId());
         } else {
             mSfatResultImgLt.setVisibility(View.VISIBLE);
             mDangerResultImgLt.setVisibility(View.INVISIBLE);
 
+            mDetSaftImgTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
             mDetSaftImgNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
             if (numVisible) {
@@ -137,15 +141,17 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mSfatResultVideoLt.setVisibility(View.INVISIBLE);
             mDangerResultVideoLt.setVisibility(View.VISIBLE);
 
-            mDetSaftVideoNumTv.setText(privacy.getPrivacyCountText());
+            mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
+            mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
         } else {
             mSfatResultVideoLt.setVisibility(View.VISIBLE);
             mDangerResultVideoLt.setVisibility(View.INVISIBLE);
 
+            mDetSaftVideoTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
-            mDetDagVideoNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            mDetSaftVideoNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
             if (numVisible) {
-                mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
+                mDetSaftVideoNumTv.setText(privacy.getPrivacyCountText());
             }
         }
     }

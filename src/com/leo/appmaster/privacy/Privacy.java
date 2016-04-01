@@ -209,11 +209,23 @@ public abstract class Privacy<T> {
     public abstract int getPrivacyType();
     public abstract String getReportDescription();
 
+    public String getTag() {
+        return "Privacy";
+    }
+
     void setTotalCount(int totalCount) {
         mTotalCount = totalCount;
     }
 
     void setProceedCount(int proceedCount) {
         mProceedCount = proceedCount;
+    }
+
+    @Override
+    public String toString() {
+        return getTag() + " | danger: " + isDangerous()
+                        + " | new: " + getNewCount()
+                        + " | proceed: " + getProceedCount()
+                        + " | total: " + getTotalCount();
     }
 }

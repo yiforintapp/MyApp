@@ -14,6 +14,10 @@ import java.util.List;
  * Created by Jasper on 2016/3/31.
  */
 public class LockPrivacy extends Privacy<AppItemInfo> {
+    @Override
+    public String getTag() {
+        return "LockPrivacy";
+    }
 
     @Override
     protected boolean isConsumed() {

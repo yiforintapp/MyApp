@@ -12,6 +12,10 @@ import java.util.List;
  * Created by Jasper on 2016/3/31.
  */
 public class VideoPrivacy extends Privacy<VideoItemBean> {
+    @Override
+    public String getTag() {
+        return "VideoPrivacy";
+    }
 
     @Override
     protected boolean isConsumed() {

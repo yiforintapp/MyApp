@@ -31,7 +31,7 @@
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_saft_app_num_tv"
             android:textColor="@color/c150"
-            android:text="@string/home_det_app_str"/>
+            android:text="@string/hd_new_app"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -63,7 +63,7 @@
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_danger_app_num_tv"
             android:textColor="@color/c150"
-            android:text="@string/home_det_app_str"/>
+            android:text="@string/hd_new_app"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -95,7 +95,7 @@
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_saft_img_num_tv"
             android:textColor="@color/c150"
-            android:text="@string/home_det_img_str"/>
+            android:text="@string/hd_new_pic"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -127,7 +127,7 @@
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_danger_img_num_tv"
             android:textColor="@color/c150"
-            android:text="@string/home_det_img_str"/>
+            android:text="@string/hd_new_pic"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -159,7 +159,7 @@
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_saft_video_num_tv"
             android:textColor="@color/c150"
-            android:text="@string/home_det_vid_str"/>
+            android:text="@string/hd_new_vid"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -192,7 +192,7 @@
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_danger_video_num_tv"
             android:textColor="@color/c150"
-            android:text="@string/home_det_vid_str"/>
+            android:text="@string/hd_new_vid"/>
     </RelativeLayout>
 
 </RelativeLayout>
