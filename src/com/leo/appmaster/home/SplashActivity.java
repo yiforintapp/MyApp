@@ -371,12 +371,14 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
             AppMasterApplication.sCheckTs = false;
         }
 
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                Debug.stopMethodTracing();
-            }
-        }, 2000);
+        if (AppMasterApplication.DGB_TRACE) {
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Debug.stopMethodTracing();
+                }
+            }, 2000);
+        }
     }
 
     private void splashDelayShow() {

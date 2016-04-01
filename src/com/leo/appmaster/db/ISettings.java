@@ -52,6 +52,7 @@ public abstract class ISettings {
             AppMasterPreference.PREF_SPLASH_LOAD_FAIL_NUMBER,
             AppMasterPreference.PREF_SPLASH_LOAD_FAIL_NUMBER,
             AppMasterPreference.PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH,
+            AppMasterPreference.PREF_HIDE_LOCK_LINE,
             PrefConst.KEY_BATTERY_REMAINING_COE,
             PrefConst.KEY_IS_NEW_INSTALL,
             PrefConst.KEY_SIM_IMEI,

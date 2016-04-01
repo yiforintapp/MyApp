@@ -65,18 +65,6 @@ public class InitCoreBootstrap extends Bootstrap {
 
         registerPackageChangedBroadcast();
 
-        start = SystemClock.elapsedRealtime();
-        SDKWrapper.iniSDK(mApp);
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
-
-        // init lock manager
-        start = SystemClock.elapsedRealtime();
-        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        lockManager.init();
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, LockManager.getInstance.init: " + (end - start));
-
         AppMasterPreference preference = AppMasterPreference.getInstance(mApp);
         if (preference.getIsFirstInstallApp()) {
             SplashActivity.deleteImage();

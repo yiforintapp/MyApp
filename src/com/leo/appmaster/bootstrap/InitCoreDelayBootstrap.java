@@ -14,12 +14,14 @@ import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.schedule.FetchScheduleJob;
 import com.leo.appmaster.schedule.ScreenRecommentJob;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.lang.reflect.Method;
@@ -47,6 +49,18 @@ public class InitCoreDelayBootstrap extends Bootstrap {
         long end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, registerReceiveMessageCallIntercept: " + (end - start));
 
+        // init lock manager
+        start = SystemClock.elapsedRealtime();
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        lockManager.init();
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, LockManager.getInstance.init: " + (end - start));
+
+        start = SystemClock.elapsedRealtime();
+        SDKWrapper.iniSDK(mApp);
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
+
         AppBackupRestoreManager.getInstance(mApp);
 
         start = SystemClock.elapsedRealtime();
@@ -58,7 +72,6 @@ public class InitCoreDelayBootstrap extends Bootstrap {
         DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
         deviceManager.init();
 
-        FetchScheduleJob.startFetchJobs();
         return false;
     }
 

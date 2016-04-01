@@ -41,6 +41,9 @@ public class AppMasterApplication extends Application {
     public static long sAppOnCrate;
     public static boolean sIsSplashActioned = false;
 
+    public static final boolean DGB_TRACE = false;
+    public static final String TRACE = "MotoG11.trace";
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -84,7 +87,9 @@ public class AppMasterApplication extends Application {
         if (sInstance != null)
             return;
 
-//        Debug.startMethodTracing("vivo3.trace");
+        if (DGB_TRACE) {
+            Debug.startMethodTracing(TRACE);
+        }
         sStartTs = SystemClock.elapsedRealtime();
         sInstance = this;
         // Use old sor

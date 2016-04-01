@@ -30,6 +30,8 @@ public class SDKWrapper {
     // useless with LeoAnaSDK_v3
     public static int P1 = 0;
 
+    private static boolean sInited = false;
+
     /**
      * initial leo analytics and flurry SDK, this will changed in the future.
      * this should be called in application's onCreate method.
@@ -52,6 +54,7 @@ public class SDKWrapper {
 
             // gamebox - 放在统计SDK后面初始化
             // initGameBoxSDK(ctx);
+            sInited = true;
         } catch (Exception e) {
 
         }
@@ -246,6 +249,7 @@ public class SDKWrapper {
      * @param description detail of this event
      */
     public static void addEvent(Context context, int level, String id, String description) {
+        LeoLog.d(TAG, "<ls> id: " + id + " | desc: " + description + " | inited: " + sInited);
         // AM-727
 //        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
         // leo
@@ -271,7 +275,7 @@ public class SDKWrapper {
 	 * @param extra detail of this extra data
 	 */
 	public static void addEvent(Context context, String exName, int level, String id, String description, int source, Map<String, String> extra) {
-		
+        LeoLog.d(TAG, "<ls> id: " + id + " | exName : " + exName + " | desc: " + description + " | inited: " + sInited);
 		//只是针对max 广告发起的extra 的范畴才要主动加上android_id
 		if (exName != null && exName.startsWith("max_ad")) {
 			if (source != AppMasterPreference.AD_SDK_SOURCE_USE_MAX) {

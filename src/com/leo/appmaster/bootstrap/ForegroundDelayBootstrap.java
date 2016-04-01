@@ -11,7 +11,7 @@ public class ForegroundDelayBootstrap extends BootstrapGroup {
     /**
      * 十秒延时
      */
-    private static final long DELAY = 10 * 1000;
+    private static final long DELAY = 5 * 1000;
 
     /**
      * 10秒延时
