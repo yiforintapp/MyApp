@@ -72,6 +72,11 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
         mEmptyHeight = activity.getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
     }
 
+    protected void hideDone(){
+        mHideBtn.setText(getString(R.string.app_hide_image));
+        mHideBtn.setEnabled(false);
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -202,13 +207,17 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
     @Override
     public void onSelectionChange(boolean selectAll, int selectedCount) {
         if (selectedCount > 0) {
+            mHideBtn.setEnabled(true);
             mProcessBtn.setEnabled(true);
             mProcessClick.setEnabled(true);
             mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
+            mHideBtn.setText(getString(R.string.new_hide_num, mAdapter.getSelectedList() == null ? 0 : mAdapter.getSelectedList().size()));
         } else {
             mProcessBtn.setEnabled(false);
             mProcessClick.setEnabled(false);
             mProcessBtn.setBackgroundResource(R.drawable.green_radius_shape_disable);
+            mHideBtn.setText(getString(R.string.app_hide_image));
+            mHideBtn.setEnabled(false);
         }
     }
 

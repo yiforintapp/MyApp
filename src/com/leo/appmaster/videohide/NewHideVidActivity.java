@@ -16,6 +16,8 @@ import com.leo.appmaster.home.PrivacyNewVideoFragment;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.Privacy;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -45,29 +47,15 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
-        mFragment = (FrameLayout)findViewById(R.id.fl_image_view);
+        mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();
     }
 
     private void initLoadData() {
-        mLoading.setVisibility(View.VISIBLE);
-        mFragment.setVisibility(View.GONE);
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                mVideoList = pdm.getAddVid();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadDone();
-                    }
-                });
-            }
-        });
-    }
-
-    private void loadDone(){
+//        mLoading.setVisibility(View.VISIBLE);
+//        mFragment.setVisibility(View.GONE);
+        Privacy privacy = PrivacyHelper.getVideoPrivacy();
+        mVideoList = privacy.getNewList();
         Fragment fragment = PrivacyNewVideoFragment.getNewVidFragment(mVideoList);
         LeoLog.v(TAG, "fragment != null : " + (fragment != null));
         FragmentManager fm = getSupportFragmentManager();
@@ -77,6 +65,7 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         mLoading.setVisibility(View.GONE);
         mFragment.setVisibility(View.VISIBLE);
     }
+
 
     @Override
     public void onBackPressed() {

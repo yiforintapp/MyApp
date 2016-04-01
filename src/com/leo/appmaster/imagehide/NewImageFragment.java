@@ -275,6 +275,7 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                     if (mDataList.size() > 0) {
                         mAdapter.setList(mDataList);
                         setLabelCount();
+                        hideDone();
                         mAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mActivity, R.string.hide_complete_new_image, Toast.LENGTH_LONG).show();

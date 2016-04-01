@@ -220,8 +220,8 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
     @Override
     public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
         VideoItemBean info = (VideoItemBean) mAdapter.getChild(i, i1);
-//        mAdapter.toggle(i, i1);
-//        mAdapter.setCheck(view, mAdapter.isChildChecked(i, i1));
+        mAdapter.toggle(i, i1);
+        mAdapter.setCheck(view, mAdapter.isChildChecked(i, i1));
         return false;
     }
 
