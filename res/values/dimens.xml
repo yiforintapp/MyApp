@@ -279,7 +279,7 @@
     <dimen name="sec_did_v_tp">20dp</dimen>
     <dimen name="no_op_suc_tv">20dp</dimen>
     <dimen name="no_open_suc_lv_tp">20dp</dimen>
-    <dimen name="open_suc_lv_tp">25dp</dimen>
+    <dimen name="open_suc_lv_tp">20dp</dimen>
     <dimen name="op_adv_suc_tv">150dp</dimen>
     <dimen name="open_suc_tv_pd_tp">9dp</dimen>
     <dimen name="open_suc_tv_pd_bt">16dp</dimen>
@@ -411,8 +411,10 @@
     <dimen name="add_num_botm_bt_width">210dp</dimen>
     <dimen name="add_num_botm_bt_height">40dp</dimen>
     <dimen name="secur_open_suc_top_rl_marg_top">74dp</dimen>
-    <dimen name="secur_top_tip_instr_tv_marg_top">20dp</dimen>
+    <dimen name="secur_top_tip_instr_tv_marg_top">15dp</dimen>
     <dimen name="secur_top_tip_instr_tv_padd_butm">18dp</dimen>
     <dimen name="secur_mody_bt_width">74dp</dimen>
     <dimen name="secur_mody_bt_height">30dp</dimen>
+    <dimen name="secur_nromal_tip_tv_marg_left">40dp</dimen>
+    <dimen name="secur_open_line2">18dp</dimen>
 </resources>

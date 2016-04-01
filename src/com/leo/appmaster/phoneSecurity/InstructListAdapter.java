@@ -37,6 +37,7 @@ public class InstructListAdapter extends BaseAdapter {
     private Context mContext;
     private String mFlag;
     private LayoutInflater mInflate;
+    private boolean mIsShowEndDetail = false;
 
     public InstructListAdapter(Context context, List list, String flag) {
         mInflate = LayoutInflater.from(context);
@@ -66,6 +67,9 @@ public class InstructListAdapter extends BaseAdapter {
         TextView content;
         TextView instrTxt;
         Button openBt;
+        TextView endDetailTxt;
+        View lineV;
+
     }
 
     @Override
@@ -80,6 +84,8 @@ public class InstructListAdapter extends BaseAdapter {
                 vh.content = (TextView) convertView.findViewById(R.id.content);
                 vh.selectImage = (ImageView) convertView.findViewById(R.id.image_tip_icon);
                 vh.openBt = (Button) convertView.findViewById(R.id.sec_add_number_BT);
+                vh.lineV = convertView.findViewById(R.id.line);
+                vh.endDetailTxt = (TextView) convertView.findViewById(R.id.detail_txt_tv);
             } else if (FLAG_OPEN_SUC_INSTR_LIST.equals(mFlag)
                     || FLAG_NO_OPEN_SUC_INSTR_LIST.equals(mFlag)) {
                 convertView = mInflate.inflate(R.layout.phone_secur_oper_item, null);
@@ -125,6 +131,13 @@ public class InstructListAdapter extends BaseAdapter {
                 vh.selectImage.setVisibility(View.GONE);
                 vh.openBt.setVisibility(View.GONE);
             }
+            if (mIsShowEndDetail && position == (mList.size() - 1)) {
+                vh.lineV.setVisibility(View.INVISIBLE);
+                vh.endDetailTxt.setVisibility(View.VISIBLE);
+            } else {
+                vh.lineV.setVisibility(View.VISIBLE);
+                vh.endDetailTxt.setVisibility(View.GONE);
+            }
         } else if (FLAG_OPEN_SUC_INSTR_LIST.equals(mFlag)
                 || FLAG_NO_OPEN_SUC_INSTR_LIST.equals(mFlag)) {
             vh.instrImage.setImageResource(instructModel.image);
@@ -136,5 +149,9 @@ public class InstructListAdapter extends BaseAdapter {
 
     public void setData(List<InstructModel> list) {
         mList = list;
+    }
+
+    public void setIsShowEndDetail(boolean isShowDetail) {
+        this.mIsShowEndDetail = isShowDetail;
     }
 }
