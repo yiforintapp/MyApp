@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -32,6 +34,7 @@ import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -76,7 +79,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private TextView mTvNewAmountTips;
     private RippleView mRvHideNew;
     private TextView mTvIgnoreNew;
-
+    private RelativeLayout mRlWholeShowContent;
 
     public static final int REQUEST_CODE_OPTION = 1001;
 
@@ -123,37 +126,29 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             });
             mDialogAskCreateShotcut.show();
         } else {
-            if(mAlbumList != null && mAlbumList.size() == 0 && !mIsFromConfirm) {
+            if (mAlbumList != null && mAlbumList.size() == 0 && !mIsFromConfirm) {
                 LeoEventBus.getDefaultBus().postSticky(new GradeEvent(GradeEvent.FROM_PIC, false));
             }
             super.onBackPressed();
         }
-    };
+    }
+
+    ;
 
     private void loadDone() {
         if (mAlbumList != null) {
             if (mAlbumList.size() > 0) {
                 mNoHidePictureHint.setVisibility(View.GONE);
                 loadingBar.setVisibility(View.GONE);
-                mGridView.setVisibility(View.VISIBLE);
+                mRlWholeShowContent.setVisibility(View.VISIBLE);
             } else {
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
                 loadingBar.setVisibility(View.GONE);
-                mGridView.setVisibility(View.GONE);
+                mRlWholeShowContent.setVisibility(View.GONE);
             }
             if (mHideAlbumAdapt != null) {
                 mHideAlbumAdapt.setDataList(mAlbumList);
                 mHideAlbumAdapt.notifyDataSetChanged();
-            }
-            if (mNewPicAdapter != null) {
-                if (mNewAddPic == null || mNewAddPic.size() == 0) {
-                    mIncludeLayoutNewPic.setVisibility(View.GONE);
-                } else {
-                    mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
-                    mNewPicAdapter.setDataList(mNewAddPic);
-                    mNewPicAdapter.notifyDataSetChanged();
-                    updateTips();
-                }
             }
 
         }
@@ -166,12 +161,16 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void asyncLoad() {
+
+        mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
+        newLoadDone();
+
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
                         getHidePicAlbum(PrivacyDataManagerImpl.CHECK_APART);
-                mNewAddPic = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).getAddPic();
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -180,6 +179,19 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 });
             }
         });
+    }
+
+    private void newLoadDone() {
+        if (mNewPicAdapter != null) {
+            if (mNewAddPic == null || mNewAddPic.size() == 0) {
+                mIncludeLayoutNewPic.setVisibility(View.GONE);
+            } else {
+                mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
+                mNewPicAdapter.setDataList(mNewAddPic);
+                mNewPicAdapter.notifyDataSetChanged();
+                updateTips();
+            }
+        }
     }
 
     @Override
@@ -210,12 +222,13 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void goNewHideImageActivity() {
-        Intent intent = new Intent(ImageHideMainActivity.this,NewHideImageActivity.class);
+        Intent intent = new Intent(ImageHideMainActivity.this, NewHideImageActivity.class);
         startActivity(intent);
     }
 
 
     private void initUI() {
+        mRlWholeShowContent = (RelativeLayout) findViewById(R.id.rl_whole_show_content);
         mIncludeLayoutNewPic = findViewById(R.id.layout_newpic);
         mRvHideNew = (RippleView) mIncludeLayoutNewPic.findViewById(R.id.rv_hide_new);
         mRvHideNew.setOnClickListener(new OnClickListener() {
@@ -263,7 +276,25 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void hideHeadLayout() {
+        TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewPic.getHeight());
+        ta.setDuration(500);
+        ta.setFillAfter(true);
+        mRlWholeShowContent.setAnimation(ta);
+        mRlWholeShowContent.startAnimation(ta);
+        ta.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
 
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mIncludeLayoutNewPic.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
     }
 
     private void initImageLoder() {
@@ -321,7 +352,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
 
-
     class NewPicAdapter extends BaseAdapter {
         Context context;
         List<PhotoItem> list = new ArrayList<PhotoItem>();
@@ -340,8 +370,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             if (list == null) {
                 return 0;
             }
-            LeoLog.i("newpic","showed size = " + Math.min(NEW_PIC_MAX_SHOW_AMOUNT,list.size()) );
-            return Math.min(NEW_PIC_MAX_SHOW_AMOUNT,list.size());
+            LeoLog.i("newpic", "showed size = " + Math.min(NEW_PIC_MAX_SHOW_AMOUNT, list.size()));
+            return Math.min(NEW_PIC_MAX_SHOW_AMOUNT, list.size());
 
         }
 
@@ -357,7 +387,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent,false);
+            View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
             ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
             String path = list.get(position).getPath();
 
@@ -367,7 +397,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
-            mImageLoader.displayImage(uri,iv,mOptions);
+            mImageLoader.displayImage(uri, iv, mOptions);
             v.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -403,13 +433,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
 
-
-
-
-
-
-
-
     class HideAlbumAdapt extends BaseAdapter {
         Context context;
         List<PhotoAibum> list = new ArrayList<PhotoAibum>();
@@ -440,23 +463,48 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
+//            ViewHolder viewHolder;
+//            String path;
+//            if (convertView == null) {
+//                convertView = getLayoutInflater().inflate(R.layout.item_gridview_album, parent, false);
+//                viewHolder = new ViewHolder();
+//                viewHolder.img = (ImageView) convertView
+//                        .findViewById(R.id.img_item_album);
+//                viewHolder.txt = (TextView) convertView
+//                        .findViewById(R.id.txt_item_album);
+//                convertView.setTag(viewHolder);
+//            } else {
+//                viewHolder = (ViewHolder) convertView.getTag();
+//            }
+//            path = list.get(position).getBitList().get(0).getPath();
+//            viewHolder.txt.setText(list.get(position).getName() + "("
+//                    + list.get(position).getCount() + ")");
+//
+//            String uri = null;
+//            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+//                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+//            } else {
+//                uri = ImageDownloader.Scheme.FILE.wrap(path);
+//            }
+//            mImageLoader.displayImage(uri, viewHolder.img, mOptions, mImageSize);
+//            return convertView;
+//        }
+
+            NewViewHolder viewHolder;
             String path;
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(
-                        R.layout.item_gridview_album, parent, false);
-                viewHolder = new ViewHolder();
-                viewHolder.img = (ImageView) convertView
-                        .findViewById(R.id.img_item_album);
-                viewHolder.txt = (TextView) convertView
-                        .findViewById(R.id.txt_item_album);
+                convertView = getLayoutInflater().inflate(R.layout.item_gridview_album_nobg, parent, false);
+                viewHolder = new NewViewHolder();
+                viewHolder.img = (ImageView) convertView.findViewById(R.id.iv_pic);
+                viewHolder.name = (TextView) convertView.findViewById(R.id.tv_folder_name);
+                viewHolder.amount = (TextView) convertView.findViewById(R.id.tv_folder_size);
                 convertView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder = (NewViewHolder) convertView.getTag();
             }
             path = list.get(position).getBitList().get(0).getPath();
-            viewHolder.txt.setText(list.get(position).getName() + "("
-                    + list.get(position).getCount() + ")");
+            viewHolder.name.setText(list.get(position).getName());
+            viewHolder.amount.setText(list.get(position).getCount());
 
             String uri = null;
             if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
@@ -467,6 +515,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             mImageLoader.displayImage(uri, viewHolder.img, mOptions, mImageSize);
             return convertView;
         }
+
+
     }
 
     private static class ViewHolder {
@@ -474,5 +524,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         private TextView txt;
     }
 
+    private static class NewViewHolder {
+        private ImageView img;
+        private TextView name;
+        private TextView amount;
+    }
 
 }

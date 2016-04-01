@@ -89,6 +89,7 @@ import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.NewHideVidActivity;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.utils.IoUtils;
@@ -209,7 +210,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         /*手机防盗开启人数，在用户没有打开手机防盗时没此进入主页拉取一次*/
         PhoneSecurityFetchJob.startImmediately();
-        CommentSettingsFetchJob.startImmediately();
         registerLocaleChange();
 
 //        if (AppMasterConfig.LOGGABLE) {
@@ -808,34 +808,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         LeoLog.i(TAG, "removeFragments, cost: " + (SystemClock.elapsedRealtime() - start));
     }
 
-    private void initMobvista() {
-        // app wall at home is abandon
-//        mWallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_64);
-//        if (mWallAd != null) {
-//            mWallAd.preloadWall();
-//        }
-
-//        mHandler.postDelayed((new Runnable() {
-//            @Override
-//            public void run() {
-//                // 默认是开，记得改回默认是关
-//                if (mHomeAdSwitchOpen == -1) {
-//                    LeoLog.d(TAG, "获取主页广告开关");
-//                    mHomeAdSwitchOpen = AppMasterPreference.getInstance(HomeActivity.this).getIsADAtAppLockFragmentOpen();
-//                }
-//                LeoLog.d(TAG, "开关值是：" + mHomeAdSwitchOpen);
-//                if (isTimetoShow()
-//                        // && !isEnterPrivacySuggest
-//                        && mHomeAdSwitchOpen == 1) {
-//                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
-//                    setAdIconVisible();
-//                } else {
-//                    setAdIconInVisible();
-//                }
-//            }
-//        }), 1000);
-    }
-
 //    public boolean isTimetoShow() {
 //        long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
 //        long nowTime = System.currentTimeMillis();
@@ -1261,7 +1233,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "about");
 //                    intent = new Intent(HomeActivity.this,
 //                            AboutActivity.class);
-                    intent = new Intent(HomeActivity.this, NewHideImageActivity.class);
+                    intent = new Intent(HomeActivity.this, NewHideVidActivity.class);
                     startActivity(intent);
                 }
             }

@@ -488,6 +488,7 @@ public class Constants {
 
 
     public static final String FROM_CONFIRM_FRAGMENT = "is_from_confirm";
+    public static final String FROM_APP_SCAN_RESULT = "app_scan_result";
 
 
     /***

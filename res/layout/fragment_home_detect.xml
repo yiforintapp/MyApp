@@ -7,14 +7,14 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/texture_home_bg"></ImageView>
+        android:background="@drawable/texture_home_bg" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/texture2_home_bg"></ImageView>
+        android:background="@drawable/texture2_home_bg" />
 
     <RelativeLayout
         android:id="@+id/home_anim_rl"
@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:visibility="invisible"
             />
 
         <include
@@ -60,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/shield_view"></include>
+            android:layout_toRightOf="@id/shield_view" />
 
     </RelativeLayout>
     <!--中间建议提示banner-->
@@ -69,7 +70,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/home_det_tip_height"
         android:layout_alignParentBottom="true"
-        android:background="#3d000000">
+        android:background="#3d000000"
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/det_tip_icon_iv"

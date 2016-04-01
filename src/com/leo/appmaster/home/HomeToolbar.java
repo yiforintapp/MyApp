@@ -37,7 +37,7 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
 
     private View mMenuRl;
     private View mMsgcenterRl;
-    private View mMoreRl;
+//    private View mMoreRl;
 
     private ImageView mMenuIv;
 
@@ -73,8 +73,8 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
         mMsgcenterRl = findViewById(R.id.hm_tool_msgcenter_rl);
         mMsgcenterRl.setOnClickListener(this);
 
-        mMoreRl = findViewById(R.id.hm_tool_more_rl);
-        mMoreRl.setOnClickListener(this);
+//        mMoreRl = findViewById(R.id.hm_tool_more_rl);
+//        mMoreRl.setOnClickListener(this);
 
         mMenuIv = (ImageView) findViewById(R.id.hm_tool_menu_iv);
         mMenuRedTipIv = (ImageView) findViewById(R.id.hm_tool_menu_red_tip_iv);
@@ -133,27 +133,27 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
                 msgCenter.setClass(getContext(), MsgCenterActivity.class);
                 getContext().startActivity(msgCenter);
                 break;
-            case R.id.hm_tool_more_rl:
-                Activity activity = (Activity) getContext();
-                if (activity instanceof HomeActivity) {
-                    if (((HomeActivity) activity).isTabDismiss()) {
-                        return;
-                    }
-                }
-                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "home", "password");
-                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-                    mDrawerLayout.closeDrawer(Gravity.START);
-                }
-                initSettingMenu();
-                mLeoPopMenu.setPopMenuItems(activity, getRightMenuItems(), getRightMenuIcons());
-                mLeoPopMenu.showPopMenu(activity, mMoreRl, null, null);
-                break;
+//            case R.id.hm_tool_more_rl:
+//                Activity activity = (Activity) getContext();
+//                if (activity instanceof HomeActivity) {
+//                    if (((HomeActivity) activity).isTabDismiss()) {
+//                        return;
+//                    }
+//                }
+//                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "home", "password");
+//                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+//                    mDrawerLayout.closeDrawer(Gravity.START);
+//                }
+//                initSettingMenu();
+//                mLeoPopMenu.setPopMenuItems(activity, getRightMenuItems(), getRightMenuIcons());
+//                mLeoPopMenu.showPopMenu(activity, mMoreRl, null, null);
+//                break;
             case R.id.hm_tool_title_tv:
                 if (AppMasterConfig.LOGGABLE) {
 //                    Intent intent = new Intent(getContext(), DebugActivity.class);
 //                    getContext().startActivity(intent);
                     Intent intent1 = new Intent(getContext(), AppLockListActivity.class);
-                    intent1.putExtra(Constants.FROM_CONFIRM_FRAGMENT, true);
+                    intent1.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
                     getContext().startActivity(intent1);
                 }
                 break;

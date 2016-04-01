@@ -20,6 +20,8 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.videohide.FolderVidNewFragment;
+import com.leo.appmaster.videohide.NewVidFragment;
 import com.leo.appmaster.videohide.VideoItemBean;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ import java.util.List;
  * Created by Jasper on 2015/10/16.
  */
 public class PrivacyNewVideoFragment extends PrivacyNewFragment implements AdapterView.OnItemClickListener {
-    private static final int FOLDER_VIDEO_COUNT = 35;
+    private static final int FOLDER_VIDEO_COUNT = 30;
 
     private ListView mVideoList;
 
@@ -50,6 +52,25 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment implements Adapt
             } else {
                 fragment = PrivacyNewVideoFragment.newInstance();
                 ((PrivacyNewVideoFragment) fragment).setData(list, "");
+            }
+
+        }
+
+        return fragment;
+    }
+
+    public static Fragment getNewVidFragment(List<VideoItemBean> list) {
+        Fragment fragment = null;
+        if (list.size() < FOLDER_VIDEO_COUNT) {
+            fragment = NewVidFragment.newInstance();
+            ((NewVidFragment) fragment).setData(list, "");
+        } else {
+            if (DataUtils.differentDirVid(list)) {
+                fragment = FolderVidNewFragment.newInstance();
+                ((FolderVidNewFragment) fragment).setData(list);
+            } else {
+                fragment = NewVidFragment.newInstance();
+                ((NewVidFragment) fragment).setData(list, "");
             }
 
         }

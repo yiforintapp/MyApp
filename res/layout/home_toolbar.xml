@@ -50,10 +50,11 @@
         android:textColor="@color/white"
         android:textSize="20dp" />
 
-    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <!--<com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/hm_tool_more_rl0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_alignParentRight="true"
         app:rippleColor="@color/menu_ripple"
         app:rippleDuration="150"
@@ -71,14 +72,14 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_toolbar_more" />
         </RelativeLayout>
-    </com.leo.appmaster.ui.MaterialRippleLayout>
+    </com.leo.appmaster.ui.MaterialRippleLayout>-->
 
 
     <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/hm_tool_msgcenter_rl0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/hm_tool_more_rl0"
+        android:layout_alignParentRight="true"
         app:rippleColor="@color/menu_ripple"
         app:rippleDuration="150"
         app:rippleHover="true"

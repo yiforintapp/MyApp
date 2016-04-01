@@ -27,7 +27,7 @@ import java.util.List;
  * 隐私等级适配器基类
  * Created by Jasper on 2015/10/15.
  */
-public abstract class ImageAdaper<T> extends BaseAdapter {
+public abstract class NewAdaper<T> extends BaseAdapter {
     public interface SelectionChangeListener {
         public void onSelectionChange(boolean selectAll, int selectedCount);
     }
@@ -47,7 +47,7 @@ public abstract class ImageAdaper<T> extends BaseAdapter {
 
     protected HashMap<View, T> mItemsView;
 
-    public ImageAdaper() {
+    public NewAdaper() {
         mDataList = new ArrayList<T>();
 //        mSelectedList = new ArrayList<T>();
 

@@ -1,24 +1,22 @@
 package com.leo.appmaster.privacy;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.db.PrefTableHelper;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.model.AppItemInfo;
-
-import java.util.List;
+import com.leo.appmaster.utils.PrefConst;
 
 /**
  * Created by Jasper on 2016/3/31.
  */
 public class LockPrivacy extends Privacy<AppItemInfo> {
-
     @Override
-    public int getProceedCount() {
-        return 0;
+    public String getTag() {
+        return "LockPrivacy";
     }
 
     @Override
     protected boolean isConsumed() {
-        return false;
+        return LeoSettings.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
     }
 
     @Override
@@ -38,12 +36,12 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
 
     @Override
     public int getAddStringId() {
-        return 0;
+        return R.string.hd_add_locked_app;
     }
 
     @Override
-    public int getPrivacySummaryId() {
-        return 0;
+    public int getDangerTipId() {
+        return R.string.hd_app_danger_tip;
     }
 
     @Override
@@ -63,7 +61,7 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
 
     @Override
     public int getPrivacyLimit() {
-        return PrefTableHelper.getLockPrivacyLimit();
+        return LeoSettings.getInteger(PrefConst.KEY_NOTIFY_APP_COUNT, 5);
     }
 
     @Override
@@ -75,4 +73,5 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     public String getReportDescription() {
         return "prilevel_notice_app";
     }
+
 }

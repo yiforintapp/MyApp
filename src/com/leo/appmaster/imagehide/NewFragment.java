@@ -24,15 +24,15 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/10/16.
  */
-public abstract class ImageFragment extends Fragment implements AbsListView.OnScrollListener,
-        CompoundButton.OnCheckedChangeListener, View.OnClickListener, ImageAdaper.SelectionChangeListener {
+public abstract class NewFragment extends Fragment implements AbsListView.OnScrollListener,
+        CompoundButton.OnCheckedChangeListener, View.OnClickListener, NewAdaper.SelectionChangeListener {
 
-    private static final String TAG = ImageFragment.class.getSimpleName();
+    private static final String TAG = NewFragment.class.getSimpleName();
 
 
     private Dictionary<Integer, Integer> listViewItemHeights = new Hashtable<Integer, Integer>();
     protected Activity mActivity;
-    protected ImageAdaper mAdapter;
+    protected NewAdaper mAdapter;
 
     protected Button mHideBtn;
     protected Button mSelectBtn;
@@ -56,7 +56,7 @@ public abstract class ImageFragment extends Fragment implements AbsListView.OnSc
 
     private LEOAlarmDialog mIgnoreDlg;
 
-    protected List<PhotoItem> mDataList = new ArrayList<PhotoItem>();
+    protected List mDataList;
 
     protected String mAppName;
 
@@ -70,6 +70,11 @@ public abstract class ImageFragment extends Fragment implements AbsListView.OnSc
 
         mToolbarHeight = activity.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
         mEmptyHeight = activity.getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
+    }
+
+    protected void hideDone(){
+        mHideBtn.setText(getString(R.string.app_hide_image));
+        mHideBtn.setEnabled(false);
     }
 
     @Override
@@ -201,20 +206,18 @@ public abstract class ImageFragment extends Fragment implements AbsListView.OnSc
 
     @Override
     public void onSelectionChange(boolean selectAll, int selectedCount) {
-//        if (selectAll) {
-//            mStickyCb.setChecked(true);
-//        } else {
-//            mStickyCb.setChecked(false);
-//        }
-
         if (selectedCount > 0) {
+            mHideBtn.setEnabled(true);
             mProcessBtn.setEnabled(true);
             mProcessClick.setEnabled(true);
             mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
+            mHideBtn.setText(getString(R.string.new_hide_num, mAdapter.getSelectedList() == null ? 0 : mAdapter.getSelectedList().size()));
         } else {
             mProcessBtn.setEnabled(false);
             mProcessClick.setEnabled(false);
             mProcessBtn.setBackgroundResource(R.drawable.green_radius_shape_disable);
+            mHideBtn.setText(getString(R.string.app_hide_image));
+            mHideBtn.setEnabled(false);
         }
     }
 

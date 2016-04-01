@@ -2378,13 +2378,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 onHelpItemClicked();
             }
         } else {
-            if (position == 0) {
-                onMoveToTheme();
-            } else if (position == 1) {
-                onHideLockLineClicked(position);
-            } else if (position == 2) {
-                onHelpItemClicked();
+
+            int type = mLockFragment.getUnlockType();
+            if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+                if (position == 0) {
+                    onMoveToTheme();
+                } else if (position == 1) {
+                    onHideLockLineClicked(position);
+                } else if (position == 2) {
+                    onHelpItemClicked();
+                }
+            } else {
+                if (position == 0) {
+                    onHelpItemClicked();
+                }
             }
+
+
         }
     }
 

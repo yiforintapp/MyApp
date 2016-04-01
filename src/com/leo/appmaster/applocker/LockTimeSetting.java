@@ -230,6 +230,8 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
         String key = preference.getKey();
         if (AppMasterPreference.PREF_AUTO_LOCK.equals(key)) {
             mAutoLock.setChecked((Boolean) newValue);
+            AppMasterPreference.getInstance(LockTimeSetting.this).
+                    setAutoLock((Boolean) newValue);
             if (!((Boolean) newValue)) {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting",
                         "cancel_auto");

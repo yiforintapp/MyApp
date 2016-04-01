@@ -1152,32 +1152,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     }
 
     @Override
-    public int getHidePicTotalCount() {
-        Uri uri = MediaStore.Files.getContentUri("external");
-        String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaStore.MediaColumns.DATA
-                + " LIKE '%.leotmi'";
-
-        Cursor cursor = null;
-        try {
-            cursor = mContext.getContentResolver().query(uri, new String[]{MediaStore.MediaColumns._ID}, selection, null,
-                    MediaStore.MediaColumns.DATE_ADDED + " desc");
-            return cursor.getCount();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            if (!BuildProperties.isApiLevel14()) {
-                IoUtils.closeSilently(cursor);
-            }
-        }
-        return 0;
-    }
-
-    @Override
-    public int getHideVidTotalCount() {
-        return 0;
-    }
-
-    @Override
     public int haveCheckedVid() {
         int i = getAddVidNum();
         int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);

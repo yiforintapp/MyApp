@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -41,7 +42,8 @@ public abstract class Privacy<T> {
     private int mTotalCount;
     private int mProceedCount;
 
-    private List<T> mDataList;
+    // 新增列表
+    private List<T> mNewList;
 
     private Context mContext;
 
@@ -53,7 +55,7 @@ public abstract class Privacy<T> {
      * @return
      */
     public int getNewCount() {
-        return mDataList == null ? 0 : mDataList.size();
+        return mNewList == null ? 0 : mNewList.size();
     }
 
     /**
@@ -65,36 +67,38 @@ public abstract class Privacy<T> {
     }
 
     void setNewList(List<T> dataList) {
-        if (mDataList == null) {
-            mDataList = new ArrayList<T>();
+        if (mNewList == null) {
+            mNewList = new ArrayList<T>();
         }
 
         if (dataList == null) {
             return;
         }
 
-        mDataList.clear();
-        mDataList.addAll(dataList);
+        mNewList.clear();
+        mNewList.addAll(dataList);
     }
 
     /**
      * 获取已处理的个数
      * @return
      */
-    public abstract int getProceedCount();
+    public int getProceedCount() {
+        return mProceedCount;
+    }
 
     /**
      * 获取新增列表
      * @return
      */
     public List<T> getNewList() {
-        if (mDataList == null) {
-            mDataList = new ArrayList<T>();
+        if (mNewList == null) {
+            mNewList = new ArrayList<T>();
         }
-        return mDataList;
+        return mNewList;
     }
 
-    public boolean isDanger() {
+    public boolean isDangerous() {
         int status = getStatus();
         return status == STATUS_NEW_ADD || status == STATUS_FOUND;
     }
@@ -154,7 +158,25 @@ public abstract class Privacy<T> {
         return getAddStringId();
     }
 
-    public abstract int getPrivacySummaryId();
+    public String getPrivacyCountText() {
+        int status = getStatus();
+        switch (status) {
+            case STATUS_FOUND:
+                return getTotalCount() + "";
+            case STATUS_NEW_ADD:
+                return getNewCount() + "";
+            case STATUS_PROCEED:
+                return getProceedCount() + "";
+        }
+
+        return "null";
+    }
+
+    public boolean showPrivacyCount() {
+        int status = getStatus();
+        return status != STATUS_TOADD;
+    }
+
     public abstract int getNotificationTextId();
     public abstract int getNotificationSummaryId();
     public abstract int getNotificationIconId();
@@ -188,11 +210,23 @@ public abstract class Privacy<T> {
     public abstract int getPrivacyType();
     public abstract String getReportDescription();
 
+    public String getTag() {
+        return "Privacy";
+    }
+
     void setTotalCount(int totalCount) {
         mTotalCount = totalCount;
     }
 
     void setProceedCount(int proceedCount) {
         mProceedCount = proceedCount;
+    }
+
+    @Override
+    public String toString() {
+        return getTag() + " | danger: " + isDangerous()
+                        + " | new: " + getNewCount()
+                        + " | proceed: " + getProceedCount()
+                        + " | total: " + getTotalCount();
     }
 }

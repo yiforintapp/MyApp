@@ -3,7 +3,6 @@ package com.leo.appmaster.imagehide;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.home.FolderPicFragment;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.home.HomeScanningFragment;
-import com.leo.appmaster.home.PrivacyNewFragment;
-import com.leo.appmaster.home.PrivacyNewPicAdapter;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -27,7 +23,6 @@ import com.leo.appmaster.ui.HeaderGridView;
 import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -36,17 +31,14 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/10/16.
  */
-public class ImageHideFragment extends ImageFragment implements AdapterView.OnItemClickListener {
-    private static final String TAG = ImageHideFragment.class.getSimpleName();
+public class NewImageFragment extends NewFragment implements AdapterView.OnItemClickListener {
+    private static final String TAG = NewImageFragment.class.getSimpleName();
 
     private HeaderGridView mPicList;
     private PrivacyDataManager mLockMgr;
 
     private LEOAlarmDialog mDialog;
     private LEOCircleProgressDialog mProgressDialog;
-
-    private boolean mHidingTimeout;
-    private boolean mHidingFinish;
 
     private TextView mNewImageNum;
 
@@ -60,15 +52,15 @@ public class ImageHideFragment extends ImageFragment implements AdapterView.OnIt
             if (list.inDifferentDir) {
                 fragment = FolderPicFragment.newInstance();
             } else {
-                fragment = ImageHideFragment.newInstance();
+                fragment = NewImageFragment.newInstance();
             }
         } else {
-            fragment = ImageHideFragment.newInstance();
+            fragment = NewImageFragment.newInstance();
         }
         if (fragment instanceof FolderPicFragment) {
             ((FolderPicFragment) fragment).setData(list.photoItems);
-        } else if (fragment instanceof ImageHideFragment) {
-            ((ImageHideFragment) fragment).setData(list.photoItems, "");
+        } else if (fragment instanceof NewImageFragment) {
+            ((NewImageFragment) fragment).setData(list.photoItems, "");
         }
 
         return fragment;
@@ -81,31 +73,31 @@ public class ImageHideFragment extends ImageFragment implements AdapterView.OnIt
         }
         if (list.photoItems.size() > 60) {
             if (list.inDifferentDir) {
-                fragment = FolderHideImageFragment.newInstance();
+                fragment = FolderNewImageFragment.newInstance();
             } else {
-                fragment = ImageHideFragment.newInstance();
+                fragment = NewImageFragment.newInstance();
             }
         } else {
-            fragment = ImageHideFragment.newInstance();
+            fragment = NewImageFragment.newInstance();
         }
-        if (fragment instanceof FolderHideImageFragment) {
-            ((FolderHideImageFragment) fragment).setData(list.photoItems);
-        } else if (fragment instanceof ImageHideFragment) {
-            ((ImageHideFragment) fragment).setData(list.photoItems, "");
+        if (fragment instanceof FolderNewImageFragment) {
+            ((FolderNewImageFragment) fragment).setData(list.photoItems);
+        } else if (fragment instanceof NewImageFragment) {
+            ((NewImageFragment) fragment).setData(list.photoItems, "");
         }
 
         return fragment;
     }
 
-    public static ImageHideFragment newInstance() {
-        ImageHideFragment fragment = new ImageHideFragment();
+    public static NewImageFragment newInstance() {
+        NewImageFragment fragment = new NewImageFragment();
         return fragment;
     }
 
     @Override
     public void setData(List<? extends Object> list, String text) {
         if (list == null) return;
-
+        mDataList = new ArrayList<PhotoItem>();
         for (Object o : list) {
             mDataList.add((PhotoItem) o);
         }
@@ -119,8 +111,7 @@ public class ImageHideFragment extends ImageFragment implements AdapterView.OnIt
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLockMgr = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-
-        mAdapter = new ImageHideAdapter();
+        mAdapter = new NewImageAdapter();
         mAdapter.setList(mDataList);
     }
 
@@ -218,17 +209,7 @@ public class ImageHideFragment extends ImageFragment implements AdapterView.OnIt
                             for (PhotoItem photoItem : list) {
                                 photos.add(photoItem.getPath());
                             }
-
                             hideAllPicBackground(photos, 0);
-                            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mHidingTimeout = true;
-                                    if (!mHidingFinish) {
-                                        onProcessFinish(0);
-                                    }
-                                }
-                            }, 8000);
                         }
                     });
                 }
@@ -268,24 +249,19 @@ public class ImageHideFragment extends ImageFragment implements AdapterView.OnIt
     }
 
     private void hideAllPicBackground(final List<String> photoItems, final int incScore) {
-        mHidingTimeout = false;
-        mHidingFinish = false;
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
                 pdm.onHideAllPic(photoItems);
-                mHidingFinish = true;
                 for (int i = 0; i < photoItems.size(); i++) {
                     for (int j = 0; j < mDataList.size(); j++) {
-                        if (mDataList.get(j).getPath().equals(photoItems.get(i))) {
+                        if (((PhotoItem)mDataList.get(j)).getPath().equals(photoItems.get(i))) {
                             mDataList.remove(j);
                         }
                     }
                 }
-                if (!mHidingTimeout) {
-                    onProcessFinish(incScore);
-                }
+                onProcessFinish(incScore);
             }
         });
     }
@@ -296,12 +272,13 @@ public class ImageHideFragment extends ImageFragment implements AdapterView.OnIt
             public void run() {
                 if (mProgressDialog != null) {
                     mProgressDialog.dismiss();
-                    if(mDataList.size() > 0) {
+                    if (mDataList.size() > 0) {
                         mAdapter.setList(mDataList);
                         setLabelCount();
+                        hideDone();
                         mAdapter.notifyDataSetChanged();
-                    }else{
-                        Toast.makeText(mActivity,R.string.hide_complete_new_image,Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(mActivity, R.string.hide_complete_new_image, Toast.LENGTH_LONG).show();
                         mActivity.finish();
                     }
                 }
@@ -321,18 +298,13 @@ public class ImageHideFragment extends ImageFragment implements AdapterView.OnIt
         super.onSelectionChange(selectAll, selectedCount);
         if (selectedCount > 0) {
             mHideBtn.setEnabled(true);
-//            mSelectBtn.setEnabled(true);
-//            mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
         } else {
             mHideBtn.setEnabled(false);
-//            mSelectBtn.setEnabled(false);
-//            mProcessBtn.setBackgroundResource(R.drawable.green_radius_shape_disable);
         }
         if (mAdapter.getSelectedList() != null && mAdapter.getSelectedList().size() < mDataList.size()) {
             mSelectBtn.setText(R.string.app_select_all);
         } else {
             mSelectBtn.setText(R.string.app_select_none);
         }
-//        setProcessContent(str);
     }
 }

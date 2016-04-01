@@ -29,9 +29,9 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/11/13.
  */
-public abstract class FolderImageAdapter<T> extends BaseExpandableListAdapter {
+public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
 
-    private static final String TAG = FolderImageAdapter.class.getSimpleName();
+    private static final String TAG = FolderNewAdapter.class.getSimpleName();
 
     private static final int GROUP_EXPANDED = 1;
     private static final byte SELECTED = 0x01;
@@ -65,7 +65,7 @@ public abstract class FolderImageAdapter<T> extends BaseExpandableListAdapter {
 
     protected boolean mExpanded;
 
-    public FolderImageAdapter() {
+    public FolderNewAdapter() {
         mSrcList = new ArrayList<T>();
         mDataList = new ArrayList<ItemsWrapper>();
 
@@ -204,7 +204,7 @@ public abstract class FolderImageAdapter<T> extends BaseExpandableListAdapter {
         return 0;
     }
 
-    protected void toggle(int group, int child) {
+    public void toggle(int group, int child) {
         SelectionInfo info = mSelectionInfo.get(group);
         byte selection = info.selectedArray[child];
         if (selection == SELECTED) {
@@ -239,7 +239,7 @@ public abstract class FolderImageAdapter<T> extends BaseExpandableListAdapter {
         }
     }
 
-    protected boolean isChildChecked(int group, int child) {
+    public boolean isChildChecked(int group, int child) {
         SelectionInfo info = mSelectionInfo.get(group);
         byte selection = info.selectedArray[child];
 
@@ -417,9 +417,9 @@ public abstract class FolderImageAdapter<T> extends BaseExpandableListAdapter {
     }
 
     public static class ItemsWrapper<T> {
-        String parentPath;
-        String parentName;
-        List<T> items;
+        public String parentPath;
+        public String parentName;
+        public List<T> items;
 
         public ItemsWrapper() {
             parentName = "";
@@ -429,9 +429,9 @@ public abstract class FolderImageAdapter<T> extends BaseExpandableListAdapter {
     }
 
     public static class FoldHolder extends PrivacyNewHolder {
-        RippleView clickRv;
-        ImageView arrow;
-        TextView count;
+        public RippleView clickRv;
+        public ImageView arrow;
+        public TextView count;
     }
 
     private static class SelectionInfo {

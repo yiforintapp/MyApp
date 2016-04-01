@@ -282,8 +282,8 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         String key = preference.getKey();
         if (AppMasterPreference.PREF_FORBIND_UNINSTALL.equals(key)) {
             Intent intent = null;
-            ComponentName component = new ComponentName(this,DeviceReceiver.class);
-            ComponentName component2 = new ComponentName(this,DeviceReceiverNewOne.class);
+            ComponentName component = new ComponentName(this, DeviceReceiver.class);
+            ComponentName component2 = new ComponentName(this, DeviceReceiverNewOne.class);
 //            if(false){
             if (isAdminActive()) {
                 DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
@@ -291,7 +291,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             } else if (isNewAdminActive()) {
                 DevicePolicyManager dpm = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
                 dpm.removeActiveAdmin(component2);
-            }else {
+            } else {
                 mLockManager.filterSelfOneMinites();
                 mLockManager.filterPackage(Constants.PKG_SETTINGS, 1000);
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
@@ -311,6 +311,8 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             }
         } else if (AppMasterPreference.PREF_AUTO_LOCK.equals(key)) {
             mAutoLock.setChecked((Boolean) newValue);
+            AppMasterPreference.getInstance(LockOptionActivity.this).
+                    setAutoLock((Boolean) newValue);
             if (!((Boolean) newValue)) {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting",
                         "cancel_auto");

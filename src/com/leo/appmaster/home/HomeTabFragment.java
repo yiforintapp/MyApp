@@ -299,11 +299,13 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     // 图片隐藏
                     intent = new Intent(activity, ImageHideMainActivity.class);
                     activity.startActivity(intent);
+                    LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
                     break;
                 case R.id.home_video:
                      //视频隐藏
                     intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
+                    LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                     break;
                 case R.id.home_more:
                     LeoSettings.setBoolean(PrefConst.KEY_IS_HOME_TAB_MORE_CONSUMED,true);
