@@ -30,6 +30,7 @@
                 android:src="@drawable/tips_img_icon" />
 
             <TextView
+                android:id="@+id/tv_new_amount_tip"
                 android:textColor="@color/c2"
                 android:textSize="@dimen/f4"
                 android:layout_marginLeft="7dp"
@@ -41,6 +42,7 @@
         </LinearLayout>
 
         <com.leo.appmaster.ui.RippleView
+            android:id="@+id/rv_hide_new"
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             app:rippleColor="@color/cm"
@@ -50,10 +52,11 @@
             >
 
             <Button
+                android:id="@+id/bt_hidenew"
                 android:textSize="@dimen/f4"
                 android:textColor="@color/c1"
                 android:minWidth="64dp"
-                android:text="@string/app_hide_image"
+                android:text="@string/hide_immediately"
                 android:background="@drawable/blue_radius_btn_shape"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />

@@ -1242,6 +1242,7 @@
 
     <string name="find_new_pic_tips">检测到最近新增了<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张图片</string>
     <string name="find_new_vid_tips">检测到最近新增了<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个视频</string>
+    <string name="hide_immediately">立即隐藏</string>
 
     <string name="hd_found_app">发现%1d个应用</string>
     <string name="hd_found_pic">发现%1d张图片</string>

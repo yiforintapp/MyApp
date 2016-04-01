@@ -4,7 +4,9 @@ package com.leo.appmaster.imagehide;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -39,7 +42,9 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
 
 import java.util.ArrayList;
@@ -68,6 +73,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private View mIncludeLayoutNewPic;
     private GridView mGvNewPic;
+    private TextView mTvNewAmountTips;
+    private RippleView mRvHideNew;
+    private TextView mTvIgnoreNew;
+
 
     public static final int REQUEST_CODE_OPTION = 1001;
 
@@ -136,7 +145,24 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 mHideAlbumAdapt.setDataList(mAlbumList);
                 mHideAlbumAdapt.notifyDataSetChanged();
             }
+            if (mNewPicAdapter != null) {
+                if (mNewAddPic == null || mNewAddPic.size() == 0) {
+                    mIncludeLayoutNewPic.setVisibility(View.GONE);
+                } else {
+                    mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
+                    mNewPicAdapter.setDataList(mNewAddPic);
+                    mNewPicAdapter.notifyDataSetChanged();
+                    updateTips();
+                }
+            }
+
         }
+    }
+
+    private void updateTips() {
+        String string1 = getString(R.string.find_new_pic_tips);
+        String s2 = String.format(string1, mNewAddPic.size());
+        mTvNewAmountTips.setText(Html.fromHtml(s2));
     }
 
     private void asyncLoad() {
@@ -183,9 +209,33 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         mIsFromConfirm = getIntent().getBooleanExtra(Constants.FROM_CONFIRM_FRAGMENT, false);
     }
 
+    private void goNewHideImageActivity() {
+        Intent intent = new Intent(ImageHideMainActivity.this,NewHideImageActivity.class);
+        startActivity(intent);
+    }
+
+
     private void initUI() {
         mIncludeLayoutNewPic = findViewById(R.id.layout_newpic);
+        mRvHideNew = (RippleView) mIncludeLayoutNewPic.findViewById(R.id.rv_hide_new);
+        mRvHideNew.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goNewHideImageActivity();
+            }
+        });
+        mTvIgnoreNew = (TextView) mIncludeLayoutNewPic.findViewById(R.id.tv_ignore);
+        mTvIgnoreNew.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+                hideHeadLayout();
+            }
+        });
+
+        mTvNewAmountTips = (TextView) mIncludeLayoutNewPic.findViewById(R.id.tv_new_amount_tip);
         mGvNewPic = (GridView) mIncludeLayoutNewPic.findViewById(R.id.gv_newpic);
+        mGvNewPic.setAdapter(mNewPicAdapter);
 
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_image_hide);
@@ -210,6 +260,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
+    }
+
+    private void hideHeadLayout() {
+
     }
 
     private void initImageLoder() {
@@ -283,27 +337,67 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
         @Override
         public int getCount() {
-            if (mNewAddPic == null) {
+            if (list == null) {
                 return 0;
             }
-            return Math.min(NEW_PIC_MAX_SHOW_AMOUNT,mNewAddPic.size());
+            LeoLog.i("newpic","showed size = " + Math.min(NEW_PIC_MAX_SHOW_AMOUNT,list.size()) );
+            return Math.min(NEW_PIC_MAX_SHOW_AMOUNT,list.size());
+
         }
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return position;
         }
 
         @Override
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic,parent,false);
+            View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent,false);
             ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
-//            iv.setImageResource(R.drawable.m);
+            String path = list.get(position).getPath();
+
+            String uri = null;
+            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+            } else {
+                uri = ImageDownloader.Scheme.FILE.wrap(path);
+            }
+            mImageLoader.displayImage(uri,iv,mOptions);
+            v.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goNewHideImageActivity();
+                }
+            });
+
+//            mImageLoader.loadImage(uri, new ImageLoadingListener() {
+//                @Override
+//                public void onLoadingStarted(String imageUri, View view) {
+//                }
+//
+//                @Override
+//                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+//                    LeoLog.i("newpic","loading failed    " + imageUri);
+//                }
+//
+//                @Override
+//                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                    LeoLog.i("newpic","loading complete  " + imageUri);
+//                }
+//
+//                @Override
+//                public void onLoadingCancelled(String imageUri, View view) {
+//
+//                }
+//            });
+
+
+//            iv.setImageResource(R.drawable.ic_launcher);
             return v;
         }
     }
