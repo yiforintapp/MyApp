@@ -11,11 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
@@ -23,7 +24,7 @@ import com.leo.tools.animator.PropertyValuesHolder;
 public class HomeDetectFragment extends Fragment implements View.OnClickListener {
     private static final int SAFT_LEVEL = 0;
     private static final int DANGER_LEVEL = 1;
-    private static final long FIR_IN_ANIM_TIME = 1000;
+    private static final long FIR_IN_ANIM_TIME = 700;
 
     private Context mContext;
     private RelativeLayout mSfatResultAppLt;
@@ -54,6 +55,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private TextView mDetDagVideoNumTv;
     private TextView mDetDagVideoTv;
     private HomeDetectPresenter mDetectPresenter;
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -265,13 +267,82 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     //首次进入主页Center盾牌动画
     public void startHomeCenterShieldAnim() {
-        PropertyValuesHolder centerScaleX = PropertyValuesHolder.ofFloat("scaleX", (float) 0.6, (float) 1.06);
-        PropertyValuesHolder centerScaleY = PropertyValuesHolder.ofFloat("scaleY", (float) 0.6, (float) 1.06);
+//        PropertyValuesHolder centerScaleX = PropertyValuesHolder.ofFloat("scaleX", (float) 0.6, (float) 1.06);
+//        PropertyValuesHolder centerScaleY = PropertyValuesHolder.ofFloat("scaleY", (float) 0.6, (float) 1.06);
+//
+//        ObjectAnimator centerAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldCenterIv, centerScaleX, centerScaleY);
+//        centerAnim.setDuration(FIR_IN_ANIM_TIME);
+//        centerAnim.setStartDelay(FIR_IN_ANIM_TIME);
+//        centerAnim.start();
+        ObjectAnimator scaleXFirstAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleX", 0.6f, 1.06f);
+        ObjectAnimator scaleYFirstAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleY", 0.6f, 1.06f);
+        AnimatorSet scaleFirstAnimatorSet = new AnimatorSet();
+        scaleFirstAnimatorSet.playTogether(scaleXFirstAnim, scaleYFirstAnim);
+        scaleFirstAnimatorSet.setDuration(200);
 
-        ObjectAnimator centerAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldCenterIv, centerScaleX, centerScaleY);
-        centerAnim.setDuration(FIR_IN_ANIM_TIME);
-        centerAnim.setStartDelay(FIR_IN_ANIM_TIME);
-        centerAnim.start();
+        ObjectAnimator scaleXEndAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleX", 1.06f, 1f);
+        ObjectAnimator scaleYEndAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleY", 1.06f, 1f);
+        AnimatorSet scaleEndAnimatorSet = new AnimatorSet();
+        scaleEndAnimatorSet.playTogether(scaleXEndAnim, scaleYEndAnim);
+        scaleEndAnimatorSet.setDuration(80);
+
+        ObjectAnimator alphaAnim =ObjectAnimator.ofFloat(mShieldCenterIv, "alpha", 0f, 1f);
+        alphaAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                mShieldCenterIv.setVisibility(View.VISIBLE);
+            }
+        });
+        alphaAnim.setDuration(120);
+
+        AnimatorSet scaleAnimatorSet = new AnimatorSet();
+        scaleAnimatorSet.playSequentially(scaleFirstAnimatorSet, scaleEndAnimatorSet);
+
+        AnimatorSet centerAnimatorSet = new AnimatorSet();
+        centerAnimatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                startScanResultAnim();
+            }
+        });
+        centerAnimatorSet.playTogether(scaleAnimatorSet, alphaAnim);
+        centerAnimatorSet.setStartDelay(500);
+        centerAnimatorSet.start();
+
+    }
+
+    private void startScanResultAnim() {
+        AnimatorSet appAnimatorSet = getTranslateAnim(mSfatResultAppLt);
+        AnimatorSet picAnimatorSet = getTranslateAnim(mSfatResultImgLt);
+        AnimatorSet vidAnimatorSet = getTranslateAnim(mSfatResultVideoLt);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(picAnimatorSet).after(280).after(appAnimatorSet);
+        animatorSet.play(vidAnimatorSet).after(280).after(picAnimatorSet);
+        animatorSet.start();
+
+    }
+
+    /** 扫描结果位移动画 */
+    private AnimatorSet getTranslateAnim(final View view) {
+        int[] size = Utilities.getScreenSize(getActivity());
+        ObjectAnimator translateAnim = ObjectAnimator.ofFloat(
+                view, "x", -size[0], view.getTranslationY());
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
+        alphaAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                view.setVisibility(View.VISIBLE);
+            }
+        });
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(translateAnim, alphaAnim);
+        animatorSet.setDuration(400);
+
+        return animatorSet;
     }
 
     //扫描结果处理后切换动画
