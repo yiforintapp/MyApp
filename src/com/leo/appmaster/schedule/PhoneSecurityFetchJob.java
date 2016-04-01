@@ -44,13 +44,15 @@ public class PhoneSecurityFetchJob extends FetchScheduleJob {
         JSONObject resp = (JSONObject) response;
         try {
                 /*开启手机防盗人数*/
-            int securNumber = resp.getInt("data");
-            if (securNumber > 0) {
-                LeoLog.i(TAG, "开启手机防盗人数:" + securNumber);
-                LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-                lostMgr.setUsePhoneSecurityConut(securNumber);
-            } else {
-                LeoLog.i(TAG, "手机防盗开启人数小于0");
+            if (!resp.isNull("data")) {
+                int securNumber = resp.getInt("data");
+                if (securNumber > 0) {
+                    LeoLog.i(TAG, "开启手机防盗人数:" + securNumber);
+                    LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                    lostMgr.setUsePhoneSecurityConut(securNumber);
+                } else {
+                    LeoLog.i(TAG, "手机防盗开启人数小于0");
+                }
             }
 
 //            /* 3.3 耗电app阈值 */

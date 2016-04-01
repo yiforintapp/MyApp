@@ -8,7 +8,6 @@ import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.PrefConst;
@@ -44,15 +43,7 @@ public class CommentSettingsFetchJob extends FetchScheduleJob {
         super.onFetchSuccess(response, noMidify);
         JSONObject resp = (JSONObject) response;
         try {
-                /*开启手机防盗人数*/
-            int securNumber = resp.getInt("data");
-            if (securNumber > 0) {
-                LeoLog.i(TAG, "开启手机防盗人数:" + securNumber);
-                LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-                lostMgr.setUsePhoneSecurityConut(securNumber);
-            } else {
-                LeoLog.i(TAG, "手机防盗开启人数小于0");
-            }
+
 
             /* 3.3 耗电app阈值 */
             if (!resp.isNull(BatteryManager.APP_THRESHOLD_KEY)) {
