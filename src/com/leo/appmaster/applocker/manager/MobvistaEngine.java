@@ -250,6 +250,8 @@ public class MobvistaEngine {
 
 			//注入facebook的placementId
 			properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));
+			
+			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 10);
 			//通过这个配置产生一个广告调用对象
 			final MvNativeHandler templateNativeHandler = new MvNativeHandler(properties, mAppContext);
 			
