@@ -1269,4 +1269,6 @@
     <string name="airsig_tip_toast_text">主题暂不适用于签字解锁哦</string>
     <string name="airsig_tip_toast_update_text">签字解锁密钥已到期，升级隐私卫士后方可继续使用</string>
 
+    <string name="uninstall_guide_tips">您已开启高级保护，点此方可卸载隐私卫士哦</string>
+
 </resources>

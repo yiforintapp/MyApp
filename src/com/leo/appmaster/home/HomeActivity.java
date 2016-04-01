@@ -30,6 +30,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +82,7 @@ import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DeviceUtil;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LeoUrls;
@@ -152,6 +154,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private boolean mHidePicFinish = true;
     private LEOAlarmDialog mUninstallDialog;  // 卸载提示对话框
     private boolean mClickUninstall; // 是否点击卸载按钮
+    private boolean mUninstallGuideShow;
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
@@ -311,6 +314,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            mWallAd.release();
 //            mWallAd = null;
 //        }
+        if (mUninstallGuideShow) {
+            cancelGuide();
+        }
 
         ImageLoader.getInstance().clearMemoryCache();
         unregisterReceiver(mLocaleReceiver);
@@ -513,6 +519,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mCommonToolbar.startAnimation(mComingInAnim);
 
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            if (mUninstallGuideShow) {
+                cancelGuide();
+            }
 //            mMoreFragment.cancelUpArrowAnim();
         }
     }
@@ -692,13 +701,24 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (mUninstallGuideShow) {
+            cancelGuide();
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
     public void onBackPressed() {
 //        if (mMoreFragment.isPanelOpen()) {
 //            mMoreFragment.closePanel();
 //            return;
 //        }
-
+        LeoLog.e("mMenuList", "onBackPressed");
         if (mDrawerLayout.isDrawerOpen(mMenuList)) {
+            if (mUninstallGuideShow) {
+                cancelGuide();
+            }
             mDrawerLayout.closeDrawer(mMenuList);
             return;
         }
@@ -840,9 +860,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
-        openAdvanceProtectDialogHandler();  //和其他对话框可能同时出现
-        showGradeDialog();
-        judgeShowGradeTip();
         /* 分析是否需要升级红点显示 */
         if (SDKWrapper.isUpdateAvailable()) {
             mToolbar.showMenuRedTip(true);
@@ -862,6 +879,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         /* 判断是否打开高级保护，显示“卸载”项 */
         addUninstallPgTOMenueItem();
+        openAdvanceProtectDialogHandler();  //和其他对话框可能同时出现
+        showGradeDialog();
+        judgeShowGradeTip();
         if (!LeoEventBus.getDefaultBus().isRegistered(this)) {
             LeoEventBus.getDefaultBus().register(this);
         }
@@ -910,18 +930,20 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @SuppressWarnings("deprecation")
     private void judgeShowGradeTip() {
         if (mNeedDialogShow) {
-            AppMasterPreference pref = AppMasterPreference.getInstance(this);
-            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-            ActivityManager.RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
-            String pkg = getPackageName();
-            if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
-                long count = pref.getUnlockCount();
-                boolean haveTip = pref.getGoogleTipShowed();
-                if (count >= 25 && !haveTip) {  // 封包改为25
+            if (!mUninstallGuideShow) {
+                AppMasterPreference pref = AppMasterPreference.getInstance(this);
+                ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                ActivityManager.RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
+                String pkg = getPackageName();
+                if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
+                    long count = pref.getUnlockCount();
+                    boolean haveTip = pref.getGoogleTipShowed();
+                    if (count >= 25 && !haveTip) {  // 封包改为25
                         /* google play 评分提示 */
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank");
-                    Intent intent = new Intent(this, GradeTipActivity.class);
-                    startActivity(intent);
+                        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank");
+                        Intent intent = new Intent(this, GradeTipActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         } else {
@@ -1603,7 +1625,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
         boolean isTip = LeoPreference.getInstance().getBoolean(key, true);
 
-        if (isAdminActive() && isTip) {
+        if (isAdminActive()/* && isTip*/) {
             /**
              * Samsung 5.1.1 sys 电池优化权限提示
              */
@@ -1620,43 +1642,52 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    private void openAdvanceProtectDialogTip() {
-        if (mMessageDialog == null) {
-            mMessageDialog = new LEOAnimationDialog(this);
-            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    if (mMessageDialog != null) {
-                        mMessageDialog = null;
-                    }
-                    AppMasterPreference.getInstance(HomeActivity.this)
-                            .setAdvanceProtectOpenSuccessDialogTip(false);
-                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-                    LeoPreference.getInstance().putBoolean(key, false);
-                }
-            });
+    private void cancelGuide() {
+        if (mGuideFragment != null) {
+            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.UNINSTALL_GUIDE);
+            mUninstallGuideShow = false;
         }
-        String content = getString(R.string.prot_open_suc_tip_cnt);
-        mMessageDialog.setContent(content);
-        mMessageDialog.show();
+    }
+
+    private void openAdvanceProtectDialogTip() {
 //        if (mMessageDialog == null) {
-//            mMessageDialog = new LEOMessageDialog(this);
+//            mMessageDialog = new LEOAnimationDialog(this);
 //            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 //                @Override
 //                public void onDismiss(DialogInterface dialog) {
 //                    if (mMessageDialog != null) {
 //                        mMessageDialog = null;
 //                    }
+//                    AppMasterPreference.getInstance(HomeActivity.this)
+//                            .setAdvanceProtectOpenSuccessDialogTip(false);
 //                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
 //                    LeoPreference.getInstance().putBoolean(key, false);
 //                }
 //            });
 //        }
-//        String title = getString(R.string.advance_protect_open_success_tip_title);
-//        String content = getString(R.string.adv_prot_open_suc_tip_cnt);
-//        mMessageDialog.setTitle(title);
+//        String content = getString(R.string.prot_open_suc_tip_cnt);
 //        mMessageDialog.setContent(content);
 //        mMessageDialog.show();
+        if (!mDrawerLayout.isDrawerVisible(mMenuList)) {
+            mDrawerLayout.openDrawer(mMenuList);
+        }
+        if (mMenuItems != null && mMenuItems.size() > 0) {
+            int topViewHeight = (int) getResources().getDimension(R.dimen.toolbar_height)
+                    + DipPixelUtil.px2dip(this, 1) * 7
+                    + ((int) getResources().getDimension(R.dimen.home_left_list_item_height))
+                    * (mMenuItems.size() - 1);
+            int lightHeight = (int) getResources().getDimension(R.dimen.home_left_list_item_height);
+            mGuideFragment.setUninstallParams(topViewHeight, lightHeight);
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.UNINSTALL_GUIDE);
+                    mUninstallGuideShow = true;
+                    LeoLog.e("mMenuList", "open:" + mUninstallGuideShow);
+                    LeoPreference.getInstance().putBoolean(PrefConst.KEY_OPEN_ADVA_PROTECT, false);
+                }
+            }, 300);
+        }
     }
 
     /*首页引导*/
@@ -1682,7 +1713,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         long storeTime = mPt.getLong(PrefConst.STORE_GRADE_TIME, 0);
         boolean mShow = mPt.getBoolean(PrefConst.KEY_HAS_GRADE, false);
         LeoLog.e(TAG, "time: " + time + ";;;storetime: " + storeTime + ";;;mshow: " + mShow + "extra: " + (System.currentTimeMillis() - storeTime));
-        if (!mShow && (System.currentTimeMillis() - storeTime >= time)) {
+        if (!mUninstallGuideShow && !mShow && (System.currentTimeMillis() - storeTime >= time)) {
             Intent intent = new Intent(this, GradeTipActivity.class);
             if (mAppLockSuccess) {
                 boolean isAppContentEmpty = TextUtils.isEmpty(
