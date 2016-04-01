@@ -150,6 +150,11 @@ public abstract class PrivacyDataManager extends Manager {
 
     public abstract int getAddVidNum();
 
+    public abstract int getNormalVidsNum();
+
+    public abstract int getHideVidsNum();
+
+
     /**
      * 已阅新增视频，更新数据
      */

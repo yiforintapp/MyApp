@@ -206,7 +206,7 @@ public class GestureLockFragment extends LockFragment implements
                 mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
                 mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
                 mIvBottom.setBackgroundResource(
-                        R.drawable.airsig_icon);
+                        R.drawable.reset_airsig_gesture);
             } else {
                 int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
                 if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
@@ -215,7 +215,7 @@ public class GestureLockFragment extends LockFragment implements
                     mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
                     mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
                     mIvBottom.setBackgroundResource(
-                            R.drawable.airsig_icon);
+                            R.drawable.reset_airsig_gesture);
                 } else {
                     mLockPatternView.setVisibility(View.GONE);
                     mAirSigTouchView.setVisibility(View.VISIBLE);
@@ -686,7 +686,7 @@ public class GestureLockFragment extends LockFragment implements
             mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
             mIvBottom.setBackgroundResource(
-                    R.drawable.airsig_icon);
+                    R.drawable.reset_airsig_gesture);
             changeBg(false);
         }
     }

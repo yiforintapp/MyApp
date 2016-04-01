@@ -926,7 +926,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         int record = 0;
         int lastVid = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
         LeoLog.d("checkVidId", "lastVid is : " + lastVid);
-//        Uri uri = MediaStore.Files.getContentUri("external");
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = Constants.VIDEO_FORMAT;
         Cursor cursor = null;
@@ -934,11 +933,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
         String store = externalStorageDirectory.getPath();
         try {
-//            cursor = mContext.getContentResolver().query(uri,
-//                    null,
-//                    selection + " and " + MediaStore.MediaColumns._ID + ">?",
-//                    new String[]{String.valueOf(lastVid)},
-//                    MediaStore.MediaColumns._ID + " desc");
             cursor = mContext.getContentResolver().query(uri, null, selection, null,
                     MediaStore.MediaColumns._ID + " desc");
             if (cursor != null) {
@@ -988,6 +982,80 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             }
         }
         return vidNum;
+    }
+
+    @Override
+    public int getNormalVidsNum() {
+        int num = 0;
+        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        String selection = Constants.VIDEO_FORMAT;
+        Cursor cursor = null;
+        try {
+            //old
+            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+                    MediaStore.MediaColumns.DATE_MODIFIED + " desc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor
+                            .getString(cursor
+                                    .getColumnIndexOrThrow(MediaStore.Video.VideoColumns.DATA));
+                    LeoLog.d("checkVidId", "path is : " + path);
+
+                    if (path.startsWith(SYSTEM_PREFIX)) {
+                        continue;
+                    }
+
+
+                    File videoFile = new File(path);
+                    boolean videoExists = videoFile.exists();
+                    if (videoExists) {
+                        num++;
+                    }
+                }
+            }
+        } catch (Exception e) {
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+
+        return num;
+    }
+
+    @Override
+    public int getHideVidsNum() {
+        int num = 0;
+        Uri uri = MediaStore.Files.getContentUri("external");
+        String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmv'";
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+                    MediaStore.MediaColumns.DATE_ADDED + " desc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor
+                            .getString(cursor
+                                    .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+                    LeoLog.d("checkVidId", "path is : " + path);
+
+
+                    File videoFile = new File(path);
+                    boolean videoExists = videoFile.exists();
+                    if (videoExists) {
+                        num++;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+
+        return num;
     }
 
     public int getNextToTargetId(int targetId) {
