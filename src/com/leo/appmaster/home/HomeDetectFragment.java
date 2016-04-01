@@ -100,12 +100,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getAppPrivacy();
         if (privacy.isDangerous()) {
             mSfatResultAppLt.setVisibility(View.INVISIBLE);
-            mDangerResultAppLt.setVisibility(View.VISIBLE);
+//            mDangerResultAppLt.setVisibility(View.VISIBLE);
 
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
         } else {
-            mSfatResultAppLt.setVisibility(View.VISIBLE);
+//            mSfatResultAppLt.setVisibility(View.VISIBLE);
             mDangerResultAppLt.setVisibility(View.INVISIBLE);
 
             mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
@@ -121,12 +121,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getImagePrivacy();
         if (privacy.isDangerous()) {
             mSfatResultImgLt.setVisibility(View.INVISIBLE);
-            mDangerResultImgLt.setVisibility(View.VISIBLE);
+//            mDangerResultImgLt.setVisibility(View.VISIBLE);
 
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
         } else {
-            mSfatResultImgLt.setVisibility(View.VISIBLE);
+//            mSfatResultImgLt.setVisibility(View.VISIBLE);
             mDangerResultImgLt.setVisibility(View.INVISIBLE);
 
             mDetSaftImgTv.setText(privacy.getPrivacyTitleId());
@@ -142,12 +142,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getVideoPrivacy();
         if (privacy.isDangerous()) {
             mSfatResultVideoLt.setVisibility(View.INVISIBLE);
-            mDangerResultVideoLt.setVisibility(View.VISIBLE);
+//            mDangerResultVideoLt.setVisibility(View.VISIBLE);
 
             mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
         } else {
-            mSfatResultVideoLt.setVisibility(View.VISIBLE);
+//            mSfatResultVideoLt.setVisibility(View.VISIBLE);
             mDangerResultVideoLt.setVisibility(View.INVISIBLE);
 
             mDetSaftVideoTv.setText(privacy.getPrivacyTitleId());
@@ -387,9 +387,24 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     private void startScanResultAnim() {
-        AnimatorSet appAnimatorSet = getTranslateAnim(mSfatResultAppLt);
-        AnimatorSet picAnimatorSet = getTranslateAnim(mSfatResultImgLt);
-        AnimatorSet vidAnimatorSet = getTranslateAnim(mSfatResultVideoLt);
+        AnimatorSet appAnimatorSet;
+        AnimatorSet picAnimatorSet;
+        AnimatorSet vidAnimatorSet;
+        if (PrivacyHelper.getAppPrivacy().isDangerous()) {
+            appAnimatorSet = getTranslateAnim(mDangerResultAppLt);
+        } else {
+            appAnimatorSet = getTranslateAnim(mSfatResultAppLt);
+        }
+        if (PrivacyHelper.getImagePrivacy().isDangerous()) {
+            picAnimatorSet = getTranslateAnim(mDangerResultImgLt);
+        } else {
+            picAnimatorSet = getTranslateAnim(mSfatResultImgLt);
+        }
+        if (PrivacyHelper.getVideoPrivacy().isDangerous()) {
+            vidAnimatorSet = getTranslateAnim(mDangerResultVideoLt);
+        } else {
+            vidAnimatorSet = getTranslateAnim(mSfatResultVideoLt);
+        }
         ObjectAnimator tipsAnim = ObjectAnimator.ofFloat(mCenterTipRt, "x", -mScreenWidth, mCenterTipRt.getTranslationX());
         tipsAnim.addListener(new AnimatorListenerAdapter() {
             @Override

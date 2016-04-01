@@ -89,6 +89,7 @@ import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.NewHideVidActivity;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.utils.IoUtils;
@@ -1233,7 +1234,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "about");
 //                    intent = new Intent(HomeActivity.this,
 //                            AboutActivity.class);
-                    intent = new Intent(HomeActivity.this, NewHideImageActivity.class);
+                    intent = new Intent(HomeActivity.this, NewHideVidActivity.class);
                     startActivity(intent);
                 }
             }

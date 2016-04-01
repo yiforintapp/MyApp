@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.FolderAdapter;
 import com.leo.appmaster.home.PrivacyNewAdaper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaskImageView;
@@ -16,11 +15,10 @@ import com.leo.appmaster.ui.RippleView;
 /**
  * Created by Jasper on 2015/10/30.
  */
-public class FolderHideImageAdapter extends FolderImageAdapter<PhotoItem> {
-    private static final String TAG = "FolderHideImageAdapter";
+public class FolderNewImageAdapter extends FolderNewAdapter<PhotoItem> {
     private static final int COLOMN = 3;
 
-    public FolderHideImageAdapter() {
+    public FolderNewImageAdapter() {
         super();
     }
 

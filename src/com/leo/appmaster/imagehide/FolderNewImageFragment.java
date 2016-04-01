@@ -3,11 +3,9 @@ package com.leo.appmaster.imagehide;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +18,6 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
-import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -30,28 +27,28 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/10/30.
  */
-public class FolderHideImageFragment extends FolderImageFragment<PhotoItem> {
-    private static final String TAG = FolderHideImageFragment.class.getSimpleName();
+public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
+    private static final String TAG = FolderNewImageFragment.class.getSimpleName();
 
     private LEOAlarmDialog mDialog;
     private LEOCircleProgressDialog mProgressDialog;
     private TextView mNewImageNum;
 
-    public static FolderHideImageFragment newInstance() {
-        return new FolderHideImageFragment();
+    public static FolderNewImageFragment newInstance() {
+        return new FolderNewImageFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mAdapter = new FolderHideImageAdapter();
+        mAdapter = new FolderNewImageAdapter();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_new_hide_image_folder, container, false);
+        return inflater.inflate(R.layout.fragment_new_folder_vid_hide, container, false);
     }
 
     @Override
@@ -100,7 +97,7 @@ public class FolderHideImageFragment extends FolderImageFragment<PhotoItem> {
                         mAdapter.notifyDataSetChanged();
                         setLabelCount();
                     }else{
-                        Toast.makeText(mActivity,"新增图片已隐藏完毕",Toast.LENGTH_LONG).show();
+                        Toast.makeText(mActivity,R.string.hide_complete_new_image,Toast.LENGTH_LONG).show();
                         mActivity.finish();
                     }
                 }
