@@ -1625,7 +1625,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
         boolean isTip = LeoPreference.getInstance().getBoolean(key, true);
 
-        if (isAdminActive()/* && isTip*/) {
+        if (isAdminActive() && isTip) {
             /**
              * Samsung 5.1.1 sys 电池优化权限提示
              */
