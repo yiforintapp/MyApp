@@ -216,7 +216,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     private void reloadAppStatus() {
         Privacy privacy = PrivacyHelper.getAppPrivacy();
-        if (/*privacy.isDangerous()*/true) {
+        if (privacy.isDangerous()) {
             mSfatResultAppLt.setVisibility(View.INVISIBLE);
             mDangerResultAppLt.setVisibility(View.VISIBLE);
             mDangerResultAppLt.setBackgroundResource(R.drawable.strip_home_nook1);
