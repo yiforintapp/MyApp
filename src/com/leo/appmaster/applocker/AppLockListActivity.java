@@ -219,7 +219,6 @@ public class AppLockListActivity extends BaseActivity implements
 
         mTtileBar = (CommonToolbar) findViewById(R.id.listlock_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_lock);
-        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
         mTtileBar.setNavigationClickListener(this);
 

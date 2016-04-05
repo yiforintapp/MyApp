@@ -8,8 +8,7 @@
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_battery"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:background="#1167f0" />
+        android:layout_height="54dp" />
 
     <RelativeLayout
         android:id="@+id/rl_content"

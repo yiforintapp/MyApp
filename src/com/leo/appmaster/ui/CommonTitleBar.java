@@ -91,6 +91,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
         mNewText = (TextView) findViewById(R.id.ct_title_tv);
 
+        setBackgroundResource(R.color.ctc);
         super.onFinishInflate();
     }
 
