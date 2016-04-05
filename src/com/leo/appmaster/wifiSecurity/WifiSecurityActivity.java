@@ -1,22 +1,17 @@
 package com.leo.appmaster.wifiSecurity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
-import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
@@ -26,9 +21,7 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.PropertyInfoUtil;
-import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -86,7 +79,6 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_main);
-
         mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         LeoEventBus.getDefaultBus().register(this);
         mIsJudgeAsLowMemory = PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this) <= Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY;
@@ -167,6 +159,9 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     }
 
     public WifiSecurityManager getManger() {
+        if (mWifiManager == null) {
+            mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
+        }
         return mWifiManager;
     }
 
