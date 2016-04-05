@@ -4,6 +4,7 @@ package com.leo.appmaster.home;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.NewHideVidActivity;
@@ -40,6 +42,7 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 
 public class HomeDetectFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = "HomeDetectFragment";
     private static final int SAFT_LEVEL = 0;
     private static final int DANGER_LEVEL = 1;
     private static final long FIR_IN_ANIM_TIME = 700;
@@ -124,6 +127,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+        LeoLog.d(TAG, "onResume...");
 
         // 刷新状态
         reloadAppStatus();
@@ -339,7 +343,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 //mDetectPresenter.appDangerHandler();
                 Intent appIntent = new Intent(mContext, AppLockListActivity.class);
                 Privacy privacy = PrivacyHelper.getAppPrivacy();
-                if (privacy.getNewCount() > 0) {
+                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
                     appIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
                 }
                 mContext.startActivity(appIntent);
@@ -354,7 +358,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 //mDetectPresenter.imageDangerHandler();
                 Intent imageIntent = null;
                 privacy = PrivacyHelper.getImagePrivacy();
-                if (privacy.getNewCount() > 0) {
+                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
                     imageIntent = new Intent(mContext, NewHideImageActivity.class);
                 } else {
                     imageIntent = new Intent(mContext, ImageHideMainActivity.class);
@@ -371,7 +375,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 //mDetectPresenter.videoDangerHandler();
                 Intent intent = null;
                 privacy = PrivacyHelper.getVideoPrivacy();
-                if (privacy.getNewCount() > 0) {
+                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
                     intent = new Intent(mContext, VideoHideMainActivity.class);
                 } else {
                     intent = new Intent(mContext, NewHideVidActivity.class);

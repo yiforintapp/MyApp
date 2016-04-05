@@ -204,6 +204,7 @@ public class LockManagerImpl extends LockManager {
         AppLoadEngine.getInstance(mContext).registerAppChangeListener(new AppLoadEngine.AppChangeListener() {
             @Override
             public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
+                notifySecurityChange();
                 if (type == AppLoadEngine.AppChangeListener.TYPE_REMOVE ||
                         type == AppLoadEngine.AppChangeListener.TYPE_UNAVAILABLE) {
                     InstalledAppTable.getInstance().removePackageList(changes);

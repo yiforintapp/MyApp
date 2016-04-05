@@ -33,7 +33,8 @@ import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 public class PrivacyHelper implements Manager.SecurityChangeListener {
     private static final String TAG = "PrivacyHelper";
 
-    private static final int CHECK_TIME = 60 * 1000;
+//    private static final int CHECK_TIME = 60 * 1000;
+    private static final int CHECK_TIME = 20 * 1000;
 
     public enum Level {
         LEVEL_ONE(100, 100),

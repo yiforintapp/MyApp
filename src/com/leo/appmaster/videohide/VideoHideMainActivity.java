@@ -170,6 +170,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 }
             }
         });
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+        pdm.haveCheckedVid();
     }
 
 
