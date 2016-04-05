@@ -10,15 +10,6 @@
         android:layout_marginTop="8dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="8dp"
-            android:background="@drawable/file_video_icon"/>
-
-        <ImageView
             android:id="@+id/image"
             android:layout_width="@dimen/hide_pictrue_imge_frame_width"
             android:layout_height="@dimen/hide_pictrue_imge_frame_width"
@@ -53,5 +44,15 @@
         android:singleLine="true"
         android:textColor="@color/c3"
         android:textSize="@dimen/f4"/>
+
+    <ImageView
+        android:id="@+id/iv_vid_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="8dp"
+        android:src="@drawable/file_video_icon"/>
 
 </RelativeLayout>
