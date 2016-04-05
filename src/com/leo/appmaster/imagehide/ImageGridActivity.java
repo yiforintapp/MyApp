@@ -278,11 +278,11 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             mHidePicture.setText(R.string.app_hide_image);
         } else if (mActicityMode == CANCEL_HIDE_MODE) {
             mHidePicture.setText(R.string.app_cancel_hide_image);
-            Drawable topDrawable = getResources().getDrawable(
-                    R.drawable.unhide_picture_selector);
-            topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(),
-                    topDrawable.getMinimumHeight());
-            mHidePicture.setCompoundDrawables(null, topDrawable, null, null);
+//            Drawable topDrawable = getResources().getDrawable(
+//                    R.drawable.unhide_picture_selector);
+//            topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(),
+//                    topDrawable.getMinimumHeight());
+//            mHidePicture.setCompoundDrawables(null, topDrawable, null, null);
             mTtileBar.setOptionMenuVisible(true);
             mTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
             mTtileBar.setOptionClickListener(new OnClickListener() {

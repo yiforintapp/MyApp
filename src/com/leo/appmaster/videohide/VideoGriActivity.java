@@ -67,6 +67,9 @@ import java.util.List;
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseFragmentActivity implements OnItemClickListener, OnClickListener {
+
+    private static final String TAG = VideoGriActivity.class.getSimpleName();
+
     public final static int START_CANCEL_OR_HIDE_VID = 26;
     public final static int CANCEL_OR_HIDE_FINISH = 27;
     private GridView mHideVideo;
@@ -200,11 +203,11 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         } else {
                             mBottomBar.setVisibility(View.VISIBLE);
                             mHideButton.setText(R.string.app_cancel_hide_image);
-                            Drawable topDrawable = getResources().getDrawable(
-                                    R.drawable.unhide_picture_selector);
-                            topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(),
-                                    topDrawable.getMinimumHeight());
-                            mHideButton.setCompoundDrawables(null, topDrawable, null, null);
+//                            Drawable topDrawable = getResources().getDrawable(
+//                                    R.drawable.unhide_picture_selector);
+//                            topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(),
+//                                    topDrawable.getMinimumHeight());
+//                            mHideButton.setCompoundDrawables(null, topDrawable, null, null);
                             mCommonTtileBar.setOptionImageResource(R.drawable.mode_done);
                         }
                         mHideVideoAdapter.notifyDataSetChanged();
