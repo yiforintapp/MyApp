@@ -73,6 +73,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     private Button mOpenSecurBt;
     private Animation mAddSecurNumberAnim;
     private TextView mTopTipInstrTv;
+    private boolean mIsModfyNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +89,11 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         mOpenSecurBt.setOnClickListener(this);
         if (TextUtils.isEmpty(extData)) {
             mTtileBar.setToolbarTitle(R.string.secur_add_number_title);
+            mIsModfyNum = false;
         } else {
             mTtileBar.setToolbarTitle(extData);
             mOpenSecurBt.setText(this.getResources().getString(R.string.secur_mody_sure_bt));
+            mIsModfyNum = true;
         }
         mPhoneContact = new ArrayList<ContactBean>();
         mAddPrivacyContact = new ArrayList<ContactBean>();
@@ -229,7 +232,9 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                 final String sendNum = number;
                 boolean isExistSim = mgr.getIsExistSim();
                 if (isExistSim && mIsCheckB) {
-                    intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT, PhoneSecurityActivity.FROM_ADD_NUM_MSM);
+                    if (!mIsModfyNum) {
+                        intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT, PhoneSecurityActivity.FROM_ADD_NUM_MSM);
+                    }
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
@@ -243,13 +248,17 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                                 R.string.privacy_message_item_send_message_fail);
                         Toast.makeText(this, failStr, Toast.LENGTH_SHORT).show();
                     }
-                    intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT, PhoneSecurityActivity.FROM_ADD_NUM_NO_MSM);
+                    if (!mIsModfyNum) {
+                        intent.putExtra(PhoneSecurityActivity.FROM_SECUR_INTENT, PhoneSecurityActivity.FROM_ADD_NUM_NO_MSM);
+                    }
                 }
                 try {
                     startActivity(intent);
                     AddSecurityNumberActivity.this.finish();
                 } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    mIsModfyNum = false;
                 }
 
             } else {
@@ -259,6 +268,8 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             //number is empty
             shakeAddSecurButton(mInputEdit);
             PhoneSecurityUtils.setVibrate(this, 200);
+            String toastTip = getResources().getString(R.string.no_add_secur_number_toast_tip);
+            Toast.makeText(this, toastTip, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,10 +22,12 @@ import com.leo.appmaster.imagehide.NewFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.HeaderGridView;
 import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.DataUtils;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ import java.util.List;
 public class NewVidFragment extends NewFragment implements AdapterView.OnItemClickListener {
     private static final int FOLDER_VIDEO_COUNT = 35;
 
-    private ListView mVideoList;
+    private HeaderGridView mVideoList;
 
     private TextView mNewImageNum;
     private LEOAlarmDialog mDialog;
@@ -215,6 +218,9 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     mSelectBtn.setText(R.string.app_select_all);
+                    mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
                 }
             });
         }
@@ -237,7 +243,7 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mVideoList = (ListView) view.findViewById(R.id.video_lv);
+        mVideoList = (HeaderGridView) view.findViewById(R.id.video_lv);
         mVideoList.setOnScrollListener(this);
         mVideoList.setOnItemClickListener(this);
         mAppName = "";
@@ -281,17 +287,20 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
         }
         if (mAdapter.getSelectedList() != null && mAdapter.getSelectedList().size() < mDataList.size()) {
             mSelectBtn.setText(R.string.app_select_all);
+            mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                    getResources().getDrawable(R.drawable.select_all_selector), null,
+                    null);
         } else {
             mSelectBtn.setText(R.string.app_select_none);
+            mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                    getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                    null);
         }
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        int pos = i - mVideoList.getHeaderViewsCount();
-        if (view != null && pos > -1 && mDataList.size() > pos) {
-//            VideoItemBean info = mDataList.get(pos);
-            mAdapter.toggle(pos);
-        }
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        LeoLog.v("imageView","onItemClick");
+        mAdapter.toggle(position);
     }
 }

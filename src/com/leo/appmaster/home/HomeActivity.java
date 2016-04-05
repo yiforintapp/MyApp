@@ -210,7 +210,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         /*手机防盗开启人数，在用户没有打开手机防盗时没此进入主页拉取一次*/
         PhoneSecurityFetchJob.startImmediately();
-        CommentSettingsFetchJob.startImmediately();
         registerLocaleChange();
 
 //        if (AppMasterConfig.LOGGABLE) {

@@ -1218,8 +1218,9 @@
     <string name="content_close_advanced_protect">关闭高级保护后，手机防盗，系统锁屏入侵防护等功能不可用，隐私卫士也可以被随意卸载</string>
     <string name="new_hidden_image">隐藏新增图片</string>
     <string name="new_hidden_vid">隐藏新增视频</string>
-    <string name="new_image_num">新增%1$d张图片</string>
-    <string name="new_vid_num">新增%1$d个视频</string>
+    <string name="new_image_num">发现%1$d张图片</string>
+    <string name="new_vid_num">发现%1$d个视频</string>
+    <string name="new_hide_num">隐藏(%1$d)</string>
     <string name="hide_complete_new_image">新增图片隐藏完成</string>
     <string name="hide_complete_new_vid">新增视频隐藏完成</string>
 

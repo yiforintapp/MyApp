@@ -34,6 +34,7 @@ import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -63,6 +64,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private CommonToolbar mTtileBar;
     private RelativeLayout mNoHidePictureHint;
     private RippleView mRvAdd;
+    private boolean mHasShowNew = false;
     private ProgressBar loadingBar;
     private LeoPreference mPt;
     private final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
@@ -149,16 +151,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 mHideAlbumAdapt.setDataList(mAlbumList);
                 mHideAlbumAdapt.notifyDataSetChanged();
             }
-            if (mNewPicAdapter != null) {
-                if (mNewAddPic == null || mNewAddPic.size() == 0) {
-                    mIncludeLayoutNewPic.setVisibility(View.GONE);
-                } else {
-                    mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
-                    mNewPicAdapter.setDataList(mNewAddPic);
-                    mNewPicAdapter.notifyDataSetChanged();
-                    updateTips();
-                }
-            }
 
         }
     }
@@ -170,12 +162,16 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void asyncLoad() {
+
+        mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
+        newLoadDone();
+
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
                         getHidePicAlbum(PrivacyDataManagerImpl.CHECK_APART);
-                mNewAddPic = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).getAddPic();
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -184,6 +180,23 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 });
             }
         });
+    }
+
+    private void newLoadDone() {
+        if (mHasShowNew) {
+            mIncludeLayoutNewPic.setVisibility(View.GONE);
+        }
+        if (mNewPicAdapter != null) {
+            if (mNewAddPic == null || mNewAddPic.size() == 0) {
+                mIncludeLayoutNewPic.setVisibility(View.GONE);
+            } else if (!mHasShowNew){
+                mHasShowNew = true;
+                mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
+                mNewPicAdapter.setDataList(mNewAddPic);
+                mNewPicAdapter.notifyDataSetChanged();
+                updateTips();
+            }
+        }
     }
 
     @Override

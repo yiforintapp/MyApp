@@ -2,6 +2,7 @@ package com.leo.appmaster.phoneSecurity;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -24,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -40,6 +42,7 @@ import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.BuildProperties;
@@ -82,13 +85,14 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private InstructListAdapter mNormalAdapter;
     private InstructListAdapter mAdvAdapter;
     private LEOAlarmDialog mSecurCloseDialg;
-//    private Button mCloseBt;
+    //    private Button mCloseBt;
     private TextView mInstruTipTv;
     private Button mAdvBt;
     private Button mSecurNumModyBt;
     private TextView mSecurNumTv;
     private LeoPreference mPreference;
     private boolean mIsOpenBtResum = false;
+    private LeoHomePopMenu mLeoPopMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +194,16 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mCommonBar.setToolbarTitle(R.string.phone_security_open);
         mCommonBar.setToolbarColorResource(R.color.home_det_bg);
         mCommonBar.setOptionMenuVisible(true);
-        mCommonBar.setOptionImageResource(R.drawable.help_icon_n);
+        mCommonBar.setOptionClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initSettingMenu();
+                mLeoPopMenu.setPopMenuItems(PhoneSecurityActivity.this, getRightMenuItems(), getRightMenuIcons());
+                mLeoPopMenu.showPopMenu(PhoneSecurityActivity.this, mCommonBar.getSecOptionImageView(), null, null);
+            }
+        });
+        mCommonBar.setSecOptionMenuVisible(true);
+        mCommonBar.setSecOptionImageResource(R.drawable.help_icon_n);
         mHelpIcon = mCommonBar.getOptionImageView();
         mCommonBar.setNavigationClickListener(new OnClickListener() {
             @Override
@@ -198,7 +211,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 PhoneSecurityActivity.this.finish();
             }
         });
-        mCommonBar.setOptionClickListener(new OnClickListener() {
+        mCommonBar.setSecOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mHelpRt.getVisibility() == View.VISIBLE) {
@@ -244,12 +257,46 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
 //        mCloseBt = (Button) findViewById(R.id.secur_colse_bt);
 //        mCloseBt.setOnClickListener(this);
         mInstruTipTv = (TextView) findViewById(R.id.secur_instru_tip_tv);
+        mInstruTipTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mInstruTipTv.setOnClickListener(this);
         mAdvBt = (Button) findViewById(R.id.secur_open_adv);
         mAdvBt.setOnClickListener(this);
         mSecurNumModyBt = (Button) findViewById(R.id.secur_mody_bt);
         mSecurNumModyBt.setOnClickListener(this);
         mSecurNumTv = (TextView) findViewById(R.id.secur_num_tv);
+    }
+
+    private List<String> getRightMenuItems() {
+        List<String> listItems = new ArrayList<String>();
+        listItems.add(this.getString(R.string.secur_close));
+        return listItems;
+    }
+
+    private List<Integer> getRightMenuIcons() {
+        List<Integer> icons = new ArrayList<Integer>();
+        icons.add(R.drawable.settings);
+        return icons;
+    }
+
+    private void initSettingMenu() {
+        if (mLeoPopMenu != null) return;
+        mLeoPopMenu = new LeoHomePopMenu();
+        mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
+        mLeoPopMenu.setPopItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    showSecurCloseDialog();
+                }
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLeoPopMenu.dismissSnapshotList();
+                    }
+                }, 500);
+            }
+        });
+        mLeoPopMenu.setListViewDivider(null);
     }
 
     /**
@@ -286,9 +333,9 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
 
         int selectImage = -1;
         if (isOpenAdv) {
-            selectImage = R.drawable.wifi_complete;
+            selectImage = R.drawable.icon_antitheft_ok;
         } else {
-            selectImage = R.drawable.wifi_error;
+            selectImage = R.drawable.icon_antitheft_unok;
         }
         int oneKeyImage = R.drawable.theft_onekey;
         int oneKeyContent = R.string.onkey_name;
@@ -331,9 +378,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 /*点击立即授权*/
                 new MsmPermisGuideList().executeGuide();
                 break;
-//            case R.id.secur_colse_bt:
-//                showSecurCloseDialog();
-//                break;
             case R.id.secur_instru_tip_tv:
                 startSecurInstrDetailActivity();
                 break;
@@ -464,7 +508,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mSecurCloseDialg.setLeftBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(PhoneSecurityActivity.this, "cancel", Toast.LENGTH_SHORT).show();
                 if (mSecurCloseDialg != null) {
                     mSecurCloseDialg.dismiss();
                 }

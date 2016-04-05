@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:leo="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:paddingBottom="8dp"
-    android:paddingLeft="2dp">
+                xmlns:leo="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:minHeight="58dp">
 
     <RelativeLayout
         android:id="@+id/instr_RT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
         <FrameLayout
@@ -23,7 +26,7 @@
                 android:id="@+id/image"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
-                android:src="@drawable/theft_alert" />
+                android:src="@drawable/theft_alert"/>
 
             <ImageView
                 android:id="@+id/image_tip_icon"
@@ -31,7 +34,7 @@
                 android:layout_height="12dp"
                 android:layout_gravity="right"
                 android:src="@drawable/wifi_error"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </FrameLayout>
 
         <LinearLayout
@@ -50,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:text="@string/phone_security_instruct_onkey"
-                android:textColor="#333333"
-                android:textSize="12dp" />
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f5a"/>
 
             <TextView
                 android:id="@+id/content"
@@ -61,8 +64,8 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="@string/phone_security_instruct_onkey_description"
-                android:textColor="#999999"
-                android:textSize="12dp" />
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f6"/>
         </LinearLayout>
 
         <com.leo.appmaster.ui.MaterialRippleLayout
@@ -86,18 +89,36 @@
                 android:gravity="center"
                 android:maxWidth="110dp"
                 android:minWidth="58dp"
-                android:paddingRight="4dp"
                 android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                 android:text="@string/secur_instr_open_bt"
                 android:textColor="#15c937"
-                android:textSize="14dp" />
+                android:textSize="14dp"/>
         </com.leo.appmaster.ui.MaterialRippleLayout>
     </RelativeLayout>
 
     <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@id/instr_RT"
-        android:layout_marginLeft="60dp"
-        android:background="@color/c5" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/c5"/>
+
+    <TextView
+        android:id="@+id/detail_txt_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line"
+        android:background="#f0f3f8"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="@string/secur_add_numb_tip"
+        android:textColor="@color/c4"
+        android:textSize="@dimen/f6"
+        android:visibility="gone"/>
 </RelativeLayout>

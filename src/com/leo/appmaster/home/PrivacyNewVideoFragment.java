@@ -31,7 +31,7 @@ import java.util.List;
  * Created by Jasper on 2015/10/16.
  */
 public class PrivacyNewVideoFragment extends PrivacyNewFragment implements AdapterView.OnItemClickListener {
-    private static final int FOLDER_VIDEO_COUNT = 35;
+    private static final int FOLDER_VIDEO_COUNT = 30;
 
     private ListView mVideoList;
 

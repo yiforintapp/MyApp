@@ -224,14 +224,13 @@ public class BatteryManagerImpl extends BatteryManager {
                 if (PrefTableHelper.showInsideApp()) {
                     handlePluginEvent(newState, false);
                 } else {
-
                     if ((BatteryShowViewActivity.isActivityAlive && mListenerRef != null)) {
-                        int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
-                                newState.level, 0);
-                        LeoLog.d("testforwhile", "remainTime remainTime");
-                        int[] remainTimeArr = getTimeArr(newState);
                         BatteryStateListener listener = mListenerRef.get();
                         if (listener != null) {
+                            int remainTime = getRemainTimeHelper(newState).getEstimatedTime(DEFAULT_LEVEL,
+                                    newState.level, 0);
+                            LeoLog.d("testforwhile", "remainTime remainTime");
+                            int[] remainTimeArr = getTimeArr(newState);
                             listener.onStateChange(EventType.SHOW_TYPE_IN, newState, remainTime, remainTimeArr);
                         }
                     } else if (AppUtil.isScreenLocked(mContext)) {
@@ -363,15 +362,15 @@ public class BatteryManagerImpl extends BatteryManager {
 //        Toast.makeText(mContext, "正在充电的电量变化事件" + newState.toString(), Toast.LENGTH_LONG).show();
 //        broadcastBatteryLevel(newState);
 
-        int remainTime = getRemainTimeHelper(newState)
-                .getEstimatedTime(mPreviousState.level, newState.level,
-                        (newState.timestamp - mPreviousState.timestamp));
 
         int[] remainTimeArr = getTimeArr(newState);
         if (BatteryShowViewActivity.isActivityAlive) {
             if (mListenerRef != null) {
                 BatteryStateListener listener = mListenerRef.get();
                 if (listener != null) {
+                    int remainTime = getRemainTimeHelper(newState)
+                            .getEstimatedTime(mPreviousState.level, newState.level,
+                                    (newState.timestamp - mPreviousState.timestamp));
                     listener.onStateChange(EventType.BAT_EVENT_CHARGING, newState, remainTime, remainTimeArr);
                 }
             }

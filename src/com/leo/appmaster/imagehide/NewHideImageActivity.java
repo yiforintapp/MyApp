@@ -14,6 +14,8 @@ import com.leo.appmaster.home.HomeScanningFragment;
 import com.leo.appmaster.home.PrivacyNewPicFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.Privacy;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -48,24 +50,10 @@ public class NewHideImageActivity extends BaseFragmentActivity {
     }
 
     private void initLoadData() {
-        mLoading.setVisibility(View.VISIBLE);
-        mFragment.setVisibility(View.GONE);
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                mPhotoItems = pdm.getAddPic();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadDone();
-                    }
-                });
-            }
-        });
-    }
-
-    private void loadDone(){
+//        mLoading.setVisibility(View.VISIBLE);
+//        mFragment.setVisibility(View.GONE);
+        Privacy privacy = PrivacyHelper.getImagePrivacy();
+        mPhotoItems = privacy.getNewList();
         HomeScanningFragment.PhotoList mPhotoList = new HomeScanningFragment.PhotoList();
         mPhotoList.photoItems = mPhotoItems;
         mPhotoList.inDifferentDir = DataUtils.differentDirPic(mPhotoItems);

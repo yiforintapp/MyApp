@@ -28,27 +28,27 @@ public class SharedSettings extends ISettings {
 
     @Override
     public void setBoolean(String key, boolean value) {
-        commitAsync(key, value);
+        commitAsync(key, String.valueOf(value));
     }
 
     @Override
     public void setInteger(String key, int value) {
-        commitAsync(key, value);
+        commitAsync(key, String.valueOf(value));
     }
 
     @Override
     public void setDouble(String key, double value) {
-        commitAsync(key, value);
+        commitAsync(key, String.valueOf(value));
     }
 
     @Override
     public void setFloat(String key, float value) {
-        commitAsync(key, value);
+        commitAsync(key, String.valueOf(value));
     }
 
     @Override
     public void setLong(String key, long value) {
-        commitAsync(key, value);
+        commitAsync(key, String.valueOf(value));
     }
 
     @Override
@@ -154,7 +154,7 @@ public class SharedSettings extends ISettings {
         }
     }
 
-    public void commitAsync(final String key, final Object value) {
+    public void commitAsync(final String key, final String value) {
         if (key == null || value == null) {
             return;
         }
@@ -163,7 +163,7 @@ public class SharedSettings extends ISettings {
             @Override
             public void run() {
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(key, value.toString());
+                editor.putString(key, value);
                 editor.commit();
             }
         });

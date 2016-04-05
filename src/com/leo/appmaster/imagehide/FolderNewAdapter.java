@@ -204,7 +204,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         return 0;
     }
 
-    protected void toggle(int group, int child) {
+    public void toggle(int group, int child) {
         SelectionInfo info = mSelectionInfo.get(group);
         byte selection = info.selectedArray[child];
         if (selection == SELECTED) {
@@ -239,7 +239,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         }
     }
 
-    protected boolean isChildChecked(int group, int child) {
+    public boolean isChildChecked(int group, int child) {
         SelectionInfo info = mSelectionInfo.get(group);
         byte selection = info.selectedArray[child];
 

@@ -320,11 +320,11 @@ public class GestureLockFragment extends LockFragment implements
             public void run() {
                 if (pressed) {
                     // Touch Area
-                    mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea_pressed));
+                    mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_bg_pre));
                     mTvMessage.setVisibility(View.INVISIBLE);
                     mTvResult.setVisibility(View.INVISIBLE);
                 } else {
-                    mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_verify_toucharea));
+                    mAirSigTouchView.setBackground(getResources().getDrawable(R.drawable.airsig_bg));
                     mTvMessage.setVisibility(View.VISIBLE);
                 }
             }

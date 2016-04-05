@@ -167,6 +167,9 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     mSelectBtn.setText(R.string.app_select_all);
+                    mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
                 }
             });
         }
@@ -220,8 +223,8 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
     @Override
     public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
         VideoItemBean info = (VideoItemBean) mAdapter.getChild(i, i1);
-//        mAdapter.toggle(i, i1);
-//        mAdapter.setCheck(view, mAdapter.isChildChecked(i, i1));
+        mAdapter.toggle(i, i1);
+        mAdapter.setCheck(view, mAdapter.isChildChecked(i, i1));
         return false;
     }
 

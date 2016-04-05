@@ -27,7 +27,8 @@
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:text="@string/app_select_all"
-            android:textColor="@drawable/selector_button_text" />
+            android:textSize="@dimen/f5a"
+            android:textColor="@color/c3" />
 
         <Button
             android:id="@+id/hide_image"
@@ -41,6 +42,7 @@
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:text="@string/app_hide_image"
-            android:textColor="@drawable/selector_button_text" />
+            android:textSize="@dimen/f5a"
+            android:textColor="@color/c3" />
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.leo.appmaster.imagehide;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -221,22 +222,33 @@ public abstract class FolderNewFragment<T> extends Fragment implements AbsListVi
         }
     }
 
+    protected void hideDone(){
+        mHideBtn.setText(getString(R.string.app_hide_image));
+        mHideBtn.setEnabled(false);
+    }
+
     @Override
     public void onSelectionChange(boolean selectAll, int selectedCount) {
         LeoLog.v(TAG, "onSelectionChange");
         if (selectedCount > 0) {
             mHideBtn.setEnabled(true);
             mProcessClick.setEnabled(true);
-//            mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
+            mHideBtn.setText(getString(R.string.new_hide_num, mAdapter.getSelectData() == null ? 0 : mAdapter.getSelectData().size()));
         } else {
             mHideBtn.setEnabled(false);
             mProcessClick.setEnabled(false);
-//            mProcessBtn.setBackgroundResource(R.drawable.green_radius_shape_disable);
+            mHideBtn.setText(getString(R.string.app_hide_image));
         }
         if (mAdapter.getSelectData() != null && mAdapter.getSelectData().size() < mDataList.size()) {
             mSelectBtn.setText(R.string.app_select_all);
+            mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                    getResources().getDrawable(R.drawable.select_all_selector), null,
+                    null);
         } else {
             mSelectBtn.setText(R.string.app_select_none);
+            mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                    getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                    null);
         }
     }
 
@@ -268,10 +280,16 @@ public abstract class FolderNewFragment<T> extends Fragment implements AbsListVi
                 LeoLog.v(TAG, "selectAllGroup");
                 mAdapter.selectAllGroup();
                 mSelectBtn.setText(R.string.app_select_none);
+                mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                        getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                        null);
             } else {
                 LeoLog.v(TAG, "cancelSelectAllGroup");
                 mAdapter.deselectAllGroup();
                 mSelectBtn.setText(R.string.app_select_all);
+                mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                        getResources().getDrawable(R.drawable.select_all_selector), null,
+                        null);
             }
         }
 

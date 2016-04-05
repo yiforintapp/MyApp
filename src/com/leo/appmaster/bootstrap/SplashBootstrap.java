@@ -15,6 +15,7 @@ import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.SplashActivity;
+import com.leo.appmaster.schedule.FetchScheduleJob;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -49,8 +50,8 @@ public class SplashBootstrap extends Bootstrap {
     @Override
     protected boolean doStrap() {
         // initStrap();
-
         loadSplashDate(false);
+        FetchScheduleJob.startFetchJobs();
         return true;
     }
 

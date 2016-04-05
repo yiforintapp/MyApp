@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -46,6 +48,12 @@ public class PreferenceTable extends BaseTable {
             synchronized (LOCK) {
                 if (sInstance == null) {
                     sInstance = new PreferenceTable();
+                    ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                        @Override
+                        public void run() {
+                            sInstance.loadPreference();
+                        }
+                    }, 3000);
                 }
             }
         }
@@ -58,18 +66,12 @@ public class PreferenceTable extends BaseTable {
         mBackupValues = new HashMap<String, Object>();
         mSerialExecutor = ThreadManager.newSerialExecutor();
         mPrefs = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
-        ThreadManager.executeOnFileThread(new Runnable() {
-            @Override
-            public void run() {
-                loadPreference();
-            }
-        });
     }
 
     public void loadPreference() {
         if (mLoaded) return;
 
-        LeoLog.d(TAG, "start to load loadPreference");
+        LeoLog.d(TAG, "<ls> start to load loadPreference");
         if (BuildProperties.isApiLevel14()) {
             try {
                 Map<String, ?> all = mPrefs.getAll();
@@ -103,7 +105,7 @@ public class PreferenceTable extends BaseTable {
         }
 
         mLoaded = true;
-        LeoLog.d(TAG, "end to load loadPreference");
+        LeoLog.d(TAG, "<ls> end to load loadPreference");
     }
 
     @Override
@@ -193,36 +195,38 @@ public class PreferenceTable extends BaseTable {
     }
 
     public synchronized String getString(String key, String def) {
-//        awaitLoadedLocked();
+//        if (AppMasterConfig.LOGGABLE && SystemClock.elapsedRealtime() - AppMasterApplication.sStartTs < 3000) {
+//            throw new RuntimeException("<ls> database operation cannot load in 3000 before app create.");
+//        }
+        // LeoLog.d(TAG, "<ls> getString, key: " + key);
+        awaitLoadedLocked();
         Object v = mValues.get(key);
-        if (mLoaded) {
-            return v != null ? v.toString() : def;
-        }
+        return v != null ? v.toString() : def;
 
-        if (BuildProperties.isApiLevel14()) {
-            return mPrefs.getString(key, def);
-        } else {
-            SQLiteDatabase db = getHelper().getReadableDatabase();
-            if (db == null) {
-                return def;
-            }
-
-            Cursor cursor = null;
-            try {
-                cursor = db.query(TABLE_NAME, new String[]{COL_VALUE}, COL_KEY + " = ?",
-                        new String[]{key}, null, null, null);
-                if (cursor != null && cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
-                    return value != null ? value.toString() : def;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                IoUtils.closeSilently(cursor);
-            }
-        }
-        return def;
+//        if (BuildProperties.isApiLevel14()) {
+//            return mPrefs.getString(key, def);
+//        } else {
+//            SQLiteDatabase db = getHelper().getReadableDatabase();
+//            if (db == null) {
+//                return def;
+//            }
+//
+//            Cursor cursor = null;
+//            try {
+//                cursor = db.query(TABLE_NAME, new String[]{COL_VALUE}, COL_KEY + " = ?",
+//                        new String[]{key}, null, null, null);
+//                if (cursor != null && cursor.getCount() > 0) {
+//                    cursor.moveToFirst();
+//                    String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
+//                    return value != null ? value.toString() : def;
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            } finally {
+//                IoUtils.closeSilently(cursor);
+//            }
+//        }
+//        return def;
     }
 
     public void putInt(String key, int value) {

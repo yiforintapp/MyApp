@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -111,7 +112,7 @@ public abstract class Privacy<T> {
             }
         }
 
-        if (getNewCount() > 0) {
+        if (getNewCount() > 0 && getTotalCount() != getNewCount()) {
             return STATUS_NEW_ADD;
         }
 

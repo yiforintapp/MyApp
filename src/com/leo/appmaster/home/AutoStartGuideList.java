@@ -542,11 +542,7 @@ public class AutoStartGuideList extends WhiteList {
         if (isCountEnough) {
             return;
         }
-        boolean appConsumed = leoPreference.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
         boolean appLockHandler = leoPreference.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
-        if (!appConsumed) {
-            leoPreference.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
-        }
         if (!appLockHandler) {
             leoPreference.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
         }

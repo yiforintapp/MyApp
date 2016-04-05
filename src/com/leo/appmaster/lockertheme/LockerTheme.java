@@ -122,6 +122,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     private static final int LOAD_INIT = 100;
     private static final int LOAD_MORE = 101;
 
+    private ImageView mIvCancel;
     private View mViewAirSigTip;
 
     private EventHandler mHandler;
@@ -605,6 +606,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         });
         mPagerTab.setViewPager(mViewPager);
 
+
+        mIvCancel = (ImageView) findViewById(R.id.cancel_iv);
+        mIvCancel.setOnClickListener(this);
         mViewAirSigTip = findViewById(R.id.airsig_tip);
         initAirSigTip();
     }
@@ -1042,6 +1046,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 break;
             case R.id.layout_title_back:
                 onBackPressed();
+                break;
+            case R.id.cancel_iv:
+                mViewAirSigTip.setVisibility(View.GONE);
                 break;
             default:
                 break;

@@ -11,16 +11,16 @@
     <dimen name="lock_icon_X">28dp</dimen>
     <dimen name="lock_icon_Y">26dp</dimen>
     <dimen name="lock_pattern_button_width">60dp</dimen>
-    <dimen name="hide_album_frame_width">149dp</dimen>
+    <dimen name="hide_album_frame_width">109dp</dimen>
     <dimen name="hide_album_image_frame_width">115dp</dimen>
     <dimen name="hide_grid_image_width">109dp</dimen>
     <dimen name="hide_album_image_frame_left">16dp</dimen>
     <dimen name="hide_album_image_frame_top">16dp</dimen>
-    <dimen name="hide_pictrue_imge_frame_width">126dp</dimen>
+    <dimen name="hide_pictrue_imge_frame_width">109dp</dimen>
     <dimen name="hide_picture_image_frame_left">6dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-    <dimen name="hide_video_checkbox_right">24dp</dimen>
-    <dimen name="hide_video_checkbox_bottom">24dp</dimen>
+    <dimen name="hide_video_checkbox_right">5dp</dimen>
+    <dimen name="hide_video_checkbox_bottom">5dp</dimen>
     <dimen name="digital_item_width">55dp</dimen>
     <dimen name="digital_item_height">55dp</dimen>
     <dimen name="digital_item_marginTop">6dp</dimen>
@@ -279,7 +279,7 @@
     <dimen name="sec_did_v_tp">20dp</dimen>
     <dimen name="no_op_suc_tv">20dp</dimen>
     <dimen name="no_open_suc_lv_tp">20dp</dimen>
-    <dimen name="open_suc_lv_tp">25dp</dimen>
+    <dimen name="open_suc_lv_tp">20dp</dimen>
     <dimen name="op_adv_suc_tv">150dp</dimen>
     <dimen name="open_suc_tv_pd_tp">9dp</dimen>
     <dimen name="open_suc_tv_pd_bt">16dp</dimen>
@@ -411,8 +411,10 @@
     <dimen name="add_num_botm_bt_width">210dp</dimen>
     <dimen name="add_num_botm_bt_height">40dp</dimen>
     <dimen name="secur_open_suc_top_rl_marg_top">74dp</dimen>
-    <dimen name="secur_top_tip_instr_tv_marg_top">20dp</dimen>
+    <dimen name="secur_top_tip_instr_tv_marg_top">15dp</dimen>
     <dimen name="secur_top_tip_instr_tv_padd_butm">18dp</dimen>
     <dimen name="secur_mody_bt_width">74dp</dimen>
     <dimen name="secur_mody_bt_height">30dp</dimen>
+    <dimen name="secur_nromal_tip_tv_marg_left">40dp</dimen>
+    <dimen name="secur_open_line2">18dp</dimen>
 </resources>

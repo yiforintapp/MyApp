@@ -1,4 +1,4 @@
-<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/messageRT"
     android:layout_width="match_parent"
@@ -8,101 +8,111 @@
     app:rippleDuration="250"
     app:rippleHover="true"
     app:rippleInAdapter="true"
-    app:rippleOverlay="false">
+    app:rippleOverlay="false">-->
 
-    <RelativeLayout
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:background="@drawable/new_list_selecter">
+
+    <LinearLayout
+        android:id="@+id/add_from_call_log_itemLT"
         android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:background="@drawable/new_list_selecter">
-
-        <ImageView
-            android:id="@+id/contactIV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toLeftOf="@+id/strange_call_del"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/add_from_call_log_itemLT"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/contactIV"
-            android:layout_toLeftOf="@+id/strange_call_del"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/contactIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="11dp"
+                android:background="@drawable/no_pick_up_call"/>
 
             <TextView
                 android:id="@+id/add_from_call_log_item_nameTV"
                 android:layout_width="@dimen/app_manager_lv_item_text_width_move_short"
                 android:layout_height="wrap_content"
+                android:paddingRight="10dp"
                 android:singleLine="true"
                 android:text="理奥网络"
                 android:textColor="@color/c2"
-                android:textSize="13dp" />
-
-            <TextView
-                android:id="@+id/add_from_call_log_item_dateTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:singleLine="true"
-                android:textColor="@color/c4"
-                android:textSize="11dp" />
+                android:textSize="13dp"/>
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/strange_call_del"
+        <TextView
+            android:id="@+id/add_from_call_log_item_dateTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp">
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:textColor="@color/c4"
+            android:textSize="11dp"/>
+    </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/two_tv_content"
+    <RelativeLayout
+        android:id="@+id/strange_call_del"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp">
+
+        <RelativeLayout
+            android:id="@+id/two_tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/time_strange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true">
+                android:singleLine="true"
+                android:text="add to Black List"
+                android:textColor="@color/c4"
+                android:textSize="11dp"/>
 
-                <TextView
-                    android:id="@+id/time_strange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="add to Black List"
-                    android:textColor="@color/c4"
-                    android:textSize="11dp" />
-
-                <TextView
-                    android:id="@+id/duration_strange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/time_strange"
-                    android:layout_marginTop="5dp"
-                    android:singleLine="true"
-                    android:text="add to Black List"
-                    android:textColor="@color/c4"
-                    android:textSize="11dp" />
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/calllog_item_check_typeIV"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/two_tv_content"
-                android:src="@drawable/unselect" />
+            <TextView
+                android:id="@+id/duration_strange"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time_strange"
+                android:layout_marginTop="5dp"
+                android:singleLine="true"
+                android:text="add to Black List"
+                android:textColor="@color/c4"
+                android:textSize="11dp"/>
 
         </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/calllog_item_check_typeIV"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/two_tv_content"
+            android:src="@drawable/unselect"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_below="@id/message_content"
-            android:background="@color/c5" />
     </RelativeLayout>
-</com.leo.appmaster.ui.RippleView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/message_content"
+        android:background="@color/c5"/>
+</RelativeLayout>
+    <!--</com.leo.appmaster.ui.RippleView>-->

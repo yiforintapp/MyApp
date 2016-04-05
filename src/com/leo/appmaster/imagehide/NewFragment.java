@@ -2,6 +2,7 @@ package com.leo.appmaster.imagehide;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -70,6 +71,11 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
 
         mToolbarHeight = activity.getResources().getDimensionPixelSize(R.dimen.toolbar_height);
         mEmptyHeight = activity.getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
+    }
+
+    protected void hideDone(){
+        mHideBtn.setText(getString(R.string.app_hide_image));
+        mHideBtn.setEnabled(false);
     }
 
     @Override
@@ -181,10 +187,17 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
                     LeoLog.v(TAG, "selectAllGroup");
                     mAdapter.selectAll();
                     mSelectBtn.setText(R.string.app_select_none);
+                    mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                            null);
                 } else {
                     LeoLog.v(TAG, "cancelSelectAllGroup");
                     mAdapter.deselectAll();
                     mSelectBtn.setText(R.string.app_select_all);
+                    mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
+
                 }
                 break;
         }
@@ -202,13 +215,17 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
     @Override
     public void onSelectionChange(boolean selectAll, int selectedCount) {
         if (selectedCount > 0) {
+            mHideBtn.setEnabled(true);
             mProcessBtn.setEnabled(true);
             mProcessClick.setEnabled(true);
             mProcessBtn.setBackgroundResource(R.drawable.green_radius_btn_shape);
+            mHideBtn.setText(getString(R.string.new_hide_num, mAdapter.getSelectedList() == null ? 0 : mAdapter.getSelectedList().size()));
         } else {
             mProcessBtn.setEnabled(false);
             mProcessClick.setEnabled(false);
             mProcessBtn.setBackgroundResource(R.drawable.green_radius_shape_disable);
+            mHideBtn.setText(getString(R.string.app_hide_image));
+            mHideBtn.setEnabled(false);
         }
     }
 

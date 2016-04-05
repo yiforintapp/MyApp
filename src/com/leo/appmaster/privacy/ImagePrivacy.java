@@ -2,11 +2,8 @@ package com.leo.appmaster.privacy;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.utils.PrefConst;
-
-import java.util.List;
 
 /**
  * Created by Jasper on 2016/3/31.
@@ -59,7 +56,7 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
 
     @Override
     public int getPrivacyLimit() {
-        return LeoSettings.getInteger(PrefConst.KEY_PRIVACY_IMAGE_LIMIT, 15);
+        return LeoSettings.getInteger(PrefConst.KEY_NOTIFY_IMG_COUNT, 15);
     }
 
     @Override

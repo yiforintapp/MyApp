@@ -18,15 +18,12 @@ public class BackgroundBootstrap extends BootstrapGroup {
      */
     private static final int STEP_INIT = STEP_BACKGROUND + 1;
     
-    /**
-     * 闪屏相关
-     */
-    private static final int STEP_SPLASH = STEP_INIT + 2;
+
     
     /**
      * 启动步骤分组，越前面优先级越高
      */
-    private static final int[] STEPS = {STEP_INIT, STEP_SPLASH};
+    private static final int[] STEPS = {STEP_INIT};
 
     BackgroundBootstrap() {
         super();
@@ -40,9 +37,6 @@ public class BackgroundBootstrap extends BootstrapGroup {
         switch (stepId) {
             case STEP_INIT:
                 strap = new InitAsyncBootstrap();
-                break;
-            case STEP_SPLASH:
-                strap = new SplashBootstrap();
                 break;
             default:
                 break;

@@ -21,8 +21,13 @@ public class BackgroundDelayBootstrap extends BootstrapGroup {
      * 10秒延时
      */
     private static final int STEP_CHECK_NEW = STEP_BACKGROUND_DELAY + 1;
+
+    /**
+     * 闪屏相关
+     */
+    private static final int STEP_SPLASH = STEP_CHECK_NEW + 1;
     
-    private static final int[] STEPS = { STEP_CHECK_NEW };
+    private static final int[] STEPS = { STEP_CHECK_NEW, STEP_SPLASH };
 
     BackgroundDelayBootstrap() {
         super();
@@ -35,6 +40,9 @@ public class BackgroundDelayBootstrap extends BootstrapGroup {
         switch (stepId) {
             case STEP_CHECK_NEW:
                 strap = new CheckNewBootstrap();
+                break;
+            case STEP_SPLASH:
+                strap = new SplashBootstrap();
                 break;
             default:
                 break;

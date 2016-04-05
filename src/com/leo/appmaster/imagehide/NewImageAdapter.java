@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ui.MaskImageView;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.ImageScaleType;
@@ -49,6 +50,7 @@ public class NewImageAdapter extends NewAdaper<PhotoItem> {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LeoLog.v("imageView","onClick");
                 toggle(position);
             }
         });

@@ -168,14 +168,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP = "switch_open_no_read_message_tip";
     public static final String PREF_SWITCH_OPEN_RECENTLY_CONTACT = "switch_open_recently_contact";
     public static final String PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP = "switch_open_privacy_contact_message_tip";
-    public static final String PREF_SWTICH_OPEN_STRENGTH_MODE = "switch_open_strength_mode";
     public static final String PREF_QUICK_FIRST_SLIDING_TIP = "quick_first_sliding_tip";
     public static final String PREF_UPDATE_QUICK_GESTURE_USER = "update_quick_gesture_user";
     public static final String PREF_LAST_BUSINESS_RED_TIP = "last_business_red_tip";
     public static final String PREF_QUICK_NO_MSM_TIP = "quick_no_msm_tip";
     public static final String PREF_QUICK_NO_CALL_LOG_TIP = "quick_no_call_log_tip";
     public static final String PREF_ENTER_HOME_TIMES = "enter_home_times";
-    public static final String PREF_HAS_EVER_CLOSE_WHITE_DOT = "has_ever_close_white_dot";
     public static final String PREF_IF_LOCK_SCREEN_MENU_CLICKED = "if_menu_clicked";
     public static final String PREF_LAST_BOOST_TIMES = "last_boost_times";
     public static final String PREF_LAST_BOOST_WITH_AD_TIMES = "last_boost_with_ad_times";
@@ -319,8 +317,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private static AppMasterPreference mInstance;
     private int mEnterHomeTimes = -1;
     private int mUseStrengthModeTimes, mGestureSlideAnimShowTimes, mLastTimeLayout = -1;
-    private boolean mHasEverCloseWhiteDot;
-    private boolean mShowWhiteDot;
 
     private int mADShowType = -1;
     private int mADFetchInterval = -1;
@@ -906,10 +902,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         } else if (mLockType == LOCK_TYPE_PASSWD) {
             mPassword = LeoSettings.getString(PREF_PASSWORD, null);
         }
-
-        mHasEverCloseWhiteDot = LeoSettings.getBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, false);
-
-        mShowWhiteDot = LeoSettings.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, true);
     }
 
     @Override
@@ -936,6 +928,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         LeoSettings.setString(PREF_PASSWD_QUESTION, qusetion);
         LeoSettings.setString(PREF_PASSWD_ANWSER, answer);
         LeoSettings.setString(PREF_PASSWD_TIP, tip);
+    }
+
+    public void setAutoLock(boolean value) {
+        LeoSettings.setBoolean(PREF_AUTO_LOCK, value);
     }
 
     public boolean isAutoLock() {

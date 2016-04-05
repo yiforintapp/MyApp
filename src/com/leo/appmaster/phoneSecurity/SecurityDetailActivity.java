@@ -44,11 +44,12 @@ public class SecurityDetailActivity extends Activity implements View.OnClickList
 
     private void initData() {
         mComBar.setToolbarTitle(R.string.secur_deta_title_bar);
-        mComBar.setToolbarColorResource(R.color.cb);
+        mComBar.setToolbarColorResource(R.color.home_det_bg);
         ArrayList<InstructModel> instructs = loadInstructList();
         if (instructs != null) {
             mAdapter = new InstructListAdapter(this, instructs, InstructListAdapter.FLAG_INSTR_LIST);
         }
+        mAdapter.setIsShowEndDetail(true);
         mListView.setAdapter(mAdapter);
     }
 

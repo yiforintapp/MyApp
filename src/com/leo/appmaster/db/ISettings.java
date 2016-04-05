@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import com.leo.appmaster.AppMasterApplication;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +42,26 @@ public abstract class ISettings {
             AppMasterPreference.PREF_SPLASH_DElAY_TIME,
             AppMasterPreference.PREF_UNLOCK_SUCCESS_TIP_RANDOM,
             AppMasterPreference.PREF_SPLASH_START_SHOW_TIME,
-            AppMasterPreference.PREF_SPLASH_END_SHOW_TIME
+            AppMasterPreference.PREF_SPLASH_END_SHOW_TIME,
+            AppMasterPreference.PREF_RECOMMENT_TIP_LIST,
+            AppMasterPreference.PREF_HIDE_THEME_PKGS,
+            AppMasterPreference.PREF_FIRST_USE_LOCK_MODE,
+            AppMasterPreference.PREF_FOREGROUND_SCORE,
+            AppMasterPreference.PREF_LAST_LOAD_SPLASH_TIME,
+            AppMasterPreference.PREF_SPLASH_LOAD_FAIL_DATE,
+            AppMasterPreference.PREF_SPLASH_LOAD_FAIL_NUMBER,
+            AppMasterPreference.PREF_SPLASH_LOAD_FAIL_NUMBER,
+            AppMasterPreference.PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH,
+            AppMasterPreference.PREF_HIDE_LOCK_LINE,
+            AppMasterPreference.PREF_AD_LOCK_WALL,
+            PrefConst.KEY_BATTERY_REMAINING_COE,
+            PrefConst.KEY_IS_NEW_INSTALL,
+            PrefConst.KEY_SIM_IMEI,
+            PrefConst.KEY_NEW_ADD_PIC,
+            PrefConst.KEY_NEW_ADD_VID,
+            PrefConst.KEY_PIC_COMSUMED,
+            PrefConst.KEY_APP_COMSUMED,
+            PrefConst.KEY_VID_COMSUMED,
     };
     static Map<String, String> sGroupHigh = null;
 

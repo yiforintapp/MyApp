@@ -18,6 +18,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.WifiSecurityEvent;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -79,11 +80,14 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
             }
         }
     };
+    private WifiSecurityManager mWifiManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi_main);
+
+        mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
         LeoEventBus.getDefaultBus().register(this);
         mIsJudgeAsLowMemory = PropertyInfoUtil.getTotalMemory(WifiSecurityActivity.this) <= Constants.TOTAL_MEMORY_JUDGE_AS_LOW_MEMORY;
         SDKWrapper.addEvent(this, SDKWrapper.P1, "wifi_scan", "wifi_scan_cnts");

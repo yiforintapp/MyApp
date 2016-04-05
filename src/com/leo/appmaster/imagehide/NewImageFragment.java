@@ -229,6 +229,9 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                 @Override
                 public void onCancel(DialogInterface dialog) {
                     mSelectBtn.setText(R.string.app_select_all);
+                    mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
                 }
             });
         }
@@ -275,6 +278,7 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                     if (mDataList.size() > 0) {
                         mAdapter.setList(mDataList);
                         setLabelCount();
+                        hideDone();
                         mAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mActivity, R.string.hide_complete_new_image, Toast.LENGTH_LONG).show();
@@ -302,8 +306,14 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
         }
         if (mAdapter.getSelectedList() != null && mAdapter.getSelectedList().size() < mDataList.size()) {
             mSelectBtn.setText(R.string.app_select_all);
+            mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                    getResources().getDrawable(R.drawable.select_all_selector), null,
+                    null);
         } else {
             mSelectBtn.setText(R.string.app_select_none);
+            mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
+                    getResources().getDrawable(R.drawable.no_select_all_selector), null,
+                    null);
         }
     }
 }
