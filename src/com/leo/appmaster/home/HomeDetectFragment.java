@@ -566,16 +566,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         animatorSet.play(vidAnimatorSet).after(280).after(picAnimatorSet);
         animatorSet.play(tipsAnim).after(1000).after(vidAnimatorSet);
 
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-//                detectResultConversionAnim(mAppDangerContent, mAppSafeContent, mDangerResultAppLt, mSfatResultAppLt);
-                reloadAppStatus();
-                detectResultConversionAnim(mAppSafeContent, mAppDangerContent, mSfatResultAppLt, mDangerResultAppLt);
-            }
-        });
-
         animatorSet.start();
 
     }
