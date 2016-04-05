@@ -142,10 +142,10 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             int currentRetryCount = pref.getScheduleValue(getJobFailCountKey(), 0);
 
             if (currentRetryCount <= getRetryCount()) {
-                LeoLog.i(getJobKey(), "haven't overlimit max retry count.");
+                LeoLog.i(getJobKey(), "<ls> haven't overlimit max retry count.");
                 period = getFailPeriod();
             } else {
-                LeoLog.i(getJobKey(), "have overlimit max retry count.");
+                LeoLog.i(getJobKey(), "<ls> have overlimit max retry count.");
                 // 重试次数已经大于了设定的次数，则把状态及次数设置为true
                 // 保存重试次数
                 pref.setScheduleValue(getJobFailCountKey(), 0);
@@ -173,7 +173,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
 
     @Override
     public void stop() {
-        LeoLog.i(getJobKey(), "stop job.");
+        LeoLog.i(getJobKey(), "<ls> stop job.");
         AppMasterApplication ctx = AppMasterApplication.getInstance();
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 
@@ -214,7 +214,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
      * 拉取数据成功
      */
     protected void onFetchSuccess(Object response, boolean noMidify) {
-        LeoLog.i(getJobKey(), "onFetchSuccess, response: " + response + " | noModify: " + noMidify);
+        LeoLog.i(getJobKey(), "<ls> onFetchSuccess, response: " + response + " | noModify: " + noMidify);
         AppMasterApplication context = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(context);
         // 保存时间
@@ -232,7 +232,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
      * 拉取时间失败
      */
     protected void onFetchFail(VolleyError error) {
-        LeoLog.i(getJobKey(), "onFetchFail, error: " + error);
+        LeoLog.i(getJobKey(), "<ls> onFetchFail, error: " + error);
         AppMasterApplication context = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(context);
         // 保存时间

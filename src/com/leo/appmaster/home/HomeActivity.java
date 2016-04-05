@@ -676,6 +676,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //                    mToolbar.setBackgroundColor(color);
 //                    mMoreFragment.setEnable(false);
                     mToolbar.setNavigationLogoResource(R.drawable.ic_toolbar_back);
+                    mToolbar.setBackgroundColor(getResources().getColor(R.color.ctc));
                 } else {
                     mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
 //                    mMoreFragment.setEnable(true);

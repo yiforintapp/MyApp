@@ -29,6 +29,7 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.NewHideVidActivity;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
@@ -341,7 +342,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_video:
                 //视频扫描危险结果
                 //mDetectPresenter.videoDangerHandler();
-                Intent intent = new Intent(mContext, VideoHideMainActivity.class);
+                Intent intent = null;
+                privacy = PrivacyHelper.getVideoPrivacy();
+                if (privacy.getNewCount() > 0) {
+                    intent = new Intent(mContext, VideoHideMainActivity.class);
+                } else {
+                    intent = new Intent(mContext, NewHideVidActivity.class);
+                }
                 mContext.startActivity(intent);
                 LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                 break;
