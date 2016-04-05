@@ -440,15 +440,18 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    if (list.size() > 5 && position == 5) {
+                    if (list.size() > 5 && position == 4) {
+                        LeoLog.i("newpic","try blur ");
                         try {
                             loadedImage = Bitmap.createScaledBitmap(loadedImage,50,50,true);
-                            loadedImage = FastBlur.doBlur(loadedImage,25,true);
+                            loadedImage = FastBlur.doBlur(loadedImage, 25, true);
+                            iv.setBackgroundDrawable(new BitmapDrawable(loadedImage));
                         } catch (Throwable t) {
                             LeoLog.i("newpic","blur error");
                         }
+                    } else {
+                        iv.setImageBitmap(loadedImage);
                     }
-                    iv.setImageBitmap(loadedImage);
                 }
 
                 @Override
