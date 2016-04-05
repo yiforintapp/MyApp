@@ -10,12 +10,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -89,6 +91,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private TextView mDangerResultAppDetailTv;
     private TextView mDangerResultPicDetailTv;
     private TextView mDangerResultVideoDetailTv;
+
+    private RelativeLayout mAppSafeContent;
+    private RelativeLayout mAppDangerContent;
+    private RelativeLayout mPicSafeContent;
+    private RelativeLayout mPicDangerContent;
+    private RelativeLayout mVidSafeContent;
+    private RelativeLayout mVidDangerContent;
 
     @Override
     public void onAttach(Activity activity) {
@@ -242,7 +251,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     private void initUI(View view) {
-        RelativeLayout resultRootView = (RelativeLayout) view.findViewById(R.id.det_result_ly);
+        FrameLayout resultRootView = (FrameLayout) view.findViewById(R.id.det_result_ly);
 
         mSfatResultAppLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_app);
         mSfatResultImgLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_img);
@@ -292,6 +301,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mDetDagVideoTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_tv);
 
         mBannerTv = (TextView) view.findViewById(R.id.det_tip_txt_tv);
+
+        mAppDangerContent = (RelativeLayout) resultRootView.findViewById(R.id.app_danger_content);
+        mAppSafeContent = (RelativeLayout) resultRootView.findViewById(R.id.app_safe_content);
+        mPicDangerContent = (RelativeLayout) resultRootView.findViewById(R.id.pic_danger_content);
+        mPicSafeContent = (RelativeLayout) resultRootView.findViewById(R.id.pic_safe_content);
+        mPicDangerContent = (RelativeLayout) resultRootView.findViewById(R.id.vid_danger_content);
+        mPicSafeContent = (RelativeLayout) resultRootView.findViewById(R.id.vid_safe_content);
 
         setSfateShieldView(true);
     }
@@ -547,6 +563,19 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         animatorSet.play(picAnimatorSet).after(280).after(appAnimatorSet);
         animatorSet.play(vidAnimatorSet).after(280).after(picAnimatorSet);
         animatorSet.play(tipsAnim).after(1000).after(vidAnimatorSet);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                reloadAppStatus();
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        detectResultConversionAnim(mAppSafeContent, mAppDangerContent, mSfatResultAppLt, mDangerResultAppLt);
+                    }
+                }, 1000);
+            }
+        });
         animatorSet.start();
 
     }
@@ -573,17 +602,57 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //扫描结果处理后切换动画
-    public void detectResultConversionAnim(final View up, View down, Animator.AnimatorListener listener) {
+    public void detectResultConversionAnim(final View current, View top, final View showView, final View missView) {
 
-        ObjectAnimator transUp1 = ObjectAnimator.ofFloat(up, "translationY", -100, 0);
-        ObjectAnimator transDown1 = ObjectAnimator.ofFloat(down, "translationY", 0, 100);
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(transUp1, transDown1);
-        set.setDuration(200);
-        set.start();
-        if (listener != null) {
-            set.addListener(null);
-        }
+        ObjectAnimator currentDown = ObjectAnimator.ofFloat(current, "translationY", -50, 0);
+        currentDown.setDuration(300);
+        ObjectAnimator topDown = ObjectAnimator.ofFloat(top, "translationY", 0, 40);
+        topDown.setDuration(300);
+
+        currentDown.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                showView.setVisibility(View.VISIBLE);
+                showView.setBackgroundColor(getResources().getColor(R.color.transparent));
+            }
+        });
+        topDown.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+        });
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(showView, "alpha", 0f, 1f);
+        alphaAnim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                showView.setBackgroundDrawable(
+                        getResources().getDrawable(R.drawable.strip_home_ok1));
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                missView.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        alphaAnim.setDuration(150);
+
+        AnimatorSet totalAnimatorSet = new AnimatorSet();
+        totalAnimatorSet.playTogether(currentDown, topDown, alphaAnim);
+
+        totalAnimatorSet.start();
+
     }
 
     //红蓝盾牌的替换动画

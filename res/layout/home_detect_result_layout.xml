@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_app"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/strip_home_ok1"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:visibility="invisible">
+
+        <RelativeLayout
+            android:id="@+id/app_safe_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
         <!--安全结果-->
         <TextView
@@ -33,17 +38,25 @@
             android:layout_toRightOf="@id/det_saft_app_num_tv"
             android:text="@string/hd_new_app"
             android:textColor="@color/c150"/>
+
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_app"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/strip_home_nook1"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:visibility="invisible">
+
+    <RelativeLayout
+        android:id="@+id/app_danger_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <!--危险结果-->
         <TextView
             android:id="@+id/det_danger_app_num_tv"
@@ -75,18 +88,27 @@
             android:layout_below="@id/det_danger_app_num_tv"
             android:textColor="@color/c150"
             android:textSize="@dimen/f5"/>
+
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_img"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
         android:layout_below="@id/lt_det_saft_result_app"
         android:background="@drawable/strip_home_ok2"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:visibility="invisible">
+
+    <RelativeLayout
+        android:id="@+id/pic_safe_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <!--安全结果-->
         <TextView
             android:id="@+id/det_saft_img_num_tv"
@@ -107,18 +129,27 @@
             android:layout_toRightOf="@id/det_saft_img_num_tv"
             android:text="@string/hd_new_pic"
             android:textColor="@color/c150"/>
+
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_img"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
         android:layout_below="@id/lt_det_saft_result_app"
         android:background="@drawable/strip_home_nook2"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:visibility="invisible">
+
+    <RelativeLayout
+        android:id="@+id/pic_danger_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <!--危险状态-->
         <TextView
             android:id="@+id/det_danger_img_num_tv"
@@ -148,18 +179,26 @@
             android:layout_below="@id/det_danger_img_num_tv"
             android:textColor="@color/c150"
             android:textSize="@dimen/f5"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_video"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="120dp"
         android:layout_below="@id/lt_det_saft_result_img"
         android:background="@drawable/strip_home_ok3"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:visibility="invisible">
+
+    <RelativeLayout
+        android:id="@+id/vid_safe_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <!--安全状态-->
         <TextView
             android:id="@+id/det_saft_video_num_tv"
@@ -180,12 +219,14 @@
             android:layout_toRightOf="@id/det_saft_video_num_tv"
             android:text="@string/hd_new_vid"
             android:textColor="@color/c150"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_video"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="120dp"
         android:layout_below="@id/lt_det_saft_result_img"
         android:background="@drawable/strip_home_nook3"
         android:gravity="center_vertical"
@@ -193,6 +234,10 @@
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:visibility="invisible"
         >
+    <RelativeLayout
+        android:id="@+id/vid_danger_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <!--危险状态-->
         <TextView
             android:id="@+id/det_danger_video_num_tv"
@@ -222,6 +267,8 @@
             android:layout_below="@id/det_danger_video_num_tv"
             android:textColor="@color/c150"
             android:textSize="@dimen/f5"/>
+
+        </RelativeLayout>
     </RelativeLayout>
 
-</RelativeLayout>
+</FrameLayout>
