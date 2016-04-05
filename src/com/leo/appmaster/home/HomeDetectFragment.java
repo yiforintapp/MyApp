@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,10 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.imagehide.NewHideImageActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.LostSecurityManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -31,10 +36,15 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 
+import java.util.Locale;
+
 public class HomeDetectFragment extends Fragment implements View.OnClickListener {
     private static final int SAFT_LEVEL = 0;
     private static final int DANGER_LEVEL = 1;
     private static final long FIR_IN_ANIM_TIME = 700;
+
+    // 是否显示防盗
+    private static boolean sShowLost = false;
 
     private Activity mContext;
     private RelativeLayout mSfatResultAppLt;
@@ -43,7 +53,11 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private RelativeLayout mDangerResultAppLt;
     private RelativeLayout mDangerResultImgLt;
     private RelativeLayout mDangerResultVideoLt;
+
+    // 中间banner
     private RelativeLayout mCenterTipRt;
+    private TextView mBannerTv;
+
     private ImageView mShieldTopIv;
     private ImageView mShieldRightIv;
     private ImageView mShieldLeftIv;
@@ -67,7 +81,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private HomeDetectPresenter mDetectPresenter;
 
     private int mScreenWidth;
-
+    private Banner mBanner;
+    private Intent mBannerIntent;
 
     @Override
     public void onAttach(Activity activity) {
@@ -92,6 +107,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         //测试
         startFirstAnim();
         startHomeCenterShieldAnim();
+
     }
 
     @Override
@@ -102,6 +118,55 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         reloadAppStatus();
         reloadImageStatus();
         reloadVideoStatus();
+
+        // 初始化中间的banner
+        initBannerTip();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        sShowLost = !sShowLost;
+    }
+
+    private void initBannerTip() {
+        Privacy appPrivacy = PrivacyHelper.getAppPrivacy();
+        Privacy imagePrivacy = PrivacyHelper.getImagePrivacy();
+        Privacy videoPrivacy = PrivacyHelper.getVideoPrivacy();
+        if (appPrivacy.isDangerous() || imagePrivacy.isDangerous() || videoPrivacy.isDangerous()) {
+            // 不显示中间banner
+            mCenterTipRt.setVisibility(View.INVISIBLE);
+        } else {
+            LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            boolean lostDisabled = !lsm.isUsePhoneSecurity();
+
+            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            boolean usageDisabled = !lm.isUsageStateEnable();
+            if (lostDisabled && usageDisabled) {
+                mCenterTipRt.setVisibility(View.VISIBLE);
+                if (sShowLost) {
+                    mBannerTv.setText(R.string.hd_lost_permisson_tip);
+                    mBannerIntent = new Intent(mContext, PhoneSecurityActivity.class);
+                } else {
+                    mBannerTv.setText(R.string.hd_lock_permisson_tip);
+                    mBannerIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+            } else if (lostDisabled) {
+                mBannerIntent = new Intent(mContext, PhoneSecurityActivity.class);
+                mCenterTipRt.setVisibility(View.VISIBLE);
+                mBannerTv.setText(R.string.hd_lost_permisson_tip);
+            } else if (usageDisabled) {
+                mCenterTipRt.setVisibility(View.VISIBLE);
+                mBannerTv.setText(R.string.hd_lock_permisson_tip);
+                mBannerIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            } else {
+                mCenterTipRt.setVisibility(View.INVISIBLE);
+                mBannerIntent = null;
+            }
+        }
     }
 
     private void reloadAppStatus() {
@@ -217,6 +282,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mDetDagVideoNumTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_num_tv);
         mDetDagVideoTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_tv);
 
+        mBannerTv = (TextView) view.findViewById(R.id.det_tip_txt_tv);
+
         setSfateShieldView();
     }
 
@@ -229,6 +296,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     public void onDetach() {
         super.onDetach();
         mDetectPresenter.detachView();
+
     }
 
     @Override
@@ -279,7 +347,15 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.lt_home_det_tip:
                 //中间banner
-                mDetectPresenter.centerBannerHandler();
+                //mDetectPresenter.centerBannerHandler();
+                if (mBannerIntent != null) {
+                    mContext.startActivity(mBannerIntent);
+                    if (!mContext.getPackageName().equals(mBannerIntent.getPackage())) {
+                        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                        lm.filterPackage(mBannerIntent.getPackage(), false);
+                        lm.filterSelfOneMinites();
+                    }
+                }
                 break;
             default:
                 break;
@@ -485,5 +561,16 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         set.playTogether(transUp1, transUp2, transDown1, transDown2);
         set.setDuration(200);
         set.start();
+    }
+
+    private class Banner {
+        private Intent intent;
+        public Banner(Intent intent) {
+            this.intent = intent;
+        }
+
+        public void click() {
+            mContext.startActivity(intent);
+        }
     }
 }

@@ -45,6 +45,7 @@ import com.leo.appmaster.applocker.manager.TimeoutRelockPolicy;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetector;
+import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.battery.BatteryShowViewActivity;
@@ -1424,6 +1425,16 @@ public class LockManagerImpl extends LockManager {
         int addedScore = MAX_SCORE - oldScore;
 
         return addedScore;
+    }
+
+    @Override
+    public boolean isUsageStateEnable() {
+        if (Build.VERSION.SDK_INT < 21) {
+            return true;
+        }
+
+        ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
+        return usageStats.checkAvailable();
     }
 
     @Override
