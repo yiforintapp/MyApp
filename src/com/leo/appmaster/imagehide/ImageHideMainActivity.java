@@ -51,6 +51,9 @@ import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.PropertyValuesHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -282,25 +285,65 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void hideHeadLayout() {
-        TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewPic.getHeight());
-        ta.setDuration(500);
-        ta.setFillAfter(false);
-        mRlWholeShowContent.setAnimation(ta);
-        mRlWholeShowContent.startAnimation(ta);
-        ta.setAnimationListener(new Animation.AnimationListener() {
+        final float initialY = mRlWholeShowContent.getY();
+        PropertyValuesHolder m = PropertyValuesHolder.ofFloat("y",mRlWholeShowContent.getY(),mRlWholeShowContent.getY() - mIncludeLayoutNewPic.getHeight());
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlWholeShowContent, m);
+        anim.setDuration(500);
+        anim.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void onAnimationStart(Animator animation) {
+
             }
 
             @Override
-            public void onAnimationEnd(Animation animation) {
+            public void onAnimationEnd(Animator animation) {
                 mIncludeLayoutNewPic.setVisibility(View.GONE);
+                mRlWholeShowContent.setY(initialY);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
             }
         });
+        anim.start();
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                mIncludeLayoutNewPic.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//            }
+//        });
+//        TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewPic.getHeight());
+//        ta.setDuration(500);
+//        ta.setFillAfter(false);
+//        mRlWholeShowContent.setAnimation(ta);
+//        mRlWholeShowContent.startAnimation(ta);
+//        ta.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                mIncludeLayoutNewPic.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//            }
+//        });
     }
 
     private void initImageLoder() {
