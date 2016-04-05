@@ -79,6 +79,7 @@ public class CommonToolbar extends RelativeLayout implements View.OnClickListene
 //            mOption2View.setOnClickListener(this);
 //        }
         mOption2Img = (ImageView) findViewById(R.id.ct_option_iv2);
+        setBackgroundResource(R.color.ctc);
     }
 
     public void setToolbarColorResource(int resource) {

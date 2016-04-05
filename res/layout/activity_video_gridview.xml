@@ -13,8 +13,7 @@
         <com.leo.appmaster.ui.CommonToolbar
             android:id="@+id/layout_title_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cb" />
+            android:layout_height="wrap_content" />
 
         <GridView
             android:id="@+id/Image_hide_folder"

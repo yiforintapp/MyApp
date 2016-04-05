@@ -1303,6 +1303,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
 
+        mTtileBar.setBackgroundResource(R.color.transparent);
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
         mTtileBar.setOptionListener(this);

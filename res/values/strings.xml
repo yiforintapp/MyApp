@@ -1266,6 +1266,7 @@
     <string name="hd_app_danger_tip">建议进行加锁处理</string>
     <string name="hd_pic_danger_tip">建议进行隐藏处理</string>
     <string name="hd_privacy_safe">隐私状况良好</string>
+    <string name="hd_more_guide_tip">更多功能，点击这里看看</string>
 
     <string name="airsig_tip_toast_text">主题暂不适用于签字解锁哦</string>
     <string name="airsig_tip_toast_update_text">签字解锁密钥已到期，升级隐私卫士后方可继续使用</string>

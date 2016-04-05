@@ -8,8 +8,7 @@
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/cb" />
+        android:layout_height="wrap_content" />
 
     <ProgressBar
         android:id="@+id/pb_loading_hide_pic"
