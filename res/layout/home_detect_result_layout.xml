@@ -12,6 +12,7 @@
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
         android:visibility="invisible">
+
         <!--安全结果-->
         <TextView
             android:id="@+id/det_saft_app_num_tv"

@@ -533,7 +533,7 @@ public class LockManagerImpl extends LockManager {
     }
 
     public void onEvent(AppUnlockEvent event) {
-        LeoLog.d(TAG, "onEvent, result: " + event.mUnlockResult);
+        LeoLog.d(TAG, "<ls> onEvent, result: " + event.mUnlockResult);
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
             mLockPolicy.onUnlocked(event.mUnlockedPkg);
             if (mExtranalUnlockListener != null) {
@@ -1448,6 +1448,7 @@ public class LockManagerImpl extends LockManager {
             public void run() {
                 List<AppItemInfo> itemInfos = AppLoadEngine.getInstance(mContext).getAllPkgInfo();
                 InstalledAppTable.getInstance().insertIgnoreItemList(itemInfos);
+                notifySecurityChange();
             }
         });
         addedScore = addedScore < 0 ? 0 : addedScore;

@@ -117,7 +117,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="10dp"
-        android:text="@string/secur_add_numb_tip"
+        android:text="@string/phone_security_number_sim_tip"
         android:textColor="@color/c4"
         android:textSize="@dimen/f6"
         android:visibility="gone"/>

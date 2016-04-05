@@ -2368,19 +2368,28 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void setPopWindowItemClick(int position) {
+        int type = mLockFragment.getUnlockType();
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-            if (position == 0) {
-                findPasswd();
-            } else if (position == 1) {
-                onMoveToTheme();
-            } else if (position == 2) {
-                onHideLockLineClicked(position);
+            if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+                if (position == 0) {
+                    findPasswd();
+                } else if (position == 1) {
+                    onMoveToTheme();
+                } else if (position == 2) {
+                    onHideLockLineClicked(position);
+                } else {
+                    onHelpItemClicked();
+                }
             } else {
-                onHelpItemClicked();
+                if (position == 0) {
+                    findPasswd();
+                } else {
+                    onHelpItemClicked();
+                }
             }
+
         } else {
 
-            int type = mLockFragment.getUnlockType();
             if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
                 if (position == 0) {
                     onMoveToTheme();

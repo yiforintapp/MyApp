@@ -29,14 +29,13 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.NewHideVidActivity;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
-
-import java.util.Locale;
 
 public class HomeDetectFragment extends Fragment implements View.OnClickListener {
     private static final int SAFT_LEVEL = 0;
@@ -83,6 +82,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private int mScreenWidth;
     private Banner mBanner;
     private Intent mBannerIntent;
+    private ImageView mShieldDangerLeftIv;
+    private ImageView mShieldDangerRightIv;
+    private ImageView mShieldDangerTopIv;
+    private ImageView mShieldDangerCenterIv;
 
     @Override
     public void onAttach(Activity activity) {
@@ -174,11 +177,14 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         if (privacy.isDangerous()) {
             mSfatResultAppLt.setVisibility(View.INVISIBLE);
             mDangerResultAppLt.setVisibility(View.VISIBLE);
+            mDangerResultAppLt.setBackgroundResource(R.drawable.strip_home_nook1);
 
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
+
         } else {
             mSfatResultAppLt.setVisibility(View.VISIBLE);
+            mSfatResultAppLt.setBackgroundResource(R.drawable.strip_home_ok1);
             mDangerResultAppLt.setVisibility(View.INVISIBLE);
 
             mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
@@ -266,6 +272,11 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mShieldRightIv = (ImageView) view.findViewById(R.id.shield_right_iv);
         mShieldTopIv = (ImageView) view.findViewById(R.id.shield_top_iv);
         mShieldCenterIv = (ImageView) view.findViewById(R.id.shield_center_iv);
+
+        mShieldDangerLeftIv = (ImageView) view.findViewById(R.id.shield_danger_left_iv);
+        mShieldDangerRightIv = (ImageView) view.findViewById(R.id.shield_danger_right_iv);
+        mShieldDangerTopIv = (ImageView) view.findViewById(R.id.shield_danger_top_iv);
+        mShieldDangerCenterIv = (ImageView) view.findViewById(R.id.shield_danger_center_iv);
         //初始化应用检测结果
         mDetSaftAppNumTv = (TextView) resultRootView.findViewById(R.id.det_saft_app_num_tv);
         mDetSaftAppTv = (TextView) resultRootView.findViewById(R.id.det_saft_app_tv);
@@ -284,7 +295,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
         mBannerTv = (TextView) view.findViewById(R.id.det_tip_txt_tv);
 
-        setSfateShieldView();
+        setSfateShieldView(true);
     }
 
 
@@ -341,7 +352,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_video:
                 //视频扫描危险结果
                 //mDetectPresenter.videoDangerHandler();
-                Intent intent = new Intent(mContext, VideoHideMainActivity.class);
+                Intent intent = null;
+                privacy = PrivacyHelper.getVideoPrivacy();
+                if (privacy.getNewCount() > 0) {
+                    intent = new Intent(mContext, VideoHideMainActivity.class);
+                } else {
+                    intent = new Intent(mContext, NewHideVidActivity.class);
+                }
                 mContext.startActivity(intent);
                 LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                 break;
@@ -371,27 +388,41 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         if (level == SAFT_LEVEL) {
             mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_blue_offset)));
         } else if (level == DANGER_LEVEL) {
-            mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_red_offset)));
+            mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_red_offset)));
         }
 
     }
 
     //危险盾牌设置
-    public void setDangerShieldView() {
+    public void setDangerShieldView(boolean isShow) {
         shieldPositionInit(DANGER_LEVEL);
-        mShieldTopIv.setImageResource(R.drawable.shield_red_top);
-        mShieldLeftIv.setImageResource(R.drawable.shield_red_left);
-        mShieldRightIv.setImageResource(R.drawable.shield_red_right);
-        mShieldCenterIv.setImageResource(R.drawable.shield_bad);
+        if (isShow) {
+            mShieldDangerTopIv.setVisibility(View.VISIBLE);
+            mShieldDangerLeftIv.setVisibility(View.VISIBLE);
+            mShieldDangerRightIv.setVisibility(View.VISIBLE);
+            mShieldDangerCenterIv.setVisibility(View.VISIBLE);
+        } else {
+            mShieldDangerTopIv.setVisibility(View.INVISIBLE);
+            mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
+            mShieldDangerRightIv.setVisibility(View.INVISIBLE);
+            mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
+        }
     }
 
     //安全盾牌设置
-    public void setSfateShieldView() {
+    public void setSfateShieldView(boolean isShow) {
         shieldPositionInit(SAFT_LEVEL);
-        mShieldTopIv.setImageResource(R.drawable.shield_blue_top);
-        mShieldLeftIv.setImageResource(R.drawable.shield_blue_left);
-        mShieldRightIv.setImageResource(R.drawable.shield_blue_right);
-        mShieldCenterIv.setImageResource(R.drawable.shield_good);
+        if (isShow) {
+            mShieldTopIv.setVisibility(View.VISIBLE);
+            mShieldLeftIv.setVisibility(View.VISIBLE);
+            mShieldRightIv.setVisibility(View.VISIBLE);
+            mShieldCenterIv.setVisibility(View.VISIBLE);
+        } else {
+            mShieldTopIv.setVisibility(View.INVISIBLE);
+            mShieldLeftIv.setVisibility(View.INVISIBLE);
+            mShieldRightIv.setVisibility(View.INVISIBLE);
+            mShieldCenterIv.setVisibility(View.INVISIBLE);
+        }
     }
 
     //首次进入主页盾牌动画
@@ -462,7 +493,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         scaleEndAnimatorSet.playTogether(scaleXEndAnim, scaleYEndAnim);
         scaleEndAnimatorSet.setDuration(80);
 
-        ObjectAnimator alphaAnim =ObjectAnimator.ofFloat(mShieldCenterIv, "alpha", 0f, 1f);
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "alpha", 0f, 1f);
         alphaAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -526,7 +557,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     }
 
-    /** 扫描结果位移动画 */
+    /**
+     * 扫描结果位移动画
+     */
     private AnimatorSet getTranslateAnim(final View view) {
         ObjectAnimator translateAnim = ObjectAnimator.ofFloat(
                 view, "x", -mScreenWidth, view.getTranslationX());
@@ -546,21 +579,93 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //扫描结果处理后切换动画
-    public void detectResultConversionAnim(View up1, View up2, View down1, View down2, Animator.AnimatorListener listener) {
+    public void detectResultConversionAnim(final View up, View down, Animator.AnimatorListener listener) {
 
-        ObjectAnimator transUp1 = ObjectAnimator.ofFloat(up1, "translationY", -100, 0);
-        ObjectAnimator transUp2 = ObjectAnimator.ofFloat(up2, "translationY", -100, 0);
-
-        ObjectAnimator transDown1 = ObjectAnimator.ofFloat(up1, "translationY", 0, 100);
-        ObjectAnimator transDown2 = ObjectAnimator.ofFloat(up2, "translationY", 0, 100);
-
+        ObjectAnimator transUp1 = ObjectAnimator.ofFloat(up, "translationY", -100, 0);
+        ObjectAnimator transDown1 = ObjectAnimator.ofFloat(down, "translationY", 0, 100);
         AnimatorSet set = new AnimatorSet();
-        if (listener != null) {
-            set.addListener(listener);
-        }
-        set.playTogether(transUp1, transUp2, transDown1, transDown2);
+        set.playTogether(transUp1, transDown1);
         set.setDuration(200);
         set.start();
+        if (listener != null) {
+            set.addListener(null);
+        }
+    }
+
+    //红蓝盾牌的替换动画
+    public void detectShieldConverAnim() {
+//        mShieldLeftIv = (ImageView) view.findViewById(R.id.shield_left_iv);
+//        mShieldRightIv = (ImageView) view.findViewById(R.id.shield_right_iv);
+//        mShieldTopIv = (ImageView) view.findViewById(R.id.shield_top_iv);
+//        mShieldCenterIv = (ImageView) view.findViewById(R.id.shield_center_iv);
+
+        setDangerShieldView(true);
+        setSfateShieldView(false);
+        ObjectAnimator dangerLeftScalX = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleX", 1.0f, 1.1f);
+        ObjectAnimator dangerLeftScalY = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleY", 0.6f, 1.06f);
+        ObjectAnimator dangerLeftApl = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "alpha", 1.0f, 0.0f);
+        AnimatorSet dangerLeftAnim = new AnimatorSet();
+        dangerLeftAnim.playTogether(dangerLeftScalX, dangerLeftScalY, dangerLeftApl);
+        dangerLeftAnim.setDuration(500);
+        dangerLeftAnim.start();
+
+        ObjectAnimator dangerRightScalX = ObjectAnimator.ofFloat(mShieldDangerRightIv, "scaleX", 1.0f, 1.1f);
+        ObjectAnimator dangerRightScalY = ObjectAnimator.ofFloat(mShieldDangerRightIv, "scaleY", 1.0f, 1.1f);
+        ObjectAnimator dangerRightApl = ObjectAnimator.ofFloat(mShieldDangerRightIv, "alpha", 1.0f, 0.0f);
+        AnimatorSet dangerRightAnim = new AnimatorSet();
+        dangerRightAnim.playTogether(dangerRightScalX, dangerRightScalY, dangerRightApl);
+        dangerRightAnim.setDuration(500);
+        dangerRightAnim.start();
+
+        ObjectAnimator dangerTopScalX = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleX", 1.0f, 1.16f);
+        ObjectAnimator dangerTopScalY = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleY", 1.0f, 1.1f);
+        ObjectAnimator dangerTopApl = ObjectAnimator.ofFloat(mShieldDangerTopIv, "alpha", 1.0f, 0.0f);
+        AnimatorSet dangerTopAnim = new AnimatorSet();
+        dangerTopAnim.playTogether(dangerTopScalX, dangerTopScalY, dangerTopApl);
+        dangerTopAnim.setDuration(500);
+        dangerTopAnim.start();
+
+        ObjectAnimator dangerCenterScalX = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleX", 1.0f, 1.16f);
+        ObjectAnimator dangerCenterScalY = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleY", 1.0f, 1.1f);
+        ObjectAnimator dangerCenterApl = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "alpha", 1.0f, 0.0f);
+        AnimatorSet dangerCenterAnim = new AnimatorSet();
+        dangerCenterAnim.playTogether(dangerCenterScalX, dangerCenterScalY, dangerCenterApl);
+        dangerCenterAnim.setDuration(500);
+        dangerCenterAnim.start();
+
+        //蓝色盾牌
+        ObjectAnimator saftLeftScalX = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleX", 1.0f, 1.1f);
+        ObjectAnimator saftLeftScalY = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleY", 0.6f, 1.06f);
+        ObjectAnimator saftLeftApl = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "alpha", 1.0f, 0.0f);
+        AnimatorSet saftLeftAnim = new AnimatorSet();
+        dangerLeftAnim.playTogether(dangerLeftScalX, dangerLeftScalY, dangerLeftApl);
+        dangerLeftAnim.setDuration(500);
+        dangerLeftAnim.start();
+
+        ObjectAnimator saftRightScalX = ObjectAnimator.ofFloat(mShieldDangerRightIv, "scaleX", 1.0f, 1.1f);
+        ObjectAnimator saftRightScalY = ObjectAnimator.ofFloat(mShieldDangerRightIv, "scaleY", 1.0f, 1.1f);
+        ObjectAnimator saftRightApl = ObjectAnimator.ofFloat(mShieldDangerRightIv, "alpha", 1.0f, 0.0f);
+        AnimatorSet saftRightAnim = new AnimatorSet();
+        dangerRightAnim.playTogether(dangerRightScalX, dangerRightScalY, dangerRightApl);
+        dangerRightAnim.setDuration(500);
+        dangerRightAnim.start();
+
+        ObjectAnimator saftTopScalX = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleX", 1.0f, 1.16f);
+        ObjectAnimator saftTopScalY = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleY", 1.0f, 1.1f);
+        ObjectAnimator saftTopApl = ObjectAnimator.ofFloat(mShieldDangerTopIv, "alpha", 1.0f, 0.0f);
+        AnimatorSet saftTopAnim = new AnimatorSet();
+        dangerTopAnim.playTogether(dangerTopScalX, dangerTopScalY, dangerTopApl);
+        dangerTopAnim.setDuration(500);
+        dangerTopAnim.start();
+
+        ObjectAnimator saftCenterScalX = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleX", 1.0f, 1.16f);
+        ObjectAnimator saftCenterScalY = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleY", 1.0f, 1.1f);
+        ObjectAnimator saftCenterApl = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "alpha", 1.0f, 0.0f);
+        AnimatorSet saftCenterAnim = new AnimatorSet();
+        dangerCenterAnim.playTogether(dangerCenterScalX, dangerCenterScalY, dangerCenterApl);
+        dangerCenterAnim.setDuration(500);
+
+
     }
 
     private class Banner {

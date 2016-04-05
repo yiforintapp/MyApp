@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Jasper on 2016/3/31.
  */
 public abstract class Privacy<T> {
-    private static final int NOTI_ID = 23456;
+    public static final int NOTI_ID = 23456;
 
     /**
      * 新增
@@ -45,7 +45,7 @@ public abstract class Privacy<T> {
     // 新增列表
     private List<T> mNewList;
 
-    private Context mContext;
+    protected Context mContext;
 
     Privacy() {
         mContext = AppMasterApplication.getInstance();
@@ -182,24 +182,6 @@ public abstract class Privacy<T> {
     public abstract int getNotificationIconId();
 
     public void showNotification() {
-        Intent intent = new Intent(mContext, StatusBarEventService.class);
-        intent.putExtra(Constants.PRIVACY_ENTER_SCAN_TYPE, getPrivacyType());
-        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, StatusBarEventService.EVENT_PRIVACY_STATUS);
-        Notification notif = new Notification();
-        PendingIntent contentIntent = PendingIntent.getService(mContext, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        notif.icon = getNotificationIconId();
-
-        String title = mContext.getString(getNotificationTextId());
-        String content = mContext.getString(getNotificationSummaryId());
-        notif.tickerText = mContext.getString(getNotificationTextId());
-        notif.flags = Notification.FLAG_AUTO_CANCEL;
-        notif.setLatestEventInfo(mContext, title, content, contentIntent);
-        NotificationUtil.setBigIcon(notif, getNotificationIconId());
-        notif.when = System.currentTimeMillis();
-        NotificationManager nm = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.notify(NOTI_ID, notif);
-
-        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "prilevel", getReportDescription());
     }
 
     /**
@@ -208,7 +190,6 @@ public abstract class Privacy<T> {
      */
     public abstract int getPrivacyLimit();
     public abstract int getPrivacyType();
-    public abstract String getReportDescription();
 
     public String getTag() {
         return "Privacy";

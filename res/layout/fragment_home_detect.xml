@@ -7,14 +7,14 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/texture_home_bg" />
+        android:background="@drawable/texture_home_bg"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/texture2_home_bg" />
+        android:background="@drawable/texture2_home_bg"/>
 
     <RelativeLayout
         android:id="@+id/home_anim_rl"
@@ -28,24 +28,30 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:background="@drawable/bg_home_shield"/>
-
+        <!--安全状态-->
         <ImageView
             android:id="@+id/shield_left_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:src="@drawable/shield_blue_left"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/shield_right_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:src="@drawable/shield_blue_right"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/shield_top_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:src="@drawable/shield_blue_top"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/shield_center_iv"
@@ -53,7 +59,40 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:visibility="invisible"
-            />
+            android:src="@drawable/shield_good"/>
+        <!--危险状态-->
+        <ImageView
+            android:id="@+id/shield_danger_left_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/shield_red_left"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/shield_danger_right_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/shield_red_right"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/shield_danger_top_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/shield_red_top"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/shield_danger_center_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/shield_bad"
+            android:visibility="invisible"/>
+
 
         <include
             android:id="@+id/det_result_ly"
@@ -61,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/shield_view" />
+            android:layout_toRightOf="@id/shield_view"/>
 
     </RelativeLayout>
     <!--中间建议提示banner-->
