@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -49,7 +51,9 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageDownloader;
+import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
 
 import java.util.ArrayList;
@@ -116,7 +120,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
                 loadingBar.setVisibility(View.GONE);
-                mRlWholeShowContent.setVisibility(View.GONE);
+//                mRlWholeShowContent.setVisibility(View.GONE);
                 mNohideVideo.setText(getString(R.string.app_no_video_hide));
             }
 //            if (mNewVidAdapter != null) {
@@ -144,7 +148,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void updateTips() {
-        String string1 = getString(R.string.find_new_pic_tips);
+        String string1 = getString(R.string.find_new_vid_tips);
         String s2 = String.format(string1, mNewAddVid.size());
         mTvNewAmountTips.setText(Html.fromHtml(s2));
     }
@@ -172,6 +176,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         }
         if (mNewVidAdapter != null) {
             if (mNewAddVid == null || mNewAddVid.size() == 0) {
+                mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
             } else if (!mHasShowNew){
                 mHasShowNew = true;
@@ -332,6 +337,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         mRlWholeShowContent = (RelativeLayout) findViewById(R.id.rl_whole_show_content);
         mIncludeLayoutNewVid = findViewById(R.id.layout_newpic);
+        ImageView f = (ImageView)mIncludeLayoutNewVid.findViewById(R.id.iv_hide_type);
+        f.setImageResource(R.drawable.tips_video_icon);
         mRvHideNew = (RippleView) mIncludeLayoutNewVid.findViewById(R.id.rv_hide_new);
         mRvHideNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -390,7 +397,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private void hideHeadLayout() {
         TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewVid.getHeight());
         ta.setDuration(500);
-        ta.setFillAfter(true);
+        ta.setFillAfter(false);
         mRlWholeShowContent.setAnimation(ta);
         mRlWholeShowContent.startAnimation(ta);
         ta.setAnimationListener(new Animation.AnimationListener() {
@@ -400,7 +407,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mIncludeLayoutNewVid.setVisibility(View.INVISIBLE);
+                mIncludeLayoutNewVid.setVisibility(View.GONE);
             }
 
             @Override
@@ -446,7 +453,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         @Override
         public Object getItem(int position) {
-
             return videos != null ? videos.get(position) : null;
         }
 
@@ -462,38 +468,70 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder = null;
+
+            NewViewHolder viewHolder;
+            String path;
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(
-                        R.layout.item_video_gridview_album, parent, false);
-                viewHolder = new ViewHolder();
-                viewHolder.imageView = (ImageView) convertView
-                        .findViewById(R.id.video_item_album);
-                viewHolder.mImageCbIcon = (ImageView) convertView.findViewById(R.id.iv_cb_icon);
-                viewHolder.text = (TextView) convertView
-                        .findViewById(R.id.txt_item_album);
+                convertView = getLayoutInflater().inflate(R.layout.item_gridview_videos_nobg, parent, false);
+                viewHolder = new NewViewHolder();
+                viewHolder.img = (ImageView) convertView.findViewById(R.id.iv_pic);
+                viewHolder.name = (TextView) convertView.findViewById(R.id.tv_folder_name);
+                viewHolder.amount = (TextView) convertView.findViewById(R.id.tv_folder_size);
+                viewHolder.vicon = (ImageView) convertView.findViewById(R.id.iv_video_icon);
                 convertView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder = (NewViewHolder) convertView.getTag();
             }
-            VideoBean video = videos.get(position);
-            String path = video.getPath();
-            String name = video.getName();
-            String secondName = FileOperationUtil.getSecondDirNameFromFilepath(path);
-            viewHolder.text.setText(name + "(" + video.getCount()
-                    + ")");
-            viewHolder.imageView.setBackgroundDrawable(context.getResources()
-                    .getDrawable(R.drawable.video_loading));
-            LeoLog.d("testIntent", "name is : " + name);
-            LeoLog.d("testIntent", "secondName is : " + secondName);
-            if (name.equals(LAST_CATALOG) && secondName.equals(SECOND_CATALOG)) {
-                viewHolder.mImageCbIcon.setVisibility(View.VISIBLE);
+            viewHolder.vicon.setVisibility(View.VISIBLE);
+            path = videos.get(position).getBitList().get(0).getPath();
+            viewHolder.name.setText(videos.get(position).getName());
+            viewHolder.amount.setText(videos.get(position).getCount()+"");
+
+            String uri = null;
+            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
             } else {
-                viewHolder.mImageCbIcon.setVisibility(View.GONE);
+                uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
-            String filePath = "voidefile://" + path;
-            mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
+            mImageLoader.displayImage(uri, viewHolder.img, mOptions);
             return convertView;
+
+
+//
+//
+//
+//            ViewHolder viewHolder = null;
+//            if (convertView == null) {
+//                convertView = getLayoutInflater().inflate(
+//                        R.layout.item_video_gridview_album, parent, false);
+//                viewHolder = new ViewHolder();
+//                viewHolder.imageView = (ImageView) convertView
+//                        .findViewById(R.id.video_item_album);
+//                viewHolder.mImageCbIcon = (ImageView) convertView.findViewById(R.id.iv_cb_icon);
+//                viewHolder.text = (TextView) convertView
+//                        .findViewById(R.id.txt_item_album);
+//                convertView.setTag(viewHolder);
+//            } else {
+//                viewHolder = (ViewHolder) convertView.getTag();
+//            }
+//            VideoBean video = videos.get(position);
+//            String path = video.getPath();
+//            String name = video.getName();
+//            String secondName = FileOperationUtil.getSecondDirNameFromFilepath(path);
+//            viewHolder.text.setText(name + "(" + video.getCount()
+//                    + ")");
+//            viewHolder.imageView.setBackgroundDrawable(context.getResources()
+//                    .getDrawable(R.drawable.video_loading));
+//            LeoLog.d("testIntent", "name is : " + name);
+//            LeoLog.d("testIntent", "secondName is : " + secondName);
+//            if (name.equals(LAST_CATALOG) && secondName.equals(SECOND_CATALOG)) {
+//                viewHolder.mImageCbIcon.setVisibility(View.VISIBLE);
+//            } else {
+//                viewHolder.mImageCbIcon.setVisibility(View.GONE);
+//            }
+//            String filePath = "voidefile://" + path;
+//            mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
+//            return convertView;
         }
 
     }
@@ -552,23 +590,60 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(VideoHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
             }
-            ImageView iv = (ImageView) convertView.findViewById(R.id.iv_pic);
-            String path = list.get(position).getPath();
-            String uri = null;
-            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
-                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
-            } else {
-                uri = ImageDownloader.Scheme.FILE.wrap(path);
+            final ImageView iv = (ImageView) convertView.findViewById(R.id.iv_pic);
+            TextView tv = (TextView) convertView.findViewById(R.id.tv_more);
+            if (list.size() > 5 && position == 4) {
+                tv.setText("+" + (list.size() - 4));
             }
-            mImageLoader.displayImage(uri, iv, mOptions);
+
+            String path = list.get(position).getPath();
+            String uri = "voidefile://" + path;
+//            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+//                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+//            } else {
+//                uri = ImageDownloader.Scheme.FILE.wrap(path);
+//            }
+//            mImageLoader.displayImage(uri, iv, mOptions);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     goNewHideVActivity();
+                }
+            });
+
+            mImageLoader.loadImage(uri, mOptions, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    LeoLog.i("newpic", "loading failed    " + imageUri);
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    if (list.size() > 5 && position == 4) {
+                        LeoLog.i("newpic", "try blur ");
+                        try {
+                            loadedImage = Bitmap.createScaledBitmap(loadedImage, 50, 50, true);
+                            loadedImage = FastBlur.doBlur(loadedImage, 25, true);
+                            iv.setBackgroundDrawable(new BitmapDrawable(loadedImage));
+                        } catch (Throwable t) {
+                            LeoLog.i("newpic", "blur error");
+                        }
+                    } else {
+                        iv.setImageBitmap(loadedImage);
+                    }
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+
                 }
             });
 
@@ -578,7 +653,15 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private void goNewHideVActivity() {
         //TODO
+        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
         Intent intent = new Intent(this, NewHideVidActivity.class);
         startActivity(intent);
+    }
+
+    private static class NewViewHolder {
+        private ImageView img;
+        private TextView name;
+        private TextView amount;
+        private ImageView vicon;
     }
 }

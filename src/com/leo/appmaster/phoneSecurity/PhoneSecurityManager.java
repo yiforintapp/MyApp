@@ -34,6 +34,7 @@ import com.leo.appmaster.utils.Utilities;
  * 手机防盗
  */
 public class PhoneSecurityManager {
+    public static boolean DBG = true;
     public static String TAG = "PhoneSecurityManager";
     private Context mContext;
     private static PhoneSecurityManager mInstance;
@@ -289,19 +290,19 @@ public class PhoneSecurityManager {
                         LeoPreference.getInstance().putLong(PrefConst.KEY_INSTRU_MSM_ID, msmId);
                     }
                     LeoLog.i(TAG, "可以执行指令，信息内容：" + body);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
                             /*上传手机数据*/
-                            String uploadStr = getUploadPhoneData();
+                             String uploadStr = getUploadPhoneData();
                             if (uploadStr != null) {
                                 LeoAgent.addEvent(PhoneSecurityConstants.UPLOAD_PHONE_DATA_ID, uploadStr);
                                 LeoLog.i(TAG, "Obser数据：" + uploadStr);
                             }
                             String sekData = getSDKWrapperData();
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_location_" + sekData);
-                        }
-                    });
+//                        }
+//                    });
 //                    ThreadManager.executeOnAsyncThread(new Runnable() {
 //                        @Override
 //                        public void run() {

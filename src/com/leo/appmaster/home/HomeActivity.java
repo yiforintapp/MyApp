@@ -48,6 +48,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.activity.AboutActivity;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
@@ -127,7 +128,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private int mHeaderHeight;
     private int mToolbarHeight;
-    private CommonToolbar mCommonToolbar;
+//    private CommonToolbar mCommonToolbar;
     private Animation mComingInAnim;
     private Animation mComingOutAnim;
 
@@ -409,10 +410,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             Animation comingOut = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_out);
 
             mToolbar.startAnimation(comingIn);
-            mCommonToolbar.startAnimation(comingOut);
+//            mCommonToolbar.startAnimation(comingOut);
             mToolbar.setVisibility(View.INVISIBLE);
-            mCommonToolbar.setVisibility(View.VISIBLE);
-            mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+//            mCommonToolbar.setVisibility(View.VISIBLE);
+//            mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
 
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_privacyScan");
@@ -512,11 +513,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            mPrivacyFragment.reset();
 
             mToolbar.setVisibility(View.VISIBLE);
-            mCommonToolbar.setVisibility(View.INVISIBLE);
+//            mCommonToolbar.setVisibility(View.INVISIBLE);
 
             mToolbar.startAnimation(mComingOutAnim);
             mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-            mCommonToolbar.startAnimation(mComingInAnim);
+//            mCommonToolbar.startAnimation(mComingInAnim);
 
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             if (mUninstallGuideShow) {
@@ -646,10 +647,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
         mToolbarHeight = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-        mCommonToolbar = (CommonToolbar) findViewById(R.id.home_common_toobar);
-        mCommonToolbar.setToolbarTitle(R.string.home_privacy_status);
-        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-        mCommonToolbar.setNavigationClickListener(this);
+//        mCommonToolbar = (CommonToolbar) findViewById(R.id.home_common_toobar);
+//        mCommonToolbar.setToolbarTitle(R.string.home_privacy_status);
+//        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+//        mCommonToolbar.setNavigationClickListener(this);
 
         mComingInAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_in);
         mComingOutAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_out);
@@ -675,6 +676,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //                    mToolbar.setBackgroundColor(color);
 //                    mMoreFragment.setEnable(false);
                     mToolbar.setNavigationLogoResource(R.drawable.ic_toolbar_back);
+                    mToolbar.setBackgroundColor(getResources().getColor(R.color.ctc));
                 } else {
                     mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
 //                    mMoreFragment.setEnable(true);
@@ -1231,9 +1233,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     /* 关于 */
                     /* sdk mark */
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "about");
-//                    intent = new Intent(HomeActivity.this,
-//                            AboutActivity.class);
-                    intent = new Intent(HomeActivity.this, NewHideVidActivity.class);
+                    intent = new Intent(HomeActivity.this,
+                            AboutActivity.class);
                     startActivity(intent);
                 }
             }
@@ -1353,7 +1354,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            mCommonToolbar.setBackgroundColor(mPrivacyFragment.getToolbarColor());
         } else {
             mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-            mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+//            mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
         }
     }
 
@@ -1361,7 +1362,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mScoreBeforeProcess = mPrivacyHelper.getSecurityScore();
         // 分数上涨，标题栏背景异常，非变现，加保护
         mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+//        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
         mProcessedMgr = null;
         mProcessAlreadyTimeout = false;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -1478,7 +1479,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     public void resetToolbarColor() {
         mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+//        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
     }
 
 

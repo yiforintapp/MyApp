@@ -75,6 +75,5 @@
         android:id="@+id/ctb_intruder_gallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cb"
-        ></com.leo.appmaster.ui.CommonToolbar>
+        android:background="@color/cb" />
 </RelativeLayout>

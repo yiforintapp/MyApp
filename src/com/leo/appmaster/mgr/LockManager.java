@@ -186,6 +186,12 @@ public abstract class LockManager extends Manager {
      */
     public abstract int getIncreaseScore(int appNum);
 
+    /**
+     * 5.0及其以上系统用量权限是否允许，5.0一下默认返回true
+     * @return
+     */
+    public abstract boolean isUsageStateEnable();
+
     private static final String ACTION_FIRST_USE_LOCK_MODE = "com.leo.appmaster.ACTION_FIRST_USE_LOCK_MODE";
     private static final String ACTION_LOCK_MODE_CHANGE = "com.leo.appmaster.ACTION_LOCK_MODE_CHANGE";
     private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";

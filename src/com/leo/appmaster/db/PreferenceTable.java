@@ -48,12 +48,7 @@ public class PreferenceTable extends BaseTable {
             synchronized (LOCK) {
                 if (sInstance == null) {
                     sInstance = new PreferenceTable();
-                    ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
-                        @Override
-                        public void run() {
-                            sInstance.loadPreference();
-                        }
-                    }, 3000);
+                    sInstance.startLoadData();
                 }
             }
         }
@@ -66,6 +61,21 @@ public class PreferenceTable extends BaseTable {
         mBackupValues = new HashMap<String, Object>();
         mSerialExecutor = ThreadManager.newSerialExecutor();
         mPrefs = AppMasterApplication.getInstance().getSharedPreferences(TABLE_NAME, Context.MODE_PRIVATE);
+    }
+
+    private void startLoadData() {
+        synchronized (this) {
+            mLoaded = false;
+        }
+        ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+            @Override
+            public void run() {
+                synchronized (PreferenceTable.this) {
+                    loadPreference();
+                }
+            }
+        }, 3000);
+
     }
 
     public void loadPreference() {
@@ -103,6 +113,7 @@ public class PreferenceTable extends BaseTable {
                 IoUtils.closeSilently(cursor);
             }
         }
+        notifyAll();
 
         mLoaded = true;
         LeoLog.d(TAG, "<ls> end to load loadPreference");
@@ -202,31 +213,6 @@ public class PreferenceTable extends BaseTable {
         awaitLoadedLocked();
         Object v = mValues.get(key);
         return v != null ? v.toString() : def;
-
-//        if (BuildProperties.isApiLevel14()) {
-//            return mPrefs.getString(key, def);
-//        } else {
-//            SQLiteDatabase db = getHelper().getReadableDatabase();
-//            if (db == null) {
-//                return def;
-//            }
-//
-//            Cursor cursor = null;
-//            try {
-//                cursor = db.query(TABLE_NAME, new String[]{COL_VALUE}, COL_KEY + " = ?",
-//                        new String[]{key}, null, null, null);
-//                if (cursor != null && cursor.getCount() > 0) {
-//                    cursor.moveToFirst();
-//                    String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
-//                    return value != null ? value.toString() : def;
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                IoUtils.closeSilently(cursor);
-//            }
-//        }
-//        return def;
     }
 
     public void putInt(String key, int value) {

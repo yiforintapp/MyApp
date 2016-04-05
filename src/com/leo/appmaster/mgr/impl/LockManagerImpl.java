@@ -45,6 +45,7 @@ import com.leo.appmaster.applocker.manager.TimeoutRelockPolicy;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetector;
+import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.battery.BatteryShowViewActivity;
@@ -532,7 +533,7 @@ public class LockManagerImpl extends LockManager {
     }
 
     public void onEvent(AppUnlockEvent event) {
-        LeoLog.d(TAG, "onEvent, result: " + event.mUnlockResult);
+        LeoLog.d(TAG, "<ls> onEvent, result: " + event.mUnlockResult);
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
             mLockPolicy.onUnlocked(event.mUnlockedPkg);
             if (mExtranalUnlockListener != null) {
@@ -1427,6 +1428,16 @@ public class LockManagerImpl extends LockManager {
     }
 
     @Override
+    public boolean isUsageStateEnable() {
+        if (Build.VERSION.SDK_INT < 21) {
+            return true;
+        }
+
+        ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
+        return usageStats.checkAvailable();
+    }
+
+    @Override
     public int ignore() {
         int oldScore = mCachedScore < 0 ? 0 : mCachedScore;
 
@@ -1437,6 +1448,7 @@ public class LockManagerImpl extends LockManager {
             public void run() {
                 List<AppItemInfo> itemInfos = AppLoadEngine.getInstance(mContext).getAllPkgInfo();
                 InstalledAppTable.getInstance().insertIgnoreItemList(itemInfos);
+                notifySecurityChange();
             }
         });
         addedScore = addedScore < 0 ? 0 : addedScore;

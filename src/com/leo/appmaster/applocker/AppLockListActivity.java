@@ -51,6 +51,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.BaseSelfDurationToast;
@@ -219,7 +220,6 @@ public class AppLockListActivity extends BaseActivity implements
 
         mTtileBar = (CommonToolbar) findViewById(R.id.listlock_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_lock);
-        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
         mTtileBar.setNavigationClickListener(this);
 
@@ -392,7 +392,8 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList = resaultUnlock;
 
         LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        mAppList = lm.getNewAppList();
+//      mAppList = lm.getNewAppList();
+        mAppList = PrivacyHelper.getAppPrivacy().getNewList();
 
         if (mAppList.size() == mUnlockList.size()) {
             mAppList.clear();
@@ -720,7 +721,6 @@ public class AppLockListActivity extends BaseActivity implements
             }
         }
     }
-
 
 
     public static class DefalutAppComparator implements Comparator<AppInfo> {

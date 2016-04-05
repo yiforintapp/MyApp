@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.privacy;
 
 import java.util.HashMap;
@@ -277,14 +276,6 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         }
 
         long currentTs = System.currentTimeMillis();
-
-        long lastDecTs = LeoPreference.getInstance().getLong(PrefConst.KEY_DECREASE_TIME, 0);
-        if (!TimeUtil.isSameDay(currentTs, lastDecTs)) {
-            LeoLog.i(TAG, "checkOrNotifyDecScore, not in the same day.");
-            // 跟之前的时间不在同一天，清0减少的分数
-            LeoPreference.getInstance().putLong(PrefConst.KEY_DECREASE_TIME, currentTs);
-        }
-
         Privacy privacy = getPrivacy(privacyType);
         if (privacy == null) {
             return;
@@ -328,15 +319,6 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             return;
         }
         privacy.showNotification();
-    }
-
-    private int calculateScore() {
-        int score = 0;
-        for (String key : mScoreMap.keySet()) {
-            score += mScoreMap.get(key);
-        }
-
-        return score;
     }
 
     public Pair<Integer, Integer> getColorPairByScore(int score) {

@@ -1215,123 +1215,124 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         /* AM-3907 规避多次添加广告 */
-		try {
-			ThreadManager.executeOnSubThread(new Runnable() {
-				@Override
-				public void run() {
-					// 避免产生anr，放到子线程
-					for (String id : mBannerAdids) {
-						LeoLog.d("LEOAdEngine", "id : =" + id + "; mDidLoadAd = " + mDidLoadAd);
-						//LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
-						// 3.3.2 封装Max与Mob SDK
-						if (mDidLoadAd) {
-							ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id, mAdView);
-						}
-					}
-				}
-			});
+        try {
+            ThreadManager.executeOnSubThread(new Runnable() {
+                @Override
+                public void run() {
+                    // 避免产生anr，放到子线程
+                    for (String id : mBannerAdids) {
+                        LeoLog.d("LEOAdEngine", "id : =" + id + "; mDidLoadAd = " + mDidLoadAd);
+                        //LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
+                        // 3.3.2 封装Max与Mob SDK
+                        if (mDidLoadAd) {
+                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id, mAdView);
+                        }
+                    }
+                }
+            });
 
-			if (mImageFetcher != null) {
-				mImageFetcher.destroy();
-			}
+            if (mImageFetcher != null) {
+                mImageFetcher.destroy();
+            }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (mBannerContainer != null) {
-			try {
-				mBannerContainer.setVisibility(View.GONE);
-			} catch (Exception e) {
-			}
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (mBannerContainer != null) {
+            try {
+                mBannerContainer.setVisibility(View.GONE);
+            } catch (Exception e) {
+            }
+        }
+    }
 
-	@Override
-	public void finish() {
-		LeoLog.d("LS2", "do finish");
-		if (!isFinishing()) {
-			super.finish();
-		}
-	}
+    @Override
+    public void finish() {
+        LeoLog.d("LS2", "do finish");
+        if (!isFinishing()) {
+            super.finish();
+        }
+    }
 
-	@Override
-	protected void onRestart() {
-		super.onRestart();
-		LeoLog.d(TAG, "onRestart...");
-		/**
-		 * dont change it, for lock theme
-		 */
-		if (mRestartForThemeChanged) {
-			Intent intent = getIntent();
-			finish();
-			mRestartForThemeChanged = false;
-			intent.putExtra("from_theme_change", true);
-			intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
-			startActivity(intent);
-		}
-	}
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        LeoLog.d(TAG, "onRestart...");
+        /**
+         * dont change it, for lock theme
+         */
+        if (mRestartForThemeChanged) {
+            Intent intent = getIntent();
+            finish();
+            mRestartForThemeChanged = false;
+            intent.putExtra("from_theme_change", true);
+            intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
+            startActivity(intent);
+        }
+    }
 
-	private void initUI() {
-		mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-		if (mLockMode == LockManager.LOCK_MODE_FULL) {
-			mTtileBar.setBackArrowVisibility(View.GONE);
+    private void initUI() {
+        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        if (mLockMode == LockManager.LOCK_MODE_FULL) {
+            mTtileBar.setBackArrowVisibility(View.GONE);
 
-			if (mQuickLockMode) {
-				List<LockMode> modes = mLockManager.getLockMode();
-				LockMode targetMode = null;
-				for (LockMode lockMode : modes) {
-					if (lockMode.modeId == mQuiclModeId) {
-						targetMode = lockMode;
-						break;
-					}
-				}
-				if (targetMode != null) {
-					setQuickLockModeTiltleBarInfo(targetMode);
-				} else {
-					setTiltleBarInfo(getPackageName());
-				}
-			}
-		} else {
-			mTtileBar.setSelfBackPressListener(this);
-			if (TextUtils.isEmpty(mLockTitle)) {
-				mTtileBar.setTitle(R.string.app_lock);
-				//解锁界面绘制介绍
-				mLockFragment.setShowText(true);
-			} else {
-				mTtileBar.setTitle(mLockTitle);
-			}
-			mTtileBar.setHelpSettingVisiblity(View.INVISIBLE);
-		}
+            if (mQuickLockMode) {
+                List<LockMode> modes = mLockManager.getLockMode();
+                LockMode targetMode = null;
+                for (LockMode lockMode : modes) {
+                    if (lockMode.modeId == mQuiclModeId) {
+                        targetMode = lockMode;
+                        break;
+                    }
+                }
+                if (targetMode != null) {
+                    setQuickLockModeTiltleBarInfo(targetMode);
+                } else {
+                    setTiltleBarInfo(getPackageName());
+                }
+            }
+        } else {
+            mTtileBar.setSelfBackPressListener(this);
+            if (TextUtils.isEmpty(mLockTitle)) {
+                mTtileBar.setTitle(R.string.app_lock);
+                //解锁界面绘制介绍
+                mLockFragment.setShowText(true);
+            } else {
+                mTtileBar.setTitle(mLockTitle);
+            }
+            mTtileBar.setHelpSettingVisiblity(View.INVISIBLE);
+        }
 
-		mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
+        mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
 
-		mTtileBar.setOptionImageVisibility(View.VISIBLE);
-		mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
-		mTtileBar.setOptionListener(this);
+        mTtileBar.setBackgroundResource(R.color.transparent);
+        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
+        mTtileBar.setOptionListener(this);
 
-		mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
-		mMrlGift = (RippleView) findViewById(R.id.mr_gift);
-		mMrlGift.setOnClickListener(this);
+        mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
+        mMrlGift = (RippleView) findViewById(R.id.mr_gift);
+        mMrlGift.setOnClickListener(this);
 
-		mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
-		if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
-			((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
-			mAdIcon.setVisibility(View.VISIBLE);
-			mAdIcon.setOnClickListener(this);
-		}
+        mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
+        if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
+            ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
+            mAdIcon.setVisibility(View.VISIBLE);
+            mAdIcon.setOnClickListener(this);
+        }
 
-		FragmentManager fm = getSupportFragmentManager();
-		FragmentTransaction tans = fm.beginTransaction();
-		tans.replace(R.id.fragment_contain, mLockFragment);
-		tans.commit();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction tans = fm.beginTransaction();
+        tans.replace(R.id.fragment_contain, mLockFragment);
+        tans.commit();
 
-		handlePretendLock();
+        handlePretendLock();
 
-		initAD();
-	}
+        initAD();
+    }
 
-	/* 初始化广告UI */
-	private void initAD() {
+    /* 初始化广告UI */
+    private void initAD() {
 //        mBannerParent = (FrameLayout) findViewById(R.id.large_adbanner_parent);
 		mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
 		mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
@@ -2370,19 +2371,28 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void setPopWindowItemClick(int position) {
+        int type = mLockFragment.getUnlockType();
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-            if (position == 0) {
-                findPasswd();
-            } else if (position == 1) {
-                onMoveToTheme();
-            } else if (position == 2) {
-                onHideLockLineClicked(position);
+            if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+                if (position == 0) {
+                    findPasswd();
+                } else if (position == 1) {
+                    onMoveToTheme();
+                } else if (position == 2) {
+                    onHideLockLineClicked(position);
+                } else {
+                    onHelpItemClicked();
+                }
             } else {
-                onHelpItemClicked();
+                if (position == 0) {
+                    findPasswd();
+                } else {
+                    onHelpItemClicked();
+                }
             }
+
         } else {
 
-            int type = mLockFragment.getUnlockType();
             if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
                 if (position == 0) {
                     onMoveToTheme();

@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.sdk;
 
 import android.app.Activity;
@@ -249,7 +248,7 @@ public class SDKWrapper {
      * @param description detail of this event
      */
     public static void addEvent(Context context, int level, String id, String description) {
-        LeoLog.d(TAG, "<ls> id: " + id + " | desc: " + description + " | inited: " + sInited);
+        // LeoLog.d(TAG, "<ls> id: " + id + " | desc: " + description + " | inited: " + sInited);
         // AM-727
 //        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
         // leo
@@ -275,7 +274,7 @@ public class SDKWrapper {
 	 * @param extra detail of this extra data
 	 */
 	public static void addEvent(Context context, String exName, int level, String id, String description, int source, Map<String, String> extra) {
-        LeoLog.d(TAG, "<ls> id: " + id + " | exName : " + exName + " | desc: " + description + " | inited: " + sInited);
+        // LeoLog.d(TAG, "<ls> id: " + id + " | exName : " + exName + " | desc: " + description + " | inited: " + sInited);
 		//只是针对max 广告发起的extra 的范畴才要主动加上android_id
 		if (exName != null && exName.startsWith("max_ad")) {
 			if (source != AppMasterPreference.AD_SDK_SOURCE_USE_MAX) {

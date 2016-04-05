@@ -83,8 +83,8 @@ public abstract class Manager {
     public void notifySecurityChange() {
         LeoLog.d("monitorMedia", "notifySecurityChange!!!");
         for (SecurityChangeListener listener : mListeners) {
-            int score = getSecurityScore();
-            listener.onSecurityChange(description(), score < 0 ? 0 : score);
+//            int score = getSecurityScore();
+            listener.onSecurityChange(description(), 0);
         }
     }
 }

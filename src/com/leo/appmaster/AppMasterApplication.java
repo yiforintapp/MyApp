@@ -41,7 +41,7 @@ public class AppMasterApplication extends Application {
     public static long sAppOnCrate;
     public static boolean sIsSplashActioned = false;
 
-    public static final boolean DGB_TRACE = false;
+    public static boolean DGB_TRACE = false;
     public static final String TRACE = "MotoG11.trace";
 
     @Override

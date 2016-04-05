@@ -13,8 +13,7 @@
         <com.leo.appmaster.ui.CommonToolbar
             android:id="@+id/layout_title_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cb" />
+            android:layout_height="wrap_content" />
 
         <GridView
             android:id="@+id/Image_hide_folder"
@@ -25,49 +24,16 @@
             android:fadingEdge="none"
             android:gravity="center"
             android:listSelector="@android:color/transparent"
-            android:numColumns="2"
+            android:numColumns="3"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:scrollbarStyle="outsideOverlay" />
 
-        <LinearLayout
-            android:id="@+id/bottom_bar"
+        <include
+            layout="@layout/image_folder_bottom_view"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="@drawable/bottom_button"
-            android:orientation="horizontal"
-            android:paddingBottom="12dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp">
-
-            <Button
-                android:id="@+id/select_all"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:drawableTop="@drawable/select_all_selector"
-                android:gravity="center_horizontal|bottom"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:text="@string/app_select_all"
-                android:textColor="@drawable/selector_button_text" />
-
-            <Button
-                android:id="@+id/hide_image"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:drawableTop="@drawable/hide_picture_selector"
-                android:enabled="false"
-                android:gravity="center_horizontal|bottom"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:text="@string/app_hide_image"
-                android:textColor="@drawable/selector_button_text" />
-        </LinearLayout>
+            android:layout_height="@dimen/secur_bt_rt_hi"
+            android:layout_alignParentBottom="true"/>
     </LinearLayout>
 
     <fragment

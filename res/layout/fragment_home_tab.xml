@@ -61,10 +61,10 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <TextView
+        <!--<TextView
             android:layout_width="2px"
             android:layout_height="match_parent"
-            android:background="@color/home_tab_divider" />
+            android:background="@color/home_tab_divider" />-->
 
         <RelativeLayout
             android:id="@+id/home_img"
@@ -96,10 +96,10 @@
 
     </LinearLayout>
 
-    <TextView
+    <!--<TextView
         android:layout_width="match_parent"
         android:layout_height="2px"
-        android:background="@color/home_tab_divider" />
+        android:background="@color/home_tab_divider" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,10 +134,10 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <TextView
+        <!--<TextView
             android:layout_width="2px"
             android:layout_height="match_parent"
-            android:background="@drawable/home_area_divider" />
+            android:background="@drawable/home_area_divider" />-->
 
         <RelativeLayout
             android:id="@+id/home_more"

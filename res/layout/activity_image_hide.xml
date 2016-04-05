@@ -12,52 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
+        <!--<ProgressBar
             android:id="@+id/pb_loading_pic"
             style="@style/ProgressBarCricle"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:layout_gravity="center"
-            android:layout_weight="1" />
+            android:layout_weight="1" />-->
 
-        <RelativeLayout
-            android:id="@+id/no_hide"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="@dimen/privacy_default_image_width"
-                    android:layout_height="@dimen/privacy_default_image_height"
-                    android:layout_gravity="center"
-                    android:src="@drawable/image_default" />
-
-                <TextView
-                    android:id="@+id/nohideTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/empty_page_text_m_top"
-                    android:gravity="center"
-                    android:text="@string/app_no_image_hide"
-                    android:textColor="#d3d3d4"
-                    android:textSize="@dimen/kongbaiye_text_size" />
-            </LinearLayout>
-        </RelativeLayout>
 
 
         <RelativeLayout
             android:id="@+id/rl_whole_show_content"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_height="1dp">
 
             <include
@@ -65,21 +34,68 @@
                 layout="@layout/header_new_hide"/>
 
 
-            <GridView
-                android:horizontalSpacing="0dp"
-                android:layout_marginTop="10dp"
-                android:verticalSpacing="12dp"
-                android:id="@+id/Image_hide_folder"
-                android:layout_below="@id/layout_newpic"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:fadingEdge="none"
-                android:gravity="center"
-                android:listSelector="@android:color/transparent"
-                android:numColumns="2"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"/>
+                android:layout_below="@id/layout_newpic"
+                android:layout_height="match_parent">
+
+                <GridView
+                    android:horizontalSpacing="0dp"
+                    android:layout_marginTop="10dp"
+                    android:verticalSpacing="12dp"
+                    android:id="@+id/Image_hide_folder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:fadingEdge="none"
+                    android:gravity="center"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="2"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"/>
+
+                <ProgressBar
+                    android:id="@+id/pb_loading_pic"
+                    style="@style/ProgressBarCricle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                     />
+
+                <RelativeLayout
+                    android:id="@+id/no_hide"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/privacy_default_image_width"
+                            android:layout_height="@dimen/privacy_default_image_height"
+                            android:layout_gravity="center"
+                            android:src="@drawable/image_default" />
+
+                        <TextView
+                            android:id="@+id/nohideTV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/empty_page_text_m_top"
+                            android:gravity="center"
+                            android:text="@string/app_no_image_hide"
+                            android:textColor="#d3d3d4"
+                            android:textSize="@dimen/kongbaiye_text_size" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
 
         </RelativeLayout>
 
@@ -117,8 +133,7 @@
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/ctc" />
+        android:layout_height="wrap_content" />
 
 
 

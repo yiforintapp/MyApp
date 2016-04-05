@@ -300,7 +300,6 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        LeoLog.v("imageView","onItemClick");
         mAdapter.toggle(position);
     }
 }

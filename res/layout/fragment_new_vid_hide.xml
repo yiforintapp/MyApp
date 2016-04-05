@@ -23,18 +23,6 @@
         android:layout_height="match_parent"
         android:background="@color/white" />
 
-
-    <!--<ListView-->
-        <!--android:id="@+id/video_lv"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/transparent"-->
-        <!--android:divider="@null"-->
-        <!--android:headerDividersEnabled="false"-->
-        <!--android:listSelector="@null"-->
-        <!--android:overScrollMode="never"-->
-        <!--android:paddingBottom="63dp"-->
-        <!--android:scrollbars="none" />-->
     <com.leo.appmaster.ui.HeaderGridView
         android:id="@+id/video_lv"
         android:layout_width="match_parent"
@@ -43,11 +31,9 @@
         android:columnWidth="109dp"
         android:divider="@null"
         android:headerDividersEnabled="false"
-        android:horizontalSpacing="8dp"
         android:listSelector="@null"
         android:numColumns="3"
         android:overScrollMode="never"
-        android:paddingLeft="@dimen/pri_new_list_padding"
         android:paddingRight="@dimen/pri_new_list_padding"
         android:paddingBottom="@dimen/secur_bt_rt_hi"
         android:scrollbars="none"

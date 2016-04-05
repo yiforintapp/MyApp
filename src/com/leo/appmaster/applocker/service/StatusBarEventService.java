@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker.service;
 
 import android.app.IntentService;
@@ -6,16 +5,20 @@ import android.content.ComponentName;
 import android.content.Intent;
 
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.videohide.NewHideVidActivity;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 /**
  * this service only use for statusbar notify event
@@ -38,6 +41,10 @@ public class StatusBarEventService extends IntentService {
     public static final int EVENT_PRIVACY_STATUS = 6;
     public static final int EVENT_TEN_NEW_APP_BACKUP = 7;
     public static final int EVENT_TEN_OVER_DAY_TRAFFIC = 8;
+
+    public static final int EVENT_PRIVACY_APP = 9;
+    public static final int EVENT_PRIVACY_IMAGE = 10;
+    public static final int EVENT_PRIVACY_VIDEO = 11;
 
     public StatusBarEventService() {
         super("");
@@ -123,6 +130,16 @@ public class StatusBarEventService extends IntentService {
             targetIntent.putExtra("from", "notification");
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        } else if (eventType == EVENT_PRIVACY_APP) {
+            targetIntent = new Intent(this, AppLockListActivity.class);
+            targetIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } else if (eventType == EVENT_PRIVACY_IMAGE) {
+            targetIntent = new Intent(this, NewHideImageActivity.class);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        } else if (eventType == EVENT_PRIVACY_VIDEO) {
+            targetIntent = new Intent(this, NewHideVidActivity.class);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } else {
             return;
         }

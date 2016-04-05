@@ -7,8 +7,7 @@
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/cb" />
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
