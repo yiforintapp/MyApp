@@ -1448,6 +1448,7 @@ public class LockManagerImpl extends LockManager {
             public void run() {
                 List<AppItemInfo> itemInfos = AppLoadEngine.getInstance(mContext).getAllPkgInfo();
                 InstalledAppTable.getInstance().insertIgnoreItemList(itemInfos);
+                notifySecurityChange();
             }
         });
         addedScore = addedScore < 0 ? 0 : addedScore;
