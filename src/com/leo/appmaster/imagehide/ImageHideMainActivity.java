@@ -227,6 +227,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void goNewHideImageActivity() {
+        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
         Intent intent = new Intent(ImageHideMainActivity.this, NewHideImageActivity.class);
         startActivity(intent);
     }
@@ -283,7 +284,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private void hideHeadLayout() {
         TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewPic.getHeight());
         ta.setDuration(500);
-        ta.setFillAfter(true);
+        ta.setFillAfter(false);
         mRlWholeShowContent.setAnimation(ta);
         mRlWholeShowContent.startAnimation(ta);
         ta.setAnimationListener(new Animation.AnimationListener() {
@@ -293,7 +294,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mIncludeLayoutNewPic.setVisibility(View.INVISIBLE);
+                mIncludeLayoutNewPic.setVisibility(View.GONE);
             }
 
             @Override

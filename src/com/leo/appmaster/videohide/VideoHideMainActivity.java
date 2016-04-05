@@ -397,7 +397,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private void hideHeadLayout() {
         TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewVid.getHeight());
         ta.setDuration(500);
-        ta.setFillAfter(true);
+        ta.setFillAfter(false);
         mRlWholeShowContent.setAnimation(ta);
         mRlWholeShowContent.startAnimation(ta);
         ta.setAnimationListener(new Animation.AnimationListener() {
@@ -407,7 +407,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mIncludeLayoutNewVid.setVisibility(View.INVISIBLE);
+                mIncludeLayoutNewVid.setVisibility(View.GONE);
             }
 
             @Override
@@ -653,6 +653,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private void goNewHideVActivity() {
         //TODO
+        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
         Intent intent = new Intent(this, NewHideVidActivity.class);
         startActivity(intent);
     }
