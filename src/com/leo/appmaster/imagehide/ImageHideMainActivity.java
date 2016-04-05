@@ -187,6 +187,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         }
         if (mNewPicAdapter != null) {
             if (mNewAddPic == null || mNewAddPic.size() == 0) {
+                mHasShowNew = true;
                 mIncludeLayoutNewPic.setVisibility(View.GONE);
             } else if (!mHasShowNew){
                 mHasShowNew = true;
