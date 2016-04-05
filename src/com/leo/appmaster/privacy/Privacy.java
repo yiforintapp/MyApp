@@ -184,6 +184,8 @@ public abstract class Privacy<T> {
     public void showNotification() {
     }
 
+    public abstract boolean isNotifyOpen();
+
     /**
      * 获取弹通知的上限个数
      * @return

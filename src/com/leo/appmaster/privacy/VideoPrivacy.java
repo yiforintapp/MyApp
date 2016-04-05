@@ -96,4 +96,9 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "prilevel", "prilevel_notice_vid");
     }
 
+    @Override
+    public boolean isNotifyOpen() {
+        return LeoSettings.getBoolean(PrefConst.KEY_NOTIFY_VID, true);
+    }
+
 }
