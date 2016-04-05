@@ -25,6 +25,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -45,8 +46,14 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private static final int DANGER_LEVEL = 1;
     private static final long FIR_IN_ANIM_TIME = 700;
 
+    private static final int TYPE_LOST = 0;
+    private static final int TYPE_LOCK = 1;
+    private static final int TYPE_NONE = -1;
+
     // 是否显示防盗
     private static boolean sShowLost = false;
+
+    private int mCurrentType = TYPE_NONE;
 
     private Activity mContext;
     private RelativeLayout mSfatResultAppLt;
@@ -140,44 +147,59 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     public void onStop() {
         super.onStop();
 
-        sShowLost = !sShowLost;
     }
 
     private void initBannerTip() {
+        LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        boolean lostDisabled = !lsm.isUsePhoneSecurity();
+        boolean usageDisabled = !lm.isUsageStateEnable();
+
+        int lastType = mCurrentType;
+        if ((lastType == TYPE_LOCK && !usageDisabled) || (lastType == TYPE_LOST && !lostDisabled)) {
+            // 之前显示的，返回后已开启，则不显示
+            mCenterTipRt.setVisibility(View.INVISIBLE);
+            mCurrentType = TYPE_NONE;
+            return;
+        }
         Privacy appPrivacy = PrivacyHelper.getAppPrivacy();
         Privacy imagePrivacy = PrivacyHelper.getImagePrivacy();
         Privacy videoPrivacy = PrivacyHelper.getVideoPrivacy();
         if (appPrivacy.isDangerous() || imagePrivacy.isDangerous() || videoPrivacy.isDangerous()) {
             // 不显示中间banner
             mCenterTipRt.setVisibility(View.INVISIBLE);
+            mCurrentType = TYPE_NONE;
         } else {
-            LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            boolean lostDisabled = !lsm.isUsePhoneSecurity();
-
-            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            boolean usageDisabled = !lm.isUsageStateEnable();
             if (lostDisabled && usageDisabled) {
                 mCenterTipRt.setVisibility(View.VISIBLE);
                 if (sShowLost) {
                     mBannerTv.setText(R.string.hd_lost_permisson_tip);
                     mBannerIntent = new Intent(mContext, PhoneSecurityActivity.class);
+                    mCurrentType = TYPE_LOST;
                 } else {
                     mBannerTv.setText(R.string.hd_lock_permisson_tip);
                     mBannerIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                     mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mCurrentType = TYPE_LOCK;
                 }
             } else if (lostDisabled) {
-                mBannerIntent = new Intent(mContext, PhoneSecurityActivity.class);
+                mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                 mCenterTipRt.setVisibility(View.VISIBLE);
                 mBannerTv.setText(R.string.hd_lost_permisson_tip);
+
+                mCurrentType = TYPE_LOST;
             } else if (usageDisabled) {
                 mCenterTipRt.setVisibility(View.VISIBLE);
                 mBannerTv.setText(R.string.hd_lock_permisson_tip);
                 mBannerIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                mCurrentType = TYPE_LOCK;
             } else {
                 mCenterTipRt.setVisibility(View.INVISIBLE);
                 mBannerIntent = null;
+
+                mCurrentType = TYPE_NONE;
             }
         }
     }
@@ -327,6 +349,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         super.onDetach();
         mDetectPresenter.detachView();
 
+        sShowLost = !sShowLost;
     }
 
     @Override
@@ -383,7 +406,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.lt_home_det_tip:
                 //中间banner
-                mDetectPresenter.centerBannerHandler();
+                //mDetectPresenter.centerBannerHandler();
                 if (mBannerIntent != null) {
                     mContext.startActivity(mBannerIntent);
                     if (!mContext.getPackageName().equals(mBannerIntent.getPackage())) {
