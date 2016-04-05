@@ -20,12 +20,28 @@
             android:background="@drawable/selector_over_frame"
             android:scaleType="center" />
 
+        <ImageView
+            android:id="@+id/iv_video_icon"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/folder_video_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:background="#5c000000"
+        android:gravity="center_vertical"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="37dp" >
+
+        <ImageView
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/folder_icon_n"
+            android:layout_width="15dp"
+            android:layout_height="15dp" />
 
         <TextView
             android:id="@+id/tv_folder_name"

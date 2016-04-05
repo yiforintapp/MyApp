@@ -470,10 +470,12 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 viewHolder.img = (ImageView) convertView.findViewById(R.id.iv_pic);
                 viewHolder.name = (TextView) convertView.findViewById(R.id.tv_folder_name);
                 viewHolder.amount = (TextView) convertView.findViewById(R.id.tv_folder_size);
+                viewHolder.vicon = (ImageView) convertView.findViewById(R.id.iv_video_icon);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (NewViewHolder) convertView.getTag();
             }
+            viewHolder.vicon.setVisibility(View.VISIBLE);
             path = videos.get(position).getBitList().get(0).getPath();
             viewHolder.name.setText(videos.get(position).getName());
             viewHolder.amount.setText(videos.get(position).getCount()+"");
@@ -620,5 +622,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         private ImageView img;
         private TextView name;
         private TextView amount;
+        private ImageView vicon;
     }
 }
