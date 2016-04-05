@@ -86,6 +86,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private ImageView mShieldDangerRightIv;
     private ImageView mShieldDangerTopIv;
     private ImageView mShieldDangerCenterIv;
+    private TextView mDangerResultAppDetailTv;
+    private TextView mDangerResultPicDetailTv;
+    private TextView mDangerResultVideoDetailTv;
 
     @Override
     public void onAttach(Activity activity) {
@@ -107,10 +110,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mDetectPresenter.attachView(this);
         initUI(view);
         initAnim();
-        //测试
-        startFirstAnim();
-        startHomeCenterShieldAnim();
-
     }
 
     @Override
@@ -181,6 +180,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
+            mDangerResultAppDetailTv.setText(privacy.getDangerTipId());
 
         } else {
             mSfatResultAppLt.setVisibility(View.VISIBLE);
@@ -194,6 +194,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mDetSaftAppNumTv.setText(privacy.getPrivacyCountText());
             }
         }
+
     }
 
     private void reloadImageStatus() {
@@ -204,6 +205,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
+            mDangerResultPicDetailTv.setText(privacy.getDangerTipId());
         } else {
             mSfatResultImgLt.setVisibility(View.VISIBLE);
             mDangerResultImgLt.setVisibility(View.INVISIBLE);
@@ -225,6 +227,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
+            mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
         } else {
             mSfatResultVideoLt.setVisibility(View.VISIBLE);
             mDangerResultVideoLt.setVisibility(View.INVISIBLE);
@@ -249,14 +252,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mDangerResultImgLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_danger_result_img);
         mDangerResultVideoLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_danger_result_video);
 
-       /* mSfatResultAppLt.setVisibility(View.INVISIBLE);
-        mSfatResultImgLt.setVisibility(View.INVISIBLE);
-        mSfatResultVideoLt.setVisibility(View.INVISIBLE);
-
-        mDangerResultAppLt.setVisibility(View.VISIBLE);
-        mDangerResultImgLt.setVisibility(View.VISIBLE);
-        mDangerResultVideoLt.setVisibility(View.VISIBLE);*/
-
+        mDangerResultAppDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_app_detal_tv);
+        mDangerResultPicDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_pic_detal_tv);
+        mDangerResultVideoDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_detal_tv);
 
         mCenterTipRt = (RelativeLayout) view.findViewById(R.id.lt_home_det_tip);
         mSfatResultAppLt.setOnClickListener(this);
@@ -301,6 +299,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     private void initAnim() {
         initHomeTopShieldAnim();
+        //测试
+        startFirstAnim();
+        startHomeCenterShieldAnim(mShieldCenterIv);
     }
 
     @Override
@@ -364,7 +365,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.lt_home_det_tip:
                 //中间banner
-                //mDetectPresenter.centerBannerHandler();
+                mDetectPresenter.centerBannerHandler();
                 if (mBannerIntent != null) {
                     mContext.startActivity(mBannerIntent);
                     if (!mContext.getPackageName().equals(mBannerIntent.getPackage())) {
@@ -473,27 +474,20 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //首次进入主页Center盾牌动画
-    public void startHomeCenterShieldAnim() {
-//        PropertyValuesHolder centerScaleX = PropertyValuesHolder.ofFloat("scaleX", (float) 0.6, (float) 1.06);
-//        PropertyValuesHolder centerScaleY = PropertyValuesHolder.ofFloat("scaleY", (float) 0.6, (float) 1.06);
-//
-//        ObjectAnimator centerAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldCenterIv, centerScaleX, centerScaleY);
-//        centerAnim.setDuration(FIR_IN_ANIM_TIME);
-//        centerAnim.setStartDelay(FIR_IN_ANIM_TIME);
-//        centerAnim.start();
-        ObjectAnimator scaleXFirstAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleX", 0.6f, 1.06f);
-        ObjectAnimator scaleYFirstAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleY", 0.6f, 1.06f);
+    public void startHomeCenterShieldAnim(View view) {
+        ObjectAnimator scaleXFirstAnim = ObjectAnimator.ofFloat(view, "scaleX", 0.6f, 1.06f);
+        ObjectAnimator scaleYFirstAnim = ObjectAnimator.ofFloat(view, "scaleY", 0.6f, 1.06f);
         AnimatorSet scaleFirstAnimatorSet = new AnimatorSet();
         scaleFirstAnimatorSet.playTogether(scaleXFirstAnim, scaleYFirstAnim);
         scaleFirstAnimatorSet.setDuration(200);
 
-        ObjectAnimator scaleXEndAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleX", 1.06f, 1f);
-        ObjectAnimator scaleYEndAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleY", 1.06f, 1f);
+        ObjectAnimator scaleXEndAnim = ObjectAnimator.ofFloat(view, "scaleX", 1.06f, 1f);
+        ObjectAnimator scaleYEndAnim = ObjectAnimator.ofFloat(view, "scaleY", 1.06f, 1f);
         AnimatorSet scaleEndAnimatorSet = new AnimatorSet();
         scaleEndAnimatorSet.playTogether(scaleXEndAnim, scaleYEndAnim);
         scaleEndAnimatorSet.setDuration(80);
 
-        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mShieldCenterIv, "alpha", 0f, 1f);
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(view, "alpha", 0f, 1f);
         alphaAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -594,19 +588,15 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     //红蓝盾牌的替换动画
     public void detectShieldConverAnim() {
-//        mShieldLeftIv = (ImageView) view.findViewById(R.id.shield_left_iv);
-//        mShieldRightIv = (ImageView) view.findViewById(R.id.shield_right_iv);
-//        mShieldTopIv = (ImageView) view.findViewById(R.id.shield_top_iv);
-//        mShieldCenterIv = (ImageView) view.findViewById(R.id.shield_center_iv);
-
         setDangerShieldView(true);
         setSfateShieldView(false);
+        shieldPositionInit(DANGER_LEVEL);
         ObjectAnimator dangerLeftScalX = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleX", 1.0f, 1.1f);
-        ObjectAnimator dangerLeftScalY = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleY", 0.6f, 1.06f);
+        ObjectAnimator dangerLeftScalY = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleY", 1.0f, 1.1f);
         ObjectAnimator dangerLeftApl = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "alpha", 1.0f, 0.0f);
         AnimatorSet dangerLeftAnim = new AnimatorSet();
         dangerLeftAnim.playTogether(dangerLeftScalX, dangerLeftScalY, dangerLeftApl);
-        dangerLeftAnim.setDuration(500);
+        dangerLeftAnim.setDuration(200);
         dangerLeftAnim.start();
 
         ObjectAnimator dangerRightScalX = ObjectAnimator.ofFloat(mShieldDangerRightIv, "scaleX", 1.0f, 1.1f);
@@ -614,62 +604,110 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         ObjectAnimator dangerRightApl = ObjectAnimator.ofFloat(mShieldDangerRightIv, "alpha", 1.0f, 0.0f);
         AnimatorSet dangerRightAnim = new AnimatorSet();
         dangerRightAnim.playTogether(dangerRightScalX, dangerRightScalY, dangerRightApl);
-        dangerRightAnim.setDuration(500);
+        dangerRightAnim.setDuration(200);
         dangerRightAnim.start();
 
-        ObjectAnimator dangerTopScalX = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleX", 1.0f, 1.16f);
+        ObjectAnimator dangerTopScalX = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleX", 1.0f, 1.1f);
         ObjectAnimator dangerTopScalY = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleY", 1.0f, 1.1f);
         ObjectAnimator dangerTopApl = ObjectAnimator.ofFloat(mShieldDangerTopIv, "alpha", 1.0f, 0.0f);
         AnimatorSet dangerTopAnim = new AnimatorSet();
         dangerTopAnim.playTogether(dangerTopScalX, dangerTopScalY, dangerTopApl);
-        dangerTopAnim.setDuration(500);
+        dangerTopAnim.setDuration(200);
         dangerTopAnim.start();
 
-        ObjectAnimator dangerCenterScalX = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleX", 1.0f, 1.16f);
+        ObjectAnimator dangerCenterScalX = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleX", 1.0f, 1.1f);
         ObjectAnimator dangerCenterScalY = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleY", 1.0f, 1.1f);
         ObjectAnimator dangerCenterApl = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "alpha", 1.0f, 0.0f);
         AnimatorSet dangerCenterAnim = new AnimatorSet();
         dangerCenterAnim.playTogether(dangerCenterScalX, dangerCenterScalY, dangerCenterApl);
-        dangerCenterAnim.setDuration(500);
+        dangerCenterAnim.setDuration(200);
         dangerCenterAnim.start();
 
+        dangerCenterAnim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                setSfateShieldView(true);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+
         //蓝色盾牌
-        ObjectAnimator saftLeftScalX = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleX", 1.0f, 1.1f);
-        ObjectAnimator saftLeftScalY = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleY", 0.6f, 1.06f);
-        ObjectAnimator saftLeftApl = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "alpha", 1.0f, 0.0f);
+        ObjectAnimator saftLeftScalX = ObjectAnimator.ofFloat(mShieldLeftIv, "scaleX", 0.8f, 1.0f);
+        ObjectAnimator saftLeftScalY = ObjectAnimator.ofFloat(mShieldLeftIv, "scaleY", 0.8f, 1.0f);
+        ObjectAnimator saftLeftApl = ObjectAnimator.ofFloat(mShieldLeftIv, "alpha", 0.8f, 1.0f);
         AnimatorSet saftLeftAnim = new AnimatorSet();
-        dangerLeftAnim.playTogether(dangerLeftScalX, dangerLeftScalY, dangerLeftApl);
-        dangerLeftAnim.setDuration(500);
-        dangerLeftAnim.start();
+        saftLeftAnim.playTogether(saftLeftScalX, saftLeftScalY, saftLeftApl);
+        saftLeftAnim.setDuration(600);
+        saftLeftAnim.setStartDelay(100);
+        saftLeftAnim.start();
 
-        ObjectAnimator saftRightScalX = ObjectAnimator.ofFloat(mShieldDangerRightIv, "scaleX", 1.0f, 1.1f);
-        ObjectAnimator saftRightScalY = ObjectAnimator.ofFloat(mShieldDangerRightIv, "scaleY", 1.0f, 1.1f);
-        ObjectAnimator saftRightApl = ObjectAnimator.ofFloat(mShieldDangerRightIv, "alpha", 1.0f, 0.0f);
+        ObjectAnimator saftRightScalX = ObjectAnimator.ofFloat(mShieldRightIv, "scaleX", 0.8f, 1.0f);
+        ObjectAnimator saftRightScalY = ObjectAnimator.ofFloat(mShieldRightIv, "scaleY", 0.8f, 1.0f);
+        ObjectAnimator saftRightApl = ObjectAnimator.ofFloat(mShieldRightIv, "alpha", 0.8f, 1.0f);
         AnimatorSet saftRightAnim = new AnimatorSet();
-        dangerRightAnim.playTogether(dangerRightScalX, dangerRightScalY, dangerRightApl);
-        dangerRightAnim.setDuration(500);
-        dangerRightAnim.start();
+        saftRightAnim.playTogether(saftRightScalX, saftRightScalY, saftRightApl);
+        saftRightAnim.setDuration(600);
+        saftRightAnim.setStartDelay(100);
+        saftRightAnim.start();
 
-        ObjectAnimator saftTopScalX = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleX", 1.0f, 1.16f);
-        ObjectAnimator saftTopScalY = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleY", 1.0f, 1.1f);
-        ObjectAnimator saftTopApl = ObjectAnimator.ofFloat(mShieldDangerTopIv, "alpha", 1.0f, 0.0f);
+        ObjectAnimator saftTopScalX = ObjectAnimator.ofFloat(mShieldTopIv, "scaleX", 0.8f, 1.0f);
+        ObjectAnimator saftTopScalY = ObjectAnimator.ofFloat(mShieldTopIv, "scaleY", 0.8f, 1.0f);
+        ObjectAnimator saftTopApl = ObjectAnimator.ofFloat(mShieldTopIv, "alpha", 0.8f, 1.0f);
         AnimatorSet saftTopAnim = new AnimatorSet();
-        dangerTopAnim.playTogether(dangerTopScalX, dangerTopScalY, dangerTopApl);
-        dangerTopAnim.setDuration(500);
-        dangerTopAnim.start();
+        saftTopAnim.playTogether(saftTopScalX, saftTopScalY, saftTopApl);
+        saftTopAnim.setDuration(600);
+        saftTopAnim.setStartDelay(100);
+        saftTopAnim.start();
 
-        ObjectAnimator saftCenterScalX = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleX", 1.0f, 1.16f);
-        ObjectAnimator saftCenterScalY = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleY", 1.0f, 1.1f);
-        ObjectAnimator saftCenterApl = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "alpha", 1.0f, 0.0f);
+        ObjectAnimator saftCenterScalX = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleX", 0.8f, 1.0f);
+        ObjectAnimator saftCenterScalY = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleY", 0.8f, 1.0f);
+        ObjectAnimator saftCenterApl = ObjectAnimator.ofFloat(mShieldCenterIv, "alpha", 0.0f, 1.0f);
         AnimatorSet saftCenterAnim = new AnimatorSet();
-        dangerCenterAnim.playTogether(dangerCenterScalX, dangerCenterScalY, dangerCenterApl);
-        dangerCenterAnim.setDuration(500);
+        saftCenterAnim.playTogether(saftCenterScalX, saftCenterScalY, saftCenterApl);
+        saftCenterAnim.setDuration(600);
+        saftCenterAnim.setStartDelay(100);
+        saftCenterAnim.start();
+        saftCenterAnim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                setDangerShieldView(false);
+            }
 
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
 
     }
 
     private class Banner {
         private Intent intent;
+
         public Banner(Intent intent) {
             this.intent = intent;
         }

@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_saft_app_num_tv"
-            android:textColor="@color/c150"
-            android:text="@string/hd_new_app"/>
+            android:text="@string/hd_new_app"
+            android:textColor="@color/c150"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -63,8 +63,18 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_danger_app_num_tv"
+            android:text="@string/hd_new_app"
             android:textColor="@color/c150"
-            android:text="@string/hd_new_app"/>
+            android:textSize="@dimen/f5"/>
+
+        <TextView
+            android:id="@+id/det_danger_app_detal_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/det_danger_app_num_tv"
+            android:layout_below="@id/det_danger_app_num_tv"
+            android:textColor="@color/c150"
+            android:textSize="@dimen/f5"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -95,8 +105,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_saft_img_num_tv"
-            android:textColor="@color/c150"
-            android:text="@string/hd_new_pic"/>
+            android:text="@string/hd_new_pic"
+            android:textColor="@color/c150"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -127,19 +137,28 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_danger_img_num_tv"
+            android:text="@string/hd_new_pic"
+            android:textColor="@color/c150"/>
+
+        <TextView
+            android:id="@+id/det_danger_pic_detal_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/det_danger_img_num_tv"
+            android:layout_below="@id/det_danger_img_num_tv"
             android:textColor="@color/c150"
-            android:text="@string/hd_new_pic"/>
+            android:textSize="@dimen/f5"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/lt_det_saft_result_img"
         android:background="@drawable/strip_home_ok3"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
-        android:layout_below="@id/lt_det_saft_result_img"
         android:visibility="invisible">
         <!--安全状态-->
         <TextView
@@ -159,19 +178,19 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_saft_video_num_tv"
-            android:textColor="@color/c150"
-            android:text="@string/hd_new_vid"/>
+            android:text="@string/hd_new_vid"
+            android:textColor="@color/c150"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/lt_det_saft_result_img"
         android:background="@drawable/strip_home_nook3"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
-        android:layout_below="@id/lt_det_saft_result_img"
         android:visibility="invisible"
         >
         <!--危险状态-->
@@ -192,8 +211,17 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
             android:layout_toRightOf="@id/det_danger_video_num_tv"
+            android:text="@string/hd_new_vid"
+            android:textColor="@color/c150"/>
+
+        <TextView
+            android:id="@+id/det_danger_video_detal_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/det_danger_video_num_tv"
+            android:layout_below="@id/det_danger_video_num_tv"
             android:textColor="@color/c150"
-            android:text="@string/hd_new_vid"/>
+            android:textSize="@dimen/f5"/>
     </RelativeLayout>
 
 </RelativeLayout>
