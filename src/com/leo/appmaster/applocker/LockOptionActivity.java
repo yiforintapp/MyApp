@@ -38,7 +38,8 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     private Preference mTheme, mLockSetting, mResetPasswd, mChangeProtectQuestion,
             mChangePasswdTip, mChangeLockTime;
 
-    private CheckBoxPreference mForbidUninstall, mAutoLock, mLockerClean, mHideLockLine;
+    private CheckBoxPreference mAutoLock, mLockerClean, mHideLockLine;
+//    mForbidUninstall
     private Preference mLockerTheme;
     private Preference mSetProtect;
 
@@ -74,7 +75,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     private void setupPreference() {
         mChangeLockTime = (Preference) findPreference(AppMasterPreference.PREF_RELOCK_TIME);
         mLockerTheme = findPreference(AppMasterPreference.PREF_LOCKER_THEME);
-        mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
+//        mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
         mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
         mLockerClean = (CheckBoxPreference) findPreference("app_lock_clean");
         mHideLockLine = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_HIDE_LOCK_LINE);
@@ -123,7 +124,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         }
 
         mResetPasswd.setOnPreferenceClickListener(this);
-        mForbidUninstall.setOnPreferenceChangeListener(this);
         if (mComeFrom == FROM_APPLOCK) {
             mAutoLock.setOnPreferenceChangeListener(this);
             mLockSetting.setOnPreferenceClickListener(this);
@@ -169,19 +169,19 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     @Override
     protected void onResume() {
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                if (isAdminActive() || isNewAdminActive()) {
-                    mForbidUninstall.setChecked(true);
-                    mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
-                } else {
-                    mForbidUninstall.setChecked(false);
-                    mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
-                }
-            }
-        }, 500);
+//        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                if (isAdminActive() || isNewAdminActive()) {
+//                    mForbidUninstall.setChecked(true);
+//                    mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
+//                } else {
+//                    mForbidUninstall.setChecked(false);
+//                    mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
+//                }
+//            }
+//        }, 500);
 
         if (haveProtect()) {
             mSetProtect.setTitle(R.string.passwd_protect);
@@ -251,21 +251,21 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     public void onEventMainThread(DeviceAdminEvent event) {
         if (event.getEventId() == EventId.EVENT_DEVICE_ADMIN_DISABLE) {
-            updateButtons(false);
+//            updateButtons(false);
         } else if (event.getEventId() == EventId.EVENT_DEVICE_ADMIN_ENABLE) {
-            updateButtons(true);
+//            updateButtons(true);
         }
     }
 
-    private void updateButtons(boolean active) {
-        if (active) {
-            mForbidUninstall.setChecked(true);
-            mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
-        } else {
-            mForbidUninstall.setChecked(false);
-            mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
-        }
-    }
+//    private void updateButtons(boolean active) {
+//        if (active) {
+//            mForbidUninstall.setChecked(true);
+//            mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
+//        } else {
+//            mForbidUninstall.setChecked(false);
+//            mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
+//        }
+//    }
 
     private void initUI() {
 

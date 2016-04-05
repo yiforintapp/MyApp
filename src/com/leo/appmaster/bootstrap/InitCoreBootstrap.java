@@ -211,6 +211,7 @@ public class InitCoreBootstrap extends Bootstrap {
             if (versionCode >= Constants.VERSION_CODE_TO_HIDE_BATTERY_FLOW_AND_WIFI) {
                 //取值时，默认值要用false
                 LeoSettings.setBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI,true);
+                LeoLog.i("need hide", "set true");
             }
         } else {
             //覆盖升级
