@@ -216,7 +216,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     private void reloadAppStatus() {
         Privacy privacy = PrivacyHelper.getAppPrivacy();
-        if (privacy.isDangerous()) {
+        if (/*privacy.isDangerous()*/true) {
             mSfatResultAppLt.setVisibility(View.INVISIBLE);
             mDangerResultAppLt.setVisibility(View.VISIBLE);
             mDangerResultAppLt.setBackgroundResource(R.drawable.strip_home_nook1);
@@ -237,6 +237,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mDetSaftAppNumTv.setText(privacy.getPrivacyCountText());
             }
         }
+        mAppDangerContent.setTranslationY(0);
 
     }
 
@@ -261,6 +262,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mDetSaftImgNumTv.setText(privacy.getPrivacyCountText());
             }
         }
+        mPicDangerContent.setTranslationY(0);
     }
 
     private void reloadVideoStatus() {
@@ -284,6 +286,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mDetSaftVideoNumTv.setText(privacy.getPrivacyCountText());
             }
         }
+        mVidDangerContent.setTranslationY(0);
     }
 
     private void initUI(View view) {
@@ -630,7 +633,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //扫描结果处理后切换动画
-    public void detectResultConversionAnim(final View current, View top, final View showView, final View missView) {
+    public void detectResultConversionAnim(final View current, final View top, final View showView, final View missView) {
 
         ObjectAnimator currentDown = ObjectAnimator.ofFloat(current, "translationY", -50, 0);
         currentDown.setDuration(300);
@@ -662,6 +665,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAnimationEnd(Animator animation) {
                 missView.setVisibility(View.INVISIBLE);
+                top.setTranslationY(0);
             }
 
             @Override
