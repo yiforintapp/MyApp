@@ -4,7 +4,6 @@ package com.leo.appmaster.home;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -567,18 +565,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         animatorSet.play(picAnimatorSet).after(280).after(appAnimatorSet);
         animatorSet.play(vidAnimatorSet).after(280).after(picAnimatorSet);
         animatorSet.play(tipsAnim).after(1000).after(vidAnimatorSet);
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        detectResultConversionAnim(mAppSafeContent, mAppDangerContent, mSfatResultAppLt, mDangerResultAppLt);
-                    }
-                }, 1000);
-            }
-        });
+
         animatorSet.start();
 
     }
