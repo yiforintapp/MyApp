@@ -466,7 +466,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             NewViewHolder viewHolder;
             String path;
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.item_gridview_album_nobg, parent, false);
+                convertView = getLayoutInflater().inflate(R.layout.item_gridview_videos_nobg, parent, false);
                 viewHolder = new NewViewHolder();
                 viewHolder.img = (ImageView) convertView.findViewById(R.id.iv_pic);
                 viewHolder.name = (TextView) convertView.findViewById(R.id.tv_folder_name);
