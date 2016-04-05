@@ -94,7 +94,7 @@
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_img"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginTop="60dp"
         android:layout_below="@id/lt_det_saft_result_app"
@@ -135,7 +135,7 @@
 
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_img"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginTop="60dp"
         android:layout_below="@id/lt_det_saft_result_app"
@@ -184,7 +184,7 @@
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_video"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginTop="120dp"
         android:layout_below="@id/lt_det_saft_result_img"
@@ -224,7 +224,7 @@
 
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_video"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_marginTop="120dp"
         android:layout_below="@id/lt_det_saft_result_img"
