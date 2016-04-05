@@ -37,8 +37,6 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 
-import java.util.Locale;
-
 public class HomeDetectFragment extends Fragment implements View.OnClickListener {
     private static final int SAFT_LEVEL = 0;
     private static final int DANGER_LEVEL = 1;
@@ -297,7 +295,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
         mBannerTv = (TextView) view.findViewById(R.id.det_tip_txt_tv);
 
-        setSfateShieldView();
         setSfateShieldView(true);
     }
 
