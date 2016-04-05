@@ -127,11 +127,80 @@ public class HomeBoostActivity extends Activity {
 
 					//判断是否一个图片还算多模板
 					String imageUrl = null;
+					boolean aPic = campaigns != null && campaigns.size() == 1;
 
-					int w = (campaigns != null && campaigns.size() == 1) ? 262 : 48;
-					int h = (campaigns != null && campaigns.size() == 1) ? 130 : 48;
-					
+					int w = (aPic) ? 262 : 48;
+					int h = (aPic) ? 130 : 48;
+					int index = 0;
 					for (WrappedCampaign campaign : campaigns) {
+
+						if (aPic) {
+
+							RelativeLayout adZone = (RelativeLayout) findViewById(R.id.rl_ad_bg);
+							ViewGroup.LayoutParams params = adZone.getLayoutParams();
+
+							params.width = (int) HomeBoostActivity.this.getResources().getDimension(R.dimen.ad_content_width);
+							params.height = (int) HomeBoostActivity.this.getResources().getDimension(R.dimen.ad_content_height);
+
+							adZone.setLayoutParams(params);
+
+							findViewById(R.id.template_zone).setVisibility(View.GONE);
+
+							findViewById(R.id.ad_info_zone).setVisibility(View.VISIBLE);
+							TextView appname = (TextView) findViewById(R.id.tv_ad_appname);
+							if(appname != null) {
+								appname.setText(campaign.getAppName());
+							}
+
+							TextView appdesc = (TextView) findViewById(R.id.tv_ad_appdesc);
+							if(appdesc != null) {
+								appdesc.setText(campaign.getDescription());
+							}
+
+							Button call = (Button) findViewById(R.id.btn_ad_appcall);
+							if(call != null) {
+								call.setText(campaign.getAdCall());
+								mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
+							}
+						} else {
+
+							TextView textView1, textView2, textView3;
+							Button btn1, btn2, btn3;
+
+
+							textView1 = (TextView) findViewById(R.id.ad_title1);
+							textView2 = (TextView) findViewById(R.id.ad_title2);
+							textView3 = (TextView) findViewById(R.id.ad_title3);
+
+							btn1 = (Button) findViewById(R.id.button1);
+							btn2 = (Button) findViewById(R.id.button2);
+							btn3 = (Button) findViewById(R.id.button3);
+
+							btn1.setClickable(false);
+							btn2.setClickable(false);
+							btn3.setClickable(false);
+
+
+							switch (index) {
+								case 0:
+									textView1.setText(campaign.getAppName());
+									btn1.setText(campaign.getAdCall());
+
+									break;
+								case 1:
+									textView2.setText(campaign.getAppName());
+									btn2.setText(campaign.getAdCall());
+
+									break;
+								case 2:
+									textView3.setText(campaign.getAppName());
+									btn3.setText(campaign.getAdCall());
+
+									break;
+							}
+							index++;
+
+						}
 						
 						imageUrl = (campaigns != null && campaigns.size() > 1)
 								? campaign.getIconUrl() : campaign.getImageUrl();
@@ -202,6 +271,7 @@ public class HomeBoostActivity extends Activity {
 						campaign = c;
 						break;
 					}
+					
 				}
                 activity.notifyAdLoadFinish(campaign, loadedImage, mCampaign.indexOf(campaign), aPic);
                 SDKWrapper.addEvent(activity, SDKWrapper.P1, "ad_act", "adv_shws_bst");
@@ -226,15 +296,7 @@ public class HomeBoostActivity extends Activity {
         AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);
 		if (aPic) {
 
-			RelativeLayout adZone = (RelativeLayout) findViewById(R.id.rl_ad_bg);
-			ViewGroup.LayoutParams params = adZone.getLayoutParams();
-
-			params.width = (int) this.getResources().getDimension(R.dimen.ad_content_width);
-			params.height = (int) this.getResources().getDimension(R.dimen.ad_content_height);
-			
-			adZone.setLayoutParams(params);
-
-					findViewById(R.id.template_zone).setVisibility(View.GONE);
+			findViewById(R.id.template_zone).setVisibility(View.GONE);
 			loadADPic(campaign.getIconUrl(),
 					new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
 							DipPixelUtil.dip2px(HomeBoostActivity.this, 48)),
@@ -243,65 +305,33 @@ public class HomeBoostActivity extends Activity {
 			ImageView previewImageView = (ImageView) findViewById(R.id.iv_ad_bg);
 			previewImageView.setVisibility(View.VISIBLE);
 			findViewById(R.id.ad_info_zone).setVisibility(View.VISIBLE);
+			
 			if(previewImageView != null) {
 				previewImageView.setImageBitmap(previewBitmap);
 			}
-			TextView appname = (TextView) findViewById(R.id.tv_ad_appname);
-			if(appname != null) {
-				appname.setText(campaign.getAppName());
-			}
 
-			TextView appdesc = (TextView) findViewById(R.id.tv_ad_appdesc);
-			if(appdesc != null) {
-				appdesc.setText(campaign.getDescription());
-			}
-
-			Button call = (Button) findViewById(R.id.btn_ad_appcall);
-			if(call != null) {
-				call.setText(campaign.getAdCall());
-				mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
-			}
+			mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
 		} else {
 			
 			ImageView imageView1, imageView2, imageView3;
-			TextView textView1, textView2, textView3;
-			Button btn1, btn2, btn3;
 
 			imageView1 = (ImageView) findViewById(R.id.imageView1);
 			imageView2 = (ImageView) findViewById(R.id.imageView2);
 			imageView3 = (ImageView) findViewById(R.id.imageView3);
 
-			textView1 = (TextView) findViewById(R.id.ad_title1);
-			textView2 = (TextView) findViewById(R.id.ad_title2);
-			textView3 = (TextView) findViewById(R.id.ad_title3);
-
-			btn1 = (Button) findViewById(R.id.button1);
-			btn2 = (Button) findViewById(R.id.button2);
-			btn3 = (Button) findViewById(R.id.button3);
-
-			btn1.setClickable(false);
-			btn2.setClickable(false);
-			btn3.setClickable(false);
-
 			switch (index) {
 				case 0:
 					imageView1.setImageBitmap(previewBitmap);
-					textView1.setText(campaign.getAppName());
-					btn1.setText(campaign.getAdCall());
 
 					mAdEngine.registerTemplateView((View)imageView1.getParent(), 0,  Constants.UNIT_ID_62);
 					break;
 				case 1:
 					imageView2.setImageBitmap(previewBitmap);
-					textView2.setText(campaign.getAppName());
-					btn2.setText(campaign.getAdCall());
 
 					mAdEngine.registerTemplateView((View)imageView2.getParent(), 1,  Constants.UNIT_ID_62);
 					break;
 				case 2:
 					imageView3.setImageBitmap(previewBitmap);
-					textView3.setText(campaign.getAppName());
-					btn3.setText(campaign.getAdCall());
 
 					mAdEngine.registerTemplateView((View)imageView3.getParent(), 2,  Constants.UNIT_ID_62);
 					break;
