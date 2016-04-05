@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
@@ -145,7 +147,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
                 loadingBar.setVisibility(View.GONE);
-                mRlWholeShowContent.setVisibility(View.GONE);
+//                mRlWholeShowContent.setVisibility(View.GONE);
             }
             if (mHideAlbumAdapt != null) {
                 mHideAlbumAdapt.setDataList(mAlbumList);
@@ -162,9 +164,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void asyncLoad() {
-
-        mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
-        newLoadDone();
 
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
@@ -324,6 +323,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     protected void onResume() {
         super.onResume();
         asyncLoad();
+        mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
+        newLoadDone();
     }
 
     @Override
@@ -391,9 +392,13 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
-            ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
+            final ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
+            TextView tv = (TextView) v.findViewById(R.id.tv_more);
+            if (list.size() > 5 && position == 4) {
+                tv.setText("+" + (list.size() - 4));
+            }
             String path = list.get(position).getPath();
 
             String uri = null;
@@ -402,7 +407,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
-            mImageLoader.displayImage(uri, iv, mOptions);
             v.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -410,26 +414,46 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 }
             });
 
-//            mImageLoader.loadImage(uri, new ImageLoadingListener() {
-//                @Override
-//                public void onLoadingStarted(String imageUri, View view) {
-//                }
+//            mImageLoader.displayImage(uri, iv, mOptions);
+
+
+//            if (list.size() > 5 && position == 5) {
+//                try {
+//                    BitmapDrawable bd = (BitmapDrawable) iv.getDrawable();
 //
-//                @Override
-//                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-//                    LeoLog.i("newpic","loading failed    " + imageUri);
-//                }
-//
-//                @Override
-//                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                    LeoLog.i("newpic","loading complete  " + imageUri);
-//                }
-//
-//                @Override
-//                public void onLoadingCancelled(String imageUri, View view) {
+//                } catch (Throwable t) {
 //
 //                }
-//            });
+//            }
+
+            mImageLoader.loadImage(uri,mOptions, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    LeoLog.i("newpic","loading failed    " + imageUri);
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    if (list.size() > 5 && position == 5) {
+                        try {
+                            loadedImage = Bitmap.createScaledBitmap(loadedImage,iv.getWidth(),iv.getHeight(),true);
+                            loadedImage = FastBlur.doBlur(loadedImage,25,true);
+                        } catch (Throwable t) {
+
+                        }
+                    }
+                    iv.setImageBitmap(loadedImage);
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+
+                }
+            });
 
 
 //            iv.setImageResource(R.drawable.ic_launcher);

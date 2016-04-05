@@ -116,7 +116,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
                 loadingBar.setVisibility(View.GONE);
-                mRlWholeShowContent.setVisibility(View.GONE);
+//                mRlWholeShowContent.setVisibility(View.GONE);
                 mNohideVideo.setText(getString(R.string.app_no_video_hide));
             }
 //            if (mNewVidAdapter != null) {
@@ -144,7 +144,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void updateTips() {
-        String string1 = getString(R.string.find_new_pic_tips);
+        String string1 = getString(R.string.find_new_vid_tips);
         String s2 = String.format(string1, mNewAddVid.size());
         mTvNewAmountTips.setText(Html.fromHtml(s2));
     }
@@ -586,6 +586,11 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 convertView = LayoutInflater.from(VideoHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
             }
             ImageView iv = (ImageView) convertView.findViewById(R.id.iv_pic);
+            TextView tv = (TextView) convertView.findViewById(R.id.tv_more);
+            if (list.size() > 5 && position == 4) {
+                tv.setText("+" + (list.size() - 4));
+            }
+
             String path = list.get(position).getPath();
             String uri = null;
             if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
