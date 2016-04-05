@@ -172,6 +172,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         }
         if (mNewVidAdapter != null) {
             if (mNewAddVid == null || mNewAddVid.size() == 0) {
+                mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
             } else if (!mHasShowNew){
                 mHasShowNew = true;
@@ -465,15 +466,17 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             NewViewHolder viewHolder;
             String path;
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.item_gridview_album_nobg, parent, false);
+                convertView = getLayoutInflater().inflate(R.layout.item_gridview_videos_nobg, parent, false);
                 viewHolder = new NewViewHolder();
                 viewHolder.img = (ImageView) convertView.findViewById(R.id.iv_pic);
                 viewHolder.name = (TextView) convertView.findViewById(R.id.tv_folder_name);
                 viewHolder.amount = (TextView) convertView.findViewById(R.id.tv_folder_size);
+                viewHolder.vicon = (ImageView) convertView.findViewById(R.id.iv_video_icon);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (NewViewHolder) convertView.getTag();
             }
+            viewHolder.vicon.setVisibility(View.VISIBLE);
             path = videos.get(position).getBitList().get(0).getPath();
             viewHolder.name.setText(videos.get(position).getName());
             viewHolder.amount.setText(videos.get(position).getCount()+"");
@@ -620,5 +623,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         private ImageView img;
         private TextView name;
         private TextView amount;
+        private ImageView vicon;
     }
 }

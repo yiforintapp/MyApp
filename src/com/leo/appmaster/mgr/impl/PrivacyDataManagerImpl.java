@@ -818,6 +818,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         LeoLog.d("testHidePic", "lastRecord : " + lastRecord);
         LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_PIC, lastRecord);
 
+        notifySecurityChange();
         if (mScanAddPicNum != 0) {
             if (mScanAddPicNum > 30) {
                 return MAX_PIC_SCORE;
@@ -1157,6 +1158,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);
         LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, lastRecord);
 
+        notifySecurityChange();
         if (mScanAddVidNum != 0) {
             if (mScanAddVidNum > 4) {
                 return MAX_VID_SCORE;

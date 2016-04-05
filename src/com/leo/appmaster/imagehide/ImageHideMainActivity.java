@@ -187,6 +187,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         }
         if (mNewPicAdapter != null) {
             if (mNewAddPic == null || mNewAddPic.size() == 0) {
+                mHasShowNew = true;
                 mIncludeLayoutNewPic.setVisibility(View.GONE);
             } else if (!mHasShowNew){
                 mHasShowNew = true;
@@ -324,6 +325,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         super.onResume();
         asyncLoad();
         mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
+        LeoLog.i("newpic", "mNewAddPic size = " + mNewAddPic.size());
         newLoadDone();
     }
 
@@ -376,7 +378,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             if (list == null) {
                 return 0;
             }
-            LeoLog.i("newpic", "showed size = " + Math.min(NEW_PIC_MAX_SHOW_AMOUNT, list.size()));
+//            LeoLog.i("newpic", "showed size = " + Math.min(NEW_PIC_MAX_SHOW_AMOUNT, list.size()));
             return Math.min(NEW_PIC_MAX_SHOW_AMOUNT, list.size());
 
         }
@@ -440,10 +442,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                     if (list.size() > 5 && position == 5) {
                         try {
-                            loadedImage = Bitmap.createScaledBitmap(loadedImage,iv.getWidth(),iv.getHeight(),true);
+                            loadedImage = Bitmap.createScaledBitmap(loadedImage,50,50,true);
                             loadedImage = FastBlur.doBlur(loadedImage,25,true);
                         } catch (Throwable t) {
-
+                            LeoLog.i("newpic","blur error");
                         }
                     }
                     iv.setImageBitmap(loadedImage);
@@ -527,10 +529,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 viewHolder.img = (ImageView) convertView.findViewById(R.id.iv_pic);
                 viewHolder.name = (TextView) convertView.findViewById(R.id.tv_folder_name);
                 viewHolder.amount = (TextView) convertView.findViewById(R.id.tv_folder_size);
+                viewHolder.vicon = (ImageView) convertView.findViewById(R.id.iv_video_icon);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (NewViewHolder) convertView.getTag();
             }
+            viewHolder.vicon.setVisibility(View.GONE);
             path = list.get(position).getBitList().get(0).getPath();
             viewHolder.name.setText(list.get(position).getName());
             viewHolder.amount.setText(list.get(position).getCount());
@@ -557,6 +561,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         private ImageView img;
         private TextView name;
         private TextView amount;
+        private ImageView vicon;
     }
 
 }

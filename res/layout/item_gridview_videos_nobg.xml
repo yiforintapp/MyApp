@@ -20,6 +20,13 @@
         android:scaleType="center" />
 
     <ImageView
+        android:id="@+id/iv_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/video_shadow" />
+
+    <ImageView
         android:id="@+id/iv_video_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
