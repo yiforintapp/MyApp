@@ -567,7 +567,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                reloadAppStatus();
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

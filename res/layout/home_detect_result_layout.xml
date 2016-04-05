@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_app"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/strip_home_ok1"
         android:gravity="center_vertical"
@@ -16,14 +16,14 @@
         <RelativeLayout
             android:id="@+id/app_safe_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/home_det_result_tv1_margin">
 
         <!--安全结果-->
         <TextView
             android:id="@+id/det_saft_app_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
             android:background="@drawable/number_home_bg1"
             android:paddingLeft="@dimen/home_det_result_tv1_padding"
             android:paddingRight="@dimen/home_det_result_tv1_padding"
@@ -44,7 +44,7 @@
 
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_app"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@drawable/strip_home_nook1"
         android:gravity="center_vertical"
@@ -55,14 +55,14 @@
     <RelativeLayout
         android:id="@+id/app_danger_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/home_det_result_tv1_margin">
 
         <!--危险结果-->
         <TextView
             android:id="@+id/det_danger_app_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
             android:background="@drawable/number_home_bg2"
             android:paddingLeft="@dimen/home_det_result_tv1_padding"
             android:paddingRight="@dimen/home_det_result_tv1_padding"
@@ -107,14 +107,14 @@
     <RelativeLayout
         android:id="@+id/pic_safe_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/home_det_result_tv1_margin">
 
         <!--安全结果-->
         <TextView
             android:id="@+id/det_saft_img_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
             android:background="@drawable/number_home_bg1"
             android:paddingLeft="@dimen/home_det_result_tv1_padding"
             android:paddingRight="@dimen/home_det_result_tv1_padding"
@@ -148,14 +148,14 @@
     <RelativeLayout
         android:id="@+id/pic_danger_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/home_det_result_tv1_margin">
 
         <!--危险状态-->
         <TextView
             android:id="@+id/det_danger_img_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
             android:background="@drawable/number_home_bg2"
             android:paddingLeft="@dimen/home_det_result_tv1_padding"
             android:paddingRight="@dimen/home_det_result_tv1_padding"
@@ -197,14 +197,14 @@
     <RelativeLayout
         android:id="@+id/vid_safe_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/home_det_result_tv1_margin">
 
         <!--安全状态-->
         <TextView
             android:id="@+id/det_saft_video_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
             android:background="@drawable/number_home_bg1"
             android:paddingLeft="@dimen/home_det_result_tv1_padding"
             android:paddingRight="@dimen/home_det_result_tv1_padding"
@@ -237,13 +237,13 @@
     <RelativeLayout
         android:id="@+id/vid_danger_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/home_det_result_tv1_margin">
         <!--危险状态-->
         <TextView
             android:id="@+id/det_danger_video_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/home_det_result_tv1_margin"
             android:background="@drawable/number_home_bg2"
             android:paddingLeft="@dimen/home_det_result_tv1_padding"
             android:paddingRight="@dimen/home_det_result_tv1_padding"
