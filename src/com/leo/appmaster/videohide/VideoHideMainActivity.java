@@ -333,6 +333,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         mRlWholeShowContent = (RelativeLayout) findViewById(R.id.rl_whole_show_content);
         mIncludeLayoutNewVid = findViewById(R.id.layout_newpic);
+        ImageView f = (ImageView)mIncludeLayoutNewVid.findViewById(R.id.iv_hide_type);
+        f.setImageResource(R.drawable.tips_video_icon);
         mRvHideNew = (RippleView) mIncludeLayoutNewVid.findViewById(R.id.rv_hide_new);
         mRvHideNew.setOnClickListener(new View.OnClickListener() {
             @Override
