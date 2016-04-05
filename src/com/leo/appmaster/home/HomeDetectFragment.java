@@ -99,6 +99,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private TextView mDangerResultAppDetailTv;
     private TextView mDangerResultPicDetailTv;
     private TextView mDangerResultVideoDetailTv;
+    private TextView mDangerDetTip;
+    private int mPrivacyConut;
 
     private RelativeLayout mAppSafeContent;
     private RelativeLayout mAppDangerContent;
@@ -135,10 +137,18 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         LeoLog.d(TAG, "onResume...");
 
         // 刷新状态
+        mPrivacyConut = 0;
         reloadAppStatus();
         reloadImageStatus();
         reloadVideoStatus();
-
+        if (mPrivacyConut > 0) {
+            mDangerDetTip.setVisibility(View.VISIBLE);
+            String str = this.getResources().getString(R.string.hd_privacy_danger);
+            String format = String.format(str,mPrivacyConut);
+            mDangerDetTip.setText(format);
+        } else {
+            mDangerDetTip.setVisibility(View.INVISIBLE);
+        }
         // 初始化中间的banner
         initBannerTip();
     }
@@ -214,7 +224,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
             mDangerResultAppDetailTv.setText(privacy.getDangerTipId());
-
+            mPrivacyConut = mPrivacyConut + 1;
         } else {
             mSfatResultAppLt.setVisibility(View.VISIBLE);
             mSfatResultAppLt.setBackgroundResource(R.drawable.strip_home_ok1);
@@ -239,6 +249,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
             mDangerResultPicDetailTv.setText(privacy.getDangerTipId());
+            mPrivacyConut = mPrivacyConut + 1;
         } else {
             mSfatResultImgLt.setVisibility(View.VISIBLE);
             mDangerResultImgLt.setVisibility(View.INVISIBLE);
@@ -261,6 +272,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
             mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
+            mPrivacyConut = mPrivacyConut + 1;
         } else {
             mSfatResultVideoLt.setVisibility(View.VISIBLE);
             mDangerResultVideoLt.setVisibility(View.INVISIBLE);
@@ -288,6 +300,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mDangerResultAppDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_app_detal_tv);
         mDangerResultPicDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_pic_detal_tv);
         mDangerResultVideoDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_detal_tv);
+
+        mDangerDetTip = (TextView) view.findViewById(R.id.lt_home_danger_det_tip);
 
         mCenterTipRt = (RelativeLayout) view.findViewById(R.id.lt_home_det_tip);
         mSfatResultAppLt.setOnClickListener(this);
@@ -422,22 +436,23 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //盾牌位置初始化
-    private void shieldPositionInit(int level) {
+    private void shieldPositionInit() {
         Context context = getActivity();
         mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_top_offset)));
         mShieldLeftIv.setTranslationX(-DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_left_offset)));
         mShieldRightIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_right_offset)));
-        if (level == SAFT_LEVEL) {
-            mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_blue_offset)));
-        } else if (level == DANGER_LEVEL) {
-            mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_red_offset)));
-        }
+        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_blue_offset)));
+
+        mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_top_offset)));
+        mShieldDangerLeftIv.setTranslationX(-DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_left_offset)));
+        mShieldDangerRightIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_right_offset)));
+        mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_red_offset)));
 
     }
 
     //危险盾牌设置
     public void setDangerShieldView(boolean isShow) {
-        shieldPositionInit(DANGER_LEVEL);
+        shieldPositionInit();
         if (isShow) {
             mShieldDangerTopIv.setVisibility(View.VISIBLE);
             mShieldDangerLeftIv.setVisibility(View.VISIBLE);
@@ -453,7 +468,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     //安全盾牌设置
     public void setSfateShieldView(boolean isShow) {
-        shieldPositionInit(SAFT_LEVEL);
+        shieldPositionInit();
         if (isShow) {
             mShieldTopIv.setVisibility(View.VISIBLE);
             mShieldLeftIv.setVisibility(View.VISIBLE);
@@ -669,16 +684,17 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //红蓝盾牌的替换动画
-    public void detectShieldConverAnim() {
+    public void dangerShieldConverAnim() {
         setDangerShieldView(true);
-        setSfateShieldView(false);
-        shieldPositionInit(DANGER_LEVEL);
+        setSfateShieldView(true);
+
+        //危险状态
         ObjectAnimator dangerLeftScalX = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleX", 1.0f, 1.1f);
         ObjectAnimator dangerLeftScalY = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleY", 1.0f, 1.1f);
         ObjectAnimator dangerLeftApl = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "alpha", 1.0f, 0.0f);
         AnimatorSet dangerLeftAnim = new AnimatorSet();
         dangerLeftAnim.playTogether(dangerLeftScalX, dangerLeftScalY, dangerLeftApl);
-        dangerLeftAnim.setDuration(200);
+        dangerLeftAnim.setDuration(480);
         dangerLeftAnim.start();
 
         ObjectAnimator dangerRightScalX = ObjectAnimator.ofFloat(mShieldDangerRightIv, "scaleX", 1.0f, 1.1f);
@@ -686,7 +702,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         ObjectAnimator dangerRightApl = ObjectAnimator.ofFloat(mShieldDangerRightIv, "alpha", 1.0f, 0.0f);
         AnimatorSet dangerRightAnim = new AnimatorSet();
         dangerRightAnim.playTogether(dangerRightScalX, dangerRightScalY, dangerRightApl);
-        dangerRightAnim.setDuration(200);
+        dangerRightAnim.setDuration(480);
         dangerRightAnim.start();
 
         ObjectAnimator dangerTopScalX = ObjectAnimator.ofFloat(mShieldDangerTopIv, "scaleX", 1.0f, 1.1f);
@@ -694,7 +710,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         ObjectAnimator dangerTopApl = ObjectAnimator.ofFloat(mShieldDangerTopIv, "alpha", 1.0f, 0.0f);
         AnimatorSet dangerTopAnim = new AnimatorSet();
         dangerTopAnim.playTogether(dangerTopScalX, dangerTopScalY, dangerTopApl);
-        dangerTopAnim.setDuration(200);
+        dangerTopAnim.setDuration(480);
         dangerTopAnim.start();
 
         ObjectAnimator dangerCenterScalX = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "scaleX", 1.0f, 1.1f);
@@ -702,30 +718,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         ObjectAnimator dangerCenterApl = ObjectAnimator.ofFloat(mShieldDangerCenterIv, "alpha", 1.0f, 0.0f);
         AnimatorSet dangerCenterAnim = new AnimatorSet();
         dangerCenterAnim.playTogether(dangerCenterScalX, dangerCenterScalY, dangerCenterApl);
-        dangerCenterAnim.setDuration(200);
+        dangerCenterAnim.setDuration(480);
         dangerCenterAnim.start();
-
-        dangerCenterAnim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                setSfateShieldView(true);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-
 
         //蓝色盾牌
         ObjectAnimator saftLeftScalX = ObjectAnimator.ofFloat(mShieldLeftIv, "scaleX", 0.8f, 1.0f);
@@ -734,7 +728,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet saftLeftAnim = new AnimatorSet();
         saftLeftAnim.playTogether(saftLeftScalX, saftLeftScalY, saftLeftApl);
         saftLeftAnim.setDuration(600);
-        saftLeftAnim.setStartDelay(100);
         saftLeftAnim.start();
 
         ObjectAnimator saftRightScalX = ObjectAnimator.ofFloat(mShieldRightIv, "scaleX", 0.8f, 1.0f);
@@ -743,7 +736,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet saftRightAnim = new AnimatorSet();
         saftRightAnim.playTogether(saftRightScalX, saftRightScalY, saftRightApl);
         saftRightAnim.setDuration(600);
-        saftRightAnim.setStartDelay(100);
         saftRightAnim.start();
 
         ObjectAnimator saftTopScalX = ObjectAnimator.ofFloat(mShieldTopIv, "scaleX", 0.8f, 1.0f);
@@ -752,7 +744,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet saftTopAnim = new AnimatorSet();
         saftTopAnim.playTogether(saftTopScalX, saftTopScalY, saftTopApl);
         saftTopAnim.setDuration(600);
-        saftTopAnim.setStartDelay(100);
         saftTopAnim.start();
 
         ObjectAnimator saftCenterScalX = ObjectAnimator.ofFloat(mShieldCenterIv, "scaleX", 0.8f, 1.0f);
@@ -761,7 +752,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet saftCenterAnim = new AnimatorSet();
         saftCenterAnim.playTogether(saftCenterScalX, saftCenterScalY, saftCenterApl);
         saftCenterAnim.setDuration(600);
-        saftCenterAnim.setStartDelay(100);
         saftCenterAnim.start();
         saftCenterAnim.addListener(new Animator.AnimatorListener() {
             @Override
