@@ -33,7 +33,8 @@ import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 public class PrivacyHelper implements Manager.SecurityChangeListener {
     private static final String TAG = "PrivacyHelper";
 
-    private static final int CHECK_TIME = 60 * 1000;
+//    private static final int CHECK_TIME = 60 * 1000;
+    private static final int CHECK_TIME = 20 * 1000;
 
     public enum Level {
         LEVEL_ONE(100, 100),
@@ -277,13 +278,13 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
         long currentTs = System.currentTimeMillis();
         Privacy privacy = getPrivacy(privacyType);
-        if (privacy == null) {
+        if (privacy == null || !privacy.isNotifyOpen()) {
             return;
         }
 
         int limit = privacy.getPrivacyLimit();
         int addedCount = privacy.getNewCount();
-        if (addedCount >= limit) {
+        if (addedCount >= limit && addedCount != privacy.getTotalCount()) {
             // 命中通知逻辑
             long lastNotify = LeoPreference.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);
             AppMasterApplication application = AppMasterApplication.getInstance();

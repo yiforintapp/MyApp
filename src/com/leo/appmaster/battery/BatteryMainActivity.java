@@ -222,9 +222,9 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
     private List<Integer> getMenuIcons() {
         List<Integer> icons = new ArrayList<Integer>();
         if (mBtrManager.getBatteryNotiStatus()) {
-            icons.add(R.drawable.ic_launcher);
+            icons.add(R.drawable.icon_battery_noti_on);
         } else {
-            icons.add(R.drawable.ic_launcher);
+            icons.add(R.drawable.icon_battery_noti_off);
         }
         return icons;
     }

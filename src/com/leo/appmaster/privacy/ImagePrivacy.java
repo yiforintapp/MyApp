@@ -50,13 +50,21 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     }
 
     @Override
-    public int getNotificationTextId() {
-        return R.string.hd_hide_pic_privacy_title;
+    public String getNotificationText() {
+        String result = LeoSettings.getString(PrefConst.KEY_NOTIFY_IMG_TITLE, null);
+        if (result == null) {
+            result = mContext.getString(R.string.hd_hide_pic_privacy_title);
+        }
+        return result;
     }
 
     @Override
-    public int getNotificationSummaryId() {
-        return R.string.hd_hide_pic_privacy_summary;
+    public String getNotificationSummary() {
+        String result = LeoSettings.getString(PrefConst.KEY_NOTIFY_IMG_CONTENT, null);
+        if (result == null) {
+            result = mContext.getString(R.string.hd_hide_pic_privacy_summary);
+        }
+        return result;
     }
 
     @Override
@@ -83,9 +91,9 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
         PendingIntent contentIntent = PendingIntent.getService(mContext, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notif.icon = getNotificationIconId();
 
-        String title = mContext.getString(getNotificationTextId());
-        String content = mContext.getString(getNotificationSummaryId());
-        notif.tickerText = mContext.getString(getNotificationTextId());
+        String title = getNotificationText();
+        String content = getNotificationSummary();
+        notif.tickerText = getNotificationText();
         notif.flags = Notification.FLAG_AUTO_CANCEL;
         notif.setLatestEventInfo(mContext, title, content, contentIntent);
         NotificationUtil.setBigIcon(notif, getNotificationIconId());
@@ -94,6 +102,11 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
         nm.notify(NOTI_ID, notif);
 
         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "prilevel", "prilevel_notice_pic");
+    }
+
+    @Override
+    public boolean isNotifyOpen() {
+        return LeoSettings.getBoolean(PrefConst.KEY_NOTIFY_PIC, true);
     }
 
 }

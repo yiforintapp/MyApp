@@ -62,16 +62,24 @@
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp">
 
+                <ImageView
+                    android:id="@+id/secur_num_titl_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_antitheft_contacts"/>
+
                 <TextView
                     android:id="@+id/secur_num_titl_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:drawableLeft="@drawable/icon_antitheft_contacts"
-                    android:drawablePadding="6dp"
                     android:text="@string/secur_save_num"
+                    android:layout_marginLeft="6dp"
                     android:textColor="@color/c2"
+                    android:layout_toRightOf="@+id/secur_num_titl_img"
                     android:textSize="@dimen/f4"
                     />
 

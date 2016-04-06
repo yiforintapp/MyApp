@@ -177,12 +177,14 @@ public abstract class Privacy<T> {
         return status != STATUS_TOADD;
     }
 
-    public abstract int getNotificationTextId();
-    public abstract int getNotificationSummaryId();
+    public abstract String getNotificationText();
+    public abstract String getNotificationSummary();
     public abstract int getNotificationIconId();
 
     public void showNotification() {
     }
+
+    public abstract boolean isNotifyOpen();
 
     /**
      * 获取弹通知的上限个数

@@ -49,6 +49,9 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();
+
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+        pdm.haveCheckedVid();
     }
 
     private void initLoadData() {

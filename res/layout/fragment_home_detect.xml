@@ -7,11 +7,6 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/texture_home_bg"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/texture2_home_bg"/>
@@ -20,7 +15,13 @@
         android:id="@+id/home_anim_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal">
+        android:gravity="center">
+        <include
+            android:id="@+id/det_result_ly"
+            layout="@layout/home_detect_result_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"/>
 
         <ImageView
             android:id="@+id/shield_view"
@@ -58,8 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:visibility="invisible"
-            android:src="@drawable/shield_good"/>
+            android:src="@drawable/shield_good"
+            android:visibility="invisible"/>
         <!--危险状态-->
         <ImageView
             android:id="@+id/shield_danger_left_iv"
@@ -93,16 +94,24 @@
             android:src="@drawable/shield_bad"
             android:visibility="invisible"/>
 
-
-        <include
-            android:id="@+id/det_result_ly"
-            layout="@layout/home_detect_result_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/shield_view"/>
-
     </RelativeLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/texture_home_bg"/>
+    <TextView
+        android:id="@+id/lt_home_danger_det_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lt_home_det_tip"
+        android:drawableLeft="@drawable/icon_home_mark"
+        android:layout_centerHorizontal="true"
+        android:drawablePadding="6dp"
+        android:textColor="@color/c1"
+        android:textSize="@dimen/f4"
+        android:layout_marginTop="25dp"
+        android:visibility="invisible"
+    />
     <!--中间建议提示banner-->
     <RelativeLayout
         android:id="@+id/lt_home_det_tip"

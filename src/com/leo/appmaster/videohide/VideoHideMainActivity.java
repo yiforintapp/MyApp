@@ -55,6 +55,9 @@ import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.PropertyValuesHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,6 +170,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 }
             }
         });
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+//        pdm.haveCheckedVid();
     }
 
 
@@ -175,7 +180,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             mIncludeLayoutNewVid.setVisibility(View.GONE);
         }
         if (mNewVidAdapter != null) {
-            if (mNewAddVid == null || mNewAddVid.size() == 0) {
+            if (mNewAddVid == null || mNewAddVid.size() == 0 || PrivacyHelper.getVideoPrivacy().getTotalCount() == PrivacyHelper.getVideoPrivacy().getNewCount()) {
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
             } else if (!mHasShowNew){
@@ -373,9 +378,9 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mRvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(VideoHideMainActivity.this,
-                        VideoHideGalleryActivity.class);
+                Intent intent = new Intent(VideoHideMainActivity.this, VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
+                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
             }
         });
 //        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
@@ -395,25 +400,53 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void hideHeadLayout() {
-        TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewVid.getHeight());
-        ta.setDuration(500);
-        ta.setFillAfter(false);
-        mRlWholeShowContent.setAnimation(ta);
-        mRlWholeShowContent.startAnimation(ta);
-        ta.setAnimationListener(new Animation.AnimationListener() {
+        final float initialY = mRlWholeShowContent.getY();
+        PropertyValuesHolder m = PropertyValuesHolder.ofFloat("y",mRlWholeShowContent.getY(),mRlWholeShowContent.getY() - mIncludeLayoutNewVid.getHeight());
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlWholeShowContent, m);
+        anim.setDuration(500);
+        anim.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void onAnimationStart(Animator animation) {
+
             }
 
             @Override
-            public void onAnimationEnd(Animation animation) {
+            public void onAnimationEnd(Animator animation) {
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
+                mRlWholeShowContent.setY(initialY);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
             }
         });
+        anim.start();
+
+//        TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewVid.getHeight());
+//        ta.setDuration(500);
+//        ta.setFillAfter(false);
+//        mRlWholeShowContent.setAnimation(ta);
+//        mRlWholeShowContent.startAnimation(ta);
+//        ta.setAnimationListener(new Animation.AnimationListener() {
+//            @Override
+//            public void onAnimationStart(Animation animation) {
+//            }
+//
+//            @Override
+//            public void onAnimationEnd(Animation animation) {
+//                mIncludeLayoutNewVid.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onAnimationRepeat(Animation animation) {
+//            }
+//        });
     }
 
     @Override
@@ -549,8 +582,10 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         bundle.putInt("mode", Constants.CANCLE_HIDE_MODE);
         bundle.putInt("fromwhere", 1);
         intent.putExtras(bundle);
+
         try {
             startActivityForResult(intent, REQUEST_CODE_OPTION);
+            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
         } catch (Exception e) {
         }
     }

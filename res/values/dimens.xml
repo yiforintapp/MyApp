@@ -388,8 +388,6 @@
     <dimen name="home_det_tip_txt_marg_left">10dp</dimen>
     <dimen name="home_det_tip_txt_marg_right">15dp</dimen>
     <dimen name="home_det_tip_arrow_marg_right">15dp</dimen>
-    <dimen name="home_det_result_tv1_padd_left">45dp</dimen>
-    <dimen name="home_det_result_tv1_padd_right">20dp</dimen>
     <integer name="shield_left_offset">2</integer>
     <integer name="shield_right_offset">2</integer>
     <integer name="shield_top_offset">4</integer>
@@ -398,8 +396,8 @@
     <integer name="shield_top_y_trans">38</integer>
     <integer name="shield_left_x_trans">34</integer>
     <integer name="shield_right_x_trans">34</integer>
-    <dimen name="home_det_result_tv2_padd_left">52dp</dimen>
-    <dimen name="home_det_result_tv3_padd_left">75dp</dimen>
+    <dimen name="home_det_result_tv2_padd_left">125dp</dimen>
+    <dimen name="home_det_result_tv3_padd_left">96dp</dimen>
     <dimen name="home_det_margin_left">19dp</dimen>
     <dimen name="home_det_margin_right">20dp</dimen>
     <dimen name="ph_secur_add_num_top_tip_marg_top">72dp</dimen>
@@ -417,4 +415,10 @@
     <dimen name="secur_mody_bt_height">30dp</dimen>
     <dimen name="secur_nromal_tip_tv_marg_left">40dp</dimen>
     <dimen name="secur_open_line2">18dp</dimen>
+    <dimen name = "det_result_icon_margin_right">10.3dp</dimen>
+    <dimen name="home_det_result_tv1_padd_left">137dp</dimen>
+    <dimen name="home_det_result_tv1_padd_right">20dp</dimen>
+    <dimen name="det_result_icon_margin_top">13dp</dimen>
+    <dimen name="det_result_saft_content_margin_top">11dp</dimen>
+    <dimen name="det_result_danger_content_margin_top">3dp</dimen>
 </resources>

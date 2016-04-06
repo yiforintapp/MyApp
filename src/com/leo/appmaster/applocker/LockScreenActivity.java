@@ -274,7 +274,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         long start = SystemClock.elapsedRealtime();
         setContentView(R.layout.activity_lock_layout);
 
-        checkIsAirSigTimeout();
 
 //        registerHomeKeyReceiver()
 		LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
@@ -324,32 +323,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
-    }
-
-    public void checkIsAirSigTimeout() {
-//        if (ASGui.getSharedInstance().isValidLicense()) {
-//            LeoLog.d("testAirSig", "no guoqi");
-//            boolean isAirSigTimeOutEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
-//            //以前是否开启状态
-//            boolean isAirSigOpenEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
-//            if (isAirSigTimeOutEver && isAirSigOpenEver) {
-//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, true);
-//                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
-//
-//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
-//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
-//            }
-//        } else {
-//            LeoLog.d("testAirSig", "yes guoqi");
-//            boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-//            if (isAirsigOn) {
-//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, true);
-//                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
-//            }
-//            //过期关闭
-//            LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-//            LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, true);
-//        }
     }
 
     private void mobvistaCheck() {
@@ -864,88 +837,103 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			mTtileBar.setTitle(R.string.change_lock_mode);
 		} else {
 //            mTtileBar.setTitle(R.string.app_name);
-			setTiltleBarInfo(getPackageName());
-		}
+            setTiltleBarInfo(getPackageName());
+        }
 
-		if (mLockedPackage == null) {
-			mLockedPackage = getPackageName();
-		}
+        if (mLockedPackage == null) {
+            mLockedPackage = getPackageName();
+        }
 
-		String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
-		if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
-			mLockedPackage = newLockedPkg;
-			if (mLockedPackage == null) {
-				mLockedPackage = getPackageName();
-			}
-			if (mPretendFragment != null) {
-				mPretendLayout.setVisibility(View.GONE);
-				mLockLayout.setVisibility(View.VISIBLE);
-			}
+        String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
+        if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
+            mLockedPackage = newLockedPkg;
+            if (mLockedPackage == null) {
+                mLockedPackage = getPackageName();
+            }
+            if (mPretendFragment != null) {
+                mPretendLayout.setVisibility(View.GONE);
+                mLockLayout.setVisibility(View.VISIBLE);
+            }
 
-			// change background
-			if (mLockMode == LockManager.LOCK_MODE_FULL) {
-				if (!ThemeUtils.checkThemeNeed(this)) {
+            // change background
+            if (mLockMode == LockManager.LOCK_MODE_FULL) {
+                if (!ThemeUtils.checkThemeNeed(this)) {
 
-					Drawable bd = getBd(mLockedPackage);
-					setAppInfoBackground(bd);
-				}
-				if (!mLockedPackage.equals(getPackageName())) {
-					createLoackAppInfoView(mLockedPackage);
-				} else {
-					removeLoackAppInfoView();
-				}
-			}
+                    Drawable bd = getBd(mLockedPackage);
+                    setAppInfoBackground(bd);
+                } else {
 
-			mLockFragment.onLockPackageChanged(mLockedPackage);
-			LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
-			if (mPretendFragment == null) {
-				// 解决Fragment内存泄露
-				mPretendFragment = getPretendFragment();
-			}
+                    int type = mLockFragment.getUnlockType();
+                    if (type == AirSigSettingActivity.AIRSIG_UNLOCK) {
+                        if (mLockFragment instanceof GestureLockFragment) {
+                            LeoLog.d("testTheme", "go this GestureLockFragment");
+                            GestureLockFragment fragment = (GestureLockFragment) mLockFragment;
+                            fragment.changeBg(true, mLockedPackage);
+                        } else {
+                            LeoLog.d("testTheme", "go this PasswdLockFragment");
+                            PasswdLockFragment fragment = (PasswdLockFragment) mLockFragment;
+                            fragment.changeBg(true, mLockedPackage);
+                        }
+                    }
 
-			if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
-					mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
-				mPretendFragment = null;
-			}
+                }
+                if (!mLockedPackage.equals(getPackageName())) {
+                    createLoackAppInfoView(mLockedPackage);
+                } else {
+                    removeLoackAppInfoView();
+                }
+            }
 
-			boolean showPretend = !mPrivateLockPck.equals(mLockedPackage);
-			if (mPretendFragment != null && showPretend) { // ph
+            mLockFragment.onLockPackageChanged(mLockedPackage);
+            LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
+            if (mPretendFragment == null) {
+                // 解决Fragment内存泄露
+                mPretendFragment = getPretendFragment();
+            }
+
+            if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
+                    mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+                mPretendFragment = null;
+            }
+
+            boolean showPretend = !mPrivateLockPck.equals(mLockedPackage);
+            if (mPretendFragment != null && showPretend) { // ph
 
 
-				FragmentManager fm = getSupportFragmentManager();
-				FragmentTransaction tans;
-				mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
-				mLockLayout.setVisibility(View.GONE);
-				mPretendLayout.setVisibility(View.VISIBLE);
-				tans = fm.beginTransaction();
-				tans.replace(R.id.pretend_layout, mPretendFragment);
-				tans.commitAllowingStateLoss();
-			}
-			if (mPretendFragment != null && showPretend) {
-				mLockLayout.setVisibility(View.GONE);
-				mPretendLayout.setVisibility(View.VISIBLE);
-				if (mPretendFragment instanceof PretendAppErrorFragment) {
-					String tip = "";
-					PackageManager pm = getPackageManager();
-					try {
-						String lab = AppUtil.getAppLabel(pm, mLockedPackage);
-						tip = getString(R.string.pretend_app_error, lab);
-					} catch (Exception e) {
-						tip = getString(R.string.weizhuang_error_notice);
-						e.printStackTrace();
-					}
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction tans;
+                mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
+                mLockLayout.setVisibility(View.GONE);
+                mPretendLayout.setVisibility(View.VISIBLE);
+                tans = fm.beginTransaction();
+                tans.replace(R.id.pretend_layout, mPretendFragment);
+                tans.commitAllowingStateLoss();
+            }
+            if (mPretendFragment != null && showPretend) {
+                mLockLayout.setVisibility(View.GONE);
+                mPretendLayout.setVisibility(View.VISIBLE);
+                if (mPretendFragment instanceof PretendAppErrorFragment) {
+                    String tip = "";
+                    PackageManager pm = getPackageManager();
+                    try {
+                        String lab = AppUtil.getAppLabel(pm, mLockedPackage);
+                        tip = getString(R.string.pretend_app_error, lab);
+                    } catch (Exception e) {
+                        tip = getString(R.string.weizhuang_error_notice);
+                        e.printStackTrace();
+                    }
 
-					((PretendAppErrorFragment) mPretendFragment).setErrorTip(tip);
-				}
-			}
-		}
-		mLockFragment.setPackage(mLockedPackage);
-		mLockFragment.onNewIntent();
-		checkOutcount();
-		super.onNewIntent(intent);
-	}
+                    ((PretendAppErrorFragment) mPretendFragment).setErrorTip(tip);
+                }
+            }
+        }
+        mLockFragment.setPackage(mLockedPackage);
+        mLockFragment.onNewIntent();
+        checkOutcount();
+        super.onNewIntent(intent);
+    }
 
-	private void checkOutcount() {
+    private void checkOutcount() {
 //        int outcountTime = mLockManager.getOutcountTime(mLockedPackage);
 //        if (outcountTime > 0) {
 //            mLockManager.filterPackage(getPackageName(), 200);
