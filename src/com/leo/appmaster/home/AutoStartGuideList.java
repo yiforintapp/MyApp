@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.home;
 
-import java.util.List;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +20,8 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
+
+import java.util.List;
 
 /**
  * 自启动引导
@@ -487,6 +487,7 @@ public class AutoStartGuideList extends WhiteList {
         int type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         dialog.getWindow().setType(type);
         dialog.show();
+        ((HomeActivity)context).setUninstallGuideShow();
 
         SDKWrapper.addEvent(context, SDKWrapper.P1, "gd_wcnts", "gd_battery_samsung");
     }
