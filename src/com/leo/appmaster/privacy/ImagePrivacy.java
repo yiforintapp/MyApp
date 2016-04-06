@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +11,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -80,6 +83,23 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     @Override
     public int getPrivacyType() {
         return PrivacyHelper.PRIVACY_HIDE_PIC;
+    }
+
+    @Override
+    public void jumpAction(Activity activity) {
+        Intent imageIntent = null;
+        int status = getStatus();
+        switch (status) {
+            case STATUS_NEW_ADD:
+                imageIntent = new Intent(activity, NewHideImageActivity.class);
+                break;
+            case STATUS_FOUND:
+            case STATUS_TOADD:
+            case STATUS_PROCEED:
+                imageIntent = new Intent(activity, ImageHideMainActivity.class);
+                break;
+        }
+        activity.startActivity(imageIntent);
     }
 
     @Override

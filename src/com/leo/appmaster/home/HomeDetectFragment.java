@@ -270,7 +270,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 }
                 if (sShowLost) {
                     mBannerTv.setText(R.string.hd_lost_permisson_tip);
-                    mBannerIntent = new Intent(mContext, PhoneSecurityActivity.class);
+                    mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                     mCurrentType = TYPE_LOST;
                 } else {
                     mBannerTv.setText(R.string.hd_lock_permisson_tip);
@@ -515,6 +515,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        Privacy privacy = null;
         switch (v.getId()) {
             case R.id.lt_det_saft_result_app:
                 //应用扫描安全结果
@@ -523,12 +524,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_app:
                 //应用扫描危险结果
                 //mDetectPresenter.appDangerHandler();
-                Intent appIntent = new Intent(mContext, AppLockListActivity.class);
-                Privacy privacy = PrivacyHelper.getAppPrivacy();
-                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
-                    appIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
-                }
-                mContext.startActivity(appIntent);
+                PrivacyHelper.getAppPrivacy().jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
                 break;
             case R.id.lt_det_saft_result_img:
@@ -538,14 +534,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_img:
                 //图片扫描危险结果
                 //mDetectPresenter.imageDangerHandler();
-                Intent imageIntent = null;
-                privacy = PrivacyHelper.getImagePrivacy();
-                if (privacy.getNewCount() > 0) {
-                    imageIntent = new Intent(mContext, NewHideImageActivity.class);
-                } else {
-                    imageIntent = new Intent(mContext, ImageHideMainActivity.class);
-                }
-                mContext.startActivity(imageIntent);
+                PrivacyHelper.getImagePrivacy().jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
                 break;
             case R.id.lt_det_saft_result_video:
@@ -555,14 +544,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_video:
                 //视频扫描危险结果
                 //mDetectPresenter.videoDangerHandler();
-                Intent intent = null;
-                privacy = PrivacyHelper.getVideoPrivacy();
-                if (privacy.getNewCount() > 0) {
-                    intent = new Intent(mContext, VideoHideMainActivity.class);
-                } else {
-                    intent = new Intent(mContext, NewHideVidActivity.class);
-                }
-                mContext.startActivity(intent);
+                PrivacyHelper.getVideoPrivacy().jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                 break;
             case R.id.lt_home_det_tip:

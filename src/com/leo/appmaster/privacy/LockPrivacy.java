@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +9,7 @@ import android.content.Intent;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.model.AppItemInfo;
@@ -85,6 +87,15 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     @Override
     public int getPrivacyType() {
         return PrivacyHelper.PRIVACY_APP_LOCK;
+    }
+
+    @Override
+    public void jumpAction(Activity activity) {
+        Intent appIntent = new Intent(activity, AppLockListActivity.class);
+        if (getNewCount() > 0 && getNewCount() != getTotalCount()) {
+            appIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
+        }
+        activity.startActivity(appIntent);
     }
 
     @Override

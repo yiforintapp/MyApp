@@ -377,8 +377,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         LeoLog.i("newpic", "mNewAddPic size = " + mNewAddPic.size());
         newLoadDone();
 
-        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-//        pdm.haveCheckedPic();
     }
 
     @Override
