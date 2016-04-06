@@ -108,6 +108,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private RelativeLayout mPicDangerContent;
     private RelativeLayout mVidSafeContent;
     private RelativeLayout mVidDangerContent;
+    private int mLastPrivacyConut;
+    private boolean mPrivacyApp;
+    private boolean mPrivacyPic;
+    private boolean mPrivacyVideo;
+    private boolean mLastPrivacyPic;
+    private boolean mLastPrivacyApp;
+    private boolean mLastPrivacyVideo;
 
     @Override
     public void onAttach(Activity activity) {
@@ -137,26 +144,86 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         LeoLog.d(TAG, "onResume...");
 
         // 刷新状态
+        refreshDetectStatus();
+        // 初始化中间的banner
+        initBannerTip();
+    }
+
+    private void refreshDetectStatus() {
+//        初始化标志状态
         mPrivacyConut = 0;
+        mPrivacyApp = false;
+        mPrivacyPic = false;
+        mPrivacyVideo = false;
+
         reloadAppStatus();
         reloadImageStatus();
         reloadVideoStatus();
         if (mPrivacyConut > 0) {
             mDangerDetTip.setVisibility(View.VISIBLE);
             String str = this.getResources().getString(R.string.hd_privacy_danger);
-            String format = String.format(str,mPrivacyConut);
+            String format = String.format(str, mPrivacyConut);
             mDangerDetTip.setText(format);
         } else {
             mDangerDetTip.setVisibility(View.INVISIBLE);
         }
-        // 初始化中间的banner
-        initBannerTip();
+
+//        LeoLog.d("refreshDetectStatus","mLastPrivacyConut:"+mLastPrivacyConut);
+//        LeoLog.d("refreshDetectStatus","mLastPrivacyApp:"+mLastPrivacyApp);
+//        LeoLog.d("refreshDetectStatus","mLastPrivacyPic:"+mLastPrivacyPic);
+//        LeoLog.d("refreshDetectStatus","mLastPrivacyVideo:"+mLastPrivacyVideo);
+        if (mLastPrivacyApp && !mLastPrivacyApp) {
+            LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
+            detectResultConversionAnim(mSfatResultAppLt, mDangerResultAppLt, mSfatResultAppLt, mDangerResultAppLt, mDetectShieldConverAnimListener);
+        }
+        if (mLastPrivacyPic && !mPrivacyVideo) {
+            LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
+            detectResultConversionAnim(mSfatResultImgLt, mDangerResultImgLt, mSfatResultImgLt, mDangerResultImgLt, mDetectShieldConverAnimListener);
+        }
+        if (mLastPrivacyVideo && !mPrivacyApp) {
+            LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
+            detectResultConversionAnim(mSfatResultVideoLt, mDangerResultVideoLt, mSfatResultVideoLt, mDangerResultVideoLt, mDetectShieldConverAnimListener);
+        }
     }
+
+    Animator.AnimatorListener mDetectShieldConverAnimListener = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            if (mLastPrivacyConut > 0) {
+                LeoLog.d("refreshDetectStatus","privacy app conver anim!");
+                dangerShieldConverAnim();
+            }
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+    };
+
 
     @Override
     public void onStop() {
         super.onStop();
+        mLastPrivacyConut = 0;
+        mLastPrivacyApp = false;
+        mLastPrivacyPic = false;
+        mLastPrivacyVideo = false;
 
+        mLastPrivacyConut = mPrivacyConut;
+        mLastPrivacyApp = mPrivacyApp;
+        mLastPrivacyPic = mPrivacyPic;
+        mLastPrivacyVideo = mPrivacyVideo;
     }
 
     private void initBannerTip() {
@@ -225,6 +292,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
             mDangerResultAppDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
+            mPrivacyApp = true;
         } else {
             mSfatResultAppLt.setVisibility(View.VISIBLE);
             mSfatResultAppLt.setBackgroundResource(R.drawable.strip_home_ok1);
@@ -251,6 +319,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
             mDangerResultPicDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
+            mPrivacyPic = true;
         } else {
             mSfatResultImgLt.setVisibility(View.VISIBLE);
             mDangerResultImgLt.setVisibility(View.INVISIBLE);
@@ -275,6 +344,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
             mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
+            mPrivacyVideo = true;
         } else {
             mSfatResultVideoLt.setVisibility(View.VISIBLE);
             mDangerResultVideoLt.setVisibility(View.INVISIBLE);
@@ -633,6 +703,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //扫描结果处理后切换动画
+    public void detectResultConversionAnim(final View current, View top, final View showView, final View missView, Animator.AnimatorListener listener) {
     public void detectResultConversionAnim(final View current, final View top, final View showView, final View missView) {
 
         ObjectAnimator currentDown = ObjectAnimator.ofFloat(current, "translationY", -50, 0);
@@ -682,12 +753,15 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
         AnimatorSet totalAnimatorSet = new AnimatorSet();
         totalAnimatorSet.playTogether(currentDown, topDown, alphaAnim);
-
+        if (listener != null) {
+            totalAnimatorSet.addListener(listener);
+        }
         totalAnimatorSet.start();
 
     }
 
     //红蓝盾牌的替换动画
+
     public void dangerShieldConverAnim() {
         setDangerShieldView(true);
         setSfateShieldView(true);
