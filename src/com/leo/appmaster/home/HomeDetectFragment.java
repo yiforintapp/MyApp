@@ -263,7 +263,11 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mCurrentType = TYPE_NONE;
         } else {
             if (lostDisabled && usageDisabled) {
-                mCenterTipRt.setVisibility(View.VISIBLE);
+                if (mFromEnter) {
+                    mCenterTipRt.setVisibility(View.INVISIBLE);
+                } else {
+                    mCenterTipRt.setVisibility(View.VISIBLE);
+                }
                 if (sShowLost) {
                     mBannerTv.setText(R.string.hd_lost_permisson_tip);
                     mBannerIntent = new Intent(mContext, PhoneSecurityActivity.class);
@@ -276,12 +280,20 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 }
             } else if (lostDisabled) {
                 mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
-                mCenterTipRt.setVisibility(View.VISIBLE);
+                if (mFromEnter) {
+                    mCenterTipRt.setVisibility(View.INVISIBLE);
+                } else {
+                    mCenterTipRt.setVisibility(View.VISIBLE);
+                }
                 mBannerTv.setText(R.string.hd_lost_permisson_tip);
 
                 mCurrentType = TYPE_LOST;
             } else if (usageDisabled) {
-                mCenterTipRt.setVisibility(View.VISIBLE);
+                if (mFromEnter) {
+                    mCenterTipRt.setVisibility(View.INVISIBLE);
+                } else {
+                    mCenterTipRt.setVisibility(View.VISIBLE);
+                }
                 mBannerTv.setText(R.string.hd_lock_permisson_tip);
                 mBannerIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
