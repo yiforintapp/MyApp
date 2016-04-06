@@ -57,7 +57,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.ctb_main);
         mTitleBar.setToolbarTitle(R.string.airsig_settings_activity_title);
-        mTitleBar.setToolbarColorResource(R.color.ctc);
+        mTitleBar.setToolbarColorResource(R.color.cb);
         mTitleBar.setOptionMenuVisible(false);
         mTitleBar.setNavigationClickListener(new View.OnClickListener() {
             @Override

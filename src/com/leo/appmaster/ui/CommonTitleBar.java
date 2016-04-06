@@ -100,6 +100,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         viewOldLeft.setVisibility(View.GONE);
     }
 
+    public void setTitleBarColorResource(int resource) {
+        setBackgroundResource(resource);
+    }
+
     public void setTitle(String title) {
         mTvTitle.setText(title);
     }
