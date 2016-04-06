@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -166,9 +167,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         reloadVideoStatus();
 
         if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
-            setSfateShieldView(true);
+            setSfateShieldView(true, mFromEnter);
         } else {
-            setDangerShieldView(true);
+            setDangerShieldView(true, mFromEnter);
         }
         if (mPrivacyConut > 0) {
             mDangerDetTip.setVisibility(View.VISIBLE);
@@ -224,8 +225,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         mLastPrivacyConut = 0;
         mLastPrivacyApp = false;
         mLastPrivacyPic = false;
@@ -296,7 +297,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getAppPrivacy();
         if (privacy.isDangerous()) {
             mSfatResultAppLt.setVisibility(View.INVISIBLE);
-            mDangerResultAppLt.setVisibility(View.VISIBLE);
+
+            if (mFromEnter) {
+                mDangerResultAppLt.setVisibility(View.INVISIBLE);
+            } else {
+                mDangerResultAppLt.setVisibility(View.VISIBLE);
+            }
             mDangerResultAppLt.setBackgroundResource(R.drawable.strip_home_nook1);
 
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
@@ -305,9 +311,17 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyApp = true;
         } else {
-            mSfatResultAppLt.setVisibility(View.VISIBLE);
+            if (mFromEnter || (mLastPrivacyApp && !mPrivacyApp)) {
+                mSfatResultAppLt.setVisibility(View.INVISIBLE);
+            } else {
+                mSfatResultAppLt.setVisibility(View.VISIBLE);
+            }
             mSfatResultAppLt.setBackgroundResource(R.drawable.strip_home_ok1);
-            mDangerResultAppLt.setVisibility(View.INVISIBLE);
+            if (mLastPrivacyApp && !mPrivacyApp) {
+                mDangerResultAppLt.setVisibility(View.VISIBLE);
+            } else {
+                mDangerResultAppLt.setVisibility(View.INVISIBLE);
+            }
 
             mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
@@ -324,7 +338,11 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getImagePrivacy();
         if (privacy.isDangerous()) {
             mSfatResultImgLt.setVisibility(View.INVISIBLE);
-            mDangerResultImgLt.setVisibility(View.VISIBLE);
+            if (mFromEnter) {
+                mDangerResultImgLt.setVisibility(View.INVISIBLE);
+            } else {
+                mDangerResultImgLt.setVisibility(View.VISIBLE);
+            }
 
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
@@ -332,8 +350,16 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyPic = true;
         } else {
-            mSfatResultImgLt.setVisibility(View.VISIBLE);
-            mDangerResultImgLt.setVisibility(View.INVISIBLE);
+            if (mFromEnter || (mLastPrivacyPic && !mPrivacyPic)) {
+                mSfatResultImgLt.setVisibility(View.INVISIBLE);
+            } else {
+                mSfatResultImgLt.setVisibility(View.VISIBLE);
+            }
+            if (mLastPrivacyPic && !mPrivacyPic) {
+                mDangerResultImgLt.setVisibility(View.VISIBLE);
+            } else {
+                mDangerResultImgLt.setVisibility(View.INVISIBLE);
+            }
 
             mDetSaftImgTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
@@ -349,16 +375,27 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy privacy = PrivacyHelper.getVideoPrivacy();
         if (privacy.isDangerous()) {
             mSfatResultVideoLt.setVisibility(View.INVISIBLE);
-            mDangerResultVideoLt.setVisibility(View.VISIBLE);
-
+            if (mFromEnter) {
+                mDangerResultVideoLt.setVisibility(View.INVISIBLE);
+            } else {
+                mDangerResultVideoLt.setVisibility(View.VISIBLE);
+            }
             mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
             mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyVideo = true;
         } else {
-            mSfatResultVideoLt.setVisibility(View.VISIBLE);
-            mDangerResultVideoLt.setVisibility(View.INVISIBLE);
+            if (mFromEnter || (mLastPrivacyVideo && !mPrivacyVideo)) {
+                mSfatResultVideoLt.setVisibility(View.INVISIBLE);
+            } else {
+                mSfatResultVideoLt.setVisibility(View.VISIBLE);
+            }
+            if (mLastPrivacyVideo && !mPrivacyVideo) {
+                mDangerResultVideoLt.setVisibility(View.VISIBLE);
+            } else {
+                mDangerResultVideoLt.setVisibility(View.INVISIBLE);
+            }
 
             mDetSaftVideoTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
@@ -438,10 +475,18 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     private void initAnim() {
         mFromEnter = false;
-        initHomeTopShieldAnim();
+        if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
+            initHomeTopShieldAnim(mShieldTopIv, mShieldLeftIv, mShieldRightIv);
+        } else {
+            initHomeTopShieldAnim(mShieldDangerTopIv, mShieldDangerLeftIv, mShieldDangerRightIv);
+        }
         //测试
         startFirstAnim();
-        startHomeCenterShieldAnim(mShieldCenterIv);
+        if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
+            startHomeCenterShieldAnim(mShieldCenterIv);
+        } else {
+            startHomeCenterShieldAnim(mShieldDangerCenterIv);
+        }
     }
 
     @Override
@@ -538,13 +583,21 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //危险盾牌设置
-    public void setDangerShieldView(boolean isShow) {
+    public void setDangerShieldView(boolean isShow, boolean firstEnter) {
         shieldPositionInit();
         if (isShow) {
-            mShieldDangerTopIv.setVisibility(View.VISIBLE);
-            mShieldDangerLeftIv.setVisibility(View.VISIBLE);
-            mShieldDangerRightIv.setVisibility(View.VISIBLE);
-            mShieldDangerCenterIv.setVisibility(View.VISIBLE);
+            if (firstEnter) {
+                mShieldDangerTopIv.setVisibility(View.INVISIBLE);
+                mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
+                mShieldDangerRightIv.setVisibility(View.INVISIBLE);
+                mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
+            } else {
+                LeoLog.e("setDangerShieldView", "setDangerShieldView");
+                mShieldDangerTopIv.setVisibility(View.VISIBLE);
+                mShieldDangerLeftIv.setVisibility(View.VISIBLE);
+                mShieldDangerRightIv.setVisibility(View.VISIBLE);
+                mShieldDangerCenterIv.setVisibility(View.VISIBLE);
+            }
             mShieldTopIv.setVisibility(View.INVISIBLE);
             mShieldLeftIv.setVisibility(View.INVISIBLE);
             mShieldRightIv.setVisibility(View.INVISIBLE);
@@ -558,17 +611,30 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //安全盾牌设置
-    public void setSfateShieldView(boolean isShow) {
+    public void setSfateShieldView(boolean isShow, boolean firstEnter) {
         shieldPositionInit();
+        boolean last = mLastPrivacyApp || mLastPrivacyPic || mLastPrivacyVideo;
+        boolean current = mPrivacyApp && mPrivacyPic && mPrivacyVideo;
         if (isShow) {
-            mShieldTopIv.setVisibility(View.VISIBLE);
-            mShieldLeftIv.setVisibility(View.VISIBLE);
-            mShieldRightIv.setVisibility(View.VISIBLE);
-            mShieldCenterIv.setVisibility(View.VISIBLE);
-            mShieldDangerTopIv.setVisibility(View.INVISIBLE);
-            mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
-            mShieldDangerRightIv.setVisibility(View.INVISIBLE);
-            mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
+            if (firstEnter || (last && !current)) {
+                mShieldTopIv.setVisibility(View.INVISIBLE);
+                mShieldLeftIv.setVisibility(View.INVISIBLE);
+                mShieldRightIv.setVisibility(View.INVISIBLE);
+                mShieldCenterIv.setVisibility(View.INVISIBLE);
+                mShieldDangerTopIv.setVisibility(View.VISIBLE);
+                mShieldDangerLeftIv.setVisibility(View.VISIBLE);
+                mShieldDangerRightIv.setVisibility(View.VISIBLE);
+                mShieldDangerCenterIv.setVisibility(View.VISIBLE);
+            } else {
+                mShieldTopIv.setVisibility(View.VISIBLE);
+                mShieldLeftIv.setVisibility(View.VISIBLE);
+                mShieldRightIv.setVisibility(View.VISIBLE);
+                mShieldCenterIv.setVisibility(View.VISIBLE);
+                mShieldDangerTopIv.setVisibility(View.INVISIBLE);
+                mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
+                mShieldDangerRightIv.setVisibility(View.INVISIBLE);
+                mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
+            }
         } else {
             mShieldTopIv.setVisibility(View.INVISIBLE);
             mShieldLeftIv.setVisibility(View.INVISIBLE);
@@ -578,25 +644,36 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //首次进入主页盾牌动画
-    public void initHomeTopShieldAnim() {
+    public void initHomeTopShieldAnim(final View top, final View left, final View right) {
         int value2 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_top_offset));
         int value1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_top_y_trans)) + value2;
         PropertyValuesHolder topTransY = PropertyValuesHolder.ofFloat("translationY", value1, value2);
         PropertyValuesHolder topAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
-        ObjectAnimator topAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldTopIv, topTransY, topAlpha);
 
         int valueLeft2 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_offset));
         int valueLeft1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_x_trans)) + value2;
         PropertyValuesHolder leftTransY = PropertyValuesHolder.ofFloat("translationX", valueLeft1, valueLeft2);
         PropertyValuesHolder leftAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
-        ObjectAnimator leftAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldLeftIv, leftTransY, leftAlpha);
+
 
         int valueRight2 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_offset));
         int valueRight1 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_right_x_trans)) + value2;
 
         PropertyValuesHolder rightTransY = PropertyValuesHolder.ofFloat("translationX", valueRight1, valueRight2);
         PropertyValuesHolder rightAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
-        ObjectAnimator rightAnim = ObjectAnimator.ofPropertyValuesHolder(mShieldRightIv, rightTransY, rightAlpha);
+        ObjectAnimator topAnim = ObjectAnimator.ofPropertyValuesHolder(top, topTransY, topAlpha);
+        topAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                top.setVisibility(View.VISIBLE);
+                left.setVisibility(View.VISIBLE);
+                right.setVisibility(View.VISIBLE);
+            }
+        });
+        ObjectAnimator leftAnim = ObjectAnimator.ofPropertyValuesHolder(left, leftTransY, leftAlpha);
+        ObjectAnimator rightAnim = ObjectAnimator.ofPropertyValuesHolder(right, rightTransY, rightAlpha);
+
 
         if (mFirstInAnim == null) {
             mFirstInAnim = new AnimatorSet();
@@ -625,7 +702,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //首次进入主页Center盾牌动画
-    public void startHomeCenterShieldAnim(View view) {
+    public void startHomeCenterShieldAnim(final View view) {
         ObjectAnimator scaleXFirstAnim = ObjectAnimator.ofFloat(view, "scaleX", 0.6f, 1.06f);
         ObjectAnimator scaleYFirstAnim = ObjectAnimator.ofFloat(view, "scaleY", 0.6f, 1.06f);
         AnimatorSet scaleFirstAnimatorSet = new AnimatorSet();
@@ -643,7 +720,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mShieldCenterIv.setVisibility(View.VISIBLE);
+                view.setVisibility(View.VISIBLE);
             }
         });
         alphaAnim.setDuration(120);
@@ -772,20 +849,25 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         });
         alphaAnim.setDuration(150);
 
-        AnimatorSet totalAnimatorSet = new AnimatorSet();
+        final AnimatorSet totalAnimatorSet = new AnimatorSet();
         totalAnimatorSet.playTogether(currentDown, topDown, alphaAnim);
         if (listener != null) {
             totalAnimatorSet.addListener(listener);
         }
-        totalAnimatorSet.start();
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                totalAnimatorSet.start();
 
+            }
+        }, 2000);
     }
 
     //红蓝盾牌的替换动画
 
     public void dangerShieldConverAnim() {
-        setDangerShieldView(true);
-        setSfateShieldView(true);
+//        setDangerShieldView(true, true);
+//        setSfateShieldView(true, true);
 
         //危险状态
         ObjectAnimator dangerLeftScalX = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleX", 1.0f, 1.1f);
@@ -851,29 +933,31 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet saftCenterAnim = new AnimatorSet();
         saftCenterAnim.playTogether(saftCenterScalX, saftCenterScalY, saftCenterApl);
         saftCenterAnim.setDuration(600);
-        saftCenterAnim.start();
-        saftCenterAnim.addListener(new Animator.AnimatorListener() {
+        saftCenterApl.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                setDangerShieldView(false);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
+                super.onAnimationStart(animation);
+                setDangerShieldView(false, false);
+                LeoLog.e("setDangerShieldView", "getAlphaAnim");
+                getAlphaAnim(mShieldDangerTopIv);
+                getAlphaAnim(mShieldDangerCenterIv);
+                getAlphaAnim(mShieldDangerLeftIv);
+                getAlphaAnim(mShieldDangerRightIv);
+                mShieldLeftIv.setVisibility(View.VISIBLE);
+                mShieldRightIv.setVisibility(View.VISIBLE);
+                mShieldTopIv.setVisibility(View.VISIBLE);
+                mShieldCenterIv.setVisibility(View.VISIBLE);
             }
         });
+        saftCenterAnim.start();
 
+    }
+
+    private void getAlphaAnim(View view) {
+        ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(view, "alpha", 0.0f, 1.0f);
+        alphaAnim.setDuration(50);
+
+        alphaAnim.start();
     }
 
     private class Banner {
