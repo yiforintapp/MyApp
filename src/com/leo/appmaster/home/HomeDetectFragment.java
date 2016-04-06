@@ -703,8 +703,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //扫描结果处理后切换动画
-    public void detectResultConversionAnim(final View current, View top, final View showView, final View missView, Animator.AnimatorListener listener) {
-    public void detectResultConversionAnim(final View current, final View top, final View showView, final View missView) {
+    public void detectResultConversionAnim(final View current,final View top, final View showView, final View missView, Animator.AnimatorListener listener) {
 
         ObjectAnimator currentDown = ObjectAnimator.ofFloat(current, "translationY", -50, 0);
         currentDown.setDuration(300);
