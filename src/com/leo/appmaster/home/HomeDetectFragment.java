@@ -91,7 +91,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private HomeDetectPresenter mDetectPresenter;
 
     private int mScreenWidth;
-    private Banner mBanner;
     private Intent mBannerIntent;
     private ImageView mShieldDangerLeftIv;
     private ImageView mShieldDangerRightIv;
@@ -144,7 +143,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
-
         // 刷新状态
         refreshDetectStatus();
         // 初始化中间的banner
@@ -180,10 +178,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDangerDetTip.setVisibility(View.INVISIBLE);
         }
 
-//        LeoLog.d("refreshDetectStatus","mLastPrivacyConut:"+mLastPrivacyConut);
-//        LeoLog.d("refreshDetectStatus","mLastPrivacyApp:"+mLastPrivacyApp);
-//        LeoLog.d("refreshDetectStatus","mLastPrivacyPic:"+mLastPrivacyPic);
-//        LeoLog.d("refreshDetectStatus","mLastPrivacyVideo:"+mLastPrivacyVideo);
         if (mLastPrivacyApp && !mPrivacyApp) {
             LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
             detectResultConversionAnim(mAppSafeContent, mAppDangerContent,
@@ -423,7 +417,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     private void initUI(View view) {
-        FrameLayout resultRootView = (FrameLayout) view.findViewById(R.id.det_result_ly);
+        RelativeLayout resultRootView = (RelativeLayout) view.findViewById(R.id.det_result_ly);
 
         mSfatResultAppLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_app);
         mSfatResultImgLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_img);
@@ -985,17 +979,5 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         alphaAnim.setDuration(50);
 
         alphaAnim.start();
-    }
-
-    private class Banner {
-        private Intent intent;
-
-        public Banner(Intent intent) {
-            this.intent = intent;
-        }
-
-        public void click() {
-            mContext.startActivity(intent);
-        }
     }
 }
