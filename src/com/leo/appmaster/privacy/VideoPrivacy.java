@@ -93,9 +93,9 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
         int status = getStatus();
         switch (status) {
             case STATUS_NEW_ADD:
+            case STATUS_FOUND:
                 imageIntent = new Intent(activity, NewHideVidActivity.class);
                 break;
-            case STATUS_FOUND:
             case STATUS_TOADD:
             case STATUS_PROCEED:
                 imageIntent = new Intent(activity, VideoHideMainActivity.class);

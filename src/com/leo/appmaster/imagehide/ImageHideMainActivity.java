@@ -454,9 +454,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            final View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
-            final ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
-            TextView tv = (TextView) v.findViewById(R.id.tv_more);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
+            }
+            final ImageView iv = (ImageView) convertView.findViewById(R.id.iv_pic);
+            TextView tv = (TextView) convertView.findViewById(R.id.tv_more);
             if (list.size() > 5 && position == 4) {
                 tv.setText("+" + (list.size() - 4));
             }
@@ -468,24 +470,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
-            v.setOnClickListener(new OnClickListener() {
+            convertView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     goNewHideImageActivity();
                 }
             });
-
-//            mImageLoader.displayImage(uri, iv, mOptions);
-
-
-//            if (list.size() > 5 && position == 5) {
-//                try {
-//                    BitmapDrawable bd = (BitmapDrawable) iv.getDrawable();
-//
-//                } catch (Throwable t) {
-//
-//                }
-//            }
 
             mImageLoader.loadImage(uri,mOptions, new ImageLoadingListener() {
                 @Override
@@ -522,7 +512,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
 
 //            iv.setImageResource(R.drawable.ic_launcher);
-            return v;
+            return convertView;
         }
     }
 
