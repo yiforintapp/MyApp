@@ -363,6 +363,19 @@ public class GestureLockFragment extends LockFragment implements
         if (null != ASEngine.getSharedInstance()) {
             ASEngine.getSharedInstance().startSensors();
         }
+        checkIsAirSigTimeOut();
+    }
+
+    private void checkIsAirSigTimeOut() {
+        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+        if (!isAirSigVaild) {
+            mLockPatternView.setVisibility(View.VISIBLE);
+            mAirSigTouchView.setVisibility(View.GONE);
+            mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+            mIvBottom.setBackgroundResource(
+                    R.drawable.reset_airsig_gesture);
+        }
     }
 
     @Override

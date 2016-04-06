@@ -151,6 +151,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         if (null != ASEngine.getSharedInstance()) {
             ASEngine.getSharedInstance().startSensors();
         }
+        checkIsAirSigTimeOut();
     }
 
 
@@ -368,6 +369,18 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
         } else {
             mViewBottom.setVisibility(View.GONE);
+        }
+    }
+
+    private void checkIsAirSigTimeOut() {
+        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+        if (!isAirSigVaild) {
+            mPassLockView.setVisibility(View.VISIBLE);
+            mAirSigTouchView.setVisibility(View.GONE);
+            mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+            mIvBottom.setBackgroundResource(
+                    R.drawable.reset_airsig_gesture);
         }
     }
 
@@ -591,7 +604,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     Drawable bgDrawable = mThemeRes.getDrawable(mLayoutBgRes);
                     layout.setBackgroundDrawable(bgDrawable);
                 } else {
-                    changeBg(true,mPackageName);
+                    changeBg(true, mPackageName);
                 }
 
 
@@ -690,7 +703,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     RelativeLayout bgLayout;
 
-    public void changeBg(boolean isNormalbg,String packageName) {
+    public void changeBg(boolean isNormalbg, String packageName) {
 
         bgLayout = (RelativeLayout) getActivity().findViewById(
                 R.id.activity_lock_layout);
@@ -892,7 +905,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
                 mIvBottom.setBackgroundResource(
                         R.drawable.reset_pass_number);
-                changeBg(true,mPackageName);
+                changeBg(true, mPackageName);
             }
         } else {
             mPassLockView.setVisibility(View.VISIBLE);
@@ -902,7 +915,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_airsig_gesture);
-            changeBg(false,mPackageName);
+            changeBg(false, mPackageName);
         }
     }
 

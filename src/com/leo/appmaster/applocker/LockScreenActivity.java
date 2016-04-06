@@ -274,7 +274,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         long start = SystemClock.elapsedRealtime();
         setContentView(R.layout.activity_lock_layout);
 
-        checkIsAirSigTimeout();
 
 //        registerHomeKeyReceiver()
         LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
@@ -324,32 +323,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
-    }
-
-    public void checkIsAirSigTimeout() {
-//        if (ASGui.getSharedInstance().isValidLicense()) {
-//            LeoLog.d("testAirSig", "no guoqi");
-//            boolean isAirSigTimeOutEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
-//            //以前是否开启状态
-//            boolean isAirSigOpenEver = LeoSettings.getBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
-//            if (isAirSigTimeOutEver && isAirSigOpenEver) {
-//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, true);
-//                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
-//
-//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, false);
-//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, false);
-//            }
-//        } else {
-//            LeoLog.d("testAirSig", "yes guoqi");
-//            boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-//            if (isAirsigOn) {
-//                LeoSettings.setBoolean(AirSigActivity.AIRSIG_OPEN_EVER, true);
-//                LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
-//            }
-//            //过期关闭
-//            LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-//            LeoSettings.setBoolean(AirSigActivity.AIRSIG_TIMEOUT_EVER, true);
-//        }
     }
 
     private void mobvistaCheck() {
