@@ -418,4 +418,7 @@
     <dimen name = "det_result_icon_margin_right">10.3dp</dimen>
     <dimen name="home_det_result_tv1_padd_left">137dp</dimen>
     <dimen name="home_det_result_tv1_padd_right">20dp</dimen>
+    <dimen name="det_result_icon_margin_top">13dp</dimen>
+    <dimen name="det_result_saft_content_margin_top">11dp</dimen>
+    <dimen name="det_result_danger_content_margin_top">3dp</dimen>
 </resources>
