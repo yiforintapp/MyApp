@@ -585,15 +585,23 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     //盾牌位置初始化
     private void shieldPositionInit() {
         Context context = getActivity();
-        mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_top_offset)));
-        mShieldLeftIv.setTranslationX(-DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_left_offset)));
-        mShieldRightIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_right_offset)));
-        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_blue_offset)));
+        mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_top_offset)));
+        mShieldLeftIv.setTranslationX(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_left_offset)));
+        mShieldRightIv.setTranslationX(DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_right_offset)));
+        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_blue_offset)));
 
-        mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_top_offset)));
-        mShieldDangerLeftIv.setTranslationX(-DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_left_offset)));
-        mShieldDangerRightIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_right_offset)));
-        mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(context, getResources().getInteger(R.integer.shield_center_red_offset)));
+        mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_top_offset)));
+        mShieldDangerLeftIv.setTranslationX(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_left_offset)));
+        mShieldDangerRightIv.setTranslationX(DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_right_offset)));
+        mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_red_offset)));
 
     }
 
@@ -765,7 +773,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         } else {
             vidAnimatorSet = getTranslateAnim(mSfatResultVideoLt);
         }
-        ObjectAnimator tipsAnim = ObjectAnimator.ofFloat(mCenterTipRt, "x", -mScreenWidth, mCenterTipRt.getTranslationX());
+        ObjectAnimator tipsAnim = ObjectAnimator.ofFloat(mCenterTipRt, "x",
+                            -mScreenWidth, mCenterTipRt.getTranslationX());
         tipsAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -806,7 +815,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //扫描结果处理后切换动画
-    public void detectResultConversionAnim(final View current,final View top, final View showView, final View missView, Animator.AnimatorListener listener) {
+    public void detectResultConversionAnim(final View current,final View top, final View showView,
+                                           final View missView, Animator.AnimatorListener listener) {
 
         ObjectAnimator currentDown = ObjectAnimator.ofFloat(current, "translationY", -50, 0);
         currentDown.setDuration(300);
