@@ -167,7 +167,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         reloadVideoStatus();
 
         if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
-            setSfateShieldView(true, mFromEnter);
+            setSfateShieldView(mFromEnter);
         } else {
             setDangerShieldView(true, mFromEnter);
         }
@@ -614,36 +614,25 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     //安全盾牌设置
-    public void setSfateShieldView(boolean isShow, boolean firstEnter) {
+    public void setSfateShieldView(boolean firstEnter) {
         shieldPositionInit();
         boolean last = mLastPrivacyApp || mLastPrivacyPic || mLastPrivacyVideo;
         boolean current = mPrivacyApp && mPrivacyPic && mPrivacyVideo;
-        if (isShow) {
-            if (firstEnter || (last && !current)) {
-                mShieldTopIv.setVisibility(View.INVISIBLE);
-                mShieldLeftIv.setVisibility(View.INVISIBLE);
-                mShieldRightIv.setVisibility(View.INVISIBLE);
-                mShieldCenterIv.setVisibility(View.INVISIBLE);
-                mShieldDangerTopIv.setVisibility(View.VISIBLE);
-                mShieldDangerLeftIv.setVisibility(View.VISIBLE);
-                mShieldDangerRightIv.setVisibility(View.VISIBLE);
-                mShieldDangerCenterIv.setVisibility(View.VISIBLE);
-            } else {
-                mShieldTopIv.setVisibility(View.VISIBLE);
-                mShieldLeftIv.setVisibility(View.VISIBLE);
-                mShieldRightIv.setVisibility(View.VISIBLE);
-                mShieldCenterIv.setVisibility(View.VISIBLE);
-                mShieldDangerTopIv.setVisibility(View.INVISIBLE);
-                mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
-                mShieldDangerRightIv.setVisibility(View.INVISIBLE);
-                mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
-            }
-        } else {
+        if (firstEnter || (last && !current)) {
             mShieldTopIv.setVisibility(View.INVISIBLE);
             mShieldLeftIv.setVisibility(View.INVISIBLE);
             mShieldRightIv.setVisibility(View.INVISIBLE);
             mShieldCenterIv.setVisibility(View.INVISIBLE);
+        } else {
+            mShieldTopIv.setVisibility(View.VISIBLE);
+            mShieldLeftIv.setVisibility(View.VISIBLE);
+            mShieldRightIv.setVisibility(View.VISIBLE);
+            mShieldCenterIv.setVisibility(View.VISIBLE);
         }
+        mShieldDangerTopIv.setVisibility(View.INVISIBLE);
+        mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
+        mShieldDangerRightIv.setVisibility(View.INVISIBLE);
+        mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
     }
 
     //首次进入主页盾牌动画
@@ -863,7 +852,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 totalAnimatorSet.start();
 
             }
-        }, 2000);
+        }, 200);
     }
 
     //红蓝盾牌的替换动画
