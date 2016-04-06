@@ -348,4 +348,10 @@ public class PrefConst {
     public static final String KEY_NOTIFY_IMG_COUNT = "notify_img_c";
     public static final String KEY_NOTIFY_VID_COUNT = "notify_vid_c";
 
+    public static final String KEY_NOTIFY_APP_TITLE = "notify_app_title";
+    public static final String KEY_NOTIFY_APP_CONTENT = "notify_app_content";
+    public static final String KEY_NOTIFY_IMG_TITLE = "notify_img_title";
+    public static final String KEY_NOTIFY_IMG_CONTENT = "notify_img_content";
+    public static final String KEY_NOTIFY_VID_TITLE = "notify_vid_title";
+    public static final String KEY_NOTIFY_VID_CONTENT = "notify_vid_content";
 }

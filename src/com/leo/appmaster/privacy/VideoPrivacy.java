@@ -50,13 +50,21 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
     }
 
     @Override
-    public int getNotificationTextId() {
-        return R.string.hd_hide_vid_privacy_title;
+    public String getNotificationText() {
+        String result = LeoSettings.getString(PrefConst.KEY_NOTIFY_VID_TITLE, null);
+        if (result == null) {
+            result = mContext.getString(R.string.hd_hide_vid_privacy_title);
+        }
+        return result;
     }
 
     @Override
-    public int getNotificationSummaryId() {
-        return R.string.hd_hide_vid_privacy_summary;
+    public String getNotificationSummary() {
+        String result = LeoSettings.getString(PrefConst.KEY_NOTIFY_VID_CONTENT, null);
+        if (result == null) {
+            result = mContext.getString(R.string.hd_hide_vid_privacy_summary);
+        }
+        return result;
     }
 
     @Override
@@ -83,9 +91,9 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
         PendingIntent contentIntent = PendingIntent.getService(mContext, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notif.icon = getNotificationIconId();
 
-        String title = mContext.getString(getNotificationTextId());
-        String content = mContext.getString(getNotificationSummaryId());
-        notif.tickerText = mContext.getString(getNotificationTextId());
+        String title = getNotificationText();
+        String content = getNotificationSummary();
+        notif.tickerText = getNotificationText();
         notif.flags = Notification.FLAG_AUTO_CANCEL;
         notif.setLatestEventInfo(mContext, title, content, contentIntent);
         NotificationUtil.setBigIcon(notif, getNotificationIconId());

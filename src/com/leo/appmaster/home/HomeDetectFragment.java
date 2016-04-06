@@ -758,18 +758,23 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet appAnimatorSet;
         AnimatorSet picAnimatorSet;
         AnimatorSet vidAnimatorSet;
+
+        boolean totalDangerous = false;
         if (PrivacyHelper.getAppPrivacy().isDangerous()) {
             appAnimatorSet = getTranslateAnim(mDangerResultAppLt);
+            totalDangerous = true;
         } else {
             appAnimatorSet = getTranslateAnim(mSfatResultAppLt);
         }
         if (PrivacyHelper.getImagePrivacy().isDangerous()) {
             picAnimatorSet = getTranslateAnim(mDangerResultImgLt);
+            totalDangerous = true;
         } else {
             picAnimatorSet = getTranslateAnim(mSfatResultImgLt);
         }
         if (PrivacyHelper.getVideoPrivacy().isDangerous()) {
             vidAnimatorSet = getTranslateAnim(mDangerResultVideoLt);
+            totalDangerous = true;
         } else {
             vidAnimatorSet = getTranslateAnim(mSfatResultVideoLt);
         }
@@ -787,7 +792,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(picAnimatorSet).after(280).after(appAnimatorSet);
         animatorSet.play(vidAnimatorSet).after(280).after(picAnimatorSet);
-        animatorSet.play(tipsAnim).after(1000).after(vidAnimatorSet);
+        if (!totalDangerous) {
+            animatorSet.play(tipsAnim).after(1000).after(vidAnimatorSet);
+        }
 
         animatorSet.start();
 
