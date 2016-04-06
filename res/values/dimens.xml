@@ -396,8 +396,8 @@
     <integer name="shield_top_y_trans">38</integer>
     <integer name="shield_left_x_trans">34</integer>
     <integer name="shield_right_x_trans">34</integer>
-    <dimen name="home_det_result_tv2_padd_left">140dp</dimen>
-    <dimen name="home_det_result_tv3_padd_left">150dp</dimen>
+    <dimen name="home_det_result_tv2_padd_left">125dp</dimen>
+    <dimen name="home_det_result_tv3_padd_left">96dp</dimen>
     <dimen name="home_det_margin_left">19dp</dimen>
     <dimen name="home_det_margin_right">20dp</dimen>
     <dimen name="ph_secur_add_num_top_tip_marg_top">72dp</dimen>
@@ -416,6 +416,6 @@
     <dimen name="secur_nromal_tip_tv_marg_left">40dp</dimen>
     <dimen name="secur_open_line2">18dp</dimen>
     <dimen name = "det_result_icon_margin_right">10.3dp</dimen>
-    <dimen name="home_det_result_tv1_padd_left">138dp</dimen>
+    <dimen name="home_det_result_tv1_padd_left">137dp</dimen>
     <dimen name="home_det_result_tv1_padd_right">20dp</dimen>
 </resources>

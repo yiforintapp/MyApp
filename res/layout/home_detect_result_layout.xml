@@ -25,7 +25,7 @@
                 android:id="@+id/app_saft_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_home_mark"
+                android:src="@drawable/icon_home_apps"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:layout_centerVertical="true"/>
 
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:src="@drawable/icon_home_mark"/>
+                android:src="@drawable/icon_home_apps2"/>
 
             <TextView
                 android:id="@+id/det_danger_app_num_tv"
@@ -136,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:src="@drawable/icon_home_mark"/>
+                android:src="@drawable/icon_home_pics"/>
 
             <TextView
                 android:id="@+id/det_saft_img_num_tv"
@@ -184,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:src="@drawable/icon_home_mark"/>
+                android:src="@drawable/icon_home_pics2"/>
 
             <TextView
                 android:id="@+id/det_danger_img_num_tv"
@@ -240,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:src="@drawable/icon_home_mark"/>
+                android:src="@drawable/icon_home_videos"/>
 
             <TextView
                 android:id="@+id/det_saft_video_num_tv"
@@ -287,7 +287,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_home_mark"/>
+                android:src="@drawable/icon_home_videos2"/>
 
             <TextView
                 android:id="@+id/det_danger_video_num_tv"
