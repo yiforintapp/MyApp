@@ -71,8 +71,8 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
         mChangeLockTime.setOnPreferenceClickListener(this);
         getPreferenceScreen().removePreference(
                 findPreference(AppMasterPreference.PREF_LOCKER_THEME));
-        getPreferenceScreen().removePreference(
-                findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL));
+//        getPreferenceScreen().removePreference(
+//                findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL));
         getPreferenceScreen().removePreference(findPreference("app_lock_clean"));
         getPreferenceScreen().removePreference(
                 findPreference(AppMasterPreference.PREF_HIDE_LOCK_LINE));
