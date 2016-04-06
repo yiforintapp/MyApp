@@ -340,7 +340,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
-            mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftAppNumTv.setText(privacy.getPrivacyCountText());
             }
@@ -378,7 +378,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetSaftImgTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
-            mDetSaftImgNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            mDetSaftImgNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftImgNumTv.setText(privacy.getPrivacyCountText());
             }
@@ -414,7 +414,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetSaftVideoTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
-            mDetSaftVideoNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            mDetSaftVideoNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftVideoNumTv.setText(privacy.getPrivacyCountText());
             }
@@ -857,8 +857,19 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         alphaAnim.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                showView.setBackgroundDrawable(
-                        getResources().getDrawable(R.drawable.strip_home_ok1));
+                if(mAppSafeContent == current){
+                    showView.setBackgroundDrawable(
+                            getResources().getDrawable(R.drawable.strip_home_ok1));
+                }else if(mPicSafeContent == current){
+                    showView.setBackgroundDrawable(
+                            getResources().getDrawable(R.drawable.strip_home_ok2));
+                }else if(mVidSafeContent == current){
+                    showView.setBackgroundDrawable(
+                            getResources().getDrawable(R.drawable.strip_home_ok3));
+                }else{
+                    showView.setBackgroundDrawable(
+                            getResources().getDrawable(R.drawable.strip_home_ok1));
+                }
             }
 
             @Override

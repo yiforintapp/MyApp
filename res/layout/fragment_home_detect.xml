@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:background="@drawable/bg_home_shield"/>
         <!--安全状态-->
         <ImageView
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_blue_left"
             android:visibility="invisible"/>
 
@@ -43,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_blue_right"
             android:visibility="invisible"/>
 
@@ -51,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_blue_top"
             android:visibility="invisible"/>
 
@@ -60,6 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/shield_good"
+            android:clickable="true"
             android:visibility="invisible"/>
         <!--危险状态-->
         <ImageView
@@ -67,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_red_left"
             android:visibility="invisible"/>
 
@@ -75,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_red_right"
             android:visibility="invisible"/>
 
@@ -83,6 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_red_top"
             android:visibility="invisible"/>
 
@@ -92,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/shield_bad"
+            android:clickable="true"
             android:visibility="invisible"/>
 
     </RelativeLayout>
