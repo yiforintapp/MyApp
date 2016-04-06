@@ -18,7 +18,7 @@
             android:id="@+id/security_guide_top_RL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/cb"
+            android:background="@color/ctc"
             android:gravity="center_horizontal">
 
             <ImageView

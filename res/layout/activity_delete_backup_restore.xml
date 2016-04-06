@@ -21,14 +21,14 @@
         android:id="@+id/home_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cb"
+        android:background="@color/ctc"
         android:orientation="vertical" >
 
         <com.leo.appmaster.ui.LeoPagerTab
             android:id="@+id/backup_app_tab_indicator"
             android:overScrollMode="never"
             android:layout_width="match_parent"
-            android:background="@color/cb"
+            android:background="@color/ctc"
             android:layout_height="@dimen/app_manager_backup_head_back" />
 
         <android.support.v4.view.ViewPager

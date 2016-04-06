@@ -9,7 +9,7 @@
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:background="@color/cb">
+        android:background="@color/ctc">
 
         <RelativeLayout
             android:layout_width="wrap_content"

@@ -17,7 +17,7 @@
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cb" />
+        android:background="@color/ctc" />
 
     <LinearLayout
         android:id="@+id/bottom_button_bar"
