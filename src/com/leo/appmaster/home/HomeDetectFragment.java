@@ -649,10 +649,17 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mShieldRightIv.setVisibility(View.VISIBLE);
             mShieldCenterIv.setVisibility(View.VISIBLE);
         }
-        mShieldDangerTopIv.setVisibility(View.INVISIBLE);
-        mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
-        mShieldDangerRightIv.setVisibility(View.INVISIBLE);
-        mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
+        if (last && !current) {
+            mShieldDangerTopIv.setVisibility(View.VISIBLE);
+            mShieldDangerLeftIv.setVisibility(View.VISIBLE);
+            mShieldDangerRightIv.setVisibility(View.VISIBLE);
+            mShieldDangerCenterIv.setVisibility(View.VISIBLE);
+        } else {
+            mShieldDangerTopIv.setVisibility(View.INVISIBLE);
+            mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
+            mShieldDangerRightIv.setVisibility(View.INVISIBLE);
+            mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
+        }
     }
 
     //首次进入主页盾牌动画
@@ -821,7 +828,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         return animatorSet;
     }
 
-    //扫描结果处理后切换动画
+    /**
+     * 扫描结果处理后切换动画
+     */
     public void detectResultConversionAnim(final View current,final View top, final View showView,
                                            final View missView, Animator.AnimatorListener listener) {
 
@@ -881,15 +890,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 totalAnimatorSet.start();
 
             }
-        }, 200);
+        }, 500);
     }
 
     //红蓝盾牌的替换动画
 
     public void dangerShieldConverAnim() {
-//        setDangerShieldView(true, true);
-//        setSfateShieldView(true, true);
-
+        setDangerShieldView(true, false);
         //危险状态
         ObjectAnimator dangerLeftScalX = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleX", 1.0f, 1.1f);
         ObjectAnimator dangerLeftScalY = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleY", 1.0f, 1.1f);
@@ -958,7 +965,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                setDangerShieldView(false, false);
+
                 mShieldLeftIv.setVisibility(View.VISIBLE);
                 mShieldRightIv.setVisibility(View.VISIBLE);
                 mShieldTopIv.setVisibility(View.VISIBLE);
@@ -969,6 +976,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                setDangerShieldView(false, false);
                 getAlphaAnim(mShieldDangerTopIv);
                 getAlphaAnim(mShieldDangerCenterIv);
                 getAlphaAnim(mShieldDangerLeftIv);
