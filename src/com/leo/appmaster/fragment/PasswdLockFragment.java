@@ -591,7 +591,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     Drawable bgDrawable = mThemeRes.getDrawable(mLayoutBgRes);
                     layout.setBackgroundDrawable(bgDrawable);
                 } else {
-                    changeBg(true);
+                    changeBg(true,mPackageName);
                 }
 
 
@@ -690,13 +690,13 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     RelativeLayout bgLayout;
 
-    private void changeBg(boolean isNormalbg) {
+    public void changeBg(boolean isNormalbg,String packageName) {
 
         bgLayout = (RelativeLayout) getActivity().findViewById(
                 R.id.activity_lock_layout);
         if (isNormalbg) {
             LockScreenActivity activity = (LockScreenActivity) mActivity;
-            activity.setAppInfoBackground(getBd(mPackageName));
+            activity.setAppInfoBackground(getBd(packageName));
         } else if (needChangeTheme()) {
 
             Context themeContext = getThemepkgConotext(mThemepkgName);
@@ -892,7 +892,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
                 mIvBottom.setBackgroundResource(
                         R.drawable.reset_pass_number);
-                changeBg(true);
+                changeBg(true,mPackageName);
             }
         } else {
             mPassLockView.setVisibility(View.VISIBLE);
@@ -902,7 +902,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_airsig_gesture);
-            changeBg(false);
+            changeBg(false,mPackageName);
         }
     }
 

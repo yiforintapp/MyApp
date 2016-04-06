@@ -507,7 +507,7 @@ public class GestureLockFragment extends LockFragment implements
                     Drawable bgDrawable = themeRes.getDrawable(layoutBgRes);
                     layout.setBackgroundDrawable(bgDrawable);
                 } else {
-                    changeBg(true);
+                    changeBg(true, mPackageName);
                 }
             }
         }
@@ -677,7 +677,7 @@ public class GestureLockFragment extends LockFragment implements
                 mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
                 mIvBottom.setBackgroundResource(
                         R.drawable.reset_pass_gesture);
-                changeBg(true);
+                changeBg(true, mPackageName);
             }
 
         } else {
@@ -687,7 +687,7 @@ public class GestureLockFragment extends LockFragment implements
             mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
             mIvBottom.setBackgroundResource(
                     R.drawable.reset_airsig_gesture);
-            changeBg(false);
+            changeBg(false, mPackageName);
         }
     }
 
@@ -714,13 +714,13 @@ public class GestureLockFragment extends LockFragment implements
 
     RelativeLayout bgLayout;
 
-    private void changeBg(boolean isNormalbg) {
+    public void changeBg(boolean isNormalbg, String packageName) {
 
         bgLayout = (RelativeLayout) getActivity().findViewById(
                 R.id.activity_lock_layout);
         if (isNormalbg) {
             LockScreenActivity activity = (LockScreenActivity) mActivity;
-            activity.setAppInfoBackground(getBd(mPackageName));
+            activity.setAppInfoBackground(getBd(packageName));
         } else if (needChangeTheme()) {
             LeoLog.d("testLockBg", "come in needChangeTheme");
             String pkgName = AppMasterApplication.getSelectedTheme();

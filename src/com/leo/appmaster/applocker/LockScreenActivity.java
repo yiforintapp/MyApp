@@ -886,6 +886,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                     Drawable bd = getBd(mLockedPackage);
                     setAppInfoBackground(bd);
+                } else {
+
+                    int type = mLockFragment.getUnlockType();
+                    if (type == AirSigSettingActivity.AIRSIG_UNLOCK) {
+                        if (mLockFragment instanceof GestureLockFragment) {
+                            LeoLog.d("testTheme", "go this GestureLockFragment");
+                            GestureLockFragment fragment = (GestureLockFragment) mLockFragment;
+                            fragment.changeBg(true, mLockedPackage);
+                        } else {
+                            LeoLog.d("testTheme", "go this PasswdLockFragment");
+                            PasswdLockFragment fragment = (PasswdLockFragment) mLockFragment;
+                            fragment.changeBg(true, mLockedPackage);
+                        }
+                    }
+
                 }
                 if (!mLockedPackage.equals(getPackageName())) {
                     createLoackAppInfoView(mLockedPackage);
