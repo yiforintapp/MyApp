@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
@@ -47,6 +44,9 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.WifiAdmin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationLockEditActivity extends BaseActivity implements
         OnClickListener, OnValueChangeListener, Formatter {
@@ -121,7 +121,7 @@ public class LocationLockEditActivity extends BaseActivity implements
 
         mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTitleBar.setToolbarTitle(R.string.lock_mode_location);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionMenuVisible(true);
         mTitleBar.setOptionClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.mode_done);

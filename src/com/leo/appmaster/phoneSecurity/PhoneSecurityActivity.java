@@ -182,7 +182,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private void initUI() {
         mCommonBar = (CommonToolbar) findViewById(R.id.phone_security_commonbar);
         mCommonBar.setToolbarTitle(R.string.phone_security_open);
-        mCommonBar.setToolbarColorResource(R.color.home_det_bg);
+        mCommonBar.setToolbarColorResource(R.color.ctc);
         mCommonBar.setOptionMenuVisible(true);
         mCommonBar.setOptionClickListener(new OnClickListener() {
             @Override

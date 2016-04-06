@@ -1,23 +1,21 @@
 package com.leo.appmaster.airsig;
 
 
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.airsig.airsigengmulti.ASEngine;
 import com.leo.appmaster.R;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
-import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.utils.LeoLog;
-
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class AirSigActivity extends BaseActivity implements View.OnClickListener {
@@ -59,7 +57,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.ctb_main);
         mTitleBar.setToolbarTitle(R.string.airsig_settings_activity_title);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionMenuVisible(false);
         mTitleBar.setNavigationClickListener(new View.OnClickListener() {
             @Override

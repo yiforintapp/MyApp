@@ -137,7 +137,7 @@
     <!-- 标准色 -->
 
     <!--3.6版本新的主色调 蓝灰色-->
-    <color name="ctc">#363e7c</color>
+    <color name="ctc">#323b75</color>
     <!--白色字-->
     <color name="c1">#ffffff</color>
     <!--50%白色字-->
@@ -198,9 +198,9 @@
     <color name="airsig_arcprogress_finished_start">#38BEEF</color>
     <color name="airsig_arcprogress_finished_end">#3BFFDA</color>
     <color name="airsig_arcprogress_text">#09455B</color>
-    <color name="home_det_bg">#323b76</color>
     <color name="home_det_result_num_txt">#fe8f00</color>
     <color name="cfl">#f0f3f7</color>
 
     <color name="uninstall_guide_bg">#99000000</color>
+    <color name="page_button_bg">#00c65d</color>
 </resources>

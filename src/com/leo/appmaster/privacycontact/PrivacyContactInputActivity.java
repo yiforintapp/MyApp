@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -46,6 +43,9 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrivacyContactInputActivity extends BaseActivity {
     private static final String TAG = "PrivacyContactInputActivity";
@@ -280,7 +280,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.title_bar);
         mTtileBar.setOptionMenuVisible(true);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         if (!Utilities.isEmpty(mFrom) &&
                 mFrom.equals(CallFilterConstants.FROM_BLACK_LIST)) {
             mTtileBar.setToolbarTitle(R.string.call_filter_dialog_add_black);

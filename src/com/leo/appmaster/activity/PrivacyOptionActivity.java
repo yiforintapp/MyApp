@@ -44,7 +44,7 @@ public class PrivacyOptionActivity extends BasePreferenceActivity implements OnP
 
         mToolbar = (CommonToolbar) findViewById(R.id.pri_opt_toobar);
         mToolbar.setToolbarTitle(R.string.home_menu_privacy);
-        mToolbar.setToolbarColorResource(R.color.cb);
+        mToolbar.setToolbarColorResource(R.color.ctc);
         mToolbar.setOptionMenuVisible(false);
     }
 

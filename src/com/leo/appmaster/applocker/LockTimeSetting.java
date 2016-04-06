@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import java.util.Arrays;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,6 +24,8 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.LeoLog;
+
+import java.util.Arrays;
 
 public class LockTimeSetting extends BasePreferenceActivity implements OnPreferenceChangeListener,
         OnPreferenceClickListener {
@@ -51,7 +51,7 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
     private void initUI() {
         mTitle = (CommonToolbar) findViewById(R.id.layout_lock_time_title_bar);
         mTitle.setToolbarTitle(R.string.lock_help_lock_setting_button);
-        mTitle.setToolbarColorResource(R.color.cb);
+        mTitle.setToolbarColorResource(R.color.ctc);
         mTitle.setOptionMenuVisible(false);
 //        mTitle.setTitle(R.string.lock_help_lock_setting_button);
 //        mTitle.openBackView();

@@ -1,12 +1,6 @@
 
 package com.leo.appmaster.callfilter;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,6 +41,12 @@ import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class StrangeCallActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private static final String TAG = "AddFromCallLogListActivity";
@@ -136,7 +136,7 @@ public class StrangeCallActivity extends BaseActivity implements OnItemClickList
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.add_privacy_call_log_title_bar);
         mTitleBar.setToolbarTitle(R.string.call_filter_black_list_unknow_num);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mRlBottomView = (RelativeLayout) findViewById(R.id.rl_bottomview);
         mAddAll = (ImageView) findViewById(R.id.iv_add_all_black);
         mAddAll.setTag(false);

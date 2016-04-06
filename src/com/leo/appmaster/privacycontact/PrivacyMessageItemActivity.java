@@ -1,21 +1,13 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -48,6 +40,12 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 public class PrivacyMessageItemActivity extends BaseActivity implements OnClickListener {
     private ListView mContactCallLog;
     private CallLogAdapter mAdapter;
@@ -68,7 +66,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_message_item_list);
         mTtileBar = (CommonToolbar) findViewById(R.id.message_item_layout_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mMessages = new ArrayList<MessageBean>();
         mShowDates = new ArrayList<String>();
         mContactCallLog = (ListView) findViewById(R.id.contactLV);
