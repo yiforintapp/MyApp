@@ -87,6 +87,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private TextView mTvIgnoreNew;
     private RelativeLayout mRlWholeShowContent;
 
+    private final int REQUEST_CODE_1 = 10;
+
     public static final int REQUEST_CODE_OPTION = 1001;
 
     private Toast mToast;
@@ -234,11 +236,18 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void goNewHideImageActivity() {
-        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
         Intent intent = new Intent(ImageHideMainActivity.this, NewHideImageActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_1);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_1 || requestCode == REQUEST_CODE_OPTION) {
+            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+        }
+    }
 
     private void initUI() {
         mRlWholeShowContent = (RelativeLayout) findViewById(R.id.rl_whole_show_content);
@@ -406,7 +415,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);
-        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+//        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
     }
 
 
