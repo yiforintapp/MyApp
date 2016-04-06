@@ -185,16 +185,18 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void newLoadDone() {
-        LeoLog.i("newpic","total : " + PrivacyHelper.getImagePrivacy().getTotalCount() + "        new : " +
+        LeoLog.i("newpic", "total : " + PrivacyHelper.getImagePrivacy().getTotalCount() + "        new : " +
                 PrivacyHelper.getImagePrivacy().getNewCount());
         if (mHasShowNew) {
             mIncludeLayoutNewPic.setVisibility(View.GONE);
         }
         if (mNewPicAdapter != null) {
-            if (mNewAddPic == null || mNewAddPic.size() == 0) {
+            if (mNewAddPic == null || mNewAddPic.size() == 0 || PrivacyHelper.getImagePrivacy().getTotalCount() == PrivacyHelper.getImagePrivacy().getNewCount()) {
                 mHasShowNew = true;
                 mIncludeLayoutNewPic.setVisibility(View.GONE);
-            } else if (!mHasShowNew && PrivacyHelper.getImagePrivacy().getTotalCount() != PrivacyHelper.getImagePrivacy().getNewCount()){
+            } else if (!mHasShowNew){
+                LeoLog.i("newpic"," in total : " + PrivacyHelper.getImagePrivacy().getTotalCount() + "        new : " +
+                        PrivacyHelper.getImagePrivacy().getNewCount());
                 mHasShowNew = true;
                 mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
                 mNewPicAdapter.setDataList(mNewAddPic);
@@ -281,7 +283,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
-                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
@@ -376,7 +378,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         newLoadDone();
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        pdm.haveCheckedPic();
+//        pdm.haveCheckedPic();
     }
 
     @Override
@@ -407,7 +409,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);
-        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
     }
 
 

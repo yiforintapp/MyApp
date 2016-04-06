@@ -171,7 +171,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         });
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        pdm.haveCheckedVid();
+//        pdm.haveCheckedVid();
     }
 
 
@@ -180,10 +180,10 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             mIncludeLayoutNewVid.setVisibility(View.GONE);
         }
         if (mNewVidAdapter != null) {
-            if (mNewAddVid == null || mNewAddVid.size() == 0) {
+            if (mNewAddVid == null || mNewAddVid.size() == 0 || PrivacyHelper.getVideoPrivacy().getTotalCount() == PrivacyHelper.getVideoPrivacy().getNewCount()) {
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
-            } else if (!mHasShowNew && PrivacyHelper.getVideoPrivacy().getTotalCount() != PrivacyHelper.getVideoPrivacy().getNewCount()){
+            } else if (!mHasShowNew){
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
                 mNewVidAdapter.setDataList(mNewAddVid);
