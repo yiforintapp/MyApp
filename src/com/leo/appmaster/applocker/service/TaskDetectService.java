@@ -127,8 +127,8 @@ public class TaskDetectService extends Service {
             @Override
             public void run() {
                 // 延时执行，防止进程启动时加载太多数据
-//                mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, AppMasterConfig.TRAFFIC_INTERNAL,
-//                        TimeUnit.MILLISECONDS);
+                mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, AppMasterConfig.TRAFFIC_INTERNAL,
+                        TimeUnit.MILLISECONDS);
             }
         }, 10 * 1000);
 
@@ -154,6 +154,7 @@ public class TaskDetectService extends Service {
 
     /**
      * 消忽略屏保页
+     *
      * @param ignore
      */
     public void ignoreBatteryPage(boolean ignore) {
@@ -573,7 +574,7 @@ public class TaskDetectService extends Service {
                                 String pkgList[] = pi.pkgList;
                                 if (pkgList != null && pkgList.length > 0) {
                                     pkgName = pkgList[0];
-                                    if (SYSTEMUI_PKG.equals(pkgName)  || Constants.ISWIPE_PACKAGE.equals(pkgName)  || Constants.PKG_BAIDU_SERVICE.equals(pkgName) || Constants.PL_PKG_NAME.equals(pkgName)) {
+                                    if (SYSTEMUI_PKG.equals(pkgName) || Constants.ISWIPE_PACKAGE.equals(pkgName) || Constants.PKG_BAIDU_SERVICE.equals(pkgName) || Constants.PL_PKG_NAME.equals(pkgName)) {
                                         continue;
                                     }
                                     if (Utilities.isEmpty(activityName)) {
