@@ -202,38 +202,38 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         }
 
         /* 开启高级保护后提示 */
-        openAdvanceProtectDialogHandler();
+//        openAdvanceProtectDialogHandler();
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "enter");
     }
 
-    private void openAdvanceProtectDialogHandler() {
-        boolean isTip = AppMasterPreference.getInstance(this)
-                .getAdvanceProtectOpenSuccessDialogTip();
-        if (isAdminActive() && isTip) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
-            openAdvanceProtectDialogTip();
-        }
-    }
+//    private void openAdvanceProtectDialogHandler() {
+//        boolean isTip = AppMasterPreference.getInstance(this)
+//                .getAdvanceProtectOpenSuccessDialogTip();
+//        if (isAdminActive() && isTip) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
+//            openAdvanceProtectDialogTip();
+//        }
+//    }
 
-    private void openAdvanceProtectDialogTip() {
-        if (mMessageDialog == null) {
-            mMessageDialog = new LEOAnimationDialog(this);
-            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    if (mMessageDialog != null) {
-                        mMessageDialog = null;
-                    }
-                    AppMasterPreference.getInstance(LockOptionActivity.this)
-                            .setAdvanceProtectOpenSuccessDialogTip(false);
-                }
-            });
-        }
-        String content = getString(R.string.prot_open_suc_tip_cnt);
-        mMessageDialog.setContent(content);
-        mMessageDialog.show();
-    }
+//    private void openAdvanceProtectDialogTip() {
+//        if (mMessageDialog == null) {
+//            mMessageDialog = new LEOAnimationDialog(this);
+//            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialog) {
+//                    if (mMessageDialog != null) {
+//                        mMessageDialog = null;
+//                    }
+//                    AppMasterPreference.getInstance(LockOptionActivity.this)
+//                            .setAdvanceProtectOpenSuccessDialogTip(false);
+//                }
+//            });
+//        }
+//        String content = getString(R.string.prot_open_suc_tip_cnt);
+//        mMessageDialog.setContent(content);
+//        mMessageDialog.show();
+//    }
 
     private boolean haveProtect() {
         return AppMasterPreference.getInstance(this).hasPswdProtect();
