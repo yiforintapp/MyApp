@@ -2,7 +2,6 @@ package com.leo.appmaster.phoneSecurity;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -14,31 +13,23 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.db.LeoPreference;
-import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
-import com.leo.appmaster.intruderprotection.ShowToast;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
-import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -46,7 +37,6 @@ import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.BuildProperties;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 
@@ -215,12 +205,14 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             @Override
             public void onClick(View v) {
                 if (mHelpRt.getVisibility() == View.VISIBLE) {
+                    mSecurPhNumCv.setVisibility(View.VISIBLE);
                     mHelpRt.setVisibility(View.GONE);
                     mHelpRt.startAnimation(AnimationUtils
                             .loadAnimation(PhoneSecurityActivity.this, R.anim.lock_mode_guide_out));
                 } else {
                     unuseSecurHandler();
                     mHelpRt.setVisibility(View.VISIBLE);
+                    mSecurPhNumCv.setVisibility(View.GONE);
                     mHelpRt.startAnimation(AnimationUtils
                             .loadAnimation(PhoneSecurityActivity.this, R.anim.lock_mode_guide_in));
                 }
@@ -354,6 +346,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             case R.id.help_bt:
                 if (mHelpRt.getVisibility() == View.VISIBLE) {
                     mHelpRt.setVisibility(View.GONE);
+                    mSecurPhNumCv.setVisibility(View.VISIBLE);
                     mHelpRt.startAnimation(AnimationUtils
                             .loadAnimation(PhoneSecurityActivity.this, R.anim.lock_mode_guide_out));
                     Animation animation =
@@ -363,6 +356,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 } else {
                     unuseSecurHandler();
                     mHelpRt.setVisibility(View.VISIBLE);
+                    mSecurPhNumCv.setVisibility(View.GONE);
                     mHelpRt.startAnimation(AnimationUtils
                             .loadAnimation(PhoneSecurityActivity.this, R.anim.lock_mode_guide_in));
                 }
