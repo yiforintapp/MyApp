@@ -183,7 +183,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             if (mNewAddVid == null || mNewAddVid.size() == 0) {
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
-            } else if (!mHasShowNew){
+            } else if (!mHasShowNew && PrivacyHelper.getVideoPrivacy().getTotalCount() != mNewAddVid.size()){
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
                 mNewVidAdapter.setDataList(mNewAddVid);
