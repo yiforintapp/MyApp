@@ -206,7 +206,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
         @Override
         public void onAnimationEnd(Animator animation) {
-            if (mLastPrivacyConut > 0) {
+            if (mLastPrivacyConut > 0 && mPrivacyConut<=0) {
                 LeoLog.d("refreshDetectStatus","privacy app conver anim!");
                 dangerShieldConverAnim();
             }
