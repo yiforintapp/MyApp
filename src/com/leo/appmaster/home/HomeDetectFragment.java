@@ -775,7 +775,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(picAnimatorSet).after(280).after(appAnimatorSet);
         animatorSet.play(vidAnimatorSet).after(280).after(picAnimatorSet);
-        if (!totalDangerous) {
+
+        LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        boolean lostDisabled = !lsm.isUsePhoneSecurity();
+        boolean usageDisabled = !lm.isUsageStateEnable();
+        if (!totalDangerous && (lostDisabled || usageDisabled)) {
             animatorSet.play(tipsAnim).after(1000).after(vidAnimatorSet);
         }
 
