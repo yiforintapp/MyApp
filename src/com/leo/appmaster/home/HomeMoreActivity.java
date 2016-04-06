@@ -86,6 +86,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             mVLine4.setVisibility(View.GONE);
         }
         boolean hide2 = AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact();
+        LeoLog.i("need hide", "when use ,hide2  = " + hide2);
         if (hide2) {
             findViewById(R.id.rl_backup_content).setVisibility(View.GONE);
             findViewById(R.id.rl_uninstall_content).setVisibility(View.GONE);
