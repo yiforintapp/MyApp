@@ -628,6 +628,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             if (!isOpPro) {
                 mIsOpenBtResum = true;
                 startDeviceItent();
+            } else {
+                startSecurInstrDetailActivity();
             }
         }
     }

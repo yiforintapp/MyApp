@@ -67,7 +67,6 @@ import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.AirSigSettingActivity;
-import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -1009,8 +1008,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         /* SDK: mark user what to unlock which app */
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "access_locked_app",
-                    mLockedPackage);
+            if (mLockedPackage != null) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "access_locked_app",
+                        mLockedPackage);
+            }
         }
 
         LeoLog.d("LockScreenActivity", "mToPackage = " + mLockedPackage);
