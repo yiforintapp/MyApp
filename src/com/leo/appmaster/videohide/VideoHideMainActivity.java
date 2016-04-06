@@ -520,18 +520,15 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             viewHolder.name.setText(videos.get(position).getName());
             viewHolder.amount.setText(videos.get(position).getCount()+"");
 
-            String uri = null;
-            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
-                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
-            } else {
-                uri = ImageDownloader.Scheme.FILE.wrap(path);
-            }
-            mImageLoader.displayImage(uri, viewHolder.img, mOptions);
+//            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+//                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+//            } else {
+//                uri = ImageDownloader.Scheme.FILE.wrap(path);
+//            }
+            String filePath = "voidefile://" + path;
+            mImageLoader.displayImage(filePath, viewHolder.img, mOptions);
             return convertView;
 
-
-//
-//
 //
 //            ViewHolder viewHolder = null;
 //            if (convertView == null) {
