@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,9 +11,13 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.videohide.NewHideVidActivity;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.appmaster.videohide.VideoItemBean;
 
 /**
@@ -80,6 +85,23 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
     @Override
     public int getPrivacyType() {
         return PrivacyHelper.PRIVACY_HIDE_VID;
+    }
+
+    @Override
+    public void jumpAction(Activity activity) {
+        Intent imageIntent = null;
+        int status = getStatus();
+        switch (status) {
+            case STATUS_NEW_ADD:
+            case STATUS_FOUND:
+                imageIntent = new Intent(activity, NewHideVidActivity.class);
+                break;
+            case STATUS_TOADD:
+            case STATUS_PROCEED:
+                imageIntent = new Intent(activity, VideoHideMainActivity.class);
+                break;
+        }
+        activity.startActivity(imageIntent);
     }
 
     @Override

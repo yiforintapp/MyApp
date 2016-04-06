@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -50,6 +47,9 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddFromContactListActivity extends BaseActivity implements OnItemClickListener {
     public static final String TAG = "AddFromContactListActivity";
@@ -159,7 +159,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         });
         mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mTtileBar.setOptionMenuVisible(true);
         mTtileBar.setOptionImageResource(R.drawable.mode_done);
         mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_from_contact);

@@ -1,6 +1,5 @@
 package com.leo.appmaster.phoneSecurity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -71,7 +70,7 @@ public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnC
         mOpenBt.setOnClickListener(this);
         mCommonBar = (CommonToolbar) findViewById(R.id.phone_security_guide_commonbar);
         mCommonBar.setToolbarTitle(R.string.home_tab_lost);
-        mCommonBar.setToolbarColorResource(R.color.cb);
+        mCommonBar.setToolbarColorResource(R.color.ctc);
         mCommonBar.setOptionMenuVisible(false);
         mSecurityOpenNumberText = (TextView) findViewById(R.id.security_guide_open_number_TV);
         int useNumber = ((LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY)).getUsePhoneSecurityCount();

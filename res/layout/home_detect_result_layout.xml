@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_app"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/strip_home_ok1"
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
@@ -43,8 +43,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg1"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/cb2"
                     android:textSize="@dimen/f6"/>
 
@@ -63,7 +63,7 @@
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_app"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/strip_home_nook1"
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
@@ -99,8 +99,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg2"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/home_det_result_num_txt"
                     android:textSize="@dimen/f6"
                     />
@@ -130,9 +130,8 @@
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_img"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/lt_det_saft_result_app"
-        android:layout_marginTop="60dp"
         android:background="@drawable/strip_home_ok2"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
@@ -166,8 +165,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg1"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/cb2"
                     android:textSize="@dimen/f6"/>
 
@@ -185,9 +184,8 @@
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_img"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/lt_det_saft_result_app"
-        android:layout_marginTop="60dp"
         android:background="@drawable/strip_home_nook2"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
@@ -222,8 +220,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg2"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/home_det_result_num_txt"
                     android:textSize="@dimen/f6"/>
 
@@ -251,9 +249,8 @@
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_video"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/lt_det_saft_result_img"
-        android:layout_marginTop="120dp"
         android:background="@drawable/strip_home_ok3"
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
@@ -288,8 +285,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg1"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/cb2"
                     android:textSize="@dimen/f6"/>
 
@@ -307,9 +304,8 @@
     <RelativeLayout
         android:id="@+id/lt_det_danger_result_video"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/lt_det_saft_result_img"
-        android:layout_marginTop="120dp"
         android:background="@drawable/strip_home_nook3"
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
         android:paddingRight="@dimen/home_det_result_tv1_padd_right"
@@ -344,8 +340,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg2"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/home_det_result_num_txt"
                     android:textSize="@dimen/f6"/>
 
@@ -371,4 +367,4 @@
         </RelativeLayout>
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

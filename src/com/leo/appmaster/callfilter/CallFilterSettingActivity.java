@@ -59,7 +59,7 @@ public class CallFilterSettingActivity extends BaseActivity implements View.OnCl
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.wifi_setting_title_bar);
         mTitleBar.setToolbarTitle(R.string.call_filter_setting_title);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionMenuVisible(false);
 
         rpBtn = (RippleView) findViewById(R.id.content_item_filter);

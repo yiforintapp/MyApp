@@ -1,12 +1,6 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
@@ -31,6 +25,12 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class PrivacyCallLogListActivity extends BaseActivity implements OnClickListener {
     private ListView mContactCallLog;
@@ -60,7 +60,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
         setContentView(R.layout.activity_privacy_call_log_item);
         mContactCallLogs = new ArrayList<ContactCallLog>();
         mComTitle = (CommonToolbar) findViewById(R.id.privacy_call_log_item_title_bar);
-        mComTitle.setToolbarColorResource(R.color.cb);
+        mComTitle.setToolbarColorResource(R.color.ctc);
         mComTitle.setToolbarTitle(R.string.privacy_contact_calllog);
         mComTitle.setOptionMenuVisible(false);
         mContactImage = (CircleImageView) findViewById(R.id.contactIV);

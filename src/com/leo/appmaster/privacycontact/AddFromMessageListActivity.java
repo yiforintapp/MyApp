@@ -1,13 +1,6 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -52,6 +45,13 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
     private static final String TAG = "AddFromMessageListActivity";
@@ -154,7 +154,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         });
         mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mTtileBar.setOptionImageResource(R.drawable.mode_done);
         mTtileBar.setOptionMenuVisible(true);
         mTtileBar.setOptionClickListener(new OnClickListener() {

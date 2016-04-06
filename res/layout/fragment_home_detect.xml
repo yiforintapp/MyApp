@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/home_det_bg">
+                android:background="@color/ctc">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -19,6 +19,7 @@
         <include
             android:id="@+id/det_result_ly"
             layout="@layout/home_detect_result_layout"
+            android:layout_marginTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"/>
@@ -28,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:background="@drawable/bg_home_shield"/>
         <!--安全状态-->
         <ImageView
@@ -35,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_blue_left"
             android:visibility="invisible"/>
 
@@ -43,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_blue_right"
             android:visibility="invisible"/>
 
@@ -51,6 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_blue_top"
             android:visibility="invisible"/>
 
@@ -60,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/shield_good"
+            android:clickable="true"
             android:visibility="invisible"/>
         <!--危险状态-->
         <ImageView
@@ -67,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_red_left"
             android:visibility="invisible"/>
 
@@ -75,6 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_red_right"
             android:visibility="invisible"/>
 
@@ -83,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:src="@drawable/shield_red_top"
             android:visibility="invisible"/>
 
@@ -92,6 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:src="@drawable/shield_bad"
+            android:clickable="true"
             android:visibility="invisible"/>
 
     </RelativeLayout>

@@ -35,8 +35,8 @@
             android:gravity="center"
             android:listSelector="@android:color/transparent"
             android:numColumns="3"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:columnWidth="109dp"
+            android:stretchMode="columnWidth"
             android:scrollbarStyle="outsideOverlay" />
 
         <include

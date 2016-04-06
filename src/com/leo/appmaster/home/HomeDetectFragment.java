@@ -91,7 +91,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private HomeDetectPresenter mDetectPresenter;
 
     private int mScreenWidth;
-    private Banner mBanner;
     private Intent mBannerIntent;
     private ImageView mShieldDangerLeftIv;
     private ImageView mShieldDangerRightIv;
@@ -144,7 +143,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
-
         // 刷新状态
         refreshDetectStatus();
         // 初始化中间的banner
@@ -180,10 +178,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDangerDetTip.setVisibility(View.INVISIBLE);
         }
 
-//        LeoLog.d("refreshDetectStatus","mLastPrivacyConut:"+mLastPrivacyConut);
-//        LeoLog.d("refreshDetectStatus","mLastPrivacyApp:"+mLastPrivacyApp);
-//        LeoLog.d("refreshDetectStatus","mLastPrivacyPic:"+mLastPrivacyPic);
-//        LeoLog.d("refreshDetectStatus","mLastPrivacyVideo:"+mLastPrivacyVideo);
         if (mLastPrivacyApp && !mPrivacyApp) {
             LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
             detectResultConversionAnim(mAppSafeContent, mAppDangerContent,
@@ -270,7 +264,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 }
                 if (sShowLost) {
                     mBannerTv.setText(R.string.hd_lost_permisson_tip);
-                    mBannerIntent = new Intent(mContext, PhoneSecurityActivity.class);
+                    mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                     mCurrentType = TYPE_LOST;
                 } else {
                     mBannerTv.setText(R.string.hd_lock_permisson_tip);
@@ -340,7 +334,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
-            mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftAppNumTv.setText(privacy.getPrivacyCountText());
             }
@@ -378,7 +372,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetSaftImgTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
-            mDetSaftImgNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            mDetSaftImgNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftImgNumTv.setText(privacy.getPrivacyCountText());
             }
@@ -414,7 +408,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetSaftVideoTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
-            mDetSaftVideoNumTv.setVisibility(numVisible ? View.VISIBLE : View.INVISIBLE);
+            mDetSaftVideoNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftVideoNumTv.setText(privacy.getPrivacyCountText());
             }
@@ -423,7 +417,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     }
 
     private void initUI(View view) {
-        FrameLayout resultRootView = (FrameLayout) view.findViewById(R.id.det_result_ly);
+        RelativeLayout resultRootView = (RelativeLayout) view.findViewById(R.id.det_result_ly);
 
         mSfatResultAppLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_app);
         mSfatResultImgLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_saft_result_img);
@@ -515,6 +509,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        Privacy privacy = null;
         switch (v.getId()) {
             case R.id.lt_det_saft_result_app:
                 //应用扫描安全结果
@@ -523,12 +518,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_app:
                 //应用扫描危险结果
                 //mDetectPresenter.appDangerHandler();
-                Intent appIntent = new Intent(mContext, AppLockListActivity.class);
-                Privacy privacy = PrivacyHelper.getAppPrivacy();
-                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
-                    appIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
-                }
-                mContext.startActivity(appIntent);
+                PrivacyHelper.getAppPrivacy().jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
                 break;
             case R.id.lt_det_saft_result_img:
@@ -538,14 +528,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_img:
                 //图片扫描危险结果
                 //mDetectPresenter.imageDangerHandler();
-                Intent imageIntent = null;
-                privacy = PrivacyHelper.getImagePrivacy();
-                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
-                    imageIntent = new Intent(mContext, NewHideImageActivity.class);
-                } else {
-                    imageIntent = new Intent(mContext, ImageHideMainActivity.class);
-                }
-                mContext.startActivity(imageIntent);
+                PrivacyHelper.getImagePrivacy().jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
                 break;
             case R.id.lt_det_saft_result_video:
@@ -555,14 +538,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_video:
                 //视频扫描危险结果
                 //mDetectPresenter.videoDangerHandler();
-                Intent intent = null;
-                privacy = PrivacyHelper.getVideoPrivacy();
-                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
-                    intent = new Intent(mContext, VideoHideMainActivity.class);
-                } else {
-                    intent = new Intent(mContext, NewHideVidActivity.class);
-                }
-                mContext.startActivity(intent);
+                PrivacyHelper.getVideoPrivacy().jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                 break;
             case R.id.lt_home_det_tip:
@@ -649,10 +625,17 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mShieldRightIv.setVisibility(View.VISIBLE);
             mShieldCenterIv.setVisibility(View.VISIBLE);
         }
-        mShieldDangerTopIv.setVisibility(View.INVISIBLE);
-        mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
-        mShieldDangerRightIv.setVisibility(View.INVISIBLE);
-        mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
+        if (last && !current) {
+            mShieldDangerTopIv.setVisibility(View.VISIBLE);
+            mShieldDangerLeftIv.setVisibility(View.VISIBLE);
+            mShieldDangerRightIv.setVisibility(View.VISIBLE);
+            mShieldDangerCenterIv.setVisibility(View.VISIBLE);
+        } else {
+            mShieldDangerTopIv.setVisibility(View.INVISIBLE);
+            mShieldDangerLeftIv.setVisibility(View.INVISIBLE);
+            mShieldDangerRightIv.setVisibility(View.INVISIBLE);
+            mShieldDangerCenterIv.setVisibility(View.INVISIBLE);
+        }
     }
 
     //首次进入主页盾牌动画
@@ -821,7 +804,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         return animatorSet;
     }
 
-    //扫描结果处理后切换动画
+    /**
+     * 扫描结果处理后切换动画
+     */
     public void detectResultConversionAnim(final View current,final View top, final View showView,
                                            final View missView, Animator.AnimatorListener listener) {
 
@@ -848,8 +833,19 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         alphaAnim.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                showView.setBackgroundDrawable(
-                        getResources().getDrawable(R.drawable.strip_home_ok1));
+                if(mAppSafeContent == current){
+                    showView.setBackgroundDrawable(
+                            getResources().getDrawable(R.drawable.strip_home_ok1));
+                }else if(mPicSafeContent == current){
+                    showView.setBackgroundDrawable(
+                            getResources().getDrawable(R.drawable.strip_home_ok2));
+                }else if(mVidSafeContent == current){
+                    showView.setBackgroundDrawable(
+                            getResources().getDrawable(R.drawable.strip_home_ok3));
+                }else{
+                    showView.setBackgroundDrawable(
+                            getResources().getDrawable(R.drawable.strip_home_ok1));
+                }
             }
 
             @Override
@@ -881,15 +877,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 totalAnimatorSet.start();
 
             }
-        }, 200);
+        }, 500);
     }
 
     //红蓝盾牌的替换动画
 
     public void dangerShieldConverAnim() {
-//        setDangerShieldView(true, true);
-//        setSfateShieldView(true, true);
-
+        setDangerShieldView(true, false);
         //危险状态
         ObjectAnimator dangerLeftScalX = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleX", 1.0f, 1.1f);
         ObjectAnimator dangerLeftScalY = ObjectAnimator.ofFloat(mShieldDangerLeftIv, "scaleY", 1.0f, 1.1f);
@@ -958,7 +952,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                setDangerShieldView(false, false);
+
                 mShieldLeftIv.setVisibility(View.VISIBLE);
                 mShieldRightIv.setVisibility(View.VISIBLE);
                 mShieldTopIv.setVisibility(View.VISIBLE);
@@ -969,6 +963,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                setDangerShieldView(false, false);
                 getAlphaAnim(mShieldDangerTopIv);
                 getAlphaAnim(mShieldDangerCenterIv);
                 getAlphaAnim(mShieldDangerLeftIv);
@@ -984,17 +979,5 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         alphaAnim.setDuration(50);
 
         alphaAnim.start();
-    }
-
-    private class Banner {
-        private Intent intent;
-
-        public Banner(Intent intent) {
-            this.intent = intent;
-        }
-
-        public void click() {
-            mContext.startActivity(intent);
-        }
     }
 }

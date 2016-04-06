@@ -193,6 +193,8 @@ public abstract class Privacy<T> {
     public abstract int getPrivacyLimit();
     public abstract int getPrivacyType();
 
+    public abstract void jumpAction(Activity activity);
+
     public String getTag() {
         return "Privacy";
     }

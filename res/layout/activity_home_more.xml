@@ -531,6 +531,207 @@
                 android:layout_marginRight="16dp"
                 android:background="#cbcbcb" />
 
+
+
+
+
+
+
+
+            <RelativeLayout
+                android:id="@+id/rl_backup_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_backup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/rl_content_tip6"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_backup_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/quick_helper_flow_manage"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_uninstall_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_uninstall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/rl_content_tip6"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_uninstall_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/quick_helper_flow_manage"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_privacycontact_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/rv_home_more_privacycontact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="68dp"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp"
+                    app:rippleAlpha="1"
+                    app:rippleColor="@color/home_tab_pressed"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="false">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toLeftOf="@+id/rl_content_tip6"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_privacycontact_entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="@string/quick_helper_flow_manage"
+                            android:textColor="@color/c2"
+                            android:textSize="15dp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
+
+                </com.leo.appmaster.ui.RippleView>
+            </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </LinearLayout>
 
         <!--<TextView

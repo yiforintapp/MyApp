@@ -8,9 +8,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
+import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.battery.BatterySettingActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
@@ -24,6 +27,7 @@ import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
@@ -45,6 +49,10 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private RippleView mRvWifiEntry;
     private RippleView mRvFlowEntry;
     private RippleView mRvBatteryEntry;
+
+    private RippleView mRvPrivacyContactEntry;
+    private RippleView mRvAppBackupEntry;
+    private RippleView mRvAppUninstallEntry;
 
     private RelativeLayout mRlCallFilter;
     private RelativeLayout mRlWifi;
@@ -76,6 +84,13 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             mVLine2.setVisibility(View.GONE);
             mVLine3.setVisibility(View.GONE);
             mVLine4.setVisibility(View.GONE);
+        }
+        boolean hide2 = AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact();
+        LeoLog.i("need hide", "when use ,hide2  = " + hide2);
+        if (hide2) {
+            findViewById(R.id.rl_backup_content).setVisibility(View.GONE);
+            findViewById(R.id.rl_uninstall_content).setVisibility(View.GONE);
+            findViewById(R.id.rl_privacycontact_content).setVisibility(View.GONE);
         }
     }
 
@@ -119,6 +134,17 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         mVLine3 = findViewById(R.id.v_line3);
         mVLine4 = findViewById(R.id.v_line4);
 
+
+        mRvPrivacyContactEntry = (RippleView) findViewById(R.id.rv_home_more_privacycontact);
+        mRvPrivacyContactEntry.setOnClickListener(this);
+
+        mRvAppBackupEntry = (RippleView) findViewById(R.id.rv_home_more_backup);
+        mRvAppBackupEntry.setOnClickListener(this);
+
+        mRvAppUninstallEntry = (RippleView) findViewById(R.id.rv_home_more_uninstall);
+        mRvAppUninstallEntry.setOnClickListener(this);
+
+
         mRvIntruderEntry = (RippleView) findViewById(R.id.rv_home_more_intruder);
         mRvIntruderEntry.setOnClickListener(this);
         mRvFindLostEntry = (RippleView) findViewById(R.id.rv_home_more_findlost);
@@ -146,6 +172,15 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.rv_home_more_privacycontact:
+                goToPrivacyContact();
+                break;
+            case R.id.rv_home_more_backup:
+                goToAppBackup();
+                break;
+            case R.id.rv_home_more_uninstall:
+                goToAppUninstall();
+                break;
             case R.id.rv_home_more_intruder:
                 goToIntruderPretection();
                 break;
@@ -173,6 +208,21 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             default:
                 break;
         }
+    }
+
+    private void goToAppUninstall() {
+        Intent dlIntent = new Intent(this, UninstallActivity.class);
+        startActivity(dlIntent);
+    }
+
+    private void goToAppBackup() {
+        Intent dlIntent = new Intent(this, BackUpActivity.class);
+        startActivity(dlIntent);
+    }
+
+    private void goToPrivacyContact() {
+        Intent dlIntent = new Intent(this, PrivacyContactActivity.class);
+        startActivity(dlIntent);
     }
 
     private void goToBatteryManagement() {

@@ -151,7 +151,7 @@ public class AppLoadEngine extends BroadcastReceiver {
     public final static String SAVE_LOCK_LIST = "save_lock_list";
     public final static String SAVE_LOCK_LIST_NUM = "save_lock_list_num";
     public static String[] sLocalLockArray;
-//            = new String[]{
+    //            = new String[]{
 //            "com.whatsapp", "com.android.mms",
 //            "com.sonyericsson.conversations", "com.facebook.katana",
 //            "com.android.gallery3d", "com.sec.android.gallery3d",
@@ -196,44 +196,44 @@ public class AppLoadEngine extends BroadcastReceiver {
 //    };
 
     public final static String[] sLocalRecommendedAppAndNum = new String[]{
-            "com.whatsapp","17500000",
-            "com.android.gallery3d","10900000",
-            "com.android.settings","10700000",
-            "com.android.mms","9600000",
-            "com.facebook.katana","9200000",
-            "com.android.vending","8400000",
-            "com.facebook.orca","8200000",
-            "com.mxtech.videoplayer.ad","7400000",
-            "com.sec.android.gallery3d","7000000",
-            "com.android.contacts","6900000",
-            "com.mediatek.filemanager","6800000",
-            "com.google.android.gm","5500000",
-            "com.google.android.youtube","5100000",
-            "com.mediatek.videoplayer","4700000",
-            "com.android.browser","4600000",
-            "com.android.chrome","4400000",
-            "com.android.providers.downloads.ui","4200000",
-            "com.sec.android.app.myfiles","4200000",
-            "com.android.email","4100000",
-            "com.android.music","4000000",
-            "com.google.android.gms","3800000",
-            "com.google.android.talk","3500000",
-            "com.android.dialer","3500000",
-            "com.UCMobile.intl","3400000",
-            "com.google.android.apps.maps","3400000",
-            "com.lenovo.anyshare.gps","3400000",
-            "com.android.calendar","3300000",
-            "com.android.soundrecorder","3300000",
-            "com.google.android.music","3200000",
-            "com.google.android.apps.plus","3200000",
-            "com.bbm","2800000",
-            "com.android.calculator2","2800000",
-            "com.instagram.android","2800000",
-            "com.google.android.googlequicksearchbox","2600000",
-            "com.google.android.apps.docs","2600000",
-            "com.bsb.hike","2200000",
-            "com.uc.browser.en","2300000",
-            "com.imo.android.imoim","2300000"
+            "com.whatsapp", "17500000",
+            "com.android.gallery3d", "10900000",
+            "com.android.settings", "10700000",
+            "com.android.mms", "9600000",
+            "com.facebook.katana", "9200000",
+            "com.android.vending", "8400000",
+            "com.facebook.orca", "8200000",
+            "com.mxtech.videoplayer.ad", "7400000",
+            "com.sec.android.gallery3d", "7000000",
+            "com.android.contacts", "6900000",
+            "com.mediatek.filemanager", "6800000",
+            "com.google.android.gm", "5500000",
+            "com.google.android.youtube", "5100000",
+            "com.mediatek.videoplayer", "4700000",
+            "com.android.browser", "4600000",
+            "com.android.chrome", "4400000",
+            "com.android.providers.downloads.ui", "4200000",
+            "com.sec.android.app.myfiles", "4200000",
+            "com.android.email", "4100000",
+            "com.android.music", "4000000",
+            "com.google.android.gms", "3800000",
+            "com.google.android.talk", "3500000",
+            "com.android.dialer", "3500000",
+            "com.UCMobile.intl", "3400000",
+            "com.google.android.apps.maps", "3400000",
+            "com.lenovo.anyshare.gps", "3400000",
+            "com.android.calendar", "3300000",
+            "com.android.soundrecorder", "3300000",
+            "com.google.android.music", "3200000",
+            "com.google.android.apps.plus", "3200000",
+            "com.bbm", "2800000",
+            "com.android.calculator2", "2800000",
+            "com.instagram.android", "2800000",
+            "com.google.android.googlequicksearchbox", "2600000",
+            "com.google.android.apps.docs", "2600000",
+            "com.bsb.hike", "2200000",
+            "com.uc.browser.en", "2300000",
+            "com.imo.android.imoim", "2300000"
     };
 
     public static final String PG_PACKAGENAME = "com.android.vending";
@@ -767,7 +767,13 @@ public class AppLoadEngine extends BroadcastReceiver {
                 // later, we will update the package at this time
             } else if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
 
-                showNewAddAppNoti(packageName);
+
+                AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+                boolean isShowBackup = pref.getIsNeedCutBackupUninstallAndPrivacyContact();
+                if (!isShowBackup) {
+                    showNewAddAppNoti(packageName);
+                }
+
 
                 LeoLog.d("AppLoadEngineAdd", "ACTION_PACKAGE_ADDED");
                 LeoLog.d("AppLoadEngineAdd", "packName is : " + packageName);
@@ -840,6 +846,8 @@ public class AppLoadEngine extends BroadcastReceiver {
                     String string = mContext.getString(R.string.ten_new_app_toast_content);
                     pushNotification.showNotification(intent, title, string,
                             R.drawable.ic_launcher_notification, pushNotification.NOTI_BACKUP);
+
+
                 }
             }
         }

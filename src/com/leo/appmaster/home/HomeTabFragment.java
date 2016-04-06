@@ -18,8 +18,6 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.callfilter.CallFilterMainActivity;
-import com.leo.appmaster.callfilter.TestDemo;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -27,17 +25,12 @@ import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
-import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +87,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateRedDot() {
-        if (!LeoSettings.getBoolean(PrefConst.KEY_IS_HOME_TAB_MORE_CONSUMED,false)) {
+        if (!LeoSettings.getBoolean(PrefConst.KEY_HOME_MORE_CONSUMED,false)) {
             mIvRedDotAtMore.setVisibility(View.VISIBLE);
         } else {
             mIvRedDotAtMore.setVisibility(View.GONE);
@@ -308,7 +301,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                     break;
                 case R.id.home_more:
-                    LeoSettings.setBoolean(PrefConst.KEY_IS_HOME_TAB_MORE_CONSUMED,true);
+                    LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED,true);
                     intent = new Intent(activity, HomeMoreActivity.class);
                     activity.startActivity(intent);
                     // 更多

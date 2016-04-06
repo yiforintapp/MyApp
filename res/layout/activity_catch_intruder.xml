@@ -4,7 +4,7 @@
     android:id="@+id/sv_intrudercatch_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ebebed"
+    android:background="@color/ctc"
     android:scrollbars="none">
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:id="@+id/rl_header"
             android:layout_width="match_parent"
             android:layout_height="168dp"
-            android:background="#2675f6">
+            android:background="@color/ctc">
 
             <LinearLayout
                 android:layout_width="wrap_content"

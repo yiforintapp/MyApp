@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.appmanage;
 
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +26,8 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.utils.LeoLog;
+
+import java.util.List;
 
 public class BackUpActivity extends BaseFragmentActivity implements OnClickListener,
         OnItemClickListener {
@@ -62,7 +62,7 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
     private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.backup_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_backup_back);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mTtileBar.setOptionMenuVisible(false);
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.backup_app_tab_indicator);

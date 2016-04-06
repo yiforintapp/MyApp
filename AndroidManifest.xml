@@ -990,6 +990,7 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing"/>
         <activity
             android:name=".phoneSecurity.AddSecurityNumberActivity"

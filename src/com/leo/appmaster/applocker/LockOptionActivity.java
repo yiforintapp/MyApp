@@ -19,7 +19,6 @@ import android.text.Spanned;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -202,38 +201,38 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         }
 
         /* 开启高级保护后提示 */
-        openAdvanceProtectDialogHandler();
+//        openAdvanceProtectDialogHandler();
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "enter");
     }
 
-    private void openAdvanceProtectDialogHandler() {
-        boolean isTip = AppMasterPreference.getInstance(this)
-                .getAdvanceProtectOpenSuccessDialogTip();
-        if (isAdminActive() && isTip) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
-            openAdvanceProtectDialogTip();
-        }
-    }
+//    private void openAdvanceProtectDialogHandler() {
+//        boolean isTip = AppMasterPreference.getInstance(this)
+//                .getAdvanceProtectOpenSuccessDialogTip();
+//        if (isAdminActive() && isTip) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
+//            openAdvanceProtectDialogTip();
+//        }
+//    }
 
-    private void openAdvanceProtectDialogTip() {
-        if (mMessageDialog == null) {
-            mMessageDialog = new LEOAnimationDialog(this);
-            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    if (mMessageDialog != null) {
-                        mMessageDialog = null;
-                    }
-                    AppMasterPreference.getInstance(LockOptionActivity.this)
-                            .setAdvanceProtectOpenSuccessDialogTip(false);
-                }
-            });
-        }
-        String content = getString(R.string.prot_open_suc_tip_cnt);
-        mMessageDialog.setContent(content);
-        mMessageDialog.show();
-    }
+//    private void openAdvanceProtectDialogTip() {
+//        if (mMessageDialog == null) {
+//            mMessageDialog = new LEOAnimationDialog(this);
+//            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialog) {
+//                    if (mMessageDialog != null) {
+//                        mMessageDialog = null;
+//                    }
+//                    AppMasterPreference.getInstance(LockOptionActivity.this)
+//                            .setAdvanceProtectOpenSuccessDialogTip(false);
+//                }
+//            });
+//        }
+//        String content = getString(R.string.prot_open_suc_tip_cnt);
+//        mMessageDialog.setContent(content);
+//        mMessageDialog.show();
+//    }
 
     private boolean haveProtect() {
         return AppMasterPreference.getInstance(this).hasPswdProtect();
@@ -271,7 +270,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.lock_setting);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mTtileBar.setOptionMenuVisible(false);
 //        mTtileBar.setTitle(R.string.lock_setting);
 //        mTtileBar.openBackView();

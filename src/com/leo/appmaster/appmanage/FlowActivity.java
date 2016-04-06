@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.appmanage;
 
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +20,8 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
+
+import java.util.List;
 
 public class FlowActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
@@ -43,7 +43,7 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.traffic_title_bar);
         mTitleBar.setToolbarTitle(R.string.app_flow_elec);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionClickListener(this);
         mTitleBar.setNavigationClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.setup_icon);
@@ -52,7 +52,7 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.traffic_app_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);
-        mPagerTab.setBackgroundResource(R.color.cb);
+        mPagerTab.setBackgroundResource(R.color.ctc);
         mViewPager = (ViewPager) findViewById(R.id.traffic_app_viewpager);
         initFragment();
 

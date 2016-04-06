@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.callfilter;
 
-import java.util.List;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +33,8 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.utils.Utilities;
+
+import java.util.List;
 
 public class CallFilterMainActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
@@ -113,7 +113,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
 
         mTitleBar = (CommonToolbar) findViewById(R.id.call_filter_toolbar);
         mTitleBar.setToolbarTitle(R.string.call_filter_name);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionClickListener(this);
         mTitleBar.setNavigationClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.setup_icon);
@@ -122,7 +122,7 @@ public class CallFilterMainActivity extends BaseFragmentActivity implements OnCl
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.call_filter_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);
-        mPagerTab.setBackgroundResource(R.color.cb);
+        mPagerTab.setBackgroundResource(R.color.ctc);
         mViewPager = (ViewPager) findViewById(R.id.call_filter_viewpager);
         initFragment();
 

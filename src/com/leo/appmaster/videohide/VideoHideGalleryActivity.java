@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,9 +112,9 @@ public class VideoHideGalleryActivity extends BaseActivity implements
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.video_loading)
-                .showImageForEmptyUri(R.drawable.video_loading)
-                .showImageOnFail(R.drawable.video_loading)
+                .showImageOnLoading(new ColorDrawable(0xd7d7dd))
+                .showImageForEmptyUri(new ColorDrawable(0xd7d7dd))
+                .showImageOnFail(new ColorDrawable(0xd7d7dd))
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .displayer(new FadeInBitmapDisplayer(500))
@@ -223,28 +224,65 @@ public class VideoHideGalleryActivity extends BaseActivity implements
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder = null;
+
+
+
+
+
+            NewViewHolder viewHolder;
+            String path;
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(
-                        R.layout.item_video_gridview_album, parent, false);
-                viewHolder = new ViewHolder();
-                viewHolder.imageView = (ImageView) convertView
-                        .findViewById(R.id.video_item_album);
-                viewHolder.text = (TextView) convertView
-                        .findViewById(R.id.txt_item_album);
+                convertView = getLayoutInflater().inflate(R.layout.item_gridview_videos_nobg, parent, false);
+                viewHolder = new NewViewHolder();
+                viewHolder.img = (ImageView) convertView.findViewById(R.id.iv_pic);
+                viewHolder.name = (TextView) convertView.findViewById(R.id.tv_folder_name);
+                viewHolder.amount = (TextView) convertView.findViewById(R.id.tv_folder_size);
+                viewHolder.vicon = (ImageView) convertView.findViewById(R.id.iv_video_icon);
                 convertView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder = (NewViewHolder) convertView.getTag();
             }
-            VideoBean video = hideVideos.get(position);
-            String path = video.getBitList().get(0).getPath();
-            viewHolder.text.setText(video.getName() + "(" + video.getCount()
-                    + ")");
-            viewHolder.imageView.setBackgroundDrawable(context.getResources()
-                    .getDrawable(R.drawable.video_loading));
+            viewHolder.vicon.setVisibility(View.VISIBLE);
+            path = hideVideos.get(position).getBitList().get(0).getPath();
+            viewHolder.name.setText(hideVideos.get(position).getName());
+            viewHolder.amount.setText(hideVideos.get(position).getCount()+"");
+
+//            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+//                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+//            } else {
+//                uri = ImageDownloader.Scheme.FILE.wrap(path);
+//            }
             String filePath = "voidefile://" + path;
-            mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
+            mImageLoader.displayImage(filePath, viewHolder.img, mOptions);
             return convertView;
+
+
+
+
+//
+//
+//            ViewHolder viewHolder = null;
+//            if (convertView == null) {
+//                convertView = getLayoutInflater().inflate(
+//                        R.layout.item_video_gridview_album, parent, false);
+//                viewHolder = new ViewHolder();
+//                viewHolder.imageView = (ImageView) convertView
+//                        .findViewById(R.id.video_item_album);
+//                viewHolder.text = (TextView) convertView
+//                        .findViewById(R.id.txt_item_album);
+//                convertView.setTag(viewHolder);
+//            } else {
+//                viewHolder = (ViewHolder) convertView.getTag();
+//            }
+//            VideoBean video = hideVideos.get(position);
+//            String path = video.getBitList().get(0).getPath();
+//            viewHolder.text.setText(video.getName() + "(" + video.getCount()
+//                    + ")");
+//            viewHolder.imageView.setBackgroundDrawable(context.getResources()
+//                    .getDrawable(R.drawable.video_loading));
+//            String filePath = "voidefile://" + path;
+//            mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
+//            return convertView;
         }
     }
 
@@ -329,5 +367,12 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                 }
             }
         }
+    }
+
+    private static class NewViewHolder {
+        private ImageView img;
+        private TextView name;
+        private TextView amount;
+        private ImageView vicon;
     }
 }

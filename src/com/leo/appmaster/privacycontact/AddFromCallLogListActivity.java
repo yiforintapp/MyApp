@@ -1,10 +1,6 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -50,6 +46,10 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class AddFromCallLogListActivity extends BaseActivity implements OnItemClickListener {
     private static final String TAG = "AddFromCallLogListActivity";
@@ -157,7 +157,7 @@ public class AddFromCallLogListActivity extends BaseActivity implements OnItemCl
         mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
         mComBar = (CommonToolbar) findViewById(R.id.add_privacy_call_log_title_bar);
         mComBar.setToolbarTitle(R.string.privacy_contact_popumenus_from_call_log);
-        mComBar.setToolbarColorResource(R.color.cb);
+        mComBar.setToolbarColorResource(R.color.ctc);
         mListCallLog = (ListView) findViewById(R.id.add_privacy_call_logLV);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
         mComBar.setOptionMenuVisible(true);

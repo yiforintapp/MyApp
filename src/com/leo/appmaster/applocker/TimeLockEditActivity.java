@@ -1,10 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +38,10 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class TimeLockEditActivity extends BaseActivity implements
         OnClickListener, OnValueChangeListener, Formatter, OnItemClickListener {
@@ -82,7 +82,7 @@ public class TimeLockEditActivity extends BaseActivity implements
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTitleBar.setToolbarTitle(R.string.lock_mode_time);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionMenuVisible(true);
         mTitleBar.setOptionClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.mode_done);

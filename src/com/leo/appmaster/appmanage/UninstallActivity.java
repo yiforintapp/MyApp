@@ -1,7 +1,5 @@
 package com.leo.appmaster.appmanage;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -17,6 +15,8 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
+
+import java.util.ArrayList;
 
 /**
  * Created by qili on 15-10-20.
@@ -59,7 +59,7 @@ public class UninstallActivity extends BaseActivity implements View.OnClickListe
 
         mTitleBar = (CommonToolbar) findViewById(R.id.uninstall_title_bar);
         mTitleBar.setToolbarTitle(R.string.home_app_manager_apps_delete);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionMenuVisible(false);
 
         mListview = (ListView) findViewById(R.id.list_uninstall);

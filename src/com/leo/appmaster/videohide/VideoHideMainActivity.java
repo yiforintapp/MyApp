@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -98,6 +99,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private NewVidAdapter mNewVidAdapter = new NewVidAdapter(this);
     private boolean mHasShowNew = false;
     public static boolean mIsFromConfirm;
+
+    private final int REQUEST_CODE_1 = 10;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -324,9 +327,9 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.video_loading)
-                .showImageForEmptyUri(R.drawable.video_loading)
-                .showImageOnFail(R.drawable.video_loading)
+                .showImageOnLoading(new ColorDrawable(0xd7d7dd))
+                .showImageForEmptyUri(new ColorDrawable(0xd7d7dd))
+                .showImageOnFail(new ColorDrawable(0xd7d7dd))
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
@@ -520,18 +523,15 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             viewHolder.name.setText(videos.get(position).getName());
             viewHolder.amount.setText(videos.get(position).getCount()+"");
 
-            String uri = null;
-            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
-                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
-            } else {
-                uri = ImageDownloader.Scheme.FILE.wrap(path);
-            }
-            mImageLoader.displayImage(uri, viewHolder.img, mOptions);
+//            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+//                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+//            } else {
+//                uri = ImageDownloader.Scheme.FILE.wrap(path);
+//            }
+            String filePath = "voidefile://" + path;
+            mImageLoader.displayImage(filePath, viewHolder.img, mOptions);
             return convertView;
 
-
-//
-//
 //
 //            ViewHolder viewHolder = null;
 //            if (convertView == null) {
@@ -585,7 +585,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         try {
             startActivityForResult(intent, REQUEST_CODE_OPTION);
-            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+//            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
         } catch (Exception e) {
         }
     }
@@ -688,9 +688,17 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private void goNewHideVActivity() {
         //TODO
-        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
         Intent intent = new Intent(this, NewHideVidActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_1 || requestCode == REQUEST_CODE_OPTION) {
+            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+        }
     }
 
     private static class NewViewHolder {

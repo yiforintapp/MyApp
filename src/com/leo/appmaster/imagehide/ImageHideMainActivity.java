@@ -87,6 +87,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private TextView mTvIgnoreNew;
     private RelativeLayout mRlWholeShowContent;
 
+    private final int REQUEST_CODE_1 = 10;
+
     public static final int REQUEST_CODE_OPTION = 1001;
 
     private Toast mToast;
@@ -234,11 +236,18 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void goNewHideImageActivity() {
-        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
         Intent intent = new Intent(ImageHideMainActivity.this, NewHideImageActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_1);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_1 || requestCode == REQUEST_CODE_OPTION) {
+            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+        }
+    }
 
     private void initUI() {
         mRlWholeShowContent = (RelativeLayout) findViewById(R.id.rl_whole_show_content);
@@ -377,8 +386,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         LeoLog.i("newpic", "mNewAddPic size = " + mNewAddPic.size());
         newLoadDone();
 
-        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-//        pdm.haveCheckedPic();
     }
 
     @Override
@@ -393,8 +400,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        Intent intent = new Intent(ImageHideMainActivity.this,
-                ImageGridActivity.class);
+        Intent intent = new Intent(ImageHideMainActivity.this, ImageGridActivity.class);
         Bundle bundle = new Bundle();
         int size = 0;
         PhotoAibum photoAibum = null;
@@ -409,7 +415,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);
-        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+//        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
     }
 
 
@@ -448,9 +454,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            final View v = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
-            final ImageView iv = (ImageView) v.findViewById(R.id.iv_pic);
-            TextView tv = (TextView) v.findViewById(R.id.tv_more);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(ImageHideMainActivity.this).inflate(R.layout.item_gv_new_pic, parent, false);
+            }
+            final ImageView iv = (ImageView) convertView.findViewById(R.id.iv_pic);
+            TextView tv = (TextView) convertView.findViewById(R.id.tv_more);
             if (list.size() > 5 && position == 4) {
                 tv.setText("+" + (list.size() - 4));
             }
@@ -462,24 +470,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 uri = ImageDownloader.Scheme.FILE.wrap(path);
             }
-            v.setOnClickListener(new OnClickListener() {
+            convertView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     goNewHideImageActivity();
                 }
             });
-
-//            mImageLoader.displayImage(uri, iv, mOptions);
-
-
-//            if (list.size() > 5 && position == 5) {
-//                try {
-//                    BitmapDrawable bd = (BitmapDrawable) iv.getDrawable();
-//
-//                } catch (Throwable t) {
-//
-//                }
-//            }
 
             mImageLoader.loadImage(uri,mOptions, new ImageLoadingListener() {
                 @Override
@@ -489,6 +485,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                     LeoLog.i("newpic","loading failed    " + imageUri);
+
                 }
 
                 @Override
@@ -515,7 +512,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
 
 //            iv.setImageResource(R.drawable.ic_launcher);
-            return v;
+            return convertView;
         }
     }
 

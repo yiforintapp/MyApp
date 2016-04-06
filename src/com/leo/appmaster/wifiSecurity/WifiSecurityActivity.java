@@ -130,6 +130,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
         mTitleBar.setNavigationClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.setup_icon);
         mTitleBar.setOptionMenuVisible(true);
+        mTitleBar.setToolbarColorResource(R.color.cb);
 
         mSmallBossView = findViewById(R.id.small_boss);
 

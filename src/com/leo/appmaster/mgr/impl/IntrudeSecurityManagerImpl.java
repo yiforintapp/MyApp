@@ -102,7 +102,7 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
 
     @Override
     public int getTimesForTakePhoto() {
-        return pt.getInt(PrefConst.KEY_FAILURE_TIMES_TO_CATCH, 1);
+        return pt.getInt(PrefConst.KEY_FAILURE_TIMES_TO_CATCH, 2);
     }
 
     @Override

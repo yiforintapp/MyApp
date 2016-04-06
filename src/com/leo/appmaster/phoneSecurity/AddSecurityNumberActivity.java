@@ -47,8 +47,6 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +81,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         String extData = intent.getStringExtra(EXTERNAL_DATA);
         mDefaultText = (LinearLayout) findViewById(R.id.add_contact_default_tv);
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.home_det_bg);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mTtileBar.setOptionMenuVisible(false);
         mOpenSecurBt = (Button) findViewById(R.id.add_bt);
         mOpenSecurBt.setOnClickListener(this);

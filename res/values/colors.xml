@@ -87,7 +87,7 @@
     <color name="home_step_small_circle">#66ffffff</color>
     <color name="pri_pro_divider">#b6b6b6</color>
     <color name="pri_pro_list_bg">#ebebed</color>
-    <color name="green_button">#16ca37</color>
+    <color name="green_button">#00c65d</color>
     <color name="green_button_ripple">#08b329</color>
 	 <color name="home_menu_text">#636363</color>
     <color name="wifi_result_safe_start">#0057e8</color>
@@ -137,7 +137,7 @@
     <!-- 标准色 -->
 
     <!--3.6版本新的主色调 蓝灰色-->
-    <color name="ctc">#363e7c</color>
+    <color name="ctc">#323b75</color>
     <!--白色字-->
     <color name="c1">#ffffff</color>
     <!--50%白色字-->
@@ -155,7 +155,7 @@
     <!--强调色-->
     <color name="cb2">#00a8ff</color>
     <!--功能操作按钮-->
-    <color name="cgn">#15c937</color>
+    <color name="cgn">#00c65d</color>
     <!--不可操作按钮-->
     <color name="cgy">#cbcbcb</color>
     <!--背景色-->
@@ -198,7 +198,6 @@
     <color name="airsig_arcprogress_finished_start">#38BEEF</color>
     <color name="airsig_arcprogress_finished_end">#3BFFDA</color>
     <color name="airsig_arcprogress_text">#09455B</color>
-    <color name="home_det_bg">#323b76</color>
     <color name="home_det_result_num_txt">#fe8f00</color>
     <color name="cfl">#f0f3f7</color>
 

@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -30,6 +27,9 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WeiZhuangActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private final static int noMode = 0;
@@ -66,7 +66,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 
         mTtileBar = (CommonToolbar) findViewById(R.id.weizhuang_title_bar);
         mTtileBar.setToolbarTitle(R.string.title_bar_weizhuang);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mTtileBar.setOptionMenuVisible(true);
         mTtileBar.setOptionClickListener(this);
         mTtileBar.setOptionImageResource(R.drawable.help_icon_n);

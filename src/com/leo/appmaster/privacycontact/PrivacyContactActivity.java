@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.privacycontact;
 
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +33,8 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.utils.Utilities;
+
+import java.util.List;
 
 public class PrivacyContactActivity extends BaseFragmentActivity implements OnClickListener {
     private static final String TAG = "PrivacyContactActivity";
@@ -115,7 +115,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
     private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.privacy_contact_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mTtileBar.setNavigationClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {

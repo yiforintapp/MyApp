@@ -29,10 +29,7 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -142,11 +139,22 @@ public class InitCoreBootstrap extends Bootstrap {
         int versionCode = PhoneInfo.getVersionCode(mApp);
         LeoLog.i("value", "lastVercode=" + lastVercode);
         LeoLog.i("value", "versionCode=" + versionCode);
+
+        int lastCode = 0;
+        try {
+            lastCode = Integer.parseInt(lastVercode);
+        } catch (NumberFormatException e) {
+        }
+        if (lastCode == 0 || lastCode >= Constants.VER_CODE_3_6) {
+            // 大于等于3.6版本
+            LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED, true);
+        }
         if (TextUtils.isEmpty(lastVercode)) {
             LeoSettings.setBoolean(PrefConst.KEY_IS_NEW_INSTALL, true);
 
             //新安装用户，去除应用备份，应用卸载及隐私联系人相关的功能
             pref.setIsNeedCutBackupUninstallAndPrivacyContact(true);
+            LeoLog.i("need hide", "set hide2 true ");
             leoPreference.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
             // first install
             // AM-2911: remove device administration at first install
@@ -171,7 +179,6 @@ public class InitCoreBootstrap extends Bootstrap {
 //                pref.setHasAutoSwitch(true);
 //            }
 
-            int lastCode = Integer.parseInt(lastVercode);
             if (lastCode < versionCode) {
                 // hit update
                 if (versionCode == 34) {

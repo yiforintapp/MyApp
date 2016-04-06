@@ -7,7 +7,8 @@
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/wifi_result_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/cb"/>
 
     <RelativeLayout
         android:id="@+id/top_content"
