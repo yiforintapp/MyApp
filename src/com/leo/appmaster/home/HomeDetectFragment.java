@@ -186,15 +186,18 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 //        LeoLog.d("refreshDetectStatus","mLastPrivacyVideo:"+mLastPrivacyVideo);
         if (mLastPrivacyApp && !mPrivacyApp) {
             LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
-            detectResultConversionAnim(mSfatResultAppLt, mDangerResultAppLt, mSfatResultAppLt, mDangerResultAppLt, mDetectShieldConverAnimListener);
+            detectResultConversionAnim(mAppSafeContent, mAppDangerContent,
+                    mSfatResultAppLt, mDangerResultAppLt, mDetectShieldConverAnimListener);
         }
         if (mLastPrivacyPic && !mPrivacyPic) {
             LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
-            detectResultConversionAnim(mSfatResultImgLt, mDangerResultImgLt, mSfatResultImgLt, mDangerResultImgLt, mDetectShieldConverAnimListener);
+            detectResultConversionAnim(mPicSafeContent, mPicDangerContent,
+                    mSfatResultImgLt, mDangerResultImgLt, mDetectShieldConverAnimListener);
         }
         if (mLastPrivacyVideo && !mPrivacyVideo) {
             LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
-            detectResultConversionAnim(mSfatResultVideoLt, mDangerResultVideoLt, mSfatResultVideoLt, mDangerResultVideoLt, mDetectShieldConverAnimListener);
+            detectResultConversionAnim(mVidSafeContent, mVidDangerContent,
+                    mSfatResultVideoLt, mDangerResultVideoLt, mDetectShieldConverAnimListener);
         }
     }
 
@@ -938,15 +941,20 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 setDangerShieldView(false, false);
-                LeoLog.e("setDangerShieldView", "getAlphaAnim");
-                getAlphaAnim(mShieldDangerTopIv);
-                getAlphaAnim(mShieldDangerCenterIv);
-                getAlphaAnim(mShieldDangerLeftIv);
-                getAlphaAnim(mShieldDangerRightIv);
                 mShieldLeftIv.setVisibility(View.VISIBLE);
                 mShieldRightIv.setVisibility(View.VISIBLE);
                 mShieldTopIv.setVisibility(View.VISIBLE);
                 mShieldCenterIv.setVisibility(View.VISIBLE);
+            }
+        });
+        saftTopApl.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                getAlphaAnim(mShieldDangerTopIv);
+                getAlphaAnim(mShieldDangerCenterIv);
+                getAlphaAnim(mShieldDangerLeftIv);
+                getAlphaAnim(mShieldDangerRightIv);
             }
         });
         saftCenterAnim.start();
