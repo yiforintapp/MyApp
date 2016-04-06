@@ -540,7 +540,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 //mDetectPresenter.imageDangerHandler();
                 Intent imageIntent = null;
                 privacy = PrivacyHelper.getImagePrivacy();
-                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
+                if (privacy.getNewCount() > 0) {
                     imageIntent = new Intent(mContext, NewHideImageActivity.class);
                 } else {
                     imageIntent = new Intent(mContext, ImageHideMainActivity.class);
@@ -557,7 +557,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 //mDetectPresenter.videoDangerHandler();
                 Intent intent = null;
                 privacy = PrivacyHelper.getVideoPrivacy();
-                if (privacy.getNewCount() > 0 && privacy.getNewCount() != privacy.getTotalCount()) {
+                if (privacy.getNewCount() > 0) {
                     intent = new Intent(mContext, VideoHideMainActivity.class);
                 } else {
                     intent = new Intent(mContext, NewHideVidActivity.class);
