@@ -704,6 +704,11 @@ public class MobvistaEngine {
 			com.mobvista.msdk.out.Campaign data = null;
 			MobvistaAdData m = mMobVistaCacheMap.remove(mUnitId);
 			if (m != null && m.campaigns != null && m.campaigns.size() > 0) {
+				if (m.campaigns.indexOf(campaign) >= m.campaigns.size() 
+						|| m.campaigns.indexOf(campaign) == -1) {
+					return;
+				}
+				
 				data = m.campaigns.get(m.campaigns.indexOf(campaign));
 			}
 
