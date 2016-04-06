@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,9 +112,9 @@ public class VideoHideGalleryActivity extends BaseActivity implements
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.video_loading)
-                .showImageForEmptyUri(R.drawable.video_loading)
-                .showImageOnFail(R.drawable.video_loading)
+                .showImageOnLoading(new ColorDrawable(0xd7d7dd))
+                .showImageForEmptyUri(new ColorDrawable(0xd7d7dd))
+                .showImageOnFail(new ColorDrawable(0xd7d7dd))
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .displayer(new FadeInBitmapDisplayer(500))

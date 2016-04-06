@@ -391,8 +391,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        Intent intent = new Intent(ImageHideMainActivity.this,
-                ImageGridActivity.class);
+        Intent intent = new Intent(ImageHideMainActivity.this, ImageGridActivity.class);
         Bundle bundle = new Bundle();
         int size = 0;
         PhotoAibum photoAibum = null;
@@ -487,6 +486,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                     LeoLog.i("newpic","loading failed    " + imageUri);
+
                 }
 
                 @Override

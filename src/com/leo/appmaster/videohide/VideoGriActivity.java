@@ -11,6 +11,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -146,9 +147,9 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.video_loading)
-                .showImageForEmptyUri(R.drawable.video_loading)
-                .showImageOnFail(R.drawable.video_loading)
+                .showImageOnLoading(new ColorDrawable(0xd7d7dd))
+                .showImageForEmptyUri(new ColorDrawable(0xd7d7dd))
+                .showImageOnFail(new ColorDrawable(0xd7d7dd))
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .displayer(new FadeInBitmapDisplayer(500))
