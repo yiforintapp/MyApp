@@ -67,7 +67,6 @@ import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.AirSigSettingActivity;
-import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -1348,7 +1347,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		mBannerContainer.removeAllViews();
         /*调用sdk前，明确是哪个sdk，mobvista or max ? */
 		AppMasterPreference sp = AppMasterPreference.getInstance(this.getApplicationContext());
-		mAdSource = sp.getLockBannerAdConfig();
+		mAdSource = 1;//sp.getLockBannerAdConfig();
 		long start = SystemClock.elapsedRealtime();
 		asyncLoadAd(forceLoad);
 		LeoLog.d(TAG, "TsCost, loadAD..." + (SystemClock.elapsedRealtime() - start));

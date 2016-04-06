@@ -220,10 +220,14 @@ public class MobvistaEngine {
 			properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT,
 					placementId);//Facebook id
 			properties.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId); //unit id
-			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 10);// 请求广告条数，不设默认为1
+			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);// 请求广告条数，不设默认为1
 
 			LeoLog.d(TAG, "create new MobvistaAdNative and start to load");
 			MvNativeHandler nativeHandler = new MvNativeHandler(properties, mAppContext);
+			
+			nativeHandler.addTemplate(new MvNativeHandler.Template(
+					MobVistaConstans.TEMPLATE_BIG_IMG, 10));
+			
 			nativeHandler.setAdListener(new AdListenerImpl(unitId));
 
 			LeoLog.i(TAG, "loadSingleMobAd -> ad[" + unitId + "], cost time = "
@@ -251,13 +255,13 @@ public class MobvistaEngine {
 			//注入facebook的placementId
 			properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));
 			
-			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 10);
+			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);
 			//通过这个配置产生一个广告调用对象
 			final MvNativeHandler templateNativeHandler = new MvNativeHandler(properties, mAppContext);
 			
 			//支持大图模板，请求一条大图广告（只支持1条）
 			templateNativeHandler.addTemplate(new MvNativeHandler.Template(
-					MobVistaConstans.TEMPLATE_BIG_IMG, 1));
+					MobVistaConstans.TEMPLATE_BIG_IMG, 10));
 			//支持多图模板，请求3条多图。（支持1-10条）
 			templateNativeHandler.addTemplate(new MvNativeHandler.Template(
 					MobVistaConstans.TEMPLATE_MULTIPLE_IMG, 3));
@@ -334,7 +338,7 @@ public class MobvistaEngine {
 		proloadMap.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId);
 
 		proloadMap.put(MobVistaConstans.PREIMAGE, true);
-		proloadMap.put(MobVistaConstans.PROPERTIES_AD_NUM, 10);
+//		proloadMap.put(MobVistaConstans.PROPERTIES_AD_NUM, 10);
 		
 		List<MvNativeHandler.Template> list = new ArrayList<MvNativeHandler.Template>();
 		/* 设置一张大图 */
