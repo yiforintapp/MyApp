@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:leo="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/home_det_bg">
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_det_bg">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/phone_security_commonbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
     <!--2-0-->
     <ScrollView
         android:id="@+id/secur_phone_nub_sc"
@@ -35,8 +35,7 @@
                     layout="@layout/secur_open_time_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true">
-                </include>
+                    android:layout_centerHorizontal="true"></include>
 
                 <TextView
                     android:id="@+id/secur_instru_tip_tv"
@@ -50,7 +49,7 @@
                     android:paddingBottom="@dimen/secur_top_tip_instr_tv_padd_butm"
                     android:text="@string/secur_add_num_tip"
                     android:textColor="@color/cb"
-                    android:textSize="@dimen/f6"/>
+                    android:textSize="@dimen/f6" />
             </LinearLayout>
 
             <RelativeLayout
@@ -142,7 +141,7 @@
                     android:layout_marginTop="18dp"
                     android:text="@string/secur_normal_function"
                     android:textColor="@color/c2"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp" />
 
                 <GridView
                     android:id="@+id/secur_open_normal_lv"
@@ -177,7 +176,7 @@
                     android:layout_marginTop="18dp"
                     android:text="@string/secur_adv_function"
                     android:textColor="@color/c2"
-                    android:textSize="15dp"/>
+                    android:textSize="15dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -198,8 +197,7 @@
                         android:overScrollMode="never"
                         android:scrollbars="none"></GridView>
 
-                    <com.leo.appmaster.ui.MaterialRippleLayout
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:layout_width="@dimen/secur_mody_bt_width"
                         android:layout_height="@dimen/secur_mody_bt_height"
                         android:layout_alignParentRight="true"
@@ -242,7 +240,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/secur_help_iv_margin_top"
-            android:src="@drawable/theft_guide_img"/>
+            android:src="@drawable/theft_guide_img" />
 
         <TextView
             android:id="@+id/help_tv"
@@ -255,7 +253,7 @@
             android:paddingRight="32dp"
             android:text="@string/secur_help_tip_txt"
             android:textColor="#666666"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
 
         <com.leo.appmaster.ui.MaterialRippleLayout
             android:id="@+id/secur_help_rp"
@@ -278,7 +276,7 @@
                 android:gravity="center"
                 android:text="@string/secur_help_bt"
                 android:textColor="@color/white"
-                android:textSize="14dp"/>
+                android:textSize="14dp" />
         </com.leo.appmaster.ui.MaterialRippleLayout>
 
         <RelativeLayout
@@ -291,7 +289,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/c4"/>
+                android:background="@color/c4" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -309,7 +307,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/secur_feedbk_content"
                     android:textColor="#333333"
-                    android:textSize="16dp"/>
+                    android:textSize="16dp" />
             </RelativeLayout>
 
             <com.leo.appmaster.ui.MaterialRippleLayout
@@ -332,7 +330,7 @@
                     android:background="@drawable/green_btn_selector"
                     android:text="@string/secur_help_feedback_tip_button"
                     android:textColor="#15c937"
-                    android:textSize="14dp"/>
+                    android:textSize="14dp" />
             </com.leo.appmaster.ui.MaterialRippleLayout>
         </RelativeLayout>
         <!--已知需要短信权限的机型提示-->
@@ -348,7 +346,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/c4"/>
+                android:background="@color/c4" />
 
             <TextView
                 android:id="@+id/secur_know_msm_content"
@@ -359,7 +357,7 @@
                 android:paddingRight="35dp"
                 android:text="请在“授权管理”的“应用权限管理”项中选中“应用管理TAB”，选择“隐私卫士”，授予“读取短信，发送短信”权限。"
                 android:textColor="#333333"
-                android:textSize="13dp"/>
+                android:textSize="13dp" />
 
             <TextView
                 android:id="@+id/secur_know_msm_click"
@@ -371,7 +369,7 @@
                 android:paddingRight="35dp"
                 android:text="@string/secur_kno_model_msm_click"
                 android:textColor="#009cff"
-                android:textSize="16dp"/>
+                android:textSize="16dp" />
 
         </LinearLayout>
     </RelativeLayout>
