@@ -81,7 +81,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:maxLines="2"
-                android:text="@string/airsig_settings_activity_two_set"
+                android:text="@string/gesture_or_password"
                 android:textColor="@color/c2"
                 android:textSize="16dp" />
 
