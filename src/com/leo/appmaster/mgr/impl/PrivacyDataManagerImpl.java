@@ -738,8 +738,13 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         Cursor cursor = null;
 
         int num = 0;
-        String splashPath = FileOperationUtil.getSplashPath();
+//        String splashPath = FileOperationUtil.getSplashPath();
 
+        int theMaxNum = 1;
+        int currSDK_INT = Build.VERSION.SDK_INT;
+        File externalStorageDirectory = Environment.getExternalStorageDirectory();
+        String store = externalStorageDirectory.getPath();
+        String splashPath = getSplashDirPath();
         try {
             cursor = MediaStore.Images.Media.query(
                     mContext.getContentResolver(),
@@ -750,13 +755,46 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                 while (cursor.moveToNext()) {
                     String path = cursor.getString(1);
                     LeoLog.d("getPhotoAlbum", "path is : " + path);
+                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
+
+//                    if (path.startsWith(SYSTEM_PREFIX)) {
+//                        continue;
+//                    }
+//
+//                    if (path.contains(splashPath)) {
+//                        continue;
+//                    }
+//
+//                    boolean isFilterVideoType = false;
+//                    for (String videoType : filterVideoTypes) {
+//                        isFilterVideoType = isFilterVideoType(path, videoType);
+//                    }
+//                    if (isFilterVideoType) {
+//                        continue;
+//                    }
+
 
                     if (path.startsWith(SYSTEM_PREFIX)) {
                         continue;
                     }
-
-                    if (path.contains(splashPath)) {
+                    if (splashPath != null && dirPath.equals(splashPath)) {
                         continue;
+                    }
+
+                    if (currSDK_INT >= API_LEVEL_19) {
+                        if (!path.startsWith(store)) {
+                            continue;
+                        }
+                    }
+
+                    //首页扫描，超过200张不判断是否存在
+                    if (theMaxNum < FASTER_NUM) {
+                        LeoLog.d("testAddPicExists", "check exists num : " + theMaxNum);
+                        File f = new File(path);
+                        if (!f.exists()) {
+                            continue;
+                        }
+                        theMaxNum++;
                     }
 
                     boolean isFilterVideoType = false;
@@ -766,6 +804,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     if (isFilterVideoType) {
                         continue;
                     }
+
 
                     num++;
                 }
@@ -930,9 +969,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = Constants.VIDEO_FORMAT;
         Cursor cursor = null;
+
         int currSDK_INT = Build.VERSION.SDK_INT;
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
         String store = externalStorageDirectory.getPath();
+
         try {
             cursor = mContext.getContentResolver().query(uri, null, selection, null,
                     MediaStore.MediaColumns._ID + " desc");
@@ -991,6 +1032,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = Constants.VIDEO_FORMAT;
         Cursor cursor = null;
+
+        int currSDK_INT = Build.VERSION.SDK_INT;
+        File externalStorageDirectory = Environment.getExternalStorageDirectory();
+        String store = externalStorageDirectory.getPath();
+
         try {
             //old
             cursor = mContext.getContentResolver().query(uri, null, selection, null,
@@ -1006,12 +1052,18 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                         continue;
                     }
 
+                    if (currSDK_INT >= API_LEVEL_19) {
+                        if (!path.startsWith(store)) {
+                            continue;
+                        }
+                    }
 
                     File videoFile = new File(path);
                     boolean videoExists = videoFile.exists();
                     if (videoExists) {
                         num++;
                     }
+
                 }
             }
         } catch (Exception e) {
