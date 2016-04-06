@@ -147,6 +147,7 @@ public class InitCoreBootstrap extends Bootstrap {
 
             //新安装用户，去除应用备份，应用卸载及隐私联系人相关的功能
             pref.setIsNeedCutBackupUninstallAndPrivacyContact(true);
+            LeoLog.i("need hide", "set hide2 true ");
             leoPreference.putBoolean(PrefConst.KEY_IS_OLD_USER, false);
             // first install
             // AM-2911: remove device administration at first install
