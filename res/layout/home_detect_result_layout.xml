@@ -43,8 +43,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg1"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/cb2"
                     android:textSize="@dimen/f6"/>
 
@@ -99,8 +99,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg2"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/home_det_result_num_txt"
                     android:textSize="@dimen/f6"
                     />
@@ -165,8 +165,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg1"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/cb2"
                     android:textSize="@dimen/f6"/>
 
@@ -220,8 +220,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg2"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/home_det_result_num_txt"
                     android:textSize="@dimen/f6"/>
 
@@ -285,8 +285,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg1"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/cb2"
                     android:textSize="@dimen/f6"/>
 
@@ -340,8 +340,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/number_home_bg2"
                     android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:paddingRight="2dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textColor="@color/home_det_result_num_txt"
                     android:textSize="@dimen/f6"/>
 
