@@ -7,11 +7,6 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/texture_home_bg"/>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/texture2_home_bg"/>
@@ -20,9 +15,7 @@
         android:id="@+id/home_anim_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        >
-
+        android:gravity="center">
         <include
             android:id="@+id/det_result_ly"
             layout="@layout/home_detect_result_layout"
@@ -100,8 +93,12 @@
             android:layout_centerVertical="true"
             android:src="@drawable/shield_bad"
             android:visibility="invisible"/>
-    </RelativeLayout>
 
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/texture_home_bg"/>
     <TextView
         android:id="@+id/lt_home_danger_det_tip"
         android:layout_width="wrap_content"
