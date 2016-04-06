@@ -50,7 +50,7 @@ public class LockPermissionTipStringFetchJob extends FetchScheduleJob {
                 LeoSettings.setString(PrefConst.KEY_NOTIFY_IMG_TITLE, notifyImgTitle);
             }
 
-            String notifyImgContent = parseContent(PrefConst.KEY_NOTIFY_IMG_TITLE, response);
+            String notifyImgContent = parseContent(PrefConst.KEY_NOTIFY_IMG_CONTENT, response);
             if (notifyImgContent != null) {
                 LeoSettings.setString(PrefConst.KEY_NOTIFY_IMG_CONTENT, notifyImgContent);
             }
