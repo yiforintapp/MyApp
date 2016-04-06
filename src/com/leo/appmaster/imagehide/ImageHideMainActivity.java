@@ -279,6 +279,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
+                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
@@ -404,6 +405,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);
+        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
     }
 
 

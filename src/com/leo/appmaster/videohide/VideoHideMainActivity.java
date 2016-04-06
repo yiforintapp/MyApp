@@ -378,9 +378,9 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mRvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(VideoHideMainActivity.this,
-                        VideoHideGalleryActivity.class);
+                Intent intent = new Intent(VideoHideMainActivity.this, VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
+                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
             }
         });
 //        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
@@ -582,8 +582,10 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         bundle.putInt("mode", Constants.CANCLE_HIDE_MODE);
         bundle.putInt("fromwhere", 1);
         intent.putExtras(bundle);
+
         try {
             startActivityForResult(intent, REQUEST_CODE_OPTION);
+            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
         } catch (Exception e) {
         }
     }
