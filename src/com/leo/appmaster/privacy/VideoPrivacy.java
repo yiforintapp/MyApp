@@ -106,7 +106,21 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
 
     @Override
     public void reportExposure() {
+        int status = getStatus();
+        switch (status) {
+            case STATUS_NEW_ADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_new_sh");
+                break;
+            case STATUS_PROCEED:
 
+                break;
+            case STATUS_FOUND:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_all_sh");
+                break;
+            case STATUS_TOADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_add_sh");
+                break;
+        }
     }
 
     @Override

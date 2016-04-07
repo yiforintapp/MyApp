@@ -102,7 +102,18 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     public void reportExposure() {
         int status = getStatus();
         switch (status) {
-//            statu
+            case STATUS_NEW_ADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_new_sh");
+                break;
+            case STATUS_PROCEED:
+
+                break;
+            case STATUS_FOUND:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_all_sh");
+                break;
+            case STATUS_TOADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_add_sh");
+                break;
         }
     }
 

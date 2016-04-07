@@ -104,7 +104,21 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
 
     @Override
     public void reportExposure() {
+        int status = getStatus();
+        switch (status) {
+            case STATUS_NEW_ADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_new_sh");
+                break;
+            case STATUS_PROCEED:
 
+                break;
+            case STATUS_FOUND:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_all_sh");
+                break;
+            case STATUS_TOADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_add_sh");
+                break;
+        }
     }
 
     @Override
