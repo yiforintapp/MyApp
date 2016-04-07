@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingTop="16dp" >
 
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/fralay_top"
         android:layout_width="@dimen/hide_album_frame_width"
         android:layout_height="@dimen/hide_album_frame_width"
@@ -42,17 +42,19 @@
         <ImageView
             android:layout_width="@dimen/hide_album_frame_width"
             android:layout_height="@dimen/hide_album_frame_width"
+            android:layout_centerInParent="true"
             android:src="@drawable/play_icon" />
 
         <ImageView
             android:id="@+id/video_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/hide_video_checkbox_bottom"
-            android:paddingRight="@dimen/hide_video_checkbox_right"
+            android:paddingLeft="@dimen/hide_video_checkbox_right"
             android:src="@drawable/pic_choose_normal" />
-    </FrameLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/txt_item_picture"
