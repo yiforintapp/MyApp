@@ -58,7 +58,6 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
 
         View emptyView = view.findViewById(R.id.pic_loading_rl);
         mListView.setEmptyView(emptyView);
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "new_pic");
     }
 
     @Override
@@ -122,30 +121,27 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
             @Override
             public void onClick(int which) {
                 if (which == 1) {
+                    final List<PhotoItem> selectList = mAdapter.getSelectData();
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$" + mAdapter.getSelectData().size());
                     showProgressDialog(getString(R.string.tips),
                             getString(R.string.app_hide_image) + "...",
                             true, true);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
-                            List<PhotoItem> list = mAdapter.getSelectData();
-                            List<String> photos = new ArrayList<String>(list.size());
-                            for (PhotoItem videoItemBean : list) {
+                            List<String> photos = new ArrayList<String>(selectList.size());
+                            for (PhotoItem videoItemBean : selectList) {
                                 photos.add(videoItemBean.getPath());
                                 LeoLog.v(TAG, "path：" + videoItemBean.getPath());
                             }
-//                            final int incScore = pdm.haveCheckedPic();
-                            if (photos.size() == mDataList.size()) {
-                                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_all");
-                            }
-                            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
                             hideAllPicBackground(photos, 0);
                         }
                     });
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1,
-                            "hide_pic_operation", "pic_add_cnts");
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1,
-                            "hide_pic_operation", "pic_add_pics_" + mAdapter.getSelectData().size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + mAdapter.getSelectData().size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$" + mAdapter.getSelectData().size());
                 }
             }
         });
@@ -180,11 +176,6 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
 
     @Override
     protected void onProcessClick() {
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
-                + mAdapter.getSelectData().size());
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$"
-                + mAdapter.getSelectData().size());
         showAlarmDialog();
         LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
         mFinishNotified = false;
@@ -194,17 +185,6 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
     @Override
     protected void onIgnoreClick() {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_direct");
-    }
-
-    @Override
-    protected void onIgnoreConfirmClick() {
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_confirm");
-//        mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
-    }
-
-    @Override
-    protected void onIgnoreCancelClick() {
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_cancel");
     }
 
     @Override
@@ -235,6 +215,11 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
         mNewImageNum = (TextView) view.findViewById(R.id.tv_image_hide_header);
         setLabelCount();
         return view;
+    }
+
+    @Override
+    protected void onSelectAllClick() {
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hide_pic", "pic_hide_all");
     }
 
     private void setLabelCount() {

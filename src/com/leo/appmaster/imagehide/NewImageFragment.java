@@ -116,26 +116,6 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
     }
 
     @Override
-    protected int getIgnoreStringId() {
-        return R.string.pri_pro_ignore_dialog;
-    }
-
-    @Override
-    protected String getSkipConfirmDesc() {
-        return "pic_skip_confirm";
-    }
-
-    @Override
-    protected String getSkipCancelDesc() {
-        return "pic_skip_cancel";
-    }
-
-    @Override
-    protected String getFolderFullDesc() {
-        return "pic_full_cnts";
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -191,6 +171,10 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
         if (mDialog == null) {
             mDialog = new LEOAlarmDialog(mActivity);
         }
+        final List<PhotoItem> selectList = mAdapter.getSelectedList();
+        if (selectList == null) {
+            return;
+        }
         mDialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
             @Override
             public void onClick(int which) {
@@ -199,30 +183,22 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                             getString(R.string.app_hide_image) + "...",
                             true, true);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
-                            + mAdapter.getSelectedList().size());
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$"
-                            + mAdapter.getSelectedList().size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$" + selectList.size());
                     LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
-                            List<PhotoItem> list = mAdapter.getSelectedList();
-                            List<String> photos = new ArrayList<String>(list.size());
-                            for (PhotoItem photoItem : list) {
+                            List<String> photos = new ArrayList<String>(selectList.size());
+                            for (PhotoItem photoItem : selectList) {
                                 photos.add(photoItem.getPath());
-                            }
-                            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
-                            if (photos.size() == mDataList.size()) {
-                                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_all");
                             }
                             hideAllPicBackground(photos, 0);
                         }
                     });
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1,
-                            "hide_pic_operation", "pic_add_cnts");
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1,
-                            "hide_pic_operation", "pic_add_pics_" + mAdapter.getSelectedList().size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_$" + selectList.size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$" + selectList.size());
                 }
             }
         });
@@ -302,9 +278,7 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        PhotoItem item = (PhotoItem) mAdapter.getItem(position);
         mAdapter.toggle(position);
-
     }
 
     @Override
@@ -326,5 +300,10 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                     getResources().getDrawable(R.drawable.no_select_all_selector), null,
                     null);
         }
+    }
+
+    @Override
+    protected void onSelectAllClick() {
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hide_pic", "pic_hide_all");
     }
 }

@@ -536,7 +536,6 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                                 .getSecondDirNameFromFilepath(mPath);
 
                         if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-
                             // new
                             if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
                                     && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)
@@ -551,22 +550,14 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                             doingBackGround(true);
                             mHideVideoAdapter.notifyDataSetChanged();
                             /* SDK:use hide video */
-                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                    "hide_Video",
-                                    "used");
-                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                    "hide_vid_operation",
-                                    "vid_add_pics_" + size);
-                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                    "hide_vid_operation",
-                                    "vid_add_cnts");
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_Video", "used");
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_vid_operation", "vid_add_pics_$" + size);
                         } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_cancel_hide_image) + "...",
                                     true,
                                     true);
-//                            BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
-//                            task.execute(false);
                             doingBackGround(false);
                             mHideVideoAdapter.notifyDataSetChanged();
                             SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,

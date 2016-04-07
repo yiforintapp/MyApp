@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/10/16.
  */
-public class NewVidFragment extends NewFragment implements AdapterView.OnItemClickListener {
+public class NewVideoFragment extends NewFragment implements AdapterView.OnItemClickListener {
     private static final int FOLDER_VIDEO_COUNT = 35;
 
     private HeaderGridView mVideoList;
@@ -45,15 +45,15 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
     public static Fragment getFragment(List<VideoItemBean> list) {
         Fragment fragment = null;
         if (list.size() < FOLDER_VIDEO_COUNT) {
-            fragment = NewVidFragment.newInstance();
-            ((NewVidFragment) fragment).setData(list, "");
+            fragment = NewVideoFragment.newInstance();
+            ((NewVideoFragment) fragment).setData(list, "");
         } else {
             if (DataUtils.differentDirVid(list)) {
                 fragment = FolderVidFragment.newInstance();
                 ((FolderVidFragment) fragment).setData(list);
             } else {
-                fragment = NewVidFragment.newInstance();
-                ((NewVidFragment) fragment).setData(list, "");
+                fragment = NewVideoFragment.newInstance();
+                ((NewVideoFragment) fragment).setData(list, "");
             }
         }
         return fragment;
@@ -62,22 +62,22 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
     public static Fragment getNewVidFragment(List<VideoItemBean> list) {
         Fragment fragment = null;
         if (list.size() < FOLDER_VIDEO_COUNT) {
-            fragment = NewVidFragment.newInstance();
-            ((NewVidFragment) fragment).setData(list, "");
+            fragment = NewVideoFragment.newInstance();
+            ((NewVideoFragment) fragment).setData(list, "");
         } else {
             if (DataUtils.differentDirVid(list)) {
-                fragment = FolderVidNewFragment.newInstance();
-                ((FolderVidNewFragment) fragment).setData(list);
+                fragment = FolderNewVideoFragment.newInstance();
+                ((FolderNewVideoFragment) fragment).setData(list);
             } else {
-                fragment = NewVidFragment.newInstance();
-                ((NewVidFragment) fragment).setData(list, "");
+                fragment = NewVideoFragment.newInstance();
+                ((NewVideoFragment) fragment).setData(list, "");
             }
         }
         return fragment;
     }
 
-    public static NewVidFragment newInstance() {
-        NewVidFragment fragment = new NewVidFragment();
+    public static NewVideoFragment newInstance() {
+        NewVideoFragment fragment = new NewVideoFragment();
         return fragment;
     }
 
@@ -103,23 +103,8 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
     }
 
     @Override
-    protected int getIgnoreStringId() {
-        return R.string.pri_pro_ignore_dialog;
-    }
-
-    @Override
-    protected String getSkipConfirmDesc() {
-        return "vid_skip_confirm";
-    }
-
-    @Override
-    protected String getSkipCancelDesc() {
-        return "vid_skip_cancel";
-    }
-
-    @Override
-    protected String getFolderFullDesc() {
-        return "vid_full_cnts";
+    protected void onSelectAllClick() {
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hide_Video", "vid_hide_all");
     }
 
 
@@ -180,19 +165,18 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
             @Override
             public void onClick(int which) {
                 if (which == 1) {
+                    final List<VideoItemBean> list = mAdapter.getSelectedList();
+
                     showProgressDialog(getString(R.string.tips),
                             getString(R.string.app_hide_image) + "...",
                             true, true);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
                             + mAdapter.getSelectedList().size());
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_new_$"
-                            + mAdapter.getSelectedList().size());
                     LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
-                            List<VideoItemBean> list = mAdapter.getSelectedList();
                             List<String> photos = new ArrayList<String>(list.size());
                             for (VideoItemBean videoItemBean : list) {
                                 photos.add(videoItemBean.getPath());
@@ -200,10 +184,11 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
                             hideAllVidBackground(photos, 0);
                         }
                     });
-                    SDKWrapper.addEvent(getActivity(),
-                            SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
-                    SDKWrapper.addEvent(getActivity(),
-                            SDKWrapper.P1, "hide_vid_operation", "vid_add_pics_$" + mAdapter.getSelectedList().size());
+
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_hide_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts_$" + list.size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_new_$" + list.size());
                 }
             }
         });
@@ -288,7 +273,9 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
         } else {
             mHideBtn.setEnabled(false);
         }
-        if (mAdapter.getSelectedList() != null && mAdapter.getSelectedList().size() < mDataList.size()) {
+
+        List selectList = mAdapter.getSelectedList();
+        if (selectList != null && selectList.size() < mDataList.size()) {
             mSelectBtn.setText(R.string.app_select_all);
             mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
                     getResources().getDrawable(R.drawable.select_all_selector), null,
@@ -299,6 +286,7 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
                     getResources().getDrawable(R.drawable.no_select_all_selector), null,
                     null);
         }
+
     }
 
     @Override

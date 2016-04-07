@@ -841,12 +841,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 //                                    ImageGridActivity.this);
 //                            task.execute(true);
                             doingBackGround(true);
-                            SDKWrapper.addEvent(ImageGridActivity.this,
-                                    SDKWrapper.P1, "hide_pic", "used");
-                            SDKWrapper.addEvent(ImageGridActivity.this,
-                                    SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
-                            SDKWrapper.addEvent(ImageGridActivity.this,
-                                    SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + size);
+                            SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic", "used");
+                            SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
+                            SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_$" + size);
                         } else if (mActicityMode == CANCEL_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_cancel_hide_image)
@@ -855,8 +852,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 //                                    ImageGridActivity.this);
 //                            task.execute(false);
                             doingBackGround(false);
-                            SDKWrapper.addEvent(ImageGridActivity.this,
-                                    SDKWrapper.P1, "hide_pic_operation", "pic_ccl_pics_" + size);
+                            SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic_operation", "pic_ccl_pics_$" + size);
                         }
                     }
                 }

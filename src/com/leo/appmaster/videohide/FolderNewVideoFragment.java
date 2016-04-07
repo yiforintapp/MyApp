@@ -27,11 +27,11 @@ import java.util.List;
 /**
  * Created by Jasper on 2015/10/22.
  */
-public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> implements ExpandableListView.OnChildClickListener {
+public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> implements ExpandableListView.OnChildClickListener {
     private static final String TAG = "FolderVidFragment";
 
-    public static FolderVidNewFragment newInstance() {
-        return new FolderVidNewFragment();
+    public static FolderNewVideoFragment newInstance() {
+        return new FolderNewVideoFragment();
     }
 
     private LEOAlarmDialog mDialog;
@@ -122,15 +122,13 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
             @Override
             public void onClick(int which) {
                 if (which == 1) {
+                    final List<VideoItemBean> list = mAdapter.getSelectData();
                     showProgressDialog(getString(R.string.tips),
                             getString(R.string.app_hide_image) + "...",
                             true, true);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
-                            List<VideoItemBean> list = mAdapter.getSelectData();
-                            PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-
                             List<String> photos = new ArrayList<String>(list.size());
                             for (VideoItemBean videoItemBean : list) {
                                 photos.add(videoItemBean.getPath());
@@ -139,10 +137,10 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
                         }
                     });
 
-                    SDKWrapper.addEvent(getActivity(),
-                            SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
-                    SDKWrapper.addEvent(getActivity(),
-                            SDKWrapper.P1, "hide_vid_operation", "vid_add_pics_$" + mAdapter.getSelectData().size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_hide_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts_$" + list.size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_new_$" + list.size());
                 }
             }
         });
@@ -183,17 +181,6 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
     }
 
     @Override
-    protected void onIgnoreConfirmClick() {
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_confirm");
-        onIgnoreClick();
-    }
-
-    @Override
-    protected void onIgnoreCancelClick() {
-        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_cancel");
-    }
-
-    @Override
     protected void onFloatingCheckClick() {
         int groupPos = mCurrentGroup;
         if (mFloatingCb.isChecked()) {
@@ -229,6 +216,11 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
         mNewImageNum = (TextView) view.findViewById(R.id.tv_image_hide_header);
         setLabelCount();
         return view;
+    }
+
+    @Override
+    protected void onSelectAllClick() {
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hide_Video", "vid_hide_all");
     }
 
     private void setLabelCount() {

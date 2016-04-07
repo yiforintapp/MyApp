@@ -17,6 +17,7 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.DataUtils;
@@ -50,17 +51,15 @@ public class NewHideImageActivity extends BaseFragmentActivity {
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         pdm.haveCheckedPic();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_pic", "new_pic");
     }
 
     private void initLoadData() {
-//        mLoading.setVisibility(View.VISIBLE);
-//        mFragment.setVisibility(View.GONE);
         Privacy privacy = PrivacyHelper.getImagePrivacy();
         mPhotoItems = privacy.getNewList();
         HomeScanningFragment.PhotoList mPhotoList = new HomeScanningFragment.PhotoList();
         mPhotoList.photoItems = mPhotoItems;
         mPhotoList.inDifferentDir = DataUtils.differentDirPic(mPhotoItems);
-        LeoLog.v(TAG, "mPhotoList size :" + (mPhotoList.photoItems == null ? 0 : mPhotoList.photoItems.size()));
         Fragment fragment = PrivacyNewPicFragment.getNewHideImageFragment(mPhotoList);
         LeoLog.v(TAG, "fragment != null : " + (fragment != null));
         FragmentManager fm = getSupportFragmentManager();
@@ -69,11 +68,6 @@ public class NewHideImageActivity extends BaseFragmentActivity {
         ft.commit();
         mLoading.setVisibility(View.GONE);
         mFragment.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 
 }

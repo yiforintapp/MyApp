@@ -13,8 +13,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -33,8 +31,6 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
-import com.leo.appmaster.imagehide.NewHideImageActivity;
-import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -53,7 +49,6 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.FailReason;
-import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
@@ -95,7 +90,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private RippleView mRvHideNew;
     private TextView mTvIgnoreNew;
     private RelativeLayout mRlWholeShowContent;
-    private List<VideoItemBean> mNewAddVid = null;
+    private List<VideoItemBean> mNewDataList = null;
     private NewVidAdapter mNewVidAdapter = new NewVidAdapter(this);
     private boolean mHasShowNew = false;
     public static boolean mIsFromConfirm;
@@ -130,22 +125,22 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 mNohideVideo.setText(getString(R.string.app_no_video_hide));
             }
 //            if (mNewVidAdapter != null) {
-//                if (mNewAddVid == null || mNewAddVid.size() == 0) {
+//                if (mNewDataList == null || mNewDataList.size() == 0) {
 //                    mIncludeLayoutNewVid.setVisibility(View.GONE);
 //                } else {
 //                    mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
-//                    mNewVidAdapter.setDataList(mNewAddVid);
+//                    mNewVidAdapter.setDataList(mNewDataList);
 //                    mNewVidAdapter.notifyDataSetChanged();
 //                    updateTips();
 //                }
 //            }
 
 //            if (mNewPicAdapter != null) {
-//                if (mNewAddVid == null || mNewAddVid.size() == 0) {
+//                if (mNewDataList == null || mNewDataList.size() == 0) {
 //                    mIncludeLayoutNewPic.setVisibility(View.GONE);
 //                } else {
 //                    mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
-////                    mNewPicAdapter.setDataList(mNewAddVid);
+////                    mNewPicAdapter.setDataList(mNewDataList);
 ////                    mNewPicAdapter.notifyDataSetChanged();
 ////                    updateTips();
 //                }
@@ -155,12 +150,12 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private void updateTips() {
         String string1 = getString(R.string.find_new_vid_tips);
-        String s2 = String.format(string1, mNewAddVid.size());
+        String s2 = String.format(string1, mNewDataList.size());
         mTvNewAmountTips.setText(Html.fromHtml(s2));
     }
 
     private void asyncLoad() {
-        mNewAddVid = PrivacyHelper.getVideoPrivacy().getNewList();
+        mNewDataList = PrivacyHelper.getVideoPrivacy().getNewList();
         newLoadDone();
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
@@ -182,13 +177,14 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             mIncludeLayoutNewVid.setVisibility(View.GONE);
         }
         if (mNewVidAdapter != null) {
-            if (mNewAddVid == null || mNewAddVid.size() == 0 || PrivacyHelper.getVideoPrivacy().getTotalCount() == PrivacyHelper.getVideoPrivacy().getNewCount()) {
+            if (mNewDataList == null || mNewDataList.size() == 0 || PrivacyHelper.getVideoPrivacy().getTotalCount() == PrivacyHelper.getVideoPrivacy().getNewCount()) {
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
-            } else if (!mHasShowNew){
+            } else if (!mHasShowNew) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_Video", "vid_card");
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
-                mNewVidAdapter.setDataList(mNewAddVid);
+                mNewVidAdapter.setDataList(mNewDataList);
                 mNewVidAdapter.notifyDataSetChanged();
                 updateTips();
             }
@@ -403,6 +399,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void hideHeadLayout() {
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_Video", "vid_card_no");
         final float initialY = mRlWholeShowContent.getY();
         PropertyValuesHolder m = PropertyValuesHolder.ofFloat("y",mRlWholeShowContent.getY(),mRlWholeShowContent.getY() - mIncludeLayoutNewVid.getHeight());
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(mRlWholeShowContent, m);
@@ -690,6 +687,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         //TODO
         Intent intent = new Intent(this, NewHideVidActivity.class);
         startActivityForResult(intent, REQUEST_CODE_GO_NEW);
+
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_Video", "vid_card_add");
     }
 
     @Override
