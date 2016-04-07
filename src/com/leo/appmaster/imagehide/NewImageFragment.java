@@ -166,6 +166,7 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                 }
             }
         });
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "new_pic");
     }
 
     protected View getEmptyHeader() {
@@ -200,6 +201,8 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
                             + mAdapter.getSelectedList().size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$"
+                            + mAdapter.getSelectedList().size());
                     LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
@@ -209,9 +212,17 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                             for (PhotoItem photoItem : list) {
                                 photos.add(photoItem.getPath());
                             }
+                            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
+                            if (photos.size() == mDataList.size()) {
+                                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_all");
+                            }
                             hideAllPicBackground(photos, 0);
                         }
                     });
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1,
+                            "hide_pic_operation", "pic_add_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1,
+                            "hide_pic_operation", "pic_add_pics_" + mAdapter.getSelectedList().size());
                 }
             }
         });

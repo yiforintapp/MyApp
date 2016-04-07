@@ -58,6 +58,7 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
 
         View emptyView = view.findViewById(R.id.pic_loading_rl);
         mListView.setEmptyView(emptyView);
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "new_pic");
     }
 
     @Override
@@ -92,13 +93,13 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
             public void run() {
                 if (mProgressDialog != null) {
                     mProgressDialog.dismiss();
-                    if(mDataList.size() > 0) {
+                    if (mDataList.size() > 0) {
                         mAdapter.setList(mDataList);
                         mAdapter.notifyDataSetChanged();
                         hideDone();
                         setLabelCount();
-                    }else{
-                        Toast.makeText(mActivity,R.string.hide_complete_new_image,Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(mActivity, R.string.hide_complete_new_image, Toast.LENGTH_LONG).show();
                         mActivity.finish();
                     }
                 }
@@ -134,15 +135,17 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                                 LeoLog.v(TAG, "path：" + videoItemBean.getPath());
                             }
 //                            final int incScore = pdm.haveCheckedPic();
+                            if (photos.size() == mDataList.size()) {
+                                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_all");
+                            }
+                            SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
                             hideAllPicBackground(photos, 0);
                         }
                     });
-//                            SDKWrapper.addEvent(ImageGridActivity.this,
-//                                    SDKWrapper.P1, "hide_pic", "used");
-//                            SDKWrapper.addEvent(ImageGridActivity.this,
-//                                    SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
-//                            SDKWrapper.addEvent(ImageGridActivity.this,
-//                                    SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + size);
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1,
+                            "hide_pic_operation", "pic_add_cnts");
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1,
+                            "hide_pic_operation", "pic_add_pics_" + mAdapter.getSelectData().size());
                 }
             }
         });
@@ -179,6 +182,8 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
     protected void onProcessClick() {
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
+                + mAdapter.getSelectData().size());
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$"
                 + mAdapter.getSelectData().size());
         showAlarmDialog();
         LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);

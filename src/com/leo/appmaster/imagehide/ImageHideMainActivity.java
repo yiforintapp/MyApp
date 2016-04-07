@@ -12,12 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -201,6 +198,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                         PrivacyHelper.getImagePrivacy().getNewCount());
                 mHasShowNew = true;
                 mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
+                SDKWrapper.addEvent(ImageHideMainActivity.this, SDKWrapper.P1, "hide_pic", "pic_card");
                 mNewPicAdapter.setDataList(mNewAddPic);
                 mNewPicAdapter.notifyDataSetChanged();
                 updateTips();
@@ -236,6 +234,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void goNewHideImageActivity() {
+        SDKWrapper.addEvent(ImageHideMainActivity.this, SDKWrapper.P1, "hide_pic", "pic_card_add");
         Intent intent = new Intent(ImageHideMainActivity.this, NewHideImageActivity.class);
         startActivityForResult(intent, REQUEST_CODE_GO_NEW);
     }
@@ -265,6 +264,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View v) {
                 ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
                 hideHeadLayout();
+                SDKWrapper.addEvent(ImageHideMainActivity.this, SDKWrapper.P1, "hide_pic", "pic_card_no");
             }
         });
 

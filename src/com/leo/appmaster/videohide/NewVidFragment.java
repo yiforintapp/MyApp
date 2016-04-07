@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +25,6 @@ import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.DataUtils;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -189,6 +186,8 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "handled", "pic_prc_cnts_$"
                             + mAdapter.getSelectedList().size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_new_$"
+                            + mAdapter.getSelectedList().size());
                     LeoPreference.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
@@ -201,6 +200,10 @@ public class NewVidFragment extends NewFragment implements AdapterView.OnItemCli
                             hideAllVidBackground(photos, 0);
                         }
                     });
+                    SDKWrapper.addEvent(getActivity(),
+                            SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
+                    SDKWrapper.addEvent(getActivity(),
+                            SDKWrapper.P1, "hide_vid_operation", "vid_add_pics_$" + mAdapter.getSelectedList().size());
                 }
             }
         });

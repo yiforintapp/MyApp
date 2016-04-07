@@ -10,32 +10,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.imagehide.ImageHideMainActivity;
-import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.appmaster.videohide.NewHideVidActivity;
-import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -168,6 +161,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         reloadAppStatus();
         reloadImageStatus();
         reloadVideoStatus();
+        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "privacy_cnts_$" + mPrivacyConut);
 
         if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
             setSfateShieldView(mFromEnter);
@@ -321,6 +315,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "app_cnts_$" + privacy.getPrivacyCountText());
             mDangerResultAppDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyApp = true;
@@ -336,7 +331,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             } else {
                 mDangerResultAppLt.setVisibility(View.INVISIBLE);
             }
-
             mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
             mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
@@ -359,6 +353,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             }
 
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "pic_cnts_$" + privacy.getPrivacyCountText());
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
             mDangerResultPicDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
@@ -395,6 +390,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mDangerResultVideoLt.setVisibility(View.VISIBLE);
             }
             mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "vid_cnts_$" + privacy.getPrivacyCountText());
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
             mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;

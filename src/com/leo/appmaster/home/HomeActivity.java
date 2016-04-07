@@ -153,6 +153,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private LEOAlarmDialog mUninstallDialog;  // 卸载提示对话框
     private boolean mClickUninstall; // 是否点击卸载按钮
     private boolean mUninstallGuideShow;
+    private boolean mClickOpenAdmin;
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
         @Override
@@ -326,6 +327,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mVidHideSuccess = false;
         mNeedDialogShow = true;
         mClickUninstall = false;
+        mClickOpenAdmin = false;
+
     }
 
     public void onEventMainThread(AppUnlockEvent event) {
@@ -861,9 +864,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
 
         if (mClickUninstall) {
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "uninstall_no");
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "protect_sh");
             showUninstallDialog(false, getResources().getString(R.string.open_admin_title),
                     getResources().getString(R.string.open_admin_content));
             mClickUninstall = false;
+        }
+
+        if (mClickOpenAdmin) {
+            if (isAdminActive()) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "menu", "protect_yes");
+            }
         }
 
     }
@@ -1304,6 +1315,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     mClickUninstall = true;
                     showSystemUninstall();
                 } else {
+                    mClickOpenAdmin = true;
                     unRegisterAdmin(false);
                 }
             }
@@ -1323,6 +1335,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             if (manager.isAdminActive(mAdminName2)) {
                 manager.removeActiveAdmin(mAdminName2);
             }
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "protect_off");
         } else {
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mAdminName2);
