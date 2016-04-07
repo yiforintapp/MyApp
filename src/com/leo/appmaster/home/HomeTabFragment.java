@@ -290,12 +290,16 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.home_img:
                     // 图片隐藏
+                    int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
+                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count + 1);
                     intent = new Intent(activity, ImageHideMainActivity.class);
                     activity.startActivity(intent);
                     LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
                     break;
                 case R.id.home_video:
                      //视频隐藏
+                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
+                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2+1);
                     intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
                     LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);

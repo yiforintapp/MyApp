@@ -70,6 +70,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private CommonToolbar mTitleBar;
     private View mProblemView;
 
+    private boolean mNeedHide = false;
     private LEOChoiceDialog mCategoryDialog;
     private ListView mCategoryListView;
     private LEOMessageDialog mMessageDialog;
@@ -106,9 +107,17 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private void handleIntent() {
         Intent intent = getIntent();
         if (intent.getBooleanExtra("isFromIntruderProtectionForbiden", false)) {
-            mCategory.setText(mCategories.get(2));
-            mCategoryPos = 2;
-            mCategory.setTag(1);
+
+            if (mNeedHide) {
+                mCategory.setText(mCategories.get(1));
+                mCategoryPos = 1;
+                mCategory.setTag(1);
+            } else {
+                mCategory.setText(mCategories.get(2));
+                mCategoryPos = 2;
+                mCategory.setTag(1);
+            }
+
         }
     }
 
@@ -180,8 +189,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
         mCategoryImg = (ImageView) findViewById(R.id.feedback_category_arrow);
 
-        boolean needhide = LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false);
-        if (needhide) {
+        mNeedHide = LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false);
+        if (mNeedHide) {
             for (int i = 0; i < sNewCategoryIds.length; i++) {
                 mCategories.add(getString(sNewCategoryIds[i]));
             }
@@ -239,7 +248,12 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         if (intent != null) {
             isFromSecurHelp = intent.getBooleanExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK, false);
             if (isFromSecurHelp) {
-                mCategoryPos = 1;
+                if (mNeedHide) {
+                    mCategoryPos = 0;
+                } else {
+                    mCategoryPos = 1;
+                }
+
                 intent.removeExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK);
             }
         }

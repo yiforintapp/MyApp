@@ -23,11 +23,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.ContentObserver;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -1431,6 +1434,13 @@ public class LockManagerImpl extends LockManager {
     @Override
     public boolean isUsageStateEnable() {
         if (Build.VERSION.SDK_INT < 21) {
+            return true;
+        }
+
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        PackageManager pm = mContext.getPackageManager();
+        List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
+        if (list == null || list.isEmpty()) {
             return true;
         }
 
