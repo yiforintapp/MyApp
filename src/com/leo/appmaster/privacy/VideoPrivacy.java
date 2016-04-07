@@ -93,15 +93,41 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
         int status = getStatus();
         switch (status) {
             case STATUS_NEW_ADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_new_cli");
+                imageIntent = new Intent(activity, NewHideVidActivity.class);
+                break;
             case STATUS_FOUND:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_all_cli");
                 imageIntent = new Intent(activity, NewHideVidActivity.class);
                 break;
             case STATUS_TOADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_add_cli");
+                imageIntent = new Intent(activity, VideoHideMainActivity.class);
+                break;
             case STATUS_PROCEED:
                 imageIntent = new Intent(activity, VideoHideMainActivity.class);
                 break;
         }
         activity.startActivity(imageIntent);
+    }
+
+    @Override
+    public void reportExposure() {
+        int status = getStatus();
+        switch (status) {
+            case STATUS_NEW_ADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_new_sh");
+                break;
+            case STATUS_PROCEED:
+
+                break;
+            case STATUS_FOUND:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_all_sh");
+                break;
+            case STATUS_TOADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_add_sh");
+                break;
+        }
     }
 
     @Override

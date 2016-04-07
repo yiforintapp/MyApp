@@ -15,19 +15,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <GridView
+        <com.leo.appmaster.ui.HeaderGridView
             android:id="@+id/Image_hide_folder"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_gravity="center"
             android:layout_weight="1"
+            android:background="@color/transparent"
+            android:columnWidth="109dp"
+            android:divider="@null"
+            android:headerDividersEnabled="false"
+            android:listSelector="@null"
+            android:numColumns="3"
+            android:overScrollMode="never"
+            android:paddingRight="@dimen/pri_new_list_padding"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp" />
+
+
+        <!--<GridView
+            android:id="@+id/Image_hide_folder"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             android:fadingEdge="none"
             android:gravity="center"
             android:listSelector="@android:color/transparent"
             android:numColumns="3"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:scrollbarStyle="outsideOverlay" />
+            android:scrollbarStyle="outsideOverlay" />-->
 
         <include
             layout="@layout/image_folder_bottom_view"

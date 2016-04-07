@@ -91,11 +91,45 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
 
     @Override
     public void jumpAction(Activity activity) {
+        int status = getStatus();
+        switch (status) {
+            case STATUS_NEW_ADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_new_cli");
+                break;
+            case STATUS_PROCEED:
+
+                break;
+            case STATUS_FOUND:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_all_cli");
+                break;
+            case STATUS_TOADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_add_cli");
+                break;
+        }
         Intent appIntent = new Intent(activity, AppLockListActivity.class);
         if (getNewCount() > 0 && getNewCount() != getTotalCount()) {
             appIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
         }
         activity.startActivity(appIntent);
+    }
+
+    @Override
+    public void reportExposure() {
+        int status = getStatus();
+        switch (status) {
+            case STATUS_NEW_ADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_new_sh");
+                break;
+            case STATUS_PROCEED:
+
+                break;
+            case STATUS_FOUND:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_all_sh");
+                break;
+            case STATUS_TOADD:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_add_sh");
+                break;
+        }
     }
 
     @Override

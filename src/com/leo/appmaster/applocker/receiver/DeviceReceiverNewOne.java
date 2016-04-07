@@ -27,6 +27,7 @@ import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -181,6 +182,7 @@ public class DeviceReceiverNewOne extends DeviceAdminReceiver {
 
 										IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath, IntrudeSecurityManager.ICON_SYSTEM, timeStamp);
 										mISManager.insertInfo(info);
+										SDKWrapper.addEvent(context, SDKWrapper.P1,"intruder1", "intruder_lockscreen");
 										mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
 										LeoPreference.getInstance().putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
 										IntrudeSecurityManager.sHasPicSaved = true;

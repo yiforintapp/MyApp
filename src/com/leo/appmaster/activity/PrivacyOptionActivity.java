@@ -30,6 +30,8 @@ public class PrivacyOptionActivity extends BasePreferenceActivity implements OnP
         setContentView(R.layout.activity_privacy_option);
         addPreferencesFromResource(R.xml.privacy_option);
 
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "monitor");
+
         mMonitorAppPref = (CheckBoxPreference) findPreference(PrefConst.KEY_NOTIFY_APP);
         mMonitorPicPref = (CheckBoxPreference) findPreference(PrefConst.KEY_NOTIFY_PIC);
         mMonitorVidPref = (CheckBoxPreference) findPreference(PrefConst.KEY_NOTIFY_VID);
@@ -81,10 +83,25 @@ public class PrivacyOptionActivity extends BasePreferenceActivity implements OnP
         boolean newValue = !value;
         String description = null;
         if (PrefConst.KEY_NOTIFY_APP.equals(key)) {
+            if(newValue) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "app_on");
+            } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "app_off");
+            }
             description = newValue ? "home_sv_appopen" : "home_sv_appclose";
         } else if (PrefConst.KEY_NOTIFY_PIC.equals(key)) {
+            if(newValue) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "pic_on");
+            } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "pic_off");
+            }
             description = newValue ? "home_sv_picopen" : "home_sv_picclose";
         } else if (PrefConst.KEY_NOTIFY_VID.equals(key)) {
+            if(newValue) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "vid_on");
+            } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "vid_off");
+            }
             description = newValue ? "home_sv_vidopen" : "home_sv_vidclose";
         }
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", description);

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 
 public class PasswdTipActivity extends BaseActivity implements OnClickListener {
@@ -44,6 +45,7 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
                 AppMasterPreference.getInstance(PasswdTipActivity.this).savePasswdProtect(q, a, tip);
                 Toast.makeText(PasswdTipActivity.this, R.string.set_success, 0).show();
                 hideIME();
+				SDKWrapper.addEvent(PasswdTipActivity.this, SDKWrapper.P1, "settings", "pwdn");
                 mEtTip.postDelayed(new Runnable() {
                     @Override
                     public void run() {

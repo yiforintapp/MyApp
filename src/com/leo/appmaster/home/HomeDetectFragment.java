@@ -10,32 +10,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.imagehide.ImageHideMainActivity;
-import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.appmaster.videohide.NewHideVidActivity;
-import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -51,6 +44,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private static final int TYPE_LOST = 0;
     private static final int TYPE_LOCK = 1;
     private static final int TYPE_NONE = -1;
+
+    private static final String KEY_TYPE = "curr_type";
 
     // 是否显示防盗
     private static boolean sShowLost = false;
@@ -138,6 +133,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         mDetectPresenter.attachView(this);
         initUI(view);
+
+        PrivacyHelper.getAppPrivacy().reportExposure();
+        PrivacyHelper.getImagePrivacy().reportExposure();
+        PrivacyHelper.getVideoPrivacy().reportExposure();
     }
 
     @Override
@@ -164,6 +163,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         reloadAppStatus();
         reloadImageStatus();
         reloadVideoStatus();
+        if (mFromEnter) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "privacy_cnts_$" + mPrivacyConut);
+        }
 
         if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
             setSfateShieldView(mFromEnter);
@@ -267,12 +269,15 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                     mBannerTv.setText(R.string.hd_lost_permisson_tip);
                     mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                     mCurrentType = TYPE_LOST;
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_sh");
                 } else {
                     mBannerTv.setText(R.string.hd_lock_permisson_tip);
                     mBannerIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                     mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mCurrentType = TYPE_LOCK;
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "gd_tips_sh");
                 }
+                mBannerIntent.putExtra(KEY_TYPE, mCurrentType);
             } else if (lostDisabled) {
                 mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                 if (mFromEnter) {
@@ -283,6 +288,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mBannerTv.setText(R.string.hd_lost_permisson_tip);
 
                 mCurrentType = TYPE_LOST;
+                mBannerIntent.putExtra(KEY_TYPE, mCurrentType);
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_sh");
             } else if (usageDisabled) {
                 if (mFromEnter) {
                     mCenterTipRt.setVisibility(View.INVISIBLE);
@@ -294,6 +301,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 mCurrentType = TYPE_LOCK;
+                mBannerIntent.putExtra(KEY_TYPE, mCurrentType);
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "gd_tips_sh");
             } else {
                 mCenterTipRt.setVisibility(View.INVISIBLE);
                 mBannerIntent = null;
@@ -317,6 +326,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
+            if (mFromEnter) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
+                        "app_cnts_$" + privacy.getPrivacyCountText());
+            }
             mDangerResultAppDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyApp = true;
@@ -332,7 +345,6 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             } else {
                 mDangerResultAppLt.setVisibility(View.INVISIBLE);
             }
-
             mDetSaftAppTv.setText(privacy.getPrivacyTitleId());
             boolean numVisible = privacy.showPrivacyCount();
             mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
@@ -355,6 +367,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             }
 
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
+            if (mFromEnter) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                        "home_advice", "pic_cnts_$" + privacy.getPrivacyCountText());
+            }
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
             mDangerResultPicDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
@@ -391,6 +407,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mDangerResultVideoLt.setVisibility(View.VISIBLE);
             }
             mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
+            if (mFromEnter) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                        "home_advice", "vid_cnts_$" + privacy.getPrivacyCountText());
+            }
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
             mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
@@ -551,12 +571,18 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 //中间banner
                 //mDetectPresenter.centerBannerHandler();
                 if (mBannerIntent != null) {
+                    int type = mBannerIntent.getIntExtra(KEY_TYPE, TYPE_NONE);
+                    mBannerIntent.removeExtra(KEY_TYPE);
                     try {
                         mContext.startActivity(mBannerIntent);
-                        if (!mContext.getPackageName().equals(mBannerIntent.getPackage())) {
+                        if (type == TYPE_LOCK) {
+                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "gd_tips_cli");
+
                             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                             lm.filterPackage(mBannerIntent.getPackage(), false);
                             lm.filterSelfOneMinites();
+                        } else if (type == TYPE_LOST) {
+                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_cli");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

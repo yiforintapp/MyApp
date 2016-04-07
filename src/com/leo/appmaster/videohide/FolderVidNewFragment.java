@@ -3,11 +3,9 @@ package com.leo.appmaster.videohide;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,17 +13,13 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.imagehide.FolderNewFragment;
-import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
-import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,12 +138,11 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
                             hideAllVidBackground(photos, 0);
                         }
                     });
-//                            SDKWrapper.addEvent(ImageGridActivity.this,
-//                                    SDKWrapper.P1, "hide_pic", "used");
-//                            SDKWrapper.addEvent(ImageGridActivity.this,
-//                                    SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
-//                            SDKWrapper.addEvent(ImageGridActivity.this,
-//                                    SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + size);
+
+                    SDKWrapper.addEvent(getActivity(),
+                            SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
+                    SDKWrapper.addEvent(getActivity(),
+                            SDKWrapper.P1, "hide_vid_operation", "vid_add_pics_$" + mAdapter.getSelectData().size());
                 }
             }
         });
@@ -184,6 +177,8 @@ public class FolderVidNewFragment extends FolderNewFragment<VideoItemBean> imple
 
     @Override
     protected void onProcessClick() {
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "pic_new_$"
+                + mAdapter.getSelectData().size());
         showAlarmDialog();
     }
 

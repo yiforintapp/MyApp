@@ -26,6 +26,7 @@ import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
@@ -47,13 +48,15 @@ public class QuickHelperActivity extends BaseActivity {
     private static Integer[] mDrawableBoost;
     private static Integer[] mDrawablePrivacy;
     private static Integer[] mDrawablePrivacy2;
+    private static Integer[] mDrawablePrivacy3;
     private static Integer[] mDrawableSystemManage;
     private static Integer[] mDrawableSystemManage2;
+    private static Integer[] mDrawableSystemManage3;
     private static Integer[] mDrawableAppJoy;
-    
+
     private List<Integer[]> mFinalDrawableArray;
     private List<Integer> mFinalDrawableIds;
-    
+
     private CommonToolbar mCtb;
     private ListView mLvQuickHelperList;
     private LayoutInflater mInflater;
@@ -84,29 +87,40 @@ public class QuickHelperActivity extends BaseActivity {
 //    private static final int POSITION_APPJOY;
 
     static {
-        mDrawableBoost = new Integer[] {
+        mDrawableBoost = new Integer[]{
                 R.drawable.qh_gamebox_icon
         };
-        mDrawablePrivacy = new Integer[] {
+        mDrawablePrivacy = new Integer[]{
                 R.drawable.qh_image_icon, R.drawable.qh_video_icon,
-                R.drawable.qh_intruder_icon, R.drawable.qh_call_filter, 
+                R.drawable.qh_intruder_icon, R.drawable.qh_call_filter,
                 R.drawable.qh_privacy_contact, R.drawable.qh_wifi_icon,
         };
-        mDrawablePrivacy2 = new Integer[] {
+        mDrawablePrivacy2 = new Integer[]{
                 R.drawable.qh_image_icon, R.drawable.qh_video_icon,
-                R.drawable.qh_intruder_icon, R.drawable.qh_call_filter, 
+                R.drawable.qh_intruder_icon, R.drawable.qh_call_filter,
                 R.drawable.qh_wifi_icon,
         };
-        mDrawableSystemManage = new Integer[] {
+
+        mDrawablePrivacy3 = new Integer[]{
+                R.drawable.qh_image_icon, R.drawable.qh_video_icon,
+                R.drawable.qh_intruder_icon, R.drawable.qh_call_filter,
+        };
+
+        mDrawableSystemManage = new Integer[]{
                 R.drawable.qh_uninstall_icon, R.drawable.qh_backup_icon,
-                R.drawable.qh_flow_icon, R.drawable.qh_battery_icon, 
+                R.drawable.qh_flow_icon, R.drawable.qh_battery_icon,
                 R.drawable.qh_speedup_icon,
         };
-        mDrawableSystemManage2 = new Integer[] {
-                R.drawable.qh_flow_icon, R.drawable.qh_battery_icon, 
+        mDrawableSystemManage2 = new Integer[]{
+                R.drawable.qh_flow_icon, R.drawable.qh_battery_icon,
                 R.drawable.qh_speedup_icon,
         };
-        mDrawableAppJoy = new Integer[] {
+
+        mDrawableSystemManage3 = new Integer[]{
+                R.drawable.qh_speedup_icon,
+        };
+
+        mDrawableAppJoy = new Integer[]{
                 R.drawable.qh_appjoy_icon
         };
     }
@@ -135,7 +149,7 @@ public class QuickHelperActivity extends BaseActivity {
         mMapDrawableToName.put(R.drawable.qh_battery_icon, R.string.quick_helper_elec_manage);
         mMapDrawableToName.put(R.drawable.qh_speedup_icon, R.string.accelerate);
         mMapDrawableToName.put(R.drawable.qh_appjoy_icon, R.string.desk_ad_name);
-        
+
         mMapDrawableToDesc = new SparseIntArray();
         mMapDrawableToDesc.put(R.drawable.qh_gamebox_icon, R.string.game_box_one);
         mMapDrawableToDesc.put(R.drawable.qh_image_icon, R.string.quick_helper_desc_pic_hide);
@@ -150,19 +164,24 @@ public class QuickHelperActivity extends BaseActivity {
         mMapDrawableToDesc.put(R.drawable.qh_battery_icon, R.string.quick_helper_desc_elec);
         mMapDrawableToDesc.put(R.drawable.qh_speedup_icon, R.string.quick_helper_desc_boost);
         mMapDrawableToDesc.put(R.drawable.qh_appjoy_icon, R.string.quick_helper_desc_appjoy);
-        
+
         mFinalDrawableArray = new ArrayList<Integer[]>();
         mFinalDrawableIds = new ArrayList<Integer>();
-        if (AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact()) {
+        if (AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact() &&
+                !LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false)) {
             mFinalDrawableArray.add(mDrawablePrivacy2);
             mFinalDrawableArray.add(mDrawableSystemManage2);
+        } else if(AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact() &&
+                LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false)) {
+            mFinalDrawableArray.add(mDrawablePrivacy3);
+            mFinalDrawableArray.add(mDrawableSystemManage3);
         } else {
             mFinalDrawableArray.add(mDrawablePrivacy);
             mFinalDrawableArray.add(mDrawableSystemManage);
         }
 //        mFinalDrawableArray.add(mDrawableBoost);
         mFinalDrawableArray.add(mDrawableAppJoy);
-        
+
         mIndexCategoryStart = new ArrayList<Integer>();
         mIndexCategoryEnd = new ArrayList<Integer>();
         int accountBeforeCurrentI = 0;
@@ -210,7 +229,7 @@ public class QuickHelperActivity extends BaseActivity {
                         tvClass.setText(R.string.class_system_manage);
                     } else if (Arrays.asList(mDrawableAppJoy).contains(drawableId)) {
                         tvClass.setText(R.string.class_happy_app);
-                    } 
+                    }
                 } else {
                     llClass.setVisibility(View.GONE);
                 }
@@ -247,9 +266,9 @@ public class QuickHelperActivity extends BaseActivity {
 //                                boolean isInstalllIswipe = ISwipUpdateRequestManager
 //                                        .isInstallIsiwpe(AppMasterApplication.getInstance());
 //                                if (!isBoostCreat) {  
-                                    intent = new Intent(AppMasterApplication.getInstance(), HomeBoostActivity.class);
-                                    intent.putExtra("from_quickhelper", true);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent = new Intent(AppMasterApplication.getInstance(), HomeBoostActivity.class);
+                                intent.putExtra("from_quickhelper", true);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                    QuickHelperUtils.createQuickHelper(getResources().getString(mMapDrawableToName.get(drawableId)), drawableId, intent, QuickHelperActivity.this);
 //                                }
                                 break;
@@ -312,7 +331,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_ELEC]), mHelperResourceIDs[POSITION_ELEC], intent, QuickHelperActivity.this);
                                 break;
-                             // 骚扰拦截 (免密码)
+                            // 骚扰拦截 (免密码)
                             case R.drawable.qh_call_filter:
 //                             SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1, "assistant", "assistant_wifi");
                                 intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
@@ -320,7 +339,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.IDX_CALL_FILTER);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_CALL_FILTER]), mHelperResourceIDs[POSITION_CALL_FILTER], intent, QuickHelperActivity.this);
-                                SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,"assistant", "block_cnts");
+                                SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1, "assistant", "block_cnts");
                                 table.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_CALLFILTER, true);
                                 break;
                             // WIFI安全 (免密码)

@@ -209,6 +209,8 @@ public class PasswdProtectActivity extends BaseActivity implements
 //                             Selection.setSelection(spanText, 0);
 //                         }
                         mSelectQues = mCategories.get(position);
+                        int fi = position + 1;
+                        SDKWrapper.addEvent(PasswdProtectActivity.this, SDKWrapper.P1, "settings", "pwd_ques_" + fi);
                         mQuesDialog.dismiss();
                     }
                 });

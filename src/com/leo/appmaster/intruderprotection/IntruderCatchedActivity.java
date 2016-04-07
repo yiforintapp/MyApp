@@ -1107,7 +1107,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
                 onBackPressed();
                 break;
             case R.id.rv_setting:
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder", "intruder_cap_setting");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "intruder1", "intruder_cap_setting");
                 Intent intent2 = new Intent(IntruderCatchedActivity.this,IntruderSettingActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent2.putExtra("isPgInner",false);
