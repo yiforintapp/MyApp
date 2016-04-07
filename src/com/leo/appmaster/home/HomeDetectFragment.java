@@ -161,7 +161,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         reloadAppStatus();
         reloadImageStatus();
         reloadVideoStatus();
-        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "privacy_cnts_$" + mPrivacyConut);
+        if (mFromEnter) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "privacy_cnts_$" + mPrivacyConut);
+        }
 
         if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
             setSfateShieldView(mFromEnter);
@@ -315,7 +317,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
             mDetDagAppTv.setText(privacy.getPrivacyTitleId());
             mDetDagAppNumTv.setText(privacy.getPrivacyCountText());
-            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "app_cnts_$" + privacy.getPrivacyCountText());
+            if (mFromEnter) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
+                        "app_cnts_$" + privacy.getPrivacyCountText());
+            }
             mDangerResultAppDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyApp = true;
@@ -353,7 +358,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             }
 
             mDetDagImgNumTv.setText(privacy.getPrivacyCountText());
-            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "pic_cnts_$" + privacy.getPrivacyCountText());
+            if (mFromEnter) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                        "home_advice", "pic_cnts_$" + privacy.getPrivacyCountText());
+            }
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
             mDangerResultPicDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
@@ -390,7 +398,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mDangerResultVideoLt.setVisibility(View.VISIBLE);
             }
             mDetDagVideoNumTv.setText(privacy.getPrivacyCountText());
-            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "vid_cnts_$" + privacy.getPrivacyCountText());
+            if (mFromEnter) {
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                        "home_advice", "vid_cnts_$" + privacy.getPrivacyCountText());
+            }
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
             mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
