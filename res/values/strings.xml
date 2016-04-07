@@ -1175,107 +1175,95 @@
     <string name="airsig_settings_generic">一般模式</string>
     <string name="airsig_settings_control">控制模式</string>
 
-    <!--3.6手机防盗-->
-    <string name="secur_deta_title_bar">防盗功能详情</string>
-    <string name="secur_deta_title">可向被盗手机发送以下指令，执行对应操作</string>
-    <string name="secur_add_numb_tip">防盗指令将会以短信形式发送到预留号码。您可以用预留号码发送防盗指令控制手机。</string>
-    <string name="secur_add_num">输入手机号</string>
-    <string name="secur_mody_num">更改</string>
-    <string name="secur_close">关闭防盗</string>
-    <string name="secur_normal_function">基本功能</string>
-    <string name="secur_instr_tip">如何防盗？</string>
-    <string name="secur_adv_function">高级功能</string>
-    <string name="secur_fun_open">已开启</string>
-    <string name="secur_fun_close">未开启</string>
-    <string name="secur_mody_num_title">修改预留号码</string>
-    <string name="secur_mody_mum_sure">确认</string>
-    <string name="secur_close_tip_content">关闭防盗，您的手机将失去保护，确认关闭吗？</string>
-    <string name="secur_close_tip_bt_cancel">取消</string>
-    <string name="secur_close_tip_bt_sure">确认</string>
-    <string name="secur_save_num">预留号码:</string>
-    <string name="secur_open_sucess_send_msm_toast">手机防盗开启成功，已将防盗指令发送给预留号码</string>
-    <string name="secur_mody_sure_bt">确认</string>
-    <string name="secur_open_sucess_toast">手机防盗开启成功</string>
-
-    <string name="airsig_settings_activity_title">签字解锁</string>
-    <string name="airsig_settings_activity_set_one_on">开启签字</string>
-    <string name="airsig_settings_activity_set_one_off">关闭签字</string>
-    <string name="airsig_settings_activity_set_two">更改签字手势</string>
-    <string name="airsig_settings_activity_toast">设定成功！将默认使用签字解锁</string>
-    <string name="airsig_settings_activity_dialog">关闭签字解锁后则无法通过手机签字解锁应用，确定关闭？</string>
-    <string name="airsig_settings_activity_two_set_title">设置默认解锁方式</string>
-    <string name="airsig_settings_activity_two_set">手势/密码解锁</string>
-    <string name="airsig_settings_activity_two_set_dialog">当前未开启签字解锁，是否立即开启？</string>
-    <string name="airsig_settings_lock_fragment_normal">切换为手势解锁</string>
-    <string name="airsig_settings_lock_fragment_normal_psw">切换为密码解锁</string>
-    <string name="airsig_settings_lock_fragment_airsig">切换为Airsig解锁</string>
-
-    <string name="change_gesture_or_password">更改手势/数字密码</string>
-    <string name="gesture_or_password">手势/数字密码</string>
-    <string name="did_not_open">未开启</string>
-    <string name="has_opened">已开启</string>
-
-    <string name="title_close_advanced_protect">关闭高级保护</string>
-    <string name="content_close_advanced_protect">关闭高级保护后，手机防盗，系统锁屏入侵防护等功能不可用，隐私卫士也可以被随意卸载</string>
-    <string name="new_hidden_image">隐藏新增图片</string>
-    <string name="new_hidden_vid">隐藏新增视频</string>
-    <string name="new_image_num">发现%1$d张图片</string>
-    <string name="new_vid_num">发现%1$d个视频</string>
-    <string name="new_hide_num">隐藏(%1$d)</string>
-    <string name="hide_complete_new_image">新增图片隐藏完成</string>
-    <string name="hide_complete_new_vid">新增视频隐藏完成</string>
-
-
-    <string name="uninstall_dialog_title">卸载隐私卫士</string>
-    <string name="uninstall_dialog_content">卸载隐私卫士前需关闭高级保护权限，可能会导致部分功能不可用。确认关闭？</string>
-    <string name="open_admin_title">开启高级保护</string>
-    <string name="open_admin_content">当前高级保护未开启，手机防盗的清除数据功能，系统锁屏入侵防护功能不可用。是否立即开启？</string>
-    <string name="lock_app_list_new_app">新增应用</string>
-    <string name="lock_app_list_all_app">全部应用</string>
-    <string name="lock_app_list_other_app">其他应用</string>
-
-    <string name="turn_on_battery_noti">开启应用耗电通知</string>
-    <string name="turn_off_battery_noti">关闭应用耗电通知</string>
-
-    <string name="img_hide_cpy_toast">当前从外置存储卡读取内容，可能过程较长</string>
-    <string name="home_more">更多</string>
-    <string name="home_det_tip">建议开启手机防盗</string>
-
-    <string name="find_new_pic_tips">检测到最近新增了<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>张图片</string>
-    <string name="find_new_vid_tips">检测到最近新增了<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>个视频</string>
-    <string name="hide_immediately">立即隐藏</string>
-
-    <string name="hd_found_app">个待处理应用</string>
-    <string name="hd_found_pic">张待处理图片</string>
-    <string name="hd_found_vid">个待处理视频</string>
-    <string name="hd_new_app">个新应用</string>
-    <string name="hd_new_pic">张新图片</string>
-    <string name="hd_new_vid">个新视频</string>
-    <string name="hd_locked_app">个加锁应用</string>
-    <string name="hd_hide_pic">张隐藏图片</string>
-    <string name="hd_hide_vid">个隐藏视频</string>
-    <string name="hd_lock_privacy_title">加锁私密应用</string>
-    <string name="hd_lock_privacy_summary">您新增了一些应用未加锁，可能泄露隐私哦</string>
-    <string name="hd_hide_pic_privacy_title">隐藏私密图片</string>
-    <string name="hd_hide_pic_privacy_summary">您新增了一些图片，私密图片建议隐藏起来</string>
-    <string name="hd_hide_vid_privacy_title">隐藏私密视频</string>
-    <string name="hd_hide_vid_privacy_summary">您新增了一些视频，不希望被别人看见？赶快隐藏起来吧</string>
-    <string name="hd_add_locked_app">添加加锁应用</string>
-    <string name="hd_add_hide_pic">添加隐藏图片</string>
-    <string name="hd_add_hide_vid">添加隐藏视频</string>
-    <string name="hd_privacy_danger">%1$d项隐私风险待处理</string>
-    <string name="hd_app_danger_tip">建议进行加锁处理</string>
-    <string name="hd_pic_danger_tip">建议进行隐藏处理</string>
-    <string name="hd_privacy_safe">隐私状况良好</string>
-    <string name="hd_more_guide_tip">更多功能，点击这里看看</string>
-    <string name="hd_lock_permisson_tip">开启应用锁权限以修复应用锁问题</string>
-    <string name="hd_lost_permisson_tip">建议开启手机防盗，点击进入防盗页面</string>
-
-    <string name="airsig_tip_toast_text">主题暂不适用于签字解锁哦</string>
-    <string name="airsig_tip_toast_update_text">签字解锁密钥已到期，升级隐私卫士后方可继续使用</string>
-
-    <string name="uninstall_guide_tips">您已开启高级保护，点此方可卸载隐私卫士哦</string>
-    <string name="secur_add_num_tip">如何防盗</string>
-    <string name="backup_instr_tip_str">把防盗指令通过短信备份给亲友号码</string>
-
+    <!--3.6-->
+    <string name="secur_deta_title_bar">Functional details</string>
+    <string name="secur_deta_title">Here are the commands that you can remotely run on your phone via SMS:</string>
+    <string name="secur_add_numb_tip">You can send remote commands via SMS through your reserved number to your lost phone.</string>
+    <string name="secur_add_num">Please enter a phone number</string>
+    <string name="secur_mody_num">Change</string>
+    <string name="secur_close">Disable Anti-Theft</string>
+    <string name="secur_normal_function">Basic Function</string>
+    <string name="secur_instr_tip">How Anti-Theft function works?</string>
+    <string name="secur_adv_function">Advanced Function</string>
+    <string name="secur_fun_open">Enabled</string>
+    <string name="secur_fun_close">Not enabled</string>
+    <string name="secur_mody_num_title">Modify the number</string>
+    <string name="secur_mody_mum_sure">Confirm</string>
+    <string name="secur_close_tip_content">After you disable Anti-Theft on this device, your phone will no longer be protected.Are you sure to disable?</string>
+    <string name="secur_close_tip_bt_cancel">Cancel</string>
+    <string name="secur_close_tip_bt_sure">Confirm</string>
+    <string name="secur_save_num">Reserve a number:</string>
+    <string name="secur_open_sucess_send_msm_toast">The Anti-Theft function was enabled successfully and the remote commands have been sent to your reserved number.</string>
+    <string name="secur_mody_sure_bt">Confirm</string>
+    <string name="secur_open_sucess_toast">Anti-Theft has been enabled</string>
+    <string name="airsig_settings_activity_title">Signature</string>
+    <string name="airsig_settings_activity_set_one_on">Enable Signature</string>
+    <string name="airsig_settings_activity_set_one_off">Disable Signature</string>
+    <string name="airsig_settings_activity_set_two">Change the Signature Gesture</string>
+    <string name="airsig_settings_activity_toast">Set up sucessfully! Use Signature Unlcok by default.</string>
+    <string name="airsig_settings_activity_dialog">After you disable Signature lock on this device, your apps will no longer be unlocked by it. Are you sure to disable?</string>
+    <string name="airsig_settings_activity_two_set_title">Set Default Unclock Method</string>
+    <string name="airsig_settings_activity_two_set">Pattern/PIN Code</string>
+    <string name="airsig_settings_activity_two_set_dialog">Signature lock is not enabled. Enable now?</string>
+    <string name="airsig_settings_lock_fragment_normal">Change to Pattern</string>
+    <string name="airsig_settings_lock_fragment_normal_psw">Change to PIN Code</string>
+    <string name="airsig_settings_lock_fragment_airsig">Change to Airsig</string>
+    <string name="change_gesture_or_password">Change the pattern/PIN Code</string>
+    <string name="gesture_or_password">Pattern/PIN Code</string>
+    <string name="did_not_open">Not enabled</string>
+    <string name="has_opened">Enabled</string>
+    <string name="title_close_advanced_protect">Disable Advanced Protection</string>
+    <string name="content_close_advanced_protect">After you disable the Advanced Protetion, your Anti-Theft, Home Screen Lock  will no longer be available and LEO Privay will be uninstalled maliciously as well.</string>
+    <string name="new_hidden_image">Hide new pictures</string>
+    <string name="new_hidden_vid">Hide new videos</string>
+    <string name="new_image_num">%1$d images found</string>
+    <string name="new_vid_num">%1$d videos found</string>
+    <string name="new_hide_num">Hide (%1$d)</string>
+    <string name="hide_complete_new_image">New images have been hidden sucessfully!</string>
+    <string name="hide_complete_new_vid">New videos have been hidden sucessfully!</string>
+    <string name="uninstall_dialog_title">Uninstall LEO Privacy</string>
+    <string name="uninstall_dialog_content">Before you uninstall LEO Privacy, you have to disable the Advanced Protection. After you disable it, some functions will no longer be available.Are you sure to disable?</string>
+    <string name="open_admin_title">Enable Advanced Protection</string>
+    <string name="open_admin_content">Advanced Protection is not enabled. Clear Data feature of the Anti-Theft and Home Screen Lock are not available. Enable now?</string>
+    <string name="lock_app_list_new_app">New Applications</string>
+    <string name="lock_app_list_all_app">All Applications</string>
+    <string name="lock_app_list_other_app">Other Applications</string>
+    <string name="turn_on_battery_noti">Enable App\'s Power Consumption Notification </string>
+    <string name="turn_off_battery_noti">Disable App‘s Power Consumption Notification </string>
+    <string name="img_hide_cpy_toast">Reading data from the external memory card now, and this action might take a while, especially if your project contains more than a few files.</string>
+    <string name="home_more">More</string>
+    <string name="home_det_tip">Recommend to enable the "Anti-Theft" function</string>
+    <string name="find_new_pic_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> new imeges were detected</string>
+    <string name="find_new_vid_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> new videos were detected</string>
+    <string name="hide_immediately">Hide immediately</string>
+    <string name="hd_found_app">apps to be processed</string>
+    <string name="hd_found_pic">images to be processed</string>
+    <string name="hd_found_vid">videos to be processed</string>
+    <string name="hd_new_app">new apps</string>
+    <string name="hd_new_pic">new images</string>
+    <string name="hd_new_vid">new videos</string>
+    <string name="hd_locked_app">locked apps</string>
+    <string name="hd_hide_pic">hidden images</string>
+    <string name="hd_hide_vid">hidden videos</string>
+    <string name="hd_lock_privacy_title">Lock private apps</string>
+    <string name="hd_lock_privacy_summary">Some new applications have not been unlocked, please lock to protect your privacy</string>
+    <string name="hd_hide_pic_privacy_title">Hide private images</string>
+    <string name="hd_hide_pic_privacy_summary">You have already added some new images, recommend to hide them now.</string>
+    <string name="hd_hide_vid_privacy_title">Hide private videos</string>
+    <string name="hd_hide_vid_privacy_summary">You have already added some new videos, please hide them to protect your privacy</string>
+    <string name="hd_add_locked_app">Add the locked applications</string>
+    <string name="hd_add_hide_pic">Add the hidden images</string>
+    <string name="hd_add_hide_vid">Add the hidden videos</string>
+    <string name="hd_privacy_danger">%1$d privacy risks to be processed</string>
+    <string name="hd_app_danger_tip">Suggest to lock </string>
+    <string name="hd_pic_danger_tip">Suggest to hide</string>
+    <string name="hd_privacy_safe">Privacy status is in good condition</string>
+    <string name="hd_more_guide_tip">Click here to find more features</string>
+    <string name="hd_lock_permisson_tip">Enable the "App Lock" access permission to fix the App Lock problem</string>
+    <string name="hd_lost_permisson_tip">Suggest to enable the "Anti-Theft" function, please click to enter the Anti-Theft page</string>
+    <string name="airsig_tip_toast_text">The theme doesn\'t apply to the Signature Unlock</string>
+    <string name="airsig_tip_toast_update_text">The Signature Unlock key has expired, please update the LEO Privacy for further usage</string>
+    <string name="uninstall_guide_tips">The Advacned Protection was enabled, please click here to uninstall the LEO Privacy</string>
+    <string name="secur_add_num_tip">How Anti-Theft function works?</string>
+    <string name="backup_instr_tip_str">You can send commands backup via SMS to your reserved number.</string>
 </resources>
