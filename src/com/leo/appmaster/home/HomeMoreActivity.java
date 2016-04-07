@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
@@ -41,6 +42,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private RippleView mRvSettingEntry;
 
     private RippleView mRvCallfilterEntry;
+    private RippleView mRvQuickHelperEntry;
     private RippleView mRvWifiEntry;
     private RippleView mRvFlowEntry;
     private RippleView mRvBatteryEntry;
@@ -132,6 +134,8 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         mVLine3 = findViewById(R.id.v_line3);
         mVLine4 = findViewById(R.id.v_line4);
 
+        mRvQuickHelperEntry = (RippleView) findViewById(R.id.rv_home_more_quickhelper);
+        mRvQuickHelperEntry.setOnClickListener(this);
 
         mRvPrivacyContactEntry = (RippleView) findViewById(R.id.rv_home_more_privacycontact);
         mRvPrivacyContactEntry.setOnClickListener(this);
@@ -170,6 +174,9 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.rv_home_more_quickhelper:
+                goToQuickHelper();
+                break;
             case R.id.rv_home_more_privacycontact:
                 goToPrivacyContact();
                 break;
@@ -206,6 +213,11 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             default:
                 break;
         }
+    }
+
+    private void goToQuickHelper() {
+        Intent dlIntent = new Intent(this, QuickHelperActivity.class);
+        startActivity(dlIntent);
     }
 
     private void goToAppUninstall() {
