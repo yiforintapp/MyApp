@@ -138,6 +138,10 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         super.onViewCreated(view, savedInstanceState);
         mDetectPresenter.attachView(this);
         initUI(view);
+
+        PrivacyHelper.getAppPrivacy().reportExposure();
+        PrivacyHelper.getImagePrivacy().reportExposure();
+        PrivacyHelper.getVideoPrivacy().reportExposure();
     }
 
     @Override

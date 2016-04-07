@@ -195,6 +195,11 @@ public abstract class Privacy<T> {
 
     public abstract void jumpAction(Activity activity);
 
+    /**
+     * 展示上报
+     */
+    public abstract void reportExposure();
+
     public String getTag() {
         return "Privacy";
     }

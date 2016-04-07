@@ -99,6 +99,14 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     }
 
     @Override
+    public void reportExposure() {
+        int status = getStatus();
+        switch (status) {
+//            statu
+        }
+    }
+
+    @Override
     public void showNotification() {
         Intent intent = new Intent(mContext, StatusBarEventService.class);
         intent.putExtra(Constants.PRIVACY_ENTER_SCAN_TYPE, getPrivacyType());

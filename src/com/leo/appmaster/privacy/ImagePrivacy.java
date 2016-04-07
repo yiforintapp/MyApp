@@ -103,6 +103,11 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     }
 
     @Override
+    public void reportExposure() {
+
+    }
+
+    @Override
     public void showNotification() {
         Intent intent = new Intent(mContext, StatusBarEventService.class);
         intent.putExtra(Constants.PRIVACY_ENTER_SCAN_TYPE, getPrivacyType());
