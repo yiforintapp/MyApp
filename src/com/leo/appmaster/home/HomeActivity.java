@@ -1667,6 +1667,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
                     mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.UNINSTALL_GUIDE);
                     mUninstallGuideShow = true;
                     LeoLog.e("mMenuList", "open:" + mUninstallGuideShow);
