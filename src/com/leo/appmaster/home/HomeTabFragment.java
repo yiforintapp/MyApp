@@ -275,14 +275,12 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
             switch (view.getId()) {
                 case R.id.home_app_lock_tv:
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");
-                    LockManager mLockManager = (LockManager) MgrContext.
-                            getManager(MgrContext.MGR_APPLOCKER);
-                    LockMode curMode = mLockManager.getCurLockMode();
-                    if (curMode != null && curMode.defaultFlag == 1 &&
-                            !curMode.haveEverOpened) {
+                    LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                    LockMode curMode = lm.getCurLockMode();
+                    if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
                         startRcommendLock(0);
                         curMode.haveEverOpened = true;
-                        mLockManager.updateMode(curMode);
+                        lm.updateMode(curMode);
                     } else {
                         intent = new Intent(getActivity(), AppLockListActivity.class);
                         startActivity(intent);
@@ -295,6 +293,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     intent = new Intent(activity, ImageHideMainActivity.class);
                     activity.startActivity(intent);
                     LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
+
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic");
                     break;
                 case R.id.home_video:
                      //视频隐藏
@@ -303,11 +303,13 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
                     LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvideo");
                     break;
                 case R.id.home_more:
                     LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED,true);
                     intent = new Intent(activity, HomeMoreActivity.class);
                     activity.startActivity(intent);
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "more");
                     // 更多
 //                    Intent intent1 = new Intent(mActivity,PhoneSecurityActivity.class);
 //                    startActivity(intent1);

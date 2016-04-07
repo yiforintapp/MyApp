@@ -45,6 +45,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private static final int TYPE_LOCK = 1;
     private static final int TYPE_NONE = -1;
 
+    private static final String KEY_TYPE = "curr_type";
+
     // 是否显示防盗
     private static boolean sShowLost = false;
 
@@ -267,12 +269,15 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                     mBannerTv.setText(R.string.hd_lost_permisson_tip);
                     mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                     mCurrentType = TYPE_LOST;
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_sh");
                 } else {
                     mBannerTv.setText(R.string.hd_lock_permisson_tip);
                     mBannerIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                     mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mCurrentType = TYPE_LOCK;
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "gd_tips_sh");
                 }
+                mBannerIntent.putExtra(KEY_TYPE, mCurrentType);
             } else if (lostDisabled) {
                 mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                 if (mFromEnter) {
@@ -283,6 +288,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mBannerTv.setText(R.string.hd_lost_permisson_tip);
 
                 mCurrentType = TYPE_LOST;
+                mBannerIntent.putExtra(KEY_TYPE, mCurrentType);
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_sh");
             } else if (usageDisabled) {
                 if (mFromEnter) {
                     mCenterTipRt.setVisibility(View.INVISIBLE);
@@ -294,6 +301,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mBannerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 mCurrentType = TYPE_LOCK;
+                mBannerIntent.putExtra(KEY_TYPE, mCurrentType);
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "gd_tips_sh");
             } else {
                 mCenterTipRt.setVisibility(View.INVISIBLE);
                 mBannerIntent = null;
@@ -562,12 +571,18 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 //中间banner
                 //mDetectPresenter.centerBannerHandler();
                 if (mBannerIntent != null) {
+                    int type = mBannerIntent.getIntExtra(KEY_TYPE, TYPE_NONE);
+                    mBannerIntent.removeExtra(KEY_TYPE);
                     try {
                         mContext.startActivity(mBannerIntent);
-                        if (!mContext.getPackageName().equals(mBannerIntent.getPackage())) {
+                        if (type == TYPE_LOCK) {
+                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "gd_tips_cli");
+
                             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                             lm.filterPackage(mBannerIntent.getPackage(), false);
                             lm.filterSelfOneMinites();
+                        } else if (type == TYPE_LOST) {
+                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_cli");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
