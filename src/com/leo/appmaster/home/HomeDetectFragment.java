@@ -551,11 +551,15 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 //中间banner
                 //mDetectPresenter.centerBannerHandler();
                 if (mBannerIntent != null) {
-                    mContext.startActivity(mBannerIntent);
-                    if (!mContext.getPackageName().equals(mBannerIntent.getPackage())) {
-                        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                        lm.filterPackage(mBannerIntent.getPackage(), false);
-                        lm.filterSelfOneMinites();
+                    try {
+                        mContext.startActivity(mBannerIntent);
+                        if (!mContext.getPackageName().equals(mBannerIntent.getPackage())) {
+                            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                            lm.filterPackage(mBannerIntent.getPackage(), false);
+                            lm.filterSelfOneMinites();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 break;
