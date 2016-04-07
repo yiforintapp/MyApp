@@ -198,18 +198,12 @@ public class GestureLockFragment extends LockFragment implements
 
         boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
 
-        if (isAirsigOn && isAirsigReady) {
-            mViewBottom.setVisibility(View.VISIBLE);
-            if (!isAirSigVaild) {
-                mLockPatternView.setVisibility(View.VISIBLE);
-                mAirSigTouchView.setVisibility(View.GONE);
-                mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
-                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
-                mIvBottom.setBackgroundResource(
-                        R.drawable.reset_airsig_gesture);
-            } else {
-                int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
-                if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+        if (mLockMode == LockManager.LOCK_MODE_PURE) {
+            mViewBottom.setVisibility(View.GONE);
+        } else {
+            if (isAirsigOn && isAirsigReady) {
+                mViewBottom.setVisibility(View.VISIBLE);
+                if (!isAirSigVaild) {
                     mLockPatternView.setVisibility(View.VISIBLE);
                     mAirSigTouchView.setVisibility(View.GONE);
                     mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
@@ -217,19 +211,28 @@ public class GestureLockFragment extends LockFragment implements
                     mIvBottom.setBackgroundResource(
                             R.drawable.reset_airsig_gesture);
                 } else {
-                    mLockPatternView.setVisibility(View.GONE);
-                    mAirSigTouchView.setVisibility(View.VISIBLE);
-                    mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
-                    mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
-                    mIvBottom.setBackgroundResource(
-                            R.drawable.reset_pass_gesture);
+                    int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+                    if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                        mLockPatternView.setVisibility(View.VISIBLE);
+                        mAirSigTouchView.setVisibility(View.GONE);
+                        mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+                        mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+                        mIvBottom.setBackgroundResource(
+                                R.drawable.reset_airsig_gesture);
+                    } else {
+                        mLockPatternView.setVisibility(View.GONE);
+                        mAirSigTouchView.setVisibility(View.VISIBLE);
+                        mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+                        mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
+                        mIvBottom.setBackgroundResource(
+                                R.drawable.reset_pass_gesture);
+                    }
                 }
+
+            } else {
+                mViewBottom.setVisibility(View.GONE);
             }
-
-        } else {
-            mViewBottom.setVisibility(View.GONE);
         }
-
     }
 
     private boolean onTouchThumb(final View v, final MotionEvent event) {

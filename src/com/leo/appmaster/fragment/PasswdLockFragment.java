@@ -337,20 +337,14 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
         boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
 
-        if (isAirsigOn && isAirsigReady) {
-            mViewBottom.setVisibility(View.VISIBLE);
 
-            if (!isAirSigVaild) {
-                mPassLockView.setVisibility(View.VISIBLE);
-                mAirSigTouchView.setVisibility(View.GONE);
-                mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
-                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
-                mIvBottom.setBackgroundResource(
-                        R.drawable.reset_airsig_gesture);
-            } else {
-                int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
+        if (mLockMode == LockManager.LOCK_MODE_PURE) {
+            mViewBottom.setVisibility(View.GONE);
+        } else {
+            if (isAirsigOn && isAirsigReady) {
+                mViewBottom.setVisibility(View.VISIBLE);
 
-                if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                if (!isAirSigVaild) {
                     mPassLockView.setVisibility(View.VISIBLE);
                     mAirSigTouchView.setVisibility(View.GONE);
                     mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
@@ -358,17 +352,28 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     mIvBottom.setBackgroundResource(
                             R.drawable.reset_airsig_gesture);
                 } else {
-                    mPassLockView.setVisibility(View.GONE);
-                    mAirSigTouchView.setVisibility(View.VISIBLE);
-                    mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
-                    mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
-                    mIvBottom.setBackgroundResource(
-                            R.drawable.reset_pass_number);
-                }
-            }
+                    int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.NOMAL_UNLOCK);
 
-        } else {
-            mViewBottom.setVisibility(View.GONE);
+                    if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                        mPassLockView.setVisibility(View.VISIBLE);
+                        mAirSigTouchView.setVisibility(View.GONE);
+                        mShowType = AirSigSettingActivity.NOMAL_UNLOCK;
+                        mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+                        mIvBottom.setBackgroundResource(
+                                R.drawable.reset_airsig_gesture);
+                    } else {
+                        mPassLockView.setVisibility(View.GONE);
+                        mAirSigTouchView.setVisibility(View.VISIBLE);
+                        mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
+                        mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
+                        mIvBottom.setBackgroundResource(
+                                R.drawable.reset_pass_number);
+                    }
+                }
+
+            } else {
+                mViewBottom.setVisibility(View.GONE);
+            }
         }
     }
 
