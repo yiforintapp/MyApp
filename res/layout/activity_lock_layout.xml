@@ -6,7 +6,7 @@
         android:id="@+id/activity_lock_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ctc">
+        android:background="@color/cb">
 
         <com.leo.appmaster.ui.CommonTitleBar
             android:id="@+id/layout_title_bar"

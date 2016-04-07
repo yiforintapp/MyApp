@@ -2,16 +2,7 @@
 package com.leo.appmaster.battery;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -35,17 +26,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.activity.PrivacyOptionActivity;
-import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.animation.ThreeDimensionalRotationAnimation;
-import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.PasswdProtectActivity;
-import com.leo.appmaster.applocker.PasswdTipActivity;
-import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BatteryViewEvent;
@@ -58,7 +41,6 @@ import com.leo.appmaster.ui.CircleArroundView;
 import com.leo.appmaster.ui.CircleArroundView.OnArroundFinishListener;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoHomePopMenu;
-import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.WaveView;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -70,6 +52,9 @@ import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BatteryMainActivity extends BaseFragmentActivity implements OnClickListener {
     private final String TAG = "BatterMainActivity";
@@ -155,6 +140,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         mRlEmpty = (RelativeLayout) findViewById(R.id.rl_empty);
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_battery);
+        mCtbMain.setToolbarColorResource(R.color.battery_view_bg);
         mCtbMain.setToolbarTitle(R.string.hp_device_power);
         mCtbMain.setOptionImageResource(R.drawable.ic_toolbar_more);
         mCtbMain.setOptionMenuVisible(true);

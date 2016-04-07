@@ -1,12 +1,9 @@
 package com.leo.appmaster.home;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -17,9 +14,7 @@ import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.battery.BatteryMainActivity;
 import com.leo.appmaster.battery.BatterySettingActivity;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
-import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -91,6 +86,9 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             findViewById(R.id.rl_backup_content).setVisibility(View.GONE);
             findViewById(R.id.rl_uninstall_content).setVisibility(View.GONE);
             findViewById(R.id.rl_privacycontact_content).setVisibility(View.GONE);
+            findViewById(R.id.v_line_backup).setVisibility(View.GONE);
+            findViewById(R.id.v_line_uninstall).setVisibility(View.GONE);
+            findViewById(R.id.v_line_battery).setVisibility(View.GONE);
         }
     }
 

@@ -179,6 +179,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     private void initUI() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        mTitleBar.setTitleBarColorResource(R.color.cb);
         if (mResetFlag) {
 //            mTitleBar.openBackView();
 //            mTitleBar.setTitle(R.string.reset_passwd);

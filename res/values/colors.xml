@@ -202,4 +202,6 @@
     <color name="cfl">#f0f3f7</color>
 
     <color name="uninstall_guide_bg">#99000000</color>
+    <color name="battery_view_bg">#1167f0</color>
+
 </resources>
