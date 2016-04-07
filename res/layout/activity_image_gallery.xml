@@ -54,6 +54,8 @@
     <GridView
         android:id="@+id/image_gallery_folder"
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:verticalSpacing="12dp"
         android:layout_height="1dp"
         android:layout_gravity="center"
         android:layout_weight="1"

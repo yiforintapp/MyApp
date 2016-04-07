@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -203,31 +204,78 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
+
+
+
+            NewViewHolder viewHolder;
             String path;
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(
-                        R.layout.item_gridview_album, parent, false);
-                viewHolder = new ViewHolder();
-                viewHolder.img = (ImageView) convertView
-                        .findViewById(R.id.img_item_album);
-                viewHolder.txt = (TextView) convertView
-                        .findViewById(R.id.txt_item_album);
+                convertView = getLayoutInflater().inflate(R.layout.item_gridview_album_nobg, parent, false);
+                viewHolder = new NewViewHolder();
+                viewHolder.img = (ImageView) convertView.findViewById(R.id.iv_pic);
+                viewHolder.name = (TextView) convertView.findViewById(R.id.tv_folder_name);
+                viewHolder.amount = (TextView) convertView.findViewById(R.id.tv_folder_size);
+                viewHolder.vicon = (ImageView) convertView.findViewById(R.id.iv_video_icon);
                 convertView.setTag(viewHolder);
             } else {
-                viewHolder = (ViewHolder) convertView.getTag();
+                viewHolder = (NewViewHolder) convertView.getTag();
             }
+            viewHolder.vicon.setVisibility(View.INVISIBLE);
             path = list.get(position).getBitList().get(0).getPath();
-            viewHolder.txt.setText(list.get(position).getName() + "("
-                    + list.get(position).getCount() + ")");
-            mImageLoader.displayImage(ImageDownloader.Scheme.FILE.wrap(path),
-                    viewHolder.img, mOptions, mImageSize);
+            viewHolder.name.setText(list.get(position).getName());
+            viewHolder.amount.setText(list.get(position).getCount()+"");
+            String uri = null;
+            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
+                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
+            } else {
+                uri = ImageDownloader.Scheme.FILE.wrap(path);
+            }
+//            String filePath = "voidefile://" + path;
+            mImageLoader.displayImage(uri, viewHolder.img, mOptions);
             return convertView;
+
+
+
+
+
+
+
+
+
+
+
+//            ViewHolder viewHolder;
+//            String path;
+//            if (convertView == null) {
+//                convertView = getLayoutInflater().inflate(
+//                        R.layout.item_gridview_album, parent, false);
+//                viewHolder = new ViewHolder();
+//                viewHolder.img = (ImageView) convertView
+//                        .findViewById(R.id.img_item_album);
+//                viewHolder.txt = (TextView) convertView
+//                        .findViewById(R.id.txt_item_album);
+//                convertView.setTag(viewHolder);
+//            } else {
+//                viewHolder = (ViewHolder) convertView.getTag();
+//            }
+//            path = list.get(position).getBitList().get(0).getPath();
+//            viewHolder.txt.setText(list.get(position).getName() + "("
+//                    + list.get(position).getCount() + ")");
+//            mImageLoader.displayImage(ImageDownloader.Scheme.FILE.wrap(path),
+//                    viewHolder.img, mOptions, mImageSize);
+//            return convertView;
         }
     }
 
     private static class ViewHolder {
         private ImageView img;
         private TextView txt;
+    }
+
+    private static class NewViewHolder {
+        private ImageView img;
+        private TextView name;
+        private TextView amount;
+        private ImageView vicon;
     }
 }
