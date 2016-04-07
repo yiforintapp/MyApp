@@ -96,10 +96,14 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private void fromIntentHandler() {
         Intent intent = this.getIntent();
         int fromId = intent.getIntExtra(FROM_SECUR_INTENT, 0);
+        LostSecurityManagerImpl securMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         switch (fromId) {
             case FROM_SECUR_GUIDE_INTENT:
                 String toastStrGuide = this.getResources().getString(R.string.secur_open_sucess_toast);
                 openSecurToast(toastStrGuide);
+                if (securMgr.isOpenAdvanceProtect()) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_suc");
+                }
                 break;
             case FROM_ADD_NUM_MSM:
                 String toastStrMsm = this.getResources().getString(R.string.secur_open_sucess_send_msm_toast);
@@ -154,7 +158,11 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             mAdvBt.setVisibility(View.GONE);
             if (mIsOpenBtResum) {
                 openAdvanceProtectDialogTip();
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_auth_suc");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_suc");
             }
+        } else {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_auth");
         }
     }
 
@@ -378,9 +386,11 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
             case R.id.secur_open_adv:
                 mIsOpenBtResum = true;
                 startDeviceItent();
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_auth_cli");
                 break;
             case R.id.secur_mody_bt:
                 startAddSecurNumberIntent();
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_change");
                 break;
             default:
                 break;
@@ -510,6 +520,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mSecurCloseDialg.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                SDKWrapper.addEvent(PhoneSecurityActivity.this,SDKWrapper.P1,"theft","theft_off");
                 LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                 manager.setUsePhoneSecurity(false);
                 Intent intent = new Intent(PhoneSecurityActivity.this, PhoneSecurityGuideActivity.class);

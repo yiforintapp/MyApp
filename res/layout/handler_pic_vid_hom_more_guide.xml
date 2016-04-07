@@ -3,7 +3,7 @@
     android:id="@+id/pic_vid_home_rt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone"
+
     android:background="@android:color/transparent"
     >
 
@@ -13,9 +13,9 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="@dimen/home_guide_marg"
             android:layout_marginRight="@dimen/home_guide_marg"
-            android:background="@drawable/guide_tip_bg_home"
+            android:background="@drawable/bg_home_tip"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/home_guide_marg_up"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true">
 
             <ImageView
@@ -23,20 +23,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:src="@drawable/tips_icon" />
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/icon_home_tip" />
 
             <TextView
                 android:id="@+id/guide_text_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/guide_tip_icon"
-                android:text="@string/home_guide_txt"
+                android:text="@string/hd_more_guide_tip"
                 android:layout_marginRight="10dp"
-                android:textColor="#ffffff"
+                android:textColor="@color/c1"
                 android:maxLines="4"
-                android:textSize="14dp"/>
+                android:textSize="@dimen/f4"/>
 
         </RelativeLayout>
 </RelativeLayout>

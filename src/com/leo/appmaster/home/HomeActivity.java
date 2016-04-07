@@ -54,6 +54,7 @@ import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -112,7 +113,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private LeoPreference mPt = LeoPreference.getInstance();
 
     private IntrudeSecurityManager mISManger;
-//    private HomePrivacyFragment mPrivacyFragment;
+    //    private HomePrivacyFragment mPrivacyFragment;
     private HomeTabFragment mTabFragment;
     private GuideFragment mGuideFragment;
     private HomeScanningFragment mScanningFragment;
@@ -124,7 +125,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private int mHeaderHeight;
     private int mToolbarHeight;
-//    private CommonToolbar mCommonToolbar;
+    //    private CommonToolbar mCommonToolbar;
     private Animation mComingInAnim;
     private Animation mComingOutAnim;
 
@@ -153,6 +154,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private LEOAlarmDialog mUninstallDialog;  // 卸载提示对话框
     private boolean mClickUninstall; // 是否点击卸载按钮
     private boolean mUninstallGuideShow;
+    private static final int MORE_TIP_COUNT = 3;
+    private static final int MORE_TIP_TIME = 5 * 1000;
+    private boolean mIsShowMoreTip;
     private boolean mClickOpenAdmin;
 
     private BroadcastReceiver mLocaleReceiver = new BroadcastReceiver() {
@@ -213,7 +217,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //        if (AppMasterConfig.LOGGABLE) {
 //            printSignature();
 //        }
-
+        setIsShowMoreGuide();
     }
 
     private void printSignature() {
@@ -538,7 +542,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         });
 //        mMoreFragment.setEnable(true);
         /*首页引导*/
-        showHomeGuide();
+//        showHomeGuide();
 
         mTabWhiteBg.setVisibility(View.VISIBLE);
 //        mPrivacyFragment.setShowColorProgress(true);
@@ -1616,15 +1620,24 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
              * Samsung 5.1.1 sys 电池优化权限提示
              */
             boolean samSungTip = AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_HOME_SAMSUNG_TIP);
-            if (!samSungTip) {
-                openAdvanceProtectDialogTip();
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
+//            if (!samSungTip) {
+            boolean isTipDialogTip = openAdvanceProtectDialogTip();
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
+            if (!isTipDialogTip && mIsShowMoreTip) {
+                showHomeMoreGuide();
             }
+//            }
         } else {
             /**
              * Samsung 5.1.1 sys 电池优化权限提示
              */
-            AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_HOME_SAMSUNG_TIP);
+//            boolean samSungTip =  AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_HOME_SAMSUNG_TIP);
+//            if(!samSungTip){
+            if (mIsShowMoreTip) {
+                showHomeMoreGuide();
+            }
+//
+// }
         }
     }
 
@@ -1635,7 +1648,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    private void openAdvanceProtectDialogTip() {
+    private boolean openAdvanceProtectDialogTip() {
+        LeoLog.d("caocao", "openAdvanceProtectDialogTip");
 //        if (mMessageDialog == null) {
 //            mMessageDialog = new LEOAnimationDialog(this);
 //            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -1674,26 +1688,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     LeoPreference.getInstance().putBoolean(PrefConst.KEY_OPEN_ADVA_PROTECT, false);
                 }
             }, 300);
+            return true;
         }
+        return false;
     }
-
-    /*首页引导*/
-    private void showHomeGuide() {
-        LeoPreference leoPreference = LeoPreference.getInstance();
-        boolean pulledEver = leoPreference.getBoolean(PrefConst.KEY_MORE_PULLED, false);
-        boolean picReddot = leoPreference.getBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, false);
-        boolean vidReddot = leoPreference.getBoolean(PrefConst.KEY_VID_REDDOT_EXIST, false);
-        boolean homeGuide = leoPreference.getBoolean(PrefConst.KEY_HOME_GUIDE, false);
-        if (!pulledEver && (picReddot || vidReddot) && !homeGuide) {
-//            if (mMoreFragment != null) {
-//                mMoreFragment.cancelUpArrowAnim();
-//            }
-            mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
-            leoPreference.putBoolean(PrefConst.KEY_HOME_GUIDE, true);
-            GuideFragment.setHomeGuideShowStatus(true);
-        }
-    }
-
 
     private void showGradeDialog() {
         long time = mPt.getLong(PrefConst.KEY_GRADE_TIME, Constants.GRADE_DEFAULT_TIME) * 60 * 60 * 1000;
@@ -1764,4 +1762,47 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     public void setHidePicFinish(boolean b) {
         this.mHidePicFinish = b;
     }
+
+    //首页更多按钮引导
+    private synchronized void showHomeMoreGuide() {
+        if (mGuideFragment != null) {
+            int moreTipCount = LeoSettings.getInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, 0);
+            mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+            int count = moreTipCount + 1;
+            LeoSettings.setInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, count);
+            ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                @Override
+                public void run() {
+                    cancelHomeMoreGuide();
+                }
+            }, MORE_TIP_TIME);
+        }
+    }
+
+    private void setIsShowMoreGuide() {
+        boolean isMoreTip = LeoSettings.getBoolean(PrefConst.KEY_HOME_MORE_TIP, false);
+        int moreTipCount = LeoSettings.getInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, 0);
+        boolean isEnoughMoreTipCount = (moreTipCount > MORE_TIP_COUNT);
+        LeoLog.e("setIsShowMoreGuide", "setIsShowMoreGuide:" + moreTipCount);
+        if (isMoreTip || isEnoughMoreTipCount) {
+            return;
+        }
+        mIsShowMoreTip = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mIsShowMoreTip = false;
+    }
+
+    //取消首页更多按钮引导
+    private void cancelHomeMoreGuide() {
+        if (mGuideFragment != null) {
+            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+            LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_TIP, true);
+        }
+    }
+
+
 }

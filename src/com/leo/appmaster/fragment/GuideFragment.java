@@ -48,7 +48,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private View mRightView;
 
 
-
     /*引导类型*/
     public enum GUIDE_TYPE {
         HOME_MORE_GUIDE, PIC_GUIDE, VIDEO_GUIDE, BATTERY_GUIDE, UNINSTALL_GUIDE
@@ -136,7 +135,10 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    /*首次处理完图片，视频返回首页引导*/
+    /**
+     * PG3.6版本改为“更多”按钮提示
+     * 原：首次处理完图片，视频返回首页引导
+     */
     private void initHomeMoreGuide(View view) {
         ViewStub viewStub = (ViewStub) view.findViewById(R.id.home_more_guide);
         if (viewStub == null) {

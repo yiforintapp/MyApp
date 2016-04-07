@@ -134,12 +134,15 @@ public class StatusBarEventService extends IntentService {
             targetIntent = new Intent(this, AppLockListActivity.class);
             targetIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_app");
         } else if (eventType == EVENT_PRIVACY_IMAGE) {
             targetIntent = new Intent(this, NewHideImageActivity.class);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_pic");
         } else if (eventType == EVENT_PRIVACY_VIDEO) {
             targetIntent = new Intent(this, NewHideVidActivity.class);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_vid");
         } else {
             return;
         }

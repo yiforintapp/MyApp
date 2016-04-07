@@ -72,6 +72,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
     private Animation mAddSecurNumberAnim;
     private TextView mTopTipInstrTv;
     private boolean mIsModfyNum;
+    private boolean mIsInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             mIsModfyNum = false;
         } else {
             mTtileBar.setToolbarTitle(extData);
-            mOpenSecurBt.setText(this.getResources().getString(R.string.secur_mody_sure_bt));
+            mOpenSecurBt.setText(this.getResources().getString(R.string.secur_mody_mum_sure));
             mIsModfyNum = true;
         }
         mPhoneContact = new ArrayList<ContactBean>();
@@ -182,10 +183,10 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_choose");
         ContactBean contact = mPhoneContact.get(position);
         if (!TextUtils.isEmpty(contact.getContactNumber())) {
             mInputEdit.setText(contact.getContactNumber());
+            mIsInput = true;
         }
     }
 
@@ -194,6 +195,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         switch (v.getId()) {
             case R.id.add_bt:
                 addSecurNumHandler();
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_enable");
                 break;
             case R.id.top_tip_instr_tv:
                 Intent intentDet = new Intent(AddSecurityNumberActivity.this, SecurityDetailActivity.class);
@@ -218,6 +220,13 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         if (!Utilities.isEmpty(number)) {
             boolean flag = addSecurNumberHandler(number);
             if (flag) {
+                if (mIsInput) {
+                    //点击联系人输入
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_choose");
+                } else {
+                    //手动输入
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_input");
+                }
                 Intent intent = new Intent(AddSecurityNumberActivity.this, PhoneSecurityActivity.class);
 
                 LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
@@ -269,6 +278,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             String toastTip = getResources().getString(R.string.no_add_secur_number_toast_tip);
             Toast.makeText(this, toastTip, Toast.LENGTH_SHORT).show();
         }
+        mIsInput = false;
     }
 
     /*获取发送短信的指令集介绍*/
@@ -282,6 +292,9 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         switch (buttonView.getId()) {
             case R.id.checkBx:
                 mIsCheckB = isChecked;
+                if (isChecked == false) {
+                SDKWrapper.addEvent(AddSecurityNumberActivity.this,SDKWrapper.P1,"theft","theft_backup_off");
+                }
                 break;
             default:
                 break;

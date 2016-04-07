@@ -354,4 +354,7 @@ public class PrefConst {
     public static final String KEY_NOTIFY_IMG_CONTENT = "notify_img_content";
     public static final String KEY_NOTIFY_VID_TITLE = "notify_vid_title";
     public static final String KEY_NOTIFY_VID_CONTENT = "notify_vid_content";
+    public static final String KEY_OPEN_ALL_SECUR = "open_all_secur";
+    public static final String KEY_HOME_MORE_TIP ="home_more_tip";
+    public static final String KEY_HOME_MORE_TIP_NUM = "home_more_tip_num";
 }

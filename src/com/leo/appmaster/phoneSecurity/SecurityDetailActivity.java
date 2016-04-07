@@ -13,6 +13,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.Utilities;
@@ -33,6 +34,12 @@ public class SecurityDetailActivity extends Activity implements View.OnClickList
         setContentView(R.layout.activity_security_detail);
         initUI();
         initData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SDKWrapper.addEvent(this,SDKWrapper.P1,"theft","theft_order");
     }
 
     private void initUI() {
@@ -60,6 +67,7 @@ public class SecurityDetailActivity extends Activity implements View.OnClickList
             case R.id.secur_bt:
                 //backup instruct button
                 backupInstructsDialog();
+                SDKWrapper.addEvent(SecurityDetailActivity.this,SDKWrapper.P1,"theft","theft_backup");
                 break;
             default:
                 break;
