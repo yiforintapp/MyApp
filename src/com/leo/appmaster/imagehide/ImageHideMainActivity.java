@@ -87,7 +87,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private TextView mTvIgnoreNew;
     private RelativeLayout mRlWholeShowContent;
 
-    private final int REQUEST_CODE_1 = 10;
+    private final int REQUEST_CODE_GO_NEW = 10;
 
     public static final int REQUEST_CODE_OPTION = 1001;
 
@@ -237,14 +237,14 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private void goNewHideImageActivity() {
         Intent intent = new Intent(ImageHideMainActivity.this, NewHideImageActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_1);
+        startActivityForResult(intent, REQUEST_CODE_GO_NEW);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_1 || requestCode == REQUEST_CODE_OPTION) {
+        if (requestCode == REQUEST_CODE_GO_NEW) {
             ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
         }
     }
@@ -415,7 +415,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);
-//        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
     }
 
 

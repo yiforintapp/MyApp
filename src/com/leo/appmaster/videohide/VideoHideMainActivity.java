@@ -100,7 +100,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private boolean mHasShowNew = false;
     public static boolean mIsFromConfirm;
 
-    private final int REQUEST_CODE_1 = 10;
+    private final int REQUEST_CODE_GO_NEW = 10;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -174,7 +174,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         });
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-//        pdm.haveCheckedVid();
     }
 
 
@@ -586,7 +585,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         try {
             startActivityForResult(intent, REQUEST_CODE_OPTION);
-//            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
         } catch (Exception e) {
         }
     }
@@ -690,15 +689,15 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private void goNewHideVActivity() {
         //TODO
         Intent intent = new Intent(this, NewHideVidActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_1);
+        startActivityForResult(intent, REQUEST_CODE_GO_NEW);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_1 || requestCode == REQUEST_CODE_OPTION) {
-            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+        if (requestCode == REQUEST_CODE_GO_NEW) {
+            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
         }
     }
 
