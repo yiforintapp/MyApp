@@ -209,7 +209,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     
     @Override
     public void onBackPressed() {
-
         if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
             mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID, true);
             if (mDialogAskCreateShotcut == null) {
@@ -324,6 +323,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         }
     }
+
+
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()

@@ -19,6 +19,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.imagehide.NewHideImageActivity;
@@ -510,6 +511,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         Privacy privacy = null;
+        LeoPreference table = LeoPreference.getInstance();
         switch (v.getId()) {
             case R.id.lt_det_saft_result_app:
                 //应用扫描安全结果
@@ -522,6 +524,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
                 break;
             case R.id.lt_det_saft_result_img:
+                int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
+                table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count + 1);
                 //图片扫描安全结果
                 //mDetectPresenter.imageSaftHandler();
                 //break;
@@ -532,6 +536,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
                 break;
             case R.id.lt_det_saft_result_video:
+                int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
+                table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
                 //视频扫描安全结果
                 //mDetectPresenter.videoSaftHandler();
                 //break;
