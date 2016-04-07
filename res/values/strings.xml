@@ -1033,147 +1033,114 @@
 
 
     <!-- 3.6 start -->
-    <!-- Text for actionbar -->
-    <string name="airsig_leave">离开</string>
-    <string name="airsig_reset">重设</string>
-    <string name="airsig_help">帮助</string>
-    <string name="airsig_clean">清除资料</string>
-
-    <!-- For verify activity -->
-    <string name="airsig_verify_title">验证签字</string>
-    <string name="airsig_verify_forgot_signature">忘记签字？</string>
-    <string name="airsig_verify_press_hint">按此开始签字验证</string>
-    <string name="airsig_verify_match">验证通过</string>
-    <string name="airsig_verify_not_match">未通过</string>
-    <string name="airsig_verify_not_match_times_left">未通过\n您还可以再试 %d 次</string>
-    <string name="airsig_verify_too_many_fails_wait">尝试太多次未通过\n请等 %,d 秒后重新验证</string>
-
-    <string name="airsig_verify_dialog_title">签名未设定</string>
-    <string name="airsig_verify_dialog_hint">请先设定您的签名</string>
-    <string name="airsig_verify_too_many_fails_alert_title">你已经错误太多次</string>
-    <string name="airsig_verify_too_many_fails_alert_btn">重新登录</string>
-
-    <!-- For training activity -->
-    <string name="airsig_training_title">设定签字</string>
-
-    <!-- Text for recording signature -->
-    <string name="airsig_training_textview_toucharea">按此蓝色区域任一处\n开始写字</string>
-    <string name="airsig_training_toucharea_pressed">写完后\n拇指请离开萤幕</string>
-
-    <!-- Text for training steps -->
-    <string name="airsig_training_step_choose_word_title">请先想好\n要设定的字</string>
-    <string name="airsig_training_step_choose_word_detail">选字建议:\n姓名中的一个字或英文名</string>
-    <string name="airsig_training_step_choose_word_next">我想好了</string>
-    <string name="airsig_training_step_how_to_setup_detail">如何签字:\n1.按住 2.写字 3.放开</string>
-    <string name="airsig_training_step_how_to_setup_next">开始写字</string>
-    <string name="airsig_training_step_first_writing_hint">1.按住 2.写字 3.放开</string>
-    <string name="airsig_training_step_write_again">请再次签写解锁字\n让系统辨识写字特征</string>
-    <string name="airsig_training_progress_hint">特征辨识</string>
-    <string name="airsig_training_progress_message">辨识未完成\n请继续签写</string>
-    <string name="airsig_training_step_completed">辨识完成</string>
-    <string name="airsig_training_step_completed_postive_button">开始使用</string>
-    <string name="airsig_training_step_completed_negative_button">重选喜欢的字</string>
-
-    <!-- Text for training security level -->
-    <string name="airsig_training_security_level_fail_title">您选的字长度不够\n请增加长度或换字</string>
-    <string name="airsig_training_security_level_fail_button">换字或增加长度</string>
-    <string name="airsig_training_security_level_pass_title">已达安全标準\n下一步: 特征辨识</string>
-    <string name="airsig_training_security_level_pass_postive_button">下一步: 特征辨识</string>
-    <string name="airsig_training_security_level_pass_negative_button">重选喜欢的字</string>
-    <string name="airsig_training_security_level_none">安全强度: 不安全</string>
-    <string name="airsig_training_security_level_insufficient">安全强度: 不足</string>
-    <string name="airsig_training_security_level_sufficient">安全强度: 已足够</string>
-
-    <!-- Text for error -->
-    <string name="airsig_training_err_default_button">我知道了</string>
-    <string name="airsig_training_err_invalid_long_signature_title">你写的字太长\n或是写的时间太久</string>
-    <string name="airsig_training_err_invalid_long_signature_detail">建议:\n减少字数或 10 秒内写完</string>
-    <string name="airsig_training_err_invalid_holding_posture">1.请用手机一角当笔尖写字\n2.随性的写，写潦草一点</string>
-    <string name="airsig_training_err_few_wrist1">1.请用手机一角当笔尖写字</string>
-    <string name="airsig_training_err_few_wrist2">2.随性的写，写潦草一点</string>
-    <string name="airsig_training_err_second_signature_too_different_title">您写字的特征\n不固定，请保持稳定</string>
-    <string name="airsig_training_err_second_signature_too_different_detail">建议:\n请看签字教学或重新设定</string>
-    <string name="airsig_training_err_second_signature_too_different_postive_button">重新设定</string>
-    <string name="airsig_training_err_second_signature_too_different_negative_button">看签字教学</string>
-    <string name="airsig_training_err_different_signature_title">此次特征与前几次\n差异太大，不列入纪录</string>
-    <string name="airsig_training_err_different_signature_detail">建议:\n请保持稳定，继续辨识</string>
-    <string name="airsig_training_err_different_signature_postive_button">继续辨识</string>
-    <string name="airsig_training_err_different_signature_negative_button">看签字教学</string>
-    <string name="airsig_training_err_training_failed_title">您写字的特征\n不固定，请保持稳定</string>
-    <string name="airsig_training_err_training_failed_detail">建议:\n请看签字教学并重新设定</string>
-    <string name="airsig_training_err_training_failed_postive_button">看签字教学</string>
-    <string name="airsig_training_err_training_failed_negative_button">重新设定</string>
-    <string name="airsig_training_err_others">有东西坏了</string>
-
-    <!-- More Text for error -->
-    <string name="airsig_training_err_not_found">找不到项目</string>
-    <string name="airsig_training_err_invalid_license">认证码无效</string>
-    <string name="airsig_training_err_invalid_action_index">参数错误：actionIndex</string>
-    <string name="airsig_training_err_user_id">参数错误：userId</string>
-    <string name="airsig_training_err_invalid_signature">参数错误：signature</string>
-    <string name="airsig_training_err_no_sensor">找不到感测元件</string>
-    <string name="airsig_training_err_no_internet">无网路</string>
-
-    <!-- for dialog in training page -->
-    <string name="airsig_training_dialog_confirm_exit_title">离开设定</string>
-    <string name="airsig_training_dialog_confirm_exit_detail">尚未完成设定，您确定要离开？</string>
-    <string name="airsig_training_dialog_confirm_exit_postive_button">离开</string>
-    <string name="airsig_training_dialog_confirm_exit_negative_button">取消</string>
-    <string name="airsig_training_dialog_confirm_reset_title">重置签名</string>
-    <string name="airsig_training_dialog_confirm_reset_detail">是否重置签名，重新设定</string>
-    <string name="airsig_training_dialog_confirm_reset_postive_button">重置</string>
-    <string name="airsig_training_dialog_confirm_reset_negative_button">取消</string>
-
-    <!-- Text for help -->
-    <string name="airsig_training_help_title">全新解锁体验\n用个人写字特征，取代复杂密码</string>
-    <string name="airsig_training_help_button">签字教学</string>
-    <string name="airsig_training_help_bottom_text">快速了解如何签字</string>
-
-    <!-- For tutorial activity -->
-    <string name="airsig_tutorial_title">签字教学</string>
-
-    <!-- Text for input signature -->
-    <string name="airsig_tutorial_textview_toucharea">按此蓝色区域任一处\n开始写字</string>
-    <string name="airsig_tutorial_toucharea_pressed">写完后\n拇指请离开萤幕</string>
-
-    <!-- Text for tutorial steps -->
-    <string name="airsig_tutorial_step_how_to_write_detail">如何签字:\n1.按住 2.写字 3.放开</string>
-    <string name="airsig_tutorial_step_how_to_write_next">开始导引教学</string>
-    <string name="airsig_tutorial_step_write_practice1">1.拇指按住蓝色区域</string>
-    <string name="airsig_tutorial_step_write_practice2">2.用手机一角当笔尖写字</string>
-    <string name="airsig_tutorial_step_write_practice3">3.写完后拇指放开</string>
-    <string name="airsig_tutorial_step_write_practice_success_title">做得很好\n请继续第二个练习</string>
-    <string name="airsig_tutorial_step_write_practice_success_detail">练习二: 将字写得随性潦草\n有个人特色的字可提高安全</string>
-    <string name="airsig_tutorial_step_write_practice_success_next">开始练习</string>
-    <string name="airsig_tutorial_step_wrist_practice">将字写得随性潦草，有个人特色</string>
-    <string name="airsig_tutorial_step_wrist_practice_success_title">做得很好\n请继续最后的练习</string>
-    <string name="airsig_tutorial_step_wrist_practice_success_detail">练习三: 请写任何想写的字\n测试您写字的安全强度</string>
-    <string name="airsig_tutorial_step_wrist_practice_success_next">开始练习</string>
-    <string name="airsig_tutorial_step_choose_word_practice">请试写任何想写的字</string>
-
-    <!-- Text for training security level -->
-    <string name="airsig_tutorial_security_level_result_detail">如何提高安全:\n1.增加字的长度或换字\n2.多用手腕，增加个人特色</string>
-    <string name="airsig_tutorial_security_level_result_positive_button">再试一次</string>
-    <string name="airsig_tutorial_security_level_result_negative_button">结束练习</string>
-    <string name="airsig_tutorial_security_level_result_none">安全强度: 不安全</string>
-    <string name="airsig_tutorial_security_level_result_insufficient">安全强度</string>
-    <string name="airsig_tutorial_security_level_result_sufficient">安全强度</string>
-
-    <!-- Text for error -->
-    <string name="airsig_tutorial_err_default_button">我知道了</string>
-    <string name="airsig_tutorial_err_posture">请用手机一角当笔尖写字\n用笔尖写字会比较顺手</string>
-    <string name="airsig_tutorial_err_few_wrist">将字写得随性潦草\n有个人特色的字可提高安全</string>
-
-    <!-- Text for dialog in tutorial page -->
-    <string name="airsig_tutorial_dialog_confirm_exit_title">离开教学</string>
-    <string name="airsig_tutorial_dialog_confirm_exit_detail">教学未完成，是否离开教学</string>
-    <string name="airsig_tutorial_dialog_confirm_exit_postive_button">离开</string>
-    <string name="airsig_tutorial_dialog_confirm_exit_negative_button">取消</string>
-
-    <!-- Text for Engine Mode -->
-    <string name="airsig_settings_high_secure">高安全模式</string>
-    <string name="airsig_settings_generic">一般模式</string>
-    <string name="airsig_settings_control">控制模式</string>
+    <!-- airsig -->
+    <string name="airsig_leave">Leave</string>
+    <string name="airsig_reset">Reset</string>
+    <string name="airsig_help">Help</string>
+    <string name="airsig_clean">Clear Data</string>
+    <string name="airsig_verify_title">Verification</string>
+    <string name="airsig_verify_forgot_signature">Forgot Password</string>
+    <string name="airsig_verify_press_hint">Thumb on here\nand start signing</string>
+    <string name="airsig_verify_match">Pass</string>
+    <string name="airsig_verify_not_match">Try Again</string>
+    <string name="airsig_verify_not_match_times_left">Ooops!\n%d time(s) left</string>
+    <string name="airsig_verify_too_many_fails_wait">Access is disabled\nTry again in %,d seconds</string>
+    <string name="airsig_verify_dialog_title">Password is not ready</string>
+    <string name="airsig_verify_dialog_hint">Please setup password first</string>
+    <string name="airsig_verify_too_many_fails_alert_title">Access is disabled</string>
+    <string name="airsig_verify_too_many_fails_alert_btn">Login Again</string>
+    <string name="airsig_training_title">Setup Password</string>
+    <string name="airsig_training_textview_toucharea">Thumb on here\nand start signing</string>
+    <string name="airsig_training_toucharea_pressed">Release \nwhen finished</string>
+    <string name="airsig_training_step_choose_word_title">To start off, please \nthink of a word to be set</string>
+    <string name="airsig_training_step_choose_word_detail">Tips:\n try your name</string>
+    <string name="airsig_training_step_choose_word_next">Ready</string>
+    <string name="airsig_training_step_how_to_setup_detail">How:\n1.Thumb on screen\n2.Write\n3.Release</string>
+    <string name="airsig_training_step_how_to_setup_next">Got it</string>
+    <string name="airsig_training_step_first_writing_hint">1.Thumb on screen\n2.Write\n3.Release</string>
+    <string name="airsig_training_step_write_again">Sign again\nfor gesture recognition</string>
+    <string name="airsig_training_progress_hint">Gesture Recognition</string>
+    <string name="airsig_training_progress_message">Not finished.\nSign again\nfor recognition</string>
+    <string name="airsig_training_step_completed">Completed</string>
+    <string name="airsig_training_step_completed_postive_button">Get Started</string>
+    <string name="airsig_training_step_completed_negative_button">Use another word</string>
+    <string name="airsig_training_security_level_fail_title">Use a longer word\nfor higher security</string>
+    <string name="airsig_training_security_level_fail_button">Got it</string>
+    <string name="airsig_training_security_level_pass_title">Well done!\nNext: Gesture Recognition</string>
+    <string name="airsig_training_security_level_pass_postive_button">Next</string>
+    <string name="airsig_training_security_level_pass_negative_button">Use another word</string>
+    <string name="airsig_training_security_level_none">Security Strength: None</string>
+    <string name="airsig_training_security_level_insufficient">Security Strength: Insufficient</string>
+    <string name="airsig_training_security_level_sufficient">Security Strength: Sufficient</string>
+    <string name="airsig_training_err_default_button">Got it</string>
+    <string name="airsig_training_err_invalid_long_signature_title">The chosen word is too long\nor your writing too slow</string>
+    <string name="airsig_training_err_invalid_long_signature_detail">Tips:\nTry a shorter word or finish within 10 seconds</string>
+    <string name="airsig_training_err_invalid_holding_posture">1.Imagine a corner of your phone\nas a pen point\n2. Sign Quickly and Casually</string>
+    <string name="airsig_training_err_few_wrist1">1.Imagine a corner of your phone\nas a pen point</string>
+    <string name="airsig_training_err_few_wrist2">2.Sign Quickly and Casually</string>
+    <string name="airsig_training_err_second_signature_too_different_title">Recognition failed\nPlease sign more consistently</string>
+    <string name="airsig_training_err_second_signature_too_different_detail">Tips:\nGo Tutorial or Try Again</string>
+    <string name="airsig_training_err_second_signature_too_different_postive_button">Start Over</string>
+    <string name="airsig_training_err_second_signature_too_different_negative_button">Go Tutorial</string>
+    <string name="airsig_training_err_different_signature_title">Inconsistent writing\nRecord discarded</string>
+    <string name="airsig_training_err_different_signature_detail">Tips:\nWatch the tutorial and try again</string>
+    <string name="airsig_training_err_different_signature_postive_button">Try Again</string>
+    <string name="airsig_training_err_different_signature_negative_button">Go to Tutorial</string>
+    <string name="airsig_training_err_training_failed_title">Inconsistent writing</string>
+    <string name="airsig_training_err_training_failed_detail">Tips:\nWatch the tutorial and try again</string>
+    <string name="airsig_training_err_training_failed_postive_button">Go to Tutorial</string>
+    <string name="airsig_training_err_training_failed_negative_button">Start Over</string>
+    <string name="airsig_training_err_others">Error</string>
+    <string name="airsig_training_err_not_found">Not found</string>
+    <string name="airsig_training_err_invalid_license">Invalid license</string>
+    <string name="airsig_training_err_invalid_action_index">Invalid action Index</string>
+    <string name="airsig_training_err_user_id">Invalid user ID</string>
+    <string name="airsig_training_err_invalid_signature">Invalid password</string>
+    <string name="airsig_training_err_no_sensor">Sensors not found</string>
+    <string name="airsig_training_err_no_internet">No connection</string>
+    <string name="airsig_training_dialog_confirm_exit_title">Quit</string>
+    <string name="airsig_training_dialog_confirm_exit_detail">Settings is unfinished. Quit?</string>
+    <string name="airsig_training_dialog_confirm_exit_postive_button">Quit</string>
+    <string name="airsig_training_dialog_confirm_exit_negative_button">Cancel</string>
+    <string name="airsig_training_dialog_confirm_reset_title">Reset</string>
+    <string name="airsig_training_dialog_confirm_reset_detail">Start over</string>
+    <string name="airsig_training_dialog_confirm_reset_postive_button">Reset</string>
+    <string name="airsig_training_dialog_confirm_reset_negative_button">Cancel</string>
+    <string name="airsig_training_help_title">Brand new unlocking experience\nReplace password with a unique air password</string>
+    <string name="airsig_training_help_button">Show me how!</string>
+    <string name="airsig_training_help_bottom_text">How to write in the air</string>
+    <string name="airsig_tutorial_title">Tutorial</string>
+    <string name="airsig_tutorial_textview_toucharea">Thumb on blue area \nand start signing</string>
+    <string name="airsig_tutorial_toucharea_pressed">Release\nwhen finished</string>
+    <string name="airsig_tutorial_step_how_to_write_detail">How:\n1.Thumb on screen\n2.Write\n3.Release</string>
+    <string name="airsig_tutorial_step_how_to_write_next">Next</string>
+    <string name="airsig_tutorial_step_write_practice1">1.Thumb on blue area</string>
+    <string name="airsig_tutorial_step_write_practice2">2.Write if you are holding a pen</string>
+    <string name="airsig_tutorial_step_write_practice3">3.Release when finished</string>
+    <string name="airsig_tutorial_step_write_practice_success_title">Excellent! \nNext :Sign quickly and casually</string>
+    <string name="airsig_tutorial_step_write_practice_success_detail">Stylish writing enhances security</string>
+    <string name="airsig_tutorial_step_write_practice_success_next">Next</string>
+    <string name="airsig_tutorial_step_wrist_practice">Sign quickly and casually</string>
+    <string name="airsig_tutorial_step_wrist_practice_success_title">Well done!\nFinal step: Security Check</string>
+    <string name="airsig_tutorial_step_wrist_practice_success_detail">Think of a word and start signing \nSee how secure it is</string>
+    <string name="airsig_tutorial_step_wrist_practice_success_next">Next</string>
+    <string name="airsig_tutorial_step_choose_word_practice">Think of a word\nSee how secure it is</string>
+    <string name="airsig_tutorial_security_level_result_detail">For higher security:\n1.Use a longer word\n2.Sign quickly and casually</string>
+    <string name="airsig_tutorial_security_level_result_positive_button">Use another word</string>
+    <string name="airsig_tutorial_security_level_result_negative_button">Back to setup</string>
+    <string name="airsig_tutorial_security_level_result_none">Security Strength: None</string>
+    <string name="airsig_tutorial_security_level_result_insufficient">Security Strength</string>
+    <string name="airsig_tutorial_security_level_result_sufficient">Security Strength</string>
+    <string name="airsig_tutorial_err_default_button">Got it</string>
+    <string name="airsig_tutorial_err_posture">Imagine a corner of phone\nas pen point</string>
+    <string name="airsig_tutorial_err_few_wrist">Sign quickly and casually\nStyled writing enhances security</string>
+    <string name="airsig_tutorial_dialog_confirm_exit_title">Quit Tutorial</string>
+    <string name="airsig_tutorial_dialog_confirm_exit_detail">Really want to quit?</string>
+    <string name="airsig_tutorial_dialog_confirm_exit_postive_button">Quit</string>
+    <string name="airsig_tutorial_dialog_confirm_exit_negative_button">Cancel</string>
+    <string name="airsig_settings_high_secure">High security mode</string>
+    <string name="airsig_settings_generic">Generic mode</string>
+    <string name="airsig_settings_control">Control mode</string>
 
     <!--3.6-->
     <string name="secur_deta_title_bar">Functional details</string>
