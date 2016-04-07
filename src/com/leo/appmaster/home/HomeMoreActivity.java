@@ -25,6 +25,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
@@ -221,6 +222,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void goToAppUninstall() {
+
         Intent dlIntent = new Intent(this, UninstallActivity.class);
         startActivity(dlIntent);
     }
@@ -237,11 +239,13 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     private void goToBatteryManagement() {
         Intent dlIntent = new Intent(this, BatteryMainActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "battery");
         startActivity(dlIntent);
     }
 
     private void goToFlowManagement() {
         Intent intent = new Intent(this, FlowActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "dataflow");
         startActivity(intent);
     }
 
@@ -249,6 +253,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         int count2 = LeoSettings.getInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, 0);
         LeoSettings.setInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_WIFI_SECURITY, count2 + 1);
         Intent mIntent = new Intent(this, WifiSecurityActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "wifi");
         startActivity(mIntent);
     }
 
@@ -259,16 +264,19 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         if (mIsHasCallFilterRecords) {
             callFilter.putExtra("needMoveToTab2", true);
         }
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "block");
         startActivity(callFilter);
     }
 
     private void goToMainSetting() {
         Intent intent = new Intent(this, MainSettingActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "settings");
         startActivity(intent);
     }
 
     private void goToBatteryScreen() {
         Intent intent = new Intent(this, BatterySettingActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "charge_scr");
         startActivity(intent);
     }
 
@@ -283,6 +291,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             intent = new Intent(this, PhoneSecurityActivity.class);
         }
         try {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "theft");
             startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
@@ -291,6 +300,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     private void goToIntruderPretection() {
         Intent intent = new Intent(this, IntruderprotectionActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "intruder");
         startActivity(intent);
     }
 

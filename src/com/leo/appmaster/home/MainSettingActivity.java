@@ -23,6 +23,7 @@ import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonSettingItem;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -217,8 +218,10 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
                 if (mCsiAdvancedProtect.isChecked()) {
+                    SDKWrapper.addEvent(MainSettingActivity.this, SDKWrapper.P1, "settings", "pro_off");
                     showConfirmDialog();
                 } else {
+                    SDKWrapper.addEvent(MainSettingActivity.this, SDKWrapper.P1, "settings", "pro_on");
                     requestDeviceAdmin();
                 }
             }
@@ -281,9 +284,17 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, component);
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getString(R.string.device_admin_extra));
         try {
-            startActivity(intent);
+            startActivityForResult(intent ,1);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && isOldAdminActive()) {
+            SDKWrapper.addEvent(MainSettingActivity.this, SDKWrapper.P1, "settings", "pro_on_suc");
         }
     }
 
@@ -297,6 +308,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 removeActiveAdmin();
+                SDKWrapper.addEvent(MainSettingActivity.this, SDKWrapper.P1, "settings", "pro_off_suc");
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
