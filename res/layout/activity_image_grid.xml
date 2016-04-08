@@ -38,10 +38,12 @@
             android:listSelector="@null"
             android:numColumns="3"
             android:overScrollMode="never"
-            android:paddingRight="@dimen/pri_new_list_padding"
             android:scrollbars="none"
             android:stretchMode="columnWidth"
-            android:verticalSpacing="8dp" />
+            android:paddingRight="7dp"
+            android:verticalSpacing="7dp" />
+        <!--android:paddingRight="@dimen/pri_new_list_padding"-->
+
 
         <!--<GridView
             android:id="@+id/image_gallery_image"

@@ -150,6 +150,9 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                 .showImageOnLoading(new ColorDrawable(0xd7d7dd))
                 .showImageForEmptyUri(new ColorDrawable(0xd7d7dd))
                 .showImageOnFail(new ColorDrawable(0xd7d7dd))
+//                .showImageOnLoading(R.drawable.loading_icon)
+//                .showImageForEmptyUri(R.drawable.loading_icon)
+//                .showImageOnFail(R.drawable.loading_icon)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .displayer(new FadeInBitmapDisplayer(500))
@@ -386,8 +389,8 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                 }
                 String name = FileOperationUtil.getNoExtNameFromHideFilepath(path);
                 viewHolder.text.setText(name);
-                viewHolder.imageView.setBackgroundDrawable(context.getResources()
-                        .getDrawable(R.drawable.video_loading));
+//                viewHolder.imageView.setBackgroundDrawable(context.getResources()
+//                        .getDrawable(R.drawable.video_loading));
                 String filePath = "voidefile://" + path;
                 mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
             }
