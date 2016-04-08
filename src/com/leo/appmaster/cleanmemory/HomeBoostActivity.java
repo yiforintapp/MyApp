@@ -52,6 +52,8 @@ import java.util.List;
 import java.util.Random;
 
 public class HomeBoostActivity extends Activity {
+	
+	private static final String TAG = "HomeBoostActivity_[DEBUG]";
     private ImageView mIvRocket, mIvCloud;
     private View mStatusBar;
     //private MobvistaEngine mAdEngine;
@@ -264,7 +266,7 @@ public class HomeBoostActivity extends Activity {
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             HomeBoostActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
-                LeoLog.d("广告图片请求好了", "[HomeBoostActivity] onLoadingComplete -> " + imageUri);
+                LeoLog.d(TAG, "[HomeBoostActivity] onLoadingComplete -> " + imageUri);
 				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
 				WrappedCampaign campaign = null;
 				String imgUrl = null;
