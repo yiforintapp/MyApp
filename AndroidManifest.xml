@@ -588,11 +588,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme"/>
         <activity
-            android:name=".applocker.UFOActivity"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/translucent"/>
-        <activity
             android:name=".applocker.ZhiWenActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
