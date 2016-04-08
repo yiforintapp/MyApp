@@ -47,6 +47,7 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -224,7 +225,9 @@ public class HomeBoostActivity extends Activity {
 			@Override
 			public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
 				HomeBoostActivity.this.finish();
-				SDKWrapper.addEvent(HomeBoostActivity.this.getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click",  "ad pos: " + unitID + " click", mAdSource, null);
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("unitId", unitID);
+				SDKWrapper.addEvent(HomeBoostActivity.this.getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "click", mAdSource, map);
 				SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1, "ad_cli",
 						"adv_cnts_bst");
 			}
@@ -237,20 +240,24 @@ public class HomeBoostActivity extends Activity {
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
         WeakReference<HomeBoostActivity> mActivity;
 		List<WrappedCampaign> mCampaign;
+		
+		HashMap<String, String> map  = new HashMap<String, String>();
 
         public AdPreviewLoaderListener (HomeBoostActivity activity, final List<WrappedCampaign> campaigns) {
             mActivity = new WeakReference<HomeBoostActivity>(activity);
             mCampaign = campaigns;
+			
+			map.put("unitId", Constants.UNIT_ID_62);
         }
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_62 + " prepare for load image", mAdSource, null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ready_to", mAdSource, map);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_62 + " load image failed", mAdSource, null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "fail", mAdSource, map);
         }
 
         @Override
@@ -258,7 +265,7 @@ public class HomeBoostActivity extends Activity {
             HomeBoostActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
                 LeoLog.d("广告图片请求好了", "[HomeBoostActivity] onLoadingComplete -> " + imageUri);
-				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_62 + " image size: " + loadedImage.getByteCount(), mAdSource, null);
+				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
 				WrappedCampaign campaign = null;
 				String imgUrl = null;
 				//是否单图
@@ -338,8 +345,9 @@ public class HomeBoostActivity extends Activity {
 			}
 
 		}
-
-		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show",  "ad pos: " + Constants.UNIT_ID_62 + " index: " + index + " adShow", mAdSource, null);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("unitId", Constants.UNIT_ID_62 );
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "show", mAdSource, map);
 		
 		
     }

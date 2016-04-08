@@ -162,7 +162,6 @@ public class ADEngineWrapper {
 		
 		String sdk = (source == 2) ? "Max" : "Mobvista";
 		final TreeMap<String, String> map = new TreeMap<String, String>();
-		map.put("engineType", sdk);
 		map.put("unitId", unitId);
 		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "start_to_loadad", sdk, source, map);
         
@@ -176,13 +175,14 @@ public class ADEngineWrapper {
 						wrappedCampaignList = WrappedCampaign.fromMaxSDK(campaign);
 
 						if (wrappedCampaignList != null) {
-							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ad pos: " + unitId + " state is suc and campaign is ready", source, null);
+							map.put("msg", msg);
+							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ready", source, map);
 						} else {
-							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ad pos: " + unitId + " state is suc and campaign is null", source, null);
+							SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "null", source, map);
 						}
                     } else {
 
-						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "ad pos: " + unitId + " state is failed code: " + code, source, null);
+						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "fail", source, map);
 					}
                     listener.onWrappedAdLoadFinished(code, wrappedCampaignList, msg);
                 }

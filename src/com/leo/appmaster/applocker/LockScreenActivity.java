@@ -1386,19 +1386,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                         /* 开始load 广告大图 */
 				LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for [" + unitId + "] ready: " + campaigns.get(0).getAppName());
+				final HashMap<String, String> map = new HashMap<String, String>();
+				map.put("unitId", unitId);
 				mImageFetcher.loadBitmap(campaigns.get(0).getImageUrl(), new PreviewImageFetcher.ImageFetcherListener() {
 					@Override
 					public void onBitmapLoadStarted(String url) {
 						LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]start to load preview for: " + url);
 
 						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
-								"max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " prepare for load image", mAdSource, null);
+								"max_ad", SDKWrapper.P1, "ad_load_image", "ready_to", mAdSource, map);
 					}
 
 					@Override
 					public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
 						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
-								"max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " image size: " + loadedImage.getByteCount(), mAdSource, null);
+								"max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
 
 						ThreadManager.executeOnUiThread(new Runnable() {
 							@Override
@@ -1490,7 +1492,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					public void onBitmapLoadFailed(String url) {
 						LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + url);
 						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
-								"max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " load image failed", mAdSource, null);
+								"max_ad", SDKWrapper.P1, "ad_load_image", "fail", mAdSource, map);
 					}
 
 					@Override
@@ -1509,8 +1511,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		 */
 		@Override
 		public void onWrappedAdClick(WrappedCampaign campaign, final String unitID) {
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("unitId", unitID);
 			SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
-					"max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
+					"max_ad", SDKWrapper.P1, "ad_click",  "click", mAdSource, map);
 			ThreadManager.executeOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -2919,7 +2923,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					snapforClick((ViewGroup) v.getParent());
 				}
 			});
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + unitId + " adShow", mAdSource, null);
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("unitId", unitId);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "show", mAdSource, map);
 			return true;
 		}
 
