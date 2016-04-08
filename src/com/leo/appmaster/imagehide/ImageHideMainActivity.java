@@ -295,7 +295,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
-                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+                    }
+                });
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
