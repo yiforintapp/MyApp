@@ -108,7 +108,7 @@ public abstract class Privacy<T> {
             }
         }
 
-        if (getNewCount() > 0 && getTotalCount() != getNewCount()) {
+        if (getNewCount() > 0 /*&& getTotalCount() != getNewCount()*/) {
             return STATUS_NEW_ADD;
         }
 
