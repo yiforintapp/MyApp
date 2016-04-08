@@ -36,14 +36,12 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case SET_DONE:
-//                    LeoPreference.getInstance().putBoolean(AirSigActivity.AIRSIG_SWITCH, true);
                     LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, true);
                     mIvShowOne.setVisibility(View.VISIBLE);
                     mIvShowTwo.setVisibility(View.GONE);
-//                    LeoPreference.getInstance().putInt(UNLOCK_TYPE, AIRSIG_UNLOCK);
                     LeoSettings.setInteger(UNLOCK_TYPE, AIRSIG_UNLOCK);
-
                     showMessage(getString(R.string.airsig_settings_activity_toast));
+                    SDKWrapper.addEvent(AirSigSettingActivity.this, SDKWrapper.P1, "settings", "airsig_def");
                     break;
             }
         }
@@ -130,6 +128,7 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
                 mIvShowTwo.setVisibility(View.VISIBLE);
 //                LeoPreference.getInstance().putInt(UNLOCK_TYPE, NOMAL_UNLOCK);
                 LeoSettings.setInteger(UNLOCK_TYPE, NOMAL_UNLOCK);
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "password_def");
                 break;
         }
     }
@@ -146,6 +145,7 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
         }
 
         if (isAirsigOn) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_def");
             //select
             mIvShowOne.setVisibility(View.VISIBLE);
             mIvShowTwo.setVisibility(View.GONE);
@@ -171,11 +171,10 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
             public void onClick(DialogInterface dialog, int which) {
 
                 if (isAirsigReady) {
-//                    LeoPreference.getInstance().putBoolean(AirSigActivity.AIRSIG_SWITCH, true);
+                    SDKWrapper.addEvent(AirSigSettingActivity.this, SDKWrapper.P1, "settings", "airsig_def");
                     LeoSettings.setBoolean(AirSigActivity.AIRSIG_SWITCH, true);
                     mIvShowOne.setVisibility(View.VISIBLE);
                     mIvShowTwo.setVisibility(View.GONE);
-//                    LeoPreference.getInstance().putInt(UNLOCK_TYPE, AIRSIG_UNLOCK);
                     LeoSettings.setInteger(UNLOCK_TYPE, AIRSIG_UNLOCK);
                 } else {
                     setAirsig();

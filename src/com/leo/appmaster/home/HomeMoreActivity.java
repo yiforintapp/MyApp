@@ -188,6 +188,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         mTvDefultLockType = (TextView) findViewById(R.id.tv_airsig_summary_two);
 
         if (isAigSigCanUse) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_sh");
             //签字解锁部分
             mTvAirSigSwitch.setText(STRID_SIGNATURE_LOCK);
             //设置默认解锁方式部分
@@ -246,6 +247,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void goToOpenAirSig() {
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig");
         Intent intent = new Intent(this, AirSigActivity.class);
         startActivity(intent);
     }
