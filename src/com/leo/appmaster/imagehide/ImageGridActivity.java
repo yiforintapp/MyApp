@@ -400,7 +400,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 mClickList.add(mPicturesList.get(position));
                 mClickPosList.add((Integer) position);
             } else {
-                cView.setImageResource(R.drawable.ic_check_normal_n);//pic_choose_normal
+                cView.setImageResource(R.drawable.ic_media_check_normal);//pic_choose_normal
                 mClickList.remove(mPicturesList.get(position));
                 mClickPosList.remove((Integer) position);
             }
@@ -462,7 +462,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                     if (mClickList.contains(item)) {
                         holder.clickView.setImageResource(R.drawable.ic_check_checked);
                     } else {
-                        holder.clickView.setImageResource(R.drawable.ic_check_normal_n);
+                        holder.clickView.setImageResource(R.drawable.ic_media_check_normal);
                     }
                 }
                 String uri = null;
