@@ -11,6 +11,7 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -532,9 +533,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.video_loading)
-                .showImageForEmptyUri(R.drawable.video_loading)
-                .showImageOnFail(R.drawable.video_loading)
+                .showImageOnLoading(new ColorDrawable(0xd7d7dd))
+                .showImageForEmptyUri(new ColorDrawable(0xd7d7dd))
+                .showImageOnFail(new ColorDrawable(0xd7d7dd))
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
@@ -609,8 +610,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     null);
             ImageView imageView = (ImageView) view.findViewById(R.id.zoom_image_view);
             imageView.setTag(path);
-            imageView.setImageDrawable(VideoViewPager.this.getResources()
-                    .getDrawable(R.drawable.video_loading));
+//            imageView.setImageDrawable(VideoViewPager.this.getResources()
+//                    .getDrawable(R.drawable.video_loading));
             String filePath = "voidefile://" + path;
             mImageLoader.displayImage(filePath, imageView, mOptions);
             imageView.setOnClickListener(new OnClickListener() {

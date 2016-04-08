@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
@@ -185,8 +186,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
     private void initImageLoader() {
         mOptions = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.photo_bg_loding)
-                .showImageOnFail(R.drawable.photo_bg_loding)
+//                .showImageForEmptyUri(R.drawable.photo_bg_loding)
+//                .showImageOnFail(R.drawable.photo_bg_loding)
+                .showImageOnLoading(new ColorDrawable(0xd7d7dd))
+                .showImageForEmptyUri(new ColorDrawable(0xd7d7dd))
+                .showImageOnFail(new ColorDrawable(0xd7d7dd))
                 .resetViewBeforeLoading(true).cacheOnDisk(false).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
