@@ -146,16 +146,8 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
 
     }
 
-//    protected void onIgnoreClick(boolean direct) {
-//        mActivity.onIgnoreClick(0, null);
-//    }
-
     protected void setProcessContent(int stringId) {
         mProcessTv.setText(stringId);
-    }
-
-    protected void setProcessContent(String string) {
-        mProcessTv.setText(string);
     }
 
     @Override
@@ -190,6 +182,7 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
                     mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
                             getResources().getDrawable(R.drawable.no_select_all_selector), null,
                             null);
+                    onSelectAllClick();
                 } else {
                     LeoLog.v(TAG, "cancelSelectAllGroup");
                     mAdapter.deselectAll();
@@ -229,35 +222,5 @@ public abstract class NewFragment extends Fragment implements AbsListView.OnScro
         }
     }
 
-    private void initIgnoreDlg() {
-        if (mIgnoreDlg != null) return;
-
-        mIgnoreDlg = new LEOAlarmDialog(getActivity());
-        String content = getString(R.string.pri_pro_ignore_dialog);
-        mIgnoreDlg.setContent(content);
-        mIgnoreDlg.setCanceledOnTouchOutside(false);
-        mIgnoreDlg.setLeftBtnListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", getSkipCancelDesc());
-                mIgnoreDlg.dismiss();
-            }
-        });
-        mIgnoreDlg.setRightBtnListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", getSkipConfirmDesc());
-//                onIgnoreClick(false);
-                mIgnoreDlg.dismiss();
-            }
-        });
-    }
-
-    protected abstract int getIgnoreStringId();
-
-    protected abstract String getSkipConfirmDesc();
-
-    protected abstract String getSkipCancelDesc();
-
-    protected abstract String getFolderFullDesc();
+    protected abstract void onSelectAllClick();
 }

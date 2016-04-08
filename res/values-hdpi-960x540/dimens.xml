@@ -325,4 +325,5 @@
     <dimen name="ad_view_width">335dp</dimen>
     <dimen name="ad_view_height">284dp</dimen>
     <dimen name="ad_ll_margin_top">256dp</dimen>
+    <dimen name="add_num_cb_padding">10dp</dimen>
 </resources>

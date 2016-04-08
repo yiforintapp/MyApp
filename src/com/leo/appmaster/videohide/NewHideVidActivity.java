@@ -19,6 +19,7 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.DataUtils;
@@ -52,6 +53,8 @@ public class NewHideVidActivity extends BaseFragmentActivity {
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         pdm.haveCheckedVid();
+
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_Video", "new_vid");
     }
 
     private void initLoadData() {

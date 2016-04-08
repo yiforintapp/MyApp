@@ -290,6 +290,7 @@ public abstract class FolderNewFragment<T> extends Fragment implements AbsListVi
                 mSelectBtn.setCompoundDrawablesWithIntrinsicBounds(null,
                         getResources().getDrawable(R.drawable.select_all_selector), null,
                         null);
+                onSelectAllClick();
             }
         }
 
@@ -313,15 +314,13 @@ public abstract class FolderNewFragment<T> extends Fragment implements AbsListVi
         return null;
     }
 
+    protected abstract void onSelectAllClick();
+
     protected abstract int getListViewId();
 
     protected abstract void onIgnoreClick();
 
     protected abstract void onProcessClick();
-
-    protected abstract void onIgnoreConfirmClick();
-
-    protected abstract void onIgnoreCancelClick();
 
     protected abstract void onFloatingCheckClick();
 

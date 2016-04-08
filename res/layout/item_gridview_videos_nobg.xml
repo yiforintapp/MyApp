@@ -55,8 +55,8 @@
         <ImageView
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:src="@drawable/folder_icon_n" />
 
         <TextView

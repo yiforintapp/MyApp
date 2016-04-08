@@ -51,6 +51,8 @@
     </RelativeLayout>
 
     <GridView
+        android:layout_marginTop="10dp"
+        android:verticalSpacing="12dp"
         android:id="@+id/Video_hide_folder"
         android:layout_width="match_parent"
         android:layout_height="1dp"
