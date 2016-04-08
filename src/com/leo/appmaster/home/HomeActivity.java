@@ -30,6 +30,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Base64;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -710,13 +711,13 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mMenuTextColorId = getResources().getColor(R.color.home_menu_text);
     }
 
-//    @Override
-//    public boolean dispatchKeyEvent(KeyEvent event) {
-//        if (mUninstallGuideShow) {
-//            cancelGuide();
-//        }
-//        return super.dispatchKeyEvent(event);
-//    }
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (mUninstallGuideShow) {
+            cancelGuide();
+        }
+        return super.dispatchKeyEvent(event);
+    }
 
     @Override
     public void onBackPressed() {
