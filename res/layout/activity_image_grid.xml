@@ -26,6 +26,7 @@
             android:visibility="gone" />
 
         <com.leo.appmaster.ui.HeaderGridView
+            android:layout_marginTop="10dp"
             android:id="@+id/image_gallery_image"
             android:layout_width="match_parent"
             android:layout_height="1dp"

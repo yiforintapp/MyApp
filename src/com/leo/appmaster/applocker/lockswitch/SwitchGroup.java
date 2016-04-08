@@ -34,7 +34,7 @@ public abstract class SwitchGroup {
 
     protected abstract void setLockNum(int num);
 
-    protected abstract boolean isLockNow(LockMode mode);
+    public abstract boolean isLockNow(LockMode mode);
 
     public boolean getScreenShowed() {
         return mPreTable.getBoolean(SCREEN_SHOWED, false);

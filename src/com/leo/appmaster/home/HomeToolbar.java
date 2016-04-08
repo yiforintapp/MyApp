@@ -15,11 +15,9 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.PrivacyOptionActivity;
-import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
@@ -152,9 +150,6 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
                 if (AppMasterConfig.LOGGABLE) {
 //                    Intent intent = new Intent(getContext(), DebugActivity.class);
 //                    getContext().startActivity(intent);
-                    Intent intent1 = new Intent(getContext(), AppLockListActivity.class);
-                    intent1.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
-                    getContext().startActivity(intent1);
                 }
                 break;
         }
