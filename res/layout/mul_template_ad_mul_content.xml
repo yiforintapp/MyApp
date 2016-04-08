@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="212dp"
+    android:layout_height="@dimen/boost_template_layout_height"
     android:orientation="vertical"
     android:layout_marginRight="5dp"
     android:gravity="center_horizontal"
@@ -9,8 +9,8 @@
     >
     <RelativeLayout 
         android:id="@+id/rl1"
-        android:layout_height="60dp"
-        android:layout_width="286dp"
+        android:layout_height="@dimen/boost_template_item_height"
+        android:layout_width="@dimen/boost_template_item_width"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -18,8 +18,8 @@
         >
          <ImageView
             android:id="@+id/imageView1"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/boost_template_item_icon_width"
+            android:layout_height="@dimen/boost_template_item_icon_height"
             android:scaleType="centerCrop"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
@@ -40,8 +40,8 @@
     
         <Button
             android:id="@+id/button1"
-            android:layout_width="66dp"
-            android:layout_height="29dp"
+            android:layout_width="@dimen/boost_template_item_btn_width"
+            android:layout_height="@dimen/boost_template_item_btn_height"
             android:layout_alignParentRight="true"
             android:layout_marginRight="6dp"
             android:layout_centerVertical="true"
@@ -53,8 +53,8 @@
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl2"
-        android:layout_height="60dp"
-        android:layout_width="286dp"
+        android:layout_height="@dimen/boost_template_item_height"
+        android:layout_width="@dimen/boost_template_item_width"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -62,8 +62,8 @@
         >
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/boost_template_item_icon_width"
+            android:layout_height="@dimen/boost_template_item_icon_height"
             android:scaleType="centerCrop"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
@@ -84,8 +84,8 @@
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="66dp"
-            android:layout_height="29dp"
+            android:layout_width="@dimen/boost_template_item_btn_width"
+            android:layout_height="@dimen/boost_template_item_btn_height"
             android:layout_alignParentRight="true"
             android:layout_marginRight="6dp"
             android:layout_centerVertical="true"
@@ -97,8 +97,8 @@
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl3"
-        android:layout_height="60dp"
-        android:layout_width="286dp"
+        android:layout_height="@dimen/boost_template_item_height"
+        android:layout_width="@dimen/boost_template_item_width"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
@@ -107,8 +107,8 @@
         >
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/boost_template_item_icon_width"
+            android:layout_height="@dimen/boost_template_item_icon_height"
             android:scaleType="centerCrop"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
@@ -129,8 +129,8 @@
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="66dp"
-            android:layout_height="29dp"
+            android:layout_width="@dimen/boost_template_item_btn_width"
+            android:layout_height="@dimen/boost_template_item_btn_height"
             android:layout_alignParentRight="true"
             android:layout_marginRight="6dp"
             android:layout_centerVertical="true"
