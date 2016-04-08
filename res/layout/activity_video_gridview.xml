@@ -24,13 +24,32 @@
             android:columnWidth="109dp"
             android:divider="@null"
             android:headerDividersEnabled="false"
-            android:listSelector="@null"
+            android:listSelector="@color/transparent"
             android:numColumns="3"
             android:overScrollMode="never"
             android:paddingRight="@dimen/pri_new_list_padding"
             android:scrollbars="none"
             android:stretchMode="columnWidth"
             android:verticalSpacing="8dp" />
+
+        <!--<com.leo.appmaster.ui.HeaderGridView
+            android:id="@+id/image_gallery_image"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:columnWidth="109dp"
+            android:divider="@null"
+            android:headerDividersEnabled="false"
+            android:listSelector="@null"
+            android:numColumns="3"
+            android:overScrollMode="never"
+            android:paddingRight="@dimen/pri_new_list_padding"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp" />-->
+
+
 
 
         <!--<GridView
