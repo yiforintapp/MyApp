@@ -390,11 +390,12 @@
     <dimen name="home_det_tip_arrow_marg_right">15dp</dimen>
     <integer name="shield_left_offset">2</integer>
     <integer name="shield_right_offset">2</integer>
-    <integer name="shield_top_offset">4</integer>
+    <integer name="shield_top_offset">16</integer>
+    <integer name="shield_offset">12</integer>
     <integer name="shield_center_blue_offset_x">33</integer>
-    <integer name="shield_center_blue_offset_y">5</integer>
+    <integer name="shield_center_blue_offset_y">11</integer>
     <integer name="shield_center_red_offset_x">48</integer>
-    <integer name="shield_center_red_offset_y">5</integer>
+    <integer name="shield_center_red_offset_y">11</integer>
     <integer name="shield_top_y_trans">38</integer>
     <integer name="shield_left_x_trans">34</integer>
     <integer name="shield_right_x_trans">34</integer>
@@ -424,4 +425,5 @@
     <dimen name="det_result_saft_content_margin_top">14dp</dimen>
     <dimen name="det_result_danger_content_margin_top">5dp</dimen>
     <dimen name="add_num_cb_padding">10dp</dimen>
+    <dimen name="detect_shield_margin_tip">115dp</dimen>
 </resources>
