@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
+import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.AirSigSettingActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
@@ -26,6 +30,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CommonSettingItem;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
@@ -36,6 +41,12 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
  * Created by chenfs on 16-3-28.
  */
 public class HomeMoreActivity extends BaseActivity implements View.OnClickListener {
+    private final int STRID_SIGNATURE_LOCK = R.string.airsig_settings_activity_title;
+    private final int STRID_GESTURE_OR_PSW = R.string.gesture_or_password;
+    private final int STRID_OPENED = R.string.has_opened;
+    private final int STRID_DID_NOT_OPEN = R.string.did_not_open;
+    private final int STRID_DEFAULT_LOCK_TYPE = R.string.airsig_settings_activity_two_set_title;
+
     private CommonToolbar mCtbMain;
     private RippleView mRvIntruderEntry;
     private RippleView mRvFindLostEntry;
@@ -61,6 +72,10 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private View mVLine3;
     private View mVLine4;
 
+    private RippleView mAirSigSwitch;
+    private RippleView mDefultLockType;
+    private TextView mTvAirSigSwitch;
+    private TextView mTvDefultLockType;
 
     private boolean mIsHasCallFilterRecords = false;
 
@@ -99,6 +114,37 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         checkCallFilterRecordCount();
+        updateAirSig();
+    }
+
+    private void updateAirSig() {
+        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+        if (!isAirSigVaild) {
+            mTvAirSigSwitch.setText(STRID_DID_NOT_OPEN);
+            mTvDefultLockType.setText(STRID_GESTURE_OR_PSW);
+            return;
+        }
+
+        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+        if (isAirsigOn) {
+            mTvAirSigSwitch.setText(STRID_OPENED);
+        } else {
+            mTvAirSigSwitch.setText(STRID_DID_NOT_OPEN);
+        }
+
+        int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE,
+                AirSigSettingActivity.NOMAL_UNLOCK);
+
+        if (isAirsigOn) {
+            if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
+                mTvDefultLockType.setText(STRID_GESTURE_OR_PSW);
+            } else {
+                mTvDefultLockType.setText(STRID_SIGNATURE_LOCK);
+            }
+        } else {
+            mTvDefultLockType.setText(STRID_GESTURE_OR_PSW);
+        }
+
     }
 
     @Override
@@ -127,9 +173,35 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initUI() {
+        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
 
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
         mCtbMain.setToolbarTitle(R.string.lock_more);
+
+        //签字解锁部分
+        mAirSigSwitch = (RippleView) findViewById(R.id.rv_airsig_visi);
+        mAirSigSwitch.setOnClickListener(this);
+        mTvAirSigSwitch = (TextView) findViewById(R.id.tv_airsig_summary);
+        //设置默认解锁方式部分
+        mDefultLockType = (RippleView) findViewById(R.id.rv_airsig_visi_two);
+        mDefultLockType.setOnClickListener(this);
+        mTvDefultLockType = (TextView) findViewById(R.id.tv_airsig_summary_two);
+
+        if (isAigSigCanUse) {
+            //签字解锁部分
+            mTvAirSigSwitch.setText(STRID_SIGNATURE_LOCK);
+            //设置默认解锁方式部分
+            mTvDefultLockType.setText(STRID_DEFAULT_LOCK_TYPE);
+            LeoLog.d("testUse", "can use");
+        } else {
+            View lineView = findViewById(R.id.white_line_airsig);
+            lineView.setVisibility(View.GONE);
+            View lineViewTwo = findViewById(R.id.line_airsig_two);
+            lineViewTwo.setVisibility(View.GONE);
+            mAirSigSwitch.setVisibility(View.GONE);
+            mDefultLockType.setVisibility(View.GONE);
+            LeoLog.d("testUse", "can not use");
+        }
 
         mVLine2 = findViewById(R.id.v_line2);
         mVLine3 = findViewById(R.id.v_line3);
@@ -170,6 +242,17 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         mRlWifi = (RelativeLayout) findViewById(R.id.rl_wifi_content);
         mRlFlowManagement = (RelativeLayout) findViewById(R.id.rl_flow_content);
         mRlBatteryManagement = (RelativeLayout) findViewById(R.id.rl_battery_content);
+
+    }
+
+    private void goToOpenAirSig() {
+        Intent intent = new Intent(this, AirSigActivity.class);
+        startActivity(intent);
+    }
+
+    private void gotoSetAirSigLock() {
+        Intent intent = new Intent(this, AirSigSettingActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -210,6 +293,12 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.rv_home_more_setting:
                 goToMainSetting();
+                break;
+            case R.id.rv_airsig_visi:
+                goToOpenAirSig();
+                break;
+            case R.id.rv_airsig_visi_two:
+                gotoSetAirSigLock();
                 break;
             default:
                 break;
