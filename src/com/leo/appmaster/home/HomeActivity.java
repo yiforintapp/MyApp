@@ -180,6 +180,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private Privacy mImagePrivacy;
     private Privacy mVideoPrivacy;
     private HomeDetectFragment mDetectFragment;
+    private boolean mJudgeShowGradeTip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -332,6 +333,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mNeedDialogShow = true;
         mClickUninstall = false;
         mClickOpenAdmin = false;
+        mJudgeShowGradeTip = false;
 
     }
 
@@ -860,12 +862,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         /* 判断是否打开高级保护，显示“卸载”项 */
         addUninstallPgTOMenueItem();
-        openAdvanceProtectDialogHandler();  //和其他对话框可能同时出现
-        showGradeDialog();
-        judgeShowGradeTip();
-        if (!LeoEventBus.getDefaultBus().isRegistered(this)) {
-            LeoEventBus.getDefaultBus().register(this);
-        }
+        //多个对话框同时出现逻辑处理
+        moreDialogTipHandler();
 
         if (mClickUninstall) {
             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "uninstall_no");
@@ -881,6 +879,18 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             }
         }
 
+    }
+
+    private void moreDialogTipHandler() {
+        openAdvanceProtectDialogHandler();
+        showGradeDialog();
+        judgeShowGradeTip();
+        if (!mJudgeShowGradeTip && mNeedDialogShow && !mUninstallGuideShow && mIsShowMoreTip) {
+            showHomeMoreGuide();
+        }
+        if (!LeoEventBus.getDefaultBus().isRegistered(this)) {
+            LeoEventBus.getDefaultBus().register(this);
+        }
     }
 
     private void addUninstallPgTOMenueItem() {
@@ -932,6 +942,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank");
                         Intent intent = new Intent(this, GradeTipActivity.class);
                         startActivity(intent);
+                        mJudgeShowGradeTip = true;
                     }
                 }
             }
@@ -1621,11 +1632,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
              */
             boolean samSungTip = AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_HOME_SAMSUNG_TIP);
 //            if (!samSungTip) {
-            boolean isTipDialogTip = openAdvanceProtectDialogTip();
+            openAdvanceProtectDialogTip();
             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
-            if (!isTipDialogTip && mIsShowMoreTip) {
-                showHomeMoreGuide();
-            }
+
 //            }
         } else {
             /**
@@ -1633,10 +1642,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
              */
 //            boolean samSungTip =  AutoStartGuideList.samSungSysTip(getApplicationContext(), PrefConst.KEY_HOME_SAMSUNG_TIP);
 //            if(!samSungTip){
-            if (mIsShowMoreTip) {
-                showHomeMoreGuide();
-            }
-//
 // }
         }
     }
@@ -1648,7 +1653,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    private boolean openAdvanceProtectDialogTip() {
+    private void openAdvanceProtectDialogTip() {
         LeoLog.d("caocao", "openAdvanceProtectDialogTip");
 //        if (mMessageDialog == null) {
 //            mMessageDialog = new LEOAnimationDialog(this);
@@ -1683,14 +1688,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 public void run() {
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
                     mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.UNINSTALL_GUIDE);
-                    mUninstallGuideShow = true;
                     LeoLog.e("mMenuList", "open:" + mUninstallGuideShow);
                     LeoPreference.getInstance().putBoolean(PrefConst.KEY_OPEN_ADVA_PROTECT, false);
                 }
             }, 300);
-            return true;
+            mUninstallGuideShow = true;
         }
-        return false;
     }
 
     private void showGradeDialog() {

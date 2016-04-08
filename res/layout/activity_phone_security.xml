@@ -88,12 +88,15 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/secur_num_titl_tv"
-                    android:text="13856932225"
+                    android:layout_toLeftOf="@+id/changer_bt"
+                    android:layout_marginRight="5dp"
+                    android:maxLines="2"
                     android:textColor="@color/c2"
                     android:textSize="@dimen/f4"/>
 
                 <com.leo.appmaster.ui.MaterialRippleLayout
                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/changer_bt"
                     android:layout_width="@dimen/secur_mody_bt_width"
                     android:layout_height="@dimen/secur_mody_bt_height"
                     android:layout_alignParentRight="true"

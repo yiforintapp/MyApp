@@ -917,7 +917,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             @Override
             public void onAnimationEnd(Animator animation) {
                 missView.setVisibility(View.INVISIBLE);
-                top.setTranslationY(0);
+//                top.setTranslationY(0);
             }
 
             @Override

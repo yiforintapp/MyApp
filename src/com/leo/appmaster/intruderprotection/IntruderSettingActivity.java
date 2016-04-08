@@ -247,7 +247,7 @@ public class IntruderSettingActivity extends BaseActivity implements View.OnClic
         boolean isTip = AppMasterPreference.getInstance(this)
                 .getAdvanceProtectOpenSuccessDialogTip();
         if (isTip) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
             openAdvanceProtectDialogTip();
         }
     }
