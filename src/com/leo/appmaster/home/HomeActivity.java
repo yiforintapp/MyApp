@@ -1796,6 +1796,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mIsShowMoreTip = false;
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     //取消首页更多按钮引导
     private void cancelHomeMoreGuide() {
         if (mGuideFragment != null) {

@@ -14,12 +14,12 @@
     <RelativeLayout
         android:id="@+id/home_anim_rl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/detect_shield_margin_tip"
+        android:gravity="center_horizontal">
         <include
             android:id="@+id/det_result_ly"
             layout="@layout/home_detect_result_layout"
-            android:layout_marginTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"/>
@@ -120,7 +120,7 @@
         android:textColor="@color/c1"
         android:textSize="@dimen/f4"
         android:layout_marginTop="25dp"
-        android:visibility="invisible"
+        android:visibility="gone"
     />
     <!--中间建议提示banner-->
     <RelativeLayout
@@ -129,7 +129,7 @@
         android:layout_height="@dimen/home_det_tip_height"
         android:layout_alignParentBottom="true"
         android:background="#3d000000"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/det_tip_icon_iv"

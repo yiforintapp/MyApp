@@ -1,18 +1,10 @@
 package com.leo.appmaster.privacy;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.NotificationUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +100,11 @@ public abstract class Privacy<T> {
             if (getProceedCount() > 0) {
                 return STATUS_PROCEED;
             } else {
-                return STATUS_FOUND;
+                if (getTotalCount() > 0) {
+                    return STATUS_FOUND;
+                } else {
+                    return STATUS_TOADD;
+                }
             }
         }
 

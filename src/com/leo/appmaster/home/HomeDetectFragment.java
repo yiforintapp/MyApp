@@ -172,14 +172,15 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         } else {
             setDangerShieldView(true, mFromEnter);
         }
-        if (mPrivacyConut > 0) {
-            mDangerDetTip.setVisibility(View.VISIBLE);
-            String str = this.getResources().getString(R.string.hd_privacy_danger);
-            String format = String.format(str, mPrivacyConut);
-            mDangerDetTip.setText(format);
-        } else {
-            mDangerDetTip.setVisibility(View.INVISIBLE);
-        }
+        //中间隐私风险待处理
+//        if (mPrivacyConut > 0) {
+//            mDangerDetTip.setVisibility(View.VISIBLE);
+//            String str = this.getResources().getString(R.string.hd_privacy_danger);
+//            String format = String.format(str, mPrivacyConut);
+//            mDangerDetTip.setText(format);
+//        } else {
+//            mDangerDetTip.setVisibility(View.INVISIBLE);
+//        }
 
         if (mLastPrivacyApp && !mPrivacyApp) {
             LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
@@ -247,7 +248,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         int lastType = mCurrentType;
         if ((lastType == TYPE_LOCK && !usageDisabled) || (lastType == TYPE_LOST && !lostDisabled)) {
             // 之前显示的，返回后已开启，则不显示
-            mCenterTipRt.setVisibility(View.INVISIBLE);
+            mCenterTipRt.setVisibility(View.GONE);
             mCurrentType = TYPE_NONE;
             return;
         }
@@ -256,12 +257,12 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         Privacy videoPrivacy = PrivacyHelper.getVideoPrivacy();
         if (appPrivacy.isDangerous() || imagePrivacy.isDangerous() || videoPrivacy.isDangerous()) {
             // 不显示中间banner
-            mCenterTipRt.setVisibility(View.INVISIBLE);
+            mCenterTipRt.setVisibility(View.GONE);
             mCurrentType = TYPE_NONE;
         } else {
             if (lostDisabled && usageDisabled) {
                 if (mFromEnter) {
-                    mCenterTipRt.setVisibility(View.INVISIBLE);
+                    mCenterTipRt.setVisibility(View.GONE);
                 } else {
                     mCenterTipRt.setVisibility(View.VISIBLE);
                 }
@@ -281,7 +282,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             } else if (lostDisabled) {
                 mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                 if (mFromEnter) {
-                    mCenterTipRt.setVisibility(View.INVISIBLE);
+                    mCenterTipRt.setVisibility(View.GONE);
                 } else {
                     mCenterTipRt.setVisibility(View.VISIBLE);
                 }
@@ -292,7 +293,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_sh");
             } else if (usageDisabled) {
                 if (mFromEnter) {
-                    mCenterTipRt.setVisibility(View.INVISIBLE);
+                    mCenterTipRt.setVisibility(View.GONE);
                 } else {
                     mCenterTipRt.setVisibility(View.VISIBLE);
                 }
@@ -304,7 +305,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 mBannerIntent.putExtra(KEY_TYPE, mCurrentType);
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "gd_tips_sh");
             } else {
-                mCenterTipRt.setVisibility(View.INVISIBLE);
+                mCenterTipRt.setVisibility(View.GONE);
                 mBannerIntent = null;
 
                 mCurrentType = TYPE_NONE;
@@ -597,23 +598,47 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     //盾牌位置初始化
     private void shieldPositionInit() {
         Context context = getActivity();
+        //安全盾牌
         mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_top_offset)));
         mShieldLeftIv.setTranslationX(-DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_left_offset)));
+        mShieldLeftIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
+
         mShieldRightIv.setTranslationX(DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_right_offset)));
-        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_center_blue_offset)));
+        mShieldRightIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
 
+        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_blue_offset_x)));
+        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
+
+        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_blue_offset_y)));
+        //危险盾牌
         mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_top_offset)));
+
         mShieldDangerLeftIv.setTranslationX(-DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_left_offset)));
+        mShieldDangerLeftIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
+
         mShieldDangerRightIv.setTranslationX(DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_right_offset)));
+        mShieldDangerRightIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
+
         mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_center_red_offset)));
+                context, getResources().getInteger(R.integer.shield_center_red_offset_x)));
+        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
+
+        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_red_offset_y)));
 
     }
 

@@ -84,7 +84,10 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     private void initAirSig() {
         ASSetting setting = new ASSetting();
-        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
+//        setting.engineParameters = ASEngine.ASEngineParameters.Unlock;
+        setting.engineParameters.signatureComplexityRequirement =
+                ASEngine.ASSignatureComplexityRequirement.Simple;
+        setting.engineParameters.maxFailedTrialsInARow = 0;
         ASGui.getSharedInstance(AppMasterApplication.getInstance(), null, setting, null); // Database is in /data/data/...
     }
 
