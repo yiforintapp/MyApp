@@ -1145,7 +1145,7 @@
     <string name="airsig_training_dialog_confirm_exit_postive_button">Выйти</string>
     <string name="airsig_training_dialog_confirm_exit_negative_button">Отменить</string>
     <string name="airsig_training_dialog_confirm_reset_title">Перенастройка</string>
-    <string name="airsig_training_dialog_confirm_reset_detail"></string>
+    <string name="airsig_training_dialog_confirm_reset_detail">Начинать</string>
     <string name="airsig_training_dialog_confirm_reset_postive_button">Перенастройка</string>
     <string name="airsig_training_dialog_confirm_reset_negative_button">Отменить</string>
     <string name="airsig_training_help_title">Абсолютно новый опыт разблокировки\n замена пароля с неповторимым воздухом пароль</string>
