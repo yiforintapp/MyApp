@@ -61,7 +61,13 @@ public class AskAddToBlacklistActivity extends BaseActivity {
     public static final int CASE_ALERT_FLOW = 5;
 
     private LEOAlarmDialog mShareDialog;
-    
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
