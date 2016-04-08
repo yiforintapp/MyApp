@@ -10,8 +10,14 @@ import android.content.Intent;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.lockswitch.BlueToothLockSwitch;
+import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
+import com.leo.appmaster.applocker.lockswitch.WifiLockSwitch;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -82,6 +88,74 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     @Override
     public int getPrivacyLimit() {
         return LeoSettings.getInteger(PrefConst.KEY_NOTIFY_APP_COUNT, 5);
+    }
+
+    @Override
+    public int getTotalCount() {
+        int count = super.getTotalCount();
+
+        SwitchGroup wifi = new WifiLockSwitch();
+        SwitchGroup bluetooth = new BlueToothLockSwitch();
+
+        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        LockMode lockMode = lm.getCurLockMode();
+        if (lockMode == null) {
+            return count;
+        }
+        if (wifi.isLockNow(lockMode)) {
+            count++;
+        }
+
+        if (bluetooth.isLockNow(lockMode)) {
+            count++;
+        }
+        return count;
+    }
+
+    @Override
+    public int getNewCount() {
+        int count = super.getNewCount();
+        if (isConsumed()) {
+            return count;
+        }
+        SwitchGroup wifi = new WifiLockSwitch();
+        SwitchGroup bluetooth = new BlueToothLockSwitch();
+
+        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        LockMode lockMode = lm.getCurLockMode();
+        if (lockMode == null) {
+            return count;
+        }
+        if (wifi.isLockNow(lockMode)) {
+            count++;
+        }
+
+        if (bluetooth.isLockNow(lockMode)) {
+            count++;
+        }
+        return count;
+    }
+
+    @Override
+    public int getProceedCount() {
+        int count = super.getProceedCount();
+
+        SwitchGroup wifi = new WifiLockSwitch();
+        SwitchGroup bluetooth = new BlueToothLockSwitch();
+
+        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        LockMode lockMode = lm.getCurLockMode();
+        if (lockMode == null) {
+            return count;
+        }
+        if (wifi.isLockNow(lockMode)) {
+            count++;
+        }
+
+        if (bluetooth.isLockNow(lockMode)) {
+            count++;
+        }
+        return count;
     }
 
     @Override
