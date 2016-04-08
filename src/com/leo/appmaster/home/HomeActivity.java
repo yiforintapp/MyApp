@@ -1766,7 +1766,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     //首页更多按钮引导
     private synchronized void showHomeMoreGuide() {
         if (mGuideFragment != null) {
-            int moreTipCount = LeoSettings.getInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, 0);
+            int moreTipCount = LeoSettings.getInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, 1);
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
             int count = moreTipCount + 1;
             LeoSettings.setInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, count);
@@ -1781,7 +1781,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void setIsShowMoreGuide() {
         boolean isMoreTip = LeoSettings.getBoolean(PrefConst.KEY_HOME_MORE_TIP, false);
-        int moreTipCount = LeoSettings.getInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, 0);
+        int moreTipCount = LeoSettings.getInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, 1);
         boolean isEnoughMoreTipCount = (moreTipCount > MORE_TIP_COUNT);
         LeoLog.e("setIsShowMoreGuide", "setIsShowMoreGuide:" + moreTipCount);
         if (isMoreTip || isEnoughMoreTipCount) {
@@ -1800,7 +1800,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private void cancelHomeMoreGuide() {
         if (mGuideFragment != null) {
             mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
-            LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_TIP, true);
         }
     }
 

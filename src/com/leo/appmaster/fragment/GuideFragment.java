@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -322,11 +323,12 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.pic_vid_home_rt:
                 mRootView.setVisibility(View.GONE);
-                int id = EventId.EVENT_HOME_GUIDE_UP_ARROW;
-                String msg = EVENT_HOME_GUIDE_MSG;
-                CommonEvent event = new CommonEvent(id, msg);
-                LeoEventBus.getDefaultBus().post(event);
-                GuideFragment.HOME_GUIDE_SHOW_STATUS = false;
+//                int id = EventId.EVENT_HOME_GUIDE_UP_ARROW;
+//                String msg = EVENT_HOME_GUIDE_MSG;
+//                CommonEvent event = new CommonEvent(id, msg);
+//                LeoEventBus.getDefaultBus().post(event);
+//                GuideFragment.HOME_GUIDE_SHOW_STATUS = false;
+                LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_TIP, true);
                 break;
             case R.id.pic_vid_edit_rt:
                 mRootView.setVisibility(View.GONE);
