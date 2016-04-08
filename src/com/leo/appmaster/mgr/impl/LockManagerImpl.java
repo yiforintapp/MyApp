@@ -1689,6 +1689,7 @@ public class LockManagerImpl extends LockManager {
             stopLockService();
 
         } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+            LeoLog.d("checkScreen", "Intent.ACTION_SCREEN_ON");
             startLockService();
             CheckNewBootstrap.checkProxy();
             mHandler.postDelayed(new Runnable() {
@@ -1713,9 +1714,13 @@ public class LockManagerImpl extends LockManager {
     }
 
     private void checkScreenOn() {
+        LeoLog.d("checkScreen", "checkScreenOn");
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         if (!pref.isAutoLock()) {
+            LeoLog.d("checkScreen", "return");
             return;
+        } else {
+            LeoLog.d("checkScreen", "not return");
         }
         List<String> list = getCurLockList();
         if (list == null) {

@@ -339,6 +339,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
 
         if (mLockMode == LockManager.LOCK_MODE_PURE) {
+            //锁屏界面 帮助小贴士进入LockScreen
             mViewBottom.setVisibility(View.GONE);
         } else {
             if (isAirsigOn && isAirsigReady) {
