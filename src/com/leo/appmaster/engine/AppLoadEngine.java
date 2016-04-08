@@ -1,19 +1,6 @@
 
 package com.leo.appmaster.engine;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -66,6 +53,19 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.PackageChangedListener;
+
+import java.io.File;
+import java.lang.reflect.Method;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 
 public class AppLoadEngine extends BroadcastReceiver {
     private static final String TAG = "AppLoadEngine";
@@ -1091,7 +1091,8 @@ public class AppLoadEngine extends BroadcastReceiver {
                 || detector.isHomePackage(packageName)) {
             return;
         }
-        if (AppMasterPreference.getInstance(mContext).isNewAppLockTip()) {
+
+        if (/*AppMasterPreference.getInstance(mContext).isNewAppLockTip()*/false) {  // 3.6暂时关闭提示
             sWorker.postDelayed(new Runnable() {
                 @Override
                 public void run() {
