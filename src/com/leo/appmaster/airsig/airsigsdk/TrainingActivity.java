@@ -873,7 +873,9 @@ public class TrainingActivity extends Activity {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             newFragment.onExpandEnd();
-
+                            if (mMainPage.getVisibility() != View.VISIBLE) {
+                                mMainPage.setVisibility(View.VISIBLE);
+                            }
                         }
                     }, duration);
                 }
