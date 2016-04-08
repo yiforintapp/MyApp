@@ -79,6 +79,7 @@ public class LockManagerImpl extends LockManager {
 
     public static final String SAMSUNG = "samsung";
     public static final String SAMSUNG_SETTINGS = "com.android.settings";
+    public static boolean isScreenOnYet = false;
 
     private static final int NO_CACHE = -9999;
 
@@ -1689,7 +1690,7 @@ public class LockManagerImpl extends LockManager {
             stopLockService();
 
         } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-            LeoLog.d("checkScreen", "Intent.ACTION_SCREEN_ON");
+            isScreenOnYet = true;
             startLockService();
             CheckNewBootstrap.checkProxy();
             mHandler.postDelayed(new Runnable() {
@@ -1776,6 +1777,7 @@ public class LockManagerImpl extends LockManager {
                 pref.setUnlocked(false);
             }
         }
+        isScreenOnYet = false;
     }
 
     public class TimeLockOperation implements Runnable {

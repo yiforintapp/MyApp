@@ -4,7 +4,6 @@ package com.leo.appmaster.applocker;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -37,7 +36,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     private Preference mTheme, mLockSetting, mResetPasswd, mChangeProtectQuestion,
             mChangePasswdTip, mChangeLockTime;
 
-    private CheckBoxPreference mAutoLock, mLockerClean, mHideLockLine;
+    private CheckBoxPreference mAutoLock, mLockerClean, mHideLockLine, mLockTip;
 //    mForbidUninstall
     private Preference mLockerTheme;
     private Preference mSetProtect;
@@ -78,6 +77,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
         mLockerClean = (CheckBoxPreference) findPreference("app_lock_clean");
         mHideLockLine = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_HIDE_LOCK_LINE);
+        mLockTip = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP);
         mSetProtect = findPreference(AppMasterPreference.PREF_SET_PROTECT);
         mLockSetting = (Preference) findPreference(AppMasterPreference.PREF_LOCK_SETTING);
         mResetPasswd = (Preference) findPreference("change_passwd");
@@ -131,6 +131,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         }
         mLockerClean.setOnPreferenceChangeListener(this);
         mHideLockLine.setOnPreferenceChangeListener(this);
+        mLockTip.setOnPreferenceChangeListener(this);
         mTheme.setOnPreferenceClickListener(this);
         mChangeProtectQuestion.setOnPreferenceClickListener(this);
         mChangePasswdTip.setOnPreferenceClickListener(this);
@@ -333,6 +334,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mHideLockLine.setChecked((Boolean) newValue);
             AppMasterPreference.getInstance(LockOptionActivity.this)
                     .setHideLine((Boolean) newValue);
+        } else if (AppMasterPreference.PREF_NEW_APP_LOCK_TIP.equals(key)) {
+            mLockTip.setChecked((Boolean) newValue);
+            AppMasterPreference.getInstance(LockOptionActivity.this)
+                    .setNewAppLockTip((Boolean) newValue);
         }
         return false;
     }

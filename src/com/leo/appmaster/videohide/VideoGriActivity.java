@@ -145,11 +145,12 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
         gotoBindService();
     }
 
+
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
-                .showImageOnLoading(new ColorDrawable(0xd7d7dd))
-                .showImageForEmptyUri(new ColorDrawable(0xd7d7dd))
-                .showImageOnFail(new ColorDrawable(0xd7d7dd))
+                .showImageOnLoading(R.drawable.img_vid_loading)
+                .showImageForEmptyUri(R.drawable.img_vid_loading)
+                .showImageOnFail(R.drawable.img_vid_loading)
 //                .showImageOnLoading(R.drawable.loading_icon)
 //                .showImageForEmptyUri(R.drawable.loading_icon)
 //                .showImageOnFail(R.drawable.loading_icon)

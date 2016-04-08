@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -44,9 +45,11 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.core.ImageSize;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.ObjectAnimator;
@@ -292,7 +295,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
-                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+                    }
+                });
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
@@ -361,7 +369,17 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void initImageLoder() {
-        mOptions = ImagePreviewUtil.getPreviewOptions();
+        mOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.img_vid_loading)
+                .showImageForEmptyUri(R.drawable.img_vid_loading)
+                .showImageOnFail(R.drawable.img_vid_loading)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .displayer(new FadeInBitmapDisplayer(500))
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
         mImageSize = ImagePreviewUtil.getPreviewSize();
         mImageLoader = ImageLoader.getInstance();
     }

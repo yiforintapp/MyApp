@@ -726,11 +726,19 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //            return;
 //        }
         LeoLog.e("mMenuList", "onBackPressed");
-        if (mDrawerLayout.isDrawerOpen(mMenuList)) {
+//        if (mDrawerLayout.isDrawerOpen(mMenuList)) {
+//            if (mUninstallGuideShow) {
+//                cancelGuide();
+//            }
+//            mDrawerLayout.closeDrawer(mMenuList);
+//            return;
+//        }
+        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             if (mUninstallGuideShow) {
                 cancelGuide();
             }
-            mDrawerLayout.closeDrawer(mMenuList);
+            mDrawerLayout.closeDrawer(Gravity.START);
+
             return;
         }
 
@@ -1673,8 +1681,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //        String content = getString(R.string.prot_open_suc_tip_cnt);
 //        mMessageDialog.setContent(content);
 //        mMessageDialog.show();
-        if (!mDrawerLayout.isDrawerVisible(mMenuList)) {
-            mDrawerLayout.openDrawer(mMenuList);
+//        if (!mDrawerLayout.isDrawerVisible(mMenuList)) {
+//            mDrawerLayout.openDrawer(mMenuList);
+//        }
+        if (!mDrawerLayout.isDrawerVisible(Gravity.START)) {
+            mDrawerLayout.openDrawer(Gravity.START);
         }
         if (mMenuItems != null && mMenuItems.size() > 0) {
             int topViewHeight = (int) getResources().getDimension(R.dimen.toolbar_height)

@@ -54,6 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:text="@string/hd_new_app"
+                    android:textSize="@dimen/f6"
                     android:textColor="@color/c150"/>
             </LinearLayout>
         </RelativeLayout>
@@ -169,7 +170,7 @@
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
                     android:textColor="@color/cb2"
-                    android:textSize="@dimen/f6"/>
+                    android:textSize="9dp"/>
 
                 <TextView
                     android:id="@+id/det_saft_img_tv"
@@ -177,6 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:text="@string/hd_new_pic"
+                    android:textSize="@dimen/f6"
                     android:textColor="@color/c150"/>
             </LinearLayout>
         </RelativeLayout>
@@ -290,7 +292,7 @@
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
                     android:textColor="@color/cb2"
-                    android:textSize="@dimen/f6"/>
+                    android:textSize="9dp"/>
 
                 <TextView
                     android:id="@+id/det_saft_video_tv"
@@ -298,6 +300,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:text="@string/hd_new_vid"
+                    android:textSize="@dimen/f6"
                     android:textColor="@color/c150"/>
             </LinearLayout>
         </RelativeLayout>
