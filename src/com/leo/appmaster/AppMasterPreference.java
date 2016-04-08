@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.preference.PreferenceManager;
 
-import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.LockRecommentTable;
@@ -776,7 +774,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean isNewAppLockTip() {
-        return LeoSettings.getBoolean(PREF_NEW_APP_LOCK_TIP, true);
+        return LeoSettings.getBoolean(PREF_NEW_APP_LOCK_TIP, false);
+    }
+
+    public void setNewAppLockTip(boolean b) {
+         LeoSettings.setBoolean(PREF_NEW_APP_LOCK_TIP, b);
     }
 
     public void setHideLine(boolean isHide) {

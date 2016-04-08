@@ -1092,7 +1092,7 @@ public class AppLoadEngine extends BroadcastReceiver {
             return;
         }
 
-        if (/*AppMasterPreference.getInstance(mContext).isNewAppLockTip()*/false) {  // 3.6暂时关闭提示
+        if (AppMasterPreference.getInstance(mContext).isNewAppLockTip()) {
             sWorker.postDelayed(new Runnable() {
                 @Override
                 public void run() {
