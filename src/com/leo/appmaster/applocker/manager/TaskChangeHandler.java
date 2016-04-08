@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -16,6 +17,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.LockManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
 
 public class TaskChangeHandler {
@@ -223,6 +225,7 @@ public class TaskChangeHandler {
             AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,
                     System.currentTimeMillis());
 
+            LeoLog.d("checkScreen", "get in");
             List<String> lockList = lockManager.getCurLockList();
             boolean lock = false;
             if (lockList != null) {
@@ -233,6 +236,12 @@ public class TaskChangeHandler {
                 }
             }
             if (lock) {
+
+                if (Build.VERSION.SDK_INT > 19 && LockManagerImpl.isScreenOnYet) {
+                    LockManagerImpl.isScreenOnYet = false;
+                    return;
+                }
+
                 LeoLog.d("Track Lock Screen",
                         "apply lockscreen form TaskChangeHandler");
                 LeoLog.d("checkScreen", "lock");
@@ -241,6 +250,7 @@ public class TaskChangeHandler {
                 }
             }
         } else {
+            LeoLog.d("checkScreen", "not get in");
             mLastRuningActivity = activity;
         }
     }
