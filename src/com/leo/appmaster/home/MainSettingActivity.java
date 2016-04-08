@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -27,6 +28,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonSettingItem;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -45,7 +47,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     private final int STRID_CHANGE_LOCK_TYPE = R.string.change_gesture_or_password;
 
     private CommonToolbar mCtbMain;
-
+    private LEOAnimationDialog mMessageDialog;
     private CommonSettingItem mCsiChangeGstOrPsw;
     private CommonSettingItem mCsiPswQuestion;
     private CommonSettingItem mCsiPswTip;
@@ -224,7 +226,36 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && isOldAdminActive()) {
             SDKWrapper.addEvent(MainSettingActivity.this, SDKWrapper.P1, "settings", "pro_on_suc");
+            openAdvanceProtectDialogHandler();
         }
+    }
+
+    private void openAdvanceProtectDialogHandler() {
+        boolean isTip = AppMasterPreference.getInstance(this)
+                .getAdvanceProtectOpenSuccessDialogTip();
+        if (isTip) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
+            openAdvanceProtectDialogTip();
+        }
+    }
+
+    private void openAdvanceProtectDialogTip() {
+        if (mMessageDialog == null) {
+            mMessageDialog = new LEOAnimationDialog(this);
+            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mMessageDialog != null) {
+                        mMessageDialog = null;
+                    }
+                    AppMasterPreference.getInstance(MainSettingActivity.this)
+                            .setAdvanceProtectOpenSuccessDialogTip(false);
+                }
+            });
+        }
+        String content = getString(R.string.prot_open_suc_tip_cnt);
+        mMessageDialog.setContent(content);
+        mMessageDialog.show();
     }
 
     private void showConfirmDialog() {
