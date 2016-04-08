@@ -39,8 +39,8 @@
 
                         <ImageView
                             android:id="@+id/home_ic_applcok_img"
-                            android:layout_width="@dimen/home_tab_ic_size"
-                            android:layout_height="@dimen/home_tab_ic_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:src="@drawable/icon_home_app" />
 
@@ -82,8 +82,8 @@
 
                 <ImageView
                     android:id="@+id/home_ic_img_img"
-                    android:layout_width="@dimen/home_tab_ic_size"
-                    android:layout_height="@dimen/home_tab_ic_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/icon_home_pic" />
 
@@ -122,8 +122,8 @@
 
                 <ImageView
                     android:id="@+id/home_ic_video"
-                    android:layout_width="@dimen/home_tab_ic_size"
-                    android:layout_height="@dimen/home_tab_ic_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/icon_home_video" />
 
@@ -169,14 +169,15 @@
 
                         <ImageView
                             android:id="@+id/home_ic_more"
-                            android:layout_width="@dimen/home_tab_ic_size"
-                            android:layout_height="@dimen/home_tab_ic_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:src="@drawable/icon_home_more" />
 
                         <TextView
                             style="@style/LockListTabText"
                             android:layout_below="@id/home_ic_more"
+                            android:layout_centerHorizontal="true"
                             android:text="@string/home_more" />
 
                     </RelativeLayout>

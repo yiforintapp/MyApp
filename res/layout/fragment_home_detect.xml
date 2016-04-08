@@ -120,7 +120,7 @@
         android:textColor="@color/c1"
         android:textSize="@dimen/f4"
         android:layout_marginTop="25dp"
-        android:visibility="invisible"
+        android:visibility="gone"
     />
     <!--中间建议提示banner-->
     <RelativeLayout
@@ -129,7 +129,7 @@
         android:layout_height="@dimen/home_det_tip_height"
         android:layout_alignParentBottom="true"
         android:background="#3d000000"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/det_tip_icon_iv"

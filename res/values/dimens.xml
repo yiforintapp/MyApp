@@ -391,8 +391,10 @@
     <integer name="shield_left_offset">2</integer>
     <integer name="shield_right_offset">2</integer>
     <integer name="shield_top_offset">4</integer>
-    <integer name="shield_center_blue_offset">33</integer>
-    <integer name="shield_center_red_offset">48</integer>
+    <integer name="shield_center_blue_offset_x">33</integer>
+    <integer name="shield_center_blue_offset_y">5</integer>
+    <integer name="shield_center_red_offset_x">48</integer>
+    <integer name="shield_center_red_offset_y">5</integer>
     <integer name="shield_top_y_trans">38</integer>
     <integer name="shield_left_x_trans">34</integer>
     <integer name="shield_right_x_trans">34</integer>
