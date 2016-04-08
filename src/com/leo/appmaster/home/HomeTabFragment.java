@@ -283,6 +283,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         lm.updateMode(curMode);
                     } else {
                         intent = new Intent(getActivity(), AppLockListActivity.class);
+                        LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
                         startActivity(intent);
                     }
                     break;
