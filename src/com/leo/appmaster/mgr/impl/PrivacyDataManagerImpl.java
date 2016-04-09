@@ -68,7 +68,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     private static int mScore = 0;
     private int mScanAddPicNum = 0;
     private int mScanAddVidNum = 0;
-
+    private int hideAllPicNum = 0;
     private ImageCryptor mImageCryptor;
 
     public PrivacyDataManagerImpl() {
@@ -287,10 +287,17 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     }
 
     @Override
+    public int getHideAllPicNum() {
+        return hideAllPicNum;
+    }
+
+
+    @Override
     public int onHideAllPic(List<String> mString) {
         // 大量图片的情况，每隐藏一张图片就通知更新UI，造成卡顿，并且分数错乱
 //        mMediaStoreChangeObserver.stopObserver();
         try {
+            hideAllPicNum = 0;
             int newAddPicNum = getAddPicNum();
             int num = mString.size();
             for (int i = 0; i < num; i++) {
@@ -307,6 +314,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                                 mContext);
                         FileOperationUtil.deleteImageMediaEntry(
                                 path, mContext);
+                        hideAllPicNum++;
                     }
                 }
             }
@@ -319,7 +327,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         } finally {
 //            mMediaStoreChangeObserver.startObserver();
         }
-
 
     }
 
@@ -1213,6 +1220,35 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
         map.put("mediaType", isImage ? "image_dis" : "video_dis");
         SDKWrapper.reportSkyfallExtra(mContext, "media_disappear", label, map);
+    }
+
+    public int getHidePicsRealNum() {
+        int num = 0;
+        Uri uri = MediaStore.Files.getContentUri("external");
+        String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaStore.MediaColumns.DATA
+                + " LIKE '%.leotmi'";
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
+                    MediaStore.MediaColumns.DATE_ADDED + " desc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor.getString
+                            (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    File f = new File(path);
+                    if (f.exists()) {
+                        num++;
+                    }
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+        return num;
     }
 
     @Override

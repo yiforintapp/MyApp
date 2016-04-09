@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -72,6 +73,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     private final int DELETE_DIALOG_TYPE = 1;
     public final static int CANCEL_HIDE = 26;
     public final static int CANCEL_HIDE_FINISH = 27;
+    private int mProcessNum = 0;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -86,11 +88,41 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                     break;
                 case CANCEL_HIDE_FINISH:
                     String isSuccess = (String) msg.obj;
+                    checkLostPic();
                     onPostDo(isSuccess);
                     break;
             }
         }
     };
+
+    private void checkLostPic() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager mPDManager = (PrivacyDataManager) MgrContext
+                        .getManager(MgrContext.MGR_PRIVACY_DATA);
+                int saveNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
+                LeoLog.d("checkLostPic", "savenum : " + saveNum);
+                int num = mPDManager.getHidePicsRealNum();
+                LeoLog.d("checkLostPic", "hide pic num : " + num);
+                if (saveNum != -1) {
+                    LeoLog.d("checkLostPic", "cancelHide process num : " + mProcessNum);
+
+                    int targetNum = saveNum - mProcessNum;
+                    if (num >= targetNum) {
+                        LeoLog.d("checkLostPic", "everything ok");
+                        LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                    } else {
+                        LeoLog.d("checkLostPic", "lost pic");
+                        //TODO
+                        LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                    }
+                } else {
+                    LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                }
+            }
+        });
+    }
 
 
     @Override
@@ -342,6 +374,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void startDoingBack() {
+        mProcessNum = 0;
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         pdm.unregisterMediaListener();
         String filepath = mPicturesList.get(mListPos);
@@ -367,6 +400,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
             } catch (Exception e) {
             }
+            mProcessNum++;
             mPicturesList.remove(mListPos);
         } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPaht)) {
             isSuccess = FileOperationUtil.HIDE_PIC_NO_MEMERY;
@@ -375,6 +409,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mPicturesList.remove(mListPos);
             FileOperationUtil.saveImageMediaEntry(newPaht, this);
             FileOperationUtil.deleteFileMediaEntry(filepath, this);
+            mProcessNum++;
         }
         pdm.registerMediaListener();
         pdm.notifySecurityChange();
@@ -447,6 +482,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void deletePicture() {
+        mProcessNum = 0;
         String filepath = mPicturesList.get(mListPos);
 
         boolean isSuccees = ((PrivacyDataManager) MgrContext.
@@ -456,6 +492,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             return;
         mPicturesList.remove(mListPos);
         FileOperationUtil.deleteFileMediaEntry(filepath, this);
+        mProcessNum++;
 
         if (mPicturesList.size() == 0) {
             if (mIsFromIntruderMore) {
@@ -482,6 +519,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mPager.setCurrentItem(mListPos);
         }
 
+        checkLostPic();
     }
 
     private void showAlarmDialog(String title, String content,

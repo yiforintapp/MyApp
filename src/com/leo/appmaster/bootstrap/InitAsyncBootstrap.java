@@ -18,6 +18,7 @@ import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
@@ -78,8 +79,34 @@ public class InitAsyncBootstrap extends Bootstrap {
 
         BlacklistTab.getInstance().initEncryptList();
 
+        checkLostPic();
 
         return true;
+    }
+
+    private void checkLostPic() {
+        LeoLog.d("checkLostPic", "initAsync");
+        PrivacyDataManager mPDManager = (PrivacyDataManager) MgrContext
+                .getManager(MgrContext.MGR_PRIVACY_DATA);
+        long a = System.currentTimeMillis();
+        int num = mPDManager.getHidePicsRealNum();
+        LeoLog.d("checkLostPic", "now num : " + num);
+
+        int saveNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
+        if (saveNum == -1) {
+            LeoLog.d("checkLostPic", "first in , save hide pic num");
+            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+        } else {
+            if (num != saveNum) {
+                LeoLog.d("checkLostPic", "lost pics , update");
+                //TODO
+                
+                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+            }
+        }
+
+        long b = System.currentTimeMillis();
+        LeoLog.d("checkLostPic", "checkLostPic done , cost : " + (b - a));
     }
 
     private void initAirSig() {

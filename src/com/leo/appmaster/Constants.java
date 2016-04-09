@@ -534,4 +534,6 @@ public class Constants {
 
     // 两次评分弹窗间隔时间 单位: 小时
     public static final long GRADE_DEFAULT_TIME = 72;
+
+    public static final String HIDE_PICS_NUM = "hide_pics_num";
 }

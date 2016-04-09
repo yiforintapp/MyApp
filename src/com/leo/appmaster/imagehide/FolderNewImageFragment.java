@@ -10,9 +10,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -81,8 +83,32 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                 }
                 LeoLog.v(TAG, "mDataList removed size :" + mDataList.size());
                 onProcessFinish(incScore);
+
+                int successnum = pdm.getHideAllPicNum();
+                checkLostPic(pdm, successnum);
             }
         });
+    }
+
+    private void checkLostPic(PrivacyDataManager pdm, int successnum) {
+        int saveNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
+        LeoLog.d("checkLostPic", "savenum : " + saveNum);
+        int num = pdm.getHidePicsRealNum();
+        LeoLog.d("checkLostPic", "hide pic num : " + num);
+        if (saveNum != -1) {
+            LeoLog.d("checkLostPic", "isHide process num : " + successnum);
+            int targetNum = saveNum + successnum;
+            if (num >= targetNum) {
+                LeoLog.d("checkLostPic", "everything ok");
+                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+            } else {
+                LeoLog.d("checkLostPic", "lost pic");
+                //TODO
+                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+            }
+        } else {
+            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+        }
     }
 
     private void onProcessFinish(final int incScore) {

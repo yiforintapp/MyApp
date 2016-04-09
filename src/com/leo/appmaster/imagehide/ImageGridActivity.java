@@ -28,6 +28,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
@@ -103,6 +104,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
     private boolean isFristIn = true;
     //通过拷贝方式隐藏图片的方式，删除源文件是否成功
     private boolean mIsDeletSucFromDatebase = true;
+    private int mProcessNum = 0;
 
     private ImageSize mImageSize;
 
@@ -125,12 +127,58 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                     });
                     break;
                 case HIDE_FINISH:
-                    String isSuccess = (String) msg.obj;
+                    Bundle bundle = msg.getData();
+                    String isSuccess = bundle.getString("isSuccess");
+                    boolean isHideb = bundle.getBoolean("isHide");
+
+                    checkLostPic(isHideb);
+
                     onPostDo(isSuccess);
                     break;
             }
         }
     };
+
+    private void checkLostPic(final boolean isHide) {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager mPDManager = (PrivacyDataManager) MgrContext
+                        .getManager(MgrContext.MGR_PRIVACY_DATA);
+                int saveNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
+                LeoLog.d("checkLostPic", "savenum : " + saveNum);
+                int num = mPDManager.getHidePicsRealNum();
+                LeoLog.d("checkLostPic", "hide pic num : " + num);
+                if (saveNum != -1) {
+                    if (isHide) {
+                        LeoLog.d("checkLostPic", "isHide process num : " + mProcessNum);
+                        int targetNum = saveNum + mProcessNum;
+                        if (num >= targetNum) {
+                            LeoLog.d("checkLostPic", "everything ok");
+                            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                        } else {
+                            LeoLog.d("checkLostPic", "lost pic");
+                            //TODO
+                            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                        }
+                    } else {
+                        LeoLog.d("checkLostPic", "cancelHide process num : " + mProcessNum);
+                        int targetNum = saveNum - mProcessNum;
+                        if (num >= targetNum) {
+                            LeoLog.d("checkLostPic", "everything ok");
+                            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                        } else {
+                            LeoLog.d("checkLostPic", "lost pic");
+                            //TODO
+                            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                        }
+                    }
+                } else {
+                    LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                }
+            }
+        });
+    }
 
 
     private void loadDone() {
@@ -885,6 +933,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 
     private void startDoingBack(boolean isHide) {
         LeoLog.d("testnewLoad", "isHide:" + isHide);
+        mProcessNum = 0;
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         String isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
         try {
@@ -919,6 +968,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 
                                 isSuccess = FileOperationUtil.HIDE_PIC_COPY_SUCESS;
                                 deleteList.add(item);
+                                mProcessNum++;
                             } else if (FileOperationUtil.HIDE_PIC_COPY_FAIL.equals(newPath)) {
                                 isSuccess = FileOperationUtil.HIDE_PIC_COPY_FAIL;
                             } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPath)) {
@@ -933,6 +983,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                                     FileOperationUtil.deleteImageMediaEntry(item.getPath(), this);
                                 }
                                 deleteList.add(item);
+                                mProcessNum++;
                             }
                         } else {
                             SDKWrapper.addEvent(this, SDKWrapper.P1,
@@ -1021,6 +1072,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             values.put("image_path", filepath);
                             getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
                             deleteList.add(item);
+                            mProcessNum++;
                         } else if (FileOperationUtil.HIDE_PIC_NO_MEMERY.equals(newPaht)) {
                             isSuccess = FileOperationUtil.HIDE_PIC_NO_MEMERY;
                             break;
@@ -1029,6 +1081,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             FileOperationUtil.saveImageMediaEntry(newPaht, this);
                             FileOperationUtil.deleteFileMediaEntry(filepath, this);
                             deleteList.add(item);
+                            mProcessNum++;
                         }
                     }
                     if (deleteList.size() > 0) {
@@ -1047,13 +1100,19 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             e.printStackTrace();
         }
 
-        readyDoingDone(isSuccess);
+        readyDoingDone(isSuccess, isHide);
     }
 
-    private void readyDoingDone(String isSuccess) {
+    private void readyDoingDone(String isSuccess, boolean isHide) {
         if (mHandler != null) {
             Message msg = new Message();
-            msg.obj = isSuccess;
+
+            Bundle bundle = new Bundle();
+            bundle.putString("isSuccess", isSuccess);
+            bundle.putBoolean("isHide", isHide);
+            msg.setData(bundle);//bundle传值，耗时，效率低
+
+//            msg.obj = isSuccess;
             msg.what = HIDE_FINISH;
             mHandler.sendMessage(msg);
         }
@@ -1119,6 +1178,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             }
         }
         mIsDeletSucFromDatebase = true;
+
     }
 
     private void doingBackGround(boolean isHidePic) {
