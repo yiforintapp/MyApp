@@ -156,7 +156,7 @@ public class LockManagerImpl extends LockManager {
     public void init() {
         LeoLog.d(TAG, "init");
         startLockService();
-        ScreenOnOffListener.addListener(new ScreenOnOffListener() {
+        ScreenOnOffListener.addListener(new ScreenOnOffListener.ScreenChangeListener() {
             @Override
             public void onScreenChanged(Intent intent) {
                 handleScreenChange(intent);

@@ -17,9 +17,7 @@ import java.util.List;
 public class ScreenOnOffListener extends BroadcastListener {
 
     public static interface ScreenChangeListener {
-        public void onScreenOn();
-        public void onScreenOff();
-        public void onUserPresent();
+        public void onScreenChanged(Intent intent);
     }
 
     public static final String TAG = "ScreenOnOffListener";
@@ -46,13 +44,7 @@ public class ScreenOnOffListener extends BroadcastListener {
             onScreenChanged(mIntent);
             for (ScreenChangeListener listener : listeners) {
                 if (listener != null) {
-                    if (Intent.ACTION_SCREEN_OFF.equals(action)) {
-                        listener.onScreenOff();
-                    } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                        listener.onScreenOn();
-                    } else {
-                        listener.onUserPresent();
-                    }
+                    listener.onScreenChanged(mIntent);
                 }
             }
         }
@@ -61,7 +53,6 @@ public class ScreenOnOffListener extends BroadcastListener {
     @Override
     protected final IntentFilter getIntentFilter() {
         IntentFilter filter = new IntentFilter();
-        filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_USER_PRESENT);
@@ -72,25 +63,11 @@ public class ScreenOnOffListener extends BroadcastListener {
      * added, changed, removed
      */
     public void onScreenChanged(Intent intent) {
-        /* 解锁手机加载iSwipe更新数据 */
-        loadISwipeUpdateForOnScreen(intent);
         /*检测SIM是否更换*/
         simChanagae(intent);
 //        loadWifiData(intent);
         /*黑名单请求*/
         blackRequestJob(intent);
-
-    }
-
-    private void loadISwipeUpdateForOnScreen(Intent intent) {
-//        Context mContext = AppMasterApplication.getInstance();
-//        if ((!AppUtil.isScreenLocked(mContext)
-//                && Intent.ACTION_SCREEN_ON.equals(intent.getAction()))
-//                || Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-//            if (!ISwipUpdateRequestManager.isInstallIsiwpe(mContext)) {
-//                ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
-//            }
-//        }
 
     }
 

@@ -187,7 +187,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             }
         });
         startIntervalScanner(CHECK_TIME);
-        ScreenOnOffListener.addListener(new ScreenOnOffListener() {
+        ScreenOnOffListener.addListener(new ScreenOnOffListener.ScreenChangeListener() {
             @Override
             public void onScreenChanged(Intent intent) {
                 handleScreenIntent(intent);

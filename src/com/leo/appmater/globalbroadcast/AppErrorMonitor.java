@@ -1,5 +1,7 @@
 package com.leo.appmater.globalbroadcast;
 
+import android.content.Intent;
+
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -22,17 +24,15 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
     }
 
     @Override
-    public void onScreenOn() {
-        LeoLog.d(TAG, "<ls> onScreenOn...");
+    public void onScreenChanged(Intent intent) {
+        String action = intent.getAction();
+        LeoLog.d(TAG, "<ls> onScreenChanged...action: " + action);
+        if (Intent.ACTION_SCREEN_ON.equals(action)) {
+            screenOn();
+        }
     }
 
-    @Override
-    public void onScreenOff() {
-        LeoLog.d(TAG, "<ls> onScreenOff...");
-    }
+    private void screenOn() {
 
-    @Override
-    public void onUserPresent() {
-        LeoLog.d(TAG, "<ls> onUserPresent...");
     }
 }
