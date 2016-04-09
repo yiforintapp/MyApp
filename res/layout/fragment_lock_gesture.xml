@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
     <RelativeLayout
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@color/transparent"
-            android:visibility="visible" />
+            android:visibility="visible"/>
 
         <ImageView
             android:id="@+id/iv_app_icon"
@@ -29,7 +29,7 @@
             android:layout_centerInParent="true"
             android:scaleType="centerInside"
             android:src="@drawable/ic_launcher"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/iv_app_icon_top"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@color/transparent"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
     </RelativeLayout>
 
 
@@ -52,7 +52,7 @@
         android:text="@string/please_input_gesture"
         android:textColor="#aaffffff"
         android:textSize="16dp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 
     <com.leo.appmaster.applocker.gesture.LockPatternView
@@ -61,7 +61,7 @@
         android:layout_height="@dimen/lockPatternView_height"
         android:layout_below="@id/tv_gesture_tip"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/ges_Pattern_m_top" />
+        android:layout_marginTop="@dimen/ges_Pattern_m_top"/>
 
 
     <RelativeLayout
@@ -74,36 +74,55 @@
         android:background="@drawable/airsig_bg"
         android:visibility="gone">
 
-        <TextView
-            android:id="@+id/textResultMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/transparent"
-            android:lineSpacingExtra="1dp"
-            android:text="@string/airsig_verify_press_hint"
-            android:textSize="@dimen/airsig_textsize_content"
-            android:visibility="invisible" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/progressBarWaiting"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp">
 
-        <TextView
-            android:id="@+id/textTouchAreaMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textResultMessage"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:lineSpacingExtra="1dp"
-            android:text="@string/airsig_verify_press_hint"
-            android:textColor="@color/airsig_text_white"
-            android:textSize="@dimen/airsig_textsize_content" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textResultMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/transparent"
+                    android:lineSpacingExtra="1dp"
+                    android:text="@string/airsig_verify_press_hint"
+                    android:textSize="@dimen/airsig_textsize_content"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/textTouchAreaMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textResultMessage"
+                    android:layout_gravity="center_horizontal"
+                    android:lineSpacingExtra="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp"
+                    android:gravity="center"
+                    android:text="@string/airsig_verify_press_hint"
+                    android:textColor="@color/airsig_text_white"
+                    android:textSize="@dimen/airsig_textsize_content"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/progressBarWaiting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="invisible" />
+            android:visibility="invisible"/>
     </RelativeLayout>
 
 
@@ -116,17 +135,17 @@
         android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
         android:background="@drawable/reset_pass_frame"
         android:gravity="center_vertical"
-        android:visibility="gone"
         android:paddingBottom="3dp"
         android:paddingLeft="9dp"
         android:paddingRight="9dp"
-        android:paddingTop="3dp">
+        android:paddingTop="3dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_reset_icon"
             android:layout_width="13dp"
             android:layout_height="13dp"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"/>
 
         <TextView
             android:id="@+id/switch_bottom"
@@ -138,16 +157,16 @@
             android:gravity="center"
             android:maxLines="1"
             android:textColor="#ffffff"
-            android:textSize="12dp" />
+            android:textSize="12dp"/>
     </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/camera_preview"
         android:layout_width="1px"
-        android:layout_height="1px" />
+        android:layout_height="1px"/>
 
     <SurfaceView
         android:layout_width="1px"
-        android:layout_height="1px" />
+        android:layout_height="1px"/>
 
 </RelativeLayout>
