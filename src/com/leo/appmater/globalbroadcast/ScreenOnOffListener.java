@@ -11,16 +11,50 @@ import com.leo.appmaster.schedule.BlackListFileFetchJob;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.utils.LeoLog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScreenOnOffListener extends BroadcastListener {
+
+    public static interface ScreenChangeListener {
+        public void onScreenOn();
+        public void onScreenOff();
+        public void onUserPresent();
+    }
 
     public static final String TAG = "ScreenOnOffListener";
     public static final long mTwoDay = 48 * 60 * 60 * 1000;
+
+    private static List<ScreenChangeListener> listeners = new ArrayList<ScreenChangeListener>();
+
+    public static void addListener(ScreenChangeListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public static void removeListener(ScreenChangeListener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
+    }
 
     public final void onEvent(String action) {
         if (Intent.ACTION_SCREEN_OFF.equals(action)
                 || Intent.ACTION_SCREEN_ON.equals(action)
                 || Intent.ACTION_USER_PRESENT.equals(action)) {
             onScreenChanged(mIntent);
+            for (ScreenChangeListener listener : listeners) {
+                if (listener != null) {
+                    if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                        listener.onScreenOff();
+                    } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
+                        listener.onScreenOn();
+                    } else {
+                        listener.onUserPresent();
+                    }
+                }
+            }
         }
     }
 

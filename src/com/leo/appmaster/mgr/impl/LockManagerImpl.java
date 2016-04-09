@@ -130,7 +130,6 @@ public class LockManagerImpl extends LockManager {
      * listener mimute change
      */
     private TimeChangeReceive mTimeChangeReceiver;
-    private ScreenOnOffListener mScreenListener;
 
     // 新增应用列表
     private List<AppItemInfo> mNewList;
@@ -157,14 +156,12 @@ public class LockManagerImpl extends LockManager {
     public void init() {
         LeoLog.d(TAG, "init");
         startLockService();
-        mScreenListener = new ScreenOnOffListener() {
+        ScreenOnOffListener.addListener(new ScreenOnOffListener() {
             @Override
             public void onScreenChanged(Intent intent) {
                 handleScreenChange(intent);
-                super.onScreenChanged(intent);
             }
-        };
-        LeoGlobalBroadcast.registerBroadcastListener(mScreenListener);
+        });
         LeoEventBus.getDefaultBus().register(this);
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);

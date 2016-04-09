@@ -19,10 +19,9 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
-import com.leo.appmaster.schedule.FetchScheduleJob;
-import com.leo.appmaster.schedule.ScreenRecommentJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmater.globalbroadcast.AppErrorMonitor;
 
 import java.lang.reflect.Method;
 
@@ -72,6 +71,8 @@ public class InitCoreDelayBootstrap extends Bootstrap {
         DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
         deviceManager.init();
 
+        // 开始文件丢失监控
+        AppErrorMonitor.get().startMonitor();
         return false;
     }
 

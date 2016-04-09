@@ -34,6 +34,8 @@ import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
+import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -61,6 +63,8 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i(TAG, "cost, AppLoadEngine.getInstance: " + (end - start));
 
         registerPackageChangedBroadcast();
+        // 注册亮屏、锁屏广播
+        LeoGlobalBroadcast.registerBroadcastListener(new ScreenOnOffListener());
 
         AppMasterPreference preference = AppMasterPreference.getInstance(mApp);
         if (preference.getIsFirstInstallApp()) {
