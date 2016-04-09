@@ -71,6 +71,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     private int mScanAddPicNum = 0;
     private int mScanAddVidNum = 0;
     private int hideAllPicNum = 0;
+    private int hideAllVidNum = 0;
     private ImageCryptor mImageCryptor;
 
     public PrivacyDataManagerImpl() {
@@ -291,6 +292,11 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     @Override
     public int getHideAllPicNum() {
         return hideAllPicNum;
+    }
+
+    @Override
+    public int getHideAllVidNum() {
+        return hideAllVidNum;
     }
 
     @Override
@@ -554,6 +560,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         // 大量图片的情况，每隐藏一张图片就通知更新UI，造成卡顿，并且分数错乱
 //        mMediaStoreChangeObserver.stopObserver();
         try {
+            hideAllVidNum = 0;
             int newAddVidNum = getAddVidNum();
 
             int num = mString.size();
@@ -571,6 +578,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                                     newFileName), mContext);
                     FileOperationUtil.deleteVideoMediaEntry(path,
                             mContext);
+                    hideAllVidNum++;
 //                    FileOperationUtil.updateVedioMediaEntry(path, true, "text/plain", mContext);
                 }
             }
@@ -1293,6 +1301,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         return num;
     }
 
+    @Override
     public int getHideVidsRealNum() {
         int num = 0;
         Uri uri = MediaStore.Files.getContentUri("external");

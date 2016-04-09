@@ -27,9 +27,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -77,6 +79,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private boolean isServiceDo = false;
     private boolean isBindServiceOK = false;
     private boolean isHaveServiceToBind = false;
+    private int mProcessNum = 0;
 
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -110,16 +113,47 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     break;
                 case CANCEL_HIDE_VID_FINISH:
                     boolean isSuccess = (Boolean) msg.obj;
+                    checkLostVid();
                     postCancelDone(isSuccess);
                     break;
                 case DELETE_VID_FINISH:
                     boolean isDone = (Boolean) msg.obj;
+                    checkLostVid();
                     postDeleteDone(isDone);
                     break;
             }
         }
 
     };
+
+    private void checkLostVid() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager mPDManager = (PrivacyDataManager) MgrContext
+                        .getManager(MgrContext.MGR_PRIVACY_DATA);
+                int savevidNum = LeoSettings.getInteger(Constants.HIDE_VIDS_NUM, -1);
+                LeoLog.d("checkLostPic", "savevidNum : " + savevidNum);
+                int vidnum = mPDManager.getHideVidsRealNum();
+                LeoLog.d("checkLostPic", "hide vid num : " + vidnum);
+                if (savevidNum != -1) {
+                    LeoLog.d("checkLostPic", "cancelHide process num : " + mProcessNum);
+
+                    int targetNum = savevidNum - mProcessNum;
+                    if (vidnum >= targetNum) {
+                        LeoLog.d("checkLostPic", "everything ok");
+                        LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+                    } else {
+                        LeoLog.d("checkLostPic", "lost pic");
+                        mPDManager.reportDisappearError(false, PrivacyDataManager.LABEL_DEL_BY_SELF);
+                        LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+                    }
+                } else {
+                    LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+                }
+            }
+        });
+    }
 
     private void postDeleteDone(boolean isDone) {
         if (isDone) {
@@ -245,6 +279,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private String mDeletePath;
 
     private void startDeleteDoingBack() {
+        mProcessNum = 0;
         boolean isSuccess = true;
         if (mPosition < mAllPath.size()) {
             mDeletePath = mAllPath.get(mPosition);
@@ -288,6 +323,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     if (isSuccess) {
                         FileOperationUtil.deleteFileMediaEntry(mDeletePath, this);
                         mAllPath.remove(mPosition);
+                        mProcessNum++;
                     }
                 } catch (Exception e) {
                     isSuccess = false;
@@ -307,6 +343,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void startCancelDoingBack() {
+        mProcessNum = 0;
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         String newFileName = null;
         boolean isSuccess = true;
@@ -377,6 +414,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         SDKWrapper.addEvent(this, SDKWrapper.P1,
                                 "hide_vid_operation",
                                 "vid_ccl_fal");
+                        mProcessNum++;
                         // }
                     }
                 } catch (Exception e) {

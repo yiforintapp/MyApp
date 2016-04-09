@@ -12,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.FolderVidFragment;
 import com.leo.appmaster.imagehide.NewFragment;
 import com.leo.appmaster.mgr.MgrContext;
@@ -25,6 +27,7 @@ import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.DataUtils;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -134,8 +137,34 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
                     }
                 }
                 onProcessFinish(incScore);
+
+                int successnum = pdm.getHideAllVidNum();
+                checkLostVid(pdm, successnum);
             }
         });
+    }
+
+
+    private void checkLostVid(PrivacyDataManager pdm, int successnum) {
+        int savevidNum = LeoSettings.getInteger(Constants.HIDE_VIDS_NUM, -1);
+        LeoLog.d("checkLostPic", "savevidNum : " + savevidNum);
+        int vidnum = pdm.getHideVidsRealNum();
+        LeoLog.d("checkLostPic", "hide vid num : " + vidnum);
+        if (savevidNum != -1) {
+            LeoLog.d("checkLostPic", "isHide process num : " + successnum);
+            int targetNum = savevidNum + successnum;
+            if (vidnum >= targetNum) {
+                LeoLog.d("checkLostPic", "everything ok");
+                LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+            } else {
+                LeoLog.d("checkLostPic", "lost vid");
+                pdm.reportDisappearError(false, PrivacyDataManager.LABEL_DEL_BY_SELF);
+                LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+            }
+
+        } else {
+            LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+        }
     }
 
     private void onProcessFinish(final int incScore) {
