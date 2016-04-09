@@ -15,8 +15,11 @@ import com.leo.appmaster.cloud.crypto.ImageCryptor;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -1202,6 +1205,14 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             vidScore = newVidNum * SPA_VID;
         }
         return vidScore;
+    }
+
+    @Override
+    public void reportDisappearError(boolean isImage, String label) {
+        Map<String, String> map = DeviceUtil.getDeviceParams();
+
+        map.put("mediaType", isImage ? "image_dis" : "video_dis");
+        SDKWrapper.reportSkyfallExtra(mContext, "media_disappear", label, map);
     }
 
     @Override

@@ -12,6 +12,10 @@ import java.util.List;
  * Created by Jasper on 2015/9/28.
  */
 public abstract class PrivacyDataManager extends Manager {
+    public static final String TAG = "PrivacyDataManager";
+
+    public static final String LABEL_DEL_BY_OTHER = "del_by_others";
+    public static final String LABEL_DEL_BY_SELF = "del_by_self";
 
     /**
      * 单个图片扣除分数
@@ -200,4 +204,9 @@ public abstract class PrivacyDataManager extends Manager {
     public abstract int getPicShouldScore(int newPicNum);
 
     public abstract int getVidShouldScore(int newVidNum);
+
+    /**
+     * 上报文件丢失
+     */
+    public abstract void reportDisappearError(boolean isImage, String label);
 }

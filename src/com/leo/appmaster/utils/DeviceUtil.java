@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -38,7 +38,7 @@ public class DeviceUtil {
         object.put("model", getModel());
         object.put("scr_res", getScreenResolution(ctx));
         object.put("scr_dpi", getScreenDpi(ctx));
-        object.put("languge", getLanguage());
+        object.put("languge", getLanguage(ctx));
         object.put("time_zone", getTimezone());
         object.put("imei", getIMEI(ctx));
         object.put("imsi", getIMSI(ctx));
@@ -79,6 +79,10 @@ public class DeviceUtil {
         return android.os.Build.MODEL.replace("\"", "");
     }
 
+    public static String getDeviceName() {
+        return android.os.Build.MANUFACTURER + "-" + android.os.Build.MODEL;
+    }
+
     public static String getScreenResolution(Context ctx) {
         DisplayMetrics dm = ctx.getResources().getDisplayMetrics();
         String res = dm.heightPixels + "x" + dm.widthPixels;
@@ -90,12 +94,8 @@ public class DeviceUtil {
         return Integer.toString(dm.densityDpi);
     }
 
-    public static String getLanguage() {
-        return Locale.getDefault().getLanguage();
-    }
-
-    public static String getCountry(){
-        return Locale.getDefault().getCountry();
+    public static String getApiLevel() {
+        return Build.VERSION.SDK_INT + "";
     }
 
     public static String getTimezone() {
@@ -156,5 +156,59 @@ public class DeviceUtil {
         } catch (PackageManager.NameNotFoundException e) {
         }
         return mAppVer;
+    }
+
+    public static String getChannelCode(Context ctx) {
+        return ctx.getString(R.string.channel_code);
+    }
+
+    public static String getLanguage(Context context) {
+        String requestLanguage;
+        String language = Locale.getDefault().getLanguage();
+        String country = getCountry(context);
+        if ("zh".equalsIgnoreCase(language)) {
+            if ("CN".equalsIgnoreCase(country)) {
+                requestLanguage = language;
+            } else {
+                requestLanguage = language + "-" + country;
+            }
+        } else {
+            requestLanguage = language;
+        }
+        return requestLanguage;
+    }
+
+    public static String getCountry(Context context) {
+        TelephonyManager tm;
+        try {
+            tm = (TelephonyManager) context
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            String id = tm.getSimCountryIso();
+            if (TextUtils.isEmpty(id)) {
+                id = Locale.getDefault().getCountry();
+            }
+            if (id == null) {
+                id = "d";
+            }
+            id = id.toLowerCase();
+            return id;
+        } catch (Exception e) {
+            return "d";
+        }
+    }
+
+    public static Map<String, String> getDeviceParams() {
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("verion", getAndroidVersion());
+        map.put("vender", getVendor());
+        map.put("deviceName", getDeviceName());
+        map.put("apiLevel", getApiLevel());
+        map.put("appVer", getAppVer(context));
+        map.put("channelCode", getChannelCode(context));
+        map.put("contry", getCountry(context));
+        map.put("language", getLanguage(context));
+
+        return map;
     }
 }

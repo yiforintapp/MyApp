@@ -358,10 +358,10 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             SDKWrapper.addEvent(FeedbackActivity.this, SDKWrapper.P1, "feedback", "faq");
 
             String faqtitle = getString(R.string.menu_left_item_problem);
-            String country = DeviceUtil.getCountry();
+            String country = DeviceUtil.getCountry(this);
             country = Utilities.exChange(country);
             int version = PhoneInfo.getVersionCode(this);
-            String language = DeviceUtil.getLanguage();
+            String language = DeviceUtil.getLanguage(this);
 
             String url = LeoUrls.FAR_REQUEST + "/"
                     + country + "/" + language + "/" + version + ".html";
