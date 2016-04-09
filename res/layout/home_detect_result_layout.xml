@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/strip_home_ok1"
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
-        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:paddingRight="@dimen/det_result_icon_margin_right"
         android:visibility="invisible">
 
         <RelativeLayout
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/strip_home_nook1"
         android:paddingLeft="@dimen/home_det_result_tv1_padd_left"
-        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:paddingRight="@dimen/det_result_icon_margin_right"
         android:visibility="invisible">
 
         <RelativeLayout
@@ -136,7 +136,7 @@
         android:layout_below="@id/lt_det_saft_result_app"
         android:background="@drawable/strip_home_ok2"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
-        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:paddingRight="@dimen/det_result_icon_margin_right"
         android:visibility="invisible">
 
         <RelativeLayout
@@ -191,7 +191,7 @@
         android:layout_below="@id/lt_det_saft_result_app"
         android:background="@drawable/strip_home_nook2"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
-        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:paddingRight="@dimen/det_result_icon_margin_right"
         android:visibility="invisible">
 
         <RelativeLayout
@@ -257,7 +257,7 @@
         android:layout_below="@id/lt_det_saft_result_img"
         android:background="@drawable/strip_home_ok3"
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
-        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:paddingRight="@dimen/det_result_icon_margin_right"
         android:visibility="invisible">
 
         <RelativeLayout
@@ -313,7 +313,7 @@
         android:layout_below="@id/lt_det_saft_result_img"
         android:background="@drawable/strip_home_nook3"
         android:paddingLeft="@dimen/home_det_result_tv3_padd_left"
-        android:paddingRight="@dimen/home_det_result_tv1_padd_right"
+        android:paddingRight="@dimen/det_result_icon_margin_right"
         android:visibility="invisible"
         >
 
