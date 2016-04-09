@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -42,40 +41,70 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
  */
 public class HomeMoreActivity extends BaseActivity implements View.OnClickListener {
     private final int STRID_SIGNATURE_LOCK = R.string.airsig_settings_activity_title;
+    private final int STRID_DEFAULT_LOCK_TYPE = R.string.airsig_settings_activity_two_set_title;
+    private final int STRID_INTRUDER = R.string.home_tab_instruder;
+    private final int STRID_FINDLOST = R.string.home_tab_lost;
+    private final int STRID_CHARGESCR = R.string.batterymanage_switch_screen;
+    private final int STRID_CALLFILTER = R.string.quick_helper_callfilter;
+    private final int STRID_QUICKHELPER = R.string.hp_helper_shot;
+    private final int STRID_WIFI = R.string.home_tab_wifi;
+    private final int STRID_FLOW = R.string.quick_helper_flow_manage;
+    private final int STRID_BATTERY = R.string.quick_helper_elec_manage;
+    private final int STRID_UNINSTALL = R.string.quick_helper_app_uninstall;
+    private final int STRID_BACKUP = R.string.quick_helper_app_backup;
+    private final int STRID_PRIVACY_CONTACT = R.string.privacy_contacts;
+    private final int STRID_SETTING = R.string.setting;
+
+    private final int ICON_ID_SIGNATURE_LOCK = R.drawable.ic_more_airsig;
+    private final int ICON_ID_DEFAULT_LOCK_TYPE = R.drawable.ic_more_defaultlock;
+    private final int ICON_ID_INTRUDER = R.drawable.ic_more_intruder;
+    private final int ICON_ID_FINDLOST = R.drawable.ic_more_findlost;
+    private final int ICON_ID_CHARGESCR = R.drawable.ic_more_chargescr;
+    private final int ICON_ID_CALLFILTER = R.drawable.ic_more_callfilter;
+    private final int ICON_ID_QUICKHELPER = R.drawable.ic_more_quickhelper;
+    private final int ICON_ID_WIFI = R.drawable.ic_more_wifi;
+    private final int ICON_ID_FLOW = R.drawable.ic_more_flow;
+    private final int ICON_ID_BATTERY = R.drawable.ic_more_battery;
+    private final int ICON_ID_UNINSTALL = R.drawable.ic_more_uninstall;
+    private final int ICON_ID_BACKUP = R.drawable.ic_more_backup;
+    private final int ICON_ID_PRIVACY_CONTACT = R.drawable.ic_more_privacy_contact;
+    private final int ICON_ID_SETTING = R.drawable.ic_more_setting;
+
+    //Summary部分的文案
     private final int STRID_GESTURE_OR_PSW = R.string.gesture_or_password;
     private final int STRID_OPENED = R.string.has_opened;
     private final int STRID_DID_NOT_OPEN = R.string.did_not_open;
-    private final int STRID_DEFAULT_LOCK_TYPE = R.string.airsig_settings_activity_two_set_title;
 
     private CommonToolbar mCtbMain;
-    private RippleView mRvIntruderEntry;
-    private RippleView mRvFindLostEntry;
-    private RippleView mRvBatteryScreenEntry;
-    private RippleView mRvSettingEntry;
 
-    private RippleView mRvCallfilterEntry;
-    private RippleView mRvQuickHelperEntry;
-    private RippleView mRvWifiEntry;
-    private RippleView mRvFlowEntry;
-    private RippleView mRvBatteryEntry;
+//    private RippleView mRvIntruderEntry;
+//    private RippleView mRvFindLostEntry;
+//    private RippleView mRvBatteryScreenEntry;
+//    private RippleView mRvSettingEntry;
+//    private RippleView mRvCallfilterEntry;
+//    private RippleView mRvQuickHelperEntry;
+//    private RippleView mRvWifiEntry;
+//    private RippleView mRvFlowEntry;
+//    private RippleView mRvBatteryEntry;
+//    private RippleView mRvPrivacyContactEntry;
+//    private RippleView mRvAppBackupEntry;
+//    private RippleView mRvAppUninstallEntry;
 
-    private RippleView mRvPrivacyContactEntry;
-    private RippleView mRvAppBackupEntry;
-    private RippleView mRvAppUninstallEntry;
+    private CommonSettingItem mItemAirSigEntry;
+    private CommonSettingItem mItemDefaultLockTypeEntry;
 
-    private RelativeLayout mRlCallFilter;
-    private RelativeLayout mRlWifi;
-    private RelativeLayout mRlFlowManagement;
-    private RelativeLayout mRlBatteryManagement;
-
-    private View mVLine2;
-    private View mVLine3;
-    private View mVLine4;
-
-    private RippleView mAirSigSwitch;
-    private RippleView mDefultLockType;
-    private TextView mTvAirSigSwitch;
-    private TextView mTvDefultLockType;
+    private CommonSettingItem mItemIntruderEntry;
+    private CommonSettingItem mItemFindLostEntry;
+    private CommonSettingItem mItemBatteryScreenEntry;
+    private CommonSettingItem mItemSettingEntry;
+    private CommonSettingItem mItemCallfilterEntry;
+    private CommonSettingItem mItemQuickHelperEntry;
+    private CommonSettingItem mItemWifiEntry;
+    private CommonSettingItem mItemFlowEntry;
+    private CommonSettingItem mItemBatteryEntry;
+    private CommonSettingItem mItemPrivacyContactEntry;
+    private CommonSettingItem mItemAppBackupEntry;
+    private CommonSettingItem mItemAppUninstallEntry;
 
     private boolean mIsHasCallFilterRecords = false;
 
@@ -91,22 +120,24 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         boolean needhide = LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false);
         LeoLog.i("need hide", "when use ,need hide = " + needhide);
         if (needhide) {
-            mRlWifi.setVisibility(View.GONE);
-            mRlFlowManagement.setVisibility(View.GONE);
-            mRlBatteryManagement.setVisibility(View.GONE);
-            mVLine2.setVisibility(View.GONE);
-            mVLine3.setVisibility(View.GONE);
-            mVLine4.setVisibility(View.GONE);
+            mItemWifiEntry.setVisibility(View.GONE);
+            mItemFlowEntry.setVisibility(View.GONE);
+            mItemBatteryEntry.setVisibility(View.GONE);
+
+            findViewById(R.id.line_8).setVisibility(View.GONE);
+            findViewById(R.id.line_9).setVisibility(View.GONE);
+            findViewById(R.id.line_7).setVisibility(View.GONE);
         }
         boolean hide2 = AppMasterPreference.getInstance(this).getIsNeedCutBackupUninstallAndPrivacyContact();
         LeoLog.i("need hide", "when use ,hide2  = " + hide2);
         if (hide2) {
-            findViewById(R.id.rl_backup_content).setVisibility(View.GONE);
-            findViewById(R.id.rl_uninstall_content).setVisibility(View.GONE);
-            findViewById(R.id.rl_privacycontact_content).setVisibility(View.GONE);
-            findViewById(R.id.v_line_backup).setVisibility(View.GONE);
-            findViewById(R.id.v_line_uninstall).setVisibility(View.GONE);
-            findViewById(R.id.v_line_battery).setVisibility(View.GONE);
+            mItemAppBackupEntry.setVisibility(View.GONE);
+            mItemAppUninstallEntry.setVisibility(View.GONE);
+            mItemPrivacyContactEntry.setVisibility(View.GONE);
+
+            findViewById(R.id.line_11).setVisibility(View.GONE);
+            findViewById(R.id.line_12).setVisibility(View.GONE);
+            findViewById(R.id.line_10).setVisibility(View.GONE);
         }
     }
 
@@ -117,19 +148,203 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         updateAirSig();
     }
 
+    private void initUI() {
+        mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
+        mCtbMain.setToolbarTitle(R.string.lock_more);
+
+        //签字解锁部分
+        mItemAirSigEntry = (CommonSettingItem) findViewById(R.id.item_airsig);
+        mItemAirSigEntry.setIcon(ICON_ID_SIGNATURE_LOCK);
+        mItemAirSigEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToOpenAirSig();
+            }
+        });
+
+//        默认解锁方式部分
+        mItemDefaultLockTypeEntry = (CommonSettingItem) findViewById(R.id.item_defaultlocktype);
+        mItemDefaultLockTypeEntry.setIcon(ICON_ID_DEFAULT_LOCK_TYPE);
+        mItemDefaultLockTypeEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoSetAirSigLock();
+            }
+        });
+
+        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+        if (isAigSigCanUse) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_sh");
+            //签字解锁部分
+            mItemAirSigEntry.setTitle(STRID_SIGNATURE_LOCK);
+            //设置默认解锁方式部分
+            mItemDefaultLockTypeEntry.setTitle(STRID_DEFAULT_LOCK_TYPE);
+        } else {
+            View line1 = findViewById(R.id.line_1);
+            mItemAirSigEntry.setVisibility(View.GONE);
+            line1.setVisibility(View.GONE);
+            mItemDefaultLockTypeEntry.setVisibility(View.GONE);
+        }
+
+        //快捷小助手部分
+        mItemQuickHelperEntry = (CommonSettingItem) findViewById(R.id.item_quickhelper);
+        mItemQuickHelperEntry.setIcon(ICON_ID_QUICKHELPER);
+        mItemQuickHelperEntry.setTitle(STRID_QUICKHELPER);
+        mItemQuickHelperEntry.setSummaryVisable(false);
+        mItemQuickHelperEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToQuickHelper();
+            }
+        });
+
+        //隐私联系人部分
+        mItemPrivacyContactEntry = (CommonSettingItem) findViewById(R.id.item_privacycontact);
+        mItemPrivacyContactEntry.setIcon(ICON_ID_PRIVACY_CONTACT);
+        mItemPrivacyContactEntry.setTitle(STRID_PRIVACY_CONTACT);
+        mItemPrivacyContactEntry.setSummaryVisable(false);
+        mItemPrivacyContactEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPrivacyContact();
+            }
+        });
+
+        //应用备份
+        mItemAppBackupEntry = (CommonSettingItem) findViewById(R.id.item_backup);
+        mItemAppBackupEntry.setIcon(ICON_ID_BACKUP);
+        mItemAppBackupEntry.setTitle(STRID_BACKUP);
+        mItemAppBackupEntry.setSummaryVisable(false);
+        mItemAppBackupEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAppBackup();
+            }
+        });
+
+        //应用卸载
+        mItemAppUninstallEntry = (CommonSettingItem) findViewById(R.id.item_uninstall);
+        mItemAppUninstallEntry.setIcon(ICON_ID_UNINSTALL);
+        mItemAppUninstallEntry.setTitle(STRID_UNINSTALL);
+        mItemAppUninstallEntry.setSummaryVisable(false);
+        mItemAppUninstallEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToAppUninstall();
+            }
+        });
+
+        //入侵者
+        mItemIntruderEntry = (CommonSettingItem) findViewById(R.id.item_intruder);
+        mItemIntruderEntry.setIcon(ICON_ID_INTRUDER);
+        mItemIntruderEntry.setTitle(STRID_INTRUDER);
+        mItemIntruderEntry.setSummaryVisable(false);
+        mItemIntruderEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToIntruderPretection();
+            }
+        });
+
+        //手机防盗
+        mItemFindLostEntry = (CommonSettingItem) findViewById(R.id.item_findlost);
+        mItemFindLostEntry.setIcon(ICON_ID_FINDLOST);
+        mItemFindLostEntry.setTitle(STRID_FINDLOST);
+        mItemFindLostEntry.setSummaryVisable(false);
+        mItemFindLostEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToFindLost();
+            }
+        });
+
+        //充电屏保
+        mItemBatteryScreenEntry = (CommonSettingItem) findViewById(R.id.item_chargescr);
+        mItemBatteryScreenEntry.setIcon(ICON_ID_CHARGESCR);
+        mItemBatteryScreenEntry.setTitle(STRID_CHARGESCR);
+        mItemBatteryScreenEntry.setSummaryVisable(false);
+        mItemBatteryScreenEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToBatteryScreen();
+            }
+        });
+
+        //设置
+        mItemSettingEntry = (CommonSettingItem) findViewById(R.id.item_setting);
+        mItemSettingEntry.setIcon(ICON_ID_SETTING);
+        mItemSettingEntry.setTitle(STRID_SETTING);
+        mItemSettingEntry.setSummaryVisable(false);
+        mItemSettingEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMainSetting();
+            }
+        });
+
+        //骚扰拦截
+        mItemCallfilterEntry = (CommonSettingItem) findViewById(R.id.item_callfilter);
+        mItemCallfilterEntry.setIcon(ICON_ID_CALLFILTER);
+        mItemCallfilterEntry.setTitle(STRID_CALLFILTER);
+        mItemCallfilterEntry.setSummaryVisable(false);
+        mItemCallfilterEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToCallfilter();
+            }
+        });
+
+        //wifi
+        mItemWifiEntry = (CommonSettingItem) findViewById(R.id.item_wifi);
+        mItemWifiEntry.setIcon(ICON_ID_WIFI);
+        mItemWifiEntry.setTitle(STRID_WIFI);
+        mItemWifiEntry.setSummaryVisable(false);
+        mItemWifiEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToWifi();
+            }
+        });
+
+        //流量管理
+        mItemFlowEntry = (CommonSettingItem) findViewById(R.id.item_flow);
+        mItemFlowEntry.setIcon(ICON_ID_FLOW);
+        mItemFlowEntry.setTitle(STRID_FLOW);
+        mItemFlowEntry.setSummaryVisable(false);
+        mItemFlowEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToFlowManagement();
+            }
+        });
+
+        //电量管理
+        mItemBatteryEntry = (CommonSettingItem) findViewById(R.id.item_battery);
+        mItemBatteryEntry.setIcon(ICON_ID_BATTERY);
+        mItemBatteryEntry.setTitle(STRID_BATTERY);
+        mItemBatteryEntry.setSummaryVisable(false);
+        mItemBatteryEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToBatteryManagement();
+            }
+        });
+
+    }
+
     private void updateAirSig() {
         boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
         if (!isAirSigVaild) {
-            mTvAirSigSwitch.setText(STRID_DID_NOT_OPEN);
-            mTvDefultLockType.setText(STRID_GESTURE_OR_PSW);
+            mItemAirSigEntry.setSummary(STRID_DID_NOT_OPEN);
+            mItemDefaultLockTypeEntry.setSummary(STRID_GESTURE_OR_PSW);
             return;
         }
 
         boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         if (isAirsigOn) {
-            mTvAirSigSwitch.setText(STRID_OPENED);
+            mItemAirSigEntry.setSummary(STRID_OPENED);
         } else {
-            mTvAirSigSwitch.setText(STRID_DID_NOT_OPEN);
+            mItemAirSigEntry.setSummary(STRID_DID_NOT_OPEN);
         }
 
         int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE,
@@ -137,12 +352,12 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
         if (isAirsigOn) {
             if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
-                mTvDefultLockType.setText(STRID_GESTURE_OR_PSW);
+                mItemDefaultLockTypeEntry.setSummary(STRID_GESTURE_OR_PSW);
             } else {
-                mTvDefultLockType.setText(STRID_SIGNATURE_LOCK);
+                mItemDefaultLockTypeEntry.setSummary(STRID_SIGNATURE_LOCK);
             }
         } else {
-            mTvDefultLockType.setText(STRID_GESTURE_OR_PSW);
+            mItemDefaultLockTypeEntry.setSummary(STRID_GESTURE_OR_PSW);
         }
 
     }
@@ -172,79 +387,6 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         });
     }
 
-    private void initUI() {
-        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
-
-        mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
-        mCtbMain.setToolbarTitle(R.string.lock_more);
-
-        //签字解锁部分
-        mAirSigSwitch = (RippleView) findViewById(R.id.rv_airsig_visi);
-        mAirSigSwitch.setOnClickListener(this);
-        mTvAirSigSwitch = (TextView) findViewById(R.id.tv_airsig_summary);
-        //设置默认解锁方式部分
-        mDefultLockType = (RippleView) findViewById(R.id.rv_airsig_visi_two);
-        mDefultLockType.setOnClickListener(this);
-        mTvDefultLockType = (TextView) findViewById(R.id.tv_airsig_summary_two);
-
-        if (isAigSigCanUse) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_sh");
-            //签字解锁部分
-            mTvAirSigSwitch.setText(STRID_SIGNATURE_LOCK);
-            //设置默认解锁方式部分
-            mTvDefultLockType.setText(STRID_DEFAULT_LOCK_TYPE);
-            LeoLog.d("testUse", "can use");
-        } else {
-            View lineView = findViewById(R.id.white_line_airsig);
-            lineView.setVisibility(View.GONE);
-            View lineViewTwo = findViewById(R.id.line_airsig_two);
-            lineViewTwo.setVisibility(View.GONE);
-            mAirSigSwitch.setVisibility(View.GONE);
-            mDefultLockType.setVisibility(View.GONE);
-            LeoLog.d("testUse", "can not use");
-        }
-
-        mVLine2 = findViewById(R.id.v_line2);
-        mVLine3 = findViewById(R.id.v_line3);
-        mVLine4 = findViewById(R.id.v_line4);
-
-        mRvQuickHelperEntry = (RippleView) findViewById(R.id.rv_home_more_quickhelper);
-        mRvQuickHelperEntry.setOnClickListener(this);
-
-        mRvPrivacyContactEntry = (RippleView) findViewById(R.id.rv_home_more_privacycontact);
-        mRvPrivacyContactEntry.setOnClickListener(this);
-
-        mRvAppBackupEntry = (RippleView) findViewById(R.id.rv_home_more_backup);
-        mRvAppBackupEntry.setOnClickListener(this);
-
-        mRvAppUninstallEntry = (RippleView) findViewById(R.id.rv_home_more_uninstall);
-        mRvAppUninstallEntry.setOnClickListener(this);
-
-
-        mRvIntruderEntry = (RippleView) findViewById(R.id.rv_home_more_intruder);
-        mRvIntruderEntry.setOnClickListener(this);
-        mRvFindLostEntry = (RippleView) findViewById(R.id.rv_home_more_findlost);
-        mRvFindLostEntry.setOnClickListener(this);
-        mRvBatteryScreenEntry = (RippleView) findViewById(R.id.rv_home_more_screenview);
-        mRvBatteryScreenEntry.setOnClickListener(this);
-        mRvSettingEntry = (RippleView) findViewById(R.id.rv_home_more_setting);
-        mRvSettingEntry.setOnClickListener(this);
-
-        mRvCallfilterEntry = (RippleView) findViewById(R.id.rv_home_more_callfilter);
-        mRvCallfilterEntry.setOnClickListener(this);
-        mRvWifiEntry = (RippleView) findViewById(R.id.rv_home_more_wifi);
-        mRvWifiEntry.setOnClickListener(this);
-        mRvFlowEntry = (RippleView) findViewById(R.id.rv_home_more_flow);
-        mRvFlowEntry.setOnClickListener(this);
-        mRvBatteryEntry = (RippleView) findViewById(R.id.rv_home_more_battery);
-        mRvBatteryEntry.setOnClickListener(this);
-
-        mRlCallFilter = (RelativeLayout) findViewById(R.id.rl_callfilter_content);
-        mRlWifi = (RelativeLayout) findViewById(R.id.rl_wifi_content);
-        mRlFlowManagement = (RelativeLayout) findViewById(R.id.rl_flow_content);
-        mRlBatteryManagement = (RelativeLayout) findViewById(R.id.rl_battery_content);
-
-    }
 
     private void goToOpenAirSig() {
         SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig");
@@ -259,52 +401,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rv_home_more_quickhelper:
-                goToQuickHelper();
-                break;
-            case R.id.rv_home_more_privacycontact:
-                goToPrivacyContact();
-                break;
-            case R.id.rv_home_more_backup:
-                goToAppBackup();
-                break;
-            case R.id.rv_home_more_uninstall:
-                goToAppUninstall();
-                break;
-            case R.id.rv_home_more_intruder:
-                goToIntruderPretection();
-                break;
-            case R.id.rv_home_more_findlost:
-                goToFindLost();
-                break;
-            case R.id.rv_home_more_screenview:
-                goToBatteryScreen();
-                break;
-            case R.id.rv_home_more_callfilter:
-                goToCallfilter();
-                break;
-            case R.id.rv_home_more_wifi:
-                goToWifi();
-                break;
-            case R.id.rv_home_more_flow:
-                goToFlowManagement();
-                break;
-            case R.id.rv_home_more_battery:
-                goToBatteryManagement();
-                break;
-            case R.id.rv_home_more_setting:
-                goToMainSetting();
-                break;
-            case R.id.rv_airsig_visi:
-                goToOpenAirSig();
-                break;
-            case R.id.rv_airsig_visi_two:
-                gotoSetAirSigLock();
-                break;
-            default:
-                break;
-        }
+
     }
 
     private void goToQuickHelper() {
