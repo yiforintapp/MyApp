@@ -1,6 +1,7 @@
 package com.leo.appmaster.ui;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 /**
  * Created by chenfs on 16-3-30.
@@ -21,7 +23,8 @@ public class CommonSettingItem extends RelativeLayout {
     private TextView mTvSummary;
     private RelativeLayout mRlIconParent;
     private RippleView mRvMain;
-
+    private ImageView mIvIcon;
+    private RelativeLayout mRlTextContent;
     private ImageView mIvArrow;
     private CheckBox mCb;
 
@@ -53,6 +56,8 @@ public class CommonSettingItem extends RelativeLayout {
         mIvArrow = (ImageView) findViewById(R.id.iv_arrow);
         mRlIconParent = (RelativeLayout) findViewById(R.id.rl_content_tip);
         mRvMain = (RippleView) findViewById(R.id.rv_main);
+        mIvIcon = (ImageView) findViewById(R.id.iv_icon);
+        mRlTextContent = (RelativeLayout) findViewById(R.id.rl_text_content);
     }
 
     public int getMainRippleViewId() {
@@ -144,6 +149,23 @@ public class CommonSettingItem extends RelativeLayout {
 
     public void setSummary(int id) {
         mTvSummary.setText(id);
+    }
+
+    public void setIconVisable(boolean isVisable) {
+        mIvIcon.setVisibility(isVisable == true ? View.VISIBLE : View.GONE);
+        if(!isVisable) {
+            RelativeLayout.LayoutParams lp = (LayoutParams) mRlTextContent.getLayoutParams();
+            lp.setMargins(DipPixelUtil.dip2px(mContext,20),0,0,0);
+            mRlTextContent.setLayoutParams(lp);
+        }
+    }
+
+    public void setIcon(int id) {
+        mIvIcon.setImageResource(id);
+    }
+
+    public void setIcon(Drawable drawable) {
+        mIvIcon.setImageDrawable(drawable);
     }
 
     public void setTitle(String s) {

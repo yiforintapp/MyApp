@@ -19,11 +19,21 @@
         app:rippleHover="true"
         app:rippleOverlay="false">
 
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_launcher" />
+
         <RelativeLayout
+            android:id="@+id/rl_text_content"
+            android:layout_toRightOf="@+id/iv_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
             android:layout_toLeftOf="@+id/rl_content_tip"
             android:gravity="left">
 
