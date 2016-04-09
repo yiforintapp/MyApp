@@ -136,7 +136,7 @@
     <!--手机防盗-->
     <dimen name="phone_security_add_number_TV_size">14dp</dimen>
     <dimen name="phone_secur_add_bt_height">48dp</dimen>
-    <dimen name="scur_contact_char">10dp</dimen>
+    <dimen name="scur_contact_char">7dp</dimen>
     <dimen name="secur_instru_grid_itme_hor_spac">44dp</dimen>
 
     <dimen name="security_guide_top_iv_margin_top">26dp</dimen>

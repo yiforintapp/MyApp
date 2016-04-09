@@ -1660,28 +1660,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void openAdvanceProtectDialogTip() {
-        LeoLog.d("caocao", "openAdvanceProtectDialogTip");
-//        if (mMessageDialog == null) {
-//            mMessageDialog = new LEOAnimationDialog(this);
-//            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialog) {
-//                    if (mMessageDialog != null) {
-//                        mMessageDialog = null;
-//                    }
-//                    AppMasterPreference.getInstance(HomeActivity.this)
-//                            .setAdvanceProtectOpenSuccessDialogTip(false);
-//                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-//                    LeoPreference.getInstance().putBoolean(key, false);
-//                }
-//            });
-//        }
-//        String content = getString(R.string.prot_open_suc_tip_cnt);
-//        mMessageDialog.setContent(content);
-//        mMessageDialog.show();
-//        if (!mDrawerLayout.isDrawerVisible(mMenuList)) {
-//            mDrawerLayout.openDrawer(mMenuList);
-//        }
         if (!mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.openDrawer(Gravity.START);
         }
