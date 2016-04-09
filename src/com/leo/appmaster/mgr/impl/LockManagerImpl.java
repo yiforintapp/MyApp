@@ -65,6 +65,8 @@ import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
@@ -1698,6 +1700,10 @@ public class LockManagerImpl extends LockManager {
                 @Override
                 public void run() {
                     checkScreenOn();
+                    
+                    PrivacyDataManager mPDManager = (PrivacyDataManager) MgrContext
+                            .getManager(MgrContext.MGR_PRIVACY_DATA);
+                    mPDManager.checkLostPicAndVid();
                 }
             }, 500);
         } else if (PhoneInfo.getPhoneDeviceModel().contains("Nokia")

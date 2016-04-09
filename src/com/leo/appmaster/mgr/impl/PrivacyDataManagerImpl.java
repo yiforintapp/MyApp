@@ -13,9 +13,11 @@ import android.text.TextUtils;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.cloud.crypto.ImageCryptor;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
@@ -289,6 +291,34 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     @Override
     public int getHideAllPicNum() {
         return hideAllPicNum;
+    }
+
+    @Override
+    public void checkLostPicAndVid() {
+        LeoLog.d("checkLostPic", "initAsync");
+        long lastCheckTime = LeoSettings.getLong(Constants.CHECK_LOST_PIC_TIME, 0);
+        long now = System.currentTimeMillis();
+        if (now - lastCheckTime > Constants.A_DAY_TIME) {
+            //check pic
+            int num = getHidePicsRealNum();
+            LeoLog.d("checkLostPic", "now num : " + num);
+            int saveNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
+            if (saveNum == -1) {
+                LeoLog.d("checkLostPic", "first in , save hide pic num");
+                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+            } else {
+                if (num != saveNum) {
+                    LeoLog.d("checkLostPic", "lost pics , update");
+                    reportDisappearError(true, PrivacyDataManager.LABEL_DEL_BY_OTHER);
+                    LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                }
+            }
+
+            //check vid
+
+
+            LeoSettings.setLong(Constants.CHECK_LOST_PIC_TIME, now);
+        }
     }
 
 

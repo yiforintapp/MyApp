@@ -103,7 +103,7 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                 LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
             } else {
                 LeoLog.d("checkLostPic", "lost pic");
-                //TODO
+                pdm.reportDisappearError(true, PrivacyDataManager.LABEL_DEL_BY_SELF);
                 LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
             }
         } else {

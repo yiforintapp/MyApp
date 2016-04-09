@@ -213,4 +213,6 @@ public abstract class PrivacyDataManager extends Manager {
     public abstract int getHidePicsRealNum();
 
     public abstract int getHideAllPicNum();
+
+    public abstract void checkLostPicAndVid();
 }

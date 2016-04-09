@@ -158,7 +158,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
                         } else {
                             LeoLog.d("checkLostPic", "lost pic");
-                            //TODO
+                            mPDManager.reportDisappearError(true, PrivacyDataManager.LABEL_DEL_BY_SELF);
                             LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
                         }
                     } else {
@@ -169,7 +169,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                             LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
                         } else {
                             LeoLog.d("checkLostPic", "lost pic");
-                            //TODO
+                            mPDManager.reportDisappearError(true, PrivacyDataManager.LABEL_DEL_BY_SELF);
                             LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
                         }
                     }
