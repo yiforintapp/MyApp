@@ -536,6 +536,7 @@ public class Constants {
     public static final long GRADE_DEFAULT_TIME = 72;
 
     public static final String HIDE_PICS_NUM = "hide_pics_num";
+    public static final String HIDE_VIDS_NUM = "hide_vids_num";
     public static final String CHECK_LOST_PIC_TIME = "check_lost_pic_time";
     public static final long A_DAY_TIME = 1000 * 60 * 60 * 24;
 }

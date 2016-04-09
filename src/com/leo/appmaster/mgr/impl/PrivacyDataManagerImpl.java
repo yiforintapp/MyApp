@@ -300,22 +300,34 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         long now = System.currentTimeMillis();
         if (now - lastCheckTime > Constants.A_DAY_TIME) {
             //check pic
-            int num = getHidePicsRealNum();
-            LeoLog.d("checkLostPic", "now num : " + num);
-            int saveNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
-            if (saveNum == -1) {
-                LeoLog.d("checkLostPic", "first in , save hide pic num");
-                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+            int picnum = getHidePicsRealNum();
+            LeoLog.d("checkLostPic", "pic now num : " + picnum);
+            int savepicNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
+            if (savepicNum == -1) {
+                LeoLog.d("checkLostPic", "pic first in , save hide pic num");
+                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, picnum);
             } else {
-                if (num != saveNum) {
+                if (picnum != savepicNum) {
                     LeoLog.d("checkLostPic", "lost pics , update");
                     reportDisappearError(true, PrivacyDataManager.LABEL_DEL_BY_OTHER);
-                    LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+                    LeoSettings.setInteger(Constants.HIDE_PICS_NUM, picnum);
                 }
             }
 
             //check vid
-
+            int vidnum = getHideVidsRealNum();
+            LeoLog.d("checkLostPic", "vid now num : " + vidnum);
+            int savevidNum = LeoSettings.getInteger(Constants.HIDE_VIDS_NUM, -1);
+            if (savevidNum == -1) {
+                LeoLog.d("checkLostPic", "vid first in , save hide vid num");
+                LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+            } else {
+                if (vidnum != savevidNum) {
+                    LeoLog.d("checkLostPic", "lost vids , update");
+                    reportDisappearError(false, PrivacyDataManager.LABEL_DEL_BY_OTHER);
+                    LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+                }
+            }
 
             LeoSettings.setLong(Constants.CHECK_LOST_PIC_TIME, now);
         }
@@ -1273,6 +1285,39 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             }
         } catch (Exception e) {
 
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+        return num;
+    }
+
+    public int getHideVidsRealNum() {
+        int num = 0;
+        Uri uri = MediaStore.Files.getContentUri("external");
+        String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmv'";
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+                    MediaStore.MediaColumns.DATE_ADDED + " desc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor
+                            .getString(cursor
+                                    .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+                    LeoLog.d("checkVidId", "path is : " + path);
+
+
+                    File videoFile = new File(path);
+                    boolean videoExists = videoFile.exists();
+                    if (videoExists) {
+                        num++;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
         } finally {
             if (!BuildProperties.isApiLevel14()) {
                 IoUtils.closeSilently(cursor);
