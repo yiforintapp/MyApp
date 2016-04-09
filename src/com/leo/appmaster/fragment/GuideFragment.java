@@ -17,7 +17,6 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
-import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.ObjectAnimator;
@@ -207,7 +206,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        mTopView = (View) inCloude.findViewById(R.id.top_view);
+        mTopView = (View) inCloude.findViewById(R.id.empty_view);
         mLightView = (View) inCloude.findViewById(R.id.light_view);
         mRightView = (View) inCloude.findViewById(R.id.right_view);
 

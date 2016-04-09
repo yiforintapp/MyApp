@@ -6,11 +6,11 @@
               android:orientation="vertical"
               android:visibility="gone">
 
-    <View
+<!--    <View
         android:id="@+id/top_view"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/uninstall_guide_bg"/>
+        android:background="@color/uninstall_guide_bg"/>-->
 
 
     <RelativeLayout
@@ -22,19 +22,21 @@
             android:id="@+id/light_view"
             android:layout_width="250dp"
             android:layout_height="100dp"
+            android:layout_below="@+id/empty_view"
             android:background="@color/transparent"/>
 
         <View
             android:id="@+id/right_view"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_below="@+id/empty_view"
             android:background="@color/uninstall_guide_bg"
             android:layout_toRightOf="@+id/light_view"/>
 
         <View
+            android:id="@+id/empty_view"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_below="@+id/light_view"
             android:background="@color/uninstall_guide_bg"/>
 
         <ImageView
@@ -42,8 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/uninstall_tips_hand"
-            android:layout_below="@+id/light_view"
-            android:layout_marginTop="-15dp"
+            android:layout_above="@+id/light_view"
+            android:layout_marginBottom="-15dp"
             android:layout_marginLeft="26dp"/>
 
         <TextView
@@ -52,7 +54,7 @@
             android:layout_marginLeft="7dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/tips_hand"
-            android:layout_below="@+id/light_view"
+            android:layout_above="@+id/light_view"
             android:text="@string/uninstall_guide_tips"
             android:textSize="@dimen/f4"
             android:textColor="#FFDA2E"/>
