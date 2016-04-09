@@ -264,7 +264,7 @@ public class MobvistaEngine {
 					MobVistaConstans.TEMPLATE_BIG_IMG, 10));
 			//支持多图模板，请求3条多图。（支持1-10条）
 			templateNativeHandler.addTemplate(new MvNativeHandler.Template(
-					MobVistaConstans.TEMPLATE_MULTIPLE_IMG, 3));
+					MobVistaConstans.TEMPLATE_MULTIPLE_IMG, 10));
 			//设置在没有应用市场情况下，必须浏览器来承接响应
 			templateNativeHandler.setMustBrowser(true);
 			//设置多模板广告请求的监听
@@ -484,6 +484,21 @@ public class MobvistaEngine {
 			@Override
 			public void onDownloadProgress(int i) {
 				
+			}
+
+			@Override
+			public boolean onInterceptDefaultLoadingDialog() {
+				return false;
+			}
+
+			@Override
+			public void onShowLoading(Campaign campaign) {
+
+			}
+
+			@Override
+			public void onDismissLoading(Campaign campaign) {
+
 			}
 
 			@Override

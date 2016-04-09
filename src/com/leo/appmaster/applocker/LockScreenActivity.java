@@ -1349,7 +1349,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		mBannerContainer.removeAllViews();
         /*调用sdk前，明确是哪个sdk，mobvista or max ? */
 		AppMasterPreference sp = AppMasterPreference.getInstance(this.getApplicationContext());
-		mAdSource = sp.getLockBannerAdConfig();
+		mAdSource = 1;//sp.getLockBannerAdConfig();
 		long start = SystemClock.elapsedRealtime();
 		asyncLoadAd(forceLoad);
 		LeoLog.d(TAG, "TsCost, loadAD..." + (SystemClock.elapsedRealtime() - start));

@@ -2,12 +2,15 @@
 package com.leo.appmaster.cleanmemory;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -651,7 +654,11 @@ public class HomeBoostActivity extends Activity {
                 @Override
                 public void onFinish() {
                     counter.setText(0+"");
-                    HomeBoostActivity.this.finish();
+                    //HomeBoostActivity.this.finish();
+					WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+					DisplayMetrics metrics = new DisplayMetrics();
+					windowManager.getDefaultDisplay().getMetrics(metrics);
+					Log.e("DEBUG", metrics.widthPixels + "|" + metrics.heightPixels + metrics.densityDpi );
 
                 }
             };
