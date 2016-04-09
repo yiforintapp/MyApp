@@ -1,10 +1,8 @@
 package com.leo.appmaster.db;
 
 import android.content.Context;
-import android.util.SparseArray;
 
 import com.leo.appmaster.AppMasterApplication;
-
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -54,6 +52,7 @@ public abstract class ISettings {
             AppMasterPreference.PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH,
             AppMasterPreference.PREF_HIDE_LOCK_LINE,
             AppMasterPreference.PREF_AD_LOCK_WALL,
+            AppMasterPreference.PREF_NEW_APP_LOCK_TIP,
             PrefConst.KEY_BATTERY_REMAINING_COE,
             PrefConst.KEY_IS_NEW_INSTALL,
             PrefConst.KEY_SIM_IMEI,
