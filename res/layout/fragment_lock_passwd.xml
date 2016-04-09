@@ -404,7 +404,7 @@
 
     <RelativeLayout
         android:id="@+id/airsig_lock"
-        android:layout_width="@dimen/air_sig_lock_patten_height"
+        android:layout_width="@dimen/air_sig_lock_patten_width"
         android:layout_height="@dimen/air_sig_lock_patten_height"
         android:layout_below="@id/iv_app_icon_layout"
         android:layout_centerHorizontal="true"
