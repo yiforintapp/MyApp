@@ -215,15 +215,21 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
 
     // 设置卸载引导布局属性
     public void setUninstallParams(int topHeight, int height) {
+        if (mTopView == null || mLightView == null || mRightView == null) {
+            return;
+        }
         ViewGroup.LayoutParams topParams = mTopView.getLayoutParams();
         topParams.height = topHeight;
         mTopView.setLayoutParams(topParams);
+
         ViewGroup.LayoutParams lightParams = mLightView.getLayoutParams();
         lightParams.height = height;
         mLightView.setLayoutParams(lightParams);
+
         ViewGroup.LayoutParams rightParams = mRightView.getLayoutParams();
         rightParams.height = height;
         mRightView.setLayoutParams(rightParams);
+
     }
 
     public void setEnable(boolean enable, GUIDE_TYPE type) {

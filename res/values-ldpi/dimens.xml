@@ -25,6 +25,7 @@
     <dimen name="digital_item_marginBottom">5dp</dimen>
     <dimen name="lockPatternView_height">250dp</dimen>
     <dimen name="air_sig_lock_patten_height">240dp</dimen>
+    <dimen name="air_sig_lock_patten_width">230dp</dimen>
 
     <dimen name="circle_count_text_size">74dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>

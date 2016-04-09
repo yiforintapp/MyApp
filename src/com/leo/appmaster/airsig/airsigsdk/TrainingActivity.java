@@ -259,12 +259,12 @@ public class TrainingActivity extends Activity {
                         // display initial view
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                new Handler().post(new Runnable() {
+                                new Handler().postDelayed(new Runnable() {
                                     public void run() {
                                         LeoLog.d("testAirsig", "gotoStep ChooseWord");
                                         gotoStep(Step.ChooseWord);
                                     }
-                                });
+                                }, 300);
                             }
                         });
 
@@ -873,9 +873,9 @@ public class TrainingActivity extends Activity {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             newFragment.onExpandEnd();
-                            if (mMainPage.getVisibility() != View.VISIBLE) {
-                                mMainPage.setVisibility(View.VISIBLE);
-                            }
+//                            if (mMainPage.getVisibility() != View.VISIBLE) {
+//                                mMainPage.setVisibility(View.VISIBLE);
+//                            }
                         }
                     }, duration);
                 }

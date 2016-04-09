@@ -20,7 +20,7 @@
     <dimen name="lockPatternView_height">330dp</dimen>
 
     <dimen name="air_sig_lock_patten_height">280dp</dimen>
-
+    <dimen name="air_sig_lock_patten_width">269dp</dimen>
 
     <dimen name="layout_four_passwd_marginTop">5dp</dimen>
 

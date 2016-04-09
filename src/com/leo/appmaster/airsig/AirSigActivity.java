@@ -16,6 +16,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 
 public class AirSigActivity extends BaseActivity implements View.OnClickListener {
@@ -31,6 +32,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     private TextView mTvSetTwo;
 
     private LEOAlarmDialog mConfirmCloseDialog;
+    private long inTime;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -51,6 +53,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.airsig_activity_select);
 
         initUI();
+        inTime = System.currentTimeMillis();
     }
 
 
@@ -141,15 +144,21 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         ASGui.getSharedInstance().showTrainingActivity(1, new ASGui.OnTrainingResultListener() {
             @Override
             public void onResult(boolean isRetrain, boolean success, ASEngine.ASAction action) {
+
+
                 if (success) {
-
-                    if (isNormalSet) {
-                        SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_enable_suc");
-                    } else {
-                        SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_reset_suc");
+                    long now = System.currentTimeMillis();
+                    LeoLog.d("testTime", "now : " + now);
+                    LeoLog.d("testTime", "inTime : " + inTime);
+                    if ((now - inTime > 3000)) {
+                        inTime = System.currentTimeMillis();
+                        if (isNormalSet) {
+                            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_enable_suc");
+                        } else {
+                            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_reset_suc");
+                        }
+                        mHandler.sendEmptyMessage(SET_DONE);
                     }
-
-                    mHandler.sendEmptyMessage(SET_DONE);
                 }
             }
         });

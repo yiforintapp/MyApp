@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:groupIndicator="@null"
+        android:listSelector="@android:color/transparent"
         android:background="@color/transparent"
         android:divider="@null"
         android:headerDividersEnabled="false"

@@ -53,9 +53,11 @@
     <RelativeLayout
         android:id="@+id/airsig_tip"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:background="#ff8241"
         android:visibility="gone">
 
@@ -65,6 +67,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="@string/airsig_tip_toast_text"
+            android:layout_toLeftOf="@+id/cancel_iv"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="5dp"
             android:textColor="@color/white"
             android:textSize="16dp" />
 

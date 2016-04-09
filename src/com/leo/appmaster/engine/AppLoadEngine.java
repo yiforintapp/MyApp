@@ -1091,7 +1091,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                 || detector.isHomePackage(packageName)) {
             return;
         }
-
+        LeoLog.i("value", "get :" + AppMasterPreference.getInstance(mContext).isNewAppLockTip());
         if (AppMasterPreference.getInstance(mContext).isNewAppLockTip()) {
             sWorker.postDelayed(new Runnable() {
                 @Override

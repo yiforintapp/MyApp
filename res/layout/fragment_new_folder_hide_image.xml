@@ -32,6 +32,7 @@
         android:background="@color/transparent"
         android:divider="@null"
         android:groupIndicator="@null"
+        android:listSelector="@android:color/transparent"
         android:headerDividersEnabled="false"
         android:numColumns="3"
         android:overScrollMode="never"

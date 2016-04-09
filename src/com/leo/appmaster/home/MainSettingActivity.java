@@ -101,6 +101,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         mCsiChangeGstOrPsw = (CommonSettingItem) findViewById(R.id.csi_change_lock_type);
         mCsiChangeGstOrPsw.setTitle(STRID_CHANGE_LOCK_TYPE);
         mCsiChangeGstOrPsw.setSummaryVisable(false);
+        mCsiChangeGstOrPsw.setIconVisable(false);
         mCsiChangeGstOrPsw.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +113,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         mCsiPswQuestion = (CommonSettingItem) findViewById(R.id.csi_pswprotect);
         mCsiPswQuestion.setTitle(STRID_PSW_QUESTION);
         mCsiPswQuestion.setSummaryVisable(false);
+        mCsiPswQuestion.setIconVisable(false);
         mCsiPswQuestion.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +125,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         mCsiPswTip = (CommonSettingItem) findViewById(R.id.csi_pswtip);
         mCsiPswTip.setTitle(STRID_PSWTIP);
         mCsiPswTip.setSummaryVisable(false);
+        mCsiPswTip.setIconVisable(false);
         mCsiPswTip.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +137,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         mCsiPrivacyListen = (CommonSettingItem) findViewById(R.id.csi_privacy_listen);
         mCsiPrivacyListen.setTitle(STRID_PRIVACY_LISTEN);
         mCsiPrivacyListen.setSummaryVisable(false);
+        mCsiPrivacyListen.setIconVisable(false);
         mCsiPrivacyListen.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,6 +149,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         mCsiAdvancedProtect = (CommonSettingItem) findViewById(R.id.csi_advanced_protect);
         mCsiAdvancedProtect.setType(CommonSettingItem.TYPE_CHECKBOX);
         mCsiAdvancedProtect.setTitle(STRID_ADVANCED_PROTECT_TITLE);
+        mCsiAdvancedProtect.setIconVisable(false);
         mCsiAdvancedProtect.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,7 +267,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         if (mConfrimCloseDialog == null) {
             mConfrimCloseDialog = new LEOAlarmDialog(this);
         }
-        mConfrimCloseDialog.setTitle(STRID_DIALOG_TITLE_ADVANCED_PROTECT);
+        mConfrimCloseDialog.setTitle(this.getResources().getString((STRID_DIALOG_TITLE_ADVANCED_PROTECT)));
         mConfrimCloseDialog.setContent(getString(STRID_DIALOG_CONTENT_ADVANCED_PROTECT));
         mConfrimCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override

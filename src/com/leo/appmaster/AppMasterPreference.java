@@ -778,6 +778,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setNewAppLockTip(boolean b) {
+         LeoLog.i("value", "b :" + b);
          LeoSettings.setBoolean(PREF_NEW_APP_LOCK_TIP, b);
     }
 
