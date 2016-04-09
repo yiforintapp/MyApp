@@ -267,7 +267,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         if (mConfrimCloseDialog == null) {
             mConfrimCloseDialog = new LEOAlarmDialog(this);
         }
-        mConfrimCloseDialog.setTitle(STRID_DIALOG_TITLE_ADVANCED_PROTECT);
+        mConfrimCloseDialog.setTitle(this.getResources().getString((STRID_DIALOG_TITLE_ADVANCED_PROTECT)));
         mConfrimCloseDialog.setContent(getString(STRID_DIALOG_CONTENT_ADVANCED_PROTECT));
         mConfrimCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
