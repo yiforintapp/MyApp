@@ -1697,10 +1697,6 @@ public class LockManagerImpl extends LockManager {
                 @Override
                 public void run() {
                     checkScreenOn();
-                    
-                    PrivacyDataManager mPDManager = (PrivacyDataManager) MgrContext
-                            .getManager(MgrContext.MGR_PRIVACY_DATA);
-                    mPDManager.checkLostPicAndVid();
                 }
             }, 500);
         } else if (PhoneInfo.getPhoneDeviceModel().contains("Nokia")

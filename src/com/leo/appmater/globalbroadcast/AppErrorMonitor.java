@@ -2,6 +2,9 @@ package com.leo.appmater.globalbroadcast;
 
 import android.content.Intent;
 
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -28,11 +31,19 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
         String action = intent.getAction();
         LeoLog.d(TAG, "<ls> onScreenChanged...action: " + action);
         if (Intent.ACTION_SCREEN_ON.equals(action)) {
-            screenOn();
+            checkLostPicAndVid();
         }
     }
 
-    private void screenOn() {
-
+    private void checkLostPicAndVid() {
+        ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager mPDManager = (PrivacyDataManager) MgrContext
+                        .getManager(MgrContext.MGR_PRIVACY_DATA);
+                mPDManager.checkLostPicAndVid();
+            }
+        }, 500);
     }
+
 }
