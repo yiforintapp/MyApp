@@ -66,7 +66,7 @@
             android:layout_marginLeft="@dimen/ph_secur_top_tip_lt_marg_left"
             android:layout_marginRight="@dimen/ph_secur_top_tip_lt_marg_left"
             android:background="@drawable/blue_edit_bg"
-            android:hint="@string/privacy_contact_edittext_hint"
+            android:hint="@string/secur_add_num"
             android:inputType="phone"
             android:paddingLeft="16dp"
             android:textColor="@drawable/privacy_contact_edit_edittext_selecter"
