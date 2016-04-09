@@ -136,6 +136,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mChangeProtectQuestion.setOnPreferenceClickListener(this);
         mChangePasswdTip.setOnPreferenceClickListener(this);
         mLockSetting.setOnPreferenceClickListener(this);
+        mLockTip.setChecked(AppMasterPreference.getInstance(LockOptionActivity.this).isNewAppLockTip());
     }
 
     private boolean isAdminActive() {
