@@ -16,6 +16,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 
 public class AirSigSettingActivity extends BaseActivity implements View.OnClickListener {
@@ -31,6 +32,7 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
     private ImageView mIvShowOne;
     private ImageView mIvShowTwo;
     private LEOAlarmDialog mConfirmCloseDialog;
+    private long inTime;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -52,6 +54,7 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airsig_activity_select_setting);
         initUI();
+        inTime = System.currentTimeMillis();
     }
 
     private void initUI() {
@@ -211,7 +214,11 @@ public class AirSigSettingActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onResult(boolean isRetrain, boolean success, ASEngine.ASAction action) {
                 if (success) {
-                    mHandler.sendEmptyMessage(SET_DONE);
+                    long now = System.currentTimeMillis();
+                    if ((now - inTime > 3000)) {
+                        inTime = System.currentTimeMillis();
+                        mHandler.sendEmptyMessage(SET_DONE);
+                    }
                 }
             }
         });
