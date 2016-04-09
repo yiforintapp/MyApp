@@ -529,6 +529,7 @@
     <string name="auto_start_tip_redmi">為了保證持續保護，請進入“自啟動應用管理”，選擇“添加自啟動應用”，將隱私衛士加入到自啟動列表</string>
     <string name="auto_start_tip_huawei">為了保證持續保護，請進入“受保護應用”，將PG加入受保護名單中</string>
     <string name="auto_start_tip_lenovo">開機啟動隱私衛士，安全無憂。請進入“後臺管理”，選擇“後臺運行”和“後臺自啓”，將隱私衛士加入到列表</string>
+    <string name="huawei7pl_op_tip">請在“權限管理”的“應用”項中選擇“隱私衛士”，授予“讀取短信/彩信，發送短信”權限。</string>
     <!-- 2.10  end -->
     <!-- 2.12 start -->
     <string name="applock_guide_tip_title">需要授權以確保正常使用</string>

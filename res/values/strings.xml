@@ -1159,7 +1159,7 @@
     <string name="secur_close_tip_content">After you disable Anti-Theft on this device, your phone will no longer be protected.Are you sure to disable?</string>
     <string name="secur_close_tip_bt_cancel">Cancel</string>
     <string name="secur_close_tip_bt_sure">Confirm</string>
-    <string name="secur_save_num">Reserve a number:</string>
+    <string name="secur_save_num">Reserved number:</string>
     <string name="secur_open_sucess_send_msm_toast">The Anti-Theft function was enabled successfully and the remote commands have been sent to your reserved number.</string>
     <string name="secur_mody_sure_bt">Confirm</string>
     <string name="secur_open_sucess_toast">Anti-Theft has been enabled</string>
@@ -1175,12 +1175,12 @@
     <string name="airsig_settings_lock_fragment_normal">Change to Pattern</string>
     <string name="airsig_settings_lock_fragment_normal_psw">Change to PIN Code</string>
     <string name="airsig_settings_lock_fragment_airsig">Change to Airsig</string>
-    <string name="change_gesture_or_password">Change the pattern/PIN Code</string>
+    <string name="change_gesture_or_password">Change the Pattern/PIN Code</string>
     <string name="gesture_or_password">Pattern/PIN Code</string>
     <string name="did_not_open">Not enabled</string>
     <string name="has_opened">Enabled</string>
     <string name="title_close_advanced_protect">Disable Advanced Protection</string>
-    <string name="content_close_advanced_protect">After you disable the Advanced Protetion, your Anti-Theft, Home Screen Lock  will no longer be available and LEO Privay will be uninstalled maliciously as well.</string>
+    <string name="content_close_advanced_protect">After you disable the Advanced Protection, your Anti-Theft, Home Screen Lock will no longer be available and LEO Privacy will be uninstalled maliciously as well.</string>
     <string name="new_hidden_image">Hide new pictures</string>
     <string name="new_hidden_vid">Hide new videos</string>
     <string name="new_image_num">%1$d images found</string>
@@ -1200,7 +1200,7 @@
     <string name="img_hide_cpy_toast">Reading data from the external memory card now, and this action might take a while, especially if your project contains more than a few files.</string>
     <string name="home_more">More</string>
     <string name="home_det_tip">Recommend to enable the "Anti-Theft" function</string>
-    <string name="find_new_pic_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> new imeges were detected</string>
+    <string name="find_new_pic_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> new images were detected</string>
     <string name="find_new_vid_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> new videos were detected</string>
     <string name="hide_immediately">Hide immediately</string>
     <string name="hd_found_app">apps to be processed</string>
@@ -1233,4 +1233,5 @@
     <string name="uninstall_guide_tips">The Advacned Protection was enabled, please click here to uninstall the LEO Privacy</string>
     <string name="secur_add_num_tip">How Anti-Theft function works?</string>
     <string name="backup_instr_tip_str">You can send commands backup via SMS to your reserved number.</string>
+
 </resources>

@@ -1001,7 +1001,7 @@
     <string name="secur_close_tip_content">После отключения Анти-кражи, ваш телефон не будет защищен.Вы уверены, что хотите отключить?</string>
     <string name="secur_close_tip_bt_cancel">Отменить</string>
     <string name="secur_close_tip_bt_sure">Подтвердить</string>
-    <string name="secur_save_num">Остаться номер</string>
+    <string name="secur_save_num">Привязанный номер:</string>
     <string name="secur_open_sucess_send_msm_toast">Анти-кражи функция была включена успешно и удаленных команд были отправлены в свой забронированный номер.</string>
     <string name="secur_mody_sure_bt">Подтвердить</string>
     <string name="secur_open_sucess_toast">Анти-кражи включена</string>
@@ -1022,7 +1022,7 @@
     <string name="did_not_open">Закрыл</string>
     <string name="has_opened">Включил</string>
     <string name="title_close_advanced_protect">Отключить Вышую Защиту</string>
-    <string name="content_close_advanced_protect">После отключения Вышую защиту, Анти-кражи, Домашний экран не доступен и Leo Privay можно удалить.</string>
+    <string name="content_close_advanced_protect">После отключения Вышую защиту, Анти-кражи, Домашний экран не доступен и LEO Privacy можно удалить.</string>
     <string name="new_hidden_image">Скрыть фото</string>
     <string name="new_hidden_vid">Скрыть видео</string>
     <string name="new_image_num">%1$d фото нашли</string>
@@ -1071,8 +1071,8 @@
     <string name="hd_lock_permisson_tip">Включить Замок App разрешения на доступ, чтобы исправить проблему блокировки приложения</string>
     <string name="hd_lost_permisson_tip">Предлагаю включить Анти-Кражи, пожалуйста, нажмите, чтобы войти п страницы Анти-Кражи</string>
     <string name="airsig_tip_toast_text">Тема не относится к подписи разблокировки</string>
-    <string name="airsig_tip_toast_update_text">Ключ разблокировки подписи истек, пожалуйста, обновите Leo Privacy для дальнейшего использования</string>
-    <string name="uninstall_guide_tips">Вышую защиту был включен, пожалуйста, щелкните здесь, чтобы удалить Leo Privacy</string>
+    <string name="airsig_tip_toast_update_text">Ключ разблокировки подписи истек, пожалуйста, обновите LEO Privacy для дальнейшего использования</string>
+    <string name="uninstall_guide_tips">Вышую защиту был включен, пожалуйста, щелкните здесь, чтобы удалить LEO Privacy</string>
     <string name="secur_add_num_tip">Как работает Анти-Кражи?</string>
     <string name="backup_instr_tip_str">Вы можете отправить резервных команд через SMS на выделенный номер.</string>
     <!-- airsig -->
