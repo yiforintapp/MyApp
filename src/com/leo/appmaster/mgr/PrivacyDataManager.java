@@ -206,15 +206,11 @@ public abstract class PrivacyDataManager extends Manager {
     public abstract int getVidShouldScore(int newVidNum);
 
     /**
-<<<<<<< HEAD
      * 上报文件丢失
      */
     public abstract void reportDisappearError(boolean isImage, String label);
-=======
-     * 统计现在隐藏图片的张数
-     */
+
     public abstract int getHidePicsRealNum();
 
     public abstract int getHideAllPicNum();
->>>>>>> pic lost
 }
