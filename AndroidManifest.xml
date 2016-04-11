@@ -628,12 +628,6 @@
             android:theme="@style/Theme.PageIndicatorDefaults"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
-            android:name=".airsig.AirSigSettingActivity"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.PageIndicatorDefaults"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-        <activity
             android:name=".airsig.airsigsdk.VerifyActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/airsig_verify_title"

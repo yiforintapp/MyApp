@@ -707,7 +707,7 @@
     <string name="no_sim_tip">SIM не вставлена, отправкаСМС удалась</string>
     <string name="secur_input_number">Введите номер вручно</string>
     <string name="secur_input_add_bt">Добавить</string>
-    <string name="secur_add_number_title">Добавить бронированные  номеры </string>
+    <string name="secur_add_number_title">Добавить номер</string>
 
     <string name="quick_helper_desc">Доб. следующие функции на рабочем столе</string>
     <string name="sucri_add_contact">Добавить из контактов</string>
@@ -828,7 +828,7 @@
     <string name="scan_vid_title">Заметить %1$s ведио</string>
     <string name="scan_vid_content">Рекомендуем выбрать секретные ведио и скрыть их</string>
     <string name="scan_instruct_title">Защита от захватчиков</string>
-    <string name="scan_instruct_content">Включить защиту от захватчиков, посмотреть, кто подсматривает за Вашим телефоном</string>
+    <string name="scan_instruct_content">Включить перерыв-в тревоге выяснить шпионов</string>
     <string name="scan_lost_title">Защита от кражи</string>
     <string name="scan_lost_content">Включить защиту от кражи для поиска украденного телефона</string>
     <string name="scan_contact_title">Постоянные конфиденциальные контактные лица</string>
@@ -879,7 +879,7 @@
     <string name="batterymanage_boost_finished">Оптимизация завершена</string>
     <string name="batterymanage_tip_loading">Идет проверка приложений, потребляющих питание</string>
     <string name="batterymanage_tip_nothing_to_boost">Нет app, которые можно оптимизировать</string>
-    <string name="batterymanage_switch_screen">Заставка с индикатором зарядки</string>
+    <string name="batterymanage_switch_screen">Заставка зарядки </string>
     <string name="batterymanage_switch_screen_summary">предотвращает лишнюю зарядку и увеличивает скорость зарядки</string>
     <string name="batterymanage_switch_noti">Уведомления о потреблении питания приложениями</string>
     <string name="batterymanage_switch_noti_summary">Проверка потребления питания приложениями</string>
@@ -931,7 +931,7 @@
     <string name="game_box_one">Ускорение игры</string>
 
     <string name="batteryview_pop_setting">Настройка  зарядки</string>
-    <string name="close_batteryview_confirm_content">Если закроете, ваша скорость зарядки будет уменьшить на 20%, еще хотите закрыть?</string>
+    <string name="close_batteryview_confirm_content">Если закроете, ваша скорость зарядки будет уменьшить на 20, хотите закрыть?</string>
     <string name="close_batteryview_confirm_sure">Да</string>
     <string name="close_batteryview_confirm_cancel">Нет</string>
     <!--3.3.2-->
@@ -939,7 +939,7 @@
     <string name="ask_create_shortcut_content_imagehide">Хотите просматривать скрытое фото? На рабочем столе создать ярлык!</string>
     <string name="ask_create_shortcut_content_videohide">Хотите просматривать скрытое видео? На рабочем столе создать ярлык!</string>
     <string name="ask_create_shortcut_content_callfilter">Добавить ярлыки на рабочем столе, и больше чтобы облегчить управление черный список, и перехватить записей.</string>
-    <string name="ask_create_shortcut_content_wifi_security">Беспокоится о безопасности сети? Создание ярлыка на рабочем столе,в любое время вамможно проверить сети Wi-Fi безопасность!</string>
+    <string name="ask_create_shortcut_content_wifi_security">Беспокоится о безопасности сети? Создание ярлыка на рабочем столе, в любое время вамможно проверить сети Wi-Fi безопасность!</string>
     <string name="grant_permission_guide">Открыть доступ о LEO Privacy</string>
     <string name="grant_permission_default_tip">Открыть доступ и исправить проблем блокировки</string>
     <string name="battery_protect_view_time_title">Время</string>
@@ -998,10 +998,10 @@
     <string name="secur_fun_close">Закрыл</string>
     <string name="secur_mody_num_title">Изменить номер</string>
     <string name="secur_mody_mum_sure">Подтвердить</string>
-    <string name="secur_close_tip_content">После отключения Анти-кражи, ваш телефон не будет защищен.Вы уверены, что хотите отключить?</string>
+    <string name="secur_close_tip_content">После отключения Анти-кражи, ваш телефон не будет защищен.Вы хотите отключить?</string>
     <string name="secur_close_tip_bt_cancel">Отменить</string>
     <string name="secur_close_tip_bt_sure">Подтвердить</string>
-    <string name="secur_save_num">Привязанный номер:</string>
+    <string name="secur_save_num">номер:</string>
     <string name="secur_open_sucess_send_msm_toast">Анти-кражи функция была включена успешно и удаленных команд были отправлены в свой забронированный номер.</string>
     <string name="secur_mody_sure_bt">Подтвердить</string>
     <string name="secur_open_sucess_toast">Анти-кражи включена</string>
@@ -1037,18 +1037,18 @@
     <string name="lock_app_list_new_app">Новые приложения</string>
     <string name="lock_app_list_all_app">Все приложения</string>
     <string name="lock_app_list_other_app">Другие приложения</string>
-    <string name="turn_on_battery_noti">Включить уведомления энергопотребление</string>
-    <string name="turn_off_battery_noti">Оключить уведомления энергопотребление</string>
+    <string name="turn_on_battery_noti">Не энергопотребление</string>
+    <string name="turn_off_battery_noti">Энергопотребление</string>
     <string name="img_hide_cpy_toast">Считывание данных из внешней карты памяти теперь, и это действие может занять некоторое время, особенно если ваш проект содержит более, чем несколько файлов.</string>
     <string name="home_more">Больше</string>
     <string name="home_det_tip">Включить Анти-кражи</string>
     <string name="find_new_pic_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> обнаружить новые фото</string>
     <string name="find_new_vid_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> обнаружить новые видео</string>
     <string name="hide_immediately">Сразу скрыть</string>
-    <string name="hd_found_app">Приложения должны быть обработаны</string>
-    <string name="hd_found_pic">Фото должны быть обработаны</string>
-    <string name="hd_found_vid">Видео должны быть обработаны</string>
-    <string name="hd_new_app">Новые приложения</string>
+    <string name="hd_found_app">Не секртые прил.</string>
+    <string name="hd_found_pic">Не секреты Фото</string>
+    <string name="hd_found_vid">Не секреты видео</string>
+    <string name="hd_new_app">Новые прил.</string>
     <string name="hd_new_pic">Новые фото</string>
     <string name="hd_new_vid">Новые видео</string>
     <string name="hd_locked_app">Замок apps</string>
@@ -1060,16 +1060,16 @@
     <string name="hd_hide_pic_privacy_summary">Вы уже добавили несколько новых фото, рекомендую скрыть их сейчас.</string>
     <string name="hd_hide_vid_privacy_title">Скрыть личные видео</string>
     <string name="hd_hide_vid_privacy_summary">Вы уже добавили несколько новых  видео, рекомендую скрыть их сейчас.</string>
-    <string name="hd_add_locked_app">Добавить в заблокированные приложения</string>
-    <string name="hd_add_hide_pic">Добавить скрытые фото</string>
-    <string name="hd_add_hide_vid">Добавить скрытые видео</string>
+    <string name="hd_add_locked_app">Добавить прил.</string>
+    <string name="hd_add_hide_pic">Добавить фото</string>
+    <string name="hd_add_hide_vid">Добавить видео</string>
     <string name="hd_privacy_danger">%1$d риски секреты нужно обрабатывать</string>
     <string name="hd_app_danger_tip">Предлагаю замок</string>
     <string name="hd_pic_danger_tip">Предлагаю скрыть</string>
     <string name="hd_privacy_safe">Статус скреты в хорошем состоянии</string>
     <string name="hd_more_guide_tip">Щелкните здесь, чтобы найти больше возможностей</string>
-    <string name="hd_lock_permisson_tip">Включить Замок App разрешения на доступ, чтобы исправить проблему блокировки приложения</string>
-    <string name="hd_lost_permisson_tip">Предлагаю включить Анти-Кражи, пожалуйста, нажмите, чтобы войти п страницы Анти-Кражи</string>
+    <string name="hd_lock_permisson_tip">Включить разрешения на доступ</string>
+    <string name="hd_lost_permisson_tip">Предлагаю включить Анти-Кражи</string>
     <string name="airsig_tip_toast_text">Тема не относится к подписи разблокировки</string>
     <string name="airsig_tip_toast_update_text">Ключ разблокировки подписи истек, пожалуйста, обновите LEO Privacy для дальнейшего использования</string>
     <string name="uninstall_guide_tips">Вышую защиту был включен, пожалуйста, щелкните здесь, чтобы удалить LEO Privacy</string>
@@ -1144,7 +1144,7 @@
     <string name="airsig_training_dialog_confirm_exit_detail">Не совершено настроить,выйти?</string>
     <string name="airsig_training_dialog_confirm_exit_postive_button">Выйти</string>
     <string name="airsig_training_dialog_confirm_exit_negative_button">Отменить</string>
-    <string name="airsig_training_dialog_confirm_reset_title">Перенастройка</string>
+    <string name="airsig_training_dialog_confirm_reset_title">Перестройка</string>
     <string name="airsig_training_dialog_confirm_reset_detail">Начинать</string>
     <string name="airsig_training_dialog_confirm_reset_postive_button">Перенастройка</string>
     <string name="airsig_training_dialog_confirm_reset_negative_button">Отменить</string>

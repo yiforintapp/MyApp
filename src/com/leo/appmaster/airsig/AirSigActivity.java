@@ -20,6 +20,10 @@ import com.leo.appmaster.utils.LeoLog;
 
 
 public class AirSigActivity extends BaseActivity implements View.OnClickListener {
+    public final static String UNLOCK_TYPE = "unlock_type";
+    public final static int NOMAL_UNLOCK = 1;
+    public final static int AIRSIG_UNLOCK = 2;
+
     public final static String AIRSIG_SWITCH = "airsig_switch";
     public final static String AIRSIG_OPEN_EVER = "airsig_open_ever";
     public final static String AIRSIG_TIMEOUT_EVER = "airsig_timeout_ever";
@@ -39,7 +43,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             switch (msg.what) {
                 case SET_DONE:
                     LeoSettings.setBoolean(AIRSIG_SWITCH, true);
-                    LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
+                    LeoSettings.setInteger(UNLOCK_TYPE, AIRSIG_UNLOCK);
                     switchOn();
                     showMessage(getString(R.string.airsig_settings_activity_toast));
                     break;
@@ -187,6 +191,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_off_suc");
+                    LeoSettings.setInteger(UNLOCK_TYPE, NOMAL_UNLOCK);
                     LeoSettings.setBoolean(AIRSIG_SWITCH, false);
                     switchOff();
                     mConfirmCloseDialog.dismiss();
@@ -198,7 +203,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         } else if (isAirsigReady) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_enable");
             //open
-            LeoSettings.setInteger(AirSigSettingActivity.UNLOCK_TYPE, AirSigSettingActivity.AIRSIG_UNLOCK);
+            LeoSettings.setInteger(UNLOCK_TYPE, AIRSIG_UNLOCK);
             LeoSettings.setBoolean(AIRSIG_SWITCH, true);
             switchOn();
             SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_enable_suc");

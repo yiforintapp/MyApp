@@ -35,19 +35,6 @@
                 android:background="#cbcbcb" />
 
             <com.leo.appmaster.ui.CommonSettingItem
-                android:id="@+id/item_defaultlocktype"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:id="@+id/line_2"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
-
-            <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_intruder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
