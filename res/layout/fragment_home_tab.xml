@@ -158,7 +158,7 @@
                 <TextView
                     style="@style/HomeTabText"
                     android:layout_below="@id/home_ic_intercept"
-                    android:text="@string/hp_hide_video"/>
+                    android:text="@string/quick_helper_callfilter"/>
             </RelativeLayout>
         </RelativeLayout>
 
@@ -191,7 +191,7 @@
                 <TextView
                     style="@style/HomeTabText"
                     android:layout_below="@id/home_ic_magiclock"
-                    android:text="@string/hp_hide_video"/>
+                    android:text="@string/airsig_settings_activity_title"/>
             </RelativeLayout>
         </RelativeLayout>
 

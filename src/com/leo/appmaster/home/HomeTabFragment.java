@@ -18,6 +18,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -328,7 +329,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvideo");
                     break;
                 case R.id.home_intercept:
-
+                    goToCallfilter();
                     break;
                 case R.id.home_magiclock:
 
@@ -344,5 +345,15 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     break;
             }
         }
+    }
+    private void goToCallfilter() {
+        int count = LeoSettings.getInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
+        LeoSettings.setInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count + 1);
+        Intent callFilter = new Intent(getActivity(), CallFilterMainActivity.class);
+        if (mIsHasCallFilterRecords) {
+            callFilter.putExtra("needMoveToTab2", true);
+        }
+        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "more", "block");
+        startActivity(callFilter);
     }
 }
