@@ -287,7 +287,7 @@
     <!-- weizhuang -->
     <string name="time_location_lock_tip_title">More Modes</string>
     <string name="lock_mode_guide_button_text">OK</string>
-    <string name="mode_missing">"You don't create the mode, please delete this shortcut"</string>
+    <string name="mode_missing">You haven\'t created this mode. Please delete its shortcut</string>
     <!-- version 2.1 end -->
 
 
@@ -511,7 +511,7 @@
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
 
     <string name="feedback_tell_us_title">Contact us</string>
-    <string name="toast_getscore_text">Congratulations!Score has increased</string>
+    <string name="toast_getscore_text">Congratulations! Score has increased</string>
     <string name="feedback_tell_us_content">If you have any further questions or requirements, please do not hesitate to contact us and follow us on Facebook &amp; Whatsapp.</string>
     <string name="feedback_tell_us_contact_type_title">Contacts:</string>
     <string name="dialog_fivestars_content_text">Enjoying LEO Privacy? Please take a moment to rate us in Google Play Store, thanks for your support!</string>
@@ -567,7 +567,7 @@
     <string name="scan_app_content">There are private apps like %1$s, lock</string>
     <string name="scan_app_content_app">There are private apps like <Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data>, lock</string>
     <string name="scan_vid_title"> %1$s videos scanned</string>
-    <string name="scan_instruct_content">Open intruder protection to observe intruders</string>
+    <string name="scan_instruct_content">Enable Break-in Alert to find out snoopers</string>
     <string name="scan_lost_title">Phone security</string>
     <string name="scan_lost_content">Open phone security, find the lost phone</string>
     <string name="scan_contact_title">Frequent privacy contacts</string>
@@ -602,7 +602,7 @@
     <string name="batterymanage_boost">Power optimization</string>
     <string name="batterymanage_boost_finished">Optimization completed</string>
     <string name="batterymanage_tip_nothing_to_boost">There is no application for optimization</string>
-    <string name="batterymanage_switch_screen">Charging screensaver</string>
+    <string name="batterymanage_switch_screen">Charging Screensaver</string>
     <string name="batterymanage_switch_screen_summary">Speed up charging and prevent overcharging</string>
     <string name="batterymanage_switch_noti">Power consumption notification</string>
     <string name="batterymanage_setting_title">Setting</string>
@@ -642,16 +642,16 @@
     <string name="game_box_one">Game accelerating</string>
 
     <string name="batteryview_pop_setting">Charging Settings</string>
-    <string name="close_batteryview_confirm_content">The charging rate will reduce 20%,confirm to close?</string>
+    <string name="close_batteryview_confirm_content">The charging rate will reduce 20%, confirm to close?</string>
     <string name="close_batteryview_confirm_sure">OK</string>
     <string name="close_batteryview_confirm_cancel">Cancel</string>
 
     <!-- 3.3.2 -->
     <string name="ask_create_shortcut_button_right">Create</string>
-    <string name="ask_create_shortcut_content_imagehide">Want to browse your hidden photos more easily? Create a shortcut on the desktop!</string>
-    <string name="ask_create_shortcut_content_videohide">Want to browse your hidden videos more easily? Create a shortcut on the desktop!</string>
+    <string name="ask_create_shortcut_content_imagehide">Want to browse your hidden images more easily?  Create a shortcut on desktop!</string>
+    <string name="ask_create_shortcut_content_videohide">Want to browse your hidden videos more easily? Create a shortcut on desktop!</string>
     <string name="ask_create_shortcut_content_callfilter">Add a desktop shortcut, to easily manage blacklist and blocking records.</string>
-    <string name="ask_create_shortcut_content_wifi_security">Worry about network security? Create a desktop shortcut to check Wi-Fi security any time!</string>
+    <string name="ask_create_shortcut_content_wifi_security">Worry about network security? Create a desktop shortcut to check Wi-Fi security anytime!</string>
     <string name="grant_permission_default_tip">Give permissions to fix App Lock problems.</string>
     <string name="battery_protect_view_time_title">Remaining time available</string>
     <string name="battery_protect_view_remain_one_title">Call</string>
@@ -695,7 +695,7 @@
     <string name="forbid_uninstall">Advanced Protection</string>
     <string name="change_lock_time">Change Auto-Lock Time</string>
     <string name="category_other">Others</string>
-    <string name="feedback_success_title">Submitted successfully</string>
+    <string name="feedback_success_title">Submit successfully</string>
     <string name="feedback_success_content">Thank you for your feedback, we will strive to improve your experience.</string>
     <string name="app_image_hide">Hide Images</string>
     <string name="app_unhide_pictures_dialog_content">Unhide selected images?</string>
@@ -807,8 +807,8 @@
     <string name="lock_line_visiable">Unlock track  has been displayed</string>
     <string name="guide_more_text">More</string>
     <string name="guide_skip_text">Skip</string>
-    <string name="zipper_too_fast">Oops!Pull down slowly</string>
-    <string name="zipper_too_slow">Oops!Pull down quickly</string>
+    <string name="zipper_too_fast">Oops! Pull down slowly</string>
+    <string name="zipper_too_slow">Oops! Pull down quickly</string>
     <string name="theme_apply_title">Apply this unlock theme %1$s?</string>
     <string name="video_delete_fail">Can not delete the file</string>
     <string name="beauty_mode_ok">Enabled Beauty Cover successfully</string>
@@ -894,7 +894,7 @@
     <string name="secur_backup_msm">You have selected to backup control orders via SMS: 1. lock mobile: #lockmobile 2. locate mobile position: #locateposition 3. send alarm: #alert 4. clear data: #formatdata 5. enable lock; tracking&amp;alarm&amp;erase: #onekey. If the mobile is lost, send corresponding orders to it. If you forget the orders, click "Backup remote control orders" to send this SMS again. [LEOMASTER]</string>
     <string name="secur_add_self_number_tip">The number you input is your mobile number, please input again</string>
     <string name="monitor_new_pic">New images</string>
-    <string name="secur_kno_model_msm_click">Authorize immediately>>></string>
+    <string name="secur_kno_model_msm_click">Authorize now>>></string>
     <string name="secur_no_kno_model_msm_tip">Anti-theft functions demand Read &amp; Send SMS privileges. Please grant permissions</string>
     <string name="secur_help_feedback_tip_button">Contact us</string>
     <string name="mi_op_tip">Please choose "Permissions" item in the permissions and select LEO Privacy, enable "Send SMS messages"and"Read SMS messages".</string>
@@ -924,9 +924,9 @@
     <string name="miss_noti_content">%1$s added to blacklist by %2$s users,recommend to add</string>
     <string name="batterymanage_result_ad_wifi_title">Wi-Fi security checking</string>
     <string name="batterymanage_result_ad_wifi_content">Unsecured Wi-Fi may threaten your privacy and security anytime</string>
-    <string name="batterymanage_result_ad_callfilter_title">Harassment intercept </string>
+    <string name="batterymanage_result_ad_callfilter_title">Harassment Intercept </string>
     <string name="batterymanage_tip_loading">Checking power-consuming apps</string>
-    <string name="quick_helper_callfilter">Harassment intercept</string>
+    <string name="quick_helper_callfilter">Harassment Intercept</string>
     <string name="phone_share_dialog_content">Your mobile is under protection of the anti-theft function, but this is maybe not the case for your friends\' mobiles. Be quick to help them.</string>
     <string name="callfilter_share_dialog_content">Recommend the Harassment Intercept function to your friends~</string>
     <string name="intruder_share_dialog_content">Like us? <Data><![CDATA[<font color="#FFF600">Share with your friends</font>]]></Data></string>
@@ -1000,8 +1000,8 @@
     <string name="call_filter_setting_two_title">Notifications</string>
     <string name="call_filter_mark_as_tx">Ads promotion</string>
     <string name="filter_list_is_empty">No records,add numbers to blacklist</string>
-    <string name="scan_pic_content">Privacy at risk,suggest to hide</string>
-    <string name="scan_vid_content">Privacy at risk,suggest to hide</string>
+    <string name="scan_pic_content">Privacy at risk, suggest to hide</string>
+    <string name="scan_vid_content">Privacy at risk, suggest to hide</string>
     <string name="scan_vid_none">No new videos</string>
     <string name="scan_app_none">No new apps</string>
     <string name="scan_find_app">Find<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> apps,suggest to lock</string>
@@ -1012,14 +1012,14 @@
     <string name="gud_page_call_fil">Auto recognise phone number，keep harassment away</string>
     <string name="ad_blk_fail">Failed</string>
     <string name="batterymanage_switch_noti_summary">Notify power consumption of apps</string>
-    <string name="batterymanage_boosted_number">%1$s items were optimized</string>
+    <string name="batterymanage_boosted_number">%1$s apps optimized</string>
     <!--3.5西安团队审校修改文案 end-->
     <!--3.5-->
     <string name="intruder_setting_title_1">Auto-photo of  snoopers breaking into Home Screen Lock</string>
     <string name="intruder_setting_summarty_1">Auto-photo when unlocking phone with the wrong password</string>
     <string name="intruder_setting_title_2">Auto-photo  of  snoopers breaking into App Lock</string>
     <string name="intruder_setting_summarty_2">Auto-photo when unlocking apps with the wrong password</string>
-    <string name="intruder_systemlock_tip">Recommend to enable the Home Screen Lock function</string>
+    <string name="intruder_systemlock_tip">Recommend to enable Home Screen Lock function</string>
     <string name="intruder_systemlock_finished">Camera access of Home Screen Lock has been activated</string>
     <string name="intruder_device_admin_guide_content">Enable the \"Advanced Protection\" before you activate this function, please disable the \"Advanced Protection\" before you uninstall \"LEO Privacy\", are you sure you want to continue? </string>
     <string name="intruder_systemlock_alarm">It won\'t be able to take photos of snoopers peeking into your phone  when you disable this function</string>
@@ -1186,8 +1186,8 @@
     <string name="new_image_num">%1$d images found</string>
     <string name="new_vid_num">%1$d videos found</string>
     <string name="new_hide_num">Hide (%1$d)</string>
-    <string name="hide_complete_new_image">New images have been hidden sucessfully!</string>
-    <string name="hide_complete_new_vid">New videos have been hidden sucessfully!</string>
+    <string name="hide_complete_new_image">Hide sucessfully!</string>
+    <string name="hide_complete_new_vid">Hide sucessfully!</string>
     <string name="uninstall_dialog_title">Uninstall LEO Privacy</string>
     <string name="uninstall_dialog_content">Before you uninstall LEO Privacy, you have to disable the Advanced Protection. After you disable it, some functions will no longer be available.Are you sure to disable?</string>
     <string name="open_admin_title">Enable Advanced Protection</string>
@@ -1195,7 +1195,7 @@
     <string name="lock_app_list_new_app">New Applications</string>
     <string name="lock_app_list_all_app">All Applications</string>
     <string name="lock_app_list_other_app">Other Applications</string>
-    <string name="turn_on_battery_noti">Enable App\'s Power Consumption Notification </string>
+    <string name="turn_on_battery_noti">Enable Power Consumption Notification </string>
     <string name="turn_off_battery_noti">Disable App‘s Power Consumption Notification </string>
     <string name="img_hide_cpy_toast">Reading data from the external memory card now, and this action might take a while, especially if your project contains more than a few files.</string>
     <string name="home_more">More</string>
