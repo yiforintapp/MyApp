@@ -200,14 +200,16 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             if (!isFinishing()) {
                 mConfirmCloseDialog.show();
             }
-        } else if (isAirsigReady) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_enable");
-            //open
-            LeoSettings.setInteger(UNLOCK_TYPE, AIRSIG_UNLOCK);
-            LeoSettings.setBoolean(AIRSIG_SWITCH, true);
-            switchOn();
-            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_enable_suc");
-        } else {
+        }
+//        else if (isAirsigReady) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_enable");
+//            //open
+//            LeoSettings.setInteger(UNLOCK_TYPE, AIRSIG_UNLOCK);
+//            LeoSettings.setBoolean(AIRSIG_SWITCH, true);
+//            switchOn();
+//            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_enable_suc");
+//        }
+        else {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_enable");
             //set Airsig
             setAirsig(true);
