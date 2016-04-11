@@ -1196,16 +1196,16 @@
     <string name="lock_app_list_all_app">All Applications</string>
     <string name="lock_app_list_other_app">Other Applications</string>
     <string name="turn_on_battery_noti">Enable Power Consumption Notification </string>
-    <string name="turn_off_battery_noti">Disable App‘s Power Consumption Notification </string>
+    <string name="turn_off_battery_noti">Disable Power Consumption Notification </string>
     <string name="img_hide_cpy_toast">Reading data from the external memory card now, and this action might take a while, especially if your project contains more than a few files.</string>
     <string name="home_more">More</string>
     <string name="home_det_tip">Recommend to enable the "Anti-Theft" function</string>
     <string name="find_new_pic_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> new images were detected</string>
     <string name="find_new_vid_tips"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> new videos were detected</string>
-    <string name="hide_immediately">Hide immediately</string>
-    <string name="hd_found_app">apps to be processed</string>
-    <string name="hd_found_pic">images to be processed</string>
-    <string name="hd_found_vid">videos to be processed</string>
+    <string name="hide_immediately">Hide now</string>
+    <string name="hd_found_app">apps to be locked</string>
+    <string name="hd_found_pic">images to be locked</string>
+    <string name="hd_found_vid">videos to be locked</string>
     <string name="hd_new_app">new apps</string>
     <string name="hd_new_pic">new images</string>
     <string name="hd_new_vid">new videos</string>
@@ -1215,22 +1215,21 @@
     <string name="hd_lock_privacy_title">Lock private apps</string>
     <string name="hd_lock_privacy_summary">Some new applications have not been unlocked, please lock to protect your privacy</string>
     <string name="hd_hide_pic_privacy_title">Hide private images</string>
-    <string name="hd_hide_pic_privacy_summary">You have already added some new images, recommend to hide them now.</string>
+    <string name="hd_hide_pic_privacy_summary">Some new images found, please hide them to protect your privacy</string>
     <string name="hd_hide_vid_privacy_title">Hide private videos</string>
-    <string name="hd_hide_vid_privacy_summary">You have already added some new videos, please hide them to protect your privacy</string>
-    <string name="hd_add_locked_app">Add the locked applications</string>
-    <string name="hd_add_hide_pic">Add the hidden images</string>
-    <string name="hd_add_hide_vid">Add the hidden videos</string>
+    <string name="hd_hide_vid_privacy_summary">Some new videos found, please hide them to protect your privacy</string>
+    <string name="hd_add_locked_app">Add apps</string>
+    <string name="hd_add_hide_vid">Add videos</string>
     <string name="hd_privacy_danger">%1$d privacy risks to be processed</string>
     <string name="hd_app_danger_tip">Suggest to lock </string>
     <string name="hd_pic_danger_tip">Suggest to hide</string>
     <string name="hd_privacy_safe">Privacy status is in good condition</string>
     <string name="hd_more_guide_tip">Click here to find more features</string>
     <string name="hd_lock_permisson_tip">Enable the "App Lock" access permission to fix the App Lock problem</string>
-    <string name="hd_lost_permisson_tip">Suggest to enable the "Anti-Theft" function, please click to enter the Anti-Theft page</string>
-    <string name="airsig_tip_toast_text">The theme doesn\'t apply to the Signature Unlock</string>
-    <string name="airsig_tip_toast_update_text">The Signature Unlock key has expired, please update the LEO Privacy for further usage</string>
-    <string name="uninstall_guide_tips">The Advacned Protection was enabled, please click here to uninstall the LEO Privacy</string>
+    <string name="hd_lost_permisson_tip">Suggest to enable "Anti-Theft" function, please click to enter the Anti-Theft page</string>
+    <string name="airsig_tip_toast_text">Theme doesn\'t apply to Signature Unlock</string>
+    <string name="airsig_tip_toast_update_text">Signature Unlock key has expired, please update the LEO Privacy for further usage</string>
+    <string name="uninstall_guide_tips">Advanced Protection was enabled, please click here to uninstall LEO Privacy</string>
     <string name="secur_add_num_tip">How Anti-Theft function works?</string>
     <string name="backup_instr_tip_str">You can send commands backup via SMS to your reserved number.</string>
 
