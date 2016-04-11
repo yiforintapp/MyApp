@@ -32,17 +32,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_home_shield"
             android:clickable="true"/>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
             <!--安全状态-->
             <ImageView
                 android:id="@+id/shield_left_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/shield_blue_left"
                 android:visibility="invisible"/>
@@ -51,7 +46,7 @@
                 android:id="@+id/shield_right_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/shield_blue_right"
                 android:visibility="invisible"/>
@@ -60,7 +55,7 @@
                 android:id="@+id/shield_top_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/shield_blue_top"
                 android:visibility="invisible"/>
@@ -69,7 +64,6 @@
                 android:id="@+id/shield_center_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/shield_good"
@@ -79,7 +73,7 @@
                 android:id="@+id/shield_danger_left_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/shield_red_left"
                 android:visibility="invisible"/>
@@ -88,7 +82,7 @@
                 android:id="@+id/shield_danger_right_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/shield_red_right"
                 android:visibility="invisible"
@@ -98,7 +92,7 @@
                 android:id="@+id/shield_danger_top_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/shield_red_top"
                 android:visibility="invisible"/>
@@ -107,12 +101,11 @@
                 android:id="@+id/shield_danger_center_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:clickable="true"
                 android:src="@drawable/shield_bad"
                 android:visibility="invisible"/>
         </RelativeLayout>
-    </RelativeLayout>
 
     <ImageView
         android:layout_width="wrap_content"

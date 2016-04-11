@@ -603,7 +603,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     //盾牌位置初始化
     private void shieldPositionInit() {
-//        Context context = getActivity();
+        Context context = getActivity();
 //        //安全盾牌
 //        mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_top_offset)));
@@ -611,46 +611,37 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 //                context, getResources().getInteger(R.integer.shield_left_offset)));
 //        mShieldLeftIv.setTranslationY(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_offset)));
-//
 //        mShieldRightIv.setTranslationX(DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_right_offset)));
 //        mShieldRightIv.setTranslationY(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_offset)));
 //
-//        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_center_blue_offset_x)));
-//        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_offset)));
-//
-//        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_center_blue_offset_y)));
+        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_blue_offset_x)));
+        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_blue_offset_y)));
 //        //危险盾牌
 //        mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_top_offset)));
-//
 //        mShieldDangerLeftIv.setTranslationX(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_left_offset)));
 //        mShieldDangerLeftIv.setTranslationY(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_offset)));
-//
 //        mShieldDangerRightIv.setTranslationX(DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_right_offset)));
 //        mShieldDangerRightIv.setTranslationY(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_offset)));
 //
-//        mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_center_red_offset_x)));
-//        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_offset)));
-//
-//        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_center_red_offset_y)));
+        mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_red_offset_x)));
+        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_center_red_offset_y)));
 
     }
 
     //危险盾牌设置
     public void setDangerShieldView(boolean isShow, boolean firstEnter) {
-//        shieldPositionInit();
+        shieldPositionInit();
         if (isShow) {
             if (firstEnter) {
                 mShieldDangerTopIv.setVisibility(View.INVISIBLE);
@@ -678,7 +669,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     //安全盾牌设置
     public void setSfateShieldView(boolean firstEnter) {
-//        shieldPositionInit();
+        shieldPositionInit();
         boolean last = mLastPrivacyApp || mLastPrivacyPic || mLastPrivacyVideo;
         boolean current = mPrivacyApp && mPrivacyPic && mPrivacyVideo;
         if (firstEnter || (last && !current)) {
