@@ -86,7 +86,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private final static int[] sNewCategoryIds = {
             R.string.home_tab_lost,
             R.string.home_tab_instruder, R.string.category_lock, R.string.hp_hide_video,
-            R.string.hp_hide_img,  R.string.call_filter_name, R.string.category_other,
+            R.string.hp_hide_img, R.string.call_filter_name, R.string.category_other,
     };
 
     private final ArrayList<String> mCategories = new ArrayList<String>();
@@ -119,6 +119,8 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             }
 
         }
+
+        String from = intent.getStringExtra("from");
     }
 
     private void initEmails() {
@@ -372,7 +374,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         } else if (v == mToEmailTextView) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "feedback", "mail");
             LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            Intent data=new Intent(Intent.ACTION_SENDTO);
+            Intent data = new Intent(Intent.ACTION_SENDTO);
             data.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             data.setData(Uri.parse("mailto:".concat(mToEmailTextView.getText().toString())));
 //            data.putExtra(Intent.EXTRA_SUBJECT, "这是标题");

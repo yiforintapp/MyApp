@@ -14,6 +14,7 @@ import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.home.HomeMoreActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -26,6 +27,10 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     public final static String UNLOCK_TYPE = "unlock_type";
     public final static int NOMAL_UNLOCK = 1;
     public final static int AIRSIG_UNLOCK = 2;
+
+    public final static int UPDATE_DIALOG = 1;
+    public final static int CLOSE_DIALOG = 2;
+    public final static int CAN_NOT_USE_DIALOG = 3;
 
     public final static String AIRSIG_SWITCH = "airsig_switch";
     public final static String AIRSIG_OPEN_EVER = "airsig_open_ever";
@@ -143,6 +148,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             case R.id.success_airsig:
                 Intent intent = new Intent(AirSigActivity.this,
                         FeedbackActivity.class);
+                intent.putExtra("from", "airsig");
                 startActivity(intent);
                 break;
         }
@@ -185,32 +191,16 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
 
         if (!isAirSigVaild) {
-            showUpdateDialog();
+            showDialog(getString(R.string.airsig_tip_toast_update_text), getString(R.string.close_batteryview_confirm_cancel)
+                    , getString(R.string.makesure), UPDATE_DIALOG);
             return;
         }
 
         if (isAirsigOn) {
             SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_off");
             //dialog to close
-            if (mConfirmCloseDialog == null) {
-                mConfirmCloseDialog = new LEOAlarmDialog(this);
-            }
-            mConfirmCloseDialog.setContent(getString(R.string.airsig_settings_activity_dialog));
-            mConfirmCloseDialog.setRightBtnStr(getString(R.string.close_batteryview_confirm_sure));
-            mConfirmCloseDialog.setLeftBtnStr(getString(R.string.close_batteryview_confirm_cancel));
-            mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_off_suc");
-                    LeoSettings.setInteger(UNLOCK_TYPE, NOMAL_UNLOCK);
-                    LeoSettings.setBoolean(AIRSIG_SWITCH, false);
-                    switchOff();
-                    mConfirmCloseDialog.dismiss();
-                }
-            });
-            if (!isFinishing()) {
-                mConfirmCloseDialog.show();
-            }
+            showDialog(getString(R.string.airsig_settings_activity_dialog), getString(R.string.close_batteryview_confirm_cancel)
+                    , getString(R.string.close_batteryview_confirm_sure), CLOSE_DIALOG);
         }
 //        else if (isAirsigReady) {
 //            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_enable");
@@ -222,22 +212,43 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
 //        }
         else {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_enable");
-            //set Airsig
-            setAirsig(true);
+
+            boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+            if (isAigSigCanUse) {
+                //set Airsig
+                setAirsig(true);
+            } else {
+                showDialog(getString(R.string.air_sig_tips_content), getString(R.string.airsig_training_err_default_button)
+                        , getString(R.string.secur_help_feedback_tip_button), CAN_NOT_USE_DIALOG);
+            }
+
+
         }
     }
 
-    private void showUpdateDialog() {
+    private void showDialog(String content, String leftBtn, String rightBtn, final int type) {
         if (mConfirmCloseDialog == null) {
             mConfirmCloseDialog = new LEOAlarmDialog(this);
         }
-        mConfirmCloseDialog.setContent(getString(R.string.airsig_tip_toast_update_text));
-        mConfirmCloseDialog.setRightBtnStr(getString(R.string.makesure));
-        mConfirmCloseDialog.setLeftBtnStr(getString(R.string.close_batteryview_confirm_cancel));
+        mConfirmCloseDialog.setContent(content);
+        mConfirmCloseDialog.setRightBtnStr(rightBtn);
+        mConfirmCloseDialog.setLeftBtnStr(leftBtn);
         mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SDKWrapper.checkUpdate();
+                if (type == UPDATE_DIALOG) {
+                    SDKWrapper.checkUpdate();
+                } else if (type == CLOSE_DIALOG) {
+                    SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_off_suc");
+                    LeoSettings.setInteger(UNLOCK_TYPE, NOMAL_UNLOCK);
+                    LeoSettings.setBoolean(AIRSIG_SWITCH, false);
+                    switchOff();
+                } else {
+                    Intent intent = new Intent(AirSigActivity.this,
+                            FeedbackActivity.class);
+                    intent.putExtra("from", "airsig");
+                    startActivity(intent);
+                }
                 mConfirmCloseDialog.dismiss();
             }
         });
