@@ -2,6 +2,7 @@ package com.leo.appmaster.airsig;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +12,8 @@ import com.airsig.airsigengmulti.ASEngine;
 import com.leo.appmaster.R;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.feedback.FeedbackActivity;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
@@ -34,6 +37,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
 
     private TextView mTvSetOne;
     private TextView mTvSetTwo;
+    private RippleView mRippView;
 
     private LEOAlarmDialog mConfirmCloseDialog;
     private long inTime;
@@ -78,6 +82,8 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         rpBtnTwo.setOnClickListener(this);
         mTvSetOne = (TextView) findViewById(R.id.tv_title_airsig);
         mTvSetTwo = (TextView) findViewById(R.id.tv_title_reset_airsig);
+        mRippView = (RippleView) findViewById(R.id.success_airsig);
+        mRippView.setOnClickListener(this);
     }
 
 
@@ -133,6 +139,11 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             case R.id.rv_item_reset_airsig:
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_reset");
                 setAirsig(false);
+                break;
+            case R.id.success_airsig:
+                Intent intent = new Intent(AirSigActivity.this,
+                        FeedbackActivity.class);
+                startActivity(intent);
                 break;
         }
     }
