@@ -88,7 +88,9 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
                     if (pkgName != null && pkgName.equals(mContext.getPackageName())) {
                         double percent = comsuption.getPercentOfTotal();
                         if (percent > 3) {
-                            batteryManager.reportBatteryError();
+                            int times = LeoSettings.getInteger(PrefConst.KEY_ACTIVITY_TIMES, 0);
+                            long foregroundTime = LeoSettings.getLong(PrefConst.KEY_ACTIVITY_TS, 0);
+                            batteryManager.reportBatteryError((int) percent, times, foregroundTime);
                         }
                         break;
                     }
@@ -96,7 +98,12 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
                 }
                 LeoLog.d(TAG, "<ls> checkBatteryUsage, apps: " + sb.toString());
 
+                // 存储电量上报的时间
                 LeoSettings.setLong(PrefConst.KEY_BATTERY_TS, currentTs);
+
+                // 重置前台展示的时间和次数
+                LeoSettings.setInteger(PrefConst.KEY_ACTIVITY_TIMES, 0);
+                LeoSettings.setLong(PrefConst.KEY_ACTIVITY_TS, 0);
             }
         }, 500);
     }

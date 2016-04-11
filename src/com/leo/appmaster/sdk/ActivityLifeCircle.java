@@ -40,6 +40,12 @@ public class ActivityLifeCircle {
     protected void onResume() {
         LeoLog.d(TAG, "<ls> onResume..." + mActivity.getClass().getName());
         mResumedTs = SystemClock.elapsedRealtime();
+
+        int times = LeoSettings.getInteger(PrefConst.KEY_ACTIVITY_TIMES, 0);
+        times++;
+        // 存储前台次数
+        LeoSettings.setInteger(PrefConst.KEY_ACTIVITY_TIMES, times);
+
         mApplication.resumeActivity(mActivity);
         if ((mActivity instanceof HomeActivity) ||
                 (mActivity instanceof UpdateActivity) ||
@@ -58,6 +64,7 @@ public class ActivityLifeCircle {
         totalTs += showTs;
         mApplication.pauseActivity(mActivity);
 
+        // 存储前台展示时间
         LeoSettings.setLong(PrefConst.KEY_ACTIVITY_TS, totalTs);
         LeoLog.d(TAG, "<ls> onPause..." + mActivity.getClass().getName() + " | totalTs: " + totalTs);
     }

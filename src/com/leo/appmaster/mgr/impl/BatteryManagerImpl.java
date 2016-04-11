@@ -33,6 +33,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -40,6 +41,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by stone on 16/1/13.
@@ -525,8 +527,10 @@ public class BatteryManagerImpl extends BatteryManager {
     }
 
     @Override
-    public void reportBatteryError() {
+    public void reportBatteryError(int percent) {
+        Map<String, String> map = DeviceUtil.getDeviceParams();
 
+        SDKWrapper.reportSkyfallExtra(mContext, "battery_error", "percent_" + percent, map);
     }
 
     public boolean isHome() {

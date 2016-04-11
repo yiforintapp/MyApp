@@ -62,6 +62,7 @@ public abstract class ISettings {
             PrefConst.KEY_APP_COMSUMED,
             PrefConst.KEY_VID_COMSUMED,
             PrefConst.KEY_ACTIVITY_TS,
+            PrefConst.KEY_ACTIVITY_TIMES,
     };
     static Map<String, String> sGroupHigh = null;
 

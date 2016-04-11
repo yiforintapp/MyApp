@@ -240,5 +240,11 @@ public abstract class BatteryManager extends Manager {
      */
     public abstract int getRemainChargingTime(int level);
 
-    public abstract void reportBatteryError();
+    /**
+     * 上报电量异常
+     * @param percent 耗电百分比
+     * @param times 前台展示的次数
+     * @param foregroundTime 前台展示的时间
+     */
+    public abstract void reportBatteryError(int percent, int times, long foregroundTime);
 }
