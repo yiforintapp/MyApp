@@ -247,7 +247,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GO_NEW) {
-            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+            markNewPicCheckedAsy();
         }
     }
 
@@ -265,7 +265,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         mTvIgnoreNew.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+                markNewPicCheckedAsy();
                 hideHeadLayout();
                 SDKWrapper.addEvent(ImageHideMainActivity.this, SDKWrapper.P1, "hide_pic", "pic_card_no");
             }
@@ -295,12 +295,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
-                    }
-                });
+                markNewPicCheckedAsy();
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
@@ -433,7 +428,16 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);
-        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+        markNewPicCheckedAsy();
+    }
+
+    private void markNewPicCheckedAsy() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+            }
+        });
     }
 
 

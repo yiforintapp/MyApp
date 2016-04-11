@@ -354,7 +354,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mTvIgnoreNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+                markNewVidCheckedAsy();
                 hideHeadLayout();
             }
         });
@@ -379,12 +379,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(VideoHideMainActivity.this, VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
-                    }
-                });
+                markNewVidCheckedAsy();
             }
         });
 //        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
@@ -571,6 +566,14 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     }
 
+    private void markNewVidCheckedAsy() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+            }
+        });
+    }
 
     /**
      * GrideView onItemClick
@@ -587,7 +590,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         try {
             startActivityForResult(intent, REQUEST_CODE_OPTION);
-            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+            markNewVidCheckedAsy();
         } catch (Exception e) {
         }
     }
@@ -701,7 +704,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GO_NEW) {
-            ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+            markNewVidCheckedAsy();
         }
     }
 

@@ -78,6 +78,8 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
                 findPreference(AppMasterPreference.PREF_HIDE_LOCK_LINE));
         getPreferenceScreen()
                 .removePreference(findPreference(AppMasterPreference.PREF_SET_PROTECT));
+        getPreferenceScreen()
+                .removePreference(findPreference(AppMasterPreference.AIRSIG_SETTING));
         getPreferenceScreen().removePreference(
                 findPreference(AppMasterPreference.PREF_LOCK_SETTING));
         getPreferenceScreen().removePreference(findPreference("change_passwd"));

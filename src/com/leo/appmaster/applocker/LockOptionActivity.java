@@ -18,8 +18,11 @@ import android.text.Spanned;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -33,11 +36,11 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
 
     private CommonToolbar mTtileBar;
-    private Preference mTheme, mLockSetting, mResetPasswd, mChangeProtectQuestion,
+    private Preference mTheme, mLockSetting, mAirSigSetting, mResetPasswd, mChangeProtectQuestion,
             mChangePasswdTip, mChangeLockTime;
 
     private CheckBoxPreference mAutoLock, mLockerClean, mHideLockLine, mLockTip;
-//    mForbidUninstall
+    //    mForbidUninstall
     private Preference mLockerTheme;
     private Preference mSetProtect;
 
@@ -80,12 +83,18 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mLockTip = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP);
         mSetProtect = findPreference(AppMasterPreference.PREF_SET_PROTECT);
         mLockSetting = (Preference) findPreference(AppMasterPreference.PREF_LOCK_SETTING);
+        mAirSigSetting = (Preference) findPreference(AppMasterPreference.AIRSIG_SETTING);
         mResetPasswd = (Preference) findPreference("change_passwd");
         mChangeProtectQuestion = (Preference) findPreference("set_passwd_protect");
         mTheme = findPreference("set_locker_theme");
         mChangePasswdTip = (Preference) findPreference("set_passwd_tip");
         mySharedPreferences = getSharedPreferences("LockerThemeOption",
                 LockOptionActivity.this.MODE_WORLD_WRITEABLE);
+
+        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+        if (!isAigSigCanUse) {
+            getPreferenceScreen().removePreference(mAirSigSetting);
+        }
 
         if (!mySharedPreferences.getBoolean("themeOption", false)
                 && mComeFrom != FROM_IMAGEHIDE) {
@@ -99,6 +108,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             getPreferenceScreen().removePreference(mLockerTheme);
             getPreferenceScreen().removePreference(mAutoLock);
             getPreferenceScreen().removePreference(mLockSetting);
+            getPreferenceScreen().removePreference(mAirSigSetting);
             getPreferenceScreen().removePreference(mLockerClean);
             getPreferenceScreen().removePreference(mHideLockLine);
             getPreferenceScreen().removePreference(
@@ -109,6 +119,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             getPreferenceScreen().removePreference(mLockerTheme);
             getPreferenceScreen().removePreference(mAutoLock);
             getPreferenceScreen().removePreference(mLockSetting);
+            getPreferenceScreen().removePreference(mAirSigSetting);
             getPreferenceScreen().removePreference(mLockerClean);
             getPreferenceScreen().removePreference(mHideLockLine);
             getPreferenceScreen().removePreference(
@@ -126,6 +137,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         if (mComeFrom == FROM_APPLOCK) {
             mAutoLock.setOnPreferenceChangeListener(this);
             mLockSetting.setOnPreferenceClickListener(this);
+            mAirSigSetting.setOnPreferenceClickListener(this);
             mLockerClean.setOnPreferenceChangeListener(this);
             mHideLockLine.setOnPreferenceChangeListener(this);
         }
@@ -136,6 +148,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mChangeProtectQuestion.setOnPreferenceClickListener(this);
         mChangePasswdTip.setOnPreferenceClickListener(this);
         mLockSetting.setOnPreferenceClickListener(this);
+        mAirSigSetting.setOnPreferenceClickListener(this);
         mLockTip.setChecked(AppMasterPreference.getInstance(LockOptionActivity.this).isNewAppLockTip());
     }
 
@@ -200,6 +213,17 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mLockerTheme.setTitle(buttonText);
         } else {
             mLockerTheme.setTitle(R.string.lockerTheme);
+        }
+
+        if (mAirSigSetting != null) {
+            boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+            boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+
+            if (isAirsigOn && isAirSigVaild) {
+                mAirSigSetting.setSummary(getString(R.string.has_opened));
+            } else {
+                mAirSigSetting.setSummary(getString(R.string.did_not_open));
+            }
         }
 
         /* 开启高级保护后提示 */
@@ -381,6 +405,9 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             startActivityForResult(intent, 0);
             SDKWrapper.addEvent(LockOptionActivity.this, SDKWrapper.P1,
                     "theme_enter", "setting");
+        } else if ("airsig_setting".equals(key)) {
+            Intent intent = new Intent(LockOptionActivity.this, AirSigActivity.class);
+            startActivity(intent);
         }
         return false;
     }
