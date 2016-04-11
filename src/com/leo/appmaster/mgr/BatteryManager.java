@@ -239,4 +239,6 @@ public abstract class BatteryManager extends Manager {
      * @return
      */
     public abstract int getRemainChargingTime(int level);
+
+    public abstract void reportBatteryError();
 }

@@ -6,6 +6,7 @@ package com.leo.appmaster.utils;
  */
 public class PrefConst {
     public static final String KEY_ACTIVITY_TS = "activity_ts";
+    public static final String KEY_BATTERY_TS = "battery_ts";
 
     public static final String KEY_HOME_MORE_CONSUMED = "is_home_tab_more_consumed";
     public static final String KEY_IS_NEW_INSTALL = "is_new_install";
