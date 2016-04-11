@@ -1770,7 +1770,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
             int count = moreTipCount + 1;
             LeoSettings.setInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, count);
-            ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     cancelHomeMoreGuide();

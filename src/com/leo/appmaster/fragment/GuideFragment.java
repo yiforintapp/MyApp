@@ -249,7 +249,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 }
                 if (mHomeGuideRt != null) {
                     mHomeGuideRt.setVisibility(View.GONE);
-                    mHomeGuideRt = null;
                 }
             }
 
