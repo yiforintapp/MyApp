@@ -901,13 +901,16 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void addUninstallPgTOMenueItem() {
         LeoLog.i(TAG, "是否开启了高级保护：" + isAdminActive());
-        mMenuAdapter = null;
-        mMenuItems = null;
+//        mMenuAdapter = null;
+//        mMenuItems = null;
+        mMenuItems.clear();
         mMenuItems = getMenuItems();
-        mMenuAdapter = new MenuAdapter(this, mMenuItems);
-        if (mMenuList.getAdapter() != null) {
-            mMenuList.setAdapter(mMenuAdapter);
-        }
+        mMenuAdapter.setItems(mMenuItems);
+        mMenuAdapter.notifyDataSetChanged();
+//        mMenuAdapter = new MenuAdapter(this, mMenuItems);
+//        if (mMenuList.getAdapter() != null) {
+//            mMenuList.setAdapter(mMenuAdapter);
+//        }
         mDrawerLayout.postInvalidate();
     }
 
@@ -1562,6 +1565,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             super();
             this.items = items;
             inflater = LayoutInflater.from(ctx);
+        }
+
+        public void setItems(List<MenuItem> list) {
+            items = list;
         }
 
         @Override
