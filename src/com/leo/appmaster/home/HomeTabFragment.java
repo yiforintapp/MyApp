@@ -159,7 +159,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         mIntruderView.setOnClickListener(this);
 
         mInterceptView = view.findViewById(R.id.home_intercept);
-        MaterialRippleLayout.on(mWifiSecurityView)
+        MaterialRippleLayout.on(mInterceptView)
                 .rippleColor(getResources().getColor(R.color.home_tab_pressed))
                 .rippleAlpha(1f)
                 .rippleDuration(250)
@@ -168,7 +168,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
         mInterceptView.setOnClickListener(this);
 
         mMagicLockView = view.findViewById(R.id.home_magiclock);
-        MaterialRippleLayout.on(mWifiSecurityView)
+        MaterialRippleLayout.on(mMagicLockView)
                 .rippleColor(getResources().getColor(R.color.home_tab_pressed))
                 .rippleAlpha(1f)
                 .rippleDuration(250)
