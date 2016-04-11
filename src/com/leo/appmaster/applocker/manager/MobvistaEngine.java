@@ -284,7 +284,7 @@ public class MobvistaEngine {
 						mMobVistaCacheMap.put(unitId, mobvista);
 
 						if (listener != null) {
-							listener.onMobvistaFinished((campaigns == null || campaigns.size() < 1) ? ERR_MOBVISTA_RESULT_NULL : ERR_OK, campaigns, null);
+							listener.onMobvistaFinished((campaigns == null || campaigns.size() <= 2) ? ERR_MOBVISTA_RESULT_NULL : ERR_OK, campaigns, null);
 						}
 					}
 				}
