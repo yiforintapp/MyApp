@@ -55,6 +55,7 @@
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:text="@string/hd_new_app"
                     android:textSize="@dimen/f6"
+                    android:minWidth="100dp"
                     android:textColor="@color/c150"/>
             </LinearLayout>
         </RelativeLayout>
@@ -113,6 +114,7 @@
                     android:text="@string/hd_new_app"
                     android:textColor="@color/c150"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
+                    android:minWidth="100dp"
                     android:textSize="@dimen/f6"/>
             </LinearLayout>
 
@@ -124,6 +126,7 @@
                 android:layout_below="@id/det_danger_app_content_lt"
                 android:layout_marginTop="2dp"
                 android:textColor="#c8c8d8"
+                android:minWidth="100dp"
                 android:textSize="9dp"/>
 
         </RelativeLayout>
@@ -179,6 +182,7 @@
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:text="@string/hd_new_pic"
                     android:textSize="@dimen/f6"
+                    android:minWidth="100dp"
                     android:textColor="@color/c150"/>
             </LinearLayout>
         </RelativeLayout>
@@ -192,7 +196,7 @@
         android:background="@drawable/strip_home_nook2"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
         android:paddingRight="@dimen/det_result_icon_margin_right"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/pic_danger_content"
@@ -235,6 +239,7 @@
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:text="@string/hd_new_pic"
                     android:textSize="@dimen/f6"
+                    android:minWidth="100dp"
                     android:textColor="@color/c150"/>
             </LinearLayout>
 
@@ -246,6 +251,7 @@
                 android:layout_below="@id/det_pic_danger_content_lt"
                 android:layout_marginTop="2dp"
                 android:textColor="#c8c8d8"
+                android:minWidth="100dp"
                 android:textSize="9dp"/>
         </RelativeLayout>
     </RelativeLayout>
@@ -301,6 +307,7 @@
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:text="@string/hd_new_vid"
                     android:textSize="@dimen/f6"
+                    android:minWidth="100dp"
                     android:textColor="@color/c150"/>
             </LinearLayout>
         </RelativeLayout>
@@ -357,6 +364,7 @@
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:text="@string/hd_new_vid"
                     android:textSize="@dimen/f6"
+                    android:minWidth="100dp"
                     android:textColor="@color/c150"/>
             </LinearLayout>
 
@@ -368,6 +376,7 @@
                 android:layout_below="@id/det_dangerr_video_content_lt"
                 android:layout_marginTop="2dp"
                 android:textColor="#c8c8d8"
+                android:minWidth="100dp"
                 android:textSize="9dp"/>
 
         </RelativeLayout>

@@ -178,7 +178,7 @@
 
     <color name="airsig_background_white">#FFFFFF</color>
     <color name="airsig_background_gray">#EDEDED</color>
-    <color name="airsig_actionbar_background">#2674F6</color>
+    <color name="airsig_actionbar_background">#323b75</color>
     <color name="airsig_actionbar_title">#FFFFFF</color>
     <color name="airsig_training_message_box_background">#2674F6</color>
     <color name="airsig_training_message_box_button">#2674F6</color>
