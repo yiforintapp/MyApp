@@ -3,6 +3,7 @@ package com.leo.appmater.globalbroadcast;
 import android.content.Intent;
 
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.utils.LeoLog;
@@ -32,6 +33,7 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
         LeoLog.d(TAG, "<ls> onScreenChanged...action: " + action);
         if (Intent.ACTION_SCREEN_ON.equals(action)) {
             checkLostPicAndVid();
+            checkBatteryUsage();
         }
     }
 
@@ -44,6 +46,10 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
                 mPDManager.checkLostPicAndVid();
             }
         }, 500);
+    }
+
+    private void checkBatteryUsage() {
+//        long timeLastReport = LeoSettings.getLong()
     }
 
 }

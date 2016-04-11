@@ -1,19 +1,26 @@
 package com.leo.appmaster.sdk;
 
 import android.app.Activity;
+import android.os.SystemClock;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.update.UpdateActivity;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 /**
  * Created by Jasper on 2015/11/19.
  */
 public class ActivityLifeCircle {
+    private static final String TAG = "ActivityLifeCircle";
     private Activity mActivity;
     private AppMasterApplication mApplication;
+
+    private long mResumedTs;
 
     public ActivityLifeCircle(Activity activity) {
         mActivity = activity;
@@ -31,6 +38,8 @@ public class ActivityLifeCircle {
     }
 
     protected void onResume() {
+        LeoLog.d(TAG, "<ls> onResume..." + mActivity.getClass().getName());
+        mResumedTs = SystemClock.elapsedRealtime();
         mApplication.resumeActivity(mActivity);
         if ((mActivity instanceof HomeActivity) ||
                 (mActivity instanceof UpdateActivity) ||
@@ -43,12 +52,18 @@ public class ActivityLifeCircle {
     }
 
     protected void onPause() {
+        long showTs = SystemClock.elapsedRealtime() - mResumedTs;
+
+        long totalTs = LeoSettings.getLong(PrefConst.KEY_ACTIVITY_TS, 0L);
+        totalTs += showTs;
         mApplication.pauseActivity(mActivity);
+
+        LeoSettings.setLong(PrefConst.KEY_ACTIVITY_TS, totalTs);
+        LeoLog.d(TAG, "<ls> onPause..." + mActivity.getClass().getName() + " | totalTs: " + totalTs);
     }
 
     protected void onStop() {
         mApplication.stopActivity(mActivity);
-
         if (!mApplication.isVisible()) {
             PrivacyHelper.getInstance(mApplication).startIntervalScanner(0);
         }

@@ -61,6 +61,7 @@ public abstract class ISettings {
             PrefConst.KEY_PIC_COMSUMED,
             PrefConst.KEY_APP_COMSUMED,
             PrefConst.KEY_VID_COMSUMED,
+            PrefConst.KEY_ACTIVITY_TS,
     };
     static Map<String, String> sGroupHigh = null;
 
