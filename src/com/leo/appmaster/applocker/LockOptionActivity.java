@@ -91,10 +91,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mySharedPreferences = getSharedPreferences("LockerThemeOption",
                 LockOptionActivity.this.MODE_WORLD_WRITEABLE);
 
-        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
-        if (!isAigSigCanUse) {
-            getPreferenceScreen().removePreference(mAirSigSetting);
-        }
+//        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+//        if (!isAigSigCanUse) {
+//            getPreferenceScreen().removePreference(mAirSigSetting);
+//        }
 
         if (!mySharedPreferences.getBoolean("themeOption", false)
                 && mComeFrom != FROM_IMAGEHIDE) {

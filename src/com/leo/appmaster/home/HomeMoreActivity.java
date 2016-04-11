@@ -147,17 +147,17 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
-        if (isAigSigCanUse) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_sh");
-            //签字解锁部分
-            mItemAirSigEntry.setTitle(STRID_SIGNATURE_LOCK);
-            //设置默认解锁方式部分
-        } else {
-            View line1 = findViewById(R.id.line_1);
-            mItemAirSigEntry.setVisibility(View.GONE);
-            line1.setVisibility(View.GONE);
-        }
+//        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+//        if (isAigSigCanUse) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_sh");
+//            //签字解锁部分
+        mItemAirSigEntry.setTitle(STRID_SIGNATURE_LOCK);
+        //设置默认解锁方式部分
+//        } else {
+//            View line1 = findViewById(R.id.line_1);
+//            mItemAirSigEntry.setVisibility(View.GONE);
+//            line1.setVisibility(View.GONE);
+//        }
 
         //快捷小助手部分
         mItemQuickHelperEntry = (CommonSettingItem) findViewById(R.id.item_quickhelper);
