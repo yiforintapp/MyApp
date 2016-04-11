@@ -83,6 +83,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class IntruderCatchedActivity extends BaseActivity implements View.OnClickListener {
@@ -146,6 +147,8 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private LinearLayout mFiveStarLayout;
     // 3.2 add advertise
     private static final String INTRUDER_AD_ID = Constants.UNIT_ID_244;
+	
+	private View mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +182,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLayout.stopAnim();
         }
         if (mShouldLoadAd) {
-            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
+            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID, mAdView);
         }
 //        finish();
     }
@@ -406,20 +409,22 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         mShouldLoadAd = (amp.getADIntruder() == 1);
         if (mShouldLoadAd) {
-			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, new ADEngineWrapper.WrappedAdListener() {
+			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
 				@Override
-				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+				public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
 					if (code == MobvistaEngine.ERR_OK) {
-						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
-						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
-						mImageLoader.loadImage(campaign.getImageUrl(), sAdImageListener);
+						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.get(0).getAppName());
+						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign.get(0));
+						mImageLoader.loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
 					}
 				}
 
 				@Override
 				public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
 					LeoLog.d("IntruderAd", "onMobvistaClick");
-					SDKWrapper.addEvent(IntruderCatchedActivity.this, "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put("unitId", unitID);
+					SDKWrapper.addEvent(IntruderCatchedActivity.this, "max_ad", SDKWrapper.P1, "ad_click", "click", mAdSource, map);
 					SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
 							"ad_cli", "adv_cnts_capture");
 					LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
@@ -456,26 +461,28 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         WeakReference<IntruderCatchedActivity> mActivity;
 		WrappedCampaign mCampaign;
 
+		HashMap<String, String> map = new HashMap<String, String>();
         public AdPreviewLoaderListener(IntruderCatchedActivity fragment, final WrappedCampaign campaign) {
             mActivity = new WeakReference<IntruderCatchedActivity>(fragment);
             mCampaign = campaign;
+			map.put("unitId", INTRUDER_AD_ID);
         }
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + INTRUDER_AD_ID + " prepare for load image", mAdSource,  null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ready_to", mAdSource,  map);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + INTRUDER_AD_ID + " load image failed", mAdSource, null);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "fail", mAdSource, map);
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             IntruderCatchedActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
-				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + INTRUDER_AD_ID + " image size: " + loadedImage.getByteCount(), mAdSource, null);
+				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image","got:" + loadedImage.getByteCount(), mAdSource, map);
                 LeoLog.d("IntruderAd", "[IntruderCatchedActivity] onLoadingComplete -> " + imageUri);
                 activity.initAdLayout(activity.findViewById(R.id.ad_content),
                         mCampaign, INTRUDER_AD_ID, loadedImage);
@@ -509,11 +516,14 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         btnCTA.setText(campaign.getAdCall());
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
+		mAdView = adView;
 		ADEngineWrapper.getInstance(this).registerView(mAdSource, adView, INTRUDER_AD_ID);
         //MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
                 "ad_act", "adv_shws_capture");
-		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + INTRUDER_AD_ID + " adShow", mAdSource, null);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("unitId", INTRUDER_AD_ID);
+		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "show", mAdSource, map);
     }
     /* 3.2 advertise stuff - end */
 

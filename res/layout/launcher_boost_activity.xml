@@ -24,7 +24,8 @@
             android:layout_width="@dimen/ad_parent_width"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone">
+            android:visibility="gone"
+            >
 
             <TextView
                 android:gravity="center"
@@ -40,8 +41,8 @@
 
             <RelativeLayout
                 android:id="@+id/rl_ad_bg"
-                android:layout_width="@dimen/ad_content_width"
-                android:layout_height="@dimen/ad_content_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="left"
@@ -51,18 +52,25 @@
                     android:id="@+id/iv_ad_bg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     android:scaleType="fitXY"/>
+                <include 
+                    android:id="@+id/template_zone"
+                    layout="@layout/mul_template_ad_mul_content" />
 
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/ad_info_zone"
                 android:layout_width="@dimen/ad_content_width"
                 android:layout_height="50dp"
                 android:layout_gravity="left"
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="@dimen/ad_ll_margin_top"
                 android:orientation="horizontal"
-                android:background="#ffffff">
+                android:background="#ffffff"
+                android:visibility="gone"
+                >
 
                 <ImageView
                     android:id="@+id/iv_ad_icon"

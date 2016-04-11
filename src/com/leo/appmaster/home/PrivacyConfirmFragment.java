@@ -29,6 +29,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
@@ -66,7 +67,7 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-import com.mobvista.sdk.m.core.entity.Campaign;
+import com.mobvista.msdk.out.Campaign;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -209,6 +210,8 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
 
     private RelativeLayout mBottomLayout;
     private ScrollView mScrollView;
+	
+	private View adView;
     private LeoPreference mPt;
 
     // 初始化时的占位View，避免一开始显示空白页面
@@ -283,7 +286,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
     public void onDestroy() {
         super.onDestroy();
         if (mDidLoadAd) {
-            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_67);
+            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_67, adView);
         }
         if (mAnimatorSet != null) {
             mAnimatorSet.cancel();
@@ -352,14 +355,14 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
                 @Override
                 public void run() {
                     MobvistaEngine.getInstance(mActivity).loadMobvista(
-                            Constants.UNIT_ID_67, new MobvistaListener() {
+                            Constants.UNIT_ID_67, ADEngineWrapper.AD_TYPE_NATIVE, new MobvistaListener() {
 
                                 @Override
-                                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
+                                public void onMobvistaFinished(int code, final List<Campaign> campaign, String msg) {
                                     if (code == MobvistaEngine.ERR_OK) {
                                         sAdImageListener = new AdPreviewLoaderListener(
-                                                PrivacyConfirmFragment.this, campaign);
-                                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                                                PrivacyConfirmFragment.this, campaign.get(0));
+                                        ImageLoader.getInstance().loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
                                     }
                                 }
 
@@ -736,6 +739,7 @@ public class PrivacyConfirmFragment extends Fragment implements View.OnClickList
             TextView tvSummary = (TextView) include.findViewById(R.id.item_summary);
             tvSummary.setText(campaign.getAppDesc());
             include.setVisibility(View.VISIBLE);
+			adView = include;
             MobvistaEngine.getInstance(mActivity).registerView(unitId, include);
         }
     }

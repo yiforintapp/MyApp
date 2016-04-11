@@ -20,7 +20,6 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.TaskProtectService;
@@ -79,8 +78,8 @@ public class InitCoreBootstrap extends Bootstrap {
 
         start = SystemClock.elapsedRealtime();
         // init MobVista SDK here
-        MobvistaEngine.getInstance(mApp);
-        LeoLog.d(TAG, "MobvistaEngine init cost: " + (SystemClock.elapsedRealtime() - start));
+        //MobvistaEngine.getInstance(mApp);
+        //LeoLog.d(TAG, "MobvistaEngine init cost: " + (SystemClock.elapsedRealtime() - start));
 
         // start a protection JobScheduler service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

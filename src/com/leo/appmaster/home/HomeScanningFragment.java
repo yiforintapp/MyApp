@@ -61,6 +61,7 @@ import com.leo.tools.animator.ValueAnimator;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -181,6 +182,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
     private boolean mIsInsAvaliable = true;
 
     private View mWifiScanBottomLine;
+	private View mAdView;
 
     private Handler mHandler = new Handler() {
 
@@ -454,14 +456,14 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         if (amp.getADAfterScan() == 1) {
             /* 3.3.2 封装Max与Mob SDK */
             mDidLoadAd = true;
-            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, AD_AFTER_SCAN,
+            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, AD_AFTER_SCAN, ADEngineWrapper.AD_TYPE_NATIVE,
                     new ADEngineWrapper.WrappedAdListener() {
                         @Override
-                        public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+                        public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
                             if (code == MobvistaEngine.ERR_OK) {
-                                LeoLog.d("AfterPrivacyScan", "Ad data loaded: " + campaign.getAppName());
-                                sAdImageListener = new AdPreviewLoaderListener(HomeScanningFragment.this, campaign);
-                                ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                                LeoLog.d("AfterPrivacyScan", "Ad data loaded: " + campaign.get(0).getAppName());
+                                sAdImageListener = new AdPreviewLoaderListener(HomeScanningFragment.this, campaign.get(0));
+                                ImageLoader.getInstance().loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
                             }
                         }
 
@@ -469,7 +471,9 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
                         public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                             LeoLog.d("AfterPrivacyScan", "onMobvistaClick");
                             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_cli", "adv_cnts_scan");
-                            SDKWrapper.addEvent(HomeScanningFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
+							HashMap<String, String> map = new HashMap<String, String>();
+							map.put("unitId", unitID);
+                            SDKWrapper.addEvent(HomeScanningFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "click", mAdSource, map);
                             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                             lm.filterSelfOneMinites();
                         }
@@ -484,7 +488,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         }
         /* 3.3.2 封装Max与Mob SDK */
         if (mDidLoadAd) {
-            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, AD_AFTER_SCAN);
+            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, AD_AFTER_SCAN, mAdView);
         }
     }
 
@@ -493,19 +497,22 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         /* 3.3.2 封装Max与Mob SDK */
         WrappedCampaign mCampaign;
 
+		HashMap<String, String> map = new HashMap<String, String>();
         public AdPreviewLoaderListener(HomeScanningFragment fragment, final WrappedCampaign campaign) {
             mFragment = new WeakReference<HomeScanningFragment>(fragment);
             mCampaign = campaign;
+			map.put("unitId", AD_AFTER_SCAN);
+					
         }
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " prepare for load image", mAdSource, null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ready_to", mAdSource, map);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " load image failed", mAdSource, null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "fail", mAdSource, map);
         }
 
         @Override
@@ -513,7 +520,7 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
             final HomeScanningFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 fragment.mAdLoaded = true;
-                SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + AD_AFTER_SCAN + " image size: " + loadedImage.getByteCount(), mAdSource, null);
+                SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
                 LeoLog.d("AfterPrivacyScan", "[HomeScanningFragment] onLoadingComplete -> " + imageUri);
                 ThreadManager.getUiThreadHandler().post(new Runnable() {
                     @Override
@@ -546,9 +553,12 @@ public class HomeScanningFragment extends Fragment implements View.OnClickListen
         ImageView iconView = (ImageView) adView.findViewById(R.id.ad_icon);
         ImageLoader.getInstance().displayImage(campaign.getIconUrl(), iconView);
         /* 3.3.2 封装Max与Mob SDK */
+		mAdView = adView;
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, adView, AD_AFTER_SCAN);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "ad_act", "adv_shws_scan");
-        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + AD_AFTER_SCAN + " adShow",  mAdSource, null);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("unitId", AD_AFTER_SCAN);
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show",  "show",  mAdSource, map);
     }
     /* 3.2 advertise end */
 

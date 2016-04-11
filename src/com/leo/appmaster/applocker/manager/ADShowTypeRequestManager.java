@@ -17,7 +17,6 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.schedule.FetchScheduleJob.FetchScheduleListener;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.mobvista.sdk.m.core.entity.Campaign;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,7 +92,6 @@ public class ADShowTypeRequestManager {
     // public boolean IsFromPush = false;
     public boolean mIsPushRequestADShowType = false;
 
-    public static Campaign mCampaign;
     private FetchScheduleListener mListener;
 
     private ADShowTypeRequestManager(Context context) {

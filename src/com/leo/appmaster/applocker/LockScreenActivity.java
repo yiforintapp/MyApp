@@ -133,7 +133,6 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
-import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -150,98 +149,99 @@ import java.util.Locale;
 import java.util.Map;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
-        OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
+		OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */ {
 
-    public static final String TAG = "LockScreenActivity";
-    //    private HomeWatcherReceiver mReceiver;
-    private static final String mPrivateLockPck = "com.leo.appmaster";
-    public static final String THEME_CHANGE = "lock_theme_change";
-    public static final String EXTRA_LOCK_MODE = "extra_lock_type";
-    public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
-    public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
-    public static final String SHOW_NOW = "mode changed_show_now";
-    public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
-    public static final int SHOW_RED_MAN = 1;
-    public static final int LARGE_BANNER_HIDE = 2;
-    public static final int AD_TYPE_SHAKE = 1;
-    public static final int AD_TYPE_JUMP = 2;
-    public static final int AD_TYPE_STAY = 3;
-    //    private static boolean sHasClickGoGrantPermission = false;
-    private static boolean mHasClickGoGrantPermission = false;
-    public int SHOW_AD_TYPE = 0;
-    private int mLockMode;
-    private String mLockedPackage;
-    private CommonTitleBar mTtileBar;
-    private TextView mLockAppTitleView;
-    private LockFragment mLockFragment;
-    private Bitmap mAppBaseInfoLayoutbg;
-    private LeoHomePopMenu mLeoPopMenu;
-    private LeoDoubleLinesInputDialog mDialog;
-    private LEOAlarmDialog mTipDialog;
-    private EditText mEtQuestion, mEtAnwser;
-    private RippleView mMrlGift;
-    private RelativeLayout mRlNoPermission;
-    private String mLockTitle;
-    // private ImageView mThemeView;
-    private ImageView mAdIcon, mAdIconRedTip;
-    // private View switch_bottom_content;
-    private ImageView mADAnimalEntry;
-    private LeoPreference mPt;
-    private BaseSelfDurationToast mPermissionGuideToast;
-    private TextView mTvPermissionTip;
-    private View mVPermissionTip;
-    /**
-     * 大banner
-     */
+	public static final String TAG = "LockScreenActivity";
+	//    private HomeWatcherReceiver mReceiver;
+	private static final String mPrivateLockPck = "com.leo.appmaster";
+	public static final String THEME_CHANGE = "lock_theme_change";
+	public static final String EXTRA_LOCK_MODE = "extra_lock_type";
+	public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
+	public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
+	public static final String SHOW_NOW = "mode changed_show_now";
+	public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
+	public static final int SHOW_RED_MAN = 1;
+	public static final int LARGE_BANNER_HIDE = 2;
+	public static final int AD_TYPE_SHAKE = 1;
+	public static final int AD_TYPE_JUMP = 2;
+	public static final int AD_TYPE_STAY = 3;
+	//    private static boolean sHasClickGoGrantPermission = false;
+	private static boolean mHasClickGoGrantPermission = false;
+	public int SHOW_AD_TYPE = 0;
+	private int mLockMode;
+	private String mLockedPackage;
+	private CommonTitleBar mTtileBar;
+	private TextView mLockAppTitleView;
+	private LockFragment mLockFragment;
+	private Bitmap mAppBaseInfoLayoutbg;
+	private LeoHomePopMenu mLeoPopMenu;
+	private LeoDoubleLinesInputDialog mDialog;
+	private LEOAlarmDialog mTipDialog;
+	private EditText mEtQuestion, mEtAnwser;
+	private RippleView mMrlGift;
+	private RelativeLayout mRlNoPermission;
+	private String mLockTitle;
+	// private ImageView mThemeView;
+	private ImageView mAdIcon, mAdIconRedTip;
+	// private View switch_bottom_content;
+	private ImageView mADAnimalEntry;
+	private LeoPreference mPt;
+	private BaseSelfDurationToast mPermissionGuideToast;
+	private TextView mTvPermissionTip;
+	private View mVPermissionTip;
+	/**
+	 * 大banner
+	 */
 //    private FrameLayout mBannerParent;
-    private ViewPager mBannerContainer;
-    private AdBannerAdapter mAdapterCycle;
-    private LinkedHashMap<String, WrappedCampaign> mAdMap = new LinkedHashMap<String, WrappedCampaign>();
-    private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
-    private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
-    private static final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2};
-    private boolean otherAdSwitcher = false;
-    private boolean mDidLoadAd = false;
-    //private String[] mBannerAdids = {"12346_00001"};
+	private ViewPager mBannerContainer;
+	private AdBannerAdapter mAdapterCycle;
+	private LinkedHashMap<String, WrappedCampaign> mAdMap = new LinkedHashMap<String, WrappedCampaign>();
+	private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
+	private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
+	private static final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2};
+	private boolean otherAdSwitcher = false;
+	private boolean mDidLoadAd = false;
+	//private String[] mBannerAdids = {"12346_00001"};
 
-    private RelativeLayout mPretendLayout;
-    private PretendFragment mPretendFragment;
-    private IntrudeSecurityManager mISManager;
-    private PrivacyDataManager mPDManager;
+	private RelativeLayout mPretendLayout;
+	private PretendFragment mPretendFragment;
+	private IntrudeSecurityManager mISManager;
+	private PrivacyDataManager mPDManager;
 
-    private String mCleanRate;
-    private TextView mText;
-    private View mLockClean;
-    private ActivityManager mAm;
+	private String mCleanRate;
+	private TextView mText;
+	private View mLockClean;
+	private ActivityManager mAm;
 
-    public boolean mRestartForThemeChanged;
-    public boolean mQuickLockMode;
-    public boolean mFromHome;
-    public boolean mFromQuickGesture;
-    public String mQuickModeName;
-    public int mQuiclModeId;
-    private RelativeLayout mLockLayout;
-    private boolean mMissingDialogShowing;
-    private MobvistaAdWall wallAd;
-    public static boolean sLockFilterFlag = false;
-    private static AnimationDrawable adAnimation;
-    public static boolean interupAinimation = false;
-    private boolean clickShakeIcon = false;
+	public boolean mRestartForThemeChanged;
+	public boolean mQuickLockMode;
+	public boolean mFromHome;
+	public boolean mFromQuickGesture;
+	public String mQuickModeName;
+	public int mQuiclModeId;
+	private RelativeLayout mLockLayout;
+	private boolean mMissingDialogShowing;
+	public static boolean sLockFilterFlag = false;
+	private static AnimationDrawable adAnimation;
+	public static boolean interupAinimation = false;
+	private boolean clickShakeIcon = false;
 
-    private static final boolean DBG = false;
-    /* 用于测试时，指定显示的广告形式 */
-    private static final int TEST_AD_NUMBER = 6;
+	private static final boolean DBG = false;
+	/* 用于测试时，指定显示的广告形式 */
+	private static final int TEST_AD_NUMBER = 6;
 
-    //能否拍照，每次进入界面才能够置为true，拍完置为false，保证每次进入界面只能拍一次，避免频繁拍照
-    private boolean mCanTakePhoto = true;
-    //照片是否已经保存完毕，保存完毕后置为true，true才能进入抓拍结果界面，每次拍照置为false //暂时不用
-    public static boolean mIsPicSaved = false;
+	//能否拍照，每次进入界面才能够置为true，拍完置为false，保证每次进入界面只能拍一次，避免频繁拍照
+	private boolean mCanTakePhoto = true;
+	//照片是否已经保存完毕，保存完毕后置为true，true才能进入抓拍结果界面，每次拍照置为false //暂时不用
+	public static boolean mIsPicSaved = false;
 
-    public static boolean mHasTakePic = false;
+	public static boolean mHasTakePic = false;
+	
+	private View mAdView;
 
 
-    private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
-    //
+	private int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
+	//
 //    public boolean mIs
 
     // 记录广告是否点击，onStart后重置为false
@@ -275,44 +275,44 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 
 //        registerHomeKeyReceiver()
-        LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
-        mISManager = (IntrudeSecurityManager) MgrContext
-                .getManager(MgrContext.MGR_INTRUDE_SECURITY);
-        mPt = LeoPreference.getInstance();
-        mPDManager = (PrivacyDataManager) MgrContext
-                .getManager(MgrContext.MGR_PRIVACY_DATA);
-        mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
-        handleIntent();
-        mLockManager.setPauseScreenonLock(true);
-        // for fix lock mode shortcut bug
-        if (mQuickLockMode) {
-            List<LockMode> modeList = mLockManager.getLockMode();
-            LockMode mode = null;
-            for (LockMode lockMode : modeList) {
-                if (lockMode.modeId == mQuiclModeId) {
-                    mode = lockMode;
-                    break;
-                }
-            }
-            if (mode != null) {
-                if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-                    if (mode.defaultFlag != -1) {
-                        Intent intent = new Intent(this, LockSettingActivity.class);
-                        intent.putExtra("from_quick_mode", true);
-                        intent.putExtra("just_finish", true);
-                        intent.putExtra("mode_id", mQuiclModeId);
-                        this.startActivity(intent);
-                    }
-                    finish();
-                    return;
-                }
-            } else {
-                showModeMissedTip();
-                return;
-            }
-        }
+		LeoLog.d(TAG, "TsCost, onCreate..." + (SystemClock.elapsedRealtime() - start));
+		mISManager = (IntrudeSecurityManager) MgrContext
+				.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+		mPt = LeoPreference.getInstance();
+		mPDManager = (PrivacyDataManager) MgrContext
+				.getManager(MgrContext.MGR_PRIVACY_DATA);
+		mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
+		handleIntent();
+		mLockManager.setPauseScreenonLock(true);
+		// for fix lock mode shortcut bug
+		if (mQuickLockMode) {
+			List<LockMode> modeList = mLockManager.getLockMode();
+			LockMode mode = null;
+			for (LockMode lockMode : modeList) {
+				if (lockMode.modeId == mQuiclModeId) {
+					mode = lockMode;
+					break;
+				}
+			}
+			if (mode != null) {
+				if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+					if (mode.defaultFlag != -1) {
+						Intent intent = new Intent(this, LockSettingActivity.class);
+						intent.putExtra("from_quick_mode", true);
+						intent.putExtra("just_finish", true);
+						intent.putExtra("mode_id", mQuiclModeId);
+						this.startActivity(intent);
+					}
+					finish();
+					return;
+				}
+			} else {
+				showModeMissedTip();
+				return;
+			}
+		}
 
-        initUI();
+		initUI();
 //        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 //            @Override
 //            public void run() {
@@ -334,11 +334,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
         // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
-        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
-        if (wallAd != null) {
-            // preload the wall data
-            wallAd.preloadWall();
-        }
+//        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+//        if (wallAd != null) {
+//            // preload the wall data
+//            wallAd.preloadWall();
+//        }
+
+		MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
     }
 
     public void takePicture(final CameraSurfacePreview view, final String packagename) {
@@ -409,146 +411,146 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             mIsPicSaved = true;
                             mPt.putLong(PrefConst.KEY_LATEAST_PATH, finalPicPath.hashCode());
 //                            mPt.putBoolean(PrefConst.KEY_HAS_LATEAST, true);
-                            LeoLog.i("poha", "after insert, before judge!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
-                            if (mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false) && mIsPicSaved) {
-                                mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false);
-                                Intent intent = new Intent(getApplicationContext(), IntruderCatchedActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.putExtra("pkgname", mLockedPackage);
-                                mLockManager.filterPackage(getPackageName(), 1000);
-                                LeoLog.i("poha", "start Catch Activity");
-                                startActivity(intent);
-                                mHasTakePic = false;
-                                mIsPicSaved = false;
-                                LeoLog.i("poha", "delay!! has enter catch !!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
-                            }
-                            bitmapt.recycle();
-                        }
-                    });
-                    if (mLockFragment != null) {
-                        mLockFragment.removeCamera();
-                    }
-                }
-            });
-        } else {
-            LeoLog.i("poha", "view == null or can't take");
-            if (mLockFragment != null) {
-                ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
-                    @Override
-                    public void run() {
-                        LeoLog.i("poha", "fragment remove Camera");
-                        mLockFragment.removeCamera();
-                    }
-                }, 2000);
-            }
-        }
-    }
+							LeoLog.i("poha", "after insert, before judge!!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + mHasTakePic + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
+							if (mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false) && mIsPicSaved) {
+								mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false);
+								Intent intent = new Intent(getApplicationContext(), IntruderCatchedActivity.class);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								intent.putExtra("pkgname", mLockedPackage);
+								mLockManager.filterPackage(getPackageName(), 1000);
+								LeoLog.i("poha", "start Catch Activity");
+								startActivity(intent);
+								mHasTakePic = false;
+								mIsPicSaved = false;
+								LeoLog.i("poha", "delay!! has enter catch !!  mCanTakePhoto :" + mCanTakePhoto + "mHasTakePic :" + "delay? :" + mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false));
+							}
+							bitmapt.recycle();
+						}
+					});
+					if (mLockFragment != null) {
+						mLockFragment.removeCamera();
+					}
+				}
+			});
+		} else {
+			LeoLog.i("poha", "view == null or can't take");
+			if (mLockFragment != null) {
+				ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+					@Override
+					public void run() {
+						LeoLog.i("poha", "fragment remove Camera");
+						mLockFragment.removeCamera();
+					}
+				}, 2000);
+			}
+		}
+	}
 
-    // 获得抓拍照片保存的路径
-    private File getPhotoSavePath() {
-        File picDir = new File(Environment.getExternalStorageDirectory()
-                .getAbsolutePath());
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(new Date());
-        File dir = new File(picDir.getPath() + File.separator + "IntruderP");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        return new File(dir + File.separator + "IMAGE_" + timeStamp + ".jpg");
-    }
+	// 获得抓拍照片保存的路径
+	private File getPhotoSavePath() {
+		File picDir = new File(Environment.getExternalStorageDirectory()
+				.getAbsolutePath());
+		String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH).format(new Date());
+		File dir = new File(picDir.getPath() + File.separator + "IntruderP");
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		return new File(dir + File.separator + "IMAGE_" + timeStamp + ".jpg");
+	}
 
-    @SuppressWarnings("deprecation")
-    private void setMobvistaIcon() {
-        if (mQuickLockMode) {
-            return;
-        }
-        if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
-            if (SHOW_AD_TYPE == AD_TYPE_SHAKE) {
-                mAdIconRedTip.setVisibility(View.VISIBLE);
-                mAdIcon.setBackgroundResource(R.drawable.adanimation2);
-                adAnimation = (AnimationDrawable)
-                        mAdIcon.getBackground();
-                adAnimation.start();
+	@SuppressWarnings("deprecation")
+	private void setMobvistaIcon() {
+		if (mQuickLockMode) {
+			return;
+		}
+		if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
+			if (SHOW_AD_TYPE == AD_TYPE_SHAKE) {
+				mAdIconRedTip.setVisibility(View.VISIBLE);
+				mAdIcon.setBackgroundResource(R.drawable.adanimation2);
+				adAnimation = (AnimationDrawable)
+						mAdIcon.getBackground();
+				adAnimation.start();
 
-            } else { // jump
-                mAdIconRedTip.setVisibility(View.GONE);
-                if (SHOW_AD_TYPE == AD_TYPE_JUMP) {
-                    mAdIcon.setBackgroundResource(R.drawable.adanimation);
-                    adAnimation = (AnimationDrawable)
-                            mAdIcon.getBackground();
-                    adAnimation.start();
-                    LeoLog.e("testLockScreen", "jump going!");
-                } else {
-                    mAdIcon.setBackgroundDrawable((this.getResources()
-                            .getDrawable(R.drawable.jump_1)));
-                    LeoLog.e("testLockScreen", "stay going!");
-                }
-            }
-        }
-    }
+			} else { // jump
+				mAdIconRedTip.setVisibility(View.GONE);
+				if (SHOW_AD_TYPE == AD_TYPE_JUMP) {
+					mAdIcon.setBackgroundResource(R.drawable.adanimation);
+					adAnimation = (AnimationDrawable)
+							mAdIcon.getBackground();
+					adAnimation.start();
+					LeoLog.e("testLockScreen", "jump going!");
+				} else {
+					mAdIcon.setBackgroundDrawable((this.getResources()
+							.getDrawable(R.drawable.jump_1)));
+					LeoLog.e("testLockScreen", "stay going!");
+				}
+			}
+		}
+	}
 
-    private void showModeMissedTip() {
-        mMissingDialogShowing = true;
-        mTipDialog = new LEOAlarmDialog(this);
-        mTipDialog.setTitle(R.string.tips_title);
-        mTipDialog.setContent(getString(R.string.mode_missing));
-        mTipDialog.setRightBtnStr(getString(R.string.lock_mode_guide_button_text));
-        mTipDialog.setLeftBtnVisibility(false);
-        mTipDialog.setRightBtnListener(new LEOAlarmDialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                LockScreenActivity.this.finish();
-            }
-        });
-        mTipDialog.show();
-    }
+	private void showModeMissedTip() {
+		mMissingDialogShowing = true;
+		mTipDialog = new LEOAlarmDialog(this);
+		mTipDialog.setTitle(R.string.tips_title);
+		mTipDialog.setContent(getString(R.string.mode_missing));
+		mTipDialog.setRightBtnStr(getString(R.string.lock_mode_guide_button_text));
+		mTipDialog.setLeftBtnVisibility(false);
+		mTipDialog.setRightBtnListener(new LEOAlarmDialog.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				LockScreenActivity.this.finish();
+			}
+		});
+		mTipDialog.show();
+	}
 
-    private void handleLoadAd() {
-        //防止重新进入时图标透明度为0
-        int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
-        if (type == LockFragment.LOCK_TYPE_PASSWD) {
-            PasswdLockFragment plf = (PasswdLockFragment) mLockFragment;
-            View icon = plf.getIconView();
-            if (icon != null) {
-                icon.setAlpha(1.0f);
-            }
-            View hint = plf.getPasswdHint();
-            if (hint != null) {
-                hint.setAlpha(1.0f);
-            }
-        } else {
-            GestureLockFragment glf = (GestureLockFragment) mLockFragment;
-            View icon = glf.getIconView();
-            if (icon != null) {
-                icon.setAlpha(1.0f);
-            }
-        }
+	private void handleLoadAd() {
+		//防止重新进入时图标透明度为0
+		int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
+		if (type == LockFragment.LOCK_TYPE_PASSWD) {
+			PasswdLockFragment plf = (PasswdLockFragment) mLockFragment;
+			View icon = plf.getIconView();
+			if (icon != null) {
+				icon.setAlpha(1.0f);
+			}
+			View hint = plf.getPasswdHint();
+			if (hint != null) {
+				hint.setAlpha(1.0f);
+			}
+		} else {
+			GestureLockFragment glf = (GestureLockFragment) mLockFragment;
+			View icon = glf.getIconView();
+			if (icon != null) {
+				icon.setAlpha(1.0f);
+			}
+		}
 
-        LeoLog.e("poha", AppMasterPreference.getInstance(this).getLockBannerADShowProbability()
-                + ":large banner show probability");
+		LeoLog.e("poha", AppMasterPreference.getInstance(this).getLockBannerADShowProbability()
+				+ ":large banner show probability");
 
-        if (AppMasterPreference.getInstance(this).getLockBannerADShowProbability() > 0
-                && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mBannerContainer != null
-                && mLockMode == LockManager.LOCK_MODE_FULL && getWindowWidth() > 240) {
-            loadAD(mForceLoad);
-        } else if (AppMasterPreference.getInstance(this).getADShowType() == 3
-                && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mADAnimalEntry != null
-                && mLockMode == LockManager.LOCK_MODE_FULL) {
-            mADAnimalEntry.setVisibility(View.VISIBLE);
-            if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE) {
-                startShakeRotateAnimation(true);
-            }
-        }
+		if (AppMasterPreference.getInstance(this).getLockBannerADShowProbability() > 0
+				&& NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mBannerContainer != null
+				&& mLockMode == LockManager.LOCK_MODE_FULL && getWindowWidth() > 240) {
+			loadAD(mForceLoad);
+		} else if (AppMasterPreference.getInstance(this).getADShowType() == 3
+				&& NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mADAnimalEntry != null
+				&& mLockMode == LockManager.LOCK_MODE_FULL) {
+			mADAnimalEntry.setVisibility(View.VISIBLE);
+			if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE) {
+				startShakeRotateAnimation(true);
+			}
+		}
 
-        setMobvistaIcon();
-    }
+		setMobvistaIcon();
+	}
 
-    @Override
-    protected void onResume() {
-        LeoLog.d(TAG, "onResume...");
-        mCanTakePhoto = true;
-        whichTypeShow();
-        LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
+	@Override
+	protected void onResume() {
+		LeoLog.d(TAG, "onResume...");
+		mCanTakePhoto = true;
+		whichTypeShow();
+		LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
 //        if (mHasClickGoGrantPermission) {
 //            tryHidePermissionGuideToast();//注意tryHidePermissionGuideToast要在tryShowNoPermissionTip方法之前
 //        }
@@ -558,34 +560,34 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             tryShowNoPermissionTip();
         }
 
-        // handleLoadAd();
+		// handleLoadAd();
 
-        // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
-        // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        // handlePretendLock(); 貌似oncreate里的init方法已经执行了，容易曹成内存泄露
-        if (!mMissingDialogShowing) {
+		// 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
+		// getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+		// handlePretendLock(); 貌似oncreate里的init方法已经执行了，容易曹成内存泄露
+		if (!mMissingDialogShowing) {
 
-            // boolean lockThemeGuid = checkNewTheme();
+			// boolean lockThemeGuid = checkNewTheme();
 
-            if (mLockMode == LockManager.LOCK_MODE_FULL) {
+			if (mLockMode == LockManager.LOCK_MODE_FULL) {
                 /*
                  * tell PushUIHelper than do not show dialog when lockscreen is
                  * shown
                  */
-                PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
-            }
-            AppMasterPreference.getInstance(this).setUnlocked(false);
-        }
-        int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
-                .getADShowType();
+				PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
+			}
+			AppMasterPreference.getInstance(this).setUnlocked(false);
+		}
+		int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+				.getADShowType();
         /* 解决超人在有伪装情况下，提前运行动画的问题 */
-        if (getPretendFragment() == null && adShowNumber == 5) {
-            LeoEventBus.getDefaultBus().post(
-                    new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "no_camouflage_lock"));
-        }
-        super.onResume();
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
-    }
+		if (getPretendFragment() == null && adShowNumber == 5) {
+			LeoEventBus.getDefaultBus().post(
+					new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "no_camouflage_lock"));
+		}
+		super.onResume();
+		SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
+	}
 
 //    private void tryHidePermissionGuideToast() {
 //        if (mPermissionGuideToast != null && mPermissionGuideToast.isShowing()) {
@@ -595,244 +597,244 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //        }
 //    }
 
-    private void tryShowNoPermissionTip() {
-        LeoLog.i("Tip", "try show");
-        LeoLog.i("Tip", "Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT);
-        LeoLog.i("Tip", "TaskDetectService.sDetectSpecial = " + TaskDetectService.sDetectSpecial);
-        LeoLog.i("Tip", "BuildProperties.isLenoveModel() = " + BuildProperties.isLenoveModel());
+	private void tryShowNoPermissionTip() {
+		LeoLog.i("Tip", "try show");
+		LeoLog.i("Tip", "Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT);
+		LeoLog.i("Tip", "TaskDetectService.sDetectSpecial = " + TaskDetectService.sDetectSpecial);
+		LeoLog.i("Tip", "BuildProperties.isLenoveModel() = " + BuildProperties.isLenoveModel());
 //        if (1 == 1) {
-        int[] size = Utilities.getScreenSize(LockScreenActivity.this);
+		int[] size = Utilities.getScreenSize(LockScreenActivity.this);
 //        Toast.makeText(LockScreenActivity.this, "size[1] = " + size[1], Toast.LENGTH_SHORT).show();
-        if (Build.VERSION.SDK_INT >= 21 && !BuildProperties.isLenoveModel() && size[1] >= 800) {
-            ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
+		if (Build.VERSION.SDK_INT >= 21 && !BuildProperties.isLenoveModel() && size[1] >= 800) {
+			ProcessDetectorUsageStats state = new ProcessDetectorUsageStats();
 //            if (2 == 2) {
-            if (!state.checkAvailable()) {
-                LeoLog.i("Tip", "unAvailable");
-                if (mVPermissionTip == null) {
-                    ViewStub vs = (ViewStub) findViewById(R.id.vs_permission_tip);
-                    mVPermissionTip = vs.inflate();
-                }
-                mRlNoPermission = (RelativeLayout) mVPermissionTip.findViewById(R.id.rl_nopermission_tip);
-                mRlNoPermission.setOnClickListener(LockScreenActivity.this);
-                mRlNoPermission.setVisibility(View.VISIBLE);
-                mTvPermissionTip = (TextView) mVPermissionTip.findViewById(R.id.tv_nopermission_tip);
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_show");
-                String tip = mPt.getString(PrefConst.KEY_APP_USAGE_STATE_GUIDE_STRING);
-                if (!TextUtils.isEmpty(tip)) {
-                    mTvPermissionTip.setText(tip);
-                }
-            } else {
-                if (mRlNoPermission != null) {
-                    mRlNoPermission.setVisibility(View.GONE);
-                }
-                if (mHasClickGoGrantPermission) {
-                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
-                    mHasClickGoGrantPermission = false;
-                }
-            }
-        } else {
-            if (mRlNoPermission != null) {
-                mRlNoPermission.setVisibility(View.GONE);
-            }
-            if (mHasClickGoGrantPermission) {
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
-                mHasClickGoGrantPermission = false;
-            }
-        }
-    }
+			if (!state.checkAvailable()) {
+				LeoLog.i("Tip", "unAvailable");
+				if (mVPermissionTip == null) {
+					ViewStub vs = (ViewStub) findViewById(R.id.vs_permission_tip);
+					mVPermissionTip = vs.inflate();
+				}
+				mRlNoPermission = (RelativeLayout) mVPermissionTip.findViewById(R.id.rl_nopermission_tip);
+				mRlNoPermission.setOnClickListener(LockScreenActivity.this);
+				mRlNoPermission.setVisibility(View.VISIBLE);
+				mTvPermissionTip = (TextView) mVPermissionTip.findViewById(R.id.tv_nopermission_tip);
+				SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_show");
+				String tip = mPt.getString(PrefConst.KEY_APP_USAGE_STATE_GUIDE_STRING);
+				if (!TextUtils.isEmpty(tip)) {
+					mTvPermissionTip.setText(tip);
+				}
+			} else {
+				if (mRlNoPermission != null) {
+					mRlNoPermission.setVisibility(View.GONE);
+				}
+				if (mHasClickGoGrantPermission) {
+					SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
+					mHasClickGoGrantPermission = false;
+				}
+			}
+		} else {
+			if (mRlNoPermission != null) {
+				mRlNoPermission.setVisibility(View.GONE);
+			}
+			if (mHasClickGoGrantPermission) {
+				SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_finish");
+				mHasClickGoGrantPermission = false;
+			}
+		}
+	}
 
-    private void whichTypeShow() {
-        mHaveNewThings = AppMasterPreference.getInstance(this)
-                .getIsADAppwallNeedUpdate();
-        mLastTime = AppMasterPreference.getInstance(LockScreenActivity.this)
-                .getAdClickTime();
-        isClickJump = AppMasterPreference.getInstance(LockScreenActivity.this)
-                .getJumpIcon();
-        long mNowTime = System.currentTimeMillis();
-        if ((mLastTime != 0 && mNowTime - mLastTime > CLICK_OVER_DAY) || mHaveNewThings) {// shake
-            SHOW_AD_TYPE = AD_TYPE_SHAKE;
-        } else { // jump
-            if (!isClickJump && !clickShakeIcon) {
-                SHOW_AD_TYPE = AD_TYPE_JUMP;
-            } else {
-                SHOW_AD_TYPE = AD_TYPE_STAY;
-            }
-        }
-    }
+	private void whichTypeShow() {
+		mHaveNewThings = AppMasterPreference.getInstance(this)
+				.getIsADAppwallNeedUpdate();
+		mLastTime = AppMasterPreference.getInstance(LockScreenActivity.this)
+				.getAdClickTime();
+		isClickJump = AppMasterPreference.getInstance(LockScreenActivity.this)
+				.getJumpIcon();
+		long mNowTime = System.currentTimeMillis();
+		if ((mLastTime != 0 && mNowTime - mLastTime > CLICK_OVER_DAY) || mHaveNewThings) {// shake
+			SHOW_AD_TYPE = AD_TYPE_SHAKE;
+		} else { // jump
+			if (!isClickJump && !clickShakeIcon) {
+				SHOW_AD_TYPE = AD_TYPE_JUMP;
+			} else {
+				SHOW_AD_TYPE = AD_TYPE_STAY;
+			}
+		}
+	}
 
-    @SuppressLint("NewApi")
-    private void startShakeRotateAnimation(boolean isFirstIn) {
-        mADAnimalEntry.setBackgroundResource(R.drawable.alien_bg1);
+	@SuppressLint("NewApi")
+	private void startShakeRotateAnimation(boolean isFirstIn) {
+		mADAnimalEntry.setBackgroundResource(R.drawable.alien_bg1);
 
-        RotateAnimation reverse = new RotateAnimation(0f, 16f, Animation.RELATIVE_TO_SELF,
-                0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
-        reverse.setDuration(500);
-        reverse.setFillAfter(true);
-        if (isFirstIn) {
-            reverse.setStartOffset(500);
-        }
-        mADAnimalEntry.setAnimation(reverse);
-        reverse.setAnimationListener(new AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
+		RotateAnimation reverse = new RotateAnimation(0f, 16f, Animation.RELATIVE_TO_SELF,
+				0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+		reverse.setDuration(500);
+		reverse.setFillAfter(true);
+		if (isFirstIn) {
+			reverse.setStartOffset(500);
+		}
+		mADAnimalEntry.setAnimation(reverse);
+		reverse.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
 
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                RotateAnimation reverse1 = new RotateAnimation(16f, -14f,
-                        Animation.RELATIVE_TO_SELF,
-                        0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
-                reverse1.setFillAfter(true);
-                reverse1.setDuration(600);
-                mADAnimalEntry.setAnimation(reverse1);
-                reverse1.setAnimationListener(new AnimationListener() {
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				RotateAnimation reverse1 = new RotateAnimation(16f, -14f,
+						Animation.RELATIVE_TO_SELF,
+						0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+				reverse1.setFillAfter(true);
+				reverse1.setDuration(600);
+				mADAnimalEntry.setAnimation(reverse1);
+				reverse1.setAnimationListener(new AnimationListener() {
 
-                    @Override
-                    public void onAnimationStart(Animation animation) {
+					@Override
+					public void onAnimationStart(Animation animation) {
 
-                    }
+					}
 
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
 
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        RotateAnimation reverse2 = new RotateAnimation(-14f, 12f,
-                                Animation.RELATIVE_TO_SELF,
-                                0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
-                        reverse2.setFillAfter(true);
-                        reverse2.setDuration(700);
-                        mADAnimalEntry.setAnimation(reverse2);
-                        reverse2.setAnimationListener(new AnimationListener() {
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						RotateAnimation reverse2 = new RotateAnimation(-14f, 12f,
+								Animation.RELATIVE_TO_SELF,
+								0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+						reverse2.setFillAfter(true);
+						reverse2.setDuration(700);
+						mADAnimalEntry.setAnimation(reverse2);
+						reverse2.setAnimationListener(new AnimationListener() {
 
-                            @Override
-                            public void onAnimationStart(Animation animation) {
+							@Override
+							public void onAnimationStart(Animation animation) {
 
-                            }
+							}
 
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
+							@Override
+							public void onAnimationRepeat(Animation animation) {
+							}
 
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                RotateAnimation tozero = new RotateAnimation(12f, 0f,
-                                        Animation.RELATIVE_TO_SELF,
-                                        0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
-                                tozero.setFillAfter(true);
-                                tozero.setDuration(750);
-                                mADAnimalEntry.setAnimation(tozero);
-                                tozero.setAnimationListener(new AnimationListener() {
+							@Override
+							public void onAnimationEnd(Animation animation) {
+								RotateAnimation tozero = new RotateAnimation(12f, 0f,
+										Animation.RELATIVE_TO_SELF,
+										0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+								tozero.setFillAfter(true);
+								tozero.setDuration(750);
+								mADAnimalEntry.setAnimation(tozero);
+								tozero.setAnimationListener(new AnimationListener() {
 
-                                    @Override
-                                    public void onAnimationStart(Animation animation) {
+									@Override
+									public void onAnimationStart(Animation animation) {
 
-                                    }
+									}
 
-                                    @Override
-                                    public void onAnimationRepeat(Animation animation) {
+									@Override
+									public void onAnimationRepeat(Animation animation) {
 
-                                    }
+									}
 
-                                    @Override
-                                    public void onAnimationEnd(Animation animation) {
-                                        interupAinimation = false;
-                                        mADAnimalEntry.clearAnimation();
-                                        Message msg = new Message();
-                                        msg.what = SHOW_RED_MAN;
-                                        mHandler.sendEmptyMessageAtTime(msg.what,
-                                                500);
-                                    }
-                                });
-                                if (interupAinimation) {
-                                    mADAnimalEntry.clearAnimation();
-                                    interupAinimation = false;
-                                } else {
-                                    tozero.start();
-                                }
-                            }
-                        });
-                        if (interupAinimation) {
-                            mADAnimalEntry.clearAnimation();
-                            interupAinimation = false;
-                        } else {
-                            reverse2.start();
-                        }
-                    }
-                });
-                if (interupAinimation) {
-                    mADAnimalEntry.clearAnimation();
-                    interupAinimation = false;
-                } else {
-                    reverse1.start();
-                }
-            }
-        });
-        reverse.start();
-    }
+									@Override
+									public void onAnimationEnd(Animation animation) {
+										interupAinimation = false;
+										mADAnimalEntry.clearAnimation();
+										Message msg = new Message();
+										msg.what = SHOW_RED_MAN;
+										mHandler.sendEmptyMessageAtTime(msg.what,
+												500);
+									}
+								});
+								if (interupAinimation) {
+									mADAnimalEntry.clearAnimation();
+									interupAinimation = false;
+								} else {
+									tozero.start();
+								}
+							}
+						});
+						if (interupAinimation) {
+							mADAnimalEntry.clearAnimation();
+							interupAinimation = false;
+						} else {
+							reverse2.start();
+						}
+					}
+				});
+				if (interupAinimation) {
+					mADAnimalEntry.clearAnimation();
+					interupAinimation = false;
+				} else {
+					reverse1.start();
+				}
+			}
+		});
+		reverse.start();
+	}
 
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState);
-        } catch (Exception e) {
-        }
-    }
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		try {
+			super.onRestoreInstanceState(savedInstanceState);
+		} catch (Exception e) {
+		}
+	}
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        LeoLog.d(TAG, "onStart...");
-        handleLoadAd();
+	@Override
+	protected void onStart() {
+		super.onStart();
+		LeoLog.d(TAG, "onStart...");
+		handleLoadAd();
 
-        mForceLoad = false;
-    }
+		mForceLoad = false;
+	}
 
-    @Override
-    protected void onPause() {
-        PushUIHelper.getInstance(getApplicationContext())
-                .setIsLockScreen(false);
-        super.onPause();
-        LeoLog.d(TAG, "onPause...");
-    }
+	@Override
+	protected void onPause() {
+		PushUIHelper.getInstance(getApplicationContext())
+				.setIsLockScreen(false);
+		super.onPause();
+		LeoLog.d(TAG, "onPause...");
+	}
 
-    /**
-     * <b>Note</b> if lock mode is changed from LockManager.LOCK_MODE_PURE to
-     * LockManager.LOCK_MODE_FULL, just restart screen pager
-     */
-    @Override
-    protected void onNewIntent(Intent intent) {
-        LeoLog.d(TAG, "onNewIntent...");
-        if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
-                LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
-            finish();
-            startActivity(intent);
+	/**
+	 * <b>Note</b> if lock mode is changed from LockManager.LOCK_MODE_PURE to
+	 * LockManager.LOCK_MODE_FULL, just restart screen pager
+	 */
+	@Override
+	protected void onNewIntent(Intent intent) {
+		LeoLog.d(TAG, "onNewIntent...");
+		if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
+				LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
+			finish();
+			startActivity(intent);
 
-            return;
-        }
+			return;
+		}
 
-        mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
-        mFromQuickGesture = intent.getBooleanExtra("from_quick_gesture", false);
-        if (!mFromQuickGesture) {
-            mFromHome = intent.getBooleanExtra("from_home", false);
-        }
+		mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
+		mFromQuickGesture = intent.getBooleanExtra("from_quick_gesture", false);
+		if (!mFromQuickGesture) {
+			mFromHome = intent.getBooleanExtra("from_home", false);
+		}
 
-        if (mQuickLockMode) {
-            mQuickModeName = intent.getStringExtra("lock_mode_name");
-            mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
-            // home mode replace unlock-all mode
-            if (mQuiclModeId == 0) {
-                mQuiclModeId = 3;
-            }
-        }
-        if (mQuickLockMode) {
-            mLockedPackage = getPackageName();
-            mTtileBar.setTitle(R.string.change_lock_mode);
-        } else {
+		if (mQuickLockMode) {
+			mQuickModeName = intent.getStringExtra("lock_mode_name");
+			mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
+			// home mode replace unlock-all mode
+			if (mQuiclModeId == 0) {
+				mQuiclModeId = 3;
+			}
+		}
+		if (mQuickLockMode) {
+			mLockedPackage = getPackageName();
+			mTtileBar.setTitle(R.string.change_lock_mode);
+		} else {
 //            mTtileBar.setTitle(R.string.app_name);
             setTiltleBarInfo(getPackageName());
         }
@@ -938,73 +940,73 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //            intent.putExtra("outcount_time", 10 - outcountTime / 1000);
 //            startActivity(intent);
 //        }
-    }
+	}
 
-    private void handleIntent() {
-        Intent intent = getIntent();
-        mRestartForThemeChanged = intent.getBooleanExtra("from_theme_change", false);
-        mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
-        mFromHome = intent.getBooleanExtra("from_home", false);
-        mFromQuickGesture = intent.getBooleanExtra("from_quick_gesture", false);
-        if (mQuickLockMode) {
-            mQuickModeName = intent.getStringExtra("lock_mode_name");
-            mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
+	private void handleIntent() {
+		Intent intent = getIntent();
+		mRestartForThemeChanged = intent.getBooleanExtra("from_theme_change", false);
+		mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
+		mFromHome = intent.getBooleanExtra("from_home", false);
+		mFromQuickGesture = intent.getBooleanExtra("from_quick_gesture", false);
+		if (mQuickLockMode) {
+			mQuickModeName = intent.getStringExtra("lock_mode_name");
+			mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
 
-            // home mode replace unlock-all mode
-            if (mQuiclModeId == 0) {
-                mQuiclModeId = 3;
-            }
-        }
-        if (mQuickLockMode) {
-            mLockedPackage = getPackageName();
-        } else {
-            mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
-        }
+			// home mode replace unlock-all mode
+			if (mQuiclModeId == 0) {
+				mQuiclModeId = 3;
+			}
+		}
+		if (mQuickLockMode) {
+			mLockedPackage = getPackageName();
+		} else {
+			mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
+		}
 
-        if (mLockedPackage == null) {
-            mLockedPackage = getPackageName();
-        }
+		if (mLockedPackage == null) {
+			mLockedPackage = getPackageName();
+		}
 
-        mLockMode = intent.getIntExtra(EXTRA_LOCK_MODE,
-                LockManager.LOCK_MODE_FULL);
+		mLockMode = intent.getIntExtra(EXTRA_LOCK_MODE,
+				LockManager.LOCK_MODE_FULL);
 
-        int type = AppMasterPreference.getInstance(this).getLockType();
-        if (type == LockFragment.LOCK_TYPE_PASSWD) {
-            mLockFragment = new PasswdLockFragment();
-        } else {
-            mLockFragment = new GestureLockFragment();
-        }
+		int type = AppMasterPreference.getInstance(this).getLockType();
+		if (type == LockFragment.LOCK_TYPE_PASSWD) {
+			mLockFragment = new PasswdLockFragment();
+		} else {
+			mLockFragment = new GestureLockFragment();
+		}
 
-        if (mLockMode == LockManager.LOCK_MODE_FULL) {
-            if (!ThemeUtils.checkThemeNeed(this)) {
+		if (mLockMode == LockManager.LOCK_MODE_FULL) {
+			if (!ThemeUtils.checkThemeNeed(this)) {
 
 
-                Drawable bd = getBd(mLockedPackage);
-                setAppInfoBackground(bd);
+				Drawable bd = getBd(mLockedPackage);
+				setAppInfoBackground(bd);
 
-                if (mLockMode == LockManager.LOCK_MODE_FULL) {
-                    if (mTtileBar == null) {
-                        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-                    }
-                    if (!mQuickLockMode) {
-                        setTiltleBarInfo(getPackageName());
-                    }
-                }
-            } else {
-                if (!mQuickLockMode) {
-                    if (mTtileBar == null) {
-                        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-                    }
-                    setTiltleBarInfo(getPackageName());
-                }
-            }
-            if (!mLockedPackage.equals(getPackageName())) {
-                createLoackAppInfoView(mLockedPackage);
-            }
-        }
-        mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
-        mLockFragment.setLockMode(mLockMode);
-        mLockFragment.setPackage(mLockedPackage);
+				if (mLockMode == LockManager.LOCK_MODE_FULL) {
+					if (mTtileBar == null) {
+						mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+					}
+					if (!mQuickLockMode) {
+						setTiltleBarInfo(getPackageName());
+					}
+				}
+			} else {
+				if (!mQuickLockMode) {
+					if (mTtileBar == null) {
+						mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+					}
+					setTiltleBarInfo(getPackageName());
+				}
+			}
+			if (!mLockedPackage.equals(getPackageName())) {
+				createLoackAppInfoView(mLockedPackage);
+			}
+		}
+		mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
+		mLockFragment.setLockMode(mLockMode);
+		mLockFragment.setPackage(mLockedPackage);
 
         /* SDK: mark user what to unlock which app */
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -1177,13 +1179,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg = null;
         }
 
-        try {
-            if (wallAd != null) {
-                wallAd.release();
-                wallAd = null;
-            }
-        } catch (Exception e) {
-        }
+//        try {
+//            if (wallAd != null) {
+//                wallAd.release();
+//                wallAd = null;
+//            }
+//        } catch (Exception e) {
+//        }
         LeoLog.d(TAG, "onDestroy...");
         LeoEventBus.getDefaultBus().unregister(this);
         mLockFragment.setShowText(false);
@@ -1212,7 +1214,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         //LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
                         // 3.3.2 封装Max与Mob SDK
                         if (mDidLoadAd) {
-                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id);
+                            ADEngineWrapper.getInstance(LockScreenActivity.this).releaseAd(mAdSource, id, mAdView);
                         }
                     }
                 }
@@ -1321,275 +1323,279 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     /* 初始化广告UI */
     private void initAD() {
 //        mBannerParent = (FrameLayout) findViewById(R.id.large_adbanner_parent);
-        mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
-        mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
-        mBannerContainer.setOffscreenPageLimit(2);
-        mBannerContainer.setOverScrollMode(View.OVER_SCROLL_NEVER);
-    }
+		mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
+		mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
+		mBannerContainer.setOffscreenPageLimit(2);
+		mBannerContainer.setOverScrollMode(View.OVER_SCROLL_NEVER);
+	}
 
-    private void loadAD(boolean forceLoad) {
-        mDidLoadAd = true;
-        mBannerContainer.setVisibility(View.VISIBLE);
-        mAdUnitIdList.clear();
-        mMobvistaListenerList.clear();
-        mAdMap.clear();
+	private void loadAD(boolean forceLoad) {
+		mDidLoadAd = true;
+		mBannerContainer.setVisibility(View.VISIBLE);
+		mAdUnitIdList.clear();
+		mMobvistaListenerList.clear();
+		mAdMap.clear();
 
-        if (mImageFetcher != null) {
-            mImageFetcher.destroy();
-        }
+		if (mImageFetcher != null) {
+			mImageFetcher.destroy();
+		}
 
-        otherAdSwitcher = false;
-        if (mAdapterCycle != null) {
-            mAdapterCycle.clearView();
-            mAdapterCycle = null;
+		otherAdSwitcher = false;
+		if (mAdapterCycle != null) {
+			mAdapterCycle.clearView();
+			mAdapterCycle = null;
 //            mAdapterCycle.getViews().clear();
-        }
-        mBannerContainer.removeAllViews();
+		}
+		mBannerContainer.removeAllViews();
         /*调用sdk前，明确是哪个sdk，mobvista or max ? */
-        AppMasterPreference sp = AppMasterPreference.getInstance(this.getApplicationContext());
-        mAdSource = sp.getLockBannerAdConfig();
-        long start = SystemClock.elapsedRealtime();
-        asyncLoadAd(forceLoad);
-        LeoLog.d(TAG, "TsCost, loadAD..." + (SystemClock.elapsedRealtime() - start));
-    }
+		AppMasterPreference sp = AppMasterPreference.getInstance(this.getApplicationContext());
+		mAdSource = sp.getLockBannerAdConfig();
+		long start = SystemClock.elapsedRealtime();
+		asyncLoadAd(forceLoad);
+		LeoLog.d(TAG, "TsCost, loadAD..." + (SystemClock.elapsedRealtime() - start));
+	}
 
-    /**
-     * 异步加载广告，等到图片loading结束后才显示处理
-     */
-    private PreviewImageFetcher mImageFetcher;
+	/**
+	 * 异步加载广告，等到图片loading结束后才显示处理
+	 */
+	private PreviewImageFetcher mImageFetcher;
 
-    private class WpdListener implements ADEngineWrapper.WrappedAdListener {
-        private String unitId;
-        ADEngineWrapper wrapperAdEngine;
+	private class WpdListener implements ADEngineWrapper.WrappedAdListener {
+		private String unitId;
+		ADEngineWrapper wrapperAdEngine;
 
-        public WpdListener(String unitId) {
-            this.unitId = unitId;
-            wrapperAdEngine = ADEngineWrapper.getInstance(LockScreenActivity.this);
-        }
+		public WpdListener(String unitId) {
+			this.unitId = unitId;
+			wrapperAdEngine = ADEngineWrapper.getInstance(LockScreenActivity.this);
+		}
 
-        /**
-         * 广告请求回调
-         *
-         * @param code     返回码，如ERR_PARAMS_NULL
-         * @param campaign 请求成功的广告结构体，失败为null
-         * @param msg      请求失败sdk返回的描述，成功为null
-         */
-        @Override
-        public synchronized void onWrappedAdLoadFinished(int code, final WrappedCampaign campaign, String msg) {
-            if (code != MobvistaEngine.ERR_OK) {
-                return;
-            }
-            if (campaign != null) {
-                mAdMap.put(unitId, campaign);
+		/**
+		 * 广告请求回调
+		 *
+		 * @param code     返回码，如ERR_PARAMS_NULL
+		 * @param campaigns 请求成功的广告结构体，失败为null
+		 * @param msg      请求失败sdk返回的描述，成功为null
+		 */
+		@Override
+		public synchronized void onWrappedAdLoadFinished(int code, final List<WrappedCampaign> campaigns, String msg) {
+			if (code != MobvistaEngine.ERR_OK) {
+				return;
+			}
+			if (campaigns != null) {
+				mAdMap.put(unitId, campaigns.get(0));
 
                         /* 开始load 广告大图 */
-                LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for [" + unitId + "] ready: " + campaign.getAppName());
-                mImageFetcher.loadBitmap(campaign.getImageUrl(), new PreviewImageFetcher.ImageFetcherListener() {
-                    @Override
-                    public void onBitmapLoadStarted(String url) {
-                        LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]start to load preview for: " + url);
+				LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for [" + unitId + "] ready: " + campaigns.get(0).getAppName());
+				final HashMap<String, String> map = new HashMap<String, String>();
+				map.put("unitId", unitId);
+				mImageFetcher.loadBitmap(campaigns.get(0).getImageUrl(), new PreviewImageFetcher.ImageFetcherListener() {
+					@Override
+					public void onBitmapLoadStarted(String url) {
+						LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]start to load preview for: " + url);
 
-                        SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
-                                "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " prepare for load image", mAdSource, null);
-                    }
+						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
+								"max_ad", SDKWrapper.P1, "ad_load_image", "ready_to", mAdSource, map);
+					}
 
-                    @Override
-                    public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
-                        SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
-                                "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " image size: " + loadedImage.getByteCount(), mAdSource, null);
+					@Override
+					public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
+						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
+								"max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
 
-                        ThreadManager.executeOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                {
-                                    LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]onLoadingComplete for: " + url);
-                                    // AM-4043 加空指针保护
-                                    if (loadedImage == null) {
-                                        return;
-                                    }
-                                    WrappedCampaign wrappedCampaign = mAdMap.get(unitId);
-                                    if (wrappedCampaign == null
-                                            || wrappedCampaign.getAppName() == null
-                                            || wrappedCampaign.getAppName().equalsIgnoreCase("")) {
-                                        mAdMap.remove(unitId);
-                                        return;
-                                    }
+						ThreadManager.executeOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								{
+									LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]onLoadingComplete for: " + url);
+									// AM-4043 加空指针保护
+									if (loadedImage == null) {
+										return;
+									}
+									WrappedCampaign wrappedCampaign = mAdMap.get(unitId);
+									if (wrappedCampaign == null
+											|| wrappedCampaign.getAppName() == null
+											|| wrappedCampaign.getAppName().equalsIgnoreCase("")) {
+										mAdMap.remove(unitId);
+										return;
+									}
 
-                                    if (mAdUnitIdList == null) {
-                                        mAdUnitIdList = new ArrayList<String>();
-                                    }
-                                    if (unitId.equals(mBannerAdids[0])) {
-                                        mAdUnitIdList.add(0, unitId);
-                                    } else {
-                                        mAdUnitIdList.add(unitId);
-                                    }
+									if (mAdUnitIdList == null) {
+										mAdUnitIdList = new ArrayList<String>();
+									}
+									if (unitId.equals(mBannerAdids[0])) {
+										mAdUnitIdList.add(0, unitId);
+									} else {
+										mAdUnitIdList.add(unitId);
+									}
 
 								/*校验此广告是否用第一个id来申请的*/
-                                    if (unitId.equals(mBannerAdids[0])) {
+									if (unitId.equals(mBannerAdids[0])) {
                                     /*如果是则将其他两个广告显示开光打开*/
-                                        otherAdSwitcher = true;
-                                    }
+										otherAdSwitcher = true;
+									}
                                 /* 如果是第二或者第三个id申请的广告 则检查广告开关是否被打开了 */
-                                    if (!unitId.equals(mBannerAdids[0])) {
+									if (!unitId.equals(mBannerAdids[0])) {
                                     /*如果广告开关没有被打开，则直接退出*/
-                                        if (!otherAdSwitcher) {
-                                            return;
-                                        }
+										if (!otherAdSwitcher) {
+											return;
+										}
                                     /*if (isRedundant(unitId, campaign)) {
                                         *//* 与之前的广告重复了，不添加到UI而且去掉广告数据 *//*
                                         removeAdData(unitId);
                                         return;
                                     }*/
-                                    }
+									}
 
-                                    if (mBannerContainer == null) {
-                                        mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
-                                    }
-                                    if (mAdapterCycle == null) {
-                                        mBannerContainer.setVisibility(View.INVISIBLE);
+									if (mBannerContainer == null) {
+										mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
+									}
+									if (mAdapterCycle == null) {
+										mBannerContainer.setVisibility(View.INVISIBLE);
                                     /* 去除重复广告之后再填充UI */
-                                        removeRedundantAds();
-                                        mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
-                                        mBannerContainer.setAdapter(mAdapterCycle);
-                                        if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
+										removeRedundantAds();
+										mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList, wrapperAdEngine);
+										mBannerContainer.setAdapter(mAdapterCycle);
+										if ((int) (Math.random() * (10) + 1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
                                         /* 第一个广告直接出现 */
-                                            mBannerContainer.setCurrentItem(1, false);
-                                            mAdapterCycle.setLasterSlectedPage(1);
-                                            mBannerContainer.setVisibility(View.VISIBLE);
-                                            showAdAnimaiton(unitId);
-                                            // 3.6版本，6秒后消失的逻辑去掉
-                                            // delayBannerHideAnim();
-                                            hideIconAndPswTips();
+											mBannerContainer.setCurrentItem(1, false);
+											mAdapterCycle.setLasterSlectedPage(1);
+											mBannerContainer.setVisibility(View.VISIBLE);
+											showAdAnimaiton(unitId);
+											// 3.6版本，6秒后消失的逻辑去掉
+											// delayBannerHideAnim();
+											hideIconAndPswTips();
 
-                                        } else {
+										} else {
                                         /* 广告隐藏在右边 */
-                                            mBannerContainer.setVisibility(View.VISIBLE);
-                                            mBannerContainer.setCurrentItem(0, false);
-                                            mAdapterCycle.setLasterSlectedPage(0);
-                                        }
-                                    } else {
+											mBannerContainer.setVisibility(View.VISIBLE);
+											mBannerContainer.setCurrentItem(0, false);
+											mAdapterCycle.setLasterSlectedPage(0);
+										}
+									} else {
                                     /* AM-3907 规避多次添加广告 */
                                     /*if (mAdapterCycle.getCount() == mBannerAdids.length) {
                                         return;
                                     }*/
-                                        removeRedundantAds();
+										removeRedundantAds();
                                     /* 如果没被去重干掉，再加进来 */
-                                        if (mAdUnitIdList.contains(unitId)) {
-                                            mAdapterCycle.addItem(unitId);
-                                        }
-                                    }
+										if (mAdUnitIdList.contains(unitId)) {
+											mAdapterCycle.addItem(unitId);
+										}
+									}
 
-                                }
-                            }
-                        });
-                    }
+								}
+							}
+						});
+					}
 
-                    @Override
-                    public void onBitmapLoadFailed(String url) {
-                        LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + url);
-                        SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
-                                "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + unitId + " load image failed", mAdSource, null);
-                    }
+					@Override
+					public void onBitmapLoadFailed(String url) {
+						LeoLog.d("LockScreenActivity_AD_DEBUG", "onLoadingFailed for: " + url);
+						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
+								"max_ad", SDKWrapper.P1, "ad_load_image", "fail", mAdSource, map);
+					}
 
-                    @Override
-                    public void onBitmapLoadCancelled(String url) {
-                        LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "] onBitmapLoadCancelled for: " + url);
-                    }
-                });
+					@Override
+					public void onBitmapLoadCancelled(String url) {
+						LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "] onBitmapLoadCancelled for: " + url);
+					}
+				});
 
-            }
-        }
+			}
+		}
 
-        /**
-         * 广告点击回调
-         *
-         * @param campaign
-         */
-        @Override
-        public void onWrappedAdClick(WrappedCampaign campaign, final String unitID) {
-            SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
-                    "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
-            ThreadManager.executeOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mForceLoad = true;
-                    if (unitID != null && unitID.equals(mBannerAdids[0])) {
-                        otherAdSwitcher = false;
-                    }
+		/**
+		 * 广告点击回调
+		 *
+		 * @param campaign
+		 */
+		@Override
+		public void onWrappedAdClick(WrappedCampaign campaign, final String unitID) {
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("unitId", unitID);
+			SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
+					"max_ad", SDKWrapper.P1, "ad_click",  "click", mAdSource, map);
+			ThreadManager.executeOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					mForceLoad = true;
+					if (unitID != null && unitID.equals(mBannerAdids[0])) {
+						otherAdSwitcher = false;
+					}
 
-                    ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID);
-                    mAdapterCycle.clearView();
-                    mBannerContainer.removeAllViews();
-                    new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+					ADEngineWrapper.getInstance(LockScreenActivity.this).removeMobAdData(mAdSource, unitID, mAdView);
+					mAdapterCycle.clearView();
+					mBannerContainer.removeAllViews();
+					new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+						@Override
+						public void run() {
                             /*boolean cacheEmpty = ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).isADCacheEmpty(mAdSource);
                             if (cacheEmpty) {
                                 loadAD(true);
                             }*/
-                            loadAD(true);
-                        }
-                    }, 500);
-                    if (mAdapterCycle.getViews() == null) {
-                        mBannerContainer.setVisibility(View.GONE);
-                    }
-                    showIconAndPswTips();
-                }
-            });
-        }
-    }
+							loadAD(true);
+						}
+					}, 500);
+					if (mAdapterCycle.getViews() == null) {
+						mBannerContainer.setVisibility(View.GONE);
+					}
+					showIconAndPswTips();
+				}
+			});
+		}
+	}
 
-    ;
+	;
 
-    private void asyncLoadAd(boolean forceLoad) {
-        if (mImageFetcher == null) {
-            mImageFetcher = new PreviewImageFetcher();
-        }
+	private void asyncLoadAd(boolean forceLoad) {
+		if (mImageFetcher == null) {
+			mImageFetcher = new PreviewImageFetcher();
+		}
 
-        int[] sources = new int[mBannerAdids.length];
-        Arrays.fill(sources, mAdSource);
+		int[] sources = new int[mBannerAdids.length];
+		Arrays.fill(sources, mAdSource);
 
-        ADEngineWrapper.WrappedAdListener[] listeners = new ADEngineWrapper.WrappedAdListener[mBannerAdids.length];
-        for (int i = 0; i < mBannerAdids.length; i++) {
-            listeners[i] = new WpdListener(mBannerAdids[i]);
-        }
-        ADEngineWrapper.getInstance(this).loadAdBatch(sources, mBannerAdids, listeners, forceLoad);
+		ADEngineWrapper.WrappedAdListener[] listeners = new ADEngineWrapper.WrappedAdListener[mBannerAdids.length];
+		for (int i = 0; i < mBannerAdids.length; i++) {
+			listeners[i] = new WpdListener(mBannerAdids[i]);
+		}
+		ADEngineWrapper.getInstance(this).loadAdBatch(sources, mBannerAdids, listeners, forceLoad);
 
-    }
+	}
 
-    private void removeRedundantAds() {
-        ArrayList<String> list = new ArrayList<String>();
-        for (String id : mAdUnitIdList) {
-            WrappedCampaign wc = mAdMap.get(id);
-            if (wc != null) {
-                boolean found = false;
-                for (String newId : list) {
-                    WrappedCampaign newWc = mAdMap.get(newId);
-                    if (newWc == null) {
-                        continue;
-                    }
-                    if (wc.getAppName().equalsIgnoreCase(newWc.getAppName())
-                            || wc.getImageUrl().equalsIgnoreCase(newWc.getImageUrl())
-                            || wc.getDescription().equalsIgnoreCase(newWc.getDescription())) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    list.add(id);
-                }
-            }
-        }
+	private void removeRedundantAds() {
+		ArrayList<String> list = new ArrayList<String>();
+		for (String id : mAdUnitIdList) {
+			WrappedCampaign wc = mAdMap.get(id);
+			if (wc != null) {
+				boolean found = false;
+				for (String newId : list) {
+					WrappedCampaign newWc = mAdMap.get(newId);
+					if (newWc == null) {
+						continue;
+					}
+					if (wc.getAppName().equalsIgnoreCase(newWc.getAppName())
+							|| wc.getImageUrl().equalsIgnoreCase(newWc.getImageUrl())
+							|| wc.getDescription().equalsIgnoreCase(newWc.getDescription())) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					list.add(id);
+				}
+			}
+		}
 
-        mAdUnitIdList = list;
-    }
+		mAdUnitIdList = list;
+	}
 
-    /**
-     * 去重添加
-     * @param unitId
-     * @param campaign
-     * @return 是否添加新的数据
-     */
+	/**
+	 * 去重添加
+	 * @param unitId
+	 * @param campaign
+	 * @return 是否添加新的数据
+	 */
     /*private boolean isRedundant(String unitId, Campaign campaign) {
         LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
         for (String key : mAdMap.keySet()) {
@@ -1604,12 +1610,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         return true;
     }*/
 
-    /**
-     * 去重添加
-     *
-     * @param unitId
-     * @return 是否与之前的广告重复
-     */
+	/**
+	 * 去重添加
+	 *
+	 * @param unitId
+	 * @return 是否与之前的广告重复
+	 */
 //    private boolean isRedundant(String unitId, WrappedCampaign campaign) {
 //        for (String key : mAdMap.keySet()) {
 //            LeoLog.i("asyncLoadAd", "ad title = " + campaign.getAppName());
@@ -1640,158 +1646,158 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         for (String key : adMap.keySet()) {
         }
     }*/
-    private int findTargetViewIndex(String unitId) {
-        int reValue = -1;
+	private int findTargetViewIndex(String unitId) {
+		int reValue = -1;
 
-        if (unitId != null && mAdapterCycle != null && mAdapterCycle.getViews() != null) {
-            LinkedList<View> localViews = mAdapterCycle.getViews();
-            String unit;
-            for (View v : localViews) {
-                if (v != null) {
-                    unit = (String) v.findViewById(R.id.ad_title).getTag();
-                    if (unit != null && unit.equals(mBannerAdids[0])) {
-                        reValue = localViews.indexOf(v);
-                        break;
-                    }
-                }
-            }
-        }
+		if (unitId != null && mAdapterCycle != null && mAdapterCycle.getViews() != null) {
+			LinkedList<View> localViews = mAdapterCycle.getViews();
+			String unit;
+			for (View v : localViews) {
+				if (v != null) {
+					unit = (String) v.findViewById(R.id.ad_title).getTag();
+					if (unit != null && unit.equals(mBannerAdids[0])) {
+						reValue = localViews.indexOf(v);
+						break;
+					}
+				}
+			}
+		}
 
-        return reValue;
-    }
+		return reValue;
+	}
 
-    private void showAdAnimaiton(String unitId) {
-        int index = findTargetViewIndex(unitId);
-        if (index == -1) {
-            otherAdSwitcher = false;
-            return;
-        }
-        View animView = mAdapterCycle.getViews().get(index);
+	private void showAdAnimaiton(String unitId) {
+		int index = findTargetViewIndex(unitId);
+		if (index == -1) {
+			otherAdSwitcher = false;
+			return;
+		}
+		View animView = mAdapterCycle.getViews().get(index);
 
-        final int itemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
-        final int itemHeight = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
-        int offset = (getWindowWidth() - itemWidth) / 2;
+		final int itemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
+		final int itemHeight = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
+		int offset = (getWindowWidth() - itemWidth) / 2;
         /*mBannerContainer*/
-        animView.setX(getWindowWidth() - offset);
+		animView.setX(getWindowWidth() - offset);
         /*mBannerContainer*/
-        animView.setScaleX(0.7f);
+		animView.setScaleX(0.7f);
         /*mBannerContainer*/
-        animView.setScaleY(0.7f);
+		animView.setScaleY(0.7f);
 
-        ObjectAnimator animatorTrans1 = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "translationX", getWindowWidth() - offset, -offset);
-        animatorTrans1.setDuration(500);
-        ObjectAnimator animatorTrans2 = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "translationX", -offset, 0);
+		ObjectAnimator animatorTrans1 = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "translationX", getWindowWidth() - offset, -offset);
+		animatorTrans1.setDuration(500);
+		ObjectAnimator animatorTrans2 = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "translationX", -offset, 0);
 
-        ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "scaleX", 0.7f, 1.0f);
-        ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "scaleY", 0.7f, 1.0f);
-        animatorScaleX.setDuration(500);
-        animatorScaleY.setDuration(500);
+		ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "scaleX", 0.7f, 1.0f);
+		ObjectAnimator animatorScaleY = ObjectAnimator.ofFloat(/*mBannerContainer*/animView, "scaleY", 0.7f, 1.0f);
+		animatorScaleX.setDuration(500);
+		animatorScaleY.setDuration(500);
 
         /*mBannerContainer*/
-        animView.setPivotX(0);
+		animView.setPivotX(0);
         /*mBannerContainer*/
-        animView.setPivotY(itemHeight / 2);
-        animatorScaleX.setInterpolator(new DecelerateInterpolator());
-        animatorScaleY.setInterpolator(new DecelerateInterpolator());
+		animView.setPivotY(itemHeight / 2);
+		animatorScaleX.setInterpolator(new DecelerateInterpolator());
+		animatorScaleY.setInterpolator(new DecelerateInterpolator());
 
-        final AnimatorSet animatorSet = new AnimatorSet();
+		final AnimatorSet animatorSet = new AnimatorSet();
 
-        animatorSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                mBannerContainer.setVisibility(View.VISIBLE);
-                mBannerContainer.setCurrentItem(1, false);
-                mAdapterCycle.setLasterSlectedPage(1);
-            }
+		animatorSet.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				super.onAnimationStart(animation);
+				mBannerContainer.setVisibility(View.VISIBLE);
+				mBannerContainer.setCurrentItem(1, false);
+				mAdapterCycle.setLasterSlectedPage(1);
+			}
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
+			@Override
+			public void onAnimationEnd(Animator animation) {
+			}
 
-        });
+		});
 
-        animatorSet.play(animatorTrans2).with(animatorScaleX).with(animatorScaleY).after(animatorTrans1);
-        animatorSet.setStartDelay(300);
-        animatorSet.start();
+		animatorSet.play(animatorTrans2).with(animatorScaleX).with(animatorScaleY).after(animatorTrans1);
+		animatorSet.setStartDelay(300);
+		animatorSet.start();
 
-    }
+	}
 
-    private void hideIconAndPswTips() {
-        //隐藏图标和密码提示
-        int type = AppMasterPreference.getInstance(this).getLockType();
-        if (type == LockFragment.LOCK_TYPE_PASSWD) {
-            View icon = ((PasswdLockFragment) mLockFragment).getIconView();
-            if (icon != null) {
-                icon.setAlpha(0.0f);
-            }
-            View hint = ((PasswdLockFragment) mLockFragment).getPasswdHint();
-            if (hint != null) {
-                hint.setAlpha(0.0f);
-            }
-        } else {
-            View icon = ((GestureLockFragment) mLockFragment).getIconView();
-            if (icon != null) {
-                icon.setAlpha(0.0f);
-            }
-        }
-    }
+	private void hideIconAndPswTips() {
+		//隐藏图标和密码提示
+		int type = AppMasterPreference.getInstance(this).getLockType();
+		if (type == LockFragment.LOCK_TYPE_PASSWD) {
+			View icon = ((PasswdLockFragment) mLockFragment).getIconView();
+			if (icon != null) {
+				icon.setAlpha(0.0f);
+			}
+			View hint = ((PasswdLockFragment) mLockFragment).getPasswdHint();
+			if (hint != null) {
+				hint.setAlpha(0.0f);
+			}
+		} else {
+			View icon = ((GestureLockFragment) mLockFragment).getIconView();
+			if (icon != null) {
+				icon.setAlpha(0.0f);
+			}
+		}
+	}
 
-    private void showIconAndPswTips() {
-        //隐藏图标和密码提示
-        int type = AppMasterPreference.getInstance(this).getLockType();
-        if (type == LockFragment.LOCK_TYPE_PASSWD) {
-            ((PasswdLockFragment) mLockFragment).getIconView().animate().alpha(1.0f).setDuration(200);
-            ((PasswdLockFragment) mLockFragment).getPasswdHint().animate().alpha(1.0f).setDuration(200);
-        } else {
-            ((GestureLockFragment) mLockFragment).getIconView().animate().alpha(1.0f).setDuration(200);
-        }
-    }
+	private void showIconAndPswTips() {
+		//隐藏图标和密码提示
+		int type = AppMasterPreference.getInstance(this).getLockType();
+		if (type == LockFragment.LOCK_TYPE_PASSWD) {
+			((PasswdLockFragment) mLockFragment).getIconView().animate().alpha(1.0f).setDuration(200);
+			((PasswdLockFragment) mLockFragment).getPasswdHint().animate().alpha(1.0f).setDuration(200);
+		} else {
+			((GestureLockFragment) mLockFragment).getIconView().animate().alpha(1.0f).setDuration(200);
+		}
+	}
 
-    private void delayBannerHideAnim() {
-        mHandler.removeMessages(LARGE_BANNER_HIDE);
+	private void delayBannerHideAnim() {
+		mHandler.removeMessages(LARGE_BANNER_HIDE);
 
-        Message msg = Message.obtain();
-        msg.what = LARGE_BANNER_HIDE;
-        mHandler.sendMessageDelayed(msg, 6000);
-    }
+		Message msg = Message.obtain();
+		msg.what = LARGE_BANNER_HIDE;
+		mHandler.sendMessageDelayed(msg, 6000);
+	}
 
-    private void bannerHideAnim() {
-        if (mBannerContainer.getChildCount() >= 2) {
-            mBannerContainer.setCurrentItem(0, true);
-        }
-    }
+	private void bannerHideAnim() {
+		if (mBannerContainer.getChildCount() >= 2) {
+			mBannerContainer.setCurrentItem(0, true);
+		}
+	}
 
-    // handle pretend lock
-    private void handlePretendLock() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction tans;
-        mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
-        if (mPretendFragment == null) {
-            // 解决Fragment内存泄露
-            mPretendFragment = getPretendFragment();
-        }
+	// handle pretend lock
+	private void handlePretendLock() {
+		FragmentManager fm = getSupportFragmentManager();
+		FragmentTransaction tans;
+		mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
+		if (mPretendFragment == null) {
+			// 解决Fragment内存泄露
+			mPretendFragment = getPretendFragment();
+		}
 
-        if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
-                mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
-            mPretendFragment = null;
-        }
+		if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
+				mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+			mPretendFragment = null;
+		}
 
-        if (mPretendFragment != null && !mRestartForThemeChanged) {
-            mLockLayout.setVisibility(View.GONE);
-            mPretendLayout.setVisibility(View.VISIBLE);
-            tans = fm.beginTransaction();
-            tans.add(R.id.pretend_layout, mPretendFragment);
+		if (mPretendFragment != null && !mRestartForThemeChanged) {
+			mLockLayout.setVisibility(View.GONE);
+			mPretendLayout.setVisibility(View.VISIBLE);
+			tans = fm.beginTransaction();
+			tans.add(R.id.pretend_layout, mPretendFragment);
 
-            tans.commit();
-        } else {
-            mLockLayout.setVisibility(View.VISIBLE);
-            mPretendLayout.setVisibility(View.GONE);
-        }
-    }
+			tans.commit();
+		} else {
+			mLockLayout.setVisibility(View.VISIBLE);
+			mPretendLayout.setVisibility(View.GONE);
+		}
+	}
 
-    private PretendFragment getPretendFragment() {
-        if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
+	private PretendFragment getPretendFragment() {
+		if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
 
 
 //            LeoLog.d("testLockName", "mLockedPackage : " + mLockedPackage);
@@ -1801,368 +1807,368 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //            }
 
 
-            int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
-            // pretendLock = 2;
-            if (pretendLock == 1) { /* app error */
-                SDKWrapper
-                        .addEvent(this, SDKWrapper.P1, "appcover", "apperror");
-                PretendAppErrorFragment paf = new PretendAppErrorFragment();
+			int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
+			// pretendLock = 2;
+			if (pretendLock == 1) { /* app error */
+				SDKWrapper
+						.addEvent(this, SDKWrapper.P1, "appcover", "apperror");
+				PretendAppErrorFragment paf = new PretendAppErrorFragment();
 
-                String tip = "";
-                PackageManager pm = this.getPackageManager();
-                try {
-                    String lab = AppUtil.getAppLabel(pm, mLockedPackage);
-                    tip = getString(R.string.pretend_app_error, lab);
-                } catch (Exception e) {
-                    tip = getString(R.string.weizhuang_error_notice);
-                    e.printStackTrace();
-                }
-                paf.setErrorTip(tip);
-                return paf;
-            } else if (pretendLock == 2) {/* unknow call */
-                SDKWrapper
-                        .addEvent(this, SDKWrapper.P1, "appcover", "unknowcall");
-                PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
-                return unknowcall;
-            } else if (pretendLock == 3) {/* fingerprint */
-                SDKWrapper
-                        .addEvent(this, SDKWrapper.P1, "appcover", "fingerprint");
-                PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
-                return weizhuang;
-            } else if (pretendLock == 4) {
-                SDKWrapper
-                        .addEvent(this, SDKWrapper.P1, "appcover", "beauty");
-                PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
-                return weizhuang;
-            }
-        }
-        return null;
-    }
+				String tip = "";
+				PackageManager pm = this.getPackageManager();
+				try {
+					String lab = AppUtil.getAppLabel(pm, mLockedPackage);
+					tip = getString(R.string.pretend_app_error, lab);
+				} catch (Exception e) {
+					tip = getString(R.string.weizhuang_error_notice);
+					e.printStackTrace();
+				}
+				paf.setErrorTip(tip);
+				return paf;
+			} else if (pretendLock == 2) {/* unknow call */
+				SDKWrapper
+						.addEvent(this, SDKWrapper.P1, "appcover", "unknowcall");
+				PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
+				return unknowcall;
+			} else if (pretendLock == 3) {/* fingerprint */
+				SDKWrapper
+						.addEvent(this, SDKWrapper.P1, "appcover", "fingerprint");
+				PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
+				return weizhuang;
+			} else if (pretendLock == 4) {
+				SDKWrapper
+						.addEvent(this, SDKWrapper.P1, "appcover", "beauty");
+				PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
+				return weizhuang;
+			}
+		}
+		return null;
+	}
 
-    public void onUnlockSucceed() {
-        AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        if (mQuickLockMode) {
-            List<LockMode> modeList = mLockManager.getLockMode();
-            LockMode willLaunch = null;
-            for (LockMode lockMode : modeList) {
-                if (mQuiclModeId == lockMode.modeId) {
-                    willLaunch = lockMode;
-                    Log.i("tag", "falg ==" + lockMode.defaultFlag);
-                    break;
-                }
-            }
+	public void onUnlockSucceed() {
+		AppMasterPreference pref = AppMasterPreference.getInstance(this);
+		if (mQuickLockMode) {
+			List<LockMode> modeList = mLockManager.getLockMode();
+			LockMode willLaunch = null;
+			for (LockMode lockMode : modeList) {
+				if (mQuiclModeId == lockMode.modeId) {
+					willLaunch = lockMode;
+					Log.i("tag", "falg ==" + lockMode.defaultFlag);
+					break;
+				}
+			}
 
-            if (willLaunch == null) {
-                LockMode homeMode = null;
-                for (LockMode lockMode : modeList) {
-                    if (lockMode.defaultFlag == 3) {
-                        homeMode = lockMode;
-                        break;
-                    }
-                }
-                willLaunch = homeMode;
-            }
-            if (willLaunch != null) {
-                LockMode lockMode = mLockManager.getCurLockMode();
-                mLockManager.setCurrentLockMode(willLaunch, true);
-                checkLockTip();
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
-                /** mode change tip **/
-                if (null != lockMode) {
-                    int currentModeFlag = lockMode.defaultFlag;
-                    showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
-                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage",
-                            "shortcuts");
-                } else {
-                    showModeActiveTip(willLaunch);
-                }
-                LeoEventBus.getDefaultBus().post(
-                        new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
-            } else {
-                // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
-                // 0).show();
-            }
+			if (willLaunch == null) {
+				LockMode homeMode = null;
+				for (LockMode lockMode : modeList) {
+					if (lockMode.defaultFlag == 3) {
+						homeMode = lockMode;
+						break;
+					}
+				}
+				willLaunch = homeMode;
+			}
+			if (willLaunch != null) {
+				LockMode lockMode = mLockManager.getCurLockMode();
+				mLockManager.setCurrentLockMode(willLaunch, true);
+				checkLockTip();
+				SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
+				/** mode change tip **/
+				if (null != lockMode) {
+					int currentModeFlag = lockMode.defaultFlag;
+					showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
+					SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage",
+							"shortcuts");
+				} else {
+					showModeActiveTip(willLaunch);
+				}
+				LeoEventBus.getDefaultBus().post(
+						new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
+			} else {
+				// Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
+				// 0).show();
+			}
 
-        } else {
-            /**
-             * notify LockManager
-             */
-            //解锁成功的时候 已经保存完照片了 ，直接进入抓拍界面
-            if (mIsPicSaved) {
+		} else {
+			/**
+			 * notify LockManager
+			 */
+			//解锁成功的时候 已经保存完照片了 ，直接进入抓拍界面
+			if (mIsPicSaved) {
 
 
-                LeoLog.d("testNumber", "mLockedPackage : " + mLockedPackage);
-                if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
-                        mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
-                    LeoEventBus.getDefaultBus().post(new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY));
-                } else {
-                    LeoEventBus.getDefaultBus().post(new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_CANCELED));
-                }
+				LeoLog.d("testNumber", "mLockedPackage : " + mLockedPackage);
+				if (mLockedPackage.equals(SwitchGroup.WIFI_SWITCH) ||
+						mLockedPackage.equals(SwitchGroup.BLUE_TOOTH_SWITCH)) {
+					LeoEventBus.getDefaultBus().post(new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY));
+				} else {
+					LeoEventBus.getDefaultBus().post(new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_CANCELED));
+				}
 
-                mLockManager.filterPackage(getPackageName(), 1000);
-                Intent intent = new Intent(LockScreenActivity.this, IntruderCatchedActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("needIntoHomeWhenFinish", true);
-                intent.putExtra("pkgname", mLockedPackage);
-                startActivity(intent);
-                mIsPicSaved = false;
-                mHasTakePic = false;
-                finish();
-                return;
-                //解锁成功的时候 还没有保存完照片，将延迟标记置为true，让保存的操作执行完后自己去进入抓拍界面
-            } else {
-                if (mHasTakePic) {
-                    mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, true);
+				mLockManager.filterPackage(getPackageName(), 1000);
+				Intent intent = new Intent(LockScreenActivity.this, IntruderCatchedActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.putExtra("needIntoHomeWhenFinish", true);
+				intent.putExtra("pkgname", mLockedPackage);
+				startActivity(intent);
+				mIsPicSaved = false;
+				mHasTakePic = false;
+				finish();
+				return;
+				//解锁成功的时候 还没有保存完照片，将延迟标记置为true，让保存的操作执行完后自己去进入抓拍界面
+			} else {
+				if (mHasTakePic) {
+					mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, true);
 //                    mHasTakePic = false;
-                    LeoLog.i("poha", "set delay true");
-                }
-            }
-            LeoEventBus.getDefaultBus().post(
-                    new AppUnlockEvent(mLockedPackage,
-                            AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY));
-            if (mLockMode == LockManager.LOCK_MODE_FULL) {
-                if (AppMasterPreference.getInstance(LockScreenActivity.this)
-                        .isLockerClean()) {
-                    Toast mToast = new Toast(this);
-                    LayoutInflater mLayoutInflater = LayoutInflater
-                            .from(LockScreenActivity.this);
-                    mLockClean = mLayoutInflater.inflate(
-                            R.layout.activity_lockclean_toast, null);
-                    mText = (TextView) mLockClean.findViewById(R.id.textToast);
-                    String textResource = getResources().getString(
-                            R.string.locker_clean);
-                    String cleanRate = String.format(textResource, mCleanRate);
-                    mText.setText(cleanRate);
-                    mToast.setGravity(Gravity.BOTTOM, 0, 66);
-                    mToast.setDuration(Toast.LENGTH_LONG);
-                    mToast.setView(mLockClean);
-                    mToast.show();
-                }
+					LeoLog.i("poha", "set delay true");
+				}
+			}
+			LeoEventBus.getDefaultBus().post(
+					new AppUnlockEvent(mLockedPackage,
+							AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY));
+			if (mLockMode == LockManager.LOCK_MODE_FULL) {
+				if (AppMasterPreference.getInstance(LockScreenActivity.this)
+						.isLockerClean()) {
+					Toast mToast = new Toast(this);
+					LayoutInflater mLayoutInflater = LayoutInflater
+							.from(LockScreenActivity.this);
+					mLockClean = mLayoutInflater.inflate(
+							R.layout.activity_lockclean_toast, null);
+					mText = (TextView) mLockClean.findViewById(R.id.textToast);
+					String textResource = getResources().getString(
+							R.string.locker_clean);
+					String cleanRate = String.format(textResource, mCleanRate);
+					mText.setText(cleanRate);
+					mToast.setGravity(Gravity.BOTTOM, 0, 66);
+					mToast.setDuration(Toast.LENGTH_LONG);
+					mToast.setView(mLockClean);
+					mToast.show();
+				}
 
-                pref.setUnlockCount(pref.getUnlockCount() + 1);
-                // quick gesture unlock count
-                pref.setNewUserUnlockCount(pref.getNewUserUnlockCount() + 1);
-            } else if (mLockMode == LockManager.LOCK_MODE_PURE) {
-            }
+				pref.setUnlockCount(pref.getUnlockCount() + 1);
+				// quick gesture unlock count
+				pref.setNewUserUnlockCount(pref.getNewUserUnlockCount() + 1);
+			} else if (mLockMode == LockManager.LOCK_MODE_PURE) {
+			}
 
-            SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "done");
+			SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "done");
 
-        }
-        mLockManager.filterPackage(mLockedPackage, 1000);
-        mTtileBar.postDelayed(new Runnable() {
+		}
+		mLockManager.filterPackage(mLockedPackage, 1000);
+		mTtileBar.postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                if (mFromHome) { // for fix bug: AM-1904
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_MAIN);
-                    intent.addCategory(Intent.CATEGORY_HOME);
-                    startActivity(intent);
-                }
-                // finish self
-                finish();
-            }
-        }, 100);
+			@Override
+			public void run() {
+				if (mFromHome) { // for fix bug: AM-1904
+					Intent intent = new Intent();
+					intent.setAction(Intent.ACTION_MAIN);
+					intent.addCategory(Intent.CATEGORY_HOME);
+					startActivity(intent);
+				}
+				// finish self
+				finish();
+			}
+		}, 100);
 
-        AppMasterPreference amp = AppMasterPreference.getInstance(LockScreenActivity.this);
-        amp.setLockerScreenThemeGuide(true);
-        amp.setUnlocked(true);
-        amp.setDoubleCheck(null);
+		AppMasterPreference amp = AppMasterPreference.getInstance(LockScreenActivity.this);
+		amp.setLockerScreenThemeGuide(true);
+		amp.setUnlocked(true);
+		amp.setDoubleCheck(null);
 
         /* 是否为强制升级 */
-        boolean isForceUpdate = AppMasterPreference.getInstance(this).getPGIsForceUpdate();
-        if (!isForceUpdate) {
-            ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
-                @Override
-                public void run() {
-                    UIHelper.getInstance(AppMasterApplication.getInstance())
-                            .unlockSuccessUpdateTip(mLockedPackage);
-                }
-            }, 200);
-        }
+		boolean isForceUpdate = AppMasterPreference.getInstance(this).getPGIsForceUpdate();
+		if (!isForceUpdate) {
+			ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+				@Override
+				public void run() {
+					UIHelper.getInstance(AppMasterApplication.getInstance())
+							.unlockSuccessUpdateTip(mLockedPackage);
+				}
+			}, 200);
+		}
         /*手机防盗，锁定手机指令，如果用户解锁成功后初始化数据*/
-        PhoneSecurityManager.getInstance(this).removeAllModeLockList();
-    }
+		PhoneSecurityManager.getInstance(this).removeAllModeLockList();
+	}
 
-    private void checkLockTip() {
-        int switchCount = AppMasterPreference.getInstance(this).getSwitchModeCount();
-        switchCount++;
-        AppMasterPreference.getInstance(this).setSwitchModeCount(switchCount);
-        List<TimeLock> timeLockList = mLockManager.getTimeLock();
-        List<LocationLock> locationLockList = mLockManager.getLocationLock();
-        if (switchCount == 6) {
+	private void checkLockTip() {
+		int switchCount = AppMasterPreference.getInstance(this).getSwitchModeCount();
+		switchCount++;
+		AppMasterPreference.getInstance(this).setSwitchModeCount(switchCount);
+		List<TimeLock> timeLockList = mLockManager.getTimeLock();
+		List<LocationLock> locationLockList = mLockManager.getLocationLock();
+		if (switchCount == 6) {
 
-            int timeLockCount = timeLockList.size();
-            int locationLockCount = locationLockList.size();
+			int timeLockCount = timeLockList.size();
+			int locationLockCount = locationLockList.size();
 
-            if (timeLockCount == 0 && locationLockCount == 0) {
-                // show three btn dialog
-                LEOThreeButtonDialog dialog = new LEOThreeButtonDialog(
-                        AppMasterApplication.getInstance());
-                dialog.setTitle(R.string.time_location_lock_tip_title);
-                String tip = this.getString(R.string.time_location_lock_tip_content);
-                dialog.setContent(tip);
-                dialog.setLeftBtnStr(this.getString(R.string.cancel));
-                dialog.setMiddleBtnStr(this.getString(R.string.lock_mode_time));
-                dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
+			if (timeLockCount == 0 && locationLockCount == 0) {
+				// show three btn dialog
+				LEOThreeButtonDialog dialog = new LEOThreeButtonDialog(
+						AppMasterApplication.getInstance());
+				dialog.setTitle(R.string.time_location_lock_tip_title);
+				String tip = this.getString(R.string.time_location_lock_tip_content);
+				dialog.setContent(tip);
+				dialog.setLeftBtnStr(this.getString(R.string.cancel));
+				dialog.setMiddleBtnStr(this.getString(R.string.lock_mode_time));
+				dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
 //                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
-                dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
-                    @Override
-                    public void onClick(int which) {
-                        Intent intent = null;
-                        if (which == 0) {
-                            // cancel
-                        } else if (which == 1) {
-                            // new time lock
-                            intent = new Intent(AppMasterApplication.getInstance(),
-                                    TimeLockEditActivity.class);
-                            intent.putExtra("new_time_lock", true);
-                            intent.putExtra("from_dialog", true);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            AppMasterApplication.getInstance().startActivity(intent);
-                        } else if (which == 2) {
-                            // new location lock
-                            intent = new Intent(AppMasterApplication.getInstance(),
-                                    LocationLockEditActivity.class);
-                            intent.putExtra("new_location_lock", true);
-                            intent.putExtra("from_dialog", true);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            AppMasterApplication.getInstance().startActivity(intent);
-                        }
-                    }
-                });
-                dialog.getWindow().setType(
-                        WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                dialog.show();
-            } else {
-                if (timeLockCount == 0 && locationLockCount != 0) {
-                    // show time lock btn dialog
-                    LEOAlarmDialog dialog = new LEOAlarmDialog(AppMasterApplication.getInstance());
-                    dialog.setTitle(R.string.time_location_lock_tip_title);
-                    String tip = this.getString(R.string.time_location_lock_tip_content);
-                    dialog.setContent(tip);
-                    dialog.setRightBtnStr(this.getString(R.string.lock_mode_time));
+				dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
+					@Override
+					public void onClick(int which) {
+						Intent intent = null;
+						if (which == 0) {
+							// cancel
+						} else if (which == 1) {
+							// new time lock
+							intent = new Intent(AppMasterApplication.getInstance(),
+									TimeLockEditActivity.class);
+							intent.putExtra("new_time_lock", true);
+							intent.putExtra("from_dialog", true);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							AppMasterApplication.getInstance().startActivity(intent);
+						} else if (which == 2) {
+							// new location lock
+							intent = new Intent(AppMasterApplication.getInstance(),
+									LocationLockEditActivity.class);
+							intent.putExtra("new_location_lock", true);
+							intent.putExtra("from_dialog", true);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							AppMasterApplication.getInstance().startActivity(intent);
+						}
+					}
+				});
+				dialog.getWindow().setType(
+						WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+				dialog.show();
+			} else {
+				if (timeLockCount == 0 && locationLockCount != 0) {
+					// show time lock btn dialog
+					LEOAlarmDialog dialog = new LEOAlarmDialog(AppMasterApplication.getInstance());
+					dialog.setTitle(R.string.time_location_lock_tip_title);
+					String tip = this.getString(R.string.time_location_lock_tip_content);
+					dialog.setContent(tip);
+					dialog.setRightBtnStr(this.getString(R.string.lock_mode_time));
 //                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
-                    dialog.setLeftBtnStr(this.getString(R.string.cancel));
-                    dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
-                        @Override
-                        public void onClick(int which) {
-                            Intent intent = null;
-                            if (which == 0) {
-                                // cancel
-                            } else if (which == 1) {
-                                // new time lock
-                                intent = new Intent(AppMasterApplication.getInstance(),
-                                        TimeLockEditActivity.class);
-                                intent.putExtra("new_time_lock", true);
-                                intent.putExtra("from_dialog", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                AppMasterApplication.getInstance().startActivity(intent);
-                            }
+					dialog.setLeftBtnStr(this.getString(R.string.cancel));
+					dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
+						@Override
+						public void onClick(int which) {
+							Intent intent = null;
+							if (which == 0) {
+								// cancel
+							} else if (which == 1) {
+								// new time lock
+								intent = new Intent(AppMasterApplication.getInstance(),
+										TimeLockEditActivity.class);
+								intent.putExtra("new_time_lock", true);
+								intent.putExtra("from_dialog", true);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								AppMasterApplication.getInstance().startActivity(intent);
+							}
 
-                        }
-                    });
-                    dialog.getWindow().setType(
-                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                    dialog.show();
+						}
+					});
+					dialog.getWindow().setType(
+							WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+					dialog.show();
 
-                } else if (timeLockCount != 0 && locationLockCount == 0) {
-                    // show lcaotion btn dialog
-                    LEOAlarmDialog dialog = new LEOAlarmDialog(AppMasterApplication.getInstance());
-                    dialog.setTitle(R.string.time_location_lock_tip_title);
-                    String tip = this.getString(R.string.time_location_lock_tip_content);
-                    dialog.setContent(tip);
-                    dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
+				} else if (timeLockCount != 0 && locationLockCount == 0) {
+					// show lcaotion btn dialog
+					LEOAlarmDialog dialog = new LEOAlarmDialog(AppMasterApplication.getInstance());
+					dialog.setTitle(R.string.time_location_lock_tip_title);
+					String tip = this.getString(R.string.time_location_lock_tip_content);
+					dialog.setContent(tip);
+					dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
 //                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
-                    dialog.setLeftBtnStr(this.getString(R.string.cancel));
+					dialog.setLeftBtnStr(this.getString(R.string.cancel));
 
-                    dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
-                        @Override
-                        public void onClick(int which) {
-                            if (which == 0) {
-                                // cancel
-                            } else if (which == 1) {
-                                // new time lock
-                                Intent intent = new Intent(AppMasterApplication.getInstance(),
-                                        LocationLockEditActivity.class);
-                                intent.putExtra("new_location_lock", true);
-                                intent.putExtra("from_dialog", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                AppMasterApplication.getInstance().startActivity(intent);
-                            }
+					dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
+						@Override
+						public void onClick(int which) {
+							if (which == 0) {
+								// cancel
+							} else if (which == 1) {
+								// new time lock
+								Intent intent = new Intent(AppMasterApplication.getInstance(),
+										LocationLockEditActivity.class);
+								intent.putExtra("new_location_lock", true);
+								intent.putExtra("from_dialog", true);
+								intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								AppMasterApplication.getInstance().startActivity(intent);
+							}
 
-                        }
-                    });
-                    dialog.getWindow().setType(
-                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                    dialog.show();
-                }
-            }
-        }
-    }
+						}
+					});
+					dialog.getWindow().setType(
+							WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+					dialog.show();
+				}
+			}
+		}
+	}
 
-    public void onUnlockOutcount() {
-        /**
-         * notify LockManager
-         */
-        LeoEventBus.getDefaultBus().post(
-                new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_OUTCOUNT));
-        AppMasterPreference.getInstance(this).setDoubleCheck(null);
-        mLockManager.recordOutcountTask(mLockedPackage);
+	public void onUnlockOutcount() {
+		/**
+		 * notify LockManager
+		 */
+		LeoEventBus.getDefaultBus().post(
+				new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_OUTCOUNT));
+		AppMasterPreference.getInstance(this).setDoubleCheck(null);
+		mLockManager.recordOutcountTask(mLockedPackage);
 
 //        Intent intent = new Intent(this, WaitActivity.class);
 //        intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
 //        startActivity(intent);
-        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "fail");
-    }
+		SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "fail");
+	}
 
-    private void findPasswd() {
-        mDialog = new LeoDoubleLinesInputDialog(this);
-        mDialog.setTitle(R.string.pleas_input_anwser);
-        mDialog.setFirstHead(R.string.passwd_question);
-        mDialog.setSecondHead(R.string.passwd_anwser);
-        mDialog.setOnClickListener(this);
-        mEtQuestion = mDialog.getFirstEditText();
-        mEtAnwser = mDialog.getSecondEditText();
-        mEtQuestion.setFocusable(false);
+	private void findPasswd() {
+		mDialog = new LeoDoubleLinesInputDialog(this);
+		mDialog.setTitle(R.string.pleas_input_anwser);
+		mDialog.setFirstHead(R.string.passwd_question);
+		mDialog.setSecondHead(R.string.passwd_anwser);
+		mDialog.setOnClickListener(this);
+		mEtQuestion = mDialog.getFirstEditText();
+		mEtAnwser = mDialog.getSecondEditText();
+		mEtQuestion.setFocusable(false);
 
-        String question = AppMasterPreference.getInstance(this)
-                .getPpQuestion();
+		String question = AppMasterPreference.getInstance(this)
+				.getPpQuestion();
 
-        if (!Utilities.isEmpty(question)) {
-            String[] oldStrings = getResources().getStringArray(
-                    R.array.default_psw_protect_entrys);
-            boolean isOldString = Utilities.makeContrast(oldStrings, question);
+		if (!Utilities.isEmpty(question)) {
+			String[] oldStrings = getResources().getStringArray(
+					R.array.default_psw_protect_entrys);
+			boolean isOldString = Utilities.makeContrast(oldStrings, question);
 
-            String[] entrys = getResources().getStringArray(
-                    R.array.default_psw_protect_entrys_new);
-            if (isOldString) {
-                question = Utilities.replaceOldString(entrys, oldStrings, question);
-            }
-        }
+			String[] entrys = getResources().getStringArray(
+					R.array.default_psw_protect_entrys_new);
+			if (isOldString) {
+				question = Utilities.replaceOldString(entrys, oldStrings, question);
+			}
+		}
 
-        mEtQuestion.setText(question);
-        mDialog.show();
-    }
+		mEtQuestion.setText(question);
+		mDialog.show();
+	}
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent();
-        // if (mLockMode == LockManager.LOCK_MODE_FULL) {
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        try {
-            startActivity(intent);
-        } catch (Exception e) {
-        }
-        /**
-         * notify LockManager
-         */
-        LeoEventBus.getDefaultBus().post(
-                new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_CANCELED));
-        super.onBackPressed();
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent();
+		// if (mLockMode == LockManager.LOCK_MODE_FULL) {
+		intent.setAction(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_HOME);
+		try {
+			startActivity(intent);
+		} catch (Exception e) {
+		}
+		/**
+		 * notify LockManager
+		 */
+		LeoEventBus.getDefaultBus().post(
+				new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_CANCELED));
+		super.onBackPressed();
 
-    }
+	}
 
 //    private String getfilterTarget(Intent intent) {
 //        if (intent == null) {
@@ -2181,39 +2187,39 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //        return filterTarget;
 //    }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.rl_nopermission_tip:
-                try {
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.rl_nopermission_tip:
+				try {
 //                    Intent home = new Intent(Intent.ACTION_MAIN);
 //                    home.addCategory(Intent.CATEGORY_HOME);
 //                    startActivity(home);
-                    Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+					Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
 //                    sHasClickGoGrantPermission = true;
-                    mHasClickGoGrantPermission = true;
+					mHasClickGoGrantPermission = true;
 //                    startActivity(intent);
 //                    mLockManager.filterSelfOneMinites();
 //                    if (!TextUtils.isEmpty(filterTarget)) {
 //                        mLockManager.filterPackage(filterTarget, Constants.TIME_FILTER_TARGET);
 //                    }
-                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_click");
+					SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_click");
 //                    finish();
                     ShowToast.showPermissionGuideToast(this);
                 } catch (Exception e) {
                 }
 //                finish();
-                break;
-            case R.id.tv_option_image_content:
-                if (mLeoPopMenu == null) {
-                    mLeoPopMenu = new LeoHomePopMenu();
-                    mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view,
-                                                int position, long id) {
-                            setPopWindowItemClick(position);
+				break;
+			case R.id.tv_option_image_content:
+				if (mLeoPopMenu == null) {
+					mLeoPopMenu = new LeoHomePopMenu();
+					mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> parent, View view,
+												int position, long id) {
+							setPopWindowItemClick(position);
 //                            mLeoPopMenu.dismissSnapshotList();
                             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                                 @Override
@@ -2258,9 +2264,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 try {
 //                    Intent mWallIntent = wallAd.getWallIntent();
 //                    startActivity(mWallIntent);
-                    wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
-                    wallAd.preloadWall();
-                    wallAd.clickWall();
+//                    wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+//                    wallAd.preloadWall();
+//                    wallAd.clickWall();
+					MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
                 } catch (Exception e) {
                 }
                 if (!mHaveNewThings && !clickShakeIcon) {
@@ -2417,312 +2424,312 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } catch (Exception e) {
         }
         /* SDK Event Mark */
-        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
-    }
+		SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
+	}
 
-    @Override
-    public void onClick(int which) {
-        if (which == 1) {// make sure
-            String anwser = AppMasterPreference.getInstance(this).getPpAnwser();
-            if (anwser.equals(mEtAnwser.getText().toString())) {
-                AppMasterPreference ampp = AppMasterPreference.getInstance(this);
-                ampp.setUnlocked(true);
-                ampp.setDoubleCheck(null);
-                // goto reset passwd
-                Intent intent = new Intent(this, LockSettingActivity.class);
-                intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
-                this.startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(this, R.string.reinput_anwser, Toast.LENGTH_SHORT).show();
-                mEtAnwser.setText("");
-            }
-        } else if (which == 0) { // cancel
-            mDialog.dismiss();
-        }
-    }
+	@Override
+	public void onClick(int which) {
+		if (which == 1) {// make sure
+			String anwser = AppMasterPreference.getInstance(this).getPpAnwser();
+			if (anwser.equals(mEtAnwser.getText().toString())) {
+				AppMasterPreference ampp = AppMasterPreference.getInstance(this);
+				ampp.setUnlocked(true);
+				ampp.setDoubleCheck(null);
+				// goto reset passwd
+				Intent intent = new Intent(this, LockSettingActivity.class);
+				intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
+				this.startActivity(intent);
+				finish();
+			} else {
+				Toast.makeText(this, R.string.reinput_anwser, Toast.LENGTH_SHORT).show();
+				mEtAnwser.setText("");
+			}
+		} else if (which == 0) { // cancel
+			mDialog.dismiss();
+		}
+	}
 
-    public int getFromType() {
-        return mLockMode;
-    }
+	public int getFromType() {
+		return mLockMode;
+	}
 
-    /**
-     * themeGuide
-     *
-     * @param view
-     * @param anim
-     */
+	/**
+	 * themeGuide
+	 *
+	 * @param view
+	 * @param anim
+	 */
 //    private void themeGuide(View view, Animation anim) {
 //        view.startAnimation(anim);
 //    }
 
-    /**
-     * check clean memory
-     */
-    private void checkCleanMem() {
-        if (AppMasterPreference.getInstance(LockScreenActivity.this)
-                .isLockerClean()) {
-            long totalMem = ProcessUtils.getTotalMem();
-            long lastUsedMem = totalMem - ProcessUtils.getAvailableMem(this);
-            cleanAllProcess();
-            long curUsedMem = totalMem - ProcessUtils.getAvailableMem(this);
-            long cleanMem = Math.abs(lastUsedMem - curUsedMem);
-            double number = (double) cleanMem / lastUsedMem;
-            int numberRate = (int) (number * 100);
-            if (numberRate <= 0) {
-                int random = (int) (Math.random() * 10 + 1);
-                mCleanRate = random + "%";
-            } else {
-                int cleanNumber = numberRate;
-                mCleanRate = cleanNumber + "%";
-            }
-        }
-    }
+	/**
+	 * check clean memory
+	 */
+	private void checkCleanMem() {
+		if (AppMasterPreference.getInstance(LockScreenActivity.this)
+				.isLockerClean()) {
+			long totalMem = ProcessUtils.getTotalMem();
+			long lastUsedMem = totalMem - ProcessUtils.getAvailableMem(this);
+			cleanAllProcess();
+			long curUsedMem = totalMem - ProcessUtils.getAvailableMem(this);
+			long cleanMem = Math.abs(lastUsedMem - curUsedMem);
+			double number = (double) cleanMem / lastUsedMem;
+			int numberRate = (int) (number * 100);
+			if (numberRate <= 0) {
+				int random = (int) (Math.random() * 10 + 1);
+				mCleanRate = random + "%";
+			} else {
+				int cleanNumber = numberRate;
+				mCleanRate = cleanNumber + "%";
+			}
+		}
+	}
 
-    private void cleanAllProcess() {
-        mAm = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
-        List<RunningAppProcessInfo> list = mAm.getRunningAppProcesses();
-        List<String> launchers = getLauncherPkgs(this);
-        for (RunningAppProcessInfo runningAppProcessInfo : list) {
-            if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
-                if (!launchers.contains(runningAppProcessInfo.processName)) {
-                    mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
-                }
-            }
-        }
-    }
+	private void cleanAllProcess() {
+		mAm = (ActivityManager) this.getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningAppProcessInfo> list = mAm.getRunningAppProcesses();
+		List<String> launchers = getLauncherPkgs(this);
+		for (RunningAppProcessInfo runningAppProcessInfo : list) {
+			if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
+				if (!launchers.contains(runningAppProcessInfo.processName)) {
+					mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
+				}
+			}
+		}
+	}
 
-    private List<String> getLauncherPkgs(Context ctx) {
-        PackageManager pm = ctx.getPackageManager();
-        List<String> pkgs = new ArrayList<String>();
-        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-        mainIntent.addCategory(Intent.CATEGORY_HOME);
-        List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
-        for (ResolveInfo resolveInfo : apps) {
-            ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
-            String packageName = applicationInfo.packageName;
-            pkgs.add(packageName);
-        }
-        if (mLockedPackage != null) {
-            pkgs.add(mLockedPackage);
-        }
-        return pkgs;
-    }
+	private List<String> getLauncherPkgs(Context ctx) {
+		PackageManager pm = ctx.getPackageManager();
+		List<String> pkgs = new ArrayList<String>();
+		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_HOME);
+		List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
+		for (ResolveInfo resolveInfo : apps) {
+			ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
+			String packageName = applicationInfo.packageName;
+			pkgs.add(packageName);
+		}
+		if (mLockedPackage != null) {
+			pkgs.add(mLockedPackage);
+		}
+		return pkgs;
+	}
 
-    /**
-     * dont change this method
-     *
-     * @param event
-     */
-    public void onEventMainThread(LockThemeChangeEvent event) {
-        mRestartForThemeChanged = true;
-    }
+	/**
+	 * dont change this method
+	 *
+	 * @param event
+	 */
+	public void onEventMainThread(LockThemeChangeEvent event) {
+		mRestartForThemeChanged = true;
+	}
 
-    public void removePretendFrame() {
-        mPretendLayout.setVisibility(View.GONE);
-        mLockLayout.setVisibility(View.VISIBLE);
+	public void removePretendFrame() {
+		mPretendLayout.setVisibility(View.GONE);
+		mLockLayout.setVisibility(View.VISIBLE);
 
-        final int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
-                .getADShowType();
+		final int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+				.getADShowType();
 
         /* 发送伪装解锁成功指令，解决在有伪装情况下动画运行时机问题 */
-        if (adShowNumber == 5) {
-            LeoEventBus.getDefaultBus().post(
-                    new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "camouflage_lock_success"));
-        }
-    }
+		if (adShowNumber == 5) {
+			LeoEventBus.getDefaultBus().post(
+					new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "camouflage_lock_success"));
+		}
+	}
 
-    private float top, height;
-    private LeoCircleView bgView;
-    private ImageView modeIconOut;
-    private ImageView modeIconIn;
-    private ImageView modeIconDown;
-    private TextView mActiveText;
-    private Map<String, Object> currModeIconMap;
-    private Map<String, Object> willModeIconMap;
+	private float top, height;
+	private LeoCircleView bgView;
+	private ImageView modeIconOut;
+	private ImageView modeIconIn;
+	private ImageView modeIconDown;
+	private TextView mActiveText;
+	private Map<String, Object> currModeIconMap;
+	private Map<String, Object> willModeIconMap;
 
-    private boolean mHaveNewThings = false;
+	private boolean mHaveNewThings = false;
 
-    private long mLastTime;
-    private boolean isClickJump;
+	private long mLastTime;
+	private boolean isClickJump;
 
-    /**
-     * show the tip when mode success activating
-     */
-    private void showModeActiveTip(int willModeFlag, int currentModeFlag) {
-        currModeIconMap = modeIconSwitch(currentModeFlag);
-        willModeIconMap = modeIconSwitch(willModeFlag);
+	/**
+	 * show the tip when mode success activating
+	 */
+	private void showModeActiveTip(int willModeFlag, int currentModeFlag) {
+		currModeIconMap = modeIconSwitch(currentModeFlag);
+		willModeIconMap = modeIconSwitch(willModeFlag);
 
-        View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
-        mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
-        mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
-        mActiveText.setMaxLines(2);
-        bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
-        modeIconIn = (ImageView) mTipView.findViewById(R.id.mode_active_in);
-        modeIconOut = (ImageView) mTipView.findViewById(R.id.mode_active_out);
-        modeIconDown = (ImageView) mTipView.findViewById(R.id.mode_active_down);
-        modeIconIn.setImageResource((Integer) willModeIconMap.get("modeIcon"));
-        modeIconOut.setImageResource((Integer) currModeIconMap.get("modeIcon"));
-        modeIconDown.setImageResource((Integer) willModeIconMap.get("modeDown"));
-        bgView.setColor(Color.parseColor(currModeIconMap.get("bgColor").toString()));
+		View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
+		mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
+		mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
+		mActiveText.setMaxLines(2);
+		bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
+		modeIconIn = (ImageView) mTipView.findViewById(R.id.mode_active_in);
+		modeIconOut = (ImageView) mTipView.findViewById(R.id.mode_active_out);
+		modeIconDown = (ImageView) mTipView.findViewById(R.id.mode_active_down);
+		modeIconIn.setImageResource((Integer) willModeIconMap.get("modeIcon"));
+		modeIconOut.setImageResource((Integer) currModeIconMap.get("modeIcon"));
+		modeIconDown.setImageResource((Integer) willModeIconMap.get("modeDown"));
+		bgView.setColor(Color.parseColor(currModeIconMap.get("bgColor").toString()));
 
-        ViewTreeObserver vto = modeIconOut.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-            @SuppressWarnings("deprecation")
-            @Override
-            public void onGlobalLayout() {
-                modeIconOut.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                top = modeIconOut.getTop();
-                height = modeIconOut.getHeight();
-                activeAnimation();
-            }
-        });
+		ViewTreeObserver vto = modeIconOut.getViewTreeObserver();
+		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				modeIconOut.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+				top = modeIconOut.getTop();
+				height = modeIconOut.getHeight();
+				activeAnimation();
+			}
+		});
 
-        Toast toast = new Toast(this);
-        toast.setView(mTipView);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.show();
-    }
+		Toast toast = new Toast(this);
+		toast.setView(mTipView);
+		toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.show();
+	}
 
-    private void activeAnimation() {
-        int bg_anim_time = 300;
-        int in_anim_time = 400;
-        int out_anim_time = 300;
+	private void activeAnimation() {
+		int bg_anim_time = 300;
+		int in_anim_time = 400;
+		int out_anim_time = 300;
 
-        ValueAnimator colorAnim = ValueAnimator.ofObject(new ColorEvaluator(),
-                currModeIconMap.get("bgColor"), willModeIconMap.get("bgColor"));
-        colorAnim.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int color = (Integer) animation.getAnimatedValue();
-                bgView.setColor(color);
-            }
-        });
-        colorAnim.setDuration(bg_anim_time);
+		ValueAnimator colorAnim = ValueAnimator.ofObject(new ColorEvaluator(),
+				currModeIconMap.get("bgColor"), willModeIconMap.get("bgColor"));
+		colorAnim.addUpdateListener(new AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				int color = (Integer) animation.getAnimatedValue();
+				bgView.setColor(color);
+			}
+		});
+		colorAnim.setDuration(bg_anim_time);
 
-        final float outLength = top + height;
-        ValueAnimator outAnimator = ValueAnimator.ofFloat(0, outLength).setDuration(out_anim_time);
-        outAnimator.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float curr = (Float) animation.getAnimatedValue();
-                float percent = 1.0f - curr / outLength;
-                modeIconOut.setTranslationY(curr);
-                if (percent >= 0.6f) {
-                    modeIconOut.setAlpha(percent);
-                    modeIconOut.setScaleX(percent);
-                    modeIconOut.setScaleY(percent);
-                }
-            }
-        });
+		final float outLength = top + height;
+		ValueAnimator outAnimator = ValueAnimator.ofFloat(0, outLength).setDuration(out_anim_time);
+		outAnimator.addUpdateListener(new AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				float curr = (Float) animation.getAnimatedValue();
+				float percent = 1.0f - curr / outLength;
+				modeIconOut.setTranslationY(curr);
+				if (percent >= 0.6f) {
+					modeIconOut.setAlpha(percent);
+					modeIconOut.setScaleX(percent);
+					modeIconOut.setScaleY(percent);
+				}
+			}
+		});
 
-        final float maxLength = 2 * top;
-        final float upLength = top + height / 2;
-        ValueAnimator inAnimator = ValueAnimator.ofFloat(-(upLength), top, 0f).setDuration(
-                in_anim_time);
-        inAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                modeIconIn.setVisibility(View.VISIBLE);
-            }
-        });
-        inAnimator.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float curr = (Float) animation.getAnimatedValue();
-                modeIconIn.setTranslationY(curr);
-                curr = curr + upLength;
-                float percent = curr / maxLength;
-                if (percent > 1.0f) {
-                    percent = 1.0f;
-                }
-                modeIconIn.setAlpha(0.6f * percent + 0.4f);
-                modeIconIn.setScaleX(0.3f * percent + 0.7f);
-                modeIconIn.setScaleY(0.3f * percent + 0.7f);
-            }
-        });
+		final float maxLength = 2 * top;
+		final float upLength = top + height / 2;
+		ValueAnimator inAnimator = ValueAnimator.ofFloat(-(upLength), top, 0f).setDuration(
+				in_anim_time);
+		inAnimator.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				super.onAnimationStart(animation);
+				modeIconIn.setVisibility(View.VISIBLE);
+			}
+		});
+		inAnimator.addUpdateListener(new AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				float curr = (Float) animation.getAnimatedValue();
+				modeIconIn.setTranslationY(curr);
+				curr = curr + upLength;
+				float percent = curr / maxLength;
+				if (percent > 1.0f) {
+					percent = 1.0f;
+				}
+				modeIconIn.setAlpha(0.6f * percent + 0.4f);
+				modeIconIn.setScaleX(0.3f * percent + 0.7f);
+				modeIconIn.setScaleY(0.3f * percent + 0.7f);
+			}
+		});
 
-        ValueAnimator downAnimator = ValueAnimator.ofFloat(0, 1.2f, 0.9f, 1.0f).setDuration(300);
-        downAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                modeIconDown.setVisibility(View.VISIBLE);
-            }
-        });
-        downAnimator.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float curr = (Float) animation.getAnimatedValue();
-                modeIconDown.setScaleX(curr);
-                modeIconDown.setScaleY(curr);
-            }
-        });
-        downAnimator.setStartDelay(in_anim_time);
+		ValueAnimator downAnimator = ValueAnimator.ofFloat(0, 1.2f, 0.9f, 1.0f).setDuration(300);
+		downAnimator.addListener(new AnimatorListenerAdapter() {
+			@Override
+			public void onAnimationStart(Animator animation) {
+				super.onAnimationStart(animation);
+				modeIconDown.setVisibility(View.VISIBLE);
+			}
+		});
+		downAnimator.addUpdateListener(new AnimatorUpdateListener() {
+			@Override
+			public void onAnimationUpdate(ValueAnimator animation) {
+				float curr = (Float) animation.getAnimatedValue();
+				modeIconDown.setScaleX(curr);
+				modeIconDown.setScaleY(curr);
+			}
+		});
+		downAnimator.setStartDelay(in_anim_time);
 
-        AnimatorSet set = new AnimatorSet();
-        set.setStartDelay(400);
-        set.playTogether(colorAnim, outAnimator, inAnimator, downAnimator);
-        set.start();
-    }
+		AnimatorSet set = new AnimatorSet();
+		set.setStartDelay(400);
+		set.playTogether(colorAnim, outAnimator, inAnimator, downAnimator);
+		set.start();
+	}
 
-    private Map<String, Object> modeIconSwitch(int modeFlag) {
-        Map<String, Object> iconMap = new HashMap<String, Object>();
-        switch (modeFlag) {
-            case 1:
-                iconMap.put("bgColor", "#5653b4");
-                iconMap.put("modeIcon", R.drawable.visitor_mode);
-                iconMap.put("modeDown", R.drawable.visitor_mode_done);
-                break;
-            case 3:
-                iconMap.put("bgColor", "#ffa71c");
-                iconMap.put("modeIcon", R.drawable.family_mode);
-                iconMap.put("modeDown", R.drawable.family_mode_done);
-                break;
-            default:
-                iconMap.put("bgColor", "#44c4f5");
-                iconMap.put("modeIcon", R.drawable.default_mode);
-                iconMap.put("modeDown", R.drawable.default_mode_done);
-                break;
-        }
-        return iconMap;
-    }
+	private Map<String, Object> modeIconSwitch(int modeFlag) {
+		Map<String, Object> iconMap = new HashMap<String, Object>();
+		switch (modeFlag) {
+			case 1:
+				iconMap.put("bgColor", "#5653b4");
+				iconMap.put("modeIcon", R.drawable.visitor_mode);
+				iconMap.put("modeDown", R.drawable.visitor_mode_done);
+				break;
+			case 3:
+				iconMap.put("bgColor", "#ffa71c");
+				iconMap.put("modeIcon", R.drawable.family_mode);
+				iconMap.put("modeDown", R.drawable.family_mode_done);
+				break;
+			default:
+				iconMap.put("bgColor", "#44c4f5");
+				iconMap.put("modeIcon", R.drawable.default_mode);
+				iconMap.put("modeDown", R.drawable.default_mode_done);
+				break;
+		}
+		return iconMap;
+	}
 
-    /**
-     * show the defalut toast tip when mode success activating
-     */
-    private void showModeActiveTip(LockMode mode) {
-        Map<String, Object> willLaunchMap = modeIconSwitch(mode.defaultFlag);
-        View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
-        mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
-        bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
-        modeIconOut = (ImageView) mTipView.findViewById(R.id.mode_active_out);
-        modeIconDown = (ImageView) mTipView.findViewById(R.id.mode_active_down);
+	/**
+	 * show the defalut toast tip when mode success activating
+	 */
+	private void showModeActiveTip(LockMode mode) {
+		Map<String, Object> willLaunchMap = modeIconSwitch(mode.defaultFlag);
+		View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
+		mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
+		bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
+		modeIconOut = (ImageView) mTipView.findViewById(R.id.mode_active_out);
+		modeIconDown = (ImageView) mTipView.findViewById(R.id.mode_active_down);
 
-        modeIconOut.setImageResource((Integer) willLaunchMap.get("modeIcon"));
-        modeIconDown.setImageResource((Integer) willLaunchMap.get("modeDown"));
-        modeIconDown.setVisibility(View.VISIBLE);
-        bgView.setColor(Color.parseColor(willLaunchMap.get("bgColor").toString()));
-        mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
-        mActiveText.setMaxLines(2);
+		modeIconOut.setImageResource((Integer) willLaunchMap.get("modeIcon"));
+		modeIconDown.setImageResource((Integer) willLaunchMap.get("modeDown"));
+		modeIconDown.setVisibility(View.VISIBLE);
+		bgView.setColor(Color.parseColor(willLaunchMap.get("bgColor").toString()));
+		mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+		mActiveText.setMaxLines(2);
 
-        Toast toast = new Toast(this);
-        toast.setView(mTipView);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.show();
-    }
+		Toast toast = new Toast(this);
+		toast.setView(mTipView);
+		toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.show();
+	}
 
-    private int getWindowWidth() {
+	private int getWindowWidth() {
 //        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
 //        return windowManager.getDefaultDisplay().getWidth();
 
-        DisplayMetrics display = getResources().getDisplayMetrics();
-        int mScreenWidth = display.widthPixels;// 获取屏幕分辨率宽度
-        return mScreenWidth;
-    }
+		DisplayMetrics display = getResources().getDisplayMetrics();
+		int mScreenWidth = display.widthPixels;// 获取屏幕分辨率宽度
+		return mScreenWidth;
+	}
 
 
 /*    public void onScrollOffsetToDis(int offset){
@@ -2754,252 +2761,254 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }*/
 
 
-    public class AdBannerAdapter extends PagerAdapter
-            implements ViewPager.OnPageChangeListener {
-        private LayoutInflater mInflater; //
-        private LinkedList<View> mViews; //
-        private ArrayList<String> mList; //
-        private ViewPager mViewPager; //页面
-        private int lasterSlectedPage = -1; //上一次选择的页面
-        private ADEngineWrapper mWrapperEngine;
+	public class AdBannerAdapter extends PagerAdapter
+			implements ViewPager.OnPageChangeListener {
+		private LayoutInflater mInflater; //
+		private LinkedList<View> mViews; //
+		private ArrayList<String> mList; //
+		private ViewPager mViewPager; //页面
+		private int lasterSlectedPage = -1; //上一次选择的页面
+		private ADEngineWrapper mWrapperEngine;
 
-        public AdBannerAdapter(Context context, ViewPager viewPager,
-                               ArrayList<String> list, ADEngineWrapper wrapperEngine) {
-            mInflater = LayoutInflater.from(context);
-            mViewPager = viewPager;
-            mList = list;
-            LeoLog.d("remove_redundant", "[AdBannerAdapter] array: " + Arrays.toString(mList.toArray()));
-            mWrapperEngine = wrapperEngine;
-            mViewPager.setOnPageChangeListener(this);
-            synchronized (mViewPager) {
-                if (list != null) {
-                    mViews = new LinkedList<View>();
-                    RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
-                    view.setTag(mViews.size());
-                    mViews.add(view);
-                    view.setVisibility(View.INVISIBLE);
+		public AdBannerAdapter(Context context, ViewPager viewPager,
+							   ArrayList<String> list, ADEngineWrapper wrapperEngine) {
+			mInflater = LayoutInflater.from(context);
+			mViewPager = viewPager;
+			mList = list;
+			LeoLog.d("remove_redundant", "[AdBannerAdapter] array: " + Arrays.toString(mList.toArray()));
+			mWrapperEngine = wrapperEngine;
+			mViewPager.setOnPageChangeListener(this);
+			synchronized (mViewPager) {
+				if (list != null) {
+					mViews = new LinkedList<View>();
+					RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
+					view.setTag(mViews.size());
+					mViews.add(view);
+					view.setVisibility(View.INVISIBLE);
 
-                    for (String unitId : mList) {
-                        view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
-                        view.setTag(mViews.size());
-                        boolean done = setItemViewContent(view, unitId);
-                        if (done) {
-                            SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
-                            mViews.add(view);
-                        }
-                    }
+					for (String unitId : mList) {
+						view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
+						view.setTag(mViews.size());
+						boolean done = setItemViewContent(view, unitId);
+						if (done) {
+							SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
+							mViews.add(view);
+						}
+					}
 
-                }
+				}
 
-            }
+			}
 
-        }
+		}
 
-        @Override
-        public int getItemPosition(Object item) {
-            for (int i = 0; i < mViews.size(); i++) {
-                if (((View) item).equals(mViews.get(i))) {
-                    return i;
-                }
-            }
-            return POSITION_NONE;
-        }
+		@Override
+		public int getItemPosition(Object item) {
+			for (int i = 0; i < mViews.size(); i++) {
+				if (((View) item).equals(mViews.get(i))) {
+					return i;
+				}
+			}
+			return POSITION_NONE;
+		}
 
-        @Override
-        public int getCount() {
-            return mViews.size();
-        }
+		@Override
+		public int getCount() {
+			return mViews.size();
+		}
 
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
+		@Override
+		public boolean isViewFromObject(View view, Object object) {
+			return view == object;
+		}
 
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            if (!mViews.isEmpty()) {
-                container.removeView(mViews.get(position));
-            }
-        }
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+			if (!mViews.isEmpty()) {
+				container.removeView(mViews.get(position));
+			}
+		}
 
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            View view = mViews.get(position);
-            container.addView(view);
-            return view;
-        }
+		@Override
+		public Object instantiateItem(ViewGroup container, int position) {
+			View view = mViews.get(position);
+			container.addView(view);
+			return view;
+		}
 
-        public void setLasterSlectedPage(int index) {
-            lasterSlectedPage = index;
-        }
+		public void setLasterSlectedPage(int index) {
+			lasterSlectedPage = index;
+		}
 
-        public int getLasterSlectedPage() {
-            return lasterSlectedPage;
-        }
+		public int getLasterSlectedPage() {
+			return lasterSlectedPage;
+		}
 
-        /***
-         * 填充广告数据到VIEW中
-         *
-         * @param view
-         * @param unitId
-         * @return 是否成功填充
-         */
-        private boolean setItemViewContent(RelativeLayout view, String unitId) {
-            WrappedCampaign campaign = mAdMap.get(unitId);
-            if (campaign == null) {
-                return false;
-            }
+		/***
+		 * 填充广告数据到VIEW中
+		 *
+		 * @param view
+		 * @param unitId
+		 * @return 是否成功填充
+		 */
+		private boolean setItemViewContent(RelativeLayout view, String unitId) {
+			WrappedCampaign campaign = mAdMap.get(unitId);
+			if (campaign == null) {
+				return false;
+			}
 
-            Bitmap bitmap = mImageFetcher.getBitmap(campaign.getImageUrl());
-            if (bitmap == null || bitmap.isRecycled()) {
-                return false;
-            }
+			Bitmap bitmap = mImageFetcher.getBitmap(campaign.getImageUrl());
+			if (bitmap == null || bitmap.isRecycled()) {
+				return false;
+			}
 
-            int index = findTargetViewIndex(unitId);
-            if (index != -1) {
-                mBannerContainer.setCurrentItem(index, false);
-                mAdapterCycle.setLasterSlectedPage(index);
+			int index = findTargetViewIndex(unitId);
+			if (index != -1) {
+				mBannerContainer.setCurrentItem(index, false);
+				mAdapterCycle.setLasterSlectedPage(index);
 
-            }
+			}
 
-            ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(bitmap);
-            ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
-            view.findViewById(R.id.ad_title).setTag(unitId);
-            ((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
-            ((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
-            final View clickArea = view.findViewById(R.id.click_area);
+			((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(bitmap);
+			((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
+			view.findViewById(R.id.ad_title).setTag(unitId);
+			((TextView) view.findViewById(R.id.ad_details)).setText(campaign.getDescription());
+			((TextView) view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
+			final View clickArea = view.findViewById(R.id.click_area);
+			mAdView = clickArea;
+			if (mWrapperEngine != null) {
+				mWrapperEngine.registerView(mAdSource, clickArea, unitId);
+			}
 
-            if (mWrapperEngine != null) {
-                mWrapperEngine.registerView(mAdSource, clickArea, unitId);
-            }
+			View leftArea = view.findViewById(R.id.left_click_area);
+			leftArea.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					snapforClick((ViewGroup) v.getParent());
+				}
+			});
 
-            View leftArea = view.findViewById(R.id.left_click_area);
-            leftArea.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    snapforClick((ViewGroup) v.getParent());
-                }
-            });
+			View rightArea = view.findViewById(R.id.right_click_area);
+			rightArea.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					snapforClick((ViewGroup) v.getParent());
+				}
+			});
+			HashMap<String, String> map = new HashMap<String, String>();
+			map.put("unitId", unitId);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "show", mAdSource, map);
+			return true;
+		}
 
-            View rightArea = view.findViewById(R.id.right_click_area);
-            rightArea.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    snapforClick((ViewGroup) v.getParent());
-                }
-            });
-            SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + unitId + " adShow", mAdSource, null);
-            return true;
-        }
+		private void snapforClick(View v) {
+			try {
+				int index = ((Integer) v.getTag());
+				if (mViewPager.getCurrentItem() != index) {
+					mViewPager.setCurrentItem(index, true);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 
-        private void snapforClick(View v) {
-            try {
-                int index = ((Integer) v.getTag());
-                if (mViewPager.getCurrentItem() != index) {
-                    mViewPager.setCurrentItem(index, true);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+		// 实现ViewPager.OnPageChangeListener接口
+		@Override
+		public void onPageSelected(int position) {
+			LeoLog.i("onPageSelected", "position=" + position);
+			if (position != 1) {
+				mHandler.removeMessages(LARGE_BANNER_HIDE);
+			}
+			if (position == 0) {
+				setLockAppInfoViewVisible(false);
+			} else {
+				setLockAppInfoViewVisible(true);
+				SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_picad" + position);
+			}
+			if (lasterSlectedPage >= 0) {
+				if (lasterSlectedPage < position) {
+					SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picad_drawL");
+				} else if (lasterSlectedPage > position) {
+					SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picad_drawR");
+				}
+			}
+			lasterSlectedPage = position;
+		}
 
-        // 实现ViewPager.OnPageChangeListener接口
-        @Override
-        public void onPageSelected(int position) {
-            LeoLog.i("onPageSelected", "position=" + position);
-            if (position != 1) {
-                mHandler.removeMessages(LARGE_BANNER_HIDE);
-            }
-            if (position == 0) {
-                setLockAppInfoViewVisible(false);
-            } else {
-                setLockAppInfoViewVisible(true);
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_picad" + position);
-            }
-            if (lasterSlectedPage >= 0) {
-                if (lasterSlectedPage < position) {
-                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picad_drawL");
-                } else if (lasterSlectedPage > position) {
-                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picad_drawR");
-                }
-            }
-            lasterSlectedPage = position;
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (position == 0) {
-                float alpha = 1 - positionOffset;
-                if (alpha > 0) {
-                    int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
-                    if (type == LockFragment.LOCK_TYPE_PASSWD) {
-                        ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(alpha);
-                        ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(alpha);
-                    } else {
-                        ((GestureLockFragment) mLockFragment).getIconView().setAlpha(alpha);
-                    }
-                    if (mLockAppTitleView != null) {
-                        TextView tv = mTtileBar.getTitleView();
-                        if (tv != null) {
-                            tv.setAlpha(alpha);
-                        }
-                        mLockAppTitleView.setAlpha(1 - alpha);
-                    }
-                } else {
-                    int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
-                    if (type == LockFragment.LOCK_TYPE_PASSWD) {
-                        if (((PasswdLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
-                            ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
-                            ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(0.0f);
-                        }
-                    } else {
-                        if (((GestureLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
-                            ((GestureLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
-                        }
-                    }
-                }
-            }
+		@Override
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			if (position == 0) {
+				float alpha = 1 - positionOffset;
+				if (alpha > 0) {
+					int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
+					if (type == LockFragment.LOCK_TYPE_PASSWD) {
+						((PasswdLockFragment) mLockFragment).getIconView().setAlpha(alpha);
+						((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(alpha);
+					} else {
+						((GestureLockFragment) mLockFragment).getIconView().setAlpha(alpha);
+					}
+					if (mLockAppTitleView != null) {
+						TextView tv = mTtileBar.getTitleView();
+						if (tv != null) {
+							tv.setAlpha(alpha);
+						}
+						mLockAppTitleView.setAlpha(1 - alpha);
+					}
+				} else {
+					int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
+					if (type == LockFragment.LOCK_TYPE_PASSWD) {
+						if (((PasswdLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
+							((PasswdLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+							((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(0.0f);
+						}
+					} else {
+						if (((GestureLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
+							((GestureLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+						}
+					}
+				}
+			}
 
 //            //解决刷新不良的问题
 //            if (mBannerParent != null) {
 //                mBannerParent.invalidate();
 //            }
-        }
+		}
 
-        @Override
-        public void onPageScrollStateChanged(int state) {
-        }
+		@Override
+		public void onPageScrollStateChanged(int state) {
+		}
 
-        public void addItem(String unitId) {
+		public void addItem(String unitId) {
             /* 移除已经存在的unitid */
-            LeoLog.d("remove_redundant", "add: " + unitId + "; array=" + Arrays.toString(mList.toArray()));
-            RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
-            if (!setItemViewContent(view, unitId)) {
-                return;
-            }
-            view.setTag(mViews.size());
-            SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
-            if (!mViews.isEmpty() && unitId.equals(mBannerAdids[0])) {
-                mViews.add(1, view);
-            } else {
-                mViews.add(view);
-            }
-            LeoLog.d("remove_redundant", "notifyDataSetChanged for: " + unitId + "; array=" + Arrays.toString(mList.toArray()));
-            notifyDataSetChanged();
-        }
+			LeoLog.d("remove_redundant", "add: " + unitId + "; array=" + Arrays.toString(mList.toArray()));
+			RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
+			if (!setItemViewContent(view, unitId)) {
+				return;
+			}
+			view.setTag(mViews.size());
+			SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cache", "adv_cache_picad" + mViews.size());
+			if (!mViews.isEmpty() && unitId.equals(mBannerAdids[0])) {
+				mViews.add(1, view);
+			} else {
+				mViews.add(view);
+			}
+			LeoLog.d("remove_redundant", "notifyDataSetChanged for: " + unitId + "; array=" + Arrays.toString(mList.toArray()));
+			notifyDataSetChanged();
+		}
 
-        public LinkedList<View> getViews() {
-            return mViews;
-        }
+		public LinkedList<View> getViews() {
+			return mViews;
+		}
 
-        public void clearView() {
-            LeoLog.d(TAG, "adapter clearView called");
-            mViews.clear();
-            mList.clear();
-            notifyDataSetChanged();
-        }
+		public void clearView() {
+			LeoLog.d(TAG, "adapter clearView called");
+			mViews.clear();
+			mList.clear();
+			notifyDataSetChanged();
+		}
 
-    }
+	}
 
 //    public class HomeWatcherReceiver extends BroadcastReceiver {
 //        private static final String LOG_TAG = "HomeReceiver";

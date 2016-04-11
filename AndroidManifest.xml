@@ -901,9 +901,17 @@
             </intent-filter>
         </receiver>
 
+        
+        <!-- MobvistaSDK Service -->
+        <service android:name="com.mobvista.msdk.shell.MVService" >
+            <intent-filter>
+                <action android:name="com.mobvista.msdk.download.action" />
+            </intent-filter>
+        </service>
         <!-- mobvista ad activity -->
         <activity
-            android:name="com.mobvista.sdk.m.core.AdMobvistaAct"
+            android:name="com.mobvista.msdk.shell.MVActivity"
+            android:configChanges="keyboard|orientation"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait" />
 

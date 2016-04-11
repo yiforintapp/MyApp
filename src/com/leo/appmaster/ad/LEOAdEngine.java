@@ -77,6 +77,8 @@ public class LEOAdEngine {
 
     private Map<String, String> mUnitIdToPlacementIdMap;
 
+	
+
 	public static interface LeoListener {
         /**
          * 广告请求回调
@@ -162,6 +164,9 @@ public class LEOAdEngine {
         // 每次都使用新的Native Ad对象
         nativeAd = createLEONative(unitId);
         try {
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("unitId", unitId);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_request", "request", AppMasterPreference.AD_SDK_SOURCE_USE_MAX, map);
             // 这个地方执行导致crash，直接catch住
             nativeAd.loadNativeAd(new AdListenerImpl(unitId));
             LeoLog.i(TAG, "loadSingleMobAd -> ad["+unitId+"]");
@@ -175,7 +180,6 @@ public class LEOAdEngine {
             return;
         }
     }
-    
     
     /**
      * 注册广告点击事件
@@ -296,7 +300,7 @@ public class LEOAdEngine {
             mLEOLoadedNatives.put(mUnitId, mobvista);
 
             if (listener != null) {
-                listener.onLeoAdLoadFinished((adData == null) ? ERR_MOBVISTA_RESULT_NULL : ERR_OK, adData, null);
+                listener.onLeoAdLoadFinished((adData == null) ? ERR_MOBVISTA_RESULT_NULL : ERR_OK, adData, "max");
             }
         }
 
@@ -329,6 +333,10 @@ public class LEOAdEngine {
             // 点击之后，重新load此位置的广告
             LeoLog.i(TAG, "reload the clicked Ad");
             if(m != null) {
+				final int source = AppMasterPreference.AD_SDK_SOURCE_USE_MAX;
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("unitId", mUnitId);
+				SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "click", source, map);
                 loadSingleMobAd(mUnitId, m.nativeAd);
             }
         }
@@ -359,7 +367,7 @@ public class LEOAdEngine {
 		map.put("unitId", unitId);
 		if (isOutOfDate(cData)) {
 			
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "ad is out of date, prepare to load", source, map);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "load", source, map);
 			
 			if (cData != null) {
 				loadSingleMobAd(unitId, cData.nativeAd);
@@ -369,7 +377,7 @@ public class LEOAdEngine {
 			LeoLog.i(TAG, "data out ofdate: reload new one.");
 			return;
 		} else {
-			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "from cache, ad is not out of date", source, map);
+			SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_loadad", "cache", source, map);
 		}
 
 		boolean loading = mLeoLoadingNatives.get(unitId) != null;
@@ -380,7 +388,7 @@ public class LEOAdEngine {
 
 		LeoCompositeData adData = mLEOLoadedNatives.get(unitId);
 		if(adData!= null && adData.campaign!=null && adData.nativeAd!=null){
-			listener.onLeoAdLoadFinished(ERR_OK, adData.campaign, null);
+			listener.onLeoAdLoadFinished(ERR_OK, adData.campaign, "cache");
 		}
 	}
 	

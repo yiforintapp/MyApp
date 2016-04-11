@@ -73,6 +73,7 @@ import com.leo.tools.animator.ObjectAnimator;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -2372,20 +2373,22 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShouldLoadAd = amp.getADOnScreenSaver() == 1;
         if (mShouldLoadAd) {
             mAdSource = amp.getChargingAdConfig();
-            ADEngineWrapper.getInstance(AppMasterApplication.getInstance()).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, new ADEngineWrapper.WrappedAdListener() {
+            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
                 @Override
-                public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+                public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
-                        LeoLog.d(TAG, "Ad data ready");
-                        sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                        LeoLog.d(TAG, "Ad data ready ad title: " + campaign.get(0).getAppName());
+                        sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign.get(0));
+                        ImageLoader.getInstance().loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
                     }
                 }
 
                 @Override
                 public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
-                    SDKWrapper.addEvent(BatteryViewFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "ad pos: " + unitID + " click", mAdSource, null);
+					HashMap<String, String> map = new HashMap<String, String>();
+					map.put("unitId", unitID);
+                    SDKWrapper.addEvent(BatteryViewFragment.this.getActivity().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "click", mAdSource, map);
                     LeoLog.d(TAG, "Ad clicked");
                 }
             });
@@ -2412,7 +2415,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void releaseAd() {
         if (mShouldLoadAd) {
             LeoLog.d(TAG, "release ad");
-            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, Constants.UNIT_ID_CHARGING);
+            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, Constants.UNIT_ID_CHARGING, mAdView);
         }
     }
 
@@ -2420,26 +2423,29 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         WeakReference<BatteryViewFragment> mFragment;
         WrappedCampaign mCampaign;
 
+		HashMap<String, String> map = new HashMap<String, String>();
+		
         public AdPreviewLoaderListener(BatteryViewFragment fragment, final WrappedCampaign campaign) {
             mFragment = new WeakReference<BatteryViewFragment>(fragment);
             mCampaign = campaign;
+			map.put("unitId", Constants.UNIT_ID_CHARGING);
         }
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " prepare for load image", mAdSource, null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", " ready_to", mAdSource, map);
         }
 
         @Override
         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
             LeoLog.e(TAG, "failed to load AD preview!");
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " load image failed", mAdSource, null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "fail", mAdSource, map);
         }
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
             LeoLog.d(TAG, "Ad preview image ready");
-            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "ad pos: " + Constants.UNIT_ID_CHARGING + " image size: " + loadedImage.getByteCount(), mAdSource, null);
+            SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
             BatteryViewFragment fragment = mFragment.get();
             if (loadedImage != null && fragment != null) {
                 try {
@@ -2532,7 +2538,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         //MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
         ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING);
         mAdWrapper.setOnClickListener(this);
-        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "ad pos: " + Constants.UNIT_ID_CHARGING + " adShow", mAdSource, null);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("unitId", Constants.UNIT_ID_CHARGING );
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "show", mAdSource, map);
     }
     /* 广告相关 - 结束 */
 
