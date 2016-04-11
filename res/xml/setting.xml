@@ -53,6 +53,15 @@
         android:summary="@string/summary_setting_locker"
         android:title="@string/lock_help_lock_setting_button"
         android:widgetLayout="@layout/pref_widget_more" />
+
+    <Preference
+        android:key="airsig_setting"
+        android:layout="@layout/pref_list_item_mid"
+        android:summary="@string/did_not_open"
+        android:title="@string/airsig_settings_activity_title"
+        android:widgetLayout="@layout/pref_widget_more" >
+    </Preference>
+
     <Preference
         android:key="change_passwd"
         android:layout="@layout/pref_list_item_mid"

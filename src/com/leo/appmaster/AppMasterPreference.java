@@ -56,6 +56,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_NEED_CUT_BACKUP_UNINSTALL_AND_PRIVACYCONTRACT = "need_cut_backup_uninstall_and_privacycontract";
 
     public static final String PREF_LOCK_SETTING = "lock_setting";
+    public static final String AIRSIG_SETTING = "airsig_setting";
 
     public static final String PREF_LAST_FILTER_SELF_TIME = "last_filter_self_time";
 
