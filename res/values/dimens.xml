@@ -436,4 +436,6 @@
     
     <dimen name="boost_template_item_btn_width">66dp</dimen>
     <dimen name="boost_template_item_btn_height">29dp</dimen>
+    <dimen name="home_result_width">328dp</dimen>
+    <dimen name="home_result_height">50dp</dimen>
 </resources>

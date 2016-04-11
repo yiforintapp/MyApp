@@ -97,9 +97,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private ImageView mShieldDangerRightIv;
     private ImageView mShieldDangerTopIv;
     private ImageView mShieldDangerCenterIv;
-    private TextView mDangerResultAppDetailTv;
-    private TextView mDangerResultPicDetailTv;
-    private TextView mDangerResultVideoDetailTv;
+//    private TextView mDangerResultAppDetailTv;
+//    private TextView mDangerResultPicDetailTv;
+//    private TextView mDangerResultVideoDetailTv;
     private TextView mDangerDetTip;
     private int mPrivacyConut;
 
@@ -336,7 +336,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
                         "app_cnts_$" + privacy.getPrivacyCountText());
             }
-            mDangerResultAppDetailTv.setText(privacy.getDangerTipId());
+//            mDangerResultAppDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyApp = true;
         } else {
@@ -378,7 +378,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                         "home_advice", "pic_cnts_$" + privacy.getPrivacyCountText());
             }
             mDetDagImgTv.setText(privacy.getPrivacyTitleId());
-            mDangerResultPicDetailTv.setText(privacy.getDangerTipId());
+//            mDangerResultPicDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyPic = true;
         } else {
@@ -418,7 +418,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                         "home_advice", "vid_cnts_$" + privacy.getPrivacyCountText());
             }
             mDetDagVideoTv.setText(privacy.getPrivacyTitleId());
-            mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
+//            mDangerResultVideoDetailTv.setText(privacy.getDangerTipId());
             mPrivacyConut = mPrivacyConut + 1;
             mPrivacyVideo = true;
         } else {
@@ -454,9 +454,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mDangerResultImgLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_danger_result_img);
         mDangerResultVideoLt = (RelativeLayout) resultRootView.findViewById(R.id.lt_det_danger_result_video);
 
-        mDangerResultAppDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_app_detal_tv);
-        mDangerResultPicDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_pic_detal_tv);
-        mDangerResultVideoDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_detal_tv);
+//        mDangerResultAppDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_app_detal_tv);
+//        mDangerResultPicDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_pic_detal_tv);
+//        mDangerResultVideoDetailTv = (TextView) resultRootView.findViewById(R.id.det_danger_video_detal_tv);
 
         mDangerDetTip = (TextView) view.findViewById(R.id.lt_home_danger_det_tip);
 
@@ -603,54 +603,54 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     //盾牌位置初始化
     private void shieldPositionInit() {
-        Context context = getActivity();
-        //安全盾牌
-        mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_top_offset)));
-        mShieldLeftIv.setTranslationX(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_left_offset)));
-        mShieldLeftIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_offset)));
-
-        mShieldRightIv.setTranslationX(DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_right_offset)));
-        mShieldRightIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_offset)));
-
-        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_center_blue_offset_x)));
-        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_offset)));
-
-        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_center_blue_offset_y)));
-        //危险盾牌
-        mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_top_offset)));
-
-        mShieldDangerLeftIv.setTranslationX(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_left_offset)));
-        mShieldDangerLeftIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_offset)));
-
-        mShieldDangerRightIv.setTranslationX(DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_right_offset)));
-        mShieldDangerRightIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_offset)));
-
-        mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_center_red_offset_x)));
-        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_offset)));
-
-        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
-                context, getResources().getInteger(R.integer.shield_center_red_offset_y)));
+//        Context context = getActivity();
+//        //安全盾牌
+//        mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_top_offset)));
+//        mShieldLeftIv.setTranslationX(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_left_offset)));
+//        mShieldLeftIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_offset)));
+//
+//        mShieldRightIv.setTranslationX(DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_right_offset)));
+//        mShieldRightIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_offset)));
+//
+//        mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_center_blue_offset_x)));
+//        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_offset)));
+//
+//        mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_center_blue_offset_y)));
+//        //危险盾牌
+//        mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_top_offset)));
+//
+//        mShieldDangerLeftIv.setTranslationX(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_left_offset)));
+//        mShieldDangerLeftIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_offset)));
+//
+//        mShieldDangerRightIv.setTranslationX(DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_right_offset)));
+//        mShieldDangerRightIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_offset)));
+//
+//        mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_center_red_offset_x)));
+//        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_offset)));
+//
+//        mShieldDangerCenterIv.setTranslationY(-DipPixelUtil.dip2px(
+//                context, getResources().getInteger(R.integer.shield_center_red_offset_y)));
 
     }
 
     //危险盾牌设置
     public void setDangerShieldView(boolean isShow, boolean firstEnter) {
-        shieldPositionInit();
+//        shieldPositionInit();
         if (isShow) {
             if (firstEnter) {
                 mShieldDangerTopIv.setVisibility(View.INVISIBLE);
@@ -678,7 +678,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     //安全盾牌设置
     public void setSfateShieldView(boolean firstEnter) {
-        shieldPositionInit();
+//        shieldPositionInit();
         boolean last = mLastPrivacyApp || mLastPrivacyPic || mLastPrivacyVideo;
         boolean current = mPrivacyApp && mPrivacyPic && mPrivacyVideo;
         if (firstEnter || (last && !current)) {
@@ -707,18 +707,18 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     //首次进入主页盾牌动画
     public void initHomeTopShieldAnim(final View top, final View left, final View right) {
-        int value2 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_top_offset));
+        int value2 = 0;
         int value1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_top_y_trans)) + value2;
         PropertyValuesHolder topTransY = PropertyValuesHolder.ofFloat("translationY", value1, value2);
         PropertyValuesHolder topAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
 
-        int valueLeft2 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_offset));
+        int valueLeft2 = 0;
         int valueLeft1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_x_trans)) + value2;
         PropertyValuesHolder leftTransY = PropertyValuesHolder.ofFloat("translationX", valueLeft1, valueLeft2);
         PropertyValuesHolder leftAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
 
 
-        int valueRight2 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_offset));
+        int valueRight2 = 0;
         int valueRight1 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_right_x_trans)) + value2;
 
         PropertyValuesHolder rightTransY = PropertyValuesHolder.ofFloat("translationX", valueRight1, valueRight2);

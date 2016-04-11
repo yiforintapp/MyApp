@@ -15,7 +15,7 @@
         <RelativeLayout
             android:id="@+id/app_safe_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/home_result_height">
 
             <!--安全结果-->
 
@@ -24,14 +24,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:layout_marginTop="@dimen/det_result_icon_margin_top"
+                android:layout_centerVertical="true"
                 android:src="@drawable/icon_home_apps"/>
 
             <LinearLayout
                 android:id="@+id/det_saft_app_contentt_lt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/det_result_saft_content_margin_top"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/app_saft_icon"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -74,7 +74,7 @@
         <RelativeLayout
             android:id="@+id/app_danger_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/home_result_height">
 
             <!--危险结果-->
             <ImageView
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:layout_marginTop="@dimen/det_result_icon_margin_top"
+                android:layout_centerVertical="true"
                 android:src="@drawable/icon_home_apps2"/>
 
             <LinearLayout
@@ -90,8 +90,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
-                android:layout_marginTop="@dimen/det_result_danger_content_margin_top"
                 android:layout_toRightOf="@id/app_danger_icon"
+                android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -118,7 +118,7 @@
                     android:textSize="@dimen/f6"/>
             </LinearLayout>
 
-            <TextView
+     <!--       <TextView
                 android:id="@+id/det_danger_app_detal_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="#c8c8d8"
                 android:minWidth="100dp"
-                android:textSize="9dp"/>
+                android:textSize="9dp"/>-->
 
         </RelativeLayout>
     </RelativeLayout>
@@ -145,7 +145,7 @@
         <RelativeLayout
             android:id="@+id/pic_safe_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/home_result_height">
 
             <!--安全结果-->
 
@@ -154,13 +154,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:layout_marginTop="@dimen/det_result_icon_margin_top"
+                android:layout_centerVertical="true"
                 android:src="@drawable/icon_home_pics"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/det_result_saft_content_margin_top"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/pic_saft_icon"
                 android:orientation="horizontal">
 
@@ -195,13 +195,12 @@
         android:layout_below="@id/lt_det_saft_result_app"
         android:background="@drawable/strip_home_nook2"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
-        android:paddingRight="@dimen/det_result_icon_margin_right"
-        android:visibility="visible">
+        android:paddingRight="@dimen/det_result_icon_margin_right">
 
         <RelativeLayout
             android:id="@+id/pic_danger_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/home_result_height">
 
             <!--危险状态-->
             <ImageView
@@ -209,16 +208,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:layout_marginTop="@dimen/det_result_icon_margin_top"
+                android:layout_centerVertical="true"
                 android:src="@drawable/icon_home_pics2"/>
 
             <LinearLayout
                 android:id="@+id/det_pic_danger_content_lt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/det_result_danger_content_margin_top"
                 android:layout_toRightOf="@id/pic_danger_icon"
                 android:gravity="center_vertical"
+                android:layout_centerVertical="true"
                 android:orientation="horizontal">
 
                 <TextView
@@ -243,7 +242,7 @@
                     android:textColor="@color/c150"/>
             </LinearLayout>
 
-            <TextView
+           <!-- <TextView
                 android:id="@+id/det_danger_pic_detal_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -252,7 +251,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="#c8c8d8"
                 android:minWidth="100dp"
-                android:textSize="9dp"/>
+                android:textSize="9dp"/>-->
         </RelativeLayout>
     </RelativeLayout>
 
@@ -269,7 +268,7 @@
         <RelativeLayout
             android:id="@+id/vid_safe_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/home_result_height">
 
             <!--安全状态-->
             <ImageView
@@ -277,14 +276,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/det_result_icon_margin_right"
-                android:layout_marginTop="@dimen/det_result_icon_margin_top"
+                android:layout_centerVertical="true"
                 android:src="@drawable/icon_home_videos"/>
 
             <LinearLayout
                 android:id="@+id/det_saft_video_content_lt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/det_result_saft_content_margin_top"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/vid_saft_icon"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -327,7 +326,7 @@
         <RelativeLayout
             android:id="@+id/vid_danger_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/home_result_height">
             <!--危险状态-->
             <ImageView
                 android:id="@+id/vid_danger_icon"
@@ -341,7 +340,7 @@
                 android:id="@+id/det_dangerr_video_content_lt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/det_result_danger_content_margin_top"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/vid_danger_icon"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
@@ -367,7 +366,7 @@
                     android:minWidth="100dp"
                     android:textColor="@color/c150"/>
             </LinearLayout>
-
+<!--
             <TextView
                 android:id="@+id/det_danger_video_detal_tv"
                 android:layout_width="wrap_content"
@@ -377,7 +376,7 @@
                 android:layout_marginTop="2dp"
                 android:textColor="#c8c8d8"
                 android:minWidth="100dp"
-                android:textSize="9dp"/>
+                android:textSize="9dp"/>-->
 
         </RelativeLayout>
     </RelativeLayout>

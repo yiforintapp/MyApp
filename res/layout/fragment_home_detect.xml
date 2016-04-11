@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/detect_shield_margin_tip"
         android:gravity="center_horizontal">
+
         <include
             android:id="@+id/det_result_ly"
             layout="@layout/home_detect_result_layout"
@@ -24,104 +25,113 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"/>
 
+
         <ImageView
             android:id="@+id/shield_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:background="@drawable/bg_home_shield"/>
-        <!--安全状态-->
-        <ImageView
-            android:id="@+id/shield_left_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:src="@drawable/shield_blue_left"
-            android:visibility="invisible"/>
+            android:background="@drawable/bg_home_shield"
+            android:clickable="true"/>
 
-        <ImageView
-            android:id="@+id/shield_right_iv"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:src="@drawable/shield_blue_right"
-            android:visibility="invisible"/>
+            android:layout_centerVertical="true">
+            <!--安全状态-->
+            <ImageView
+                android:id="@+id/shield_left_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:src="@drawable/shield_blue_left"
+                android:visibility="invisible"/>
 
-        <ImageView
-            android:id="@+id/shield_top_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:src="@drawable/shield_blue_top"
-            android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/shield_right_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:src="@drawable/shield_blue_right"
+                android:visibility="invisible"/>
 
-        <ImageView
-            android:id="@+id/shield_center_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/shield_good"
-            android:clickable="true"
-            android:visibility="invisible"/>
-        <!--危险状态-->
-        <ImageView
-            android:id="@+id/shield_danger_left_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:src="@drawable/shield_red_left"
-            android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/shield_top_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:src="@drawable/shield_blue_top"
+                android:visibility="invisible"/>
 
-        <ImageView
-            android:id="@+id/shield_danger_right_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:src="@drawable/shield_red_right"
-            android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/shield_center_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:src="@drawable/shield_good"
+                android:visibility="invisible"/>
+            <!--危险状态-->
+            <ImageView
+                android:id="@+id/shield_danger_left_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:src="@drawable/shield_red_left"
+                android:visibility="invisible"/>
 
-        <ImageView
-            android:id="@+id/shield_danger_top_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:src="@drawable/shield_red_top"
-            android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/shield_danger_right_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:src="@drawable/shield_red_right"
+                android:visibility="invisible"
+                />
 
-        <ImageView
-            android:id="@+id/shield_danger_center_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/shield_bad"
-            android:clickable="true"
-            android:visibility="invisible"/>
+            <ImageView
+                android:id="@+id/shield_danger_top_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:src="@drawable/shield_red_top"
+                android:visibility="invisible"/>
 
+            <ImageView
+                android:id="@+id/shield_danger_center_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clickable="true"
+                android:src="@drawable/shield_bad"
+                android:visibility="invisible"/>
+        </RelativeLayout>
     </RelativeLayout>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/texture_home_bg"/>
+
     <TextView
         android:id="@+id/lt_home_danger_det_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/lt_home_det_tip"
-        android:drawableLeft="@drawable/icon_home_mark"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:drawableLeft="@drawable/icon_home_mark"
         android:drawablePadding="6dp"
         android:textColor="@color/c1"
         android:textSize="@dimen/f4"
-        android:layout_marginTop="25dp"
         android:visibility="gone"
-    />
+        />
     <!--中间建议提示banner-->
     <RelativeLayout
         android:id="@+id/lt_home_det_tip"
