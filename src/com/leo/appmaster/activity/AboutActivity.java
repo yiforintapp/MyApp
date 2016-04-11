@@ -27,7 +27,7 @@ public class AboutActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.app_about_layout);
         mTtileBar = (CommonToolbar) findViewById(R.id.about_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_setting_about);
-        mTtileBar.setToolbarColorResource(R.color.cb);
+        mTtileBar.setToolbarColorResource(R.color.ctc);
         mShowProtocol = (RippleView) findViewById(R.id.rv_check_update_button);
         mShowProtocol.setOnClickListener(this);
 

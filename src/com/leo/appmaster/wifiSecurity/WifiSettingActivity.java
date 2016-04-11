@@ -43,7 +43,7 @@ public class WifiSettingActivity extends BaseActivity implements View.OnClickLis
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.wifi_setting_title_bar);
         mTitleBar.setToolbarTitle(R.string.wifi_titlebar_name);
-        mTitleBar.setToolbarColorResource(R.color.cb);
+        mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionMenuVisible(false);
 
         rpBtn = (RippleView) findViewById(R.id.content_item_all);

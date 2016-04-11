@@ -87,8 +87,8 @@
     <color name="home_step_small_circle">#66ffffff</color>
     <color name="pri_pro_divider">#b6b6b6</color>
     <color name="pri_pro_list_bg">#ebebed</color>
-    <color name="green_button">#00c65d</color>
-    <color name="green_button_ripple">#08b329</color>
+    <color name="green_button">#2675f6</color>
+    <color name="green_button_ripple">#0453d6</color>
 	 <color name="home_menu_text">#636363</color>
     <color name="wifi_result_safe_start">#0057e8</color>
     <color name="wifi_result_safe_end">#3c73ff</color>
@@ -116,7 +116,7 @@
     <!-- 绿色按钮 -->
     <color name="button_blue">#2675f6</color>
     <!-- 绿色按钮波纹效果 -->
-    <color name="button_green_ripple">#04aa24</color>
+    <color name="button_green_ripple">#0453d6</color>
     <!-- 绿色按钮波纹效果 -->
     <color name="button_blue_ripple">#0453d6</color>
     <!-- 蓝色按钮波纹效果 -->
@@ -137,7 +137,7 @@
     <!-- 标准色 -->
 
     <!--3.6版本新的主色调 蓝灰色-->
-    <color name="ctc">#323b75</color>
+    <color name="ctc">#293478</color>
     <!--白色字-->
     <color name="c1">#ffffff</color>
     <!--50%白色字-->
