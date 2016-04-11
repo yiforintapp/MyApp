@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    tools:context="com.leo.appmaster.home.HomeTabFragment">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical"
+              tools:context="com.leo.appmaster.home.HomeTabFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
+        <!--APP-->
         <RelativeLayout
             android:id="@+id/home_app_lock_tv"
             android:layout_width="0dp"
@@ -42,12 +42,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/icon_home_app" />
+                            android:src="@drawable/icon_home_app"/>
 
                         <TextView
                             style="@style/LockListTabText"
                             android:layout_below="@id/home_ic_applcok_img"
-                            android:text="@string/home_tab_app_lock" />
+                            android:text="@string/home_tab_app_lock"/>
                     </RelativeLayout>
 
                     <ImageView
@@ -56,7 +56,7 @@
                         android:layout_height="15dp"
                         android:layout_marginLeft="2dp"
                         android:layout_toRightOf="@id/content_app_lock_red"
-                        android:src="@drawable/red_dot" />
+                        android:src="@drawable/red_dot"/>
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
@@ -65,7 +65,7 @@
             android:layout_width="2px"
             android:layout_height="match_parent"
             android:background="@color/home_tab_divider" />-->
-
+        <!--Image-->
         <RelativeLayout
             android:id="@+id/home_img"
             android:layout_width="0dp"
@@ -85,27 +85,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/icon_home_pic" />
+                    android:src="@drawable/icon_home_pic"/>
 
                 <TextView
                     style="@style/HomeTabText"
                     android:layout_below="@id/home_ic_img_img"
-                    android:text="@string/hp_hide_img" />
+                    android:text="@string/hp_hide_img"/>
             </RelativeLayout>
         </RelativeLayout>
-
-    </LinearLayout>
-
-    <!--<TextView
-        android:layout_width="match_parent"
-        android:layout_height="2px"
-        android:background="@color/home_tab_divider" />-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
+        <!--Video-->
         <RelativeLayout
             android:id="@+id/home_video"
             android:layout_width="0dp"
@@ -125,12 +113,52 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/icon_home_video" />
+                    android:src="@drawable/icon_home_video"/>
 
                 <TextView
                     style="@style/HomeTabText"
                     android:layout_below="@id/home_ic_video"
-                    android:text="@string/hp_hide_video" />
+                    android:text="@string/hp_hide_video"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!--<TextView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/home_tab_divider" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <!--Video-->
+        <RelativeLayout
+            android:id="@+id/home_intercept"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:id="@+id/rl_home_tab_intercept"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@drawable/new_list_selecter"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/home_ic_intercept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/icon_home_video"/>
+
+                <TextView
+                    style="@style/HomeTabText"
+                    android:layout_below="@id/home_ic_intercept"
+                    android:text="@string/hp_hide_video"/>
             </RelativeLayout>
         </RelativeLayout>
 
@@ -138,6 +166,35 @@
             android:layout_width="2px"
             android:layout_height="match_parent"
             android:background="@drawable/home_area_divider" />-->
+        <!--Magic lock-->
+        <RelativeLayout
+            android:id="@+id/home_magiclock"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:id="@+id/rl_home_tab_magiclock"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@drawable/new_list_selecter"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/home_ic_magiclock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/icon_home_video"/>
+
+                <TextView
+                    style="@style/HomeTabText"
+                    android:layout_below="@id/home_ic_magiclock"
+                    android:text="@string/hp_hide_video"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/home_more"
@@ -172,13 +229,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/icon_home_more" />
+                            android:src="@drawable/icon_home_more"/>
 
                         <TextView
                             style="@style/LockListTabText"
                             android:layout_below="@id/home_ic_more"
                             android:layout_centerHorizontal="true"
-                            android:text="@string/home_more" />
+                            android:text="@string/home_more"/>
 
                     </RelativeLayout>
 
@@ -188,7 +245,7 @@
                         android:layout_height="15dp"
                         android:layout_marginLeft="2dp"
                         android:layout_toRightOf="@id/content_more_red"
-                        android:src="@drawable/red_dot" />
+                        android:src="@drawable/red_dot"/>
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>

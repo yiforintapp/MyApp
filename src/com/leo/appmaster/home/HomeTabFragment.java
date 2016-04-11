@@ -62,6 +62,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private HomeActivity mActivity;
 
     private boolean mAnimating;
+    private View mInterceptView;
+    private View mMagicLockView;
 
     public HomeTabFragment() {
 
@@ -87,7 +89,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updateRedDot() {
-        if (!LeoSettings.getBoolean(PrefConst.KEY_HOME_MORE_CONSUMED,false)) {
+        if (!LeoSettings.getBoolean(PrefConst.KEY_HOME_MORE_CONSUMED, false)) {
             mIvRedDotAtMore.setVisibility(View.VISIBLE);
         } else {
             mIvRedDotAtMore.setVisibility(View.GONE);
@@ -138,6 +140,15 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .create();
         mAppLockView.setOnClickListener(this);
 
+        mWifiSecurityView = view.findViewById(R.id.home_img);
+        MaterialRippleLayout.on(mWifiSecurityView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleDuration(250)
+                .rippleHover(true)
+                .create();
+        mWifiSecurityView.setOnClickListener(this);
+
         mIntruderView = view.findViewById(R.id.home_video);
         MaterialRippleLayout.on(mIntruderView)
                 .rippleColor(getResources().getColor(R.color.home_tab_pressed))
@@ -147,14 +158,24 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .create();
         mIntruderView.setOnClickListener(this);
 
-        mWifiSecurityView = view.findViewById(R.id.home_img);
+        mInterceptView = view.findViewById(R.id.home_intercept);
         MaterialRippleLayout.on(mWifiSecurityView)
                 .rippleColor(getResources().getColor(R.color.home_tab_pressed))
                 .rippleAlpha(1f)
                 .rippleDuration(250)
                 .rippleHover(true)
                 .create();
-        mWifiSecurityView.setOnClickListener(this);
+        mInterceptView.setOnClickListener(this);
+
+        mMagicLockView = view.findViewById(R.id.home_magiclock);
+        MaterialRippleLayout.on(mWifiSecurityView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleDuration(250)
+                .rippleHover(true)
+                .create();
+        mMagicLockView.setOnClickListener(this);
+
 
         mLostSecurityView = view.findViewById(R.id.home_more);
         MaterialRippleLayout.on(mLostSecurityView)
@@ -298,16 +319,22 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic");
                     break;
                 case R.id.home_video:
-                     //视频隐藏
+                    //视频隐藏
                     int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
-                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2+1);
+                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
                     intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
                     LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvideo");
                     break;
+                case R.id.home_intercept:
+
+                    break;
+                case R.id.home_magiclock:
+
+                    break;
                 case R.id.home_more:
-                    LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED,true);
+                    LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED, true);
                     intent = new Intent(activity, HomeMoreActivity.class);
                     activity.startActivity(intent);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "more");
