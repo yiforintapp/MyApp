@@ -283,7 +283,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
         int limit = privacy.getPrivacyLimit();
         int addedCount = privacy.getNewCount();
-        if (addedCount >= limit && addedCount != privacy.getTotalCount()) {
+        if (addedCount >= limit && privacy.getStatus() == Privacy.STATUS_NEW_ADD) {
             // 命中通知逻辑
             long lastNotify = LeoPreference.getInstance().getLong(PrefConst.KEY_NOTIFY_TIME, 0);
             AppMasterApplication application = AppMasterApplication.getInstance();
