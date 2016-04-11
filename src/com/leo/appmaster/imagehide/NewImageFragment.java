@@ -11,9 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.FolderPicFragment;
 import com.leo.appmaster.home.HomeScanningFragment;
 import com.leo.appmaster.mgr.MgrContext;
@@ -23,6 +25,7 @@ import com.leo.appmaster.ui.HeaderGridView;
 import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
@@ -246,14 +249,38 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                 pdm.onHideAllPic(photoItems);
                 for (int i = 0; i < photoItems.size(); i++) {
                     for (int j = 0; j < mDataList.size(); j++) {
-                        if (((PhotoItem)mDataList.get(j)).getPath().equals(photoItems.get(i))) {
+                        if (((PhotoItem) mDataList.get(j)).getPath().equals(photoItems.get(i))) {
                             mDataList.remove(j);
                         }
                     }
                 }
                 onProcessFinish(incScore);
+
+                int successnum = pdm.getHideAllPicNum();
+                checkLostPic(pdm, successnum);
             }
         });
+    }
+
+    private void checkLostPic(PrivacyDataManager pdm, int successnum) {
+        int saveNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
+        LeoLog.d("checkLostPic", "savenum : " + saveNum);
+        int num = pdm.getHidePicsRealNum();
+        LeoLog.d("checkLostPic", "hide pic num : " + num);
+        if (saveNum != -1) {
+            LeoLog.d("checkLostPic", "isHide process num : " + successnum);
+            int targetNum = saveNum + successnum;
+            if (num >= targetNum) {
+                LeoLog.d("checkLostPic", "everything ok");
+                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+            } else {
+                LeoLog.d("checkLostPic", "lost pic");
+                pdm.reportDisappearError(true, PrivacyDataManager.LABEL_DEL_BY_SELF);
+                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+            }
+        } else {
+            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, num);
+        }
     }
 
     private void onProcessFinish(final int incScore) {

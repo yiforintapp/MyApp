@@ -536,7 +536,7 @@
     <string name="time_lock_mode_guide_content">يمكن تنشيط وضع الظروف بقفل الزمان، يقترح إضافة قفل الزمان</string>
     <string name="location_lock_mode_guide_content">يمكن تشغيل وضع ظروف في مكان محدد بقفل مكان مثل تفعيل وضع زيارة وإلخ، يرمز مكان عبر واي فاي.</string>
     <string name="lock_mode_guide_button_text">عرفت</string>
-    <string name="mode_missing">"لم تقم وضع الظروف، احذف الطريق السريع"</string>
+    <string name="mode_missing">" لم تقم بهذا الوضع، احذف الطريقة السريعة "</string>
 
     <!-- version 2.1 end -->
 
@@ -853,7 +853,7 @@
     <string name="secur_send_msm_no_location"> [LEOMASTER] غير قادر على الحصول http://www.leomaster.com</string>
 
     <string name="feedback_tell_us_title">اتصل بنا</string>
-    <string name="toast_getscore_text">مبروك! قد زادت النقاط</string>
+    <string name="toast_getscore_text">مبروك ! قد زادت النقاط</string>
     <string name="feedback_tell_us_content">إذا لديك أي أسئلة أو احتياجات، لا تردد في الاتصال بنا وتابعنا في Facebook وWhatsapp.</string>
     <string name="feedback_tell_us_contact_type_title">جهات الاتصال</string>
     <string name="dialog_fivestars_content_text">تحب حارس الخصوصية ؟</string>
@@ -973,7 +973,7 @@
     <!--3.3-->
     <string name="batterymanage_result_ad_wifi_title">التى يربطها  wifi اختبار أمانية </string>
     <string name="batterymanage_result_ad_wifi_content"> غير السالم يخطر أمان خصوصيتكم فى أى وقت Wifi</string>
-    <string name="batterymanage_result_ad_callfilter_title">حظر الإزعاج</string>
+    <string name="batterymanage_result_ad_callfilter_title">منع الإزعاج</string>
     <string name="batterymanage_result_ad_callfilter_content">تبيين هذه المكالمات المزعاجة لكم واعتراضها</string>
     <string name="batterymanage_label"> سر في الكهرباء استهلاك جاري تطبيق &#160;</string>
     <string name="batterymanage_label_old"> سر في الكهرباء استهلاك جاري تطبيق  <Data><![CDATA[<b><font color="#00a8ff">%1$s</font></b>]]></Data></string>
@@ -986,7 +986,7 @@
     <string name="batterymanage_switch_noti">اشعار استهلاك الكهرباء للتطبيق</string>
     <string name="batterymanage_switch_noti_summary">إعلام حالة استهلاك الكهرباء</string>
     <string name="batterymanage_setting_title">اعدادات</string>
-    <string name="quick_helper_callfilter">حظر  الإزعاج</string>
+    <string name="quick_helper_callfilter">منع  الإزعاج</string>
     <string name="quick_helper_desc_callfilter">تبيين هذه المكالمات المزعاجة واعتراضها</string>
     <string name="phone_share_dialog_content">جوالكم فى حالة الحماية من وظيفة وقاية من السرق ، لكن أصدقائكم ليسوا بذلك ، أرسع～ لتساعدهم </string>
     <string name="callfilter_share_dialog_content">～داع أصدقائكم معا لمنع المكالمات المزعاجة </string>
@@ -1038,7 +1038,7 @@
 
     <!--3.3.2-->
     <string name="ask_create_shortcut_button_right">انشاء</string>
-    <string name="ask_create_shortcut_content_imagehide">تريد أن تخفي الصور بأسهل الطريقة؟ أنشأ الطريقة السريعة علي سطح المكتب !</string>
+    <string name="ask_create_shortcut_content_imagehide">تريد أن تخفي الصور بأسهل الطريقة؟ أنشأ الطريقة السريعة علي سطح المكتب!</string>
     <string name="grant_permission_default_tip">فتح الأذن لاصلاح مشاكل قفل التطبيق</string>
     <string name="battery_protect_view_time_title">الوقت المتبقي</string>
     <string name="battery_protect_view_remain_one_title">مكالمة </string>

@@ -18,6 +18,7 @@ import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;

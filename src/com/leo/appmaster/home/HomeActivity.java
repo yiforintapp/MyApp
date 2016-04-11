@@ -66,6 +66,7 @@ import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -215,9 +216,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         PhoneSecurityFetchJob.startImmediately();
         registerLocaleChange();
 
-//        if (AppMasterConfig.LOGGABLE) {
-//            printSignature();
-//        }
         setIsShowMoreGuide();
     }
 
@@ -1278,10 +1276,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private void menuFaqJump() {
 
         String faqtitle = getString(R.string.menu_left_item_problem);
-        String country = DeviceUtil.getCountry();
+        String country = DeviceUtil.getCountry(this);
         country = Utilities.exChange(country);
         int version = PhoneInfo.getVersionCode(this);
-        String language = DeviceUtil.getLanguage();
+        String language = DeviceUtil.getLanguage(this);
 
         String url = LeoUrls.FAR_REQUEST + "/"
                 + country + "/" + language + "/" + version + ".html";
@@ -1662,28 +1660,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void openAdvanceProtectDialogTip() {
-        LeoLog.d("caocao", "openAdvanceProtectDialogTip");
-//        if (mMessageDialog == null) {
-//            mMessageDialog = new LEOAnimationDialog(this);
-//            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialog) {
-//                    if (mMessageDialog != null) {
-//                        mMessageDialog = null;
-//                    }
-//                    AppMasterPreference.getInstance(HomeActivity.this)
-//                            .setAdvanceProtectOpenSuccessDialogTip(false);
-//                    String key = PrefConst.KEY_OPEN_ADVA_PROTECT;
-//                    LeoPreference.getInstance().putBoolean(key, false);
-//                }
-//            });
-//        }
-//        String content = getString(R.string.prot_open_suc_tip_cnt);
-//        mMessageDialog.setContent(content);
-//        mMessageDialog.show();
-//        if (!mDrawerLayout.isDrawerVisible(mMenuList)) {
-//            mDrawerLayout.openDrawer(mMenuList);
-//        }
         if (!mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.openDrawer(Gravity.START);
         }
@@ -1693,12 +1669,16 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                     + ((int) getResources().getDimension(R.dimen.home_left_list_item_height))
                     * (mMenuItems.size() - 1);
             int lightHeight = (int) getResources().getDimension(R.dimen.home_left_list_item_height);
-            mGuideFragment.setUninstallParams(topViewHeight, lightHeight);
+            if (mGuideFragment != null) {
+                mGuideFragment.setUninstallParams(topViewHeight, lightHeight);
+            }
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "home_dlg_uninstall");
-                    mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.UNINSTALL_GUIDE);
+                    if (mGuideFragment != null) {
+                        mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.UNINSTALL_GUIDE);
+                    }
                     LeoLog.e("mMenuList", "open:" + mUninstallGuideShow);
                     LeoPreference.getInstance().putBoolean(PrefConst.KEY_OPEN_ADVA_PROTECT, false);
                 }

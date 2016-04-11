@@ -11,23 +11,48 @@ import com.leo.appmaster.schedule.BlackListFileFetchJob;
 import com.leo.appmaster.schedule.BlackUploadFetchJob;
 import com.leo.appmaster.utils.LeoLog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScreenOnOffListener extends BroadcastListener {
+
+    public static interface ScreenChangeListener {
+        public void onScreenChanged(Intent intent);
+    }
 
     public static final String TAG = "ScreenOnOffListener";
     public static final long mTwoDay = 48 * 60 * 60 * 1000;
+
+    private static List<ScreenChangeListener> listeners = new ArrayList<ScreenChangeListener>();
+
+    public static void addListener(ScreenChangeListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+    }
+
+    public static void removeListener(ScreenChangeListener listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener);
+        }
+    }
 
     public final void onEvent(String action) {
         if (Intent.ACTION_SCREEN_OFF.equals(action)
                 || Intent.ACTION_SCREEN_ON.equals(action)
                 || Intent.ACTION_USER_PRESENT.equals(action)) {
             onScreenChanged(mIntent);
+            for (ScreenChangeListener listener : listeners) {
+                if (listener != null) {
+                    listener.onScreenChanged(mIntent);
+                }
+            }
         }
     }
 
     @Override
     protected final IntentFilter getIntentFilter() {
         IntentFilter filter = new IntentFilter();
-        filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_USER_PRESENT);
@@ -38,25 +63,11 @@ public class ScreenOnOffListener extends BroadcastListener {
      * added, changed, removed
      */
     public void onScreenChanged(Intent intent) {
-        /* 解锁手机加载iSwipe更新数据 */
-        loadISwipeUpdateForOnScreen(intent);
         /*检测SIM是否更换*/
         simChanagae(intent);
 //        loadWifiData(intent);
         /*黑名单请求*/
         blackRequestJob(intent);
-
-    }
-
-    private void loadISwipeUpdateForOnScreen(Intent intent) {
-//        Context mContext = AppMasterApplication.getInstance();
-//        if ((!AppUtil.isScreenLocked(mContext)
-//                && Intent.ACTION_SCREEN_ON.equals(intent.getAction()))
-//                || Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-//            if (!ISwipUpdateRequestManager.isInstallIsiwpe(mContext)) {
-//                ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
-//            }
-//        }
 
     }
 

@@ -153,11 +153,11 @@ public class CommonSettingItem extends RelativeLayout {
 
     public void setIconVisable(boolean isVisable) {
         mIvIcon.setVisibility(isVisable == true ? View.VISIBLE : View.GONE);
-        if(!isVisable) {
-            RelativeLayout.LayoutParams lp = (LayoutParams) mRlTextContent.getLayoutParams();
-            lp.setMargins(DipPixelUtil.dip2px(mContext,20),0,0,0);
-            mRlTextContent.setLayoutParams(lp);
-        }
+//        if(!isVisable) {
+//            RelativeLayout.LayoutParams lp = (LayoutParams) mRlTextContent.getLayoutParams();
+//            lp.leftMargin = DipPixelUtil.dip2px(mContext,16);
+//            mRlTextContent.setLayoutParams(lp);
+//        }
     }
 
     public void setIcon(int id) {

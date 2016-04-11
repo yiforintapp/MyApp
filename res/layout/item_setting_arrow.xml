@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_wifi_content"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -25,10 +26,10 @@
             android:layout_height="22dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:src="@drawable/ic_launcher" />
 
         <RelativeLayout
+            android:layout_marginLeft="16dp"
             android:id="@+id/rl_text_content"
             android:layout_toRightOf="@+id/iv_icon"
             android:layout_width="match_parent"
@@ -45,7 +46,7 @@
                 android:maxLines="4"
                 android:text="@string/home_tab_wifi"
                 android:textColor="@color/c2"
-                android:textSize="15dp" />
+                android:textSize="@dimen/f3" />
 
             <TextView
                 android:id="@+id/tv_summary"
@@ -58,7 +59,7 @@
                 android:maxLines="3"
                 android:text="@string/airsig_settings_activity_title"
                 android:textColor="@color/c4"
-                android:textSize="10dp" />
+                android:textSize="@dimen/f4" />
 
         </RelativeLayout>
 

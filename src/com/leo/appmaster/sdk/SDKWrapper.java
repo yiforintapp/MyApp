@@ -18,6 +18,7 @@ import com.leo.push.IPushStatHelper;
 import com.leo.push.PushManager;
 import com.tendcloud.tenddata.TCAgent;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -320,6 +321,10 @@ public class SDKWrapper {
 //        LeoAgent.onPause();
         TCAgent.onPause(ctx);
         com.leo.stat.StatService.onPause(ctx);
+    }
+
+    public static void reportSkyfallExtra(Context ctx, String eventId, String description, Map<String, String> params) {
+        com.leo.stat.StatService.onExtraEvent(ctx, "LP_Error", eventId, description, params);
     }
 
     // private static void iniBaidu(Context ctx) {

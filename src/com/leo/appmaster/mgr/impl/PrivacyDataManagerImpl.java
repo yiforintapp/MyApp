@@ -13,10 +13,15 @@ import android.text.TextUtils;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.cloud.crypto.ImageCryptor;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -65,7 +70,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     private static int mScore = 0;
     private int mScanAddPicNum = 0;
     private int mScanAddVidNum = 0;
-
+    private int hideAllPicNum = 0;
+    private int hideAllVidNum = 0;
     private ImageCryptor mImageCryptor;
 
     public PrivacyDataManagerImpl() {
@@ -284,10 +290,62 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
     }
 
     @Override
+    public int getHideAllPicNum() {
+        return hideAllPicNum;
+    }
+
+    @Override
+    public int getHideAllVidNum() {
+        return hideAllVidNum;
+    }
+
+    @Override
+    public void checkLostPicAndVid() {
+        LeoLog.d("checkLostPic", "initAsync");
+        long lastCheckTime = LeoSettings.getLong(Constants.CHECK_LOST_PIC_TIME, 0);
+        long now = System.currentTimeMillis();
+        if (now - lastCheckTime > Constants.A_DAY_TIME) {
+            //check pic
+            int picnum = getHidePicsRealNum();
+            LeoLog.d("checkLostPic", "pic now num : " + picnum);
+            int savepicNum = LeoSettings.getInteger(Constants.HIDE_PICS_NUM, -1);
+            if (savepicNum == -1) {
+                LeoLog.d("checkLostPic", "pic first in , save hide pic num");
+                LeoSettings.setInteger(Constants.HIDE_PICS_NUM, picnum);
+            } else {
+                if (picnum != savepicNum) {
+                    LeoLog.d("checkLostPic", "lost pics , update");
+                    reportDisappearError(true, PrivacyDataManager.LABEL_DEL_BY_OTHER);
+                    LeoSettings.setInteger(Constants.HIDE_PICS_NUM, picnum);
+                }
+            }
+
+            //check vid
+            int vidnum = getHideVidsRealNum();
+            LeoLog.d("checkLostPic", "vid now num : " + vidnum);
+            int savevidNum = LeoSettings.getInteger(Constants.HIDE_VIDS_NUM, -1);
+            if (savevidNum == -1) {
+                LeoLog.d("checkLostPic", "vid first in , save hide vid num");
+                LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+            } else {
+                if (vidnum != savevidNum) {
+                    LeoLog.d("checkLostPic", "lost vids , update");
+                    reportDisappearError(false, PrivacyDataManager.LABEL_DEL_BY_OTHER);
+                    LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+                }
+            }
+
+            LeoSettings.setLong(Constants.CHECK_LOST_PIC_TIME, now);
+        }
+    }
+
+
+    @Override
     public int onHideAllPic(List<String> mString) {
         // 大量图片的情况，每隐藏一张图片就通知更新UI，造成卡顿，并且分数错乱
 //        mMediaStoreChangeObserver.stopObserver();
         try {
+            hideAllPicNum = 0;
             int newAddPicNum = getAddPicNum();
             int num = mString.size();
             for (int i = 0; i < num; i++) {
@@ -304,6 +362,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                                 mContext);
                         FileOperationUtil.deleteImageMediaEntry(
                                 path, mContext);
+                        hideAllPicNum++;
                     }
                 }
             }
@@ -316,7 +375,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         } finally {
 //            mMediaStoreChangeObserver.startObserver();
         }
-
 
     }
 
@@ -502,6 +560,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         // 大量图片的情况，每隐藏一张图片就通知更新UI，造成卡顿，并且分数错乱
 //        mMediaStoreChangeObserver.stopObserver();
         try {
+            hideAllVidNum = 0;
             int newAddVidNum = getAddVidNum();
 
             int num = mString.size();
@@ -519,6 +578,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                                     newFileName), mContext);
                     FileOperationUtil.deleteVideoMediaEntry(path,
                             mContext);
+                    hideAllVidNum++;
 //                    FileOperationUtil.updateVedioMediaEntry(path, true, "text/plain", mContext);
                 }
             }
@@ -1202,6 +1262,77 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             vidScore = newVidNum * SPA_VID;
         }
         return vidScore;
+    }
+
+    @Override
+    public void reportDisappearError(boolean isImage, String label) {
+        Map<String, String> map = DeviceUtil.getDeviceParams();
+
+        map.put("mediaType", isImage ? "image_dis" : "video_dis");
+        SDKWrapper.reportSkyfallExtra(mContext, "media_disappear", label, map);
+    }
+
+    public int getHidePicsRealNum() {
+        int num = 0;
+        Uri uri = MediaStore.Files.getContentUri("external");
+        String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaStore.MediaColumns.DATA
+                + " LIKE '%.leotmi'";
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
+                    MediaStore.MediaColumns.DATE_ADDED + " desc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor.getString
+                            (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    File f = new File(path);
+                    if (f.exists()) {
+                        num++;
+                    }
+                }
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+        return num;
+    }
+
+    @Override
+    public int getHideVidsRealNum() {
+        int num = 0;
+        Uri uri = MediaStore.Files.getContentUri("external");
+        String selection = MediaStore.MediaColumns.DATA + " LIKE '%.leotmv'";
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+                    MediaStore.MediaColumns.DATE_ADDED + " desc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor
+                            .getString(cursor
+                                    .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
+                    LeoLog.d("checkVidId", "path is : " + path);
+
+
+                    File videoFile = new File(path);
+                    boolean videoExists = videoFile.exists();
+                    if (videoExists) {
+                        num++;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+        } finally {
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
+        }
+        return num;
     }
 
     @Override

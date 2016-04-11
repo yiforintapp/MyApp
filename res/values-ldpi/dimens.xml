@@ -231,7 +231,7 @@
     <dimen name="op_adv_suc_tv">130dp</dimen>
     <dimen name="open_suc_tv_pd_tp">2dp</dimen>
     <dimen name="open_suc_tv_pd_bt">5dp</dimen>
-    <dimen name="scur_contact_char">8dp</dimen>
+    <dimen name="scur_contact_char">7dp</dimen>
     <dimen name="secur_number_tp">0dp</dimen>
     <dimen name="secur_number_name_size">14dp</dimen>
     <dimen name="secur_number_size">12dp</dimen>

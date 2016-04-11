@@ -66,7 +66,7 @@
             android:layout_marginLeft="@dimen/ph_secur_top_tip_lt_marg_left"
             android:layout_marginRight="@dimen/ph_secur_top_tip_lt_marg_left"
             android:background="@drawable/blue_edit_bg"
-            android:hint="@string/privacy_contact_edittext_hint"
+            android:hint="@string/secur_add_num"
             android:inputType="phone"
             android:paddingLeft="16dp"
             android:textColor="@drawable/privacy_contact_edit_edittext_selecter"
@@ -96,6 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/security_input_number_LT"
         android:background="@color/white">
+
         <View
             android:id="@+id/line_v"
             android:layout_width="match_parent"
@@ -103,35 +104,40 @@
             android:layout_marginTop="24dp"
             android:background="@color/c5">
         </View>
+
         <LinearLayout
             android:id="@+id/add_contact_tip"
             android:layout_width="match_parent"
-            android:layout_below="@id/line_v"
             android:layout_height="wrap_content"
+            android:layout_below="@id/line_v"
             android:layout_marginLeft="21dp"
-            android:layout_marginTop="9dp"
             android:layout_marginRight="21dp"
+            android:layout_marginTop="9dp"
             android:gravity="center_vertical">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icon_antitheft_contacts"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="7dp"
                 android:text="@string/privacy_contact_popumenus_from_contact"
                 android:textColor="@color/c2"
-                android:textSize="@dimen/f4"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="7dp"/>
+                android:textSize="@dimen/f4"/>
 
         </LinearLayout>
+
         <FrameLayout
             android:id="@+id/number_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/add_contact_tip"
             android:layout_marginTop="9dp"
+            android:layout_marginBottom="64dp"
             android:background="@color/white">
 
             <ListView
@@ -147,9 +153,10 @@
             <com.leo.appmaster.privacycontact.ContactSideBar
                 android:id="@+id/contact_sidrbar"
                 android:layout_width="25dp"
-                android:layout_height="fill_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="right|center"
-                android:visibility="gone"></com.leo.appmaster.privacycontact.ContactSideBar>
+                android:visibility="gone">
+            </com.leo.appmaster.privacycontact.ContactSideBar>
 
             <LinearLayout
                 android:id="@+id/add_contact_default_tv"
@@ -197,6 +204,7 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/line3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@+id/botm_bt_lt"
@@ -214,8 +222,8 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="@dimen/add_num_botm_bt_width"
             android:layout_height="@dimen/add_num_botm_bt_height"
-            app:rippleColor="@color/menu_ripple"
             android:layout_centerInParent="true"
+            app:rippleColor="@color/menu_ripple"
             app:rippleDuration="150"
             app:rippleHover="true"
             app:rippleOverlay="true">

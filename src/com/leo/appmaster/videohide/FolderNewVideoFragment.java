@@ -11,8 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.FolderNewFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -74,8 +76,33 @@ public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> imp
                 }
                 LeoLog.v(TAG, "mDataList removed size :" + mDataList.size());
                 onProcessFinish(incScore);
+
+                int successnum = pdm.getHideAllVidNum();
+                checkLostVid(pdm, successnum);
             }
         });
+    }
+
+    private void checkLostVid(PrivacyDataManager pdm, int successnum) {
+        int savevidNum = LeoSettings.getInteger(Constants.HIDE_VIDS_NUM, -1);
+        LeoLog.d("checkLostPic", "savevidNum : " + savevidNum);
+        int vidnum = pdm.getHideVidsRealNum();
+        LeoLog.d("checkLostPic", "hide vid num : " + vidnum);
+        if (savevidNum != -1) {
+            LeoLog.d("checkLostPic", "isHide process num : " + successnum);
+            int targetNum = savevidNum + successnum;
+            if (vidnum >= targetNum) {
+                LeoLog.d("checkLostPic", "everything ok");
+                LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+            } else {
+                LeoLog.d("checkLostPic", "lost vid");
+                pdm.reportDisappearError(false, PrivacyDataManager.LABEL_DEL_BY_SELF);
+                LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+            }
+
+        } else {
+            LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+        }
     }
 
     private void onProcessFinish(final int incScore) {
@@ -85,12 +112,12 @@ public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> imp
             public void run() {
                 if (mProgressDialog != null) {
                     mProgressDialog.dismiss();
-                    if(mDataList.size() > 0) {
+                    if (mDataList.size() > 0) {
                         mAdapter.setList(mDataList);
                         mAdapter.notifyDataSetChanged();
                         setLabelCount();
-                    }else{
-                        Toast.makeText(mActivity,R.string.hide_complete_new_vid,Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(mActivity, R.string.hide_complete_new_vid, Toast.LENGTH_LONG).show();
                         mActivity.finish();
                     }
                 }

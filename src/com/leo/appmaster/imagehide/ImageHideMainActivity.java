@@ -527,8 +527,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
                 }
             });
-
-
 //            iv.setImageResource(R.drawable.ic_launcher);
             return convertView;
         }

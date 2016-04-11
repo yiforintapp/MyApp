@@ -7,17 +7,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.intruderprotection.ShowToast;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -25,6 +28,7 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.BaseSelfDurationToast;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -60,6 +64,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private RelativeLayout mDangerResultImgLt;
     private RelativeLayout mDangerResultVideoLt;
 
+    private BaseSelfDurationToast mPermissionGuideToast;
     // 中间banner
     private RelativeLayout mCenterTipRt;
     private TextView mBannerTv;
@@ -577,8 +582,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                     try {
                         mContext.startActivity(mBannerIntent);
                         if (type == TYPE_LOCK) {
+                            ShowToast.showPermissionGuideToast(mContext);
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "gd_tips_cli");
-
                             LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                             lm.filterPackage(mBannerIntent.getPackage(), false);
                             lm.filterSelfOneMinites();
@@ -594,6 +599,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 break;
         }
     }
+
 
     //盾牌位置初始化
     private void shieldPositionInit() {

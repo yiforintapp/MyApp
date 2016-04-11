@@ -38,6 +38,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
@@ -105,6 +106,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
     private VideoBean mVideoBean;
     private GuideFragment mGuideFragment;
     private boolean mVideoEditGuide;
+    private int mProcessNum = 0;
 
     private android.os.Handler mHandler = new android.os.Handler() {
         public void handleMessage(final android.os.Message msg) {
@@ -125,7 +127,13 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                     });
                     break;
                 case CANCEL_OR_HIDE_FINISH:
-                    boolean isSuccess = (Boolean) msg.obj;
+
+                    Bundle bundle = msg.getData();
+                    boolean isSuccess = bundle.getBoolean("isSuccess");
+                    boolean isHideb = bundle.getBoolean("isHide");
+
+                    checkLostVid(isHideb);
+
                     onPostDo(isSuccess);
                     break;
             }
@@ -145,6 +153,46 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
         gotoBindService();
     }
 
+    private void checkLostVid(final boolean isHide) {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager mPDManager = (PrivacyDataManager) MgrContext
+                        .getManager(MgrContext.MGR_PRIVACY_DATA);
+                int savevidNum = LeoSettings.getInteger(Constants.HIDE_VIDS_NUM, -1);
+                LeoLog.d("checkLostPic", "savevidNum : " + savevidNum);
+                int vidnum = mPDManager.getHideVidsRealNum();
+                LeoLog.d("checkLostPic", "hide vid num : " + vidnum);
+                if (savevidNum != -1) {
+                    if (isHide) {
+                        LeoLog.d("checkLostPic", "isHide process num : " + mProcessNum);
+                        int targetNum = savevidNum + mProcessNum;
+                        if (vidnum >= targetNum) {
+                            LeoLog.d("checkLostPic", "everything ok");
+                            LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+                        } else {
+                            LeoLog.d("checkLostPic", "lost vid");
+                            mPDManager.reportDisappearError(false, PrivacyDataManager.LABEL_DEL_BY_SELF);
+                            LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+                        }
+                    } else {
+                        LeoLog.d("checkLostPic", "cancelHide process num : " + mProcessNum);
+                        int targetNum = savevidNum - mProcessNum;
+                        if (vidnum >= targetNum) {
+                            LeoLog.d("checkLostPic", "everything ok");
+                            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, vidnum);
+                        } else {
+                            LeoLog.d("checkLostPic", "lost vid");
+                            mPDManager.reportDisappearError(false, PrivacyDataManager.LABEL_DEL_BY_SELF);
+                            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, vidnum);
+                        }
+                    }
+                } else {
+                    LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
+                }
+            }
+        });
+    }
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
@@ -601,6 +649,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
     private ArrayList<VideoItemBean> clickListAnimation = new ArrayList<VideoItemBean>();
 
     private void startDoingBack(boolean isHide) {
+        mProcessNum = 0;
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         String newFileName;
         Boolean isSuccess = true;
@@ -680,6 +729,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                                 SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
                                         "hidevd_cb",
                                         "hide_done");
+                                mProcessNum++;
                             } else {
                                 mUnhidePath.remove(item.getPath());
                                 isSuccess = false;
@@ -757,6 +807,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                                         this);
                                 LeoLog.d("testcancelHide", "cancel success");
                                 mVideoItems.remove(item);
+                                mProcessNum++;
                             } else {
                                 isSuccess = false;
                                 SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
@@ -773,14 +824,20 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
             pdm.registerMediaListener();
             pdm.notifySecurityChange();
         }
-        readyDoingDone(isSuccess);
+        readyDoingDone(isSuccess, isHide);
     }
 
-    private void readyDoingDone(Boolean isSuccess) {
+    private void readyDoingDone(Boolean isSuccess, Boolean isHide) {
         if (mHandler != null) {
             Message msg = new Message();
-            msg.obj = isSuccess;
+
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isSuccess", isSuccess);
+            bundle.putBoolean("isHide", isHide);
+            msg.setData(bundle);//bundle传值，耗时，效率低
+
             msg.what = CANCEL_OR_HIDE_FINISH;
+
             mHandler.sendMessage(msg);
         }
     }
