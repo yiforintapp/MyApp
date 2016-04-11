@@ -239,13 +239,19 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             if (mRootView.getVisibility() != View.GONE) {
                 mRootView.setVisibility(View.GONE);
             }
-            if (mHomeGuideAnim != null) {
-                if (mHomeGuideAnim.isRunning()) {
-                    mHomeGuideAnim.cancel();
+            if (GUIDE_TYPE.HOME_MORE_GUIDE == type) {
+                if (mHomeGuideAnim != null) {
+                    if (mHomeGuideAnim.isRunning()) {
+                        mHomeGuideAnim.cancel();
+                    }
+                    mHomeGuideRt.clearAnimation();
+                    mHomeGuideAnim = null;
                 }
-                mHomeGuideRt.clearAnimation();
-                mHomeGuideAnim = null;
+                if (mHomeGuideRt != null) {
+                    mHomeGuideRt.setVisibility(View.GONE);
+                }
             }
+
             if (mBatteryGuideAnim != null) {
                 if (mBatteryGuideAnim.isRunning()) {
                     mBatteryGuideAnim.cancel();
