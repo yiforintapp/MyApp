@@ -10,7 +10,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.airsig.AirSigActivity;
-import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
@@ -77,21 +76,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     private CommonToolbar mCtbMain;
 
-//    private RippleView mRvIntruderEntry;
-//    private RippleView mRvFindLostEntry;
-//    private RippleView mRvBatteryScreenEntry;
-//    private RippleView mRvSettingEntry;
-//    private RippleView mRvCallfilterEntry;
-//    private RippleView mRvQuickHelperEntry;
-//    private RippleView mRvWifiEntry;
-//    private RippleView mRvFlowEntry;
-//    private RippleView mRvBatteryEntry;
-//    private RippleView mRvPrivacyContactEntry;
-//    private RippleView mRvAppBackupEntry;
-//    private RippleView mRvAppUninstallEntry;
-
     private CommonSettingItem mItemAirSigEntry;
-    private CommonSettingItem mItemDefaultLockTypeEntry;
 
     private CommonSettingItem mItemIntruderEntry;
     private CommonSettingItem mItemFindLostEntry;
@@ -162,28 +147,16 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-//        默认解锁方式部分
-        mItemDefaultLockTypeEntry = (CommonSettingItem) findViewById(R.id.item_defaultlocktype);
-        mItemDefaultLockTypeEntry.setIcon(ICON_ID_DEFAULT_LOCK_TYPE);
-        mItemDefaultLockTypeEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoSetAirSigLock();
-            }
-        });
-
         boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
         if (isAigSigCanUse) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_sh");
             //签字解锁部分
             mItemAirSigEntry.setTitle(STRID_SIGNATURE_LOCK);
             //设置默认解锁方式部分
-            mItemDefaultLockTypeEntry.setTitle(STRID_DEFAULT_LOCK_TYPE);
         } else {
             View line1 = findViewById(R.id.line_1);
             mItemAirSigEntry.setVisibility(View.GONE);
             line1.setVisibility(View.GONE);
-            mItemDefaultLockTypeEntry.setVisibility(View.GONE);
         }
 
         //快捷小助手部分
@@ -336,7 +309,6 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
         if (!isAirSigVaild) {
             mItemAirSigEntry.setSummary(STRID_DID_NOT_OPEN);
-            mItemDefaultLockTypeEntry.setSummary(STRID_GESTURE_OR_PSW);
             return;
         }
 
@@ -346,20 +318,6 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         } else {
             mItemAirSigEntry.setSummary(STRID_DID_NOT_OPEN);
         }
-
-        int unlockType = LeoSettings.getInteger(AirSigSettingActivity.UNLOCK_TYPE,
-                AirSigSettingActivity.NOMAL_UNLOCK);
-
-        if (isAirsigOn) {
-            if (unlockType == AirSigSettingActivity.NOMAL_UNLOCK) {
-                mItemDefaultLockTypeEntry.setSummary(STRID_GESTURE_OR_PSW);
-            } else {
-                mItemDefaultLockTypeEntry.setSummary(STRID_SIGNATURE_LOCK);
-            }
-        } else {
-            mItemDefaultLockTypeEntry.setSummary(STRID_GESTURE_OR_PSW);
-        }
-
     }
 
     @Override
@@ -391,11 +349,6 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private void goToOpenAirSig() {
         SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig");
         Intent intent = new Intent(this, AirSigActivity.class);
-        startActivity(intent);
-    }
-
-    private void gotoSetAirSigLock() {
-        Intent intent = new Intent(this, AirSigSettingActivity.class);
         startActivity(intent);
     }
 

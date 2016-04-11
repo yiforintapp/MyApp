@@ -15,7 +15,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.PrivacyOptionActivity;
 import com.leo.appmaster.airsig.AirSigActivity;
-import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
@@ -178,11 +177,6 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
 
-    }
-
-    private void gotoSetAirSigLock() {
-        Intent intent = new Intent(this, AirSigSettingActivity.class);
-        startActivity(intent);
     }
 
     private void goToOpenAirSig() {

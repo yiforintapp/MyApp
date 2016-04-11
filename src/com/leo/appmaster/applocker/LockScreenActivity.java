@@ -66,7 +66,6 @@ import com.leo.appmaster.ad.LEOAdManager;
 import com.leo.appmaster.ad.PreviewImageFetcher;
 import com.leo.appmaster.ad.WrappedCampaign;
 import com.leo.appmaster.airsig.AirSigActivity;
-import com.leo.appmaster.airsig.AirSigSettingActivity;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.lockswitch.SwitchGroup;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -862,7 +861,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 } else {
 
                     int type = mLockFragment.getUnlockType();
-                    if (type == AirSigSettingActivity.AIRSIG_UNLOCK) {
+                    if (type == AirSigActivity.AIRSIG_UNLOCK) {
                         if (mLockFragment instanceof GestureLockFragment) {
                             LeoLog.d("testTheme", "go this GestureLockFragment");
                             GestureLockFragment fragment = (GestureLockFragment) mLockFragment;
@@ -2299,7 +2298,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         int type = mLockFragment.getUnlockType();
-        if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+        if (type == AirSigActivity.NOMAL_UNLOCK) {
             listItems.add(resources.getString(R.string.unlock_theme));
             listItems.add(resources.getString(R.string.setting_hide_lockline));
         }
@@ -2316,7 +2315,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         int type = mLockFragment.getUnlockType();
-        if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+        if (type == AirSigActivity.NOMAL_UNLOCK) {
             icons.add(R.drawable.theme_icon_black);
             if (AppMasterPreference.getInstance(this).getIsHideLine()) {
                 icons.add(R.drawable.show_locus_icon);
@@ -2332,7 +2331,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void setPopWindowItemClick(int position) {
         int type = mLockFragment.getUnlockType();
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-            if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+            if (type == AirSigActivity.NOMAL_UNLOCK) {
                 if (position == 0) {
                     findPasswd();
                 } else if (position == 1) {
@@ -2352,7 +2351,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         } else {
 
-            if (type == AirSigSettingActivity.NOMAL_UNLOCK) {
+            if (type == AirSigActivity.NOMAL_UNLOCK) {
                 if (position == 0) {
                     onMoveToTheme();
                 } else if (position == 1) {
