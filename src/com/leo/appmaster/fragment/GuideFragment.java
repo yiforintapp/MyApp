@@ -115,7 +115,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
 
     private void initUI() {
         if (mRootView != null) {
-            initHomeMoreGuide(mRootView);
             initPicVidEditGuide(mRootView);
             initVideoEditGuide(mRootView);
             initBatteryGuide(mRootView);
@@ -249,6 +248,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 }
                 if (mHomeGuideRt != null) {
                     mHomeGuideRt.setVisibility(View.GONE);
+                    mHomeGuideRt = null;
                 }
             }
 
@@ -266,6 +266,11 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             return;
         }
         if (GUIDE_TYPE.HOME_MORE_GUIDE == type) {
+
+            if (mRootView != null) {
+                initHomeMoreGuide(mRootView);
+            }
+
             if (mHomeGuideRt != null) {
 
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_bub");
