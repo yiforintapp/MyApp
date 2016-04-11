@@ -8,12 +8,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.home.HomeScanningFragment;
-import com.leo.appmaster.home.PrivacyNewPicFragment;
 import com.leo.appmaster.home.PrivacyNewVideoFragment;
-import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.privacy.Privacy;
@@ -22,7 +19,6 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.LeoLog;
 
 import java.util.List;
@@ -41,12 +37,20 @@ public class NewHideVidActivity extends BaseFragmentActivity {
     private ProgressBar mLoading;
     private List<VideoItemBean> mVideoList;
 
+    public final static String FOUND_VID = "found_vid";
+    public final static String NEW_ADD_VID = "new_add_vid";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_hide_image);
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
+//        mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
+        if (FOUND_VID.equals(getIntent().getStringExtra(Constants.FIRST_ENTER_VID))) {
+            mTtileBar.setToolbarTitle(R.string.found_new_vid);
+        } else {
+            mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
+        }
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();

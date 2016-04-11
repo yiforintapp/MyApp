@@ -125,7 +125,7 @@ public class WifiSecurityActivity extends BaseFragmentActivity implements View.O
     private void initUi() {
         mTitleBar = (CommonToolbar) findViewById(R.id.wifi_title_bar);
         mTitleBar.setToolbarTitle(R.string.wifi_titlebar_name);
-        mTitleBar.setToolbarColorResource(R.color.ctc);
+        mTitleBar.setToolbarColorResource(R.color.transparent);
         mTitleBar.setOptionClickListener(this);
         mTitleBar.setNavigationClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.setup_icon);

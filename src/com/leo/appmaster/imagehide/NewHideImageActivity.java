@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.HomeScanningFragment;
 import com.leo.appmaster.home.PrivacyNewPicFragment;
 import com.leo.appmaster.mgr.MgrContext;
@@ -39,12 +39,20 @@ public class NewHideImageActivity extends BaseFragmentActivity {
     private ProgressBar mLoading;
     private List<PhotoItem> mPhotoItems;
 
+    public final static String FOUND_PIC = "found_pic";
+    public final static String NEW_ADD_PIC = "new_add_pic";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_hide_image);
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setToolbarTitle(R.string.new_hidden_image);
+//        mTtileBar.setToolbarTitle(R.string.new_hidden_image);
+        if (FOUND_PIC.equals(getIntent().getStringExtra(Constants.FIRST_ENTER_PIC))) {
+            mTtileBar.setToolbarTitle(R.string.found_new_pic);
+        } else {
+            mTtileBar.setToolbarTitle(R.string.new_hidden_image);
+        }
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mFragment = (FrameLayout)findViewById(R.id.fl_image_view);
         initLoadData();

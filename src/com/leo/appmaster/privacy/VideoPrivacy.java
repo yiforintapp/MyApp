@@ -11,8 +11,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.imagehide.ImageHideMainActivity;
-import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.PrefConst;
@@ -95,10 +93,12 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
             case STATUS_NEW_ADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_new_cli");
                 imageIntent = new Intent(activity, NewHideVidActivity.class);
+                imageIntent.putExtra(Constants.FIRST_ENTER_VID, NewHideVidActivity.NEW_ADD_VID);
                 break;
             case STATUS_FOUND:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_all_cli");
                 imageIntent = new Intent(activity, NewHideVidActivity.class);
+                imageIntent.putExtra(Constants.FIRST_ENTER_VID, NewHideVidActivity.FOUND_VID);
                 break;
             case STATUS_TOADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_add_cli");

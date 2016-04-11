@@ -112,8 +112,8 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
             setImageState();
         } else {
 
-            mTopViewBackground.setBackgroundColor(getResources().getColor(R.color.ctc));
-            mTitleBar.setToolbarColorResource(R.color.ctc);
+            mTopViewBackground.setBackgroundColor(getResources().getColor(R.color.cb));
+            mTitleBar.setToolbarColorResource(R.color.cb);
 
             bigText.setText(getString(R.string.wifi_scan_result_safe));
             bigViewIcon.setImageResource(R.drawable.wifisafety);
