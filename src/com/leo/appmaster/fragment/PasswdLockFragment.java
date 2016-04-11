@@ -363,6 +363,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                         mIvBottom.setBackgroundResource(
                                 R.drawable.reset_airsig_gesture);
                     } else {
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "settings", "airsig_sh");
                         mPassLockView.setVisibility(View.GONE);
                         mAirSigTouchView.setVisibility(View.VISIBLE);
                         mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;

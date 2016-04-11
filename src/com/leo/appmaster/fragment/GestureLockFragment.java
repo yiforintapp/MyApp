@@ -221,6 +221,7 @@ public class GestureLockFragment extends LockFragment implements
                         mIvBottom.setBackgroundResource(
                                 R.drawable.reset_airsig_gesture);
                     } else {
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "settings", "airsig_sh");
                         mLockPatternView.setVisibility(View.GONE);
                         mAirSigTouchView.setVisibility(View.VISIBLE);
                         mShowType = AirSigSettingActivity.AIRSIG_UNLOCK;
