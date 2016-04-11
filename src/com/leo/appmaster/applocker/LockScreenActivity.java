@@ -95,6 +95,7 @@ import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
+import com.leo.appmaster.intruderprotection.ShowToast;
 import com.leo.appmaster.intruderprotection.WaterMarkUtils;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -2201,35 +2202,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                    }
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_tips_click");
 //                    finish();
-                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            if (mPermissionGuideToast == null) {
-                                mPermissionGuideToast = new BaseSelfDurationToast(LockScreenActivity.this);
-                            }
-                            mPermissionGuideToast.setDuration(1000 * 5);
-                            if (Utilities.hasNavigationBar(LockScreenActivity.this)) {
-                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission_navigationbar);
-                            } else {
-                                mPermissionGuideToast.setWindowAnimations(R.style.toast_guide_permission);
-                            }
-                            mPermissionGuideToast.setMatchParent();
-                            mPermissionGuideToast.setGravity(Gravity.BOTTOM, 0, DipPixelUtil.dip2px(LockScreenActivity.this, 14));
-                            View v = LayoutInflater.from(LockScreenActivity.this).inflate(R.layout.toast_permission_guide, null);
-                            ImageView ivClose = (ImageView) v.findViewById(R.id.iv_permission_guide_close);
-                            ivClose.setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (mPermissionGuideToast != null) {
-                                        mPermissionGuideToast.hide();
-                                    }
-                                }
-                            });
-                            mPermissionGuideToast.setView(v);
-                            mPermissionGuideToast.show();
-                        }
-                    }, 200);
+                    ShowToast.showPermissionGuideToast(this);
                 } catch (Exception e) {
                 }
 //                finish();
