@@ -19,6 +19,7 @@ import android.widget.RemoteViews;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.mgr.BatteryManager;
@@ -26,6 +27,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 
 /**
@@ -155,7 +157,7 @@ public class BatteryNotifyHelper {
                             final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
                             LeoLog.d(TAG, "apps count: " + list.size()
                                     + "/" + mManager.getAppThreshold());
-                            if (list.size() > mManager.getAppThreshold()) {
+                            if (list.size() > mManager.getAppThreshold() && !LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI,false)) {
                                 ThreadManager.executeOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
