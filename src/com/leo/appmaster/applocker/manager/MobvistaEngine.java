@@ -83,7 +83,9 @@ public class MobvistaEngine {
 	
 	private static MobVistaSDK sdk;
 
-	
+	public void setContext(Context context) {
+		mAppContext = context;
+	}
 
 
 //    static {
@@ -120,7 +122,7 @@ public class MobvistaEngine {
     public static synchronized MobvistaEngine getInstance(Context ctx) {
         if (sInstance == null) {
             LeoLog.d(TAG, "MobvistaEngine first touch, init Mobvista");
-            initMobvista();
+            initMobvista(ctx);
             sInstance = new MobvistaEngine(ctx);
             // Do not preload all advertise when bootup.
             // Load them only if necessary
@@ -135,8 +137,8 @@ public class MobvistaEngine {
         return sInstance;
     }
 
-    private static void initMobvista() {
-        Context context = AppMasterApplication.getInstance();
+    private static void initMobvista(Context ctx) {
+        //Context context = AppMasterApplication.getInstance();
         try {
             long start = SystemClock.elapsedRealtime();
             // Mob 6.x
@@ -145,7 +147,7 @@ public class MobvistaEngine {
 			
 			sdk = MobVistaSDKFactory.getMobVistaSDK();
 			Map<String, String> initInfo = sdk.getMVConfigurationMap(Constants.MOBVISTA_APPID, Constants.MOBVISTA_APPKEY);
-			sdk.init(initInfo, (AppMasterApplication)context);
+			sdk.init(initInfo, /*(AppMasterApplication)context*/ctx);
 			
             LeoLog.i(TAG, "initMobvista module done, cost time="
                     + (SystemClock.elapsedRealtime() - start));
@@ -157,7 +159,7 @@ public class MobvistaEngine {
     }
 
     private MobvistaEngine(Context ctx) {
-        mAppContext = ctx.getApplicationContext();
+        mAppContext = ctx/*.getApplicationContext()*/;
         mPref = AppMasterPreference.getInstance(mAppContext);
         mMobVistaCacheMap = new HashMap<String, MobvistaAdData>();
         mMobVistaListeners = new HashMap<String, MobvistaListener>();

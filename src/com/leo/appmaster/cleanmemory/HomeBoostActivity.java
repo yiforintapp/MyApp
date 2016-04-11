@@ -229,7 +229,7 @@ public class HomeBoostActivity extends Activity {
 			 */
 			@Override
 			public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
-				HomeBoostActivity.this.finish();
+				//HomeBoostActivity.this.finish();
 				HashMap<String, String> map = new HashMap<String, String>();
 				map.put("unitId", unitID);
 				SDKWrapper.addEvent(HomeBoostActivity.this.getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "click", mAdSource, map);
@@ -654,7 +654,7 @@ public class HomeBoostActivity extends Activity {
                 @Override
                 public void onFinish() {
                     counter.setText(0+"");
-                    //HomeBoostActivity.this.finish();
+                    HomeBoostActivity.this.finish();
 					WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 					DisplayMetrics metrics = new DisplayMetrics();
 					windowManager.getDefaultDisplay().getMetrics(metrics);

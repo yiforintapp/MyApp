@@ -65,6 +65,12 @@ public class ADEngineWrapper {
         if (sInstance == null) {
             sInstance = new ADEngineWrapper(context);
         }
+		
+		if (sInstance != null) {
+			if (sInstance.mMobEngine != null) {
+				sInstance.mMobEngine.setContext(context);
+			}
+		}
         return sInstance;
     }
 

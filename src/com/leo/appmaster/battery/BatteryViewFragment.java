@@ -2373,7 +2373,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShouldLoadAd = amp.getADOnScreenSaver() == 1;
         if (mShouldLoadAd) {
             mAdSource = amp.getChargingAdConfig();
-            ADEngineWrapper.getInstance(AppMasterApplication.getInstance()).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
+            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
                 @Override
                 public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {

@@ -1214,7 +1214,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         //LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
                         // 3.3.2 封装Max与Mob SDK
                         if (mDidLoadAd) {
-                            ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).releaseAd(mAdSource, id, mAdView);
+                            ADEngineWrapper.getInstance(LockScreenActivity.this).releaseAd(mAdSource, id, mAdView);
                         }
                     }
                 }
@@ -1523,7 +1523,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 						otherAdSwitcher = false;
 					}
 
-					ADEngineWrapper.getInstance(LockScreenActivity.this.getApplicationContext()).removeMobAdData(mAdSource, unitID, mAdView);
+					ADEngineWrapper.getInstance(LockScreenActivity.this).removeMobAdData(mAdSource, unitID, mAdView);
 					mAdapterCycle.clearView();
 					mBannerContainer.removeAllViews();
 					new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
