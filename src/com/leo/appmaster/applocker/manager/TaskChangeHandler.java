@@ -225,7 +225,7 @@ public class TaskChangeHandler {
             AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,
                     System.currentTimeMillis());
 
-            LeoLog.d("checkScreen", "get in");
+            // LeoLog.d("checkScreen", "get in");
             List<String> lockList = lockManager.getCurLockList();
             boolean lock = false;
             if (lockList != null) {
@@ -244,13 +244,13 @@ public class TaskChangeHandler {
 
                 LeoLog.d("Track Lock Screen",
                         "apply lockscreen form TaskChangeHandler");
-                LeoLog.d("checkScreen", "lock");
+                // LeoLog.d("checkScreen", "lock");
                 if (lockManager.applyLock(LockManager.LOCK_MODE_FULL, pkg, false, null)) {
                     amp.setUnlocked(false);
                 }
             }
         } else {
-            LeoLog.d("checkScreen", "not get in");
+            // LeoLog.d("checkScreen", "not get in");
             mLastRuningActivity = activity;
         }
     }
