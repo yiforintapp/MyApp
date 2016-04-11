@@ -69,7 +69,7 @@ public class GestureLockFragment extends LockFragment implements
     private LockPatternView mLockPatternView;
     private boolean mNeedIntruderProtection = false;
     private final static int DISMISSRESULT = 1;
-
+    private int airsigFailTimes;
 
     // GP包
     public static final String GPPACKAGE = "com.android.vending";
@@ -192,6 +192,7 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     private void initAirSig() {
+        airsigFailTimes = 0;
         boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
 
@@ -308,6 +309,13 @@ public class GestureLockFragment extends LockFragment implements
                 if (match) {
                     ((LockScreenActivity) mActivity).onUnlockSucceed();
                 } else {
+                    if (airsigFailTimes < 2) {
+                        airsigFailTimes++;
+                    } else {
+                        airsigFailTimes = 0;
+                        //switch to normal lock
+                        changeNormalLockType();
+                    }
                     //dismiss result tv 1.5s later
                     mHandler.sendEmptyMessageDelayed(DISMISSRESULT, 1000);
                 }
@@ -688,24 +696,31 @@ public class GestureLockFragment extends LockFragment implements
             if (!isAirSigVaild) {
                 showUpdateDialog();
             } else {
-                mLockPatternView.setVisibility(View.GONE);
-                mAirSigTouchView.setVisibility(View.VISIBLE);
-                mShowType = AirSigActivity.AIRSIG_UNLOCK;
-                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
-                mIvBottom.setBackgroundResource(
-                        R.drawable.reset_pass_gesture);
-                changeBg(true, mPackageName);
+                changeAirSigLockType();
             }
-
         } else {
-            mLockPatternView.setVisibility(View.VISIBLE);
-            mAirSigTouchView.setVisibility(View.GONE);
-            mShowType = AirSigActivity.NOMAL_UNLOCK;
-            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
-            mIvBottom.setBackgroundResource(
-                    R.drawable.reset_airsig_gesture);
-            changeBg(false, mPackageName);
+            changeNormalLockType();
         }
+    }
+
+    private void changeNormalLockType() {
+        mLockPatternView.setVisibility(View.VISIBLE);
+        mAirSigTouchView.setVisibility(View.GONE);
+        mShowType = AirSigActivity.NOMAL_UNLOCK;
+        mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+        mIvBottom.setBackgroundResource(
+                R.drawable.reset_airsig_gesture);
+        changeBg(false, mPackageName);
+    }
+
+    private void changeAirSigLockType() {
+        mLockPatternView.setVisibility(View.GONE);
+        mAirSigTouchView.setVisibility(View.VISIBLE);
+        mShowType = AirSigActivity.AIRSIG_UNLOCK;
+        mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal));
+        mIvBottom.setBackgroundResource(
+                R.drawable.reset_pass_gesture);
+        changeBg(true, mPackageName);
     }
 
     private void showUpdateDialog() {

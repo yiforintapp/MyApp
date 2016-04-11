@@ -123,6 +123,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private boolean mIsShowAnim/* 是否显示动画 */, mIsLoadAdSuccess/* 是否显示动画 */,
             mIsCamouflageLockSuccess/* 伪装是否解锁成功 */;
 
+    private int airsigFailTimes;
+
     /*-------------------end-------------------*/
 
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -332,6 +334,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     }
 
     private void initAirSig() {
+        airsigFailTimes = 0;
         boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
         boolean isAirsigReady = ASGui.getSharedInstance().isSignatureReady(1);
         boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
@@ -462,11 +465,42 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     ((LockScreenActivity) mActivity).onUnlockSucceed();
                 } else {
                     //dismiss result tv 1.5s later
+
+                    if (airsigFailTimes < 2) {
+                        airsigFailTimes++;
+                    } else {
+                        airsigFailTimes = 0;
+                        //switch to normal lock
+                        changeNormalLockType();
+                    }
+
                     mHandler.sendEmptyMessageDelayed(DISMISSRESULT, 1000);
                 }
 
             }
         });
+    }
+
+    private void changeNormalLockType() {
+        mPassLockView.setVisibility(View.VISIBLE);
+        mAirSigTouchView.setVisibility(View.GONE);
+        mShowType = AirSigActivity.NOMAL_UNLOCK;
+
+        mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
+        mIvBottom.setBackgroundResource(
+                R.drawable.reset_airsig_gesture);
+        changeBg(false, mPackageName);
+    }
+
+
+    private void changeAirSigLockType() {
+        mPassLockView.setVisibility(View.GONE);
+        mAirSigTouchView.setVisibility(View.VISIBLE);
+        mShowType = AirSigActivity.AIRSIG_UNLOCK;
+        mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
+        mIvBottom.setBackgroundResource(
+                R.drawable.reset_pass_number);
+        changeBg(true, mPackageName);
     }
 
     private void pressThumb(final boolean pressed) {
@@ -904,24 +938,11 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             if (!isAirSigVaild) {
                 showUpdateDialog();
             } else {
-                mPassLockView.setVisibility(View.GONE);
-                mAirSigTouchView.setVisibility(View.VISIBLE);
-                mShowType = AirSigActivity.AIRSIG_UNLOCK;
+                changeAirSigLockType();
 
-                mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_normal_psw));
-                mIvBottom.setBackgroundResource(
-                        R.drawable.reset_pass_number);
-                changeBg(true, mPackageName);
             }
         } else {
-            mPassLockView.setVisibility(View.VISIBLE);
-            mAirSigTouchView.setVisibility(View.GONE);
-            mShowType = AirSigActivity.NOMAL_UNLOCK;
-
-            mTvBottom.setText(getString(R.string.airsig_settings_lock_fragment_airsig));
-            mIvBottom.setBackgroundResource(
-                    R.drawable.reset_airsig_gesture);
-            changeBg(false, mPackageName);
+            changeNormalLockType();
         }
     }
 
