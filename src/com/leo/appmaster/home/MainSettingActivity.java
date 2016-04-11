@@ -94,7 +94,6 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
     private void initUI() {
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
         mCtbMain.setToolbarTitle(STRID_SETTING);
-        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
 
         //更改手势/数字密码部分
         mCsiChangeGstOrPsw = (CommonSettingItem) findViewById(R.id.csi_change_lock_type);

@@ -239,13 +239,20 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             if (mRootView.getVisibility() != View.GONE) {
                 mRootView.setVisibility(View.GONE);
             }
-            if (mHomeGuideAnim != null) {
-                if (mHomeGuideAnim.isRunning()) {
-                    mHomeGuideAnim.cancel();
+            if (GUIDE_TYPE.HOME_MORE_GUIDE == type) {
+                if (mHomeGuideAnim != null) {
+                    if (mHomeGuideAnim.isRunning()) {
+                        mHomeGuideAnim.cancel();
+                    }
+                    mHomeGuideRt.clearAnimation();
+                    mHomeGuideAnim = null;
                 }
-                mHomeGuideRt.clearAnimation();
-                mHomeGuideAnim = null;
+                if (mHomeGuideRt != null) {
+                    mHomeGuideRt.setVisibility(View.GONE);
+                    mHomeGuideRt = null;
+                }
             }
+
             if (mBatteryGuideAnim != null) {
                 if (mBatteryGuideAnim.isRunning()) {
                     mBatteryGuideAnim.cancel();
@@ -260,6 +267,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             return;
         }
         if (GUIDE_TYPE.HOME_MORE_GUIDE == type) {
+
             if (mHomeGuideRt != null) {
 
                 SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_bub");

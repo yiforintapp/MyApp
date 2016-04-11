@@ -66,7 +66,6 @@ import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -1672,7 +1671,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         if (mMenuItems != null && mMenuItems.size() > 0) {
             int topViewHeight = (int) getResources().getDimension(R.dimen.toolbar_height)
-                    + DipPixelUtil.px2dip(this, 1) * 7
+                    + DipPixelUtil.px2dip(this, 2) * 7
                     + ((int) getResources().getDimension(R.dimen.home_left_list_item_height))
                     * (mMenuItems.size() - 1);
             int lightHeight = (int) getResources().getDimension(R.dimen.home_left_list_item_height);

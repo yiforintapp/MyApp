@@ -419,7 +419,7 @@
     <dimen name="secur_mody_bt_height">30dp</dimen>
     <dimen name="secur_nromal_tip_tv_marg_left">40dp</dimen>
     <dimen name="secur_open_line2">18dp</dimen>
-    <dimen name = "det_result_icon_margin_right">10.3dp</dimen>
+    <dimen name="det_result_icon_margin_right">10.3dp</dimen>
     <dimen name="home_det_result_tv1_padd_left">137dp</dimen>
     <dimen name="home_det_result_tv1_padd_right">20dp</dimen>
     <dimen name="det_result_icon_margin_top">13dp</dimen>

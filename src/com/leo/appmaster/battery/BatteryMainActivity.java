@@ -140,7 +140,7 @@ public class BatteryMainActivity extends BaseFragmentActivity implements OnClick
         mPbLoading = (ProgressBar) findViewById(R.id.pb_loading);
         mRlEmpty = (RelativeLayout) findViewById(R.id.rl_empty);
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_battery);
-        mCtbMain.setToolbarColorResource(R.color.battery_view_bg);
+        mCtbMain.setToolbarColorResource(R.color.ctc);
         mCtbMain.setToolbarTitle(R.string.hp_device_power);
         mCtbMain.setOptionImageResource(R.drawable.ic_toolbar_more);
         mCtbMain.setOptionMenuVisible(true);

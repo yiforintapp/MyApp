@@ -20,7 +20,7 @@
             android:id="@+id/rl_anim_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/batterymanage_toplayout_height"
-            android:background="#1167f0" >
+            android:background="@color/ctc" >
 
             <RelativeLayout
                 android:layout_marginTop="5dp"
