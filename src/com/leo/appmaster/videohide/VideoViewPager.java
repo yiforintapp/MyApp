@@ -353,8 +353,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             if (isServiceDo) {
                 int mProcessType = -1;
                 try {
-                    mProcessType =
-                            mService.cancelHide(path);
+                    mProcessType = mService.cancelHide(path);
                     if (mProcessType == 0) {
                         mResultPath.add(path);
                         mAllPath.remove(mPosition);
@@ -369,8 +368,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 if (!isSuccess) {
                     newFileName = FileOperationUtil.getNameFromFilepath(path);
                     try {
-                        newFileName = newFileName.substring(0,
-                                newFileName.indexOf(".leotmv"));
+                        newFileName = newFileName.substring(0, newFileName.indexOf(".leotmv"));
 
                         boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
                                 getManager(MgrContext.MGR_PRIVACY_DATA)).
@@ -380,10 +378,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             isSuccess = false;
                         } else {
                             mResultPath.add(path);
-                            FileOperationUtil.saveVideoMediaEntry(FileOperationUtil
-                                    .makePath(
-                                            FileOperationUtil
-                                                    .getDirPathFromFilepath(path), newFileName), this);
+                            FileOperationUtil.saveVideoMediaEntry(FileOperationUtil.makePath(
+                                            FileOperationUtil .getDirPathFromFilepath(path), newFileName), this);
                             FileOperationUtil.deleteFileMediaEntry(path, this);
                             mAllPath.remove(mPosition);
                         }
@@ -394,8 +390,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             } else {
                 newFileName = FileOperationUtil.getNameFromFilepath(path);
                 try {
-                    newFileName = newFileName.substring(0,
-                            newFileName.indexOf(".leotmv"));
+                    newFileName = newFileName.substring(0, newFileName.indexOf(".leotmv"));
 
                     boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
                             getManager(MgrContext.MGR_PRIVACY_DATA)).
@@ -405,17 +400,12 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         isSuccess = false;
                     } else {
                         mResultPath.add(path);
-                        FileOperationUtil.saveVideoMediaEntry(FileOperationUtil
-                                .makePath(
-                                        FileOperationUtil
-                                                .getDirPathFromFilepath(path), newFileName), this);
+                        FileOperationUtil.saveVideoMediaEntry(FileOperationUtil.makePath(
+                                        FileOperationUtil.getDirPathFromFilepath(path), newFileName), this);
                         FileOperationUtil.deleteFileMediaEntry(path, this);
                         mAllPath.remove(mPosition);
-                        SDKWrapper.addEvent(this, SDKWrapper.P1,
-                                "hide_vid_operation",
-                                "vid_ccl_fal");
+                        SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_vid_operation", "vid_ccl_fal");
                         mProcessNum++;
-                        // }
                     }
                 } catch (Exception e) {
                     isSuccess = false;
@@ -424,6 +414,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             //refresh by itself
             pdm.registerMediaListener();
             pdm.notifySecurityChange();
+
+            // 取消隐藏不算新增
+            pdm.haveCheckedVid();
         }
         readyCancelDoingDone(isSuccess);
     }

@@ -414,6 +414,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         pdm.registerMediaListener();
         pdm.notifySecurityChange();
         readyDoingDone(isSuccess);
+
+        // 取消隐藏不算新增 add in v3.6
+        pdm.haveCheckedPic();
     }
 
     private void onPostDo(String isSuccess) {

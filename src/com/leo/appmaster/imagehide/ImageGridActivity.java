@@ -1091,6 +1091,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                         }
 
                     }
+                    // 取消隐藏不算新增，add in v3.6
+                    pdm.haveCheckedPic();
                 }
 
                 pdm.registerMediaListener();

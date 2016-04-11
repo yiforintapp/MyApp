@@ -527,8 +527,11 @@ public class BatteryManagerImpl extends BatteryManager {
     }
 
     @Override
-    public void reportBatteryError(int percent) {
+    public void reportBatteryError(int percent, int times, long foregroundTime) {
         Map<String, String> map = DeviceUtil.getDeviceParams();
+        map.put("times", String.valueOf(times));
+        map.put("foregroundTime", String.valueOf(foregroundTime));
+        map.put("percent", String.valueOf(percent));
 
         SDKWrapper.reportSkyfallExtra(mContext, "battery_error", "percent_" + percent, map);
     }

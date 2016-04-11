@@ -665,8 +665,8 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
             pdm.unregisterMediaListener();
             if (isHide) {
                 for (VideoItemBean item : list) {
-                    if (!mIsBackgoundRunning)
-                        break;
+                    if (!mIsBackgoundRunning) { break; }
+
                     mUnhidePath.add(item.getPath());
                     if (isServiceDo) {
                         int mProcessType = -1;
@@ -683,32 +683,25 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         }
                         // if cb can not do this , pg do this
                         if (!isSuccess) {
-                            newFileName =
-                                    FileOperationUtil.getNameFromFilepath(item.getPath());
+                            newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
                             newFileName = newFileName + ".leotmv";
                             boolean isHideSuccees = ((PrivacyDataManager) MgrContext.
                                     getManager(MgrContext.MGR_PRIVACY_DATA)).
                                     onHideVid(item.getPath(), "");
                             if (isHideSuccees) {
-                                FileOperationUtil.saveFileMediaEntry(FileOperationUtil
-                                        .makePath(
-                                                FileOperationUtil.getDirPathFromFilepath(item
-                                                        .getPath()),
-                                                newFileName), this);
-                                FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
-                                        this);
+                                FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
+                                        FileOperationUtil.getDirPathFromFilepath(item.getPath()),
+                                        newFileName), this);
+                                FileOperationUtil.deleteVideoMediaEntry(item.getPath(), this);
                                 mVideoItems.remove(item);
-                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                        "hidevd_cb",
-                                        "hide_done");
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb", "hide_done");
                             } else {
                                 mUnhidePath.remove(item.getPath());
                                 isSuccess = false;
                             }
                         }
                     } else {
-                        newFileName =
-                                FileOperationUtil.getNameFromFilepath(item.getPath());
+                        newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
                         try {
                             newFileName = newFileName + ".leotmv";
 
@@ -717,25 +710,16 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                                     onHideVid(item.getPath(), "");
 
                             if (isHideSuccees) {
-                                FileOperationUtil.saveFileMediaEntry(FileOperationUtil
-                                        .makePath(
-                                                FileOperationUtil
-                                                        .getDirPathFromFilepath(item
-                                                                .getPath()),
-                                                newFileName), this);
-                                FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
-                                        this);
+                                FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
+                                        FileOperationUtil.getDirPathFromFilepath(item.getPath()), newFileName), this);
+                                FileOperationUtil.deleteVideoMediaEntry(item.getPath(), this);
                                 mVideoItems.remove(item);
-                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                        "hidevd_cb",
-                                        "hide_done");
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb", "hide_done");
                                 mProcessNum++;
                             } else {
                                 mUnhidePath.remove(item.getPath());
                                 isSuccess = false;
-                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                        "hide_vid_operation",
-                                        "vid_hid_fal");
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_vid_operation", "vid_hid_fal");
                             }
                         } catch (Exception e) {
                             isSuccess = false;
@@ -751,8 +735,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         LeoLog.d("testcancelHide", "isServiceDo");
                         int mProcessType = -1;
                         try {
-                            mProcessType =
-                                    mService.cancelHide(item.getPath());
+                            mProcessType = mService.cancelHide(item.getPath());
                         } catch (RemoteException e) {
                             isSuccess = false;
                         }
@@ -765,23 +748,17 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         if (!isSuccess) {
                             LeoLog.d("testcancelHide", "CB do not cancel , pg do");
                             try {
-                                newFileName =
-                                        FileOperationUtil.getNameFromFilepath(item.getPath());
-                                newFileName = newFileName.substring(0,
-                                        newFileName.indexOf(".leotmv"));
+                                newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
+                                newFileName = newFileName.substring(0, newFileName.indexOf(".leotmv"));
 
                                 boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
                                         getManager(MgrContext.MGR_PRIVACY_DATA)).
                                         cancelHideVid(item.getPath());
 
                                 if (isUnHideSuccees) {
-                                    FileOperationUtil.saveVideoMediaEntry(FileOperationUtil
-                                            .makePath(
-                                                    FileOperationUtil
-                                                            .getDirPathFromFilepath(item
-                                                                    .getPath()), newFileName), this);
-                                    FileOperationUtil.deleteFileMediaEntry(item.getPath(),
-                                            this);
+                                    FileOperationUtil.saveVideoMediaEntry(FileOperationUtil.makePath(
+                                            FileOperationUtil .getDirPathFromFilepath(item .getPath()), newFileName), this);
+                                    FileOperationUtil.deleteFileMediaEntry(item.getPath(), this);
                                     mVideoItems.remove(item);
                                 }
                             } catch (Exception e) {
@@ -789,40 +766,36 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                             }
                         }
                     } else {
-                        newFileName =
-                                FileOperationUtil.getNameFromFilepath(item.getPath());
+                        newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
                         try {
-                            newFileName = newFileName.substring(0,
-                                    newFileName.indexOf(".leotmv"));
+                            newFileName = newFileName.substring(0, newFileName.indexOf(".leotmv"));
                             boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
                                     getManager(MgrContext.MGR_PRIVACY_DATA)).
                                     cancelHideVid(item.getPath());
                             if (isUnHideSuccees) {
-                                FileOperationUtil.saveVideoMediaEntry(FileOperationUtil
-                                        .makePath(
-                                                FileOperationUtil
-                                                        .getDirPathFromFilepath(item
-                                                                .getPath()), newFileName), this);
-                                FileOperationUtil.deleteFileMediaEntry(item.getPath(),
-                                        this);
+                                FileOperationUtil.saveVideoMediaEntry(FileOperationUtil.makePath(
+                                        FileOperationUtil.getDirPathFromFilepath(item.getPath()), newFileName), this);
+                                FileOperationUtil.deleteFileMediaEntry(item.getPath(), this);
                                 LeoLog.d("testcancelHide", "cancel success");
                                 mVideoItems.remove(item);
                                 mProcessNum++;
                             } else {
                                 isSuccess = false;
-                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                        "hide_vid_operation",
-                                        "vid_ccl_fal");
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_vid_operation", "vid_ccl_fal");
                             }
                         } catch (Exception e) {
                             isSuccess = false;
                         }
                     }
                 }
+
+                // 取消隐藏不算新增
+                pdm.haveCheckedVid();
             }
             //refresh by itself
             pdm.registerMediaListener();
             pdm.notifySecurityChange();
+
         }
         readyDoingDone(isSuccess, isHide);
     }
