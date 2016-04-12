@@ -1226,8 +1226,8 @@
     <string name="hd_pic_danger_tip">Suggest to hide</string>
     <string name="hd_privacy_safe">Privacy status is in good condition</string>
     <string name="hd_more_guide_tip">Click here to find more features</string>
-    <string name="hd_lock_permisson_tip">Enable the "App Lock" access permission to fix the App Lock problem</string>
-    <string name="hd_lost_permisson_tip">Suggest to enable "Anti-Theft" function, please click to enter the Anti-Theft page</string>
+    <string name="hd_lock_permisson_tip">Enable the \"App Lock\" access permission to fix the App Lock problem</string>
+    <string name="hd_lost_permisson_tip">Suggest to enable \"Anti-Theft\" function, please click to enter the Anti-Theft page</string>
     <string name="airsig_tip_toast_text">Theme doesn\'t apply to Signature Unlock</string>
     <string name="airsig_tip_toast_update_text">Signature Unlock key has expired, please update the LEO Privacy for further usage</string>
     <string name="uninstall_guide_tips">Advanced Protection was enabled, please click here to uninstall LEO Privacy</string>

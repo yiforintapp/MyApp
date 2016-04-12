@@ -555,7 +555,7 @@
 
 
     <!-- version 2.5 huangqili part -->
-    <string name="forbid_uninstall_off">يشغل حماية أعلى ويمنع إلغاء تثبيت PrivacyGuard </string>
+    <string name="forbid_uninstall_off">يشغل حماية أعلى ويمنع إلغاء تثبيت LEO Privacy</string>
     <string name="forbid_uninstall_on">تم شغل حماية عالبة مستوى</string>
     <string name="setting_hide_lockline">كمن مسار فتح قفل</string>
     <string name="change_to_gesture">إلى إشارة</string>
