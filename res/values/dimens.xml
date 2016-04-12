@@ -3,9 +3,9 @@
     <dimen name="lockscreen_permissiontip_marginbottom">15dp</dimen>
     <dimen name="batteryscreen_slidearea_height">70dp</dimen>
     <dimen name="batteryscreen_bossview_height">300dp</dimen>
-	<dimen name="batterymanage_toplayout_height">183dp</dimen>
-	<dimen name="batterymanage_toplayout_ball">154dp</dimen>
-	<dimen name="home_left_list_item_height">60dp</dimen>
+    <dimen name="batterymanage_toplayout_height">183dp</dimen>
+    <dimen name="batterymanage_toplayout_ball">154dp</dimen>
+    <dimen name="home_left_list_item_height">60dp</dimen>
     <dimen name="setting_item_height">55dp</dimen>
     <dimen name="lock_icon_width">22dp</dimen>
     <dimen name="lock_icon_X">28dp</dimen>
@@ -433,9 +433,17 @@
     <dimen name="boost_template_item_width">286dp</dimen>
     <dimen name="boost_template_item_icon_width">48dp</dimen>
     <dimen name="boost_template_item_icon_height">48dp</dimen>
-    
+
     <dimen name="boost_template_item_btn_width">66dp</dimen>
     <dimen name="boost_template_item_btn_height">29dp</dimen>
     <dimen name="home_result_width">328dp</dimen>
     <dimen name="home_result_height">50dp</dimen>
+    <dimen name="home_shield_width">118.67dp</dimen>
+    <dimen name="home_shield_height">118dp</dimen>
+    <dimen name = "home_result_bg_width">328dp</dimen>
+    <dimen name = "home_result_bg_height">59dp</dimen>
+    <dimen name="home_shied_center_good_width">48.33dp</dimen>
+    <dimen name="home_shied_center_good_heigh">38.67dp</dimen>
+    <dimen name="home_shied_center_no_width">14dp</dimen>
+    <dimen name="home_shied_center_no_heigh">63.33dp</dimen>
 </resources>

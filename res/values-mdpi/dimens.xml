@@ -191,5 +191,18 @@
     <dimen name="hide_grid_image_width">109dp</dimen>
     <dimen name="add_num_cb_padding">30dp</dimen>
     <dimen name="home_det_height">268dp</dimen>
-    <dimen name="detect_shield_margin_tip">88dp</dimen>
+    <dimen name="detect_shield_margin_tip">58dp</dimen>
+
+    <dimen name="home_shield_width">105.48dp</dimen>
+    <dimen name="home_shield_height">88.5dp</dimen>
+    <dimen name = "home_result_bg_width">291.52dp</dimen>
+    <dimen name = "home_result_bg_height">44.24dp</dimen>
+    <dimen name="home_shied_center_good_width">42.96dp</dimen>
+    <dimen name="home_shied_center_good_heigh">29dp</dimen>
+    <dimen name="home_shied_center_no_width">12.41dp</dimen>
+    <dimen name="home_shied_center_no_heigh">47.04dp</dimen>
+    <dimen name="home_result_height">50dp</dimen>
+    <integer name="shield_center_blue_offset_x">35</integer>
+    <integer name="shield_center_red_offset_x">47</integer>
+    <dimen name="home_det_result_tv3_padd_left">108dp</dimen>
 </resources>
