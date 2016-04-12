@@ -81,12 +81,14 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
             R.string.home_tab_wifi, R.string.home_tab_lost,
             R.string.home_tab_instruder, R.string.category_lock, R.string.hp_hide_video,
             R.string.hp_hide_img, R.string.hp_device_power, R.string.call_filter_name, R.string.category_other,
+            R.string.airsig_settings_activity_title,
     };
 
     private final static int[] sNewCategoryIds = {
             R.string.home_tab_lost,
             R.string.home_tab_instruder, R.string.category_lock, R.string.hp_hide_video,
             R.string.hp_hide_img, R.string.call_filter_name, R.string.category_other,
+            R.string.airsig_settings_activity_title,
     };
 
     private final ArrayList<String> mCategories = new ArrayList<String>();
@@ -121,6 +123,11 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         }
 
         String from = intent.getStringExtra("from");
+        if (!Utilities.isEmpty(from) && from.equals("airsig")) {
+            if (mCategory != null) {
+                mCategory.setText(getString(R.string.airsig_settings_activity_title));
+            }
+        }
     }
 
     private void initEmails() {
