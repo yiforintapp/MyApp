@@ -1,12 +1,5 @@
 package com.leo.appmaster.applocker;
 
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,6 +37,13 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LeoSingleLinesInputDialog;
 import com.leo.appmaster.utils.LeoLog;
+
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by root on 15-10-11.
@@ -183,8 +183,8 @@ public class LockModeEditActivity extends BaseActivity implements
         LockMode mode = new LockMode();
         mode.modeName = mModeName;
         mListAdapter.setMode(mode, mNewMode);
-        mListAdapter.setData(resault, true);
-        switchList = mListAdapter.getSwitchList(false);
+        mListAdapter.setData(resault, true, true);
+        switchList = mListAdapter.getSwitchList(false, true);
     }
 
     private int fixPosEqules(AppInfo info) {

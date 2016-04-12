@@ -75,7 +75,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         if (mLockAdapter != null) {
             mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
             if (mResaultList != null) {
-                mLockAdapter.setData(mResaultList,false);
+                mLockAdapter.setData(mResaultList,false, false);
             }
         }
     }

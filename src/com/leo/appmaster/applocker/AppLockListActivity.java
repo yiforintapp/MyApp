@@ -149,7 +149,7 @@ public class AppLockListActivity extends BaseActivity implements
         mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
         if (mResaultList != null) {
             mLockAdapter.setMode(mLockManager.getCurLockMode(), false);
-            mLockAdapter.setData(mResaultList, true);
+            mLockAdapter.setData(mResaultList, true, false);
             if (mFromAppScanResult && (mAppList != null && mAppList.size() > 0)) {
                 List<AppInfo> switchs = mLockAdapter.getSwitchs();
                 if (switchs != null && switchs.size() > 0) {

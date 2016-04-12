@@ -187,10 +187,10 @@ public class ListAppLockAdapter extends BaseAdapter {
 
     List<AppInfo> switchList;
 
-    public void setData(ArrayList<AppInfo> resault, boolean showSwitch) {
+    public void setData(ArrayList<AppInfo> resault, boolean showSwitch, boolean fromMode) {
         mList.clear();
         if (showSwitch) {
-            switchList = getSwitchList(true);
+            switchList = getSwitchList(true, fromMode);
             mList.addAll(switchList);
         }
         mList.addAll(resault);
@@ -209,16 +209,18 @@ public class ListAppLockAdapter extends BaseAdapter {
         mFlag = fromDefaultRecommentActivity;
     }
 
-    public List<AppInfo> getSwitchList(boolean isNeedLabel) {
+    public List<AppInfo> getSwitchList(boolean isNeedLabel, boolean fromMode) {
         List<AppInfo> switchList = new ArrayList<AppInfo>();
         WifiLockSwitch wifiSwitch = new WifiLockSwitch();
         BlueToothLockSwitch blueToothSwitch = new BlueToothLockSwitch();
 
         if (isNeedLabel) {
-            AppInfo labelInfo = new AppInfo();
-            labelInfo.label = Constants.LABLE_LIST;
-            labelInfo.titleName = Constants.SWITCH_LIST;
-            switchList.add(labelInfo);
+            if (!fromMode) {
+                AppInfo labelInfo = new AppInfo();
+                labelInfo.label = Constants.LABLE_LIST;
+                labelInfo.titleName = Constants.SWITCH_LIST;
+                switchList.add(labelInfo);
+            }
         }
 
         AppInfo wifiInfo = new AppInfo();
