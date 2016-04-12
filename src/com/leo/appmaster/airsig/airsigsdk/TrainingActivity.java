@@ -13,15 +13,22 @@ import com.airsig.airsigengmulti.ASEngine.ASStrength;
 import com.airsig.airsigengmulti.ASEngine.OnGetActionResultListener;
 import com.airsig.airsigengmulti.ASEngine.OnResetSignatureResultListener;
 import com.leo.appmaster.R;
+import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.airsigui.AnimatedGifImageView;
 import com.leo.appmaster.airsig.airsigutils.EventLogger;
 import com.leo.appmaster.airsig.airsigutils.Utils;
+import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.feedback.FeedbackActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -69,6 +76,10 @@ import android.widget.Toast;
 
 
 public class TrainingActivity extends Activity {
+
+    private int mTryTimes = 0;
+    private LEOAlarmDialog mConfirmCloseDialog;
+    public static final int SHOWDIALOG = 1;
 
     private enum Step {
         TrainingCompleted(null),
@@ -125,6 +136,17 @@ public class TrainingActivity extends Activity {
     private ProgressBar mProgressBar;
     private ToneGenerator mToneGenerator = null;
     private ToneGenerator mToneGenerator2 = null;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case SHOWDIALOG:
+                    showFailDialog();
+                    break;
+            }
+        }
+    };
+
 
     @SuppressLint({"InflateParams", "NewApi"})
     @Override
@@ -625,6 +647,16 @@ public class TrainingActivity extends Activity {
 
                             switch (error) {
                                 case TRAINING_INVALID_LONG_SIGNATURE:
+                                    LeoLog.d("testAirSig", "error 1");
+
+                                    if (mTryTimes >= 2) {
+                                        //failed time over 3 times
+//                                        showFailDialog();
+                                        mHandler.sendEmptyMessage(SHOWDIALOG);
+                                    } else {
+                                        mTryTimes++;
+                                    }
+
                                     showTextMessage(getResources().getString(R.string.airsig_training_err_invalid_long_signature_title),
                                             getResources().getString(R.string.airsig_training_err_invalid_long_signature_detail), null,
                                             new OnClickListener() {
@@ -637,9 +669,18 @@ public class TrainingActivity extends Activity {
                                     );
                                     break;
                                 case TRAINING_INVALID_SHORT_SIGNATURE:
+                                    LeoLog.d("testAirSig", "error 2");
                                     gotoStep(mCurrentStep);
                                     return;
                                 case TRAINING_INVALID_HOLDING_POSTURE:
+                                    LeoLog.d("testAirSig", "error 3");
+                                    if (mTryTimes >= 2) {
+                                        //failed time over 3 times
+//                                        showFailDialog();
+                                        mHandler.sendEmptyMessage(SHOWDIALOG);
+                                    } else {
+                                        mTryTimes++;
+                                    }
                                     showImageMessage(getResources().getString(R.string.airsig_training_err_invalid_holding_posture), R.raw.airsig_ani_tutorial_holding_posture, null,
                                             new OnClickListener() {
                                                 @Override
@@ -651,6 +692,14 @@ public class TrainingActivity extends Activity {
                                     );
                                     break;
                                 case TRAINING_INVALID_FEW_WRIST:
+                                    LeoLog.d("testAirSig", "error 4");
+                                    if (mTryTimes >= 2) {
+                                        //failed time over 3 times
+//                                        showFailDialog();
+                                        mHandler.sendEmptyMessage(SHOWDIALOG);
+                                    } else {
+                                        mTryTimes++;
+                                    }
                                     SpannableString fw1 = new SpannableString(getResources().getString(R.string.airsig_training_err_few_wrist1));
                                     String fw2 = getResources().getString(R.string.airsig_training_err_few_wrist2);
                                     fw1.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.airsig_text_gray)), 0, fw1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -665,12 +714,28 @@ public class TrainingActivity extends Activity {
                                     );
                                     break;
                                 case TRAINING_INVALID_FEW_WORDS:
+                                    LeoLog.d("testAirSig", "error 5");
+                                    if (mTryTimes >= 2) {
+                                        //failed time over 3 times
+//                                        showFailDialog();
+                                        mHandler.sendEmptyMessage(SHOWDIALOG);
+                                    } else {
+                                        mTryTimes++;
+                                    }
                                     final ASEngine.ASSignatureSecurityLevel level = (ASEngine.ASSignatureSecurityLevel) error.userData.get(ASError.KEY_TRAINING_SECURITY_LEVEL);
                                     if (level != null) {
                                         displaySecurityLevel(level.level, false);
                                     }
                                     break;
                                 case TRAINING_DIFFERENT_SIGNATURE:
+                                    LeoLog.d("testAirSig", "error 6");
+                                    if (mTryTimes >= 2) {
+                                        //failed time over 3 times
+//                                        showFailDialog();
+                                        mHandler.sendEmptyMessage(SHOWDIALOG);
+                                    } else {
+                                        mTryTimes++;
+                                    }
                                     showTextMessage(getResources().getString(R.string.airsig_training_err_different_signature_title),
                                             getResources().getString(R.string.airsig_training_err_different_signature_detail),
                                             getResources().getString(R.string.airsig_training_err_different_signature_postive_button),
@@ -695,6 +760,14 @@ public class TrainingActivity extends Activity {
                                     );
                                     break;
                                 case TRAINING_THE_SECOND_SIGNATURE_IS_TOO_DIFFERNT:
+                                    LeoLog.d("testAirSig", "error 7");
+                                    if (mTryTimes >= 2) {
+                                        //failed time over 3 times
+//                                        showFailDialog();
+                                        mHandler.sendEmptyMessage(SHOWDIALOG);
+                                    } else {
+                                        mTryTimes++;
+                                    }
                                     showTextMessage(getResources().getString(R.string.airsig_training_err_second_signature_too_different_title),
                                             getResources().getString(R.string.airsig_training_err_second_signature_too_different_detail),
                                             getResources().getString(R.string.airsig_training_err_second_signature_too_different_postive_button),
@@ -715,6 +788,14 @@ public class TrainingActivity extends Activity {
                                     );
                                     break;
                                 case TRAINING_FAILED:
+                                    LeoLog.d("testAirSig", "error 8");
+                                    if (mTryTimes >= 2) {
+                                        //failed time over 3 times
+//                                        showFailDialog();
+                                        mHandler.sendEmptyMessage(SHOWDIALOG);
+                                    } else {
+                                        mTryTimes++;
+                                    }
                                     showTextMessage(getResources().getString(R.string.airsig_training_err_training_failed_title),
                                             getResources().getString(R.string.airsig_training_err_training_failed_detail),
                                             getResources().getString(R.string.airsig_training_err_training_failed_postive_button),
@@ -735,11 +816,12 @@ public class TrainingActivity extends Activity {
                                     );
                                     break;
                                 default:
-                                    showToast(getResources().getString(R.string.airsig_training_err_others) + "\n" + error.message);
+//                                    showToast(getResources().getString(R.string.airsig_training_err_others) + "\n" + error.message);
                                     break;
                             }
                             makeFailedSound();
                         } else if (null != action) {
+                            LeoLog.d("testAirSig", "success");
                             makeSuccessSound();
                             mTrainingAction = action;
                             mSignatureInputCount++;
@@ -752,14 +834,18 @@ public class TrainingActivity extends Activity {
                             ASEngine.getSharedInstance().setActions(actions, null);
 
                             if (progress == 1) { // if training completed
+                                LeoLog.d("testAirSig", "success 1");
                                 if (mCurrentStep != null) {
                                     gotoStep(mCurrentStep.next);
                                 }
                             } else if (securityLevel != null) { // display security level is enough
+                                LeoLog.d("testAirSig", "success 2");
                                 displaySecurityLevel(securityLevel.level, true);
                             } else if (mCurrentStep == Step.FirstTimeWriting) { // please repeat
+                                LeoLog.d("testAirSig", "success 3");
                                 gotoStep(mCurrentStep.next);
                             } else { // display progress message
+                                LeoLog.d("testAirSig", "success 4");
                                 displayProgress(progress);
                             }
                         }
@@ -768,6 +854,48 @@ public class TrainingActivity extends Activity {
                 break;
         }
         return true;
+    }
+
+    private void showFailDialog() {
+        mTryTimes = 0;
+        if (mConfirmCloseDialog == null) {
+            mConfirmCloseDialog = new LEOAlarmDialog(this);
+        }
+        mConfirmCloseDialog.setContent(getString(R.string.air_sig_tips_content_two));
+        mConfirmCloseDialog.setRightBtnStr(getString(R.string.secur_help_feedback_tip_button));
+        mConfirmCloseDialog.setLeftBtnStr(getString(R.string.airsig_training_err_default_button));
+        mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                reset();
+
+                Intent intent = new Intent(TrainingActivity.this,
+                        FeedbackActivity.class);
+                intent.putExtra("from", "airsig");
+                startActivity(intent);
+
+                mConfirmCloseDialog.dismiss();
+            }
+        });
+        mConfirmCloseDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                reset();
+                mConfirmCloseDialog.dismiss();
+            }
+        });
+        if (!isFinishing()) {
+            mConfirmCloseDialog.show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mConfirmCloseDialog != null && mConfirmCloseDialog.isShowing()) {
+            mConfirmCloseDialog.dismiss();
+            mConfirmCloseDialog = null;
+        }
     }
 
     private void enableTouchArea(final boolean enable) {
