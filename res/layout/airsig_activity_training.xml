@@ -8,74 +8,75 @@
     android:fitsSystemWindows="true"
     tools:context="com.airsig.android_sdk.TrainingActivity">
 
+
+    <RelativeLayout
+        android:id="@+id/title_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.leo.appmaster.ui.CommonToolbar
+            android:id="@+id/airsig_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/airsig_teach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            app:rippleColor="@color/menu_ripple"
+            app:rippleDuration="150"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <RelativeLayout
+                android:id="@+id/airsig_teach_click"
+                style="@style/ToolbarIcon">
+
+                <ImageView
+                    android:id="@+id/lock_setting_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/airsig_ic_help" />
+            </RelativeLayout>
+        </com.leo.appmaster.ui.MaterialRippleLayout>
+
+        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/airsig_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/airsig_teach"
+            app:rippleColor="@color/menu_ripple"
+            app:rippleDuration="150"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <RelativeLayout
+                android:id="@+id/airsig_reset_click"
+                style="@style/ToolbarIcon">
+
+                <ImageView
+                    android:id="@+id/tip_help"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/airsig_ic_reset" />
+            </RelativeLayout>
+        </com.leo.appmaster.ui.MaterialRippleLayout>
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/contentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:id="@+id/title_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.leo.appmaster.ui.CommonToolbar
-                android:id="@+id/airsig_title_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/airsig_teach"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                app:rippleColor="@color/menu_ripple"
-                app:rippleDuration="150"
-                app:rippleHover="true"
-                app:rippleOverlay="true">
-
-                <RelativeLayout
-                    android:id="@+id/airsig_teach_click"
-                    style="@style/ToolbarIcon">
-
-                    <ImageView
-                        android:id="@+id/lock_setting_icon"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_centerInParent="true"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/airsig_ic_help" />
-                </RelativeLayout>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
-
-            <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/airsig_reset"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/airsig_teach"
-                app:rippleColor="@color/menu_ripple"
-                app:rippleDuration="150"
-                app:rippleHover="true"
-                app:rippleOverlay="true">
-
-                <RelativeLayout
-                    android:id="@+id/airsig_reset_click"
-                    style="@style/ToolbarIcon">
-
-                    <ImageView
-                        android:id="@+id/tip_help"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_centerInParent="true"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/airsig_ic_reset" />
-                </RelativeLayout>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
-        </RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_top">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/title_top"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -155,13 +156,13 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:visibility="invisible" />
-
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/helpPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title_top"
         android:layout_margin="10dp"
         android:background="@drawable/airsig_alert"
         android:visibility="invisible">
@@ -221,5 +222,4 @@
             android:textSize="@dimen/airsig_textsize_content_small" />
 
     </RelativeLayout>
-
 </RelativeLayout>
