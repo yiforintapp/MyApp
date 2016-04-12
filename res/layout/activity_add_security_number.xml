@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:leo="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/ctc">
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ctc">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/add_privacy_contact_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:id="@+id/top_tip_lt"
@@ -22,7 +22,7 @@
             android:id="@+id/tip_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_antitheft_sms"/>
+            android:src="@drawable/icon_antitheft_sms" />
 
         <TextView
             android:id="@+id/tip_tv"
@@ -32,7 +32,7 @@
             android:layout_toRightOf="@id/tip_iv"
             android:text="@string/secur_add_numb_tip"
             android:textColor="@color/c1"
-            android:textSize="@dimen/f6"/>
+            android:textSize="@dimen/f6" />
 
         <TextView
             android:id="@+id/top_tip_instr_tv"
@@ -47,7 +47,7 @@
             android:paddingBottom="@dimen/top_tip_instr_tv_marg_botm"
             android:text="@string/secur_add_num_tip"
             android:textColor="@color/cb"
-            android:textSize="@dimen/f6"/>
+            android:textSize="@dimen/f6" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -71,22 +71,41 @@
             android:paddingLeft="16dp"
             android:textColor="@drawable/privacy_contact_edit_edittext_selecter"
             android:textColorHint="@color/c4"
-            android:textSize="14dp"/>
+            android:textSize="14dp" />
 
-        <CheckBox
-            android:id="@+id/checkBx"
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/sec_input_numberEV"
             android:layout_marginLeft="@dimen/ph_secur_top_tip_lt_marg_left"
             android:layout_marginRight="@dimen/ph_secur_top_tip_lt_marg_left"
             android:layout_marginTop="8dp"
-            android:button="@drawable/send_msm_selector"
-            android:checked="true"
-            android:padding="@dimen/add_num_cb_padding"
-            android:text="@string/backup_instr_tip_str"
-            android:textColor="@color/c2"
-            android:textSize="@dimen/f5"/>
+            android:paddingTop="@dimen/add_num_cb_padding"
+            android:paddingBottom="@dimen/add_num_cb_padding"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+           <!-- android:paddingTop="@dimen/add_num_cb_padding"
+            android:paddingBottom="@dimen/add_num_cb_padding-->
+
+            <CheckBox
+                android:id="@+id/checkBx"
+                android:gravity="center"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:button="@drawable/send_msm_selector"
+                android:checked="true"/>
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/backup_instr_tip_str"
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f5" />
+
+        </LinearLayout>
 
 
     </RelativeLayout>
@@ -102,8 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="24dp"
-            android:background="@color/c5">
-        </View>
+            android:background="@color/c5"></View>
 
         <LinearLayout
             android:id="@+id/add_contact_tip"
@@ -118,7 +136,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/icon_antitheft_contacts"/>
+                android:src="@drawable/icon_antitheft_contacts" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -127,7 +145,7 @@
                 android:layout_marginLeft="7dp"
                 android:text="@string/privacy_contact_popumenus_from_contact"
                 android:textColor="@color/c2"
-                android:textSize="@dimen/f4"/>
+                android:textSize="@dimen/f4" />
 
         </LinearLayout>
 
@@ -136,8 +154,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/add_contact_tip"
-            android:layout_marginTop="9dp"
             android:layout_marginBottom="64dp"
+            android:layout_marginTop="9dp"
             android:background="@color/white">
 
             <ListView
@@ -148,15 +166,14 @@
                 android:overScrollMode="never"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:scrollbars="none"/>
+                android:scrollbars="none" />
 
             <com.leo.appmaster.privacycontact.ContactSideBar
                 android:id="@+id/contact_sidrbar"
                 android:layout_width="25dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center"
-                android:visibility="gone">
-            </com.leo.appmaster.privacycontact.ContactSideBar>
+                android:visibility="gone"></com.leo.appmaster.privacycontact.ContactSideBar>
 
             <LinearLayout
                 android:id="@+id/add_contact_default_tv"
@@ -170,14 +187,14 @@
                 <ImageView
                     android:layout_width="@dimen/privacy_default_image_width"
                     android:layout_height="@dimen/privacy_default_image_height"
-                    android:src="@drawable/contact_default"/>
+                    android:src="@drawable/contact_default" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/privacy_add_contact_default_text"
                     android:textColor="#d3d3d4"
-                    android:textSize="18dp"/>
+                    android:textSize="18dp" />
             </LinearLayout>
         </FrameLayout>
 
@@ -188,7 +205,7 @@
             android:layout_height="110dp"
             android:layout_centerInParent="true"
             android:paddingBottom="80dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/contact_dialog"
@@ -200,7 +217,7 @@
             android:gravity="center"
             android:textColor="#ffffffff"
             android:textSize="30dip"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <View
@@ -218,8 +235,7 @@
         android:layout_centerHorizontal="true"
         android:background="@color/white">
 
-        <com.leo.appmaster.ui.MaterialRippleLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="@dimen/add_num_botm_bt_width"
             android:layout_height="@dimen/add_num_botm_bt_height"
             android:layout_centerInParent="true"
@@ -236,8 +252,7 @@
                 android:background="@drawable/selector_dialog_blue_button"
                 android:text="@string/security_guide_button_text"
                 android:textColor="@color/white"
-                android:textSize="16dp"
-                ></Button>
+                android:textSize="16dp"></Button>
         </com.leo.appmaster.ui.MaterialRippleLayout>
     </RelativeLayout>
 </RelativeLayout>
