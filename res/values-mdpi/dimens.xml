@@ -13,7 +13,7 @@
     <dimen name="hide_album_image_frame_top">18dp</dimen>
     <dimen name="hide_pictrue_imge_frame_width">142dp</dimen>
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-            <dimen name="hide_video_checkbox_right">24dp</dimen>
+    <dimen name="hide_video_checkbox_right">24dp</dimen>
     <dimen name="hide_video_checkbox_bottom">28dp</dimen>
     <dimen name="digital_item_width">45dp</dimen>
     <dimen name="digital_item_height">45dp</dimen>
@@ -190,4 +190,5 @@
     <dimen name="bay_pro_three_icon_m_top">13dp</dimen>
     <dimen name="hide_grid_image_width">109dp</dimen>
     <dimen name="add_num_cb_padding">30dp</dimen>
+    <dimen name="home_det_height">448dp</dimen>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/lt_det_saft_result_app"
@@ -23,8 +23,8 @@
                 android:id="@+id/app_saft_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:src="@drawable/icon_home_apps"/>
 
             <LinearLayout
@@ -53,10 +53,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
-                    android:text="@string/hd_new_app"
-                    android:textSize="@dimen/f6"
                     android:minWidth="100dp"
-                    android:textColor="@color/c150"/>
+                    android:text="@string/hd_new_app"
+                    android:textColor="@color/c150"
+                    android:textSize="@dimen/f6"/>
             </LinearLayout>
         </RelativeLayout>
 
@@ -81,17 +81,17 @@
                 android:id="@+id/app_danger_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:src="@drawable/icon_home_apps2"/>
 
             <LinearLayout
                 android:id="@+id/det_danger_app_content_lt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                 android:layout_toRightOf="@id/app_danger_icon"
-                android:layout_centerVertical="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -111,23 +111,23 @@
                     android:id="@+id/det_danger_app_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hd_new_app"
-                    android:textColor="@color/c150"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
                     android:minWidth="100dp"
+                    android:text="@string/hd_new_app"
+                    android:textColor="@color/c150"
                     android:textSize="@dimen/f6"/>
             </LinearLayout>
 
-     <!--       <TextView
-                android:id="@+id/det_danger_app_detal_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/det_danger_app_content_lt"
-                android:layout_below="@id/det_danger_app_content_lt"
-                android:layout_marginTop="2dp"
-                android:textColor="#c8c8d8"
-                android:minWidth="100dp"
-                android:textSize="9dp"/>-->
+            <!--       <TextView
+                       android:id="@+id/det_danger_app_detal_tv"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_alignLeft="@id/det_danger_app_content_lt"
+                       android:layout_below="@id/det_danger_app_content_lt"
+                       android:layout_marginTop="2dp"
+                       android:textColor="#c8c8d8"
+                       android:minWidth="100dp"
+                       android:textSize="9dp"/>-->
 
         </RelativeLayout>
     </RelativeLayout>
@@ -153,8 +153,8 @@
                 android:id="@+id/pic_saft_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:src="@drawable/icon_home_pics"/>
 
             <LinearLayout
@@ -180,10 +180,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
-                    android:text="@string/hd_new_pic"
-                    android:textSize="@dimen/f6"
                     android:minWidth="100dp"
-                    android:textColor="@color/c150"/>
+                    android:text="@string/hd_new_pic"
+                    android:textColor="@color/c150"
+                    android:textSize="@dimen/f6"/>
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
@@ -195,7 +195,8 @@
         android:layout_below="@id/lt_det_saft_result_app"
         android:background="@drawable/strip_home_nook2"
         android:paddingLeft="@dimen/home_det_result_tv2_padd_left"
-        android:paddingRight="@dimen/det_result_icon_margin_right">
+        android:paddingRight="@dimen/det_result_icon_margin_right"
+        android:visibility="invisible">
 
         <RelativeLayout
             android:id="@+id/pic_danger_content"
@@ -207,17 +208,17 @@
                 android:id="@+id/pic_danger_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:src="@drawable/icon_home_pics2"/>
 
             <LinearLayout
                 android:id="@+id/det_pic_danger_content_lt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/pic_danger_icon"
                 android:gravity="center_vertical"
-                android:layout_centerVertical="true"
                 android:orientation="horizontal">
 
                 <TextView
@@ -236,22 +237,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
-                    android:text="@string/hd_new_pic"
-                    android:textSize="@dimen/f6"
                     android:minWidth="100dp"
-                    android:textColor="@color/c150"/>
+                    android:text="@string/hd_new_pic"
+                    android:textColor="@color/c150"
+                    android:textSize="@dimen/f6"/>
             </LinearLayout>
 
-           <!-- <TextView
-                android:id="@+id/det_danger_pic_detal_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/det_pic_danger_content_lt"
-                android:layout_below="@id/det_pic_danger_content_lt"
-                android:layout_marginTop="2dp"
-                android:textColor="#c8c8d8"
-                android:minWidth="100dp"
-                android:textSize="9dp"/>-->
+            <!-- <TextView
+                 android:id="@+id/det_danger_pic_detal_tv"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignLeft="@id/det_pic_danger_content_lt"
+                 android:layout_below="@id/det_pic_danger_content_lt"
+                 android:layout_marginTop="2dp"
+                 android:textColor="#c8c8d8"
+                 android:minWidth="100dp"
+                 android:textSize="9dp"/>-->
         </RelativeLayout>
     </RelativeLayout>
 
@@ -275,8 +276,8 @@
                 android:id="@+id/vid_saft_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/det_result_icon_margin_right"
                 android:src="@drawable/icon_home_videos"/>
 
             <LinearLayout
@@ -304,10 +305,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
-                    android:text="@string/hd_new_vid"
-                    android:textSize="@dimen/f6"
                     android:minWidth="100dp"
-                    android:textColor="@color/c150"/>
+                    android:text="@string/hd_new_vid"
+                    android:textColor="@color/c150"
+                    android:textSize="@dimen/f6"/>
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
@@ -361,22 +362,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/home_det_result_tv2_margin"
-                    android:text="@string/hd_new_vid"
-                    android:textSize="@dimen/f6"
                     android:minWidth="100dp"
-                    android:textColor="@color/c150"/>
+                    android:text="@string/hd_new_vid"
+                    android:textColor="@color/c150"
+                    android:textSize="@dimen/f6"/>
             </LinearLayout>
-<!--
-            <TextView
-                android:id="@+id/det_danger_video_detal_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/det_dangerr_video_content_lt"
-                android:layout_below="@id/det_dangerr_video_content_lt"
-                android:layout_marginTop="2dp"
-                android:textColor="#c8c8d8"
-                android:minWidth="100dp"
-                android:textSize="9dp"/>-->
+            <!--
+                        <TextView
+                            android:id="@+id/det_danger_video_detal_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@id/det_dangerr_video_content_lt"
+                            android:layout_below="@id/det_dangerr_video_content_lt"
+                            android:layout_marginTop="2dp"
+                            android:textColor="#c8c8d8"
+                            android:minWidth="100dp"
+                            android:textSize="9dp"/>-->
 
         </RelativeLayout>
     </RelativeLayout>
