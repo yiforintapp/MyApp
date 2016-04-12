@@ -228,7 +228,7 @@ public class MobvistaEngine {
 			MvNativeHandler nativeHandler = new MvNativeHandler(properties, mAppContext);
 			
 			nativeHandler.addTemplate(new MvNativeHandler.Template(
-					MobVistaConstans.TEMPLATE_BIG_IMG, 10));
+					MobVistaConstans.TEMPLATE_BIG_IMG, 3));
 			
 			nativeHandler.setAdListener(new AdListenerImpl(unitId));
 
