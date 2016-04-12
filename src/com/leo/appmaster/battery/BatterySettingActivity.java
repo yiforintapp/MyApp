@@ -93,7 +93,7 @@ public class BatterySettingActivity extends BaseActivity implements View.OnClick
 
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.ctb_main);
-        mTitleBar.setToolbarTitle(R.string.batterymanage_setting_title);
+        mTitleBar.setToolbarTitle(R.string.batterymanage_switch_screen);
         mTitleBar.setToolbarColorResource(R.color.ctc);
         mTitleBar.setOptionMenuVisible(false);
         mTitleBar.setNavigationClickListener(new View.OnClickListener() {
