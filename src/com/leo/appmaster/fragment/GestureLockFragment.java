@@ -221,7 +221,7 @@ public class GestureLockFragment extends LockFragment implements
                         mIvBottom.setBackgroundResource(
                                 R.drawable.reset_airsig_gesture);
                     } else {
-                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "settings", "airsig_sh");
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "airsig_sh");
                         mLockPatternView.setVisibility(View.GONE);
                         mAirSigTouchView.setVisibility(View.VISIBLE);
                         mShowType = AirSigActivity.AIRSIG_UNLOCK;
@@ -307,12 +307,15 @@ public class GestureLockFragment extends LockFragment implements
 
                 // Callback
                 if (match) {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_airsig_suc");
                     ((LockScreenActivity) mActivity).onUnlockSucceed();
                 } else {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_airsig_fail");
                     if (airsigFailTimes < 2) {
                         airsigFailTimes++;
                     } else {
                         airsigFailTimes = 0;
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_airsig_cha");
                         //switch to normal lock
                         changeNormalLockType();
                     }

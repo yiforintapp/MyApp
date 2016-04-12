@@ -151,6 +151,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case SHOWDIALOG:
+                    SDKWrapper.addEvent(TrainingActivity.this, SDKWrapper.P1, "airsig_set", "set_fail");
                     showFailDialog();
                     break;
             }
@@ -370,6 +371,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_CLICK_LEAVE, null);
 
         if (isTrainingNotCompleted()) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig", "airsig_reset");
             showTipsDialog(getResources().getString(R.string.airsig_training_dialog_confirm_exit_detail),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_postive_button),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_negative_button),
@@ -494,6 +496,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
 //    }
 
     private void showAirSigTutorial() {
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_set", "airsig_learn");
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), TutorialActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1680,6 +1683,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                         }
                     }, sa.getDuration());
                 } else {
+
                     mMainPage.setVisibility(View.INVISIBLE);
 
                     mHelpPage.setVisibility(View.VISIBLE);

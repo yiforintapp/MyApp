@@ -142,7 +142,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
                 switchAirsig();
                 break;
             case R.id.rv_item_reset_airsig:
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_reset");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_set", "airsig_reset");
                 setAirsig(false);
                 break;
             case R.id.success_airsig:
@@ -174,9 +174,9 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
                     if ((now - inTime > 3000)) {
                         inTime = System.currentTimeMillis();
                         if (isNormalSet) {
-                            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_enable_suc");
+                            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_set", "airsig_enable_suc");
                         } else {
-                            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_reset_suc");
+                            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_set", "airsig_reset_suc");
                         }
                         mHandler.sendEmptyMessage(SET_DONE);
                     }
@@ -197,7 +197,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
         }
 
         if (isAirsigOn) {
-            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_off");
+            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_set", "airsig_off");
             //dialog to close
             showDialog(getString(R.string.airsig_settings_activity_dialog), getString(R.string.close_batteryview_confirm_cancel)
                     , getString(R.string.close_batteryview_confirm_sure), CLOSE_DIALOG);
@@ -211,13 +211,14 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
 //            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_enable_suc");
 //        }
         else {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_enable");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_set", "airsig_enable");
 
             boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
             if (isAigSigCanUse) {
                 //set Airsig
                 setAirsig(true);
             } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_set", "airsig_enable_no");
                 showDialog(getString(R.string.air_sig_tips_content), getString(R.string.airsig_training_err_default_button)
                         , getString(R.string.secur_help_feedback_tip_button), CAN_NOT_USE_DIALOG);
             }
@@ -239,7 +240,7 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
                 if (type == UPDATE_DIALOG) {
                     SDKWrapper.checkUpdate();
                 } else if (type == CLOSE_DIALOG) {
-                    SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "settings", "airsig_off_suc");
+                    SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_set", "airsig_off_suc");
                     LeoSettings.setInteger(UNLOCK_TYPE, NOMAL_UNLOCK);
                     LeoSettings.setBoolean(AIRSIG_SWITCH, false);
                     switchOff();
