@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.HomeScanningFragment;
 import com.leo.appmaster.home.PrivacyNewPicFragment;
 import com.leo.appmaster.mgr.MgrContext;
@@ -60,8 +61,13 @@ public class NewHideImageActivity extends BaseFragmentActivity {
         mFragment = (FrameLayout)findViewById(R.id.fl_image_view);
         initLoadData();
 
-        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        pdm.haveCheckedPic();
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                pdm.haveCheckedPic();
+            }
+        });
         SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_pic", "new_pic");
     }
 

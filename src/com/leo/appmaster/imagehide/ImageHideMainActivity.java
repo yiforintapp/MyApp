@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.imagehide;
 
 import android.content.Context;
@@ -183,6 +182,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                         loadDone();
                     }
                 });
+
+                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                pdm.haveCheckedPic();
             }
         });
     }
@@ -343,38 +345,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         });
         anim.start();
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                mIncludeLayoutNewPic.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//            }
-//        });
-//        TranslateAnimation ta = new TranslateAnimation(0, 0, 0, -mIncludeLayoutNewPic.getHeight());
-//        ta.setDuration(500);
-//        ta.setFillAfter(false);
-//        mRlWholeShowContent.setAnimation(ta);
-//        mRlWholeShowContent.startAnimation(ta);
-//        ta.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                mIncludeLayoutNewPic.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//            }
-//        });
     }
 
     private void initImageLoder() {

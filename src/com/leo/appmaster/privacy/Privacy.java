@@ -108,7 +108,7 @@ public abstract class Privacy<T> {
             }
         }
 
-        if (getNewCount() > 0 /*&& getTotalCount() != getNewCount()*/) {
+        if (getNewCount() > 0) {
             return STATUS_NEW_ADD;
         }
 
@@ -116,6 +116,16 @@ public abstract class Privacy<T> {
             return STATUS_PROCEED;
         }
         return STATUS_TOADD;
+    }
+
+    public void clearNewList() {
+        if (mNewList != null) {
+            mNewList.clear();
+        }
+    }
+
+    protected boolean haveIgnored() {
+        return false;
     }
 
     /**

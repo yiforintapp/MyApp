@@ -233,4 +233,8 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
         return LeoSettings.getBoolean(PrefConst.KEY_NOTIFY_APP, true);
     }
 
+    @Override
+    protected boolean haveIgnored() {
+        return isConsumed();
+    }
 }

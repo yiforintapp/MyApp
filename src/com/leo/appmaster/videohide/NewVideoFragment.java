@@ -21,6 +21,7 @@ import com.leo.appmaster.home.FolderVidFragment;
 import com.leo.appmaster.imagehide.NewFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.HeaderGridView;
 import com.leo.appmaster.ui.XHeaderView;
@@ -114,13 +115,6 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
     @Override
     protected void onProcessClick() {
         showAlarmDialog();
-    }
-
-    @Override
-    public void onDestroy() {
-        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        pdm.haveCheckedVid();
-        super.onDestroy();
     }
 
     private void hideAllVidBackground(final List<String> photoItems, final int incScore) {

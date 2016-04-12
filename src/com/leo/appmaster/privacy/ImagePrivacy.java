@@ -10,6 +10,7 @@ import android.content.Intent;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.imagehide.NewHideImageActivity;
@@ -159,4 +160,9 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
         return LeoSettings.getBoolean(PrefConst.KEY_NOTIFY_PIC, true);
     }
 
+    @Override
+    protected boolean haveIgnored() {
+        int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_PIC, 0);
+        return lastRecord > 0;
+    }
 }

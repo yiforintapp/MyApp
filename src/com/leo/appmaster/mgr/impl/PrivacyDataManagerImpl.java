@@ -19,6 +19,7 @@ import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DeviceUtil;
@@ -911,6 +912,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
     @Override
     public int haveCheckedPic() {
+        PrivacyHelper.getImagePrivacy().clearNewList();
         int i = getAddPicNum();
         LeoLog.d("testHidePic", "haveCheckedPic : " + i);
         int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_PIC, 0);
@@ -1337,6 +1339,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
     @Override
     public int haveCheckedVid() {
+        PrivacyHelper.getVideoPrivacy().clearNewList();
         int i = getAddVidNum();
         int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);
         LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, lastRecord);

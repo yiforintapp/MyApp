@@ -10,6 +10,7 @@ import android.content.Intent;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -159,4 +160,9 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
         return LeoSettings.getBoolean(PrefConst.KEY_NOTIFY_VID, true);
     }
 
+    @Override
+    protected boolean haveIgnored() {
+        int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_LAST_ADD_VID, 0);
+        return lastRecord > 0;
+    }
 }

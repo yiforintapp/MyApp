@@ -20,6 +20,7 @@ import com.leo.appmaster.home.FolderPicFragment;
 import com.leo.appmaster.home.HomeScanningFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.HeaderGridView;
 import com.leo.appmaster.ui.XHeaderView;
@@ -241,9 +242,8 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
 
     @Override
     public void onDestroy() {
-        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        pdm.haveCheckedPic();
         super.onDestroy();
+        PrivacyHelper.getImagePrivacy().clearNewList();
     }
 
     private void hideAllPicBackground(final List<String> photoItems, final int incScore) {

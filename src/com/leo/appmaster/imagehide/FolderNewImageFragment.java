@@ -17,6 +17,7 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
@@ -130,13 +131,6 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                 }
             }
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        pdm.haveCheckedPic();
-        super.onDestroy();
     }
 
     private void showAlarmDialog() {

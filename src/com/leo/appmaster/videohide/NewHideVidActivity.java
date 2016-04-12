@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.PrivacyNewVideoFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -58,8 +59,13 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();
 
-        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        pdm.haveCheckedVid();
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                pdm.haveCheckedVid();
+            }
+        });
 
         SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_Video", "new_vid");
     }
@@ -77,12 +83,6 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         ft.commit();
         mLoading.setVisibility(View.GONE);
         mFragment.setVisibility(View.VISIBLE);
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 
 }
