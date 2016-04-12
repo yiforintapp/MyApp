@@ -47,7 +47,7 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
 //        mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
         if (FOUND_VID.equals(getIntent().getStringExtra(Constants.FIRST_ENTER_VID))) {
-            mTtileBar.setToolbarTitle(R.string.found_new_vid);
+            mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
         } else {
             mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
         }

@@ -49,7 +49,7 @@ public class NewHideImageActivity extends BaseFragmentActivity {
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
 //        mTtileBar.setToolbarTitle(R.string.new_hidden_image);
         if (FOUND_PIC.equals(getIntent().getStringExtra(Constants.FIRST_ENTER_PIC))) {
-            mTtileBar.setToolbarTitle(R.string.found_new_pic);
+            mTtileBar.setToolbarTitle(R.string.new_hidden_image);
         } else {
             mTtileBar.setToolbarTitle(R.string.new_hidden_image);
         }

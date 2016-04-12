@@ -1236,6 +1236,4 @@
 
     <string name="air_sig_tips_content">您的手机重力感应陀螺仪存在问题，无法使用空中解锁</string>
     <string name="air_sig_tips_content_two">如果您多次设置失败，可能是手机重力感应陀螺仪存在问题</string>
-    <string name="found_new_pic">发现图片</string>
-    <string name="found_new_vid">发现视频</string>
 </resources>
