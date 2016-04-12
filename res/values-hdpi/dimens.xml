@@ -426,4 +426,6 @@
     <integer name="shield_center_blue_offset_x">41</integer>
     <integer name="shield_center_red_offset_x">53</integer>
     <dimen name="home_det_result_tv3_padd_left">101dp</dimen>
+    <dimen name="detect_shield_margin_tip">88dp</dimen>
+    <dimen name="home_det_height">320dp</dimen>
 </resources>
