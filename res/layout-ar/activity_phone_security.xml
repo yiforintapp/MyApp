@@ -1,0 +1,384 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:leo="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/ctc">
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/phone_security_commonbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <!--2-0-->
+    <ScrollView
+        android:id="@+id/secur_phone_nub_sc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/secur_open_suc_top_rl_marg_top"
+        android:background="@color/white"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:id="@+id/secur_top_rt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- 开启手机防盗后顶部UI -->
+            <LinearLayout
+                android:id="@+id/top_lt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ctc"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/show_time_lt"
+                    layout="@layout/secur_open_time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"></include>
+
+                <TextView
+                    android:id="@+id/secur_instru_tip_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/show_time_lt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/secur_top_tip_instr_tv_marg_top"
+                    android:drawableLeft="@drawable/icon_antitheft_help"
+                    android:drawablePadding="@dimen/ph_secur_add_num_top_tip_drawpadd"
+                    android:paddingBottom="@dimen/secur_top_tip_instr_tv_padd_butm"
+                    android:text="@string/secur_add_num_tip"
+                    android:textColor="@color/cb"
+                    android:textSize="@dimen/f6"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/secur_num_oper_lt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/top_lt"
+                android:background="@color/white"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/secur_num_titl_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_antitheft_contacts"/>
+
+                <TextView
+                    android:id="@+id/secur_num_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:maxWidth="150dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_toRightOf="@+id/secur_num_titl_img"
+                    android:maxLines="2"
+                    android:textColor="@color/c2"
+                    android:textSize="@dimen/f4"/>
+
+                <TextView
+                    android:id="@+id/secur_num_titl_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/changer_bt"
+                    android:layout_toRightOf="@id/secur_num_tv"
+                    android:gravity="left"
+                    android:maxLines="2"
+                    android:text="@string/secur_save_num"
+                    android:textColor="@color/c2"
+                    android:textSize="@dimen/f4"
+                    />
+
+
+                <com.leo.appmaster.ui.MaterialRippleLayout
+                    android:id="@+id/changer_bt"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="@dimen/secur_mody_bt_width"
+                    android:layout_height="@dimen/secur_mody_bt_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="13dp"
+                    app:rippleColor="@color/menu_ripple"
+                    app:rippleDuration="150"
+                    app:rippleHover="true"
+                    app:rippleOverlay="true">
+
+                    <Button
+                        android:id="@+id/secur_mody_bt"
+                        android:layout_width="@dimen/secur_mody_bt_width"
+                        android:layout_height="@dimen/secur_mody_bt_height"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/selector_dialog_blue_button"
+                        android:text="@string/secur_mody_num"
+                        android:textColor="@color/c1"
+                        android:textSize="@dimen/f5"/>
+                </com.leo.appmaster.ui.MaterialRippleLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/secur_num_oper_lt"
+                android:background="@color/white">
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/c5"></View>
+
+                <TextView
+                    android:id="@+id/secur_nromal_tip_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/line"
+                    android:layout_marginLeft="@dimen/secur_nromal_tip_tv_marg_left"
+                    android:layout_marginRight="@dimen/secur_nromal_tip_tv_marg_left"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/secur_normal_function"
+                    android:textColor="@color/c2"
+                    android:textSize="15dp"/>
+
+                <GridView
+                    android:id="@+id/secur_open_normal_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/secur_nromal_tip_tv"
+                    android:layout_marginLeft="@dimen/secur_nromal_tip_tv_marg_left"
+                    android:layout_marginRight="@dimen/secur_nromal_tip_tv_marg_left"
+                    android:layout_marginTop="@dimen/open_suc_lv_tp"
+                    android:divider="@null"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="4"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"></GridView>
+
+                <TextView
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_below="@id/secur_open_normal_lv"
+                    android:layout_marginTop="@dimen/secur_open_line2"
+                    android:background="@color/cfl"></TextView>
+
+                <TextView
+                    android:id="@+id/secur_adv_tip_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/line2"
+                    android:layout_marginLeft="@dimen/secur_nromal_tip_tv_marg_left"
+                    android:layout_marginRight="@dimen/secur_nromal_tip_tv_marg_left"
+                    android:layout_marginTop="18dp"
+                    android:text="@string/secur_adv_function"
+                    android:textColor="@color/c2"
+                    android:textSize="15dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/secur_adv_tip_tv"
+                    android:layout_marginTop="@dimen/open_suc_lv_tp"
+                    android:paddingBottom="26dp">
+
+                    <GridView
+                        android:id="@+id/secur_open_adv_lv"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/secur_nromal_tip_tv_marg_left"
+                        android:layout_marginRight="@dimen/secur_nromal_tip_tv_marg_left"
+                        android:divider="@null"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="3"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"></GridView>
+
+                    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                               android:layout_width="@dimen/secur_mody_bt_width"
+                                                               android:layout_height="@dimen/secur_mody_bt_height"
+                                                               android:layout_alignParentRight="true"
+                                                               android:layout_centerVertical="true"
+                                                               android:layout_marginRight="13dp"
+                                                               app:rippleColor="@color/menu_ripple"
+                                                               app:rippleDuration="150"
+                                                               app:rippleHover="true"
+                                                               app:rippleOverlay="true">
+
+                        <Button
+                            android:id="@+id/secur_open_adv"
+                            android:layout_width="@dimen/secur_mody_bt_width"
+                            android:layout_height="@dimen/secur_mody_bt_height"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="13dp"
+                            android:layout_toRightOf="@id/secur_open_adv_lv"
+                            android:background="@drawable/selector_dialog_blue_button"
+                            android:text="@string/security_guide_button_text"
+                            android:textColor="@color/c1"
+                            android:textSize="@dimen/f5"></Button>
+                    </com.leo.appmaster.ui.MaterialRippleLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+    <!--2.3手机防盗帮助页面-->
+    <RelativeLayout
+        android:id="@+id/secur_help_RL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/phone_security_commonbar"
+        android:background="@color/white"
+        android:visibility="gone">
+        <!--    android:visibility="gone"-->
+        <ImageView
+            android:id="@+id/help_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/secur_help_iv_margin_top"
+            android:src="@drawable/theft_guide_img"/>
+
+        <TextView
+            android:id="@+id/help_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/help_iv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/secur_help_tv_margin_top"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:text="@string/secur_help_tip_txt"
+            android:textColor="#666666"
+            android:textSize="14dp"/>
+
+        <com.leo.appmaster.ui.MaterialRippleLayout
+            android:id="@+id/secur_help_rp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/help_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/secur_help_rp_margin_top"
+            leo:rippleAlpha="0.5"
+            leo:rippleColor="@color/button_blue_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="true"
+            leo:rippleOverlay="true">
+
+            <Button
+                android:id="@+id/help_bt"
+                android:layout_width="90dp"
+                android:layout_height="30dp"
+                android:background="@drawable/app_done_btn"
+                android:gravity="center"
+                android:text="@string/secur_help_bt"
+                android:textColor="@color/white"
+                android:textSize="14dp"/>
+        </com.leo.appmaster.ui.MaterialRippleLayout>
+
+        <RelativeLayout
+            android:id="@+id/no_know_model_help_tip_RT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/c4"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/know_feekback_RV"
+                android:clickable="true"
+                android:paddingBottom="13dp"
+                android:paddingLeft="36dp"
+                android:paddingTop="13dp">
+
+                <TextView
+                    android:id="@+id/no_know_mod_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/secur_feedbk_content"
+                    android:textColor="#333333"
+                    android:textSize="16dp"/>
+            </RelativeLayout>
+
+            <com.leo.appmaster.ui.MaterialRippleLayout
+                android:id="@+id/know_feekback_RV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="22dp"
+                leo:rippleAlpha="0.5"
+                leo:rippleColor="@color/white_list_item_ripple"
+                leo:rippleDuration="250"
+                leo:rippleHover="true"
+                leo:rippleOverlay="true">
+
+                <Button
+                    android:id="@+id/know_feekback_bt"
+                    android:layout_width="104dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/green_btn_selector"
+                    android:text="@string/secur_help_feedback_tip_button"
+                    android:textColor="#15c937"
+                    android:textSize="14dp"/>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
+        </RelativeLayout>
+        <!--已知需要短信权限的机型提示-->
+        <LinearLayout
+            android:id="@+id/secur_know_msm_LT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/c4"/>
+
+            <TextView
+                android:id="@+id/secur_know_msm_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                android:text="请在“授权管理”的“应用权限管理”项中选中“应用管理TAB”，选择“隐私卫士”，授予“读取短信，发送短信”权限。"
+                android:textColor="#333333"
+                android:textSize="13dp"/>
+
+            <TextView
+                android:id="@+id/secur_know_msm_click"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="2dp"
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                android:text="@string/secur_kno_model_msm_click"
+                android:textColor="#009cff"
+                android:textSize="16dp"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

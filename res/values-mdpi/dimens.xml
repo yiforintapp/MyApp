@@ -189,7 +189,7 @@
     <dimen name="bay_pro_show_text_m_top">20dp</dimen>
     <dimen name="bay_pro_three_icon_m_top">13dp</dimen>
     <dimen name="hide_grid_image_width">109dp</dimen>
-    <dimen name="add_num_cb_padding">30dp</dimen>
+    <dimen name="add_num_cb_padding">10dp</dimen>
     <dimen name="home_det_height">268dp</dimen>
     <dimen name="detect_shield_margin_tip">58dp</dimen>
 
@@ -205,4 +205,5 @@
     <integer name="shield_center_blue_offset_x">35</integer>
     <integer name="shield_center_red_offset_x">47</integer>
     <dimen name="home_det_result_tv3_padd_left">108dp</dimen>
+    <dimen name="scur_contact_char">5dp</dimen>
 </resources>

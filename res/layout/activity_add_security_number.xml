@@ -80,7 +80,6 @@
             android:layout_below="@id/sec_input_numberEV"
             android:layout_marginLeft="@dimen/ph_secur_top_tip_lt_marg_left"
             android:layout_marginRight="@dimen/ph_secur_top_tip_lt_marg_left"
-            android:layout_marginTop="8dp"
             android:paddingTop="@dimen/add_num_cb_padding"
             android:paddingBottom="@dimen/add_num_cb_padding"
             android:gravity="center_vertical"
@@ -120,40 +119,13 @@
             android:id="@+id/line_v"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="24dp"
             android:background="@color/c5"></View>
-
-        <LinearLayout
-            android:id="@+id/add_contact_tip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/line_v"
-            android:layout_marginLeft="21dp"
-            android:layout_marginRight="21dp"
-            android:layout_marginTop="9dp"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_antitheft_contacts" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="7dp"
-                android:text="@string/privacy_contact_popumenus_from_contact"
-                android:textColor="@color/c2"
-                android:textSize="@dimen/f4" />
-
-        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/number_fl"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/add_contact_tip"
+            android:layout_below="@id/line_v"
             android:layout_marginBottom="64dp"
             android:layout_marginTop="9dp"
             android:background="@color/white">

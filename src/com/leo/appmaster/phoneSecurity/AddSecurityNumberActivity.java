@@ -97,6 +97,9 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         mPhoneContact = new ArrayList<ContactBean>();
         mAddPrivacyContact = new ArrayList<ContactBean>();
         mListContact = (ListView) findViewById(R.id.add_contactLV);
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View inflate = layoutInflater.inflate(this.getResources().getLayout(R.layout.add_secur_num_header), null);
+        mListContact.addHeaderView(inflate);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
         /**
          * 初始化sidebar
@@ -293,7 +296,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             case R.id.checkBx:
                 mIsCheckB = isChecked;
                 if (isChecked == false) {
-                SDKWrapper.addEvent(AddSecurityNumberActivity.this,SDKWrapper.P1,"theft","theft_backup_off");
+                    SDKWrapper.addEvent(AddSecurityNumberActivity.this, SDKWrapper.P1, "theft", "theft_backup_off");
                 }
                 break;
             default:
