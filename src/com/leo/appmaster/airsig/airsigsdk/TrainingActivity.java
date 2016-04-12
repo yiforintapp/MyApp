@@ -140,6 +140,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
     private View mMainPage;
     private View mHelpPage;
     private Button mHelpPageButton;
+    private boolean isFirstIn = false;
 
     // other UI components
     private ProgressBar mProgressBar;
@@ -163,6 +164,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airsig_activity_training);
 
+        isFirstIn = true;
         // customize action bar:
         // 1. no App icon
         // 2. back button
@@ -298,14 +300,24 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                         }
 
                         // display initial view
+//                        runOnUiThread(new Runnable() {
+//                            public void run() {
+//                                new Handler().postDelayed(new Runnable() {
+//                                    public void run() {
+//                                        LeoLog.d("testAirsig", "gotoStep ChooseWord");
+//                                        gotoStep(Step.ChooseWord);
+//                                    }
+//                                }, 300);
+//                            }
+//                        });
                         runOnUiThread(new Runnable() {
                             public void run() {
-                                new Handler().postDelayed(new Runnable() {
+                                new Handler().post(new Runnable() {
                                     public void run() {
                                         LeoLog.d("testAirsig", "gotoStep ChooseWord");
                                         gotoStep(Step.ChooseWord);
                                     }
-                                }, 300);
+                                });
                             }
                         });
 
@@ -1014,6 +1026,12 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if (isFirstIn) {
+                    isFirstIn = false;
+                } else {
+                    mTouchBox.setVisibility(View.INVISIBLE);
+                }
+
                 enableTouchArea(false);
 
                 // Set content of message box
@@ -1054,9 +1072,6 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             newFragment.onExpandEnd();
-//                            if (mMainPage.getVisibility() != View.VISIBLE) {
-//                                mMainPage.setVisibility(View.VISIBLE);
-//                            }
                         }
                     }, duration);
                 }
@@ -1069,6 +1084,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                mTouchBox.setVisibility(View.VISIBLE);
                 // Animation
                 int duration = getResources().getInteger(R.integer.airsig_message_box_animation_duration);
 
