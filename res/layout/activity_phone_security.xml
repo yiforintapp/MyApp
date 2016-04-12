@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/secur_open_suc_top_rl_marg_top"
         android:background="@color/white"
+        android:scrollbars="none"
         android:overScrollMode="never">
 
         <RelativeLayout
