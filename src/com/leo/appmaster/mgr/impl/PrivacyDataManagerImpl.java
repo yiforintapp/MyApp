@@ -367,6 +367,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     }
                 }
             }
+            notifySecurityChange();
 
             if (newAddPicNum < 30) {
                 return newAddPicNum;
@@ -583,6 +584,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 //                    FileOperationUtil.updateVedioMediaEntry(path, true, "text/plain", mContext);
                 }
             }
+            notifySecurityChange();
 
             if (newAddVidNum < getMaxVidNum()) {
                 return newAddVidNum * SPA_VID;

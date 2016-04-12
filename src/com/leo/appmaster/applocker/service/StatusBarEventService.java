@@ -9,6 +9,7 @@ import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.LockManager;
@@ -17,6 +18,7 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.NewHideVidActivity;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 /**
  * this service only use for statusbar notify event
@@ -134,12 +136,20 @@ public class StatusBarEventService extends IntentService {
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_app");
         } else if (eventType == EVENT_PRIVACY_IMAGE) {
-            targetIntent = new Intent(this, NewHideImageActivity.class);
+            if (PrivacyHelper.getImagePrivacy().getNewCount() > 0) {
+                targetIntent = new Intent(this, NewHideImageActivity.class);
+            } else {
+                targetIntent = new Intent(this, ImageHideMainActivity.class);
+            }
             targetIntent.putExtra("pic_from_notify", true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_pic");
         } else if (eventType == EVENT_PRIVACY_VIDEO) {
-            targetIntent = new Intent(this, NewHideVidActivity.class);
+            if (PrivacyHelper.getVideoPrivacy().getNewCount() > 0) {
+                targetIntent = new Intent(this, NewHideVidActivity.class);
+            } else {
+                targetIntent = new Intent(this, VideoHideMainActivity.class);
+            }
             targetIntent.putExtra("vid_from_notify", true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_vid");
