@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -30,6 +29,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
@@ -97,6 +97,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     public static boolean mIsFromConfirm;
 
+    private boolean mEnterSubPage;
+    private boolean mDataChanged;
+
     public void onBackPressed() {
         LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
         LeoLog.d(TAG, "mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0) = " + mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0));
@@ -141,8 +144,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         }
     }
 
-    ;
-
     private void loadDone() {
         if (mAlbumList != null) {
             if (mAlbumList.size() > 0) {
@@ -152,7 +153,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             } else {
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
                 loadingBar.setVisibility(View.GONE);
-//                mRlWholeShowContent.setVisibility(View.GONE);
             }
             if (mHideAlbumAdapt != null) {
                 mHideAlbumAdapt.setDataList(mAlbumList);
@@ -217,6 +217,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         initImageLoder();
         handleIntent();
         initUI();
+
+        mDataChanged = true;
+        LeoEventBus.getDefaultBus().register(this);
     }
 
     private void handleIntent() {
@@ -249,6 +252,15 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         if (requestCode == REQUEST_CODE_GO_NEW) {
             markNewPicCheckedAsy();
         }
+    }
+
+    public void onEvent(MediaChangeEvent event) {
+        if (event == null || !event.isImage) {
+            return;
+        }
+
+        LeoLog.d(TAG, "<ls> onEvent...");
+        mDataChanged = true;
     }
 
     private void initUI() {
@@ -296,6 +308,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
                 markNewPicCheckedAsy();
+                mEnterSubPage = true;
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
@@ -389,26 +402,31 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         if (mToast != null) {
             mToast.cancel();
         }
+
+        LeoEventBus.getDefaultBus().unregister(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        asyncLoad();
-        mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
-        LeoLog.i("newpic", "mNewAddPic size = " + mNewAddPic.size());
-        newLoadDone();
+        if (mEnterSubPage && mNewAddPic != null) {
+            mIncludeLayoutNewPic.setVisibility(View.GONE);
+            mEnterSubPage = false;
+        }
 
+        if (mDataChanged) {
+            mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
+            asyncLoad();
+            LeoLog.i("newpic", "mNewAddPic size = " + mNewAddPic.size());
+            newLoadDone();
+        }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
+    protected void onStop() {
+        super.onStop();
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
+        mDataChanged = false;
     }
 
     @Override
@@ -429,6 +447,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);
         markNewPicCheckedAsy();
+        mEnterSubPage = true;
     }
 
     private void markNewPicCheckedAsy() {

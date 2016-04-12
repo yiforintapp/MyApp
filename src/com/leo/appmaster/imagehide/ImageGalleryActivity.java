@@ -21,11 +21,14 @@ import android.widget.TextView;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -36,8 +39,7 @@ import com.leo.imageloader.core.ImageSize;
  * @author linxiongzhou
  */
 public class ImageGalleryActivity extends BaseActivity implements OnItemClickListener {
-    public final static int INIT_UI_DONE = 22;
-    public final static int LOAD_DATA_DONE = 23;
+    private static final String TAG = "ImageGalleryActivity";
     private List<PhotoAibum> mAlbumList = null;
     private GridView mGridView;
     private DisplayImageOptions mOptions;
@@ -48,19 +50,8 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
 
     private ProgressBar loadingBar;
 
-    private android.os.Handler mHandler = new android.os.Handler() {
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case INIT_UI_DONE:
-                    asyncLoad();
-                    break;
-                case LOAD_DATA_DONE:
-                    loadDone();
-                    break;
-            }
-        }
-    };
     private ImageSize mImageSize;
+    private boolean mDataChanged;
 
     private void loadDone() {
         if (mAlbumList != null) {
@@ -84,9 +75,12 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             public void run() {
                 mAlbumList = ((PrivacyDataManager) MgrContext.
                         getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile(PrivacyDataManagerImpl.CHECK_APART);
-                if (mHandler != null) {
-                    mHandler.sendEmptyMessage(LOAD_DATA_DONE);
-                }
+                ThreadManager.executeOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadDone();
+                    }
+                });
             }
         });
     }
@@ -98,6 +92,18 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
         setContentView(R.layout.activity_image_gallery);
         initImageLoder();
         initUI();
+
+        LeoEventBus.getDefaultBus().register(this);
+        mDataChanged = true;
+    }
+
+    public void onEvent(MediaChangeEvent event) {
+        if (event == null || !event.isImage) {
+            return;
+        }
+
+        LeoLog.d(TAG, "<ls> onEvent...");
+        mDataChanged = true;
     }
 
     private void initUI() {
@@ -114,14 +120,12 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mHandler != null) {
-            mHandler.removeCallbacksAndMessages(null);
-            mHandler = null;
-        }
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
         }
+
+        LeoEventBus.getDefaultBus().unregister(this);
     }
 
 
@@ -134,20 +138,19 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-
-    }
-
-    @Override
     protected void onResume() {
-        mHandler.sendEmptyMessage(INIT_UI_DONE);
         super.onResume();
+        LeoLog.d(TAG, "<ls> onResume...");
+        if (mDataChanged) {
+            asyncLoad();
+        }
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
+
+        mDataChanged = false;
     }
 
     private void initImageLoder() {

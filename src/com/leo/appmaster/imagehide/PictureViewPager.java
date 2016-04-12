@@ -28,6 +28,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -534,6 +536,8 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             @Override
             public void onClick(int which) {
                 if (which == 1) {
+                    LeoEventBus.getDefaultBus().post(new MediaChangeEvent(true));
+
                     if (dialogType == UNHIDE_DIALOG_TYPE) {
                         unhidePicture();
                     } else if (dialogType == DELETE_DIALOG_TYPE) {

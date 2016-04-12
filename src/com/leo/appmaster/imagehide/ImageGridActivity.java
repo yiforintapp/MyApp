@@ -31,6 +31,7 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -284,14 +285,17 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         if (resultCode == RESULT_OK) {
             mAllListPath = data.getStringArrayListExtra("list");
             LeoLog.d("teststartResult", "mAllListPath size : " + mAllListPath.size());
+
+            boolean needRefresh = false;
             for (Iterator iterator = mPicturesList.iterator(); iterator
                     .hasNext(); ) {
                 PhotoItem item = (PhotoItem) iterator.next();
                 if (!mAllListPath.contains(item.getPath())) {
                     iterator.remove();
+                    needRefresh = true;
                 }
             }
-            if (mImageAdapter != null) {
+            if (mImageAdapter != null && needRefresh) {
                 mImageAdapter.notifyDataSetChanged();
             }
         }
@@ -933,6 +937,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 
     private void startDoingBack(boolean isHide) {
         LeoLog.d("testnewLoad", "isHide:" + isHide);
+        LeoEventBus.getDefaultBus().post(new MediaChangeEvent(true));
         mProcessNum = 0;
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         String isSuccess = FileOperationUtil.HIDE_PIC_SUCESS;
@@ -1094,7 +1099,6 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                     // 取消隐藏不算新增，add in v3.6
                     pdm.haveCheckedPic();
                 }
-
                 pdm.registerMediaListener();
                 pdm.notifySecurityChange();
             }
