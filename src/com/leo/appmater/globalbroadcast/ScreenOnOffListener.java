@@ -1,9 +1,12 @@
 
 package com.leo.appmater.globalbroadcast;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.PowerManager;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
@@ -25,6 +28,17 @@ public class ScreenOnOffListener extends BroadcastListener {
 
     private static List<ScreenChangeListener> listeners = new ArrayList<ScreenChangeListener>();
 
+    private static ScreenOnOffListener sInstance;
+    private static boolean sIsScreenOn;
+
+    public static ScreenOnOffListener instance() {
+        if (sInstance == null) {
+            sInstance = new ScreenOnOffListener();
+        }
+
+        return sInstance;
+    }
+
     public static void addListener(ScreenChangeListener listener) {
         if (!listeners.contains(listener)) {
             listeners.add(listener);
@@ -37,10 +51,26 @@ public class ScreenOnOffListener extends BroadcastListener {
         }
     }
 
+    private ScreenOnOffListener() {
+        AppMasterApplication ctx = AppMasterApplication.getInstance();
+        PowerManager pm = (PowerManager) ctx.getSystemService(Context.POWER_SERVICE);
+        sIsScreenOn = pm.isScreenOn();
+    }
+
+    public static boolean isScreenOn() {
+        return sIsScreenOn;
+    }
+
     public final void onEvent(String action) {
         if (Intent.ACTION_SCREEN_OFF.equals(action)
                 || Intent.ACTION_SCREEN_ON.equals(action)
                 || Intent.ACTION_USER_PRESENT.equals(action)) {
+
+            if (Intent.ACTION_SCREEN_ON.equals(action) || Intent.ACTION_USER_PRESENT.equals(action)) {
+                sIsScreenOn = true;
+            } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                sIsScreenOn = false;
+            }
             onScreenChanged(mIntent);
             for (ScreenChangeListener listener : listeners) {
                 if (listener != null) {

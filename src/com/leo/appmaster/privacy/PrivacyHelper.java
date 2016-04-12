@@ -179,14 +179,17 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     }
 
     public void initPrivacyStatus() {
-        LeoLog.d(TAG, "<ls> initPrivacyStatus...");
+        boolean isScreenOn = ScreenOnOffListener.isScreenOn();
+        LeoLog.d(TAG, "<ls> initPrivacyStatus...isScreenOn: " + isScreenOn);
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 setPrivacyListAndCount();
             }
         });
-        startIntervalScanner(CHECK_TIME);
+        if (isScreenOn) {
+            startIntervalScanner(CHECK_TIME);
+        }
         ScreenOnOffListener.addListener(new ScreenOnOffListener.ScreenChangeListener() {
             @Override
             public void onScreenChanged(Intent intent) {

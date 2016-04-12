@@ -30,6 +30,7 @@ import android.net.NetworkInfo.State;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.text.TextUtils;
@@ -56,6 +57,7 @@ import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 
 //import android.app.ActivityManager.AppTask;
 
@@ -194,7 +196,7 @@ public class TaskDetectService extends Service {
     }
 
     public void startDetect() {
-        if (!mServiceStarted) {
+        if (!mServiceStarted && ScreenOnOffListener.isScreenOn()) {
             startDetectTask();
             mServiceStarted = true;
         }

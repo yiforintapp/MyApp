@@ -63,7 +63,7 @@ public class InitCoreBootstrap extends Bootstrap {
 
         registerPackageChangedBroadcast();
         // 注册亮屏、锁屏广播
-        LeoGlobalBroadcast.registerBroadcastListener(new ScreenOnOffListener());
+        LeoGlobalBroadcast.registerBroadcastListener(ScreenOnOffListener.instance());
 
         AppMasterPreference preference = AppMasterPreference.getInstance(mApp);
         if (preference.getIsFirstInstallApp()) {
