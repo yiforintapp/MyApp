@@ -62,8 +62,8 @@ import java.util.List;
 
 @SuppressLint("NewApi")
 public class VideoHideMainActivity extends BaseActivity implements OnItemClickListener {
-    public final static int INIT_UI_DONE = 26;
-    public final static int LOAD_DATA_DONE = 27;
+//    public final static int INIT_UI_DONE = 26;
+//    public final static int LOAD_DATA_DONE = 27;
     private static final String TAG = "VideoHideMainActivity";
     private static final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
     private GridView mGridView;
@@ -100,19 +100,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private final int REQUEST_CODE_GO_NEW = 10;
 
-    private android.os.Handler mHandler = new android.os.Handler() {
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case INIT_UI_DONE:
-                    asyncLoad();
-                    break;
-                case LOAD_DATA_DONE:
-                    loadDone();
-                    break;
-            }
-        }
-    };
     private boolean mDataChanged;
+    private boolean mEnterSubPage;
 
     private void loadDone() {
         adapter = new HideVideoAdapter(this, hideVideos);
@@ -159,17 +148,18 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void asyncLoad() {
-        mNewDataList = PrivacyHelper.getVideoPrivacy().getNewList();
-        newLoadDone();
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 hideVideos = ((PrivacyDataManager) MgrContext.
                         getManager(MgrContext.MGR_PRIVACY_DATA)).getHideVidAlbum("");
                 makeCbFloderFirst();
-                if (mHandler != null) {
-                    mHandler.sendEmptyMessage(LOAD_DATA_DONE);
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadDone();
+                    }
+                });
                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
                 pdm.haveCheckedVid();
             }
@@ -265,8 +255,15 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        if (mEnterSubPage && mNewDataList != null) {
+            mIncludeLayoutNewVid.setVisibility(View.GONE);
+            mEnterSubPage = false;
+        }
+
         if (mDataChanged) {
-            mHandler.sendEmptyMessage(INIT_UI_DONE);
+            mNewDataList = PrivacyHelper.getVideoPrivacy().getNewList();
+            asyncLoad();
+            newLoadDone();
         }
     }
 
@@ -397,6 +394,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 Intent intent = new Intent(VideoHideMainActivity.this, VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
                 markNewVidCheckedAsy();
+                mEnterSubPage = true;
             }
         });
 //        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
@@ -469,10 +467,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mHandler != null) {
-            mHandler.removeCallbacksAndMessages(null);
-            mHandler = null;
-        }
         if(hideVideos != null) {
             hideVideos.clear();
         }
@@ -582,6 +576,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             markNewVidCheckedAsy();
         } catch (Exception e) {
         }
+        mEnterSubPage = true;
     }
 
 

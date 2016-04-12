@@ -388,7 +388,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         if (mDataChanged) {
             mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
             asyncLoad();
-            LeoLog.i("newpic", "mNewAddPic size = " + mNewAddPic.size());
             newLoadDone();
         }
     }

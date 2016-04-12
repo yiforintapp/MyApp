@@ -292,9 +292,10 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             AppMasterApplication application = AppMasterApplication.getInstance();
             boolean isForeground = application.isVisible();
             boolean isSameDay = TimeUtil.isSameDay(lastNotify, currentTs);
-            LeoLog.i(TAG, "checkOrNotifyDecScore, isForeground: " + isForeground + ", isSameDay: " + isSameDay);
+            LeoLog.i(TAG, "<ls> checkOrNotifyDecScore, isForeground: " + isForeground + ", isSameDay: " + isSameDay);
             if (!isForeground && !isSameDay) {
                 int currHour = TimeUtil.getHourOfDay(currentTs);
+                LeoLog.d(TAG, "<ls> checkOrNotifyDecScore, currHour: " + currHour);
                 if (currHour > 7) {
                     // 当前时间大于7点钟，弹出通知
                     notifyDecreasePrivacy(privacyType);
@@ -314,6 +315,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     }
 
     private void notifyDecreasePrivacy(int privacyType) {
+        LeoLog.d(TAG, "<ls> notifyDecreasePrivacy... privacyType: " + privacyType);
         long currentTs = System.currentTimeMillis();
         LeoPreference.getInstance().putLong(PrefConst.KEY_NOTIFY_TIME, currentTs);
 
@@ -321,6 +323,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         if (privacy == null) {
             return;
         }
+        LeoLog.d(TAG, "<ls> notifyDecreasePrivacy... show notification.");
         privacy.showNotification();
     }
 
