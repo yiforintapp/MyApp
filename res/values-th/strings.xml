@@ -1116,12 +1116,12 @@
     <string name="secur_adv_function">สมรรถนะขั้นสูง</string>
     <string name="secur_fun_open">การเปิด</string>
     <string name="secur_fun_close">การปิด</string>
-    <string name="secur_mody_num_title">แก้ไขหมายเลขโทรศัพท์ที่คุณจองล่วงหน้า</string>
+    <string name="secur_mody_num_title">แก้ไขหมายเลขโทรศัพท์</string>
     <string name="secur_mody_mum_sure">ยอมรับ</string>
     <string name="secur_close_tip_content">โทรศัพท์ของคุณอาจจะเสียสมรรถนะการรักษาถ้าปิดการป้อนกันความปลอดภัย คุณแน่ใจปิดหรือเปล่า</string>
     <string name="secur_close_tip_bt_cancel">การยกเลิก</string>
     <string name="secur_close_tip_bt_sure">ยอมรับ</string>
-    <string name="secur_save_num">รักษาหมายเลขโทรศัพท์ไว้ล่วงหน้า:</string>
+    <string name="secur_save_num">รักษาหมายเลขโทรศัพท:</string>
     <string name="secur_open_sucess_send_msm_toast">สมรรถนะการป้อนกันขโมยโทรศัพท์เปิดแล้วคำสั่งป้อนกันขโมยส่งถึงโทรศัพท์</string>
     <string name="secur_mody_sure_bt">ยอมรับ</string>
     <string name="secur_open_sucess_toast">สมรรถนะการป้อนกันขโมยโทรศัพท์เปิดแล้ว</string>
