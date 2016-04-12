@@ -31,6 +31,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -109,6 +110,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         }
     };
+    private boolean mDataChanged;
 
     private void loadDone() {
         adapter = new HideVideoAdapter(this, hideVideos);
@@ -200,6 +202,9 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mPt = LeoPreference.getInstance();
         getDirFromSp();
         handleIntent();
+
+        mDataChanged = true;
+        LeoEventBus.getDefaultBus().register(this);
     }
     
     @Override
@@ -257,7 +262,16 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     @Override
     protected void onResume() {
         super.onResume();
-        mHandler.sendEmptyMessage(INIT_UI_DONE);
+        if (mDataChanged) {
+            mHandler.sendEmptyMessage(INIT_UI_DONE);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        mDataChanged = false;
     }
 
     private void handleIntent() {
@@ -462,6 +476,17 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
+
+        LeoEventBus.getDefaultBus().unregister(this);
+    }
+
+    public void onEvent(MediaChangeEvent event) {
+        if (event == null || event.isImage) {
+            return;
+        }
+
+        LeoLog.d(TAG, "<ls> onEvent...");
+        mDataChanged = true;
     }
 
 

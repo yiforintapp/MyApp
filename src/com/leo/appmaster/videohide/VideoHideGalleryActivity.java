@@ -31,10 +31,13 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -44,8 +47,7 @@ import com.leo.imageloader.core.ImageScaleType;
 @SuppressLint("NewApi")
 public class VideoHideGalleryActivity extends BaseActivity implements
         OnClickListener, OnItemClickListener {
-    public final static int INIT_UI_DONE = 28;
-    public final static int LOAD_DATA_DONE = 29;
+    private static final String TAG = "VideoHideGalleryActivity";
     private GridView mGridView;
     private CommonToolbar mTtileBar;
     private RelativeLayout mNoHidePictureHint;
@@ -56,19 +58,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
     private ProgressBar loadingBar;
-
-    private android.os.Handler mHandler = new android.os.Handler() {
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case INIT_UI_DONE:
-                    asyncLoad();
-                    break;
-                case LOAD_DATA_DONE:
-                    loadDone();
-                    break;
-            }
-        }
-    };
 
     private void loadDone() {
         mGridView.setAdapter(adapter);
@@ -93,9 +82,12 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                 hideVideos = ((PrivacyDataManager) MgrContext.
                         getManager(MgrContext.MGR_PRIVACY_DATA)).
                         getAllVidFile();
-                if (mHandler != null) {
-                    mHandler.sendEmptyMessage(LOAD_DATA_DONE);
-                }
+                ThreadManager.executeOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadDone();
+                    }
+                });
             }
         });
     }
@@ -106,9 +98,17 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         setContentView(R.layout.activity_video_hide);
         initImageLoder();
         initUI();
-
-        mHandler.sendEmptyMessage(INIT_UI_DONE);
+        asyncLoad();
     }
+
+//    public void onEvent(MediaChangeEvent event) {
+//        if (event == null || !event.isImage) {
+//            return;
+//        }
+//
+//        LeoLog.d(TAG, "<ls> onEvent...");
+//        mDataChanged = true;
+//    }
 
     private void initImageLoder() {
         mOptions = new DisplayImageOptions.Builder()
@@ -158,10 +158,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mHandler != null) {
-            mHandler.removeCallbacksAndMessages(null);
-            mHandler = null;
-        }
         if (hideVideos != null) {
             hideVideos.clear();
         }
@@ -224,11 +220,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
-
-
-
-
             NewViewHolder viewHolder;
             String path;
             if (convertView == null) {
@@ -255,34 +246,6 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             String filePath = "voidefile://" + path;
             mImageLoader.displayImage(filePath, viewHolder.img, mOptions);
             return convertView;
-
-
-
-
-//
-//
-//            ViewHolder viewHolder = null;
-//            if (convertView == null) {
-//                convertView = getLayoutInflater().inflate(
-//                        R.layout.item_video_gridview_album, parent, false);
-//                viewHolder = new ViewHolder();
-//                viewHolder.imageView = (ImageView) convertView
-//                        .findViewById(R.id.video_item_album);
-//                viewHolder.text = (TextView) convertView
-//                        .findViewById(R.id.txt_item_album);
-//                convertView.setTag(viewHolder);
-//            } else {
-//                viewHolder = (ViewHolder) convertView.getTag();
-//            }
-//            VideoBean video = hideVideos.get(position);
-//            String path = video.getBitList().get(0).getPath();
-//            viewHolder.text.setText(video.getName() + "(" + video.getCount()
-//                    + ")");
-//            viewHolder.imageView.setBackgroundDrawable(context.getResources()
-//                    .getDrawable(R.drawable.video_loading));
-//            String filePath = "voidefile://" + path;
-//            mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
-//            return convertView;
         }
     }
 
@@ -336,6 +299,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && hideVideos != null) {
             Bundle bundle = data.getExtras();
+            boolean needRefresh = false;
             if (bundle != null) {
                 ArrayList<String> resultPath = (ArrayList<String>) bundle.get("path");
                 if (resultPath != null) {
@@ -347,6 +311,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                                 String path = itemBean.getPath();
                                 if (resultPath.contains(path)) {
                                     remove.add(itemBean);
+                                    needRefresh = true;
                                 }
                             }
                             bin.getBitList().removeAll(remove);
@@ -360,7 +325,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
                         }
 
                         Collections.sort(hideVideos, folderamparator);
-                        if (adapter != null) {
+                        if (adapter != null && needRefresh) {
                             adapter.notifyDataSetChanged();
                         }
                     }

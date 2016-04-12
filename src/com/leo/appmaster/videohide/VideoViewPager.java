@@ -32,6 +32,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -695,6 +697,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             @Override
             public void onClick(int which) {
                 if (which == 1) {
+                    LeoEventBus.getDefaultBus().post(new MediaChangeEvent(false));
                     if (flag == DIALOG_CANCLE_VIDEO) {
 //                        BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
 //                        backgoundTask.execute(true);

@@ -41,6 +41,7 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -649,6 +650,8 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
     private ArrayList<VideoItemBean> clickListAnimation = new ArrayList<VideoItemBean>();
 
     private void startDoingBack(boolean isHide) {
+        LeoEventBus.getDefaultBus().post(new MediaChangeEvent(false));
+
         mProcessNum = 0;
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         String newFileName;
