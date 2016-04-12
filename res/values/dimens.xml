@@ -334,7 +334,7 @@
     <dimen name="home_more_click_height">50dp</dimen>
 
     <dimen name="home_guide_trans_y">13dp</dimen>
-    <dimen name="home_guide_marg">41dp</dimen>
+    <dimen name="home_guide_marg">11dp</dimen>
     <dimen name="home_guide_marg_up">94dp</dimen>
 
     <!-- 3.2 -->

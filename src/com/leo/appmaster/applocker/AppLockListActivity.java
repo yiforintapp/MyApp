@@ -657,6 +657,13 @@ public class AppLockListActivity extends BaseActivity implements
             showTextToast(toast);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "lock_" + curMode.modeName + "_"
                     + mLastSelectApp.packageName);
+
+            //从通知进入并添加加锁应用的次数
+            if (mFromAppScanResult) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_add_app");
+                mFromAppScanResult = false;
+            }
+
             long e = System.currentTimeMillis();
             LeoLog.d("testWhoNull", "part c : " + (e - d));
             AutoStartGuideList.saveSamSungAppLock();
