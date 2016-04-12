@@ -481,7 +481,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textColor">@color/c2</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:layout_marginTop">21dp</item>
+        <item name="android:layout_marginTop">13dp</item>
     </style>
 
     <style name="LockListTabText">
@@ -492,7 +492,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textColor">@color/c2</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:layout_marginTop">21dp</item>
+        <item name="android:layout_marginTop">13dp</item>
     </style>
 
     <style name="ToolbarIcon">
