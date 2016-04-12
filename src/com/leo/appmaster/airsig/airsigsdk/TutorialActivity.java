@@ -12,6 +12,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.airsig.airsigui.AnimatedGifImageView;
 import com.leo.appmaster.airsig.airsigutils.EventLogger;
 import com.leo.appmaster.airsig.airsigutils.Utils;
+import com.leo.appmaster.sdk.BaseActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -44,7 +45,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class TutorialActivity extends Activity {
+public class TutorialActivity extends BaseActivity {
 	
 	private enum Step {
 		ChooseWordPractice(null),

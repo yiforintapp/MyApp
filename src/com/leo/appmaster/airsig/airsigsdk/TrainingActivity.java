@@ -19,6 +19,9 @@ import com.leo.appmaster.airsig.airsigutils.EventLogger;
 import com.leo.appmaster.airsig.airsigutils.Utils;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.feedback.FeedbackActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -76,7 +79,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class TrainingActivity extends Activity implements OnClickListener {
+public class TrainingActivity extends BaseActivity implements OnClickListener {
 
     private int mTryTimes = 0;
     private LEOAlarmDialog mConfirmCloseDialog;
@@ -939,6 +942,13 @@ public class TrainingActivity extends Activity implements OnClickListener {
             mConfirmCloseDialog.dismiss();
             mConfirmCloseDialog = null;
         }
+    }
+
+    @Override
+    public void finish() {
+//        LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+//        mLockManager.filterPackage(this.getPackageName(), 1000);
+        super.finish();
     }
 
     private void enableTouchArea(final boolean enable) {
