@@ -239,11 +239,7 @@ public class PreferenceTable extends BaseTable {
         if (TextUtils.isEmpty(key) || value == null) return;
 
         // true和false统一转为 1 和 0
-        if (value.equals("true")) {
-            value = String.valueOf(BOOL_TRUE);
-        } else if (value.equals("false")) {
-            value = String.valueOf(BOOL_FALSE);
-        }
+        value = transBooleanToInteger(value);
         mValues.put(key, value);
         final String finalValue = value;
         mSerialExecutor.execute(new Runnable() {
@@ -254,12 +250,17 @@ public class PreferenceTable extends BaseTable {
         });
     }
 
-    public void putBundleMap(final Map<String, Object> map, final ISettings.OnBundleSavedListener listener) {
+    public void putBundleMap(Map<String, Object> map, final ISettings.OnBundleSavedListener listener) {
         if (map == null || map.size() == 0) {
             return;
         }
 
-        mValues.putAll(map);
+        for (String key : map.keySet()) {
+            String value = String.valueOf(map.get(key));
+            value = transBooleanToInteger(value);
+            mValues.put(key, value);
+        }
+        // mValues.putAll(map);
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -269,11 +270,13 @@ public class PreferenceTable extends BaseTable {
                             @Override
                             public void run() {
                                 final SharedPreferences.Editor editor = mPrefs.edit();
-                                for (String key : map.keySet()) {
-                                    String value = String.valueOf(map.get(key));
+                                for (String key : mValues.keySet()) {
+                                    String value = String.valueOf(mValues.get(key));
+                                    // value = transBooleanToInteger(value);
                                     editor.putString(key, value);
 
-                                    checkBooleanAndChange(key, value);
+                                    // mValues.put(key, value);
+                                    // checkBooleanAndChange(key, value);
                                 }
                                 editor.commit();
                                 if (listener != null) {
@@ -295,16 +298,18 @@ public class PreferenceTable extends BaseTable {
                             db.beginTransaction();
                             try {
                                 ContentValues contentValues = new ContentValues();
-                                for (String key : map.keySet()) {
+                                for (String key : mValues.keySet()) {
                                     // true和false统一转为 1 和 0
-                                    String value = String.valueOf(map.get(key));
+                                    String value = String.valueOf(mValues.get(key));
+                                    // value = transBooleanToInteger(value);
                                     contentValues.put(COL_KEY, key);
                                     contentValues.put(COL_VALUE, value);
                                     int rows = db.update(TABLE_NAME, contentValues, COL_KEY + " = ? ", new String[]{key});
                                     if (rows <= 0) {
                                         db.insert(TABLE_NAME, null, contentValues);
                                     }
-                                    checkBooleanAndChange(key, value);
+                                    // mValues.put(key, value);
+                                    // checkBooleanAndChange(key, value);
                                 }
                                 db.setTransactionSuccessful();
                                 if (listener != null) {
@@ -355,6 +360,16 @@ public class PreferenceTable extends BaseTable {
         }
     }
 
+    private String transBooleanToInteger(String value) {
+        if ("true".equals(value)) {
+            return String.valueOf(BOOL_TRUE);
+        } else if ("false".equals(value)) {
+            return String.valueOf(BOOL_FALSE);
+        }
+
+        return value;
+    }
+
     private void awaitLoadedLocked() {
         while (!mLoaded) {
             try {
@@ -363,4 +378,5 @@ public class PreferenceTable extends BaseTable {
             }
         }
     }
+
 }
