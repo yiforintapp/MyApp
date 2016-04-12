@@ -20,6 +20,7 @@ import com.leo.appmaster.airsig.airsigutils.Utils;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -75,11 +76,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class TrainingActivity extends Activity {
+public class TrainingActivity extends Activity implements OnClickListener {
 
     private int mTryTimes = 0;
     private LEOAlarmDialog mConfirmCloseDialog;
     public static final int SHOWDIALOG = 1;
+    private CommonToolbar mTitleBar;
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ct_back_rl:
+                onBackPressed();
+                break;
+
+        }
+    }
 
     private enum Step {
         TrainingCompleted(null),
@@ -157,21 +169,26 @@ public class TrainingActivity extends Activity {
         // customize action bar:
         // 1. no App icon
         // 2. back button
-        if (null != getActionBar()) {
-            getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-            getActionBar().setDisplayShowTitleEnabled(false);
-            getActionBar().setDisplayShowCustomEnabled(true);
-            TextView title = new TextView(getApplicationContext());
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            title.setLayoutParams(lp);
-            title.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            title.setEllipsize(TruncateAt.END);
-            title.setTextColor(getResources().getColor(R.color.airsig_actionbar_title));
-            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.airsig_actionbar_title_textsize));
-            title.setText(getResources().getString(R.string.airsig_training_title));
-            getActionBar().setCustomView(title);
-        }
+//        if (null != getActionBar()) {
+//            getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
+//            getActionBar().setDisplayHomeAsUpEnabled(true);
+//            getActionBar().setDisplayShowTitleEnabled(false);
+//            getActionBar().setDisplayShowCustomEnabled(true);
+//            TextView title = new TextView(getApplicationContext());
+//            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//            title.setLayoutParams(lp);
+//            title.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+//            title.setEllipsize(TruncateAt.END);
+//            title.setTextColor(getResources().getColor(R.color.airsig_actionbar_title));
+//            title.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimensionPixelSize(R.dimen.airsig_actionbar_title_textsize));
+//            title.setText(getResources().getString(R.string.airsig_training_title));
+//            getActionBar().setCustomView(title);
+//        }
+
+        mTitleBar = (CommonToolbar) findViewById(R.id.airsig_title_bar);
+        mTitleBar.setToolbarTitle(R.string.airsig_settings_activity_title);
+        mTitleBar.setOptionMenuVisible(false);
+        mTitleBar.setNavigationClickListener(this);
 
         // initialize UI components:
         mTouchBox = (RelativeLayout) findViewById(R.id.viewTouchBox);
@@ -356,107 +373,107 @@ public class TrainingActivity extends Activity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.airsig_actionbar_training_mode, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.airsig_actionbar_training_mode, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        if (R.id.reset == item.getItemId()) {
-            if (mHelpPage.getVisibility() == View.VISIBLE) {
-                return true;
-            }
-
-            showDialog(getResources().getString(R.string.airsig_training_dialog_confirm_reset_title),
-                    getResources().getString(R.string.airsig_training_dialog_confirm_reset_detail),
-                    R.drawable.airsig_ic_dialog,
-                    getResources().getString(R.string.airsig_training_dialog_confirm_reset_postive_button),
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // Log event
-                            EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_RESET, null);
-
-                            reset();
-                        }
-                    },
-                    getResources().getString(R.string.airsig_training_dialog_confirm_reset_negative_button), null
-            );
-        } else if (android.R.id.home == item.getItemId()) {
-            // Log event
-            EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_CLICK_LEAVE, null);
-
-            if (isTrainingNotCompleted()) {
-                showDialog(getResources().getString(R.string.airsig_training_dialog_confirm_exit_title),
-                        getResources().getString(R.string.airsig_training_dialog_confirm_exit_detail),
-                        R.drawable.airsig_ic_dialog,
-                        getResources().getString(R.string.airsig_training_dialog_confirm_exit_postive_button),
-                        new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                finishActivity(false);
-                            }
-                        },
-                        getResources().getString(R.string.airsig_training_dialog_confirm_exit_negative_button), null
-                );
-            } else {
-                finishActivity(true);
-            }
-        } else if (R.id.help == item.getItemId()) {
-            if (mHelpPage.getVisibility() != View.VISIBLE) {
-                // Log event
-                EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_CLICK_TUTORIAL, null);
-            }
-
-            if (mHelpPage.getVisibility() == View.VISIBLE) {
-                mMainPage.setVisibility(View.VISIBLE);
-
-                ScaleAnimation sa = new ScaleAnimation(1f, 0f, 1f, 0f, mHelpPage.getWidth() / 2, mHelpPage.getHeight() / 2);
-                sa.setDuration(300);
-                AlphaAnimation aa = new AlphaAnimation(1f, 0f);
-                aa.setDuration(300);
-                AnimationSet as = new AnimationSet(true);
-                as.setInterpolator(new AccelerateInterpolator());
-                as.addAnimation(sa);
-                as.addAnimation(aa);
-
-                item.setEnabled(false);
-                mHelpPage.startAnimation(sa);
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        mHelpPage.setVisibility(View.INVISIBLE);
-                        item.setEnabled(true);
-                    }
-                }, sa.getDuration());
-            } else {
-                mMainPage.setVisibility(View.INVISIBLE);
-
-                mHelpPage.setVisibility(View.VISIBLE);
-                ScaleAnimation sa = new ScaleAnimation(0f, 1f, 0f, 1f, mHelpPage.getWidth() / 2, mHelpPage.getHeight() / 2);
-                sa.setDuration(300);
-                AlphaAnimation aa = new AlphaAnimation(0f, 1f);
-                aa.setDuration(300);
-                AnimationSet as = new AnimationSet(true);
-                as.setInterpolator(new AccelerateDecelerateInterpolator());
-                as.addAnimation(sa);
-                as.addAnimation(aa);
-
-                item.setEnabled(false);
-                mHelpPage.startAnimation(as);
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        item.setEnabled(true);
-                    }
-                }, sa.getDuration());
-            }
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(final MenuItem item) {
+//        super.onOptionsItemSelected(item);
+//
+//        if (R.id.reset == item.getItemId()) {
+//            if (mHelpPage.getVisibility() == View.VISIBLE) {
+//                return true;
+//            }
+//
+//            showDialog(getResources().getString(R.string.airsig_training_dialog_confirm_reset_title),
+//                    getResources().getString(R.string.airsig_training_dialog_confirm_reset_detail),
+//                    R.drawable.airsig_ic_dialog,
+//                    getResources().getString(R.string.airsig_training_dialog_confirm_reset_postive_button),
+//                    new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            // Log event
+//                            EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_RESET, null);
+//
+//                            reset();
+//                        }
+//                    },
+//                    getResources().getString(R.string.airsig_training_dialog_confirm_reset_negative_button), null
+//            );
+//        } else if (android.R.id.home == item.getItemId()) {
+//            // Log event
+//            EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_CLICK_LEAVE, null);
+//
+//            if (isTrainingNotCompleted()) {
+//                showDialog(getResources().getString(R.string.airsig_training_dialog_confirm_exit_title),
+//                        getResources().getString(R.string.airsig_training_dialog_confirm_exit_detail),
+//                        R.drawable.airsig_ic_dialog,
+//                        getResources().getString(R.string.airsig_training_dialog_confirm_exit_postive_button),
+//                        new OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                finishActivity(false);
+//                            }
+//                        },
+//                        getResources().getString(R.string.airsig_training_dialog_confirm_exit_negative_button), null
+//                );
+//            } else {
+//                finishActivity(true);
+//            }
+//        } else if (R.id.help == item.getItemId()) {
+//            if (mHelpPage.getVisibility() != View.VISIBLE) {
+//                // Log event
+//                EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_CLICK_TUTORIAL, null);
+//            }
+//
+//            if (mHelpPage.getVisibility() == View.VISIBLE) {
+//                mMainPage.setVisibility(View.VISIBLE);
+//
+//                ScaleAnimation sa = new ScaleAnimation(1f, 0f, 1f, 0f, mHelpPage.getWidth() / 2, mHelpPage.getHeight() / 2);
+//                sa.setDuration(300);
+//                AlphaAnimation aa = new AlphaAnimation(1f, 0f);
+//                aa.setDuration(300);
+//                AnimationSet as = new AnimationSet(true);
+//                as.setInterpolator(new AccelerateInterpolator());
+//                as.addAnimation(sa);
+//                as.addAnimation(aa);
+//
+//                item.setEnabled(false);
+//                mHelpPage.startAnimation(sa);
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//                        mHelpPage.setVisibility(View.INVISIBLE);
+//                        item.setEnabled(true);
+//                    }
+//                }, sa.getDuration());
+//            } else {
+//                mMainPage.setVisibility(View.INVISIBLE);
+//
+//                mHelpPage.setVisibility(View.VISIBLE);
+//                ScaleAnimation sa = new ScaleAnimation(0f, 1f, 0f, 1f, mHelpPage.getWidth() / 2, mHelpPage.getHeight() / 2);
+//                sa.setDuration(300);
+//                AlphaAnimation aa = new AlphaAnimation(0f, 1f);
+//                aa.setDuration(300);
+//                AnimationSet as = new AnimationSet(true);
+//                as.setInterpolator(new AccelerateDecelerateInterpolator());
+//                as.addAnimation(sa);
+//                as.addAnimation(aa);
+//
+//                item.setEnabled(false);
+//                mHelpPage.startAnimation(as);
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+//                        item.setEnabled(true);
+//                    }
+//                }, sa.getDuration());
+//            }
+//        }
+//
+//        return true;
+//    }
 
     private void showAirSigTutorial() {
         Intent intent = new Intent();
@@ -1320,20 +1337,38 @@ public class TrainingActivity extends Activity {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AlertBuilder alert = new AlertBuilder(TrainingActivity.this);
-                alert.setTitle(title);
-                alert.setDetailedMessage(detail);
-                if (image != null) {
-                    if ("drawable".compareToIgnoreCase(getResources().getResourceTypeName(image)) == 0) {
-                        alert.setImageResource(image);
-                    } else {
-                        alert.setGifResource(image);
-                    }
+//                AlertBuilder alert = new AlertBuilder(TrainingActivity.this);
+//                alert.setTitle(title);
+//                alert.setDetailedMessage(detail);
+//                if (image != null) {
+//                    if ("drawable".compareToIgnoreCase(getResources().getResourceTypeName(image)) == 0) {
+//                        alert.setImageResource(image);
+//                    } else {
+//                        alert.setGifResource(image);
+//                    }
+//                }
+//                alert.setPositiveButton(postiveButton, positiveButtonClickListener);
+//                alert.setNegativeButton(negativeButton, negativeButtonClickListener);
+//                alert.setCancelable(false);
+//                alert.show();
+
+                if (mConfirmCloseDialog == null) {
+                    mConfirmCloseDialog = new LEOAlarmDialog(TrainingActivity.this);
                 }
-                alert.setPositiveButton(postiveButton, positiveButtonClickListener);
-                alert.setNegativeButton(negativeButton, negativeButtonClickListener);
-                alert.setCancelable(false);
-                alert.show();
+                mConfirmCloseDialog.setContent(detail);
+                mConfirmCloseDialog.setRightBtnStr(postiveButton);
+                mConfirmCloseDialog.setLeftBtnStr(negativeButton);
+                mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        mConfirmCloseDialog.dismiss();
+                    }
+                });
+                if (!isFinishing()) {
+                    mConfirmCloseDialog.show();
+                }
+
             }
         });
     }
