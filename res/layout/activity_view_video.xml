@@ -43,7 +43,7 @@
             android:background="@android:color/transparent"
             android:drawableTop="@drawable/unhide_picture_selector"
             android:text="@string/app_cancel_hide_image"
-            android:textColor="@drawable/selector_button_text" />
+            android:textColor="@color/c3" />
 
         <View
             android:layout_width="5dp"
@@ -60,7 +60,7 @@
             android:background="@android:color/transparent"
             android:drawableTop="@drawable/delete_picture_selector"
             android:text="@string/button_delete"
-            android:textColor="@drawable/selector_button_text" />
+            android:textColor="@color/c3" />
 
     </LinearLayout>
 
