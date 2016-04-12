@@ -1287,4 +1287,7 @@
     <string name="uninstall_guide_tips">تم تمكين الحماية المتقدمة ، يُرجى النقر هنا لإلغاء تثبيت LEO Privacy</string>
     <string name="secur_add_num_tip">كيف تعمل وظيفة مكافحة السرقة؟</string>
     <string name="backup_instr_tip_str">يمكنك إرسال نسخة احتياطية من الأوامر عبر الرسائل القصيرة إلى رقمك المحجوز.</string>
+
+    <string name="air_sig_tips_content">لا تستطيع أن تستخدم Magic Lock، ربما بسبب جيروسكوب</string>
+    <string name="air_sig_tips_content_two">اذا تفشل اعدادات كثيرا  من مرات، ربما توجد مشاكل عن جيروسكوب علي الهاتف</string>
 </resources>

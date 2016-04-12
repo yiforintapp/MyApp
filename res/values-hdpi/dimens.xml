@@ -417,4 +417,6 @@
 
     <dimen name="battery_clean_result_margingTop">0dp</dimen>
     <dimen name="hide_grid_image_width">109dp</dimen>
+    <dimen name="home_det_height">318dp</dimen>
+    <dimen name="detect_shield_margin_tip">98dp</dimen>
 </resources>

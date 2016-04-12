@@ -1228,4 +1228,7 @@
     <string name="airsig_settings_high_secure">高安全模式</string>
     <string name="airsig_settings_generic">一般模式</string>
     <string name="airsig_settings_control">控制模式</string>
+
+    <string name="air_sig_tips_content">您的手机重力感应陀螺仪存在问题，无法使用空中解锁</string>
+    <string name="air_sig_tips_content_two">如果您多次设置失败，可能是手机重力感应陀螺仪存在问题</string>
 </resources>
