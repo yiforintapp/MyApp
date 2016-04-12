@@ -140,6 +140,7 @@ public class StatusBarEventService extends IntentService {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_pic");
         } else if (eventType == EVENT_PRIVACY_VIDEO) {
             targetIntent = new Intent(this, NewHideVidActivity.class);
+            targetIntent.putExtra("vid_from_notify", true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_vid");
         } else {

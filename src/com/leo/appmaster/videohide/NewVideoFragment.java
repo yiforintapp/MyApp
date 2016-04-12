@@ -213,7 +213,11 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
                             hideAllVidBackground(photos, 0);
                         }
                     });
-
+                    if (NewHideVidActivity.mFromNotification) {
+                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_noti_hide");
+                    } else {
+                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_home_hide");
+                    }
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts_$" + list.size());

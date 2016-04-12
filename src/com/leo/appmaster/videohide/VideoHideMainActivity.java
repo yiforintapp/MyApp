@@ -96,6 +96,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private NewVidAdapter mNewVidAdapter = new NewVidAdapter(this);
     private boolean mHasShowNew = false;
     public static boolean mIsFromConfirm;
+    public static boolean mFromHomeEnter;
 
     private final int REQUEST_CODE_GO_NEW = 10;
 

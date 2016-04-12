@@ -324,6 +324,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     //视频隐藏
                     int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
                     table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
+                    VideoHideMainActivity.mFromHomeEnter = false;
                     intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
                     LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);

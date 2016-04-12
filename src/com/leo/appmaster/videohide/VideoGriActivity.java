@@ -11,8 +11,6 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -604,6 +602,11 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                             doingBackGround(true);
                             mHideVideoAdapter.notifyDataSetChanged();
                             /* SDK:use hide video */
+                            if (VideoHideMainActivity.mFromHomeEnter) {
+                                 SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_Video", "vid_home_hide");
+                            } else {
+                                 SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_pic", "vid_icon_hide");
+                            }
                             SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_Video", "used");
                             SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
                             SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_vid_operation", "vid_add_pics_$" + size);

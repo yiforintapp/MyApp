@@ -40,6 +40,8 @@ public class NewHideVidActivity extends BaseFragmentActivity {
     public final static String FOUND_VID = "found_vid";
     public final static String NEW_ADD_VID = "new_add_vid";
 
+    public static boolean mFromNotification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         } else {
             mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
         }
+        mFromNotification = getIntent().getBooleanExtra("vid_from_notify", false);
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();
