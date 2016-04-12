@@ -99,11 +99,15 @@ public class ThreadManager {
 
     };
 
-    static {
+    public static void initialize() {
         sNetworkExecutor = initThreadExecutor(NETWORK_CORE_SIZE, MAX_NETWORK_SIZE, sNetworkFactory);
         sAsyncExecutor = initThreadExecutor(ASYNCTASK_CORE_SIZE, MAX_ASYNC_SIZE, sAsyncFactory);
 
         sUiThread = Thread.currentThread();
+    }
+
+    public static long getMainThreadId() {
+        return sUiThread.getId();
     }
 
     private static ScheduledThreadPoolExecutor initThreadExecutor(int coreSize, int maxSize, ThreadFactory factory) {

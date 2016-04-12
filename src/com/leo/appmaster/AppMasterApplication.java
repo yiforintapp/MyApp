@@ -98,6 +98,8 @@ public class AppMasterApplication extends Application {
         } catch (Exception e) {
         }
         long start = SystemClock.elapsedRealtime();
+
+        ThreadManager.initialize();
         LeoSettings.initialize();
         LeoLog.d(TAG, "initialize cost: " + (SystemClock.elapsedRealtime() - start));
 

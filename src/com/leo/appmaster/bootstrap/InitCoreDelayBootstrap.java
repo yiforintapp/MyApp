@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.mgr.DeviceManager;
@@ -43,6 +44,7 @@ public class InitCoreDelayBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        LeoLog.d(TAG, "<ls> doStrap, curr_tid:" + Thread.currentThread().getId() + " | main_tid:" + ThreadManager.getMainThreadId());
         long start = SystemClock.elapsedRealtime();
         registerReceiveMessageCallIntercept();
         long end = SystemClock.elapsedRealtime();
