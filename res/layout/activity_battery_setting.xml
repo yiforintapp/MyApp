@@ -67,6 +67,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:layout_marginLeft="20dp"
                         android:layout_toLeftOf="@+id/iv_switch_screenview"
                         android:gravity="left">
@@ -91,7 +93,7 @@
                             android:maxLines="3"
                             android:text="@string/batterymanage_switch_screen_summary"
                             android:textColor="@color/c4"
-                            android:textSize="10dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <ImageView
@@ -131,6 +133,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:layout_marginLeft="20dp"
                         android:layout_toLeftOf="@+id/iv_switch_pow_sav"
                         android:gravity="left">
@@ -155,7 +159,7 @@
                             android:maxLines="3"
                             android:text="@string/battery_protect_setting_pow_sav_des"
                             android:textColor="@color/c4"
-                            android:textSize="10dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <ImageView

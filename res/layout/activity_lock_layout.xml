@@ -6,14 +6,14 @@
         android:id="@+id/activity_lock_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cb">
+        android:background="@color/ctc">
 
         <com.leo.appmaster.ui.CommonTitleBar
             android:id="@+id/layout_title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"/>
-        
+        z
         <FrameLayout
             android:id="@+id/fragment_contain"
             android:layout_width="match_parent"

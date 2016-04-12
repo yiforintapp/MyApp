@@ -47,6 +47,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
                         android:gravity="left">
 
@@ -58,7 +60,7 @@
                             android:maxLines="4"
                             android:text="@string/intruder_setting_title_1"
                             android:textColor="@color/c2"
-                            android:textSize="15dp" />
+                            android:textSize="16dp" />
 
                         <TextView
                             android:id="@+id/tv_intruder_setting_summary1"
@@ -71,7 +73,7 @@
                             android:maxLines="3"
                             android:text="@string/intruder_setting_summarty_1"
                             android:textColor="@color/c4"
-                            android:textSize="10dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <ImageView
@@ -113,6 +115,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:layout_toLeftOf="@+id/iv_intruder_setting_switch2"
                         android:gravity="left">
 
@@ -124,7 +128,7 @@
                             android:maxLines="4"
                             android:text="@string/intruder_setting_title_2"
                             android:textColor="@color/c2"
-                            android:textSize="15dp" />
+                            android:textSize="16dp" />
 
                         <TextView
                             android:id="@+id/tv_intruder_setting_summary2"
@@ -137,7 +141,7 @@
                             android:maxLines="3"
                             android:text="@string/intruder_setting_summarty_2"
                             android:textColor="@color/c4"
-                            android:textSize="10dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <ImageView
@@ -178,6 +182,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20dp"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:layout_toLeftOf="@+id/iv_intruder_setting_switch3"
                         android:gravity="left">
 
@@ -188,7 +194,7 @@
                             android:maxLines="2"
                             android:text="@string/ask_for_times_for_catch"
                             android:textColor="@color/c2"
-                            android:textSize="15dp" />
+                            android:textSize="16dp" />
 
                         <TextView
                             android:id="@+id/tv_intruder_setting_summary3"
@@ -200,7 +206,7 @@
                             android:gravity="top"
                             android:maxLines="3"
                             android:textColor="@color/c4"
-                            android:textSize="10dp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
 
                     <ImageView

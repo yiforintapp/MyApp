@@ -14,8 +14,8 @@
         android:layout_height="@dimen/setting_item_height"
         android:background="@drawable/new_list_selecter"
         android:gravity="center_vertical"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
-                android:textColor="@color/option_text_color"
+                android:textColor="@color/c2"
                 android:textSize="16dp" />
 
             <TextView
@@ -42,7 +42,7 @@
                 android:layout_alignLeft="@android:id/title"
                 android:layout_below="@android:id/title"
                 android:maxLines="2"
-                android:textColor="@drawable/selector_text_detail"
+                android:textColor="@color/c4"
                 android:textSize="16dp" />
         </RelativeLayout>
 

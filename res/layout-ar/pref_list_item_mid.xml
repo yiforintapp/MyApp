@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/new_list_selecter"
         android:gravity="center_vertical"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -31,7 +31,7 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:gravity="center_vertical"
-                android:textColor="@color/option_text_color"
+                android:textColor="@color/c2"
                 android:textSize="16dp" />
 
             <TextView
@@ -43,8 +43,8 @@
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:gravity="center_vertical"
-                android:textColor="#999999"
-                android:textSize="10dp" />
+                android:textColor="@color/c4"
+                android:textSize="14dp" />
         </RelativeLayout>
 
         <LinearLayout
