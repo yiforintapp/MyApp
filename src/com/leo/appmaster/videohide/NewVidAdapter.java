@@ -10,6 +10,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.imagehide.NewAdaper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.ImageDownloader;
 
 /**
  * Created by Jasper on 2015/10/16.
@@ -39,7 +40,7 @@ public class NewVidAdapter extends NewAdaper<VideoItemBean> {
 
         final VideoItemBean info = (VideoItemBean) getItem(position);
 
-        String url = "voidefile://" + info.getPath();
+        String url = ImageDownloader.Scheme.VIDEOFILE.wrap(info.getPath());
         mImageLoader.displayImage(url, holder.imageView, getMediaOptions());
         holder.title.setText(info.getName());
 

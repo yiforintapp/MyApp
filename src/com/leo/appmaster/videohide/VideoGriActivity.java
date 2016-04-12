@@ -58,6 +58,7 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
@@ -441,7 +442,7 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                 viewHolder.text.setText(name);
 //                viewHolder.imageView.setBackgroundDrawable(context.getResources()
 //                        .getDrawable(R.drawable.video_loading));
-                String filePath = "voidefile://" + path;
+                String filePath = ImageDownloader.Scheme.VIDEOFILE.wrap(path);
                 mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
             }
             return convertView;

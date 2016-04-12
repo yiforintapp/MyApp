@@ -11,6 +11,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoItemBean;
+import com.leo.imageloader.core.ImageDownloader;
 
 /**
  * Created by Jasper on 2015/10/22.
@@ -90,7 +91,7 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
         } else {
             holder.title.setText(wrapper.parentName);
             holder.count.setText(mContext.getString(R.string.pri_pro_folder_summary, wrapper.items.size()));
-            String url = "voidefile://" + getPath(wrapper.items.get(0));
+            String url = ImageDownloader.Scheme.VIDEOFILE.wrap(getPath(wrapper.items.get(0)));
             mImageLoader.displayImage(url, holder.imageView, PrivacyNewAdaper.getOptions());
         }
 
@@ -143,7 +144,7 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
 
         final VideoItemBean info = (VideoItemBean) getChild(groupPosition, childPosition);
 
-        String url = "voidefile://" + info.getPath();
+        String url = ImageDownloader.Scheme.VIDEOFILE.wrap(info.getPath());
         mImageLoader.displayImage(url, holder.imageView, getMediaOptions());
         holder.title.setText(info.getName());
 

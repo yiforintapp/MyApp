@@ -50,6 +50,7 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
@@ -545,48 +546,9 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             viewHolder.name.setText(videos.get(position).getName());
             viewHolder.amount.setText(videos.get(position).getCount()+"");
 
-//            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
-//                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
-//            } else {
-//                uri = ImageDownloader.Scheme.FILE.wrap(path);
-//            }
-            String filePath = "voidefile://" + path;
+            String filePath = ImageDownloader.Scheme.VIDEOFILE.wrap(path);
             mImageLoader.displayImage(filePath, viewHolder.img, mOptions);
             return convertView;
-
-//
-//            ViewHolder viewHolder = null;
-//            if (convertView == null) {
-//                convertView = getLayoutInflater().inflate(
-//                        R.layout.item_video_gridview_album, parent, false);
-//                viewHolder = new ViewHolder();
-//                viewHolder.imageView = (ImageView) convertView
-//                        .findViewById(R.id.video_item_album);
-//                viewHolder.mImageCbIcon = (ImageView) convertView.findViewById(R.id.iv_cb_icon);
-//                viewHolder.text = (TextView) convertView
-//                        .findViewById(R.id.txt_item_album);
-//                convertView.setTag(viewHolder);
-//            } else {
-//                viewHolder = (ViewHolder) convertView.getTag();
-//            }
-//            VideoBean video = videos.get(position);
-//            String path = video.getPath();
-//            String name = video.getName();
-//            String secondName = FileOperationUtil.getSecondDirNameFromFilepath(path);
-//            viewHolder.text.setText(name + "(" + video.getCount()
-//                    + ")");
-//            viewHolder.imageView.setBackgroundDrawable(context.getResources()
-//                    .getDrawable(R.drawable.video_loading));
-//            LeoLog.d("testIntent", "name is : " + name);
-//            LeoLog.d("testIntent", "secondName is : " + secondName);
-//            if (name.equals(LAST_CATALOG) && secondName.equals(SECOND_CATALOG)) {
-//                viewHolder.mImageCbIcon.setVisibility(View.VISIBLE);
-//            } else {
-//                viewHolder.mImageCbIcon.setVisibility(View.GONE);
-//            }
-//            String filePath = "voidefile://" + path;
-//            mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
-//            return convertView;
         }
 
     }
@@ -666,7 +628,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             }
 
             String path = list.get(position).getPath();
-            String uri = "voidefile://" + path;
+            String uri = ImageDownloader.Scheme.VIDEOFILE.wrap(path);
 //            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
 //                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
 //            } else {

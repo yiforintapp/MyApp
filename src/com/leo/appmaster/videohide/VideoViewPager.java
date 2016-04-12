@@ -49,6 +49,7 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageScaleType;
 
 public class VideoViewPager extends BaseActivity implements OnClickListener {
@@ -645,7 +646,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             imageView.setTag(path);
 //            imageView.setImageDrawable(VideoViewPager.this.getResources()
 //                    .getDrawable(R.drawable.video_loading));
-            String filePath = "voidefile://" + path;
+            String filePath = ImageDownloader.Scheme.VIDEOFILE.wrap(path);
             mImageLoader.displayImage(filePath, imageView, mOptions);
             imageView.setOnClickListener(new OnClickListener() {
 

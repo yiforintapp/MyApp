@@ -42,6 +42,7 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageScaleType;
 
 @SuppressLint("NewApi")
@@ -243,7 +244,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
 //            } else {
 //                uri = ImageDownloader.Scheme.FILE.wrap(path);
 //            }
-            String filePath = "voidefile://" + path;
+            String filePath = ImageDownloader.Scheme.VIDEOFILE.wrap(path);
             mImageLoader.displayImage(filePath, viewHolder.img, mOptions);
             return convertView;
         }
