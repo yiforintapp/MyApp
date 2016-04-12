@@ -15,20 +15,21 @@
             android:id="@+id/home_app_lock_tv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/icon_home_top_1"
             android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_applock"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/new_list_selecter">
 
                 <RelativeLayout
                     android:id="@+id/content_app_lock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center">
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal">
 
                     <RelativeLayout
                         android:id="@+id/content_app_lock_red"
@@ -70,15 +71,16 @@
             android:id="@+id/home_img"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/icon_home_top_1"
             android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_img"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/new_list_selecter"
-                android:gravity="center">
+                android:gravity="center_horizontal">
 
                 <ImageView
                     android:id="@+id/home_ic_img_img"
@@ -98,15 +100,16 @@
             android:id="@+id/home_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/icon_home_top_1"
             android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_video"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/new_list_selecter"
-                android:gravity="center">
+                android:gravity="center_horizontal">
 
                 <ImageView
                     android:id="@+id/home_ic_video"
@@ -138,22 +141,23 @@
             android:id="@+id/home_intercept"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/icon_home_top_2"
             android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_intercept"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/new_list_selecter"
-                android:gravity="center">
+                android:gravity="center_horizontal">
 
                 <ImageView
                     android:id="@+id/home_ic_intercept"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/icon_home_video"/>
+                    android:src="@drawable/icon_home_intercept"/>
 
                 <TextView
                     style="@style/HomeTabText"
@@ -171,22 +175,23 @@
             android:id="@+id/home_magiclock"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/icon_home_top_2"
             android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_magiclock"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/new_list_selecter"
-                android:gravity="center">
+                android:gravity="center_horizontal">
 
                 <ImageView
                     android:id="@+id/home_ic_magiclock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/icon_home_video"/>
+                    android:src="@drawable/icon_home_magiclock"/>
 
                 <TextView
                     style="@style/HomeTabText"
@@ -200,22 +205,23 @@
             android:id="@+id/home_more"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/icon_home_top_2"
             android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/new_list_selecter"
-                android:gravity="center">
+                android:gravity="center_horizontal">
 
                 <RelativeLayout
                     android:id="@+id/content_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center">
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal">
 
                     <RelativeLayout
                         android:id="@+id/content_more_red"
