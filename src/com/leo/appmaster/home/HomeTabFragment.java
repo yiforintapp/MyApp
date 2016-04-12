@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -334,6 +335,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     goToCallfilter();
                     break;
                 case R.id.home_magiclock:
+                    Intent intent2 = new Intent(activity, AirSigActivity.class);
+                    startActivity(intent2);
 
                     break;
                 case R.id.home_more:

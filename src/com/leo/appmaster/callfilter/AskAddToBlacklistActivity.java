@@ -187,7 +187,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                             default:
                                 break;
                         }
-                        LeoLog.i("asdfasdfasfdasdf",mPhoneNumber+":markType="+ info.markType);
+                        LeoLog.i("asdfasdfasfdasdf", mPhoneNumber + ":markType=" + info.markType);
                         infost.add(info);
                         boolean inerFlag = mCmp.addBlackList(infost, false);
                         if (!inerFlag) {
@@ -199,12 +199,14 @@ public class AskAddToBlacklistActivity extends BaseActivity {
                 });
 
                 Toast.makeText(AskAddToBlacklistActivity.this, getResources().getString(R.string.mark_number_from_list), Toast.LENGTH_SHORT).show();
+                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_5s_block");
                 mDialogTooShort.dismiss();
 //                AskAddToBlacklistActivity.this.finish();
                 showShareDialog();
             }
         });
         mDialogTooShort.show();
+        SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_5s_sh");
     }
 
 
