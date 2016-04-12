@@ -359,22 +359,26 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     private void goToQuickHelper() {
         Intent dlIntent = new Intent(this, QuickHelperActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "asisitant");
         startActivity(dlIntent);
     }
 
     private void goToAppUninstall() {
 
         Intent dlIntent = new Intent(this, UninstallActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "newuninstall");
         startActivity(dlIntent);
     }
 
     private void goToAppBackup() {
         Intent dlIntent = new Intent(this, BackUpActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "backup");
         startActivity(dlIntent);
     }
 
     private void goToPrivacyContact() {
         Intent dlIntent = new Intent(this, PrivacyContactActivity.class);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "more", "contacts");
         startActivity(dlIntent);
     }
 
