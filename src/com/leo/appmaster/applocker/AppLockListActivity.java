@@ -855,6 +855,7 @@ public class AppLockListActivity extends BaseActivity implements
             case R.id.auto_guide_button:
                 /* 华为P7类rom */
                 if (AutoStartGuideList.HUAWEIP7_PLUS == mWhiteMode) {
+                    LeoLog.d("testHuawei", "1");
                     Intent autoIntent = new Intent();
                     autoIntent.setAction("android.intent.action.MAIN");
                     ComponentName autoCn = new ComponentName("com.huawei.systemmanager",
@@ -870,6 +871,7 @@ public class AppLockListActivity extends BaseActivity implements
                     } catch (Exception e) {
                     }
                 } else {
+                    LeoLog.d("testHuawei", "2");
                     new AutoStartGuideList().executeGuide();
                 }
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_fn");
@@ -928,6 +930,17 @@ public class AppLockListActivity extends BaseActivity implements
         }
     }
 
+    public static boolean isHuaweiActivity(Context context) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setPackage("com.huawei.systemmanager");
+        intent.setClassName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.bootstart.BootStartActivity");
+        List<ResolveInfo> info = context.getPackageManager().queryIntentActivities(intent, 0);
+        if (info != null && info.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
     private String getfilterTarget(Intent intent) {
         if (intent == null) {
             return null;
@@ -981,6 +994,7 @@ public class AppLockListActivity extends BaseActivity implements
             mWhiteMode = AutoStartGuideList.HUAWEIP7_PLUS;
         }
         if (mWhiteMode != -1) {
+
             mGuideTip.setVisibility(View.VISIBLE);
             int content = AutoStartGuideList
                     .getAutoWhiteListTipText(AppMasterApplication.getInstance());
@@ -988,14 +1002,13 @@ public class AppLockListActivity extends BaseActivity implements
             mAutoRL.setVisibility(View.VISIBLE);
             if (AutoStartGuideList.SAMSUMG_SYS == AutoStartGuideList.isAutoWhiteListModel(this)) {
                 mAutoImage.setImageResource(R.drawable.backstage_protection);
-
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_samsung_cover");
-
             } else {
                 mAutoImage.setImageResource(R.drawable.power_star);
             }
             mBackgroundRL.setVisibility(View.GONE);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_display_fn");
+
             /* 查询是否为双提示打开系统权限的机型 */
             if (AutoStartGuideList.isDoubleTipOPenPhone(mWhiteMode)) {
                 mBackgroundRL.setVisibility(View.VISIBLE);
@@ -1003,6 +1016,14 @@ public class AppLockListActivity extends BaseActivity implements
                 mBackGroudText.setText(content);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_display_back");
             }
+
+            //fix bug - AM4264
+            boolean huawei = BuildProperties.isHuaWeiTipPhone(this);
+            boolean canJump = isHuaweiActivity(this);
+            if (huawei && !canJump) {
+                mAutoRL.setVisibility(View.GONE);
+            }
+
         } else {
             mAutoRL.setVisibility(View.GONE);
             mBackgroundRL.setVisibility(View.GONE);
@@ -1125,4 +1146,6 @@ public class AppLockListActivity extends BaseActivity implements
         /*进入应用锁，引导强制提示3*/
         return guideCount > IN_LOCK_GUIDE_COUNT;
     }
+
+
 }
