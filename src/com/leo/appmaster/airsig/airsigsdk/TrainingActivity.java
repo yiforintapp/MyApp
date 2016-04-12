@@ -1515,7 +1515,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         mToneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP);
     }
 
-    private static class MessageBoxFragment extends Fragment {
+    public static class MessageBoxFragment extends Fragment {
 
         private FrameLayout mContentContainer;
         private TextView mPositiveButton, mNegativeButton;
