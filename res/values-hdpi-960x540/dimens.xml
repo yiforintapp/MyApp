@@ -327,4 +327,7 @@
     <dimen name="ad_view_height">284dp</dimen>
     <dimen name="ad_ll_margin_top">256dp</dimen>
     <dimen name="add_num_cb_padding">10dp</dimen>
+
+    <dimen name="detect_shield_margin_tip">98dp</dimen>
+    <dimen name="home_det_height">358dp</dimen>
 </resources>
