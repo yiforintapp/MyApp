@@ -7,13 +7,13 @@
     android:background="#d9d9e7"
     android:paddingBottom="10dp"
     android:paddingLeft="13dp"
-    android:paddingRight="16dp"
     android:paddingTop="10dp">
 
     <LinearLayout
         android:id="@+id/ll_amount_and_hide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -73,7 +73,7 @@
         android:listSelector="@android:color/transparent"
         android:scrollbars="none"
         android:layout_width="match_parent"
-
+        android:layout_marginRight="16dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:horizontalSpacing="2dp"
@@ -86,6 +86,7 @@
         android:gravity="center_vertical|right"
         android:textSize="@dimen/f5"
         android:maxLines="1"
+        android:layout_marginRight="16dp"
         android:textColor="#9393ad"
         android:layout_alignParentRight="true"
         android:layout_below="@id/gv_newpic"
