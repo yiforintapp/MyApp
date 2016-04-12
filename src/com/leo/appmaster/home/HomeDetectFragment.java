@@ -97,7 +97,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private ImageView mShieldDangerRightIv;
     private ImageView mShieldDangerTopIv;
     private ImageView mShieldDangerCenterIv;
-//    private TextView mDangerResultAppDetailTv;
+    //    private TextView mDangerResultAppDetailTv;
 //    private TextView mDangerResultPicDetailTv;
 //    private TextView mDangerResultVideoDetailTv;
     private TextView mDangerDetTip;
@@ -118,6 +118,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private boolean mLastPrivacyVideo;
 
     private boolean mFromEnter;
+    private boolean mCenterBanner;
 
     @Override
     public void onAttach(Activity activity) {
@@ -155,6 +156,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
         if (mFromEnter) {
             initAnim();
+        }
+
+        //隐藏中间banner
+        if (mCenterBanner) {
+            if (mCenterTipRt.getVisibility() == View.VISIBLE) {
+                mCenterTipRt.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -212,8 +220,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
         @Override
         public void onAnimationEnd(Animator animation) {
-            if (mLastPrivacyConut > 0 && mPrivacyConut<=0) {
-                LeoLog.d("refreshDetectStatus","privacy app conver anim!");
+            if (mLastPrivacyConut > 0 && mPrivacyConut <= 0) {
+                LeoLog.d("refreshDetectStatus", "privacy app conver anim!");
                 dangerShieldConverAnim();
             }
         }
@@ -242,6 +250,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mLastPrivacyApp = mPrivacyApp;
         mLastPrivacyPic = mPrivacyPic;
         mLastPrivacyVideo = mPrivacyVideo;
+
     }
 
     private void initBannerTip() {
@@ -532,6 +541,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
         sShowLost = !sShowLost;
         mFromEnter = false;
+        mCenterBanner = false;
     }
 
     @Override
@@ -590,6 +600,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                         } else if (type == TYPE_LOST) {
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_cli");
                         }
+                        mCenterBanner = true;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -696,7 +707,13 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    //首次进入主页盾牌动画
+    /**
+     * 进入主页盾牌动画
+     *
+     * @param top
+     * @param left
+     * @param right
+     */
     public void initHomeTopShieldAnim(final View top, final View left, final View right) {
         int value2 = 0;
         int value1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_top_y_trans)) + value2;
@@ -754,7 +771,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         mFirstInAnim.cancel();
     }
 
-    //首次进入主页Center盾牌动画
+    /**
+     * 盾牌中间view动画
+     */
     public void startHomeCenterShieldAnim(final View view) {
         ObjectAnimator scaleXFirstAnim = ObjectAnimator.ofFloat(view, "scaleX", 0.6f, 1.06f);
         ObjectAnimator scaleYFirstAnim = ObjectAnimator.ofFloat(view, "scaleY", 0.6f, 1.06f);
@@ -795,6 +814,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     }
 
+    /**
+     * 检测结果输出动画
+     */
     private void startScanResultAnim() {
         AnimatorSet appAnimatorSet;
         AnimatorSet picAnimatorSet;
@@ -820,7 +842,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             vidAnimatorSet = getTranslateAnim(mSfatResultVideoLt);
         }
         ObjectAnimator tipsAnim = ObjectAnimator.ofFloat(mCenterTipRt, "x",
-                            -mScreenWidth, mCenterTipRt.getTranslationX());
+                -mScreenWidth, mCenterTipRt.getTranslationX());
         tipsAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -870,7 +892,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     /**
      * 扫描结果处理后切换动画
      */
-    public void detectResultConversionAnim(final View current,final View top, final View showView,
+    public void detectResultConversionAnim(final View current, final View top, final View showView,
                                            final View missView, Animator.AnimatorListener listener) {
 
         ObjectAnimator currentDown = ObjectAnimator.ofFloat(current, "translationY", -50, 0);
@@ -896,16 +918,16 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         alphaAnim.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                if(mAppSafeContent == current){
+                if (mAppSafeContent == current) {
                     showView.setBackgroundDrawable(
                             getResources().getDrawable(R.drawable.strip_home_ok1));
-                }else if(mPicSafeContent == current){
+                } else if (mPicSafeContent == current) {
                     showView.setBackgroundDrawable(
                             getResources().getDrawable(R.drawable.strip_home_ok2));
-                }else if(mVidSafeContent == current){
+                } else if (mVidSafeContent == current) {
                     showView.setBackgroundDrawable(
                             getResources().getDrawable(R.drawable.strip_home_ok3));
-                }else{
+                } else {
                     showView.setBackgroundDrawable(
                             getResources().getDrawable(R.drawable.strip_home_ok1));
                 }
@@ -943,8 +965,9 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         }, 500);
     }
 
-    //红蓝盾牌的替换动画
-
+    /**
+     * 红蓝盾牌的替换动画
+     */
     public void dangerShieldConverAnim() {
         setDangerShieldView(true, false);
         //危险状态
