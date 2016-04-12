@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -556,8 +554,17 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_app:
                 //应用扫描危险结果
                 //mDetectPresenter.appDangerHandler();
-                PrivacyHelper.getAppPrivacy().jumpAction(mContext);
+                privacy = PrivacyHelper.getAppPrivacy();
+                privacy.jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
+                try {
+                    if (Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
+                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
+                                "app_cli_$" + privacy.getPrivacyCountText());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.lt_det_saft_result_img:
                 int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
@@ -568,8 +575,17 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_img:
                 //图片扫描危险结果
                 //mDetectPresenter.imageDangerHandler();
-                PrivacyHelper.getImagePrivacy().jumpAction(mContext);
+                privacy = PrivacyHelper.getImagePrivacy();
+                privacy.jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
+                try {
+                    if ( Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
+                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
+                                "pic_cli_$" + privacy.getPrivacyCountText());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.lt_det_saft_result_video:
                 int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
@@ -580,8 +596,17 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             case R.id.lt_det_danger_result_video:
                 //视频扫描危险结果
                 //mDetectPresenter.videoDangerHandler();
-                PrivacyHelper.getVideoPrivacy().jumpAction(mContext);
+                privacy = PrivacyHelper.getVideoPrivacy();
+                privacy.jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
+                try {
+                    if ( Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
+                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
+                                "vid_cli_$" + privacy.getPrivacyCountText());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.lt_home_det_tip:
                 //中间banner
