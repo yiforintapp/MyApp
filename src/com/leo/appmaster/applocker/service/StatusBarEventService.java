@@ -1,7 +1,6 @@
 package com.leo.appmaster.applocker.service;
 
 import android.app.IntentService;
-import android.content.ComponentName;
 import android.content.Intent;
 
 import com.leo.appmaster.Constants;
@@ -18,7 +17,6 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.NewHideVidActivity;
-import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 /**
  * this service only use for statusbar notify event
@@ -137,6 +135,7 @@ public class StatusBarEventService extends IntentService {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_app");
         } else if (eventType == EVENT_PRIVACY_IMAGE) {
             targetIntent = new Intent(this, NewHideImageActivity.class);
+            targetIntent.putExtra("pic_from_notify", true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_cnts_pic");
         } else if (eventType == EVENT_PRIVACY_VIDEO) {

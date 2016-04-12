@@ -39,6 +39,8 @@ public class NewHideImageActivity extends BaseFragmentActivity {
     private ProgressBar mLoading;
     private List<PhotoItem> mPhotoItems;
 
+    public static boolean mFromNotification;
+
     public final static String FOUND_PIC = "found_pic";
     public final static String NEW_ADD_PIC = "new_add_pic";
 
@@ -53,6 +55,7 @@ public class NewHideImageActivity extends BaseFragmentActivity {
         } else {
             mTtileBar.setToolbarTitle(R.string.new_hidden_image);
         }
+        mFromNotification = getIntent().getBooleanExtra("pic_from_notify", false);
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mFragment = (FrameLayout)findViewById(R.id.fl_image_view);
         initLoadData();

@@ -164,6 +164,11 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                             hideAllPicBackground(photos, 0);
                         }
                     });
+                    if (NewHideImageActivity.mFromNotification) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_noti_hide");
+                    } else {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_home_hide");
+                    }
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + mAdapter.getSelectData().size());

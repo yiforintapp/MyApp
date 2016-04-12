@@ -313,6 +313,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     // 图片隐藏
                     int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
                     table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count + 1);
+                    ImageHideMainActivity.mFromHomeEnter = false;
                     intent = new Intent(activity, ImageHideMainActivity.class);
                     activity.startActivity(intent);
                     LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);

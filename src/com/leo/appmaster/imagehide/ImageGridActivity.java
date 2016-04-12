@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.SystemClock;
@@ -906,6 +905,11 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
 //                                    ImageGridActivity.this);
 //                            task.execute(true);
                             doingBackGround(true);
+                            if (ImageHideMainActivity.mFromHomeEnter) {
+                                SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic", "pic_home_hide");
+                            } else {
+                                SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic", "pic_icon_hide");
+                            }
                             SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic", "used");
                             SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
                             SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_$" + size);

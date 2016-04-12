@@ -96,6 +96,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private ImageSize mImageSize;
 
     public static boolean mIsFromConfirm;
+    public static boolean mFromHomeEnter;
 
     private boolean mEnterSubPage;
     private boolean mDataChanged;
