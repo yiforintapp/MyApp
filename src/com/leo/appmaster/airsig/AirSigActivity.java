@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.airsig.airsigengmulti.ASEngine;
 import com.leo.appmaster.R;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
+import com.leo.appmaster.airsig.airsigsdk.TrainingActivity;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.home.HomeActivity;
@@ -168,6 +169,15 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
 
 
                 if (success) {
+
+                    if (TrainingActivity.isEnterTutorPage) {
+                        SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc," + "yes");
+                        TrainingActivity.isEnterTutorPage = false;
+                    } else {
+                        SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc," + "no");
+                    }
+
+
                     long now = System.currentTimeMillis();
                     LeoLog.d("testTime", "now : " + now);
                     LeoLog.d("testTime", "inTime : " + inTime);

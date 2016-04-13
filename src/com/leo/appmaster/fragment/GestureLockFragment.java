@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -30,6 +31,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.airsig.airsigsdk.ASGui;
+import com.leo.appmaster.airsig.airsigsdk.TrainingActivity;
 import com.leo.appmaster.airsig.airsigutils.EventLogger;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
@@ -51,6 +53,7 @@ import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leo.appmaster.utils.PrefConst;
@@ -70,6 +73,7 @@ public class GestureLockFragment extends LockFragment implements
     private boolean mNeedIntruderProtection = false;
     private final static int DISMISSRESULT = 1;
     private int airsigFailTimes;
+    private boolean isFileThreeTimes = false;
 
     // GP包
     public static final String GPPACKAGE = "com.android.vending";
@@ -314,8 +318,10 @@ public class GestureLockFragment extends LockFragment implements
                     if (airsigFailTimes < 2) {
                         airsigFailTimes++;
                     } else {
+                        isFileThreeTimes = true;
                         airsigFailTimes = 0;
                         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_airsig_cha");
+                        makeDevicePoint();
                         //switch to normal lock
                         changeNormalLockType();
                     }
@@ -325,6 +331,15 @@ public class GestureLockFragment extends LockFragment implements
 
             }
         });
+    }
+
+    private void makeDevicePoint() {
+        boolean isLockUpdateYet = LeoSettings.getBoolean(LOCK_FAILE, false);
+        if (!isLockUpdateYet) {
+            String strings = DeviceUtil.getAirSigDeives(mActivity);
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_sdk", "unlock_fail_" + strings);
+            LeoSettings.setBoolean(LOCK_FAILE, true);
+        }
     }
 
 
@@ -604,6 +619,9 @@ public class GestureLockFragment extends LockFragment implements
         String savedGesture = savegesture;
         // AM-2936, no gesture, just unlock
         if (Utilities.isEmpty(savedGesture) || savedGesture.equals(gesture)) {
+            if (isFileThreeTimes) {
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_other_suc");
+            }
             ((LockScreenActivity) mActivity).onUnlockSucceed();
             mIsIntruded = false;
         } else {

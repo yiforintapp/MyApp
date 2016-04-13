@@ -8,6 +8,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.utils.LeoLog;
 
 public abstract class LockFragment extends BaseFragment {
+    public static final String LOCK_FAILE = "lockUpdate";
     public int mShowType = AirSigActivity.NOMAL_UNLOCK;
     protected int mMaxInput = 5;
 

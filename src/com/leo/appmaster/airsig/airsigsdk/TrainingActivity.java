@@ -25,6 +25,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.annotation.SuppressLint;
@@ -40,6 +41,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.ToneGenerator;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
@@ -81,6 +83,7 @@ import android.widget.Toast;
 
 public class TrainingActivity extends BaseActivity implements OnClickListener {
 
+    public static final String SETTING_FAILE = "isUpdateYet";
     private int mTryTimes = 0;
     private LEOAlarmDialog mConfirmCloseDialog;
     public static final int SHOWDIALOG = 1;
@@ -152,6 +155,17 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
             switch (msg.what) {
                 case SHOWDIALOG:
                     SDKWrapper.addEvent(TrainingActivity.this, SDKWrapper.P1, "airsig_set", "set_fail");
+
+                    boolean isUpdateYet = LeoSettings.getBoolean(SETTING_FAILE, false);
+                    if (!isUpdateYet) {
+                        //update devices
+                        String strings = DeviceUtil.getAirSigDeives(TrainingActivity.this);
+                        SDKWrapper.addEvent(TrainingActivity.this, SDKWrapper.P1, "airsig_sdk", "set_fail_" + strings);
+
+                        LeoSettings.setBoolean(SETTING_FAILE, true);
+                    }
+
+
                     showFailDialog();
                     break;
             }
@@ -371,7 +385,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_CLICK_LEAVE, null);
 
         if (isTrainingNotCompleted()) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig", "airsig_reset");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_sdk", "leave");
             showTipsDialog(getResources().getString(R.string.airsig_training_dialog_confirm_exit_detail),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_postive_button),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_negative_button),
@@ -495,7 +509,10 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
 //        return true;
 //    }
 
+    public static boolean isEnterTutorPage = false;
+
     private void showAirSigTutorial() {
+        isEnterTutorPage = true;
         SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_set", "airsig_learn");
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), TutorialActivity.class);
