@@ -1195,4 +1195,11 @@
     <string name="uninstall_guide_tips">การรักษาขั้นสูงเปิดแล้ว กดตรงนี้จะสามารถถอนLEO Privacyออก</string>
     <string name="secur_add_num_tip">ป้อนกันความปลอดภัยยังไง</string>
     <string name="backup_instr_tip_str">สำรองข้อมูลคำสั่งป้อนการความปลอดภัยให้แก่เพื่อนโดยใช้SMS</string>
+
+    <string name="guide_page_title_one">อินเตอร์เฟสใหม่</string>
+    <string name="guide_page_title_two">ล็อคแอพ</string>
+    <string name="guide_page_title_three">กล่องนิรภัย</string>
+    <string name="guide_page_content_one">เสนอความเป็นส่วนตัว  จะดำเนินการสะดวกกว่า</string>
+    <string name="guide_page_content_two">ล็อคการประยุกต์ใช้ รักษาประยุกต์การใช้ของคุณทุกเวลา</string>
+    <string name="guide_page_content_three">แฝงรูปภาพ/เวดีโอ ความเป็นส่วนตัวปลอดภัยกว่า</string>
 </resources>

@@ -1206,4 +1206,11 @@
 
     <string name="air_sig_tips_content">您的手机陀螺仪存在问题，无法使用空中解锁</string>
     <string name="air_sig_tips_content_two">如果您多次设置失败，可能是手机陀螺仪存在问题</string>
+
+    <string name="guide_page_title_one">全新界面</string>
+    <string name="guide_page_title_two">應用鎖</string>
+    <string name="guide_page_title_three">保險箱</string>
+    <string name="guide_page_content_one">隱私建議，操作更便捷</string>
+    <string name="guide_page_content_two">應用加鎖，隨時保護你的應用</string>
+    <string name="guide_page_content_three">圖片/視頻隱藏，隱私更安全</string>
 </resources>

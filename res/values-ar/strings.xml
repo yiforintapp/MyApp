@@ -1290,4 +1290,11 @@
 
     <string name="air_sig_tips_content">لا تستطيع أن تستخدم Magic Lock، ربما بسبب جيروسكوب</string>
     <string name="air_sig_tips_content_two">اذا تفشل اعدادات كثيرا  من مرات، ربما توجد مشاكل عن جيروسكوب علي الهاتف</string>
+
+    <string name="guide_page_title_one">سطح جديد</string>
+    <string name="guide_page_title_two">قفل التطبيق</string>
+    <string name="guide_page_title_three">صندوق الحماية</string>
+    <string name="guide_page_content_one">نصائح بسيطةتشغيل&amp;بنقرة واحدة</string>
+    <string name="guide_page_content_two">قفل التطبيقات في أي وقت!</string>
+    <string name="guide_page_content_three">إخفاء الصور/مقاطع الفيديو، تجنب خرق الخصوصية!</string>
 </resources>

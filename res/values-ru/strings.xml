@@ -1187,4 +1187,10 @@
     <string name="air_sig_tips_content">У твоего жироскопа мобильника есть проблемы, Magic Lock не работает</string>
     <string name="air_sig_tips_content_two">Если вы настроили не успешно,может быть, жироскоп мобильника не работает</string>
 
+    <string name="guide_page_title_one">Новый интерфейс</string>
+    <string name="guide_page_title_two">Замок приложение</string>
+    <string name="guide_page_title_three">Ящик-сейф</string>
+    <string name="guide_page_content_one">Простые советы и одним щелчком мыши операции</string>
+    <string name="guide_page_content_two">Блокировка приложений в любое время !</string>
+    <string name="guide_page_content_three">Скрыть фото/видео,избежать утечки секреты !</string>
 </resources>

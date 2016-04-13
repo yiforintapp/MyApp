@@ -1235,4 +1235,11 @@
     <string name="backup_instr_tip_str">You can send commands backup via SMS to your reserved number.</string>
     <string name="air_sig_tips_content">Oops, there were some problems with your gyroscope, unable to use Magic Lock</string>
     <string name="air_sig_tips_content_two">If you failed to set it multiple times, it may be gyroscope problems</string>
+
+    <string name="guide_page_title_one">New Interface</string>
+    <string name="guide_page_title_two">App Lock</string>
+    <string name="guide_page_title_three">Safe Box</string>
+    <string name="guide_page_content_one">Simple tips &amp; one-click operation</string>
+    <string name="guide_page_content_two">Lock apps at any time !</string>
+    <string name="guide_page_content_three">Hide images/videos,avoid privacy leaking !</string>
 </resources>
