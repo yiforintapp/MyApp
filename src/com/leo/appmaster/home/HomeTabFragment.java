@@ -320,7 +320,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     ImageHideMainActivity.mFromHomeEnter = false;
                     intent = new Intent(activity, ImageHideMainActivity.class);
                     activity.startActivity(intent);
-                    LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
 
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic");
                     break;
@@ -331,7 +330,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     VideoHideMainActivity.mFromHomeEnter = false;
                     intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
-                    LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvideo");
                     break;
                 case R.id.home_intercept:
