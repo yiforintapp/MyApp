@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.home.HomeScanningFragment;
 import com.leo.appmaster.home.PrivacyNewPicFragment;
 import com.leo.appmaster.mgr.MgrContext;
@@ -57,8 +58,9 @@ public class NewHideImageActivity extends BaseFragmentActivity {
             mTtileBar.setToolbarTitle(R.string.new_hidden_image);
         }
         mFromNotification = getIntent().getBooleanExtra("pic_from_notify", false);
+        PrivacyNewPicFragment.mIsNewImgFromNoti = getIntent().getBooleanExtra(StatusBarEventService.NEW_IMG_HIDE_FROM_NOTIF, false);
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
-        mFragment = (FrameLayout)findViewById(R.id.fl_image_view);
+        mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();
 
         ThreadManager.executeOnAsyncThread(new Runnable() {
