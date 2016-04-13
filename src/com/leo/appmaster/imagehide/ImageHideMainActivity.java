@@ -32,6 +32,7 @@ import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
+import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -99,6 +100,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private boolean mEnterSubPage;
     private boolean mDataChanged;
+    private boolean mOnCreated;
 
     public void onBackPressed() {
         LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
@@ -221,12 +223,19 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         handleIntent();
         initUI();
 
+        mDataChanged = true;
+        mOnCreated = true;
+        LeoEventBus.getDefaultBus().register(this);
+    }
+
+    private void markIgnoreIfNeed() {
         boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
-        if (enterByTips) {
+        int status = PrivacyHelper.getImagePrivacy().getStatus();
+        if (enterByTips || (!enterByTips && status == Privacy.STATUS_FOUND)) {
+            // 1、从banner进入
+            // 2、从tab进入，并且状态为“x张待处理视频”
             markNewPicCheckedAsy();
         }
-        mDataChanged = true;
-        LeoEventBus.getDefaultBus().register(this);
     }
 
     private void handleIntent() {
@@ -394,6 +403,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             asyncLoad();
             newLoadDone();
         }
+
+        if (mOnCreated) {
+            markIgnoreIfNeed();
+            mOnCreated = false;
+        }
     }
 
     @Override
@@ -429,7 +443,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             @Override
             public void run() {
                 PrivacyHelper.getImagePrivacy().ignoreNew();
-//                        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
             }
         });
     }

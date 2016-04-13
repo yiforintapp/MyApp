@@ -33,6 +33,7 @@ import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -101,6 +102,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private boolean mDataChanged;
     private boolean mEnterSubPage;
+    private boolean mOnCreated;
 
     private void loadDone() {
         adapter = new HideVideoAdapter(this, hideVideos);
@@ -195,11 +197,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         getDirFromSp();
         handleIntent();
 
-        boolean enteryByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
-        if (enteryByTips) {
-            markNewVidCheckedAsy();
-        }
-
+        mOnCreated = true;
         mDataChanged = true;
         LeoEventBus.getDefaultBus().register(this);
     }
@@ -268,6 +266,21 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             mNewDataList = PrivacyHelper.getVideoPrivacy().getNewList();
             asyncLoad();
             newLoadDone();
+        }
+
+        if (mOnCreated) {
+            markIgnoreIfNeed();
+            mOnCreated = false;
+        }
+    }
+
+    private void markIgnoreIfNeed() {
+        boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
+        int status = PrivacyHelper.getVideoPrivacy().getStatus();
+        if (enterByTips || (!enterByTips && status == Privacy.STATUS_FOUND)) {
+            // 1、从banner进入
+            // 2、从tab进入，并且状态为“x张待处理视频”
+            markNewVidCheckedAsy();
         }
     }
 
