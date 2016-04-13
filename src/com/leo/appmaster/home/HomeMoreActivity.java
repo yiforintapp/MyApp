@@ -135,7 +135,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     private void initUI() {
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
-        mCtbMain.setToolbarTitle(R.string.lock_more);
+        mCtbMain.setToolbarTitle(R.string.home_more);
 
         //签字解锁部分
         mItemAirSigEntry = (CommonSettingItem) findViewById(R.id.item_airsig);
