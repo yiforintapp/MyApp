@@ -522,10 +522,8 @@ public class AppLockListActivity extends BaseActivity implements
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         long a = System.currentTimeMillis();
 
-        LeoLog.d("testPosition", "position : " + i + ";;" + mLockAdapter.getSwitchs().size());
-
         //head return
-        if (i == 0) return;
+        if (i == 0 || mLockAdapter == null) return;
         //label return
         List<AppInfo> switchs = mLockAdapter.getSwitchs();
         if (switchs != null && switchs.size() > 0) {
