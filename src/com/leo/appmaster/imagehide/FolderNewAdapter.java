@@ -50,7 +50,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
 
     private List<T> mSrcList;
     protected List<ItemsWrapper> mDataList;
-//    private List<T> mSelectData;
+    //    private List<T> mSelectData;
     private List<SelectionInfo> mSelectionInfo;
 
     protected LayoutInflater mInflater;
@@ -79,7 +79,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         mGroupIndexArray = new SparseIntArray();
     }
 
-    public List<ItemsWrapper> getDataList(){
+    public List<ItemsWrapper> getDataList() {
         return mDataList;
     }
 
@@ -123,12 +123,14 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
 
     public List<T> getSelectData() {
         List<T> result = new ArrayList<T>();
-        for (int i = 0; i < mSelectionInfo.size(); i++) {
-            SelectionInfo info = mSelectionInfo.get(i);
-            ItemsWrapper<T> wrapper = mDataList.get(i);
-            for (int j = 0; j < info.selectedArray.length; j++) {
-                if (info.selectedArray[j] == SELECTED) {
-                    result.add(wrapper.items.get(j));
+        if (mSelectionInfo != null && mSelectionInfo.size() > 0) {
+            for (int i = 0; i < mSelectionInfo.size(); i++) {
+                SelectionInfo info = mSelectionInfo.get(i);
+                ItemsWrapper<T> wrapper = mDataList.get(i);
+                for (int j = 0; j < info.selectedArray.length; j++) {
+                    if (info.selectedArray[j] == SELECTED) {
+                        result.add(wrapper.items.get(j));
+                    }
                 }
             }
         }
@@ -271,7 +273,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         return null;
     }
 
-    public void selectAllGroup(){
+    public void selectAllGroup() {
         for (int i = 0; i < mDataList.size(); i++) {
             ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(i);
             SelectionInfo info = mSelectionInfo.get(i);
@@ -309,7 +311,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         }
     }
 
-    public void deselectAllGroup(){
+    public void deselectAllGroup() {
         for (int i = 0; i < mDataList.size(); i++) {
             ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(i);
             SelectionInfo info = mSelectionInfo.get(i);
@@ -378,7 +380,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         for (T item : list) {
             String path = getPath(item);
             index = path.lastIndexOf("/");
-            if(index < 1) {
+            if (index < 1) {
                 continue;
             }
             String parentPath = path.substring(0, index);
