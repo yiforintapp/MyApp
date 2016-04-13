@@ -41,8 +41,8 @@
     <color name="guide_page2_background_color">#ffc000</color>
     <color name="guide_page4_background_color">#ffc000</color>
     <color name="new_guide_page1_background_color">#06c4a7</color>
-    <color name="new_guide_page2_background_color">#289afb</color>
-    <color name="new_guide_page4_background_color">#ff9000</color>
+    <color name="new_guide_page2_background_color">#1879e7</color>
+    <color name="new_guide_page4_background_color">#00ac7d</color>
     <!-- guide page begin -->
 
     <color name="weisuo_text">#636363</color>
