@@ -206,4 +206,7 @@
     <integer name="shield_center_red_offset_x">47</integer>
     <dimen name="home_det_result_tv3_padd_left">108dp</dimen>
     <dimen name="scur_contact_char">5dp</dimen>
+
+    <dimen name="ph_sec_guide_top_iv_width">192dp</dimen>
+    <dimen name="ph_sec_guide_top_iv_height">90dp</dimen>
 </resources>

@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:leo="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+                xmlns:leo="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/phone_security_guide_commonbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,11 +23,11 @@
 
             <ImageView
                 android:id="@+id/security_guide_top_IV"
-                android:layout_width="192dp"
-                android:layout_height="90dp"
+                android:layout_width="@dimen/ph_sec_guide_top_iv_width"
+                android:layout_height="@dimen/ph_sec_guide_top_iv_height"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/security_guide_top_iv_margin_top"
-                android:src="@drawable/theft_guide_img" />
+                android:src="@drawable/theft_guide_img"/>
 
             <LinearLayout
                 android:id="@+id/security_guide_open_number_LT"
@@ -44,14 +44,14 @@
                     android:layout_height="wrap_content"
                     android:text="21452"
                     android:textColor="#f6ff00"
-                    android:textSize="24dp" />
+                    android:textSize="24dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/secur_guide_pep"
                     android:textColor="@color/white"
-                    android:textSize="24dp" />
+                    android:textSize="24dp"/>
             </LinearLayout>
 
             <TextView
@@ -64,7 +64,7 @@
                 android:paddingBottom="@dimen/security_guide_tv_content_marginbottom"
                 android:text="@string/secur_guide_tip"
                 android:textColor="@color/white"
-                android:textSize="16dp" />
+                android:textSize="16dp"/>
         </RelativeLayout>
 
         <TextView
@@ -78,7 +78,7 @@
             android:layout_marginTop="@dimen/security_guide_title_margin_top"
             android:text="@string/security_guide_tip_text"
             android:textColor="#333333"
-            android:textSize="@dimen/security_guide_title_size" />
+            android:textSize="@dimen/security_guide_title_size"/>
 
         <TextView
             android:id="@+id/security_guide_content"
@@ -91,7 +91,7 @@
             android:paddingRight="@dimen/sec_gde_content_pd"
             android:text="@string/security_guide_tip_content"
             android:textColor="#999999"
-            android:textSize="@dimen/security_guide_content_size" />
+            android:textSize="@dimen/security_guide_content_size"/>
         <!--未知的需要短信权限的提示-->
         <LinearLayout
             android:id="@+id/secur_no_know_msm_LT"
@@ -107,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:src="@drawable/ic_monitor_label" />
+                android:src="@drawable/ic_monitor_label"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                 android:layout_marginLeft="4dp"
                 android:text="@string/secur_no_kno_model_msm_tip"
                 android:textColor="#333333"
-                android:textSize="13dp" />
+                android:textSize="13dp"/>
         </LinearLayout>
         <!--已知需要短信权限的机型提示-->
         <LinearLayout
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/secur_kno_model_msm_tip"
                 android:textColor="#333333"
-                android:textSize="13dp" />
+                android:textSize="13dp"/>
 
             <TextView
                 android:id="@+id/secur_know_msm_click"
@@ -144,7 +144,7 @@
                 android:layout_marginTop="7dp"
                 android:text="@string/secur_kno_model_msm_click"
                 android:textColor="#009cff"
-                android:textSize="16dp" />
+                android:textSize="16dp"/>
 
         </LinearLayout>
     </RelativeLayout>
@@ -178,6 +178,6 @@
             android:background="@drawable/green_radius_btn_shape"
             android:text="@string/security_guide_button_text"
             android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:textSize="16dp"/>
     </com.leo.appmaster.ui.MaterialRippleLayout>
 </RelativeLayout>
