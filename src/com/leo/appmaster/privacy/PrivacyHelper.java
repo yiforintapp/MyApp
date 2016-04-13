@@ -296,18 +296,18 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             if (!isForeground && !isSameDay) {
                 int currHour = TimeUtil.getHourOfDay(currentTs);
                 LeoLog.d(TAG, "<ls> checkOrNotifyDecScore, currHour: " + currHour);
-                if (currHour > 7) {
-                    // 当前时间大于7点钟，弹出通知
+                if (currHour > 7 && currHour < 23) {
+                    // 当前时间大于7点钟并且小于23点，弹出通知
                     notifyDecreasePrivacy(privacyType);
                 } else {
-                    // 当前时间小于7点钟，延时7个小时再弹通知
-                    long hour7 = 7 * 60 * 60 * 1000;
+                    // 8小时后再弹出
+                    long hour8 = 8 * 60 * 60 * 1000;
                     if (mDalayNotifyFuture != null) {
                         mDalayNotifyFuture.cancel(false);
                     }
                     mDelayNotifyTask = new DelayTimerTask(privacyType);
                     mDalayNotifyFuture = ThreadManager.getAsyncExecutor().schedule(
-                            mDelayNotifyTask, hour7, TimeUnit.MILLISECONDS);
+                            mDelayNotifyTask, hour8, TimeUnit.MILLISECONDS);
                 }
 
             }
