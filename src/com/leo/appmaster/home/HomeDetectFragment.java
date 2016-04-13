@@ -323,7 +323,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                     mCenterTipRt.setVisibility(View.VISIBLE);
                 }
                 if (sShowLost) {
-                    mBannerTv.setText(R.string.hd_lost_permisson_tip);
+                    mBannerTv.setText(R.string.home_det_tip);
                     mBannerIntent = new Intent(mContext, PhoneSecurityGuideActivity.class);
                     mCurrentType = TYPE_LOST;
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "theft_tips_sh");
@@ -342,7 +342,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 } else {
                     mCenterTipRt.setVisibility(View.VISIBLE);
                 }
-                mBannerTv.setText(R.string.hd_lost_permisson_tip);
+                mBannerTv.setText(R.string.home_det_tip);
 
                 mCurrentType = TYPE_LOST;
                 mBannerIntent.putExtra(KEY_TYPE, mCurrentType);
