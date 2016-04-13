@@ -1163,7 +1163,7 @@
     <string name="secur_open_sucess_send_msm_toast">The Anti-Theft function was enabled successfully and the remote commands have been sent to your reserved number.</string>
     <string name="secur_mody_sure_bt">Confirm</string>
     <string name="secur_open_sucess_toast">Anti-Theft has been enabled</string>
-    <string name="airsig_settings_activity_title">Signature</string>
+    <string name="airsig_settings_activity_title">Magic Lock</string>
     <string name="airsig_settings_activity_set_one_on">Enable Signature</string>
     <string name="airsig_settings_activity_set_one_off">Disable Signature</string>
     <string name="airsig_settings_activity_set_two">Change the Signature Gesture</string>

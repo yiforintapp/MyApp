@@ -1129,7 +1129,7 @@
     <string name="secur_open_sucess_send_msm_toast">Anti-hırsızlık fonksiyonu açılması başarılı,Anti-hırsızlık talimatları mesaj olarak kayıtlı telefona gönderildi.</string>
     <string name="secur_mody_sure_bt">Onay</string>
     <string name="secur_open_sucess_toast">Cep telefonu anti-hırsızlık aç başarılı</string>
-    <string name="airsig_settings_activity_title">İmza kilidini</string>
+    <!--<string name="airsig_settings_activity_title">İmza kilidini</string>-->
     <string name="airsig_settings_activity_set_one_on">Açık</string>
     <string name="airsig_settings_activity_set_one_off">kapalı</string>
     <string name="airsig_settings_activity_set_two">imzayı değiştir</string>

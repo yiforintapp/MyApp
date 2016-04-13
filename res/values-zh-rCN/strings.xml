@@ -1015,7 +1015,7 @@
     <string name="secur_open_sucess_send_msm_toast">手机防盗开启成功，已将防盗指令发送给预留号码</string>
     <string name="secur_mody_sure_bt">确认</string>
     <string name="secur_open_sucess_toast">手机防盗开启成功</string>
-    <string name="airsig_settings_activity_title">签字解锁</string>
+    <string name="airsig_settings_activity_title">空中解锁</string>
     <string name="airsig_settings_activity_set_one_on">开启签字</string>
     <string name="airsig_settings_activity_set_one_off">关闭签字</string>
     <string name="airsig_settings_activity_set_two">更改签字手势</string>

@@ -1217,7 +1217,7 @@
     <string name="secur_open_sucess_send_msm_toast">تم تعطيل وظيفة مكافحة السرقة بنجاح، وتم إرسال الأوامر عن بُعد إلى رقمك المحجوز.</string>
     <string name="secur_mody_sure_bt">تأكيد</string>
     <string name="secur_open_sucess_toast">تم تمكين وظيفة مكافحة السرقة</string>
-    <string name="airsig_settings_activity_title">التوقيع</string>
+   <!-- <string name="airsig_settings_activity_title">التوقيع</string>-->
     <string name="airsig_settings_activity_set_one_on">تمكين التوقيع</string>
     <string name="airsig_settings_activity_set_one_off">تعطيل التوقيع</string>
     <string name="airsig_settings_activity_set_two">تغيير إيماءة التوقيع</string>

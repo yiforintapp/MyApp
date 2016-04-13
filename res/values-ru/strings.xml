@@ -1005,7 +1005,7 @@
     <string name="secur_open_sucess_send_msm_toast">Анти-кражи функция была включена успешно и удаленных команд были отправлены в свой забронированный номер.</string>
     <string name="secur_mody_sure_bt">Подтвердить</string>
     <string name="secur_open_sucess_toast">Анти-кражи включена</string>
-    <string name="airsig_settings_activity_title">Подпись</string>
+  <!--  <string name="airsig_settings_activity_title">Подпись</string>-->
     <string name="airsig_settings_activity_set_one_on">Включить Подпись</string>
     <string name="airsig_settings_activity_set_one_off">Отключить Подписи</string>
     <string name="airsig_settings_activity_set_two">Изменить фирменный жест</string>
