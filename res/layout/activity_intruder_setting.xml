@@ -2,8 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cbg">
-
+    android:background="#f0f3f7">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_main"
@@ -25,8 +24,6 @@
                 android:id="@+id/intruder_setting_content1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginTop="11dp"
                 android:background="@color/white">
 
@@ -46,7 +43,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="16dp"
                         android:paddingBottom="16dp"
                         android:paddingTop="16dp"
                         android:layout_toLeftOf="@+id/iv_intruder_setting_switch1"
@@ -94,8 +91,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/intruder_setting_content1"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:background="@color/white">
 
                 <com.leo.appmaster.ui.RippleView
@@ -114,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="16dp"
                         android:paddingBottom="16dp"
                         android:paddingTop="16dp"
                         android:layout_toLeftOf="@+id/iv_intruder_setting_switch2"
@@ -160,9 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/intruder_setting_content2"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/white">
 
                 <com.leo.appmaster.ui.RippleView
@@ -181,7 +174,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="16dp"
                         android:paddingBottom="16dp"
                         android:paddingTop="16dp"
                         android:layout_toLeftOf="@+id/iv_intruder_setting_switch3"
@@ -206,7 +199,7 @@
                             android:gravity="top"
                             android:maxLines="3"
                             android:textColor="@color/c4"
-                            android:textSize="14dp" />
+                            android:textSize="@dimen/f4" />
                     </RelativeLayout>
 
                     <ImageView

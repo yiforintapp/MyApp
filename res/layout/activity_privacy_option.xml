@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/white"
+    android:background="#f0f3f7"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -36,12 +36,12 @@
 
     <ListView
         android:id="@android:id/list"
+        android:footerDividersEnabled="false"
         android:layout_width="match_parent"
+        android:layout_marginTop="12dp"
         android:layout_height="match_parent"
         android:layout_below="@id/pri_opt_label"
-        android:layout_margin="16dp"
-        android:background="@color/white"
-        android:divider="@color/c5"
+        android:divider="@drawable/divider_setting"
         android:overScrollMode="never"
         android:dividerHeight="1px"
         android:listSelector="@null"
