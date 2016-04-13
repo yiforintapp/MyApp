@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <View
+           <!-- <View
                 android:id="@+id/line_5"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
@@ -68,7 +68,7 @@
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_callfilter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" />-->
 
             <View
                 android:id="@+id/line_6"

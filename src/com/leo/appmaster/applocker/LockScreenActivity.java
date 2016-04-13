@@ -598,6 +598,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //    }
 
 	private void tryShowNoPermissionTip() {
+		if (mLockMode == LockManager.LOCK_MODE_PURE) {
+			return;
+		}
 		LeoLog.i("Tip", "try show");
 		LeoLog.i("Tip", "Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT);
 		LeoLog.i("Tip", "TaskDetectService.sDetectSpecial = " + TaskDetectService.sDetectSpecial);

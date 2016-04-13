@@ -82,7 +82,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private CommonSettingItem mItemFindLostEntry;
     private CommonSettingItem mItemBatteryScreenEntry;
     private CommonSettingItem mItemSettingEntry;
-    private CommonSettingItem mItemCallfilterEntry;
+    /*private CommonSettingItem mItemCallfilterEntry;*/
     private CommonSettingItem mItemQuickHelperEntry;
     private CommonSettingItem mItemWifiEntry;
     private CommonSettingItem mItemFlowEntry;
@@ -255,7 +255,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        //骚扰拦截
+    /*    //骚扰拦截
         mItemCallfilterEntry = (CommonSettingItem) findViewById(R.id.item_callfilter);
         mItemCallfilterEntry.setIcon(ICON_ID_CALLFILTER);
         mItemCallfilterEntry.setTitle(STRID_CALLFILTER);
@@ -265,7 +265,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             public void onClick(View v) {
                 goToCallfilter();
             }
-        });
+        });*/
 
         //wifi
         mItemWifiEntry = (CommonSettingItem) findViewById(R.id.item_wifi);
