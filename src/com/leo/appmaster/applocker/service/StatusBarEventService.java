@@ -46,6 +46,7 @@ public class StatusBarEventService extends IntentService {
     public static final int EVENT_PRIVACY_IMAGE = 10;
     public static final int EVENT_PRIVACY_VIDEO = 11;
     public static final String NEW_IMG_HIDE_FROM_NOTIF = "new_img_hide_from_notif";
+    public static final String NEW_VID_HIDE_FROM_NOTIF = "new_vid_hide_from_notif";
 
     public StatusBarEventService() {
         super("");
@@ -149,6 +150,7 @@ public class StatusBarEventService extends IntentService {
         } else if (eventType == EVENT_PRIVACY_VIDEO) {
             if (PrivacyHelper.getVideoPrivacy().getNewCount() > 0) {
                 targetIntent = new Intent(this, NewHideVidActivity.class);
+                targetIntent.putExtra(NEW_VID_HIDE_FROM_NOTIF, true);
             } else {
                 targetIntent = new Intent(this, VideoHideMainActivity.class);
             }

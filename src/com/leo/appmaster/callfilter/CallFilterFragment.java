@@ -39,7 +39,7 @@ import java.util.List;
 
 public class CallFilterFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private static final String TAG = "CallFilterFragment";
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
 
     private ListView mCallListView;
     private View mNothingToShowView;

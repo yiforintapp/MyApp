@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.home.PrivacyNewVideoFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -55,6 +56,8 @@ public class NewHideVidActivity extends BaseFragmentActivity {
             mTtileBar.setToolbarTitle(R.string.new_hidden_vid);
         }
         mFromNotification = getIntent().getBooleanExtra("vid_from_notify", false);
+        NewVideoFragment.mIsVidFromNoti = getIntent().getBooleanExtra(StatusBarEventService.NEW_VID_HIDE_FROM_NOTIF, false);
+        FolderNewVideoFragment.mIsFolderVidFromNoti = getIntent().getBooleanExtra(StatusBarEventService.NEW_VID_HIDE_FROM_NOTIF, false);
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();

@@ -32,6 +32,7 @@ import java.util.List;
  */
 public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> implements ExpandableListView.OnChildClickListener {
     private static final String TAG = "FolderVidFragment";
+    public static boolean mIsFolderVidFromNoti;
 
     public static FolderNewVideoFragment newInstance() {
         return new FolderNewVideoFragment();
@@ -158,14 +159,18 @@ public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> imp
                         }
                     });
                     if (NewHideVidActivity.mFromNotification) {
-                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_noti_hide");
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_noti_hide");
                     } else {
-                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "vid_home_hide");
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "vid_home_hide");
                     }
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts_$" + list.size());
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_new_$" + list.size());
+                    if (mIsFolderVidFromNoti) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_vid");
+                        mIsFolderVidFromNoti = false;
+                    }
                 }
             }
         });

@@ -45,6 +45,7 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
     private TextView mNewImageNum;
     private LEOAlarmDialog mDialog;
     private LEOCircleProgressDialog mProgressDialog;
+    public static boolean mIsVidFromNoti;
 
     public static Fragment getFragment(List<VideoItemBean> list) {
         Fragment fragment = null;
@@ -216,6 +217,10 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts_$" + list.size());
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_new_$" + list.size());
+                    if (mIsVidFromNoti) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_vid");
+                        mIsVidFromNoti = false;
+                    }
                 }
             }
         });
