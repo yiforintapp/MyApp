@@ -19,6 +19,7 @@ import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
@@ -28,6 +29,7 @@ import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
@@ -334,6 +336,16 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.home_intercept:
                     goToCallfilter();
+//                    CallFilterManager mCmp = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//
+//                    List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+//                    BlackListInfo info = new BlackListInfo();
+//                    info.number = "18790729990";
+//                    info.name = "run";
+//                    info.blackNum = 24123412;
+//                    info.markNum = 1231;
+//                    infost.add(info);
+//                    mCmp.addBlackList(infost, false);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "block");
                     break;
                 case R.id.home_magiclock:
