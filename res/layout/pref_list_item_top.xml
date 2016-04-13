@@ -11,6 +11,7 @@
     app:rippleOverlay="false">
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/new_list_selecter"
@@ -86,10 +87,11 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:layout_marginRight="22dp"
             android:id="@android:id/widget_frame"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|right"
             android:orientation="vertical" />
     </LinearLayout>
 </com.leo.appmaster.ui.LinearRippleView>

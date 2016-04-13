@@ -4,7 +4,6 @@
     android:layout_width="43dp"
     android:layout_height="38dp"
     android:layout_gravity="center_vertical"
-    android:layout_marginRight="8.0dip"
     android:button="@drawable/selector_checkbox"
     android:clickable="false"
     android:focusable="false" />
