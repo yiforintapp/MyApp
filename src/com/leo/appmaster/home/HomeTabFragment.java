@@ -23,6 +23,7 @@ import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -350,6 +351,10 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     // 更多
 //                    Intent intent1 = new Intent(mActivity,PhoneSecurityActivity.class);
 //                    startActivity(intent1);
+                    if (GuideFragment.mIsClickMoreTip) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "more_gd_cli");
+                        GuideFragment.mIsClickMoreTip = false;
+                    }
                     break;
             }
         }
