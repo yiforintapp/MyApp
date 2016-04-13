@@ -1402,6 +1402,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 					@Override
 					public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
+                        if (loadedImage == null) {
+                            return;
+                        }
 						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
 								"max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
 
