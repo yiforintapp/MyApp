@@ -922,7 +922,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         mConfirmCloseDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                reset();
+//                reset();
 
                 Intent intent = new Intent(TrainingActivity.this,
                         FeedbackActivity.class);
@@ -935,7 +935,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         mConfirmCloseDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                reset();
+//                reset();
                 mConfirmCloseDialog.dismiss();
             }
         });
