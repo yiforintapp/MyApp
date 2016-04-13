@@ -160,42 +160,42 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         // 初始化中间的banner
         initBannerTip();
 
-        if (mMemoryLess) {
-            if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
-                setViewVisible(mShieldTopIv, mShieldLeftIv, mShieldRightIv);
-                mShieldCenterIv.setVisibility(View.VISIBLE);
+        if (mFromEnter) {
+            if (mMemoryLess) {
+                if (!mPrivacyApp && !mPrivacyPic && !mPrivacyVideo) {
+                    setViewVisible(mShieldTopIv, mShieldLeftIv, mShieldRightIv);
+                    mShieldCenterIv.setVisibility(View.VISIBLE);
+                } else {
+                    setViewVisible(mShieldDangerTopIv, mShieldDangerLeftIv, mShieldDangerRightIv);
+                    mShieldDangerCenterIv.setVisibility(View.VISIBLE);
+                }
+                boolean totalDangerous = false;
+                if (PrivacyHelper.getAppPrivacy().isDangerous()) {
+                    mDangerResultAppLt.setVisibility(View.VISIBLE);
+                    totalDangerous = true;
+                } else {
+                    mSfatResultAppLt.setVisibility(View.VISIBLE);
+                }
+                if (PrivacyHelper.getImagePrivacy().isDangerous()) {
+                    mDangerResultImgLt.setVisibility(View.VISIBLE);
+                    totalDangerous = true;
+                } else {
+                    mSfatResultImgLt.setVisibility(View.VISIBLE);
+                }
+                if (PrivacyHelper.getVideoPrivacy().isDangerous()) {
+                    mDangerResultVideoLt.setVisibility(View.VISIBLE);
+                    totalDangerous = true;
+                } else {
+                    mSfatResultVideoLt.setVisibility(View.VISIBLE);
+                }
+                LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                boolean lostDisabled = !lsm.isUsePhoneSecurity();
+                boolean usageDisabled = !lm.isUsageStateEnable();
+                if (!totalDangerous && (lostDisabled || usageDisabled)) {
+                    mCenterTipRt.setVisibility(View.VISIBLE);
+                }
             } else {
-                setViewVisible(mShieldDangerTopIv, mShieldDangerLeftIv, mShieldDangerRightIv);
-                mShieldDangerCenterIv.setVisibility(View.VISIBLE);
-            }
-            boolean totalDangerous = false;
-            if (PrivacyHelper.getAppPrivacy().isDangerous()) {
-                mDangerResultAppLt.setVisibility(View.VISIBLE);
-                totalDangerous = true;
-            } else {
-                mSfatResultAppLt.setVisibility(View.VISIBLE);
-            }
-            if (PrivacyHelper.getImagePrivacy().isDangerous()) {
-                mDangerResultImgLt.setVisibility(View.VISIBLE);
-                totalDangerous = true;
-            } else {
-                mSfatResultImgLt.setVisibility(View.VISIBLE);
-            }
-            if (PrivacyHelper.getVideoPrivacy().isDangerous()) {
-                mDangerResultVideoLt.setVisibility(View.VISIBLE);
-                totalDangerous = true;
-            } else {
-                mSfatResultVideoLt.setVisibility(View.VISIBLE);
-            }
-            LostSecurityManager lsm = (LostSecurityManager) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            boolean lostDisabled = !lsm.isUsePhoneSecurity();
-            boolean usageDisabled = !lm.isUsageStateEnable();
-            if (!totalDangerous && (lostDisabled || usageDisabled)) {
-                mCenterTipRt.setVisibility(View.VISIBLE);
-            }
-        } else {
-            if (mFromEnter) {
                 initAnim();
             }
         }
