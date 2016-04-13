@@ -241,24 +241,28 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         LeoLog.d(TAG, "<ls> set privacy: " + sLockPrivacy.toString());
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-        int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
-        if (lastRecord > 0) {
-            List<PhotoItem> picList = pdm.getAddPic();
+//        int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
+        List<PhotoItem> picList = pdm.getAddPic();
+//        if (lastRecord > 0) {
             sImagePrivacy.setNewList(picList);
-        } else {
-            sImagePrivacy.setNewList(new ArrayList<PhotoItem>());
-        }
+//            sImagePrivacy.setNewListFoundStatus(picList);
+//        } else {
+//            sImagePrivacy.setNewList(null);
+//            sImagePrivacy.setNewListFoundStatus(picList);
+//        }
         sImagePrivacy.setProceedCount(pdm.getHidePicsNum());
         sImagePrivacy.setTotalCount(pdm.getNormalPicsNum());
         LeoLog.d(TAG, "<ls> set privacy: " + sImagePrivacy.toString());
 
-        lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
-        if (lastRecord > 0) {
-            List<VideoItemBean> vidList = pdm.getAddVid();
+//        lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
+        List<VideoItemBean> vidList = pdm.getAddVid();
+//        if (lastRecord > 0) {
             sVideoPrivacy.setNewList(vidList);
-        } else {
-            sVideoPrivacy.setNewList(new ArrayList<VideoItemBean>());
-        }
+//            sVideoPrivacy.setNewListFoundStatus(vidList);
+//        } else {
+//            sVideoPrivacy.setNewList(null);
+//            sVideoPrivacy.setNewListFoundStatus(vidList);
+//        }
         sVideoPrivacy.setProceedCount(pdm.getHideVidsNum());
         sVideoPrivacy.setTotalCount(pdm.getNormalVidsNum());
         LeoLog.d(TAG, "<ls> set privacy: " + sVideoPrivacy.toString());

@@ -28,6 +28,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.eventbus.event.MediaChangeEvent;
@@ -270,6 +271,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         if (mOnCreated) {
             markIgnoreIfNeed();
+            LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
             mOnCreated = false;
         }
     }
@@ -277,7 +279,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private void markIgnoreIfNeed() {
         boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
         int status = PrivacyHelper.getVideoPrivacy().getStatus();
-        if (enterByTips || (!enterByTips && status == Privacy.STATUS_FOUND)) {
+        if (enterByTips || status == Privacy.STATUS_FOUND) {
             // 1、从banner进入
             // 2、从tab进入，并且状态为“x张待处理视频”
             markNewVidCheckedAsy();

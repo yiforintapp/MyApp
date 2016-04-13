@@ -12,6 +12,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.PrivacyNewVideoFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -22,6 +23,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.util.List;
 
@@ -62,6 +64,7 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();
 
+        LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {

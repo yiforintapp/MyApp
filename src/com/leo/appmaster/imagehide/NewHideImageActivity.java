@@ -12,6 +12,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.HomeScanningFragment;
 import com.leo.appmaster.home.PrivacyNewPicFragment;
 import com.leo.appmaster.mgr.MgrContext;
@@ -24,6 +25,7 @@ import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.util.List;
 
@@ -63,6 +65,7 @@ public class NewHideImageActivity extends BaseFragmentActivity {
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();
+        LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
 
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
@@ -89,4 +92,8 @@ public class NewHideImageActivity extends BaseFragmentActivity {
         mFragment.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
