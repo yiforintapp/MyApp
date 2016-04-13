@@ -45,6 +45,7 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
     private LEOCircleProgressDialog mProgressDialog;
 
     private TextView mNewImageNum;
+    public static boolean mIsNewImgFromNoti;
 
 
     public static Fragment getFragment(HomeScanningFragment.PhotoList list) {
@@ -208,6 +209,8 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_$" + selectList.size());
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$" + selectList.size());
+//                    if(mIsNewImgFromNoti) {
+//                    }
                 }
             }
         });

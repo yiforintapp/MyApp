@@ -38,7 +38,6 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
 
     private boolean mHidingTimeout;
     private boolean mHidingFinish;
-    public static boolean mIsNewImgFromNoti;
 
 
     public static Fragment getFragment(HomeScanningFragment.PhotoList list) {
