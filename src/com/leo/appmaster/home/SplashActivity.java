@@ -610,8 +610,8 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         int initColor = 0;
         mPageColors[3] = getResources().getColor(R.color.new_guide_page2_background_color);
         mPageColors[4] = getResources().getColor(R.color.new_guide_page4_background_color);
-        /*骚扰拦截引导*/
-        mPageColors[5] = getResources().getColor(R.color.new_guide_page1_background_color);
+//        /*骚扰拦截引导*/
+//        mPageColors[5] = getResources().getColor(R.color.new_guide_page1_background_color);
 
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
         /* 显示跳过按钮 */
@@ -647,14 +647,14 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         tvContent.setText(getResources().getString(R.string.guide_page_content_two));
         mNewFuncPageViews.add(page3);
         /*骚扰拦截引导：page4*/
-        ViewGroup page4 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page4.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.callfilter_page));
-        tvTitle = (TextView) page4.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.call_filter_name));
-        tvContent = (TextView) page4.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.gud_page_call_fil));
-        mNewFuncPageViews.add(page4);
+//        ViewGroup page4 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page4.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.callfilter_page));
+//        tvTitle = (TextView) page4.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.call_filter_name));
+//        tvContent = (TextView) page4.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.gud_page_call_fil));
+//        mNewFuncPageViews.add(page4);
 
         mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
         mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
@@ -670,10 +670,10 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         mIndicator.setViewPager(mNewFuncViewPager);
         mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, initColor));
 
-        enterAppButton = (Button) page4.findViewById(R.id.button_guide);
+        enterAppButton = (Button) page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
         enterAppButton.setTextColor(getResources().getColor(
-                R.color.new_guide_page1_background_color));
+                R.color.new_guide_page4_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             @Override
