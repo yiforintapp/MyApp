@@ -229,7 +229,7 @@ public class LockManagerImpl extends LockManager {
     private void tryLoadLockMode() {
         if (mLockModeLoaded) return;
 
-        ThreadManager.executeOnAsyncThread(new Runnable() {
+        ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
                 loadLockMode();
@@ -1171,11 +1171,6 @@ public class LockManagerImpl extends LockManager {
 
     @Override
     public int getLockedAppCount() {
-//        if (!mLockModeLoaded) {
-//            synchronized (LOCK_MODE) {
-//                LOCK_MODE.wait();
-//            }
-//        }
         return mCurrentMode == null || mCurrentMode.lockList == null ? 0 : (mCurrentMode.lockList.size() > 0 ? mCurrentMode.lockList
                 .size() - 1 : 0);
     }
@@ -1522,35 +1517,29 @@ public class LockManagerImpl extends LockManager {
             mLockModeLoaded = resault;
             AppMasterPreference.getInstance(mContext).setFirstUseLockMode(!resault);
         } else {
-            LeoLog.d("loadLockMode", "not first Load ");
-            mTaskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    LockModeDao lmd = new LockModeDao(mContext);
-                    // load lock mode
-                    mLockModeList = lmd.querryLockModeList();
+            LeoLog.d("loadLockMode", "<ls> not first Load ");
+            LockModeDao lmd = new LockModeDao(mContext);
+            // load lock mode
+            mLockModeList = lmd.querryLockModeList();
 
-                    LeoLog.d("loadLockMode", mLockModeList.size() + "");
-                    // load time lock
-                    mTimeLockList = lmd.querryTimeLockList();
-                    // load location lock
-                    mLocationLockList = lmd.querryLocationLockList();
+            LeoLog.d("loadLockMode", mLockModeList.size() + "");
+            // load time lock
+            mTimeLockList = lmd.querryTimeLockList();
+            // load location lock
+            mLocationLockList = lmd.querryLocationLockList();
 
-                    // check remove unlock-all mode< v2.1 >
-                    checkRemoveUnlockAll();
+            // check remove unlock-all mode< v2.1 >
+            checkRemoveUnlockAll();
 
-                    for (LockMode lockMode : mLockModeList) {
-                        if (lockMode.isCurrentUsed) {
-                            mCurrentMode = lockMode;
-                            break;
-                        }
-                    }
-                    mLockModeLoaded = true;
+            for (LockMode lockMode : mLockModeList) {
+                if (lockMode.isCurrentUsed) {
+                    mCurrentMode = lockMode;
+                    break;
                 }
-
-            });
+            }
+            mLockModeLoaded = true;
+            LeoLog.d("loadLockMode", "<ls> Load finish : " + mLockModeList.size());
         }
-        LeoLog.d("loadLockMode", "Load finish : " + mLockModeList.size());
     }
 
     // check remove unlock-all mode< v2.1 >
@@ -1786,97 +1775,97 @@ public class LockManagerImpl extends LockManager {
         isScreenOnYet = false;
     }
 
-    public class TimeLockOperation implements Runnable {
-        long timeLockId;
-        long modeId;
+public class TimeLockOperation implements Runnable {
+    long timeLockId;
+    long modeId;
 
-        public TimeLockOperation(long timeLockId, long modeId) {
-            super();
-            this.timeLockId = timeLockId;
-            this.modeId = modeId;
-        }
+    public TimeLockOperation(long timeLockId, long modeId) {
+        super();
+        this.timeLockId = timeLockId;
+        this.modeId = modeId;
+    }
 
-        @Override
-        public void run() {
-            if (modeId != 0) {
-                for (LockMode lockMode : mLockModeList) {
-                    if (lockMode.modeId == modeId) {
-                        LeoLog.d("TimeLockReceiver", "change current lock mode:  " + lockMode.modeName);
-                        setCurrentLockMode(lockMode, false);
-                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "modeschage", "time");
+    @Override
+    public void run() {
+        if (modeId != 0) {
+            for (LockMode lockMode : mLockModeList) {
+                if (lockMode.modeId == modeId) {
+                    LeoLog.d("TimeLockReceiver", "change current lock mode:  " + lockMode.modeName);
+                    setCurrentLockMode(lockMode, false);
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "modeschage", "time");
+                    break;
+                }
+            }
+            for (TimeLock timeLock : mTimeLockList) {
+                if (timeLock.id == timeLockId) {
+                    if (timeLock.using && timeLock.repeatMode.getAllRepeatDayOfWeek().length == 0) {
+                        timeLock.using = false;
+                        updateTimeLock(timeLock);
+                        LeoLog.d("TimeLockReceiver", "timeLock:  " + timeLock.name);
+                        LeoEventBus.getDefaultBus().post(
+                                new TimeLockEvent(EventId.EVENT_TIME_LOCK_CHANGE, "time lock change"));
                         break;
                     }
                 }
-                for (TimeLock timeLock : mTimeLockList) {
-                    if (timeLock.id == timeLockId) {
-                        if (timeLock.using && timeLock.repeatMode.getAllRepeatDayOfWeek().length == 0) {
-                            timeLock.using = false;
-                            updateTimeLock(timeLock);
-                            LeoLog.d("TimeLockReceiver", "timeLock:  " + timeLock.name);
-                            LeoEventBus.getDefaultBus().post(
-                                    new TimeLockEvent(EventId.EVENT_TIME_LOCK_CHANGE, "time lock change"));
-                            break;
-                        }
-                    }
-                }
-                LeoEventBus.getDefaultBus().post(
-                        new LockModeEvent(EventId.EVENT_MODE_CHANGE, "time lock receiver"));
             }
-        }
-
-    }
-
-    public class OutcountTrackTask implements Runnable {
-        String pkg;
-
-        public OutcountTrackTask(String pkg) {
-            super();
-            this.pkg = pkg;
-        }
-
-        @Override
-        public void run() {
-            if (mOutcountPkgMap.containsKey(pkg)) {
-                int time = mOutcountPkgMap.get(pkg).intValue();
-                if (time <= 0) {
-                    ScheduledFuture<?> future = mOutcountTaskMap.get(this);
-                    mOutcountPkgMap.remove(this);
-                    mOutcountPkgMap.remove(pkg);
-                    future.cancel(true);
-                } else {
-                    mOutcountPkgMap.put(pkg, time - 500);
-                }
-            }
+            LeoEventBus.getDefaultBus().post(
+                    new LockModeEvent(EventId.EVENT_MODE_CHANGE, "time lock receiver"));
         }
     }
 
-    class TimeChangeReceive extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (Intent.ACTION_TIME_TICK.endsWith(action)) {
-                LeoLog.d("TimeChangeReceive", "time change");
-                mTaskExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        // cancel and clear futurelist
-                        List<ScheduledFuture<?>> futureList;
-                        if (!mTLMap.isEmpty()) {
-                            Set<Map.Entry<TimeLock, List<ScheduledFuture<?>>>> set = mTLMap.entrySet();
-                            for (Map.Entry<TimeLock, List<ScheduledFuture<?>>> entry : set) {
-                                futureList = entry.getValue();
-                                for (ScheduledFuture<?> future : futureList) {
-                                    future.cancel(true);
-                                }
+}
+
+public class OutcountTrackTask implements Runnable {
+    String pkg;
+
+    public OutcountTrackTask(String pkg) {
+        super();
+        this.pkg = pkg;
+    }
+
+    @Override
+    public void run() {
+        if (mOutcountPkgMap.containsKey(pkg)) {
+            int time = mOutcountPkgMap.get(pkg).intValue();
+            if (time <= 0) {
+                ScheduledFuture<?> future = mOutcountTaskMap.get(this);
+                mOutcountPkgMap.remove(this);
+                mOutcountPkgMap.remove(pkg);
+                future.cancel(true);
+            } else {
+                mOutcountPkgMap.put(pkg, time - 500);
+            }
+        }
+    }
+}
+
+class TimeChangeReceive extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (Intent.ACTION_TIME_TICK.endsWith(action)) {
+            LeoLog.d("TimeChangeReceive", "time change");
+            mTaskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    // cancel and clear futurelist
+                    List<ScheduledFuture<?>> futureList;
+                    if (!mTLMap.isEmpty()) {
+                        Set<Map.Entry<TimeLock, List<ScheduledFuture<?>>>> set = mTLMap.entrySet();
+                        for (Map.Entry<TimeLock, List<ScheduledFuture<?>>> entry : set) {
+                            futureList = entry.getValue();
+                            for (ScheduledFuture<?> future : futureList) {
+                                future.cancel(true);
                             }
-                            mTLMap.clear();
                         }
-                        // re-init time lock
-                        initTimeLock();
+                        mTLMap.clear();
                     }
-                });
+                    // re-init time lock
+                    initTimeLock();
+                }
+            });
 
-            }
         }
     }
+}
 }

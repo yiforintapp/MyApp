@@ -28,6 +28,8 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -56,9 +58,16 @@ public class InitCoreBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        // init lock manager
         long start = SystemClock.elapsedRealtime();
-        AppLoadEngine.getInstance(mApp);
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        lockManager.init();
         long end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, LockManager.getInstance.init: " + (end - start));
+
+        start = SystemClock.elapsedRealtime();
+        AppLoadEngine.getInstance(mApp);
+        end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, AppLoadEngine.getInstance: " + (end - start));
 
         registerPackageChangedBroadcast();

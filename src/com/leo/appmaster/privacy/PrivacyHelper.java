@@ -181,7 +181,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     public void initPrivacyStatus() {
         boolean isScreenOn = ScreenOnOffListener.isScreenOn();
         LeoLog.d(TAG, "<ls> initPrivacyStatus...isScreenOn: " + isScreenOn);
-        mExecutor.execute(new Runnable() {
+        ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
                 setPrivacyListAndCount();
