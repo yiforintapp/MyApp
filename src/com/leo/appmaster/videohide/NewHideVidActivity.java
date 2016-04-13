@@ -62,8 +62,7 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                pdm.haveCheckedVid();
+                PrivacyHelper.getVideoPrivacy().ignoreNew();
             }
         });
 

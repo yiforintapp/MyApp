@@ -85,6 +85,8 @@ public class LockManagerImpl extends LockManager {
 
     private static final int NO_CACHE = -9999;
 
+    private static final byte[] LOCK_MODE = new byte[1];
+
     public int mCurNetType = NETWORK_MOBILE;
     public String mCurWifi = "";
 
@@ -1169,6 +1171,11 @@ public class LockManagerImpl extends LockManager {
 
     @Override
     public int getLockedAppCount() {
+//        if (!mLockModeLoaded) {
+//            synchronized (LOCK_MODE) {
+//                LOCK_MODE.wait();
+//            }
+//        }
         return mCurrentMode == null || mCurrentMode.lockList == null ? 0 : (mCurrentMode.lockList.size() > 0 ? mCurrentMode.lockList
                 .size() - 1 : 0);
     }
@@ -1358,7 +1365,7 @@ public class LockManagerImpl extends LockManager {
         AppMasterApplication ctx = AppMasterApplication.getInstance();
         long start = SystemClock.elapsedRealtime();
         List<AppItemInfo> allList = AppLoadEngine.getInstance(ctx).getAllPkgInfo();
-        LeoLog.i(TAG, "getNewAppList, getAllPkgInfo-cost: " + (SystemClock.elapsedRealtime() - start));
+        LeoLog.i(TAG, "<ls> getNewAppList, getAllPkgInfo-cost: " + (SystemClock.elapsedRealtime() - start));
         result.addAll(allList);
 
         List<String> lockList = getCurLockList();
@@ -1372,7 +1379,7 @@ public class LockManagerImpl extends LockManager {
                 iterator.remove();
             }
         }
-        LeoLog.i(TAG, "getNewAppList, filter lock-cost: " + (SystemClock.elapsedRealtime() - start));
+        LeoLog.i(TAG, "<ls> getNewAppList, filter lock-cost: " + (SystemClock.elapsedRealtime() - start));
 
         start = SystemClock.elapsedRealtime();
         List<String> ignoreList = InstalledAppTable.getInstance().getIgnoredList();
@@ -1384,7 +1391,7 @@ public class LockManagerImpl extends LockManager {
                 iterator.remove();
             }
         }
-        LeoLog.i(TAG, "getNewAppList, filter ignore-cost: " + (SystemClock.elapsedRealtime() - start));
+        LeoLog.i(TAG, "<ls> getNewAppList, filter ignore-cost: " + (SystemClock.elapsedRealtime() - start));
 
         mNewList.clear();
         mNewList.addAll(result);

@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.videohide;
 
 import android.annotation.SuppressLint;
@@ -195,6 +194,11 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mPt = LeoPreference.getInstance();
         getDirFromSp();
         handleIntent();
+
+        boolean enteryByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
+        if (enteryByTips) {
+            markNewVidCheckedAsy();
+        }
 
         mDataChanged = true;
         LeoEventBus.getDefaultBus().register(this);
@@ -553,7 +557,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
+                PrivacyHelper.getVideoPrivacy().ignoreNew();
+//                        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedVid();
             }
         });
     }

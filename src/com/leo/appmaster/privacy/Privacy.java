@@ -118,7 +118,7 @@ public abstract class Privacy<T> {
         return STATUS_TOADD;
     }
 
-    public void clearNewList() {
+    void clearNewList() {
         if (mNewList != null) {
             mNewList.clear();
         }
@@ -138,6 +138,8 @@ public abstract class Privacy<T> {
     public abstract int getNewStringId();
     public abstract int getProceedStringId();
     public abstract int getAddStringId();
+
+    public abstract void ignoreNew();
 
     public int getDangerTipId() {
         return R.string.hd_pic_danger_tip;

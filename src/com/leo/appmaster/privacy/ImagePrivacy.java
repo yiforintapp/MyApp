@@ -15,6 +15,8 @@ import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.PrefConst;
@@ -51,6 +53,13 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     @Override
     public int getAddStringId() {
         return R.string.hd_add_hide_pic;
+    }
+
+    @Override
+    public void ignoreNew() {
+        clearNewList();
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+        pdm.haveCheckedPic();
     }
 
     @Override
@@ -105,11 +114,13 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_add_cli");
                 ImageHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, ImageHideMainActivity.class);
+                imageIntent.putExtra(Constants.ENTER_BY_TIPS, true);
                 break;
             case STATUS_PROCEED:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_hidden_cli");
                 ImageHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, ImageHideMainActivity.class);
+                imageIntent.putExtra(Constants.ENTER_BY_TIPS, true);
                 break;
         }
         activity.startActivity(imageIntent);

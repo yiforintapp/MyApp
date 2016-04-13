@@ -12,6 +12,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.PrefConst;
@@ -51,6 +53,14 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
     @Override
     public int getAddStringId() {
         return R.string.hd_add_hide_vid;
+    }
+
+    @Override
+    public void ignoreNew() {
+        clearNewList();
+
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+        pdm.haveCheckedVid();
     }
 
     @Override
@@ -105,11 +115,13 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_add_cli");
                 VideoHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, VideoHideMainActivity.class);
+                imageIntent.putExtra(Constants.ENTER_BY_TIPS, true);
                 break;
             case STATUS_PROCEED:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_hidden_cli");
                 VideoHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, VideoHideMainActivity.class);
+                imageIntent.putExtra(Constants.ENTER_BY_TIPS, true);
                 break;
         }
         activity.startActivity(imageIntent);

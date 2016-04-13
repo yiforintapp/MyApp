@@ -64,8 +64,7 @@ public class NewHideImageActivity extends BaseFragmentActivity {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                pdm.haveCheckedPic();
+                PrivacyHelper.getImagePrivacy().ignoreNew();
             }
         });
         SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_pic", "new_pic");

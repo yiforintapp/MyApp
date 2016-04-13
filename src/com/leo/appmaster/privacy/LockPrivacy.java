@@ -60,6 +60,14 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     }
 
     @Override
+    public void ignoreNew() {
+        clearNewList();
+
+        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        lm.ignore();
+    }
+
+    @Override
     public int getDangerTipId() {
         return R.string.hd_app_danger_tip;
     }

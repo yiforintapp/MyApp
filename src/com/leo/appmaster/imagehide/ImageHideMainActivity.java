@@ -221,6 +221,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         handleIntent();
         initUI();
 
+        boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
+        if (enterByTips) {
+            markNewPicCheckedAsy();
+        }
         mDataChanged = true;
         LeoEventBus.getDefaultBus().register(this);
     }
@@ -424,7 +428,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+                PrivacyHelper.getImagePrivacy().ignoreNew();
+//                        ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
             }
         });
     }

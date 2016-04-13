@@ -240,12 +240,6 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
         mProgressDialog.show();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        PrivacyHelper.getImagePrivacy().clearNewList();
-    }
-
     private void hideAllPicBackground(final List<String> photoItems, final int incScore) {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
