@@ -184,8 +184,9 @@ public class InitCoreBootstrap extends Bootstrap {
                     R.integer.guide_page_version);
             pref.setLastGuideVersion(currentGuideVersion);
         } else {
-            LeoLog.i("value", "start");
-            AppMasterPreference.getInstance(mApp).setNewAppLockTip(true);
+            if (AppMasterPreference.getInstance(mApp).isNewAppLockTip()) {
+                AppMasterPreference.getInstance(mApp).setNewAppLockTip(true);
+            }
             LeoSettings.setBoolean(PrefConst.KEY_IS_NEW_INSTALL, false);
 //            if(DeviceReceiverNewOne.isActive(AppMasterApplication.getInstance()) && (!pref.getHasAutoSwitch()) && (Integer.parseInt(lastVercode) < 70)) {
 //                IntrudeSecurityManager m = (IntrudeSecurityManager)MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
