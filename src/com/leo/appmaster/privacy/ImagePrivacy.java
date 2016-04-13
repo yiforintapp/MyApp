@@ -107,6 +107,7 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
                 imageIntent = new Intent(activity, ImageHideMainActivity.class);
                 break;
             case STATUS_PROCEED:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_hidden_cli");
                 ImageHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, ImageHideMainActivity.class);
                 break;

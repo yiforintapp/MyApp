@@ -66,6 +66,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private boolean mAnimating;
     private View mInterceptView;
     private View mMagicLockView;
+    public static final String FROM_HOME_APP = "from_home_app";
 
     public HomeTabFragment() {
 
@@ -306,6 +307,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         lm.updateMode(curMode);
                     } else {
                         intent = new Intent(getActivity(), AppLockListActivity.class);
+                        intent.putExtra(FROM_HOME_APP, true);
                         LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
                         startActivity(intent);
                     }
@@ -333,11 +335,12 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.home_intercept:
                     goToCallfilter();
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "block");
                     break;
                 case R.id.home_magiclock:
                     Intent intent2 = new Intent(activity, AirSigActivity.class);
                     startActivity(intent2);
-
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "airsig");
                     break;
                 case R.id.home_more:
                     LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED, true);
@@ -351,6 +354,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
+
     private void goToCallfilter() {
         int count = LeoSettings.getInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
         LeoSettings.setInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count + 1);

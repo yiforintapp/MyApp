@@ -46,11 +46,13 @@ import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.AutoStartGuideList;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.home.HomeTabFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.privacy.LockPrivacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -120,6 +122,7 @@ public class AppLockListActivity extends BaseActivity implements
     private ArrayList<AppInfo> mResaultList;
     private ImageView mAutoImage;
     private boolean mFromAppScanResult = false;
+    private boolean mFromAppHome;
     private WifiLockSwitch wifiSwitch;
     private BlueToothLockSwitch blueToothSwitch;
 
@@ -143,6 +146,8 @@ public class AppLockListActivity extends BaseActivity implements
             }
         }
     };
+
+    private boolean mFromAppHomeResult;
 
     private void loadDone() {
         //Flag is Recomment list
@@ -209,6 +214,8 @@ public class AppLockListActivity extends BaseActivity implements
 
             mFromAppScanResult = intent.getBooleanExtra(Constants.FROM_APP_SCAN_RESULT, false);
             mFromSuccessListCount = intent.getIntExtra("first_lock_size", 0);
+            mFromAppHome = intent.getBooleanExtra(HomeTabFragment.FROM_HOME_APP, false);
+            mFromAppHomeResult = intent.getBooleanExtra(LockPrivacy.FROM_HOME_RESULT_APP, false);
         }
     }
 
@@ -662,6 +669,16 @@ public class AppLockListActivity extends BaseActivity implements
             if (mFromAppScanResult) {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", "prilevel_add_app");
                 mFromAppScanResult = false;
+            }
+            //用户从首页icon进入并添加加锁应用的次数
+            if (mFromAppHome) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "app_icon_lock");
+                mFromAppHome = false;
+            }
+            //用户从首页提示条进入并添加加锁应用的次数
+            if (mFromAppHomeResult) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "app_home_lock");
+                mFromAppHomeResult = false;
             }
 
             long e = System.currentTimeMillis();

@@ -107,6 +107,7 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
                 imageIntent = new Intent(activity, VideoHideMainActivity.class);
                 break;
             case STATUS_PROCEED:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_hidden_cli");
                 VideoHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, VideoHideMainActivity.class);
                 break;

@@ -363,6 +363,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetSaftAppNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftAppNumTv.setText(privacy.getPrivacyCountText());
+                //上报：首页已加锁xx应用展示次数
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock_hidden_sh");
             }
         }
         mAppDangerContent.setTranslationY(0);
@@ -405,6 +407,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetSaftImgNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftImgNumTv.setText(privacy.getPrivacyCountText());
+                //上报：首页已隐藏xx图片展示次数
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic_hidden_sh");
             }
         }
         mPicDangerContent.setTranslationY(0);
@@ -445,6 +449,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
             mDetSaftVideoNumTv.setVisibility(numVisible ? View.VISIBLE : View.GONE);
             if (numVisible) {
                 mDetSaftVideoNumTv.setText(privacy.getPrivacyCountText());
+                //上报：首页已隐藏xx视频展示次数
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_hidden_sh");
             }
         }
         mVidDangerContent.setTranslationY(0);
@@ -579,7 +585,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 privacy.jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
                 try {
-                    if ( Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
+                    if (Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
                                 "pic_cli_$" + privacy.getPrivacyCountText());
                     }
@@ -600,7 +606,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 privacy.jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                 try {
-                    if ( Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
+                    if (Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
                                 "vid_cli_$" + privacy.getPrivacyCountText());
                     }

@@ -27,6 +27,8 @@ import com.leo.appmaster.utils.PrefConst;
  * Created by Jasper on 2016/3/31.
  */
 public class LockPrivacy extends Privacy<AppItemInfo> {
+    public static final String FROM_HOME_RESULT_APP = "from_home_result_app";
+
     @Override
     public String getTag() {
         return "LockPrivacy";
@@ -171,7 +173,7 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_new_cli");
                 break;
             case STATUS_PROCEED:
-
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_hidden_cli");
                 break;
             case STATUS_FOUND:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_all_cli");
@@ -184,7 +186,9 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
         if (getNewCount() > 0 && getNewCount() != getTotalCount()) {
             appIntent.putExtra(Constants.FROM_APP_SCAN_RESULT, true);
         }
+        appIntent.putExtra(FROM_HOME_RESULT_APP, true);
         activity.startActivity(appIntent);
+
     }
 
     @Override
