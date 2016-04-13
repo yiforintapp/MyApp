@@ -40,9 +40,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/csi_pswtip"
@@ -52,9 +50,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/csi_privacy_listen"
