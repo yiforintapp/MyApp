@@ -36,6 +36,7 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
     private LEOAlarmDialog mDialog;
     private LEOCircleProgressDialog mProgressDialog;
     private TextView mNewImageNum;
+    public static boolean mIsNewFolderImgFromNoti;
 
     public static FolderNewImageFragment newInstance() {
         return new FolderNewImageFragment();
@@ -167,6 +168,10 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + mAdapter.getSelectData().size());
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$" + mAdapter.getSelectData().size());
+                    if (mIsNewFolderImgFromNoti) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_pic");
+                        mIsNewFolderImgFromNoti = false;
+                    }
                 }
             }
         });

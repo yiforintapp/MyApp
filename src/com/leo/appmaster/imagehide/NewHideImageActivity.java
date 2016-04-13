@@ -59,6 +59,7 @@ public class NewHideImageActivity extends BaseFragmentActivity {
         }
         mFromNotification = getIntent().getBooleanExtra("pic_from_notify", false);
         NewImageFragment.mIsNewImgFromNoti = getIntent().getBooleanExtra(StatusBarEventService.NEW_IMG_HIDE_FROM_NOTIF, false);
+        FolderNewImageFragment.mIsNewFolderImgFromNoti = getIntent().getBooleanExtra(StatusBarEventService.NEW_IMG_HIDE_FROM_NOTIF, false);
         mLoading = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mFragment = (FrameLayout) findViewById(R.id.fl_image_view);
         initLoadData();

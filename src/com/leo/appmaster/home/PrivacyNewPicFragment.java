@@ -69,6 +69,7 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
             return fragment;
         }
         if (list.photoItems.size() > 60) {
+
             if (list.inDifferentDir) {
                 fragment = FolderNewImageFragment.newInstance();
             } else {
