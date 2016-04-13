@@ -692,32 +692,32 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private void shieldPositionInit() {
         Context context = getActivity();
 //        //安全盾牌
-//        mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_top_offset)));
+        mShieldTopIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
 //        mShieldLeftIv.setTranslationX(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_left_offset)));
-//        mShieldLeftIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_offset)));
+        mShieldLeftIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
 //        mShieldRightIv.setTranslationX(DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_right_offset)));
-//        mShieldRightIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_offset)));
+        mShieldRightIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
 //
         mShieldCenterIv.setTranslationX(DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_center_blue_offset_x)));
         mShieldCenterIv.setTranslationY(-DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_center_blue_offset_y)));
 //        //危险盾牌
-//        mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_top_offset)));
+        mShieldDangerTopIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
 //        mShieldDangerLeftIv.setTranslationX(-DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_left_offset)));
-//        mShieldDangerLeftIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_offset)));
+        mShieldDangerLeftIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
 //        mShieldDangerRightIv.setTranslationX(DipPixelUtil.dip2px(
 //                context, getResources().getInteger(R.integer.shield_right_offset)));
-//        mShieldDangerRightIv.setTranslationY(-DipPixelUtil.dip2px(
-//                context, getResources().getInteger(R.integer.shield_offset)));
+        mShieldDangerRightIv.setTranslationY(-DipPixelUtil.dip2px(
+                context, getResources().getInteger(R.integer.shield_offset)));
 //
         mShieldDangerCenterIv.setTranslationX(DipPixelUtil.dip2px(
                 context, getResources().getInteger(R.integer.shield_center_red_offset_x)));
@@ -804,19 +804,19 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
      * @param right
      */
     public void initHomeTopShieldAnim(final View top, final View left, final View right) {
-        int value2 = 0;
+        int value2 = -DipPixelUtil.dip2px(getActivity(), getResources().getInteger(R.integer.shield_offset));
         int value1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_top_y_trans)) + value2;
         PropertyValuesHolder topTransY = PropertyValuesHolder.ofFloat("translationY", value1, value2);
         PropertyValuesHolder topAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
 
         int valueLeft2 = 0;
-        int valueLeft1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_x_trans)) + value2;
+        int valueLeft1 = -DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_left_x_trans)) + valueLeft2;
         PropertyValuesHolder leftTransY = PropertyValuesHolder.ofFloat("translationX", valueLeft1, valueLeft2);
         PropertyValuesHolder leftAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
 
 
         int valueRight2 = 0;
-        int valueRight1 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_right_x_trans)) + value2;
+        int valueRight1 = DipPixelUtil.dip2px(mContext, getResources().getInteger(R.integer.shield_right_x_trans)) + valueRight2;
 
         PropertyValuesHolder rightTransY = PropertyValuesHolder.ofFloat("translationX", valueRight1, valueRight2);
         PropertyValuesHolder rightAlpha = PropertyValuesHolder.ofFloat("alpha", 0, 1);
