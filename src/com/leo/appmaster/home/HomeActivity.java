@@ -848,6 +848,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         LeoLog.d(TAG, "onResume...");
+
+        //上报：首页展示次数
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_sh");
+
         /* 分析是否需要升级红点显示 */
         if (SDKWrapper.isUpdateAvailable()) {
             mToolbar.showMenuRedTip(true);
@@ -891,6 +895,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         showGradeDialog();
         judgeShowGradeTip();
         if (!mJudgeShowGradeTip && mNeedDialogShow && !mUninstallGuideShow && mIsShowMoreTip) {
+            SDKWrapper.addEvent(this,SDKWrapper.P1,"home","more_gd_sh");
             showHomeMoreGuide();
         }
         if (!LeoEventBus.getDefaultBus().isRegistered(this)) {

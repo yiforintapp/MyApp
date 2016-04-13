@@ -20,6 +20,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -176,15 +177,19 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     @Override
     public void jumpAction(Activity activity) {
         int status = getStatus();
+        Privacy privacy = PrivacyHelper.getAppPrivacy();
         switch (status) {
             case STATUS_NEW_ADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_new_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "app_cli_$new"+privacy.getPrivacyCountText());
                 break;
             case STATUS_PROCEED:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_hidden_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "app_cli_$hidden"+privacy.getPrivacyCountText());
                 break;
             case STATUS_FOUND:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_all_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "app_cli_$all"+privacy.getPrivacyCountText());
                 break;
             case STATUS_TOADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_add_cli");
@@ -202,17 +207,25 @@ public class LockPrivacy extends Privacy<AppItemInfo> {
     @Override
     public void reportExposure() {
         int status = getStatus();
+        Privacy privacy = PrivacyHelper.getAppPrivacy();
         switch (status) {
             case STATUS_NEW_ADD:
+                LeoLog.e("reportExposureApp","新增");
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_new_sh");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "app_cnts_$new"+privacy.getPrivacyCountText());
                 break;
             case STATUS_PROCEED:
-
+                LeoLog.e("reportExposureApp","已加锁");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_hidden_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "app_cnts_$hidden"+privacy.getPrivacyCountText());
                 break;
             case STATUS_FOUND:
+                LeoLog.e("reportExposureApp","待处理");
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_all_sh");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "app_cnts_$all"+privacy.getPrivacyCountText());
                 break;
             case STATUS_TOADD:
+                LeoLog.e("reportExposureApp","无加锁");
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "lock_add_sh");
                 break;
         }

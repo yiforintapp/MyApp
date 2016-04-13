@@ -99,15 +99,18 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
     @Override
     public void jumpAction(Activity activity) {
         Intent imageIntent = null;
+        Privacy privacy = PrivacyHelper.getVideoPrivacy();
         int status = getStatus();
         switch (status) {
             case STATUS_NEW_ADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_new_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "vid_cli_$new"+privacy.getPrivacyCountText());
                 imageIntent = new Intent(activity, NewHideVidActivity.class);
                 imageIntent.putExtra(Constants.FIRST_ENTER_VID, NewHideVidActivity.NEW_ADD_VID);
                 break;
             case STATUS_FOUND:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_all_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "vid_cli_$all"+privacy.getPrivacyCountText());
                 imageIntent = new Intent(activity, NewHideVidActivity.class);
                 imageIntent.putExtra(Constants.FIRST_ENTER_VID, NewHideVidActivity.FOUND_VID);
                 break;
@@ -119,6 +122,7 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
                 break;
             case STATUS_PROCEED:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_hidden_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "vid_cli_$hidden"+privacy.getPrivacyCountText());
                 VideoHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, VideoHideMainActivity.class);
                 imageIntent.putExtra(Constants.ENTER_BY_TIPS, true);
@@ -130,15 +134,19 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
     @Override
     public void reportExposure() {
         int status = getStatus();
+        Privacy privacy = PrivacyHelper.getVideoPrivacy();
         switch (status) {
             case STATUS_NEW_ADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_new_sh");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "vid_cnts_$new" + privacy.getPrivacyCountText());
                 break;
             case STATUS_PROCEED:
-
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_hidden_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "vid_cnts_$hidden" + privacy.getPrivacyCountText());
                 break;
             case STATUS_FOUND:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_all_sh");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "vid_cnts_$all" + privacy.getPrivacyCountText());
                 break;
             case STATUS_TOADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidvid_add_sh");
