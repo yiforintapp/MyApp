@@ -1,6 +1,7 @@
 package com.leo.appmaster.utils;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
@@ -12,8 +13,11 @@ import android.util.DisplayMetrics;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.model.AppInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -209,7 +213,22 @@ public class DeviceUtil {
         map.put("contry", getCountry(context));
         map.put("language", getLanguage(context));
 
+        String allPackageName = getAllPackageName(context);
+        map.put("packagenames", allPackageName);
         return map;
+    }
+
+    private static String getAllPackageName(Context context) {
+        List<PackageInfo> packages = context.getPackageManager().getInstalledPackages(0);
+        String strings = "";
+        for (int i = 0; i < packages.size(); i++) {
+            PackageInfo packageInfo = packages.get(i);
+            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                String packageName = packageInfo.packageName;
+                strings = strings + packageName + ",";
+            }
+        }
+        return strings;
     }
 
     public static String getAirSigDeives(Context ctx) {
