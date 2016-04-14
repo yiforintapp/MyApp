@@ -832,7 +832,7 @@
     <string name="secur_help_tip_txt">ستقوم هذه الخاصية بحماية خصوصيتك ومساعدتك في العثور على هاتفك المفقود. لاستخدامها، يجب تعيين رقم هاتف مسبقا، وعند فقدان الهاتف، ترسل رسالة نصية عبر الرقم المعد مسبقا.</string>
     <string name="secur_help_bt">موافق</string>
     <string name="advan_secur_text">يمكنك استخدام الوظائف التالية:</string>
-    <string name="secur_backup_msm">[LEOMASTER] لقد قمت باختيار النسخ الاحتياطي لأوامر التحكم عبر الرسائل النصية: 1. قفل الهاتف: #lockmobile 2. تحديد موقع الهاتف:  #locateposition 3. إرسال تنبيه: #alert  4. الانذار:#alertoff 5. مسح البيانات: formatdata# 6. تمكين القفل، التعقب؛ المنبه؛ المسح: #onekey. إذت تعرض الهاتف للضياع، ارسل الأوامر المطابقة لما تريد. إذا نسيت الأوامر، انقر على "النسخ الاحتياطي لأوامر التحكم عن بعد" لإرسال هذه الرسالة النصية مرة أخرى. http://www.leomaster.com</string>
+    <string name="secur_backup_msm">[LEOMASTER] لقد قمت باختيار النسخ الاحتياطي لأوامر التحكم عبر الرسائل النصية: 1. قفل الهاتف: #lockmobile 2. تحديد موقع الهاتف:  #locateposition 3. إرسال تنبيه: #alert  4. الانذار:#alertoff 5. مسح البيانات: formatdata# 6. تمكين القفل، التعقب؛ المنبه؛ المسح: #onekey. إذت تعرض الهاتف للضياع، ارسل الأوامر المطابقة لما تريد. إذا نسيت الأوامر، انقر على "النسخ الاحتياطي لأوامر التحكم عن بعد" لإرسال هذه الرسالة النصية مرة أخرى. http://www.leomaster.comhttp://www.leomaster.com</string>
     <string name="secur_location_msm">[LEOMASTER] تم تحديد موقع الهاتف المفقود، انقر لترى: <xliff:g id="locate_posi">%1$s</xliff:g> . http://www.leomaster.com</string>
     <string name="pri_pro_ignore_dialog">هل أنت متأكد من تجاهل النتائج؟ للقيام بذلك، لن تحصل على الدرجة</string>
     <string name="secur_add_self_number_tip">لقد قمت بإدخال رقم هذا الهاتف، يرجى الإدخال مرة أخرى</string>
@@ -1228,7 +1228,7 @@
     <string name="airsig_settings_activity_two_set_dialog">لم يتم تمكين قفل التوقيع. تمكين الآن؟</string>
     <string name="airsig_settings_lock_fragment_normal">تغيير إلى النمط</string>
     <string name="airsig_settings_lock_fragment_normal_psw">تغيير إلى رمز PIN</string>
-    <string name="airsig_settings_lock_fragment_airsig">تغيير إلى Airsig</string>
+    <string name="airsig_settings_lock_fragment_airsig">Magic Lock إلى Airsig</string>
     <string name="change_gesture_or_password">تغيير إلى النمط/رمز PIN</string>
     <string name="gesture_or_password">النمط/رمز PIN</string>
     <string name="did_not_open">غير مُمكَّنة</string>

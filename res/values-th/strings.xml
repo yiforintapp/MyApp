@@ -1136,7 +1136,7 @@
     <string name="airsig_settings_activity_two_set_dialog">ยังไม่เปิดปลดล็อค จะเปิดทันทีไหม</string>
     <string name="airsig_settings_lock_fragment_normal">เปลี่ยนเป็นท่าปลคล็อค</string>
     <string name="airsig_settings_lock_fragment_normal_psw">เปลี่ยนเป็นรหัสผ่านปลคล็อค</string>
-    <string name="airsig_settings_lock_fragment_airsig">เปลี่ยนเป็นAirsigปลคล็อค</string>
+    <string name="airsig_settings_lock_fragment_airsig">เปลี่ยนเป็นMagci Lockปลคล็อค</string>
     <string name="change_gesture_or_password">เปลี่ยนท่า/หมายเลขรหัสผ่าน</string>
     <string name="gesture_or_password">ท่า/หมายเลขรหัสผ่าน</string>
     <string name="did_not_open">ยังไม่เปิด</string>

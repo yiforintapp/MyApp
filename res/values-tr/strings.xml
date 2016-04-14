@@ -1140,7 +1140,7 @@
     <string name="airsig_settings_activity_two_set_dialog">İmza kilidini kapalı ,açmak ister misiniz?</string>
     <string name="airsig_settings_lock_fragment_normal">İmza kilidini</string>
     <string name="airsig_settings_lock_fragment_normal_psw">Şifre kilidini</string>
-    <string name="airsig_settings_lock_fragment_airsig">Airsig kilidini</string>
+    <string name="airsig_settings_lock_fragment_airsig">Magic Lock kilidini</string>
     <string name="change_gesture_or_password">El hareketi ve sayı şifreleri değiştirin</string>
     <string name="gesture_or_password">El hareketi ve sayı şifreleri </string>
     <string name="did_not_open">kapalı</string>

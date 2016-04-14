@@ -891,7 +891,7 @@
     <string name="secur_protect_time_tip">Enable advanced protection</string>
     <string name="backup_instr_dialog_content">Orders will be sent to friend’s phone via SMS, send now? </string>
     <string name="secur_finish_no_complate_tip">You can use basic function now, for advance function, go to Device Manager</string>
-    <string name="secur_backup_msm">You have selected to backup control orders via SMS: 1. lock mobile: #lockmobile 2. locate mobile position: #locateposition 3. send alarm: #alert 4. clear data: #formatdata 5. enable lock; tracking&amp;alarm&amp;erase: #onekey. If the mobile is lost, send corresponding orders to it. If you forget the orders, click "Backup remote control orders" to send this SMS again. [LEOMASTER]</string>
+    <string name="secur_backup_msm">You have selected to backup control orders via SMS: 1. lock mobile: #lockmobile 2. locate mobile position: #locateposition 3. send alarm: #alert 4. clear data: #formatdata 5. enable lock; tracking&amp;alarm&amp;erase: #onekey. If the mobile is lost, send corresponding orders to it. If you forget the orders, click "Backup remote control orders" to send this SMS again. http://www.leomaster.com</string>
     <string name="secur_add_self_number_tip">The number you input is your mobile number, please input again</string>
     <string name="monitor_new_pic">New images</string>
     <string name="secur_kno_model_msm_click">Authorize now>>></string>
@@ -1174,7 +1174,7 @@
     <string name="airsig_settings_activity_two_set_dialog">Signature lock is not enabled. Enable now?</string>
     <string name="airsig_settings_lock_fragment_normal">Change to Pattern</string>
     <string name="airsig_settings_lock_fragment_normal_psw">Change to PIN Code</string>
-    <string name="airsig_settings_lock_fragment_airsig">Change to Airsig</string>
+    <string name="airsig_settings_lock_fragment_airsig">Change to Magic Lock</string>
     <string name="change_gesture_or_password">Change the Pattern/PIN Code</string>
     <string name="gesture_or_password">Pattern/PIN Code</string>
     <string name="did_not_open">Not enabled</string>

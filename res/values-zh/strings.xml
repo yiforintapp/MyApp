@@ -1036,7 +1036,7 @@
     <string name="airsig_settings_activity_two_set_dialog">當前未開啟簽字解鎖，是否立即開啟？</string>
     <string name="airsig_settings_lock_fragment_normal">切換為手勢解鎖</string>
     <string name="airsig_settings_lock_fragment_normal_psw">切換為密碼解鎖</string>
-    <string name="airsig_settings_lock_fragment_airsig">切換為Airsig解鎖</string>
+    <string name="airsig_settings_lock_fragment_airsig">切換為Magic Lock解鎖</string>
     <string name="change_gesture_or_password">更改手勢/數字密碼</string>
     <string name="gesture_or_password">手勢/數字密碼</string>
     <string name="did_not_open">未開啟</string>
