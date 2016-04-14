@@ -81,13 +81,14 @@ public class ListAppLockAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.item_lock_app, null);
             ListLockItem itemView = (ListLockItem) view.findViewById(R.id.content_item_all);
             if (mFlag.equals(AppLockListActivity.FROM_DEFAULT_RECOMMENT_ACTIVITY)) {
+                itemView.setInfo(info);
                 itemView.setIcon(info.icon);
                 itemView.setTitle(info.label);
                 itemView.setDescEx(info, info.isLocked);
                 itemView.setLockView(info.isLocked);
-                itemView.setInfo(info);
                 return view;
             } else {
+                itemView.setInfo(info);
                 itemView.setIcon(info.icon);
                 itemView.setTitle(info.label);
                 if (info.topPos > -1) {
@@ -98,7 +99,6 @@ public class ListAppLockAdapter extends BaseAdapter {
                     itemView.setText("");
                 }
                 itemView.setDefaultRecommendApp(info.isLocked);
-                itemView.setInfo(info);
                 return view;
             }
         }

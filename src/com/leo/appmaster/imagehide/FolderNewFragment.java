@@ -1,7 +1,6 @@
 package com.leo.appmaster.imagehide;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -146,7 +145,7 @@ public abstract class FolderNewFragment<T> extends Fragment implements AbsListVi
         }
 
 //        mActivity.onListScroll(scrollY);
-        int maxScrollHeight = mEmptyHeight - mTopViewHeight + mTopViewHeightPadding;
+        int maxScrollHeight = /*mEmptyHeight - */mTopViewHeight/* + mTopViewHeightPadding*/;
         LeoLog.e("HomePrivacyFragment", "onScroll:" + mTopViewHeight);
         if (scrollY > maxScrollHeight) {
             mOffsetBg.setTranslationY(-maxScrollHeight);

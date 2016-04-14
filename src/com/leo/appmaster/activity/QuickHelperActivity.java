@@ -280,7 +280,7 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra("from_quickhelper", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                                QuickHelperUtils.createQuickHelper(getResources().getString(mMapDrawableToName.get(drawableId)), drawableId, intent, QuickHelperActivity.this);
-                                table.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, true);
+                                table.putBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, true);
                                 break;
                             // 视频隐藏
                             case R.drawable.qh_video_icon:

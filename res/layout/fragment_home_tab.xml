@@ -16,13 +16,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="@dimen/icon_home_top_1">
+            android:paddingTop="@dimen/icon_home_top_1"
+            android:background="@drawable/new_list_selecter">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_applock"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/new_list_selecter">
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
                     android:id="@+id/content_app_lock"
@@ -72,14 +72,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="@dimen/icon_home_top_1">
+            android:paddingTop="@dimen/icon_home_top_1"
+            android:background="@drawable/new_list_selecter">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/new_list_selecter"
                 android:gravity="center_horizontal">
 
                 <ImageView
@@ -101,14 +101,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="@dimen/icon_home_top_1">
+            android:paddingTop="@dimen/icon_home_top_1"
+            android:background="@drawable/new_list_selecter">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_video"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/new_list_selecter"
                 android:gravity="center_horizontal">
 
                 <ImageView
@@ -142,14 +142,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="@dimen/icon_home_top_2">
-
+            android:paddingTop="@dimen/icon_home_top_2"
+            android:background="@drawable/new_list_selecter">
             <RelativeLayout
                 android:id="@+id/rl_home_tab_intercept"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/new_list_selecter"
                 android:gravity="center_horizontal">
 
                 <ImageView
@@ -176,14 +175,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="@dimen/icon_home_top_2">
+            android:paddingTop="@dimen/icon_home_top_2"
+            android:background="@drawable/new_list_selecter">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_magiclock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/new_list_selecter"
                 android:gravity="center_horizontal">
 
                 <ImageView
@@ -206,14 +205,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="@dimen/icon_home_top_2">
+            android:paddingTop="@dimen/icon_home_top_2"
+            android:background="@drawable/new_list_selecter">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/new_list_selecter"
                 android:gravity="center_horizontal">
 
                 <RelativeLayout

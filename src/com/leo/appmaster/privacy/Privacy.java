@@ -36,8 +36,6 @@ public abstract class Privacy<T> {
 
     // 新增列表
     private List<T> mNewList;
-    // 只有状态为STATUS_FOUND时，才有效
-    private List<T> mFoundStatusNewList;
 
     protected Context mContext;
 
@@ -89,27 +87,7 @@ public abstract class Privacy<T> {
         if (mNewList == null) {
             mNewList = new ArrayList<T>();
         }
-//        if (mFoundStatusNewList == null) {
-//            mFoundStatusNewList = new ArrayList<T>();
-//        }
-//        int status = getStatus();
-//        if (status == STATUS_FOUND) {
-//            return mFoundStatusNewList;
-//        }
         return mNewList;
-    }
-
-    void setNewListFoundStatus(List<T> dataList) {
-        if (mFoundStatusNewList == null) {
-            mFoundStatusNewList = new ArrayList<T>();
-        } else {
-            mFoundStatusNewList.clear();
-        }
-        if (dataList == null) {
-            return;
-        }
-
-        mFoundStatusNewList.addAll(dataList);
     }
 
     public boolean isDangerous() {

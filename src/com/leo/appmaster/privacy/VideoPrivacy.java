@@ -57,10 +57,10 @@ public class VideoPrivacy extends Privacy<VideoItemBean> {
 
     @Override
     public void ignoreNew() {
-        clearNewList();
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         pdm.haveCheckedVid();
+        clearNewList();
     }
 
     @Override

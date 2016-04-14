@@ -73,7 +73,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private boolean mHasShowNew = false;
     private ProgressBar loadingBar;
     private LeoPreference mPt;
-    private final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
+    private final int TOTAL_TO_CREATE_SHOTCUT = 3;
     private LEOAlarmDialog mDialogAskCreateShotcut;
     private final int NEW_PIC_MAX_SHOW_AMOUNT = 5;
 
@@ -103,11 +103,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private boolean mDataChanged;
     private boolean mOnCreated;
 
+    @Override
     public void onBackPressed() {
-        LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
-        LeoLog.d(TAG, "mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0) = " + mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0));
-        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
-            mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, true);
+        LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, false));
+        LeoLog.d(TAG, "mPt.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, 0) = " + mPt.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, 0));
+        if (!mPt.getBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, false) && mPt.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, 0) >= TOTAL_TO_CREATE_SHOTCUT) {
+            mPt.putBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, true);
             if (mDialogAskCreateShotcut == null) {
                 mDialogAskCreateShotcut = new LEOAlarmDialog(this);
             }
@@ -232,7 +233,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private void markIgnoreIfNeed() {
         boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
         int status = PrivacyHelper.getImagePrivacy().getStatus();
-        if (enterByTips || status == Privacy.STATUS_FOUND) {
+        if (enterByTips || status != Privacy.STATUS_NEW_ADD) {
             // 1、从banner进入
             // 2、从tab进入，并且状态为“x张待处理视频”
             markNewPicCheckedAsy();
@@ -498,6 +499,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             TextView tv = (TextView) convertView.findViewById(R.id.tv_more);
             if (list.size() > 5 && position == 4) {
                 tv.setText("+" + (list.size() - 4));
+                convertView.findViewById(R.id.v_mask).setVisibility(View.VISIBLE);
             }
             String path = list.get(position).getPath();
 

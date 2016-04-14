@@ -314,7 +314,7 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
                     + "download_count TEXT," + "desc TEXT,"
                     + "gp_priority INTEGER," + "gp_url TEXT,"
                     + "app_size INTEGER," + "icon_status INTEGER" + ");");
-        } else if (newVersion == 9) {
+        } else if (newVersion > 8) {
             execSQLForFilter(db);
         }
 

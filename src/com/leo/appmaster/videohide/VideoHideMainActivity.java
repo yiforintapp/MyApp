@@ -205,7 +205,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     
     @Override
     public void onBackPressed() {
-        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
+        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID, false) && mPt.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_VIDEO, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
             mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_VID, true);
             if (mDialogAskCreateShotcut == null) {
                 mDialogAskCreateShotcut = new LEOAlarmDialog(this);
@@ -279,7 +279,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private void markIgnoreIfNeed() {
         boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
         int status = PrivacyHelper.getVideoPrivacy().getStatus();
-        if (enterByTips || status == Privacy.STATUS_FOUND) {
+        if (enterByTips || status != Privacy.STATUS_NEW_ADD) {
             // 1、从banner进入
             // 2、从tab进入，并且状态为“x张待处理视频”
             markNewVidCheckedAsy();
@@ -642,8 +642,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             TextView tv = (TextView) convertView.findViewById(R.id.tv_more);
             if (list.size() > 5 && position == 4) {
                 tv.setText("+" + (list.size() - 4));
+                convertView.findViewById(R.id.v_mask).setVisibility(View.VISIBLE);
             }
-
             String path = list.get(position).getPath();
             String uri = ImageDownloader.Scheme.VIDEOFILE.wrap(path);
 //            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
