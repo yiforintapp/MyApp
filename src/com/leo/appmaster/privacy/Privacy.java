@@ -118,7 +118,7 @@ public abstract class Privacy<T> {
         return STATUS_TOADD;
     }
 
-    void clearNewList() {
+    public void clearNewList() {
         if (mNewList != null) {
             mNewList.clear();
         }

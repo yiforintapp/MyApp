@@ -162,8 +162,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                         loadDone();
                     }
                 });
-//                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-//                pdm.haveCheckedVid();
             }
         });
     }
@@ -186,20 +184,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.GONE);
             }
-//            if (mNewDataList == null || mNewDataList.size() == 0) {
-//                mHasShowNew = true;
-//                mIncludeLayoutNewVid.setVisibility(View.GONE);
-//            } else if (!mHasShowNew && status == Privacy.STATUS_NEW_ADD) {
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_Video", "vid_card");
-//                mHasShowNew = true;
-//                mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
-//                mNewVidAdapter.setDataList(mNewDataList);
-//                mNewVidAdapter.notifyDataSetChanged();
-//                updateTips();
-//            } else {
-//                mHasShowNew = true;
-//                mIncludeLayoutNewVid.setVisibility(View.GONE);
-//            }
         }
     }
 
@@ -295,6 +279,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
         int status = PrivacyHelper.getVideoPrivacy().getStatus();
         if (enterByTips || status != Privacy.STATUS_NEW_ADD) {
+            // 先在主线程触发一次，防止放在异步线程操作太快，返回还没来得及刷新的问题
+            PrivacyHelper.getVideoPrivacy().clearNewList();
             // 1、从banner进入
             // 2、从tab进入，并且状态为“x张待处理视频”
             markNewVidCheckedAsy();
