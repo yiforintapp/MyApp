@@ -219,4 +219,6 @@
     <dimen name="icon_home_top_1">34dp</dimen>
     <dimen name="icon_home_top_2">20dp</dimen>
     <dimen name="home_tab_tv_top">13dp</dimen>
+
+    <dimen name="home_guide_marg_up">94dp</dimen>
 </resources>
