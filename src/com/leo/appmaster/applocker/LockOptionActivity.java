@@ -150,6 +150,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mLockSetting.setOnPreferenceClickListener(this);
         mAirSigSetting.setOnPreferenceClickListener(this);
         mLockTip.setChecked(AppMasterPreference.getInstance(LockOptionActivity.this).isNewAppLockTip());
+        mHideLockLine.setChecked(AppMasterPreference.getInstance(this).getIsHideLine());
     }
 
     private boolean isAdminActive() {
