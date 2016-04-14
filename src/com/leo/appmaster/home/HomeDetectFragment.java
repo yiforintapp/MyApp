@@ -605,48 +605,24 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
                 privacy = PrivacyHelper.getAppPrivacy();
                 privacy.jumpAction(mContext);
                 LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
-                try {
-                    if (Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
-                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
-                                "app_cli_$" + privacy.getPrivacyCountText());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 break;
             case R.id.lt_det_saft_result_img:
                 //图片扫描安全结果
-                int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
-                table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count + 1);
+                int count = table.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, 0);
+                table.putInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, count + 1);
             case R.id.lt_det_danger_result_img:
                 //图片扫描危险结果
                 privacy = PrivacyHelper.getImagePrivacy();
                 privacy.jumpAction(mContext);
-                try {
-                    if (Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
-                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
-                                "pic_cli_$" + privacy.getPrivacyCountText());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 break;
             case R.id.lt_det_saft_result_video:
                 //视频扫描安全结果
-                int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
-                table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
+                int count2 = table.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_VIDEO, 0);
+                table.putInt(PrefConst.KEY_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
             case R.id.lt_det_danger_result_video:
                 //视频扫描危险结果
                 privacy = PrivacyHelper.getVideoPrivacy();
                 privacy.jumpAction(mContext);
-                try {
-                    if (Integer.parseInt(privacy.getPrivacyCountText()) > 0) {
-                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice",
-                                "vid_cli_$" + privacy.getPrivacyCountText());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 break;
             case R.id.lt_home_det_tip:
                 //中间banner

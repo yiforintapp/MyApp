@@ -73,7 +73,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private boolean mHasShowNew = false;
     private ProgressBar loadingBar;
     private LeoPreference mPt;
-    private final int ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT = 3;
+    private final int TOTAL_TO_CREATE_SHOTCUT = 3;
     private LEOAlarmDialog mDialogAskCreateShotcut;
     private final int NEW_PIC_MAX_SHOW_AMOUNT = 5;
 
@@ -103,11 +103,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private boolean mDataChanged;
     private boolean mOnCreated;
 
+    @Override
     public void onBackPressed() {
-        LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
-        LeoLog.d(TAG, "mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0) = " + mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0));
-        if (!mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) && mPt.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0) >= ACCUMULATIVE_TOTAL_TO_ASK_CREATE_SHOTCUT) {
-            mPt.putBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, true);
+        LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, false));
+        LeoLog.d(TAG, "mPt.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, 0) = " + mPt.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, 0));
+        if (!mPt.getBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, false) && mPt.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, 0) >= TOTAL_TO_CREATE_SHOTCUT) {
+            mPt.putBoolean(PrefConst.KEY_HAS_CREATE_SHOTCUT_PIC, true);
             if (mDialogAskCreateShotcut == null) {
                 mDialogAskCreateShotcut = new LEOAlarmDialog(this);
             }

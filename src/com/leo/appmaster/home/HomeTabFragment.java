@@ -19,7 +19,6 @@ import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
@@ -29,7 +28,6 @@ import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
@@ -317,8 +315,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.home_img:
                     // 图片隐藏
-                    int count = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, 0);
-                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_PIC, count + 1);
+                    int count = table.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, 0);
+                    table.putInt(PrefConst.KEY_TOTAL_ENTER_HIDE_PIC, count + 1);
                     ImageHideMainActivity.mFromHomeEnter = false;
                     intent = new Intent(activity, ImageHideMainActivity.class);
                     activity.startActivity(intent);
@@ -326,8 +324,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     break;
                 case R.id.home_video:
                     //视频隐藏
-                    int count2 = table.getInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, 0);
-                    table.putInt(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
+                    int count2 = table.getInt(PrefConst.KEY_TOTAL_ENTER_HIDE_VIDEO, 0);
+                    table.putInt(PrefConst.KEY_TOTAL_ENTER_HIDE_VIDEO, count2 + 1);
                     VideoHideMainActivity.mFromHomeEnter = false;
                     intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
