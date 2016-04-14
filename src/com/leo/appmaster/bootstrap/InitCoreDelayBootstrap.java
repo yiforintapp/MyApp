@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -17,6 +18,7 @@ import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
@@ -51,7 +53,6 @@ public class InitCoreDelayBootstrap extends Bootstrap {
         LeoLog.i(TAG, "cost, registerReceiveMessageCallIntercept: " + (end - start));
 
 
-
         start = SystemClock.elapsedRealtime();
         SDKWrapper.iniSDK(mApp);
         end = SystemClock.elapsedRealtime();
@@ -67,6 +68,7 @@ public class InitCoreDelayBootstrap extends Bootstrap {
         //init DeviceImp
         DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
         deviceManager.init();
+        WifiSecurityManager wifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
 
         // 开始文件丢失监控
         AppErrorMonitor.get().startMonitor();
