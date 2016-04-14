@@ -250,7 +250,6 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                         hideDone();
                         mAdapter.notifyDataSetChanged();
                     } else {
-                        hideDone();
                         Toast.makeText(mActivity, R.string.hide_complete_new_image, Toast.LENGTH_LONG).show();
                         mActivity.finish();
                     }
