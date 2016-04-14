@@ -174,17 +174,32 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             mIncludeLayoutNewVid.setVisibility(View.GONE);
         }
         if (mNewVidAdapter != null) {
-            if (mNewDataList == null || mNewDataList.size() == 0 || PrivacyHelper.getVideoPrivacy().getTotalCount() == PrivacyHelper.getVideoPrivacy().getNewCount()) {
-                mHasShowNew = true;
-                mIncludeLayoutNewVid.setVisibility(View.GONE);
-            } else if (!mHasShowNew) {
+            int status = PrivacyHelper.getVideoPrivacy().getStatus();
+            if (!mHasShowNew && status == Privacy.STATUS_NEW_ADD) {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_Video", "vid_card");
                 mHasShowNew = true;
                 mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
                 mNewVidAdapter.setDataList(mNewDataList);
                 mNewVidAdapter.notifyDataSetChanged();
                 updateTips();
+            } else {
+                mHasShowNew = true;
+                mIncludeLayoutNewVid.setVisibility(View.GONE);
             }
+//            if (mNewDataList == null || mNewDataList.size() == 0) {
+//                mHasShowNew = true;
+//                mIncludeLayoutNewVid.setVisibility(View.GONE);
+//            } else if (!mHasShowNew && status == Privacy.STATUS_NEW_ADD) {
+//                SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_Video", "vid_card");
+//                mHasShowNew = true;
+//                mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
+//                mNewVidAdapter.setDataList(mNewDataList);
+//                mNewVidAdapter.notifyDataSetChanged();
+//                updateTips();
+//            } else {
+//                mHasShowNew = true;
+//                mIncludeLayoutNewVid.setVisibility(View.GONE);
+//            }
         }
     }
 

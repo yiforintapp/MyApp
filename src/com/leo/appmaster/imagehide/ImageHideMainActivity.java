@@ -200,10 +200,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             mIncludeLayoutNewPic.setVisibility(View.GONE);
         }
         if (mNewPicAdapter != null) {
-            if (mNewAddPic == null || mNewAddPic.size() == 0 || PrivacyHelper.getImagePrivacy().getTotalCount() == PrivacyHelper.getImagePrivacy().getNewCount()) {
-                mHasShowNew = true;
-                mIncludeLayoutNewPic.setVisibility(View.GONE);
-            } else if (!mHasShowNew){
+            int status = PrivacyHelper.getImagePrivacy().getStatus();
+
+            if (!mHasShowNew && status == Privacy.STATUS_NEW_ADD) {
                 LeoLog.i("newpic"," in total : " + PrivacyHelper.getImagePrivacy().getTotalCount() + "        new : " +
                         PrivacyHelper.getImagePrivacy().getNewCount());
                 mHasShowNew = true;
@@ -212,6 +211,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 mNewPicAdapter.setDataList(mNewAddPic);
                 mNewPicAdapter.notifyDataSetChanged();
                 updateTips();
+            } else {
+                mHasShowNew = true;
+                mIncludeLayoutNewPic.setVisibility(View.GONE);
             }
         }
     }
