@@ -17,11 +17,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.home.FolderVidFragment;
 import com.leo.appmaster.imagehide.NewFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.HeaderGridView;
 import com.leo.appmaster.ui.XHeaderView;
@@ -38,48 +36,12 @@ import java.util.List;
  * Created by Jasper on 2015/10/16.
  */
 public class NewVideoFragment extends NewFragment implements AdapterView.OnItemClickListener {
-    private static final int FOLDER_VIDEO_COUNT = 35;
-
     private HeaderGridView mVideoList;
 
     private TextView mNewImageNum;
     private LEOAlarmDialog mDialog;
     private LEOCircleProgressDialog mProgressDialog;
     public static boolean mIsVidFromNoti;
-
-    public static Fragment getFragment(List<VideoItemBean> list) {
-        Fragment fragment = null;
-        if (list.size() < FOLDER_VIDEO_COUNT) {
-            fragment = NewVideoFragment.newInstance();
-            ((NewVideoFragment) fragment).setData(list, "");
-        } else {
-            if (DataUtils.differentDirVid(list)) {
-                fragment = FolderVidFragment.newInstance();
-                ((FolderVidFragment) fragment).setData(list);
-            } else {
-                fragment = NewVideoFragment.newInstance();
-                ((NewVideoFragment) fragment).setData(list, "");
-            }
-        }
-        return fragment;
-    }
-
-    public static Fragment getNewVidFragment(List<VideoItemBean> list) {
-        Fragment fragment = null;
-        if (list.size() < FOLDER_VIDEO_COUNT) {
-            fragment = NewVideoFragment.newInstance();
-            ((NewVideoFragment) fragment).setData(list, "");
-        } else {
-            if (DataUtils.differentDirVid(list)) {
-                fragment = FolderNewVideoFragment.newInstance();
-                ((FolderNewVideoFragment) fragment).setData(list);
-            } else {
-                fragment = NewVideoFragment.newInstance();
-                ((NewVideoFragment) fragment).setData(list, "");
-            }
-        }
-        return fragment;
-    }
 
     public static NewVideoFragment newInstance() {
         NewVideoFragment fragment = new NewVideoFragment();

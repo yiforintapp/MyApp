@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.PrivacyNewAdaper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaskImageView;
 import com.leo.appmaster.ui.RippleView;
@@ -79,7 +78,7 @@ public class FolderNewImageAdapter extends FolderNewAdapter<PhotoItem> {
             holder.title.setText(wrapper.parentName);
             holder.count.setText(mContext.getString(R.string.pri_pro_folder_summary, wrapper.items.size()));
             String url = "file://" + getPath(wrapper.items.get(0));
-            mImageLoader.displayImage(url, holder.imageView, PrivacyNewAdaper.getOptions());
+            mImageLoader.displayImage(url, holder.imageView, FolderNewAdapter.getMediaOptions());
         }
 
         holder.checkBox.setChecked(isGroupChecked(groupPosition));
@@ -121,17 +120,17 @@ public class FolderNewImageAdapter extends FolderNewAdapter<PhotoItem> {
 
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        PrivacyNewAdaper.PrivacyNewHolder holder = null;
+        PrivacyNewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.pri_pro_new_pic_item, null);
 
-            holder = new PrivacyNewAdaper.PrivacyNewHolder();
+            holder = new PrivacyNewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.pp_pic_iv);
             holder.checkBox = (CheckBox) convertView.findViewById(R.id.pp_pic_item_cb);
 
             convertView.setTag(R.layout.pri_pro_new_pic_item, holder);
         } else {
-            holder = (PrivacyNewAdaper.PrivacyNewHolder) convertView.getTag(R.layout.pri_pro_new_pic_item);
+            holder = (PrivacyNewHolder) convertView.getTag(R.layout.pri_pro_new_pic_item);
         }
 
         final PhotoItem item = (PhotoItem) getChild(groupPosition, childPosition);

@@ -7,8 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.FolderAdapter;
-import com.leo.appmaster.home.PrivacyNewAdaper;
 import com.leo.appmaster.imagehide.FolderNewAdapter;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
@@ -94,7 +92,7 @@ public class FolderVidNewAdapter extends FolderNewAdapter<VideoItemBean> {
             holder.title.setText(wrapper.parentName);
             holder.count.setText(mContext.getString(R.string.pri_pro_folder_summary, wrapper.items.size()));
             String url = ImageDownloader.Scheme.VIDEOFILE.wrap(getPath(wrapper.items.get(0)));
-            mImageLoader.displayImage(url, holder.imageView, PrivacyNewAdaper.getOptions());
+            mImageLoader.displayImage(url, holder.imageView, FolderNewAdapter.getMediaOptions());
         }
 
         holder.checkBox.setClickable(false);
@@ -130,18 +128,18 @@ public class FolderVidNewAdapter extends FolderNewAdapter<VideoItemBean> {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        PrivacyNewAdaper.PrivacyNewHolder holder = null;
+        PrivacyNewHolder holder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.pri_pro_new_video_item, null);
 
-            holder = new PrivacyNewAdaper.PrivacyNewHolder();
+            holder = new PrivacyNewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.pp_video_iv);
             holder.title = (TextView) convertView.findViewById(R.id.pp_video_title_tv);
             holder.checkBox = (CheckBox) convertView.findViewById(R.id.pp_video_item_cb);
 
             convertView.setTag(holder);
         } else {
-            holder = (PrivacyNewAdaper.PrivacyNewHolder) convertView.getTag();
+            holder = (PrivacyNewHolder) convertView.getTag();
         }
 
         final VideoItemBean info = (VideoItemBean) getChild(groupPosition, childPosition);

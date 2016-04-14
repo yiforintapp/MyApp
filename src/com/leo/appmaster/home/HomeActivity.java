@@ -63,13 +63,10 @@ import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.GuideFragment;
-import com.leo.appmaster.home.HomeScanningFragment.PhotoList;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.schedule.PhoneSecurityFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -77,7 +74,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAnimationDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DeviceUtil;
@@ -88,7 +84,6 @@ import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
-import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.utils.IoUtils;
 
@@ -116,30 +111,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     //    private HomePrivacyFragment mPrivacyFragment;
     private HomeTabFragment mTabFragment;
     private GuideFragment mGuideFragment;
-    private HomeScanningFragment mScanningFragment;
-    private Fragment mCurrentFragment;
-    private PrivacyHelper mPrivacyHelper;
-    private boolean mProcessAlreadyTimeout;
-    private int mProcessedScore;
-    private String mProcessedMgr;
-
-    private int mHeaderHeight;
-    private int mToolbarHeight;
-    //    private CommonToolbar mCommonToolbar;
-    private Animation mComingInAnim;
     private Animation mComingOutAnim;
 
-    private List<AppItemInfo> mAppList;
-    private PhotoList mPhotoList;
-    private List<VideoItemBean> mVideoList;
-    private List<ContactBean> mContactList;
-
-    private boolean mShownIgnoreDlg;
-    private boolean mShowContact;
-
-    private LEOAnimationDialog mMessageDialog;
-
-    private String mAppScanText;
     private int mLockAppNum = 0;
     private int mHidePicNum = 0;
     private int mHideVidNum = 0;
@@ -194,7 +167,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         setContentView(R.layout.activity_home_main);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
-        mPrivacyHelper = PrivacyHelper.getInstance(this);
         mISManger = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
         initUI();
 //        initMobvista();
@@ -337,7 +309,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     public void onEventMainThread(AppUnlockEvent event) {
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
             if (mEnterScan) {
-                onShieldClick();
+                //onShieldClick();
                 mEnterScan = false;
             }
 
@@ -394,145 +366,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         LeoLog.i(TAG, "onEvent, event: " + event);
     }
 
-    public void onShieldClick() {
-        LeoLog.d(TAG, "onShieldClick....");
-        int securityScore = mPrivacyHelper.getSecurityScore();
-        if (securityScore == 100) {
-            mShowContact = false;
-//            mMoreFragment.setEnable(false);
-//            startProcess();
-//            Toast.makeText(this, R.string.pri_pro_summary_confirm, Toast.LENGTH_SHORT).show();
-//            return;
-        } else {
-            mShowContact = true;
-        }
-        if (!mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
-            LeoLog.d(TAG, "onShieldClick, start dismiss tab.");
-            mTabFragment.dismissTab();
-//            mPrivacyFragment.setShowColorProgress(false);
-//            mMoreFragment.setEnable(false);
-
-            Animation comingIn = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_in);
-            Animation comingOut = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_out);
-
-            mToolbar.startAnimation(comingIn);
-//            mCommonToolbar.startAnimation(comingOut);
-            mToolbar.setVisibility(View.INVISIBLE);
-//            mCommonToolbar.setVisibility(View.VISIBLE);
-//            mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_privacyScan");
-//            mPrivacyFragment.startScanningAnim();
-
-            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    LeoLog.d(TAG, "zany, start scanning fragment.");
-                    mScanningFragment = new HomeScanningFragment();
-                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                    ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, 0);
-                    ft.addToBackStack(null);
-                    ft.replace(R.id.pri_pro_content, mScanningFragment);
-                    try {
-                        ft.commitAllowingStateLoss();
-                        LeoLog.d(TAG, "zany, start scanning commit success.");
-                    } catch (Exception e) {
-                        LeoLog.e(TAG, "zany, start scanning commit ex.", e);
-                    }
-//                    mPrivacyFragment.onScanStart();
-                    mCurrentFragment = mScanningFragment;
-                }
-            }, 50);
-        }
-    }
-
-    public void onTabAnimationFinish() {
-        if (isFinishing()) return;
-
-        if (!mTabFragment.isTabDismiss()) {
-            mTabWhiteBg.setVisibility(View.VISIBLE);
-//            mPrivacyFragment.setShowColorProgress(true);
-        } else {
-//            mPrivacyFragment.startScanningAnim();
-            mScanningFragment = new HomeScanningFragment();
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, 0);
-            ft.addToBackStack(null);
-            ft.replace(R.id.pri_pro_content, mScanningFragment);
-            boolean commited = false;
-            try {
-                ft.commit();
-                commited = true;
-            } catch (Exception e) {
-            }
-            if (!commited) {
-                try {
-                    ft.commitAllowingStateLoss();
-                } catch (Exception e) {
-                }
-            }
-            mCurrentFragment = mScanningFragment;
-        }
-    }
-
-//    public void onScanningStart(int duration) {
-//        mPrivacyFragment.showScanningPercent(duration);
-//    }
-//
-//    public void scanningFromPercent(int duration, int from, int to) {
-//        mPrivacyFragment.showScanningPercent(duration, from, to);
-//    }
-//
-//    public int getScanningPercent() {
-//        return mPrivacyFragment.getScanningPercent();
-//    }
-
-    public void onScanningFinish(List<AppItemInfo> appList, PhotoList photoItems, List<VideoItemBean> videoItemBeans, String appScanText) {
-        mAppList = appList;
-        mPhotoList = photoItems;
-        mVideoList = videoItemBeans;
-        mAppScanText = appScanText;
-
-//        mPrivacyFragment.getShiledLayer().setShieldAlpha(255);
-        int score = mPrivacyHelper.getSecurityScore();
-        if (score == 100) {
-//            mPrivacyFragment.startDirectBurstAnim();
-        }
-    }
-
-    public void onExitScanning() {
-        if (mTabFragment.isTabDismiss()) {
-            LeoLog.d(TAG, "onExitScanning...");
-            reportFragmentExit();
-//            mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
-//                @Override
-//                public void onShowTabListener() {
-//                    mMoreFragment.setEnable(true);
-//                    /*首页引导*/
-//                    showHomeGuide();
-//                }
-//            });
-            showTab();
-            getSupportFragmentManager().popBackStack();
-//            mPrivacyFragment.setInterceptRaiseAnim();
-//            mPrivacyFragment.reset();
-
-            mToolbar.setVisibility(View.VISIBLE);
-//            mCommonToolbar.setVisibility(View.INVISIBLE);
-
-            mToolbar.startAnimation(mComingOutAnim);
-            mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-//            mCommonToolbar.startAnimation(mComingInAnim);
-
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            if (mUninstallGuideShow) {
-                cancelGuide();
-            }
-//            mMoreFragment.cancelUpArrowAnim();
-        }
-    }
-
     private void showTab() {
         mTabFragment.showTab(new HomeTabFragment.OnShowTabListener() {
             @Override
@@ -547,118 +380,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //        mPrivacyFragment.setShowColorProgress(true);
     }
 
-    public void setContactList(List<ContactBean> contactList) {
-        mContactList = contactList;
-    }
-
-    // 是否已显示过跳过弹窗
-    public boolean shownIgnoreDlg() {
-        return mShownIgnoreDlg;
-    }
-
-    // 设置已显示过跳过弹窗
-    public void setShownIngoreDlg() {
-        mShownIgnoreDlg = true;
-    }
-
-    public void startProcess() {
-        mTabWhiteBg.setVisibility(View.INVISIBLE);
-        mShownIgnoreDlg = false;
-        int count = 1;
-        if (mAppList != null && mAppList.size() > 0) {
-            count++;
-        }
-
-        if (mPhotoList != null && mPhotoList.photoItems.size() > 0) {
-            count++;
-        }
-
-        if (mVideoList != null && mVideoList.size() > 0) {
-            count++;
-        }
-//        mPrivacyFragment.startProcessing(count);
-        int score = mPrivacyHelper.getSecurityScore();
-        if (count == 1) {
-            if (score == 100) {
-//                mPrivacyFragment.startDirectBurstAnim();
-            } else {
-//                mPrivacyFragment.startDirectTranslation();
-                jumpToNextFragment(true);
-            }
-        } else {
-            jumpToNextFragment(true);
-        }
-        mScanningFragment = null;
-    }
-
-//    public int getToolbarColor() {
-//        return mPrivacyFragment.getToolbarColor();
-//    }
-
-    public void jumpToNextFragment(boolean startByFirst) {
-//        mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_NONE);
-
-        FragmentManager fm = getSupportFragmentManager();
-        try {
-            fm.popBackStack();
-        } catch (Exception e) {
-        }
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, /*R.anim.anim_up_to_down*/0);
-        if (mAppList != null && mAppList.size() > 0) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "app_arv");
-            PrivacyNewFragment fragment = PrivacyNewAppFragment.newInstance();
-            ft.replace(R.id.pri_pro_content, fragment);
-            fragment.setData(mAppList, mAppScanText);
-            mAppList = null;
-            mCurrentFragment = fragment;
-        } else if (mPhotoList != null && mPhotoList.photoItems.size() > 0) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "pic_arv");
-            Fragment fragment = PrivacyNewPicFragment.getFragment(mPhotoList);
-            ft.replace(R.id.pri_pro_content, fragment);
-            mPhotoList = null;
-            mCurrentFragment = fragment;
-        } else if (mVideoList != null && mVideoList.size() > 0) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "process", "vid_arv");
-            Fragment fragment = PrivacyNewVideoFragment.getFragment(mVideoList);
-            ft.replace(R.id.pri_pro_content, fragment);
-            mVideoList = null;
-            mCurrentFragment = fragment;
-        } else {
-            if (!startByFirst) {
-//                mPrivacyFragment.startFinalAnim();
-            }
-            PrivacyConfirmFragment fragment = PrivacyConfirmFragment.newInstance(mShowContact);
-            fragment.setDataList(mContactList);
-            ft.replace(R.id.pri_pro_content, fragment);
-            mCurrentFragment = fragment;
-        }
-        ft.addToBackStack(null);
-        try {
-            ft.commitAllowingStateLoss();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        IoUtils.commitSafely(ft);
-    }
-
     private void initUI() {
-//        mTabWhiteBg = findViewById(R.id.home_tab_white_bg);
-//        mMoreFragment = (HomeMoreFragment) getSupportFragmentManager().findFragmentById(R.id.home_more_ft);
-//        mPrivacyFragment = (HomePrivacyFragment) getSupportFragmentManager().findFragmentById(R.id.home_anim_ft);
         mDetectFragment = (HomeDetectFragment) getSupportFragmentManager().findFragmentById(R.id.home_anim_ft);
         mTabFragment = (HomeTabFragment) getSupportFragmentManager().findFragmentById(R.id.home_tab_ft);
         mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.home_guide);
         mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
 
-        mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
-        mToolbarHeight = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-//        mCommonToolbar = (CommonToolbar) findViewById(R.id.home_common_toobar);
-//        mCommonToolbar.setToolbarTitle(R.string.home_privacy_status);
-//        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-//        mCommonToolbar.setNavigationClickListener(this);
-
-        mComingInAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_in);
         mComingOutAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_out);
 
         mDrawerArrowDrawable = new DrawerArrowDrawable(getResources());
@@ -718,35 +445,23 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-//        if (mMoreFragment.isPanelOpen()) {
-//            mMoreFragment.closePanel();
-//            return;
-//        }
         LeoLog.e("mMenuList", "onBackPressed");
-//        if (mDrawerLayout.isDrawerOpen(mMenuList)) {
-//            if (mUninstallGuideShow) {
-//                cancelGuide();
-//            }
-//            mDrawerLayout.closeDrawer(mMenuList);
-//            return;
-//        }
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             if (mUninstallGuideShow) {
                 cancelGuide();
             }
             mDrawerLayout.closeDrawer(Gravity.START);
-
             return;
         }
 
-        if (getFragmentManager().getBackStackEntryCount() > 0
-                || mTabFragment.isTabDismiss()) {
-            try {
-                onExitScanning();
-            } catch (Exception e) {
-                LeoLog.e(TAG, "ex on onExitScanning...", e);
-            }
-        } else {
+//        if (getFragmentManager().getBackStackEntryCount() > 0
+//                || mTabFragment.isTabDismiss()) {
+//            try {
+//                onExitScanning();
+//            } catch (Exception e) {
+//                LeoLog.e(TAG, "ex on onExitScanning...", e);
+//            }
+//        } else {
             finish();
 
             // ===== AMAM-1336 ========
@@ -757,7 +472,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 startActivity(intent);
             } catch (Exception e) {
             }
-        }
+//        }
 
     }
 
@@ -789,23 +504,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    private void reportFragmentExit() {
-        int score = mPrivacyHelper.getSecurityScore();
-        if (mCurrentFragment instanceof HomeScanningFragment) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "scan", "cancel");
-        } else if (mCurrentFragment instanceof PrivacyNewAppFragment) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "points", "points_app_" + score);
-        } else if ((mCurrentFragment instanceof PrivacyNewPicFragment) ||
-                (mCurrentFragment instanceof FolderPicFragment)) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "points", "points_pic_" + score);
-        } else if ((mCurrentFragment instanceof PrivacyNewVideoFragment ||
-                mCurrentFragment instanceof FolderVidFragment)) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "points", "points_vid_" + score);
-        } else if (mCurrentFragment instanceof PrivacyConfirmFragment) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "points", "points_fsh_" + score);
-        }
-    }
-
     private void removeFragments() {
         long start = SystemClock.elapsedRealtime();
         FragmentManager fm = getSupportFragmentManager();
@@ -823,18 +521,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
         LeoLog.i(TAG, "removeFragments, cost: " + (SystemClock.elapsedRealtime() - start));
     }
-
-//    public boolean isTimetoShow() {
-//        long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
-//        long nowTime = System.currentTimeMillis();
-//        if (nowTime - clickTime > Constants.TIME_ONE_DAY) {
-//            LeoLog.d("testHomeAd", "isTimetoShow true");
-//            return true;
-//        } else {
-//            LeoLog.d("testHomeAd", "isTimetoShow false");
-//            return false;
-//        }
-//    }
 
     public void recordEnterHomeTimes() {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -1129,7 +815,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //                }
                 break;
             case R.id.ct_back_rl:
-                onExitScanning();
+                // onExitScanning();
                 break;
             default:
                 break;
@@ -1388,141 +1074,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    public void onListScroll(int scrollHeight) {
-        int stickyMaxScrollHeight = mHeaderHeight - mToolbarHeight;
-        if (scrollHeight > stickyMaxScrollHeight) {
-//            mToolbar.setBackgroundColor(mPrivacyFragment.getToolbarColor());
-//            mCommonToolbar.setBackgroundColor(mPrivacyFragment.getToolbarColor());
-        } else {
-            mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-//            mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-        }
-    }
-
-    public void onProcessClick(Fragment fragment) {
-        mScoreBeforeProcess = mPrivacyHelper.getSecurityScore();
-        // 分数上涨，标题栏背景异常，非变现，加保护
-        mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-//        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-        mProcessedMgr = null;
-        mProcessAlreadyTimeout = false;
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.remove(fragment);
-        IoUtils.commitSafely(ft);
-//        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-
-        LeoPreference leoPreference = LeoPreference.getInstance();
-        if (fragment instanceof PrivacyNewAppFragment) {
-//            mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
-            boolean appConsumed = leoPreference.getBoolean(PrefConst.KEY_APP_COMSUMED, false);
-            boolean appLockHandler = leoPreference.getBoolean(PrefConst.KEY_APP_LOCK_HANDLER, false);
-            if (!appConsumed) {
-                leoPreference.putBoolean(PrefConst.KEY_APP_COMSUMED, true);
-            }
-            if (!appLockHandler) {
-                leoPreference.putBoolean(PrefConst.KEY_APP_LOCK_HANDLER, true);
-            }
-        } else if ((fragment instanceof PrivacyNewPicFragment)
-                || (fragment instanceof FolderPicFragment)) {
-//            mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_PIC);
-            boolean picConsumed = leoPreference.getBoolean(PrefConst.KEY_PIC_COMSUMED, false);
-            if (!picConsumed) {
-                leoPreference.putBoolean(PrefConst.KEY_PIC_COMSUMED, true);
-                leoPreference.putBoolean(PrefConst.KEY_PIC_REDDOT_EXIST, true);
-//                mMoreFragment.updateHideRedTip();
-            }
-        } else if ((fragment instanceof PrivacyNewVideoFragment)
-                || (fragment instanceof FolderVidFragment)) {
-//            mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_VID);
-            boolean vidConsumed = leoPreference.getBoolean(PrefConst.KEY_VID_COMSUMED, false);
-            if (!vidConsumed) {
-                leoPreference.putBoolean(PrefConst.KEY_VID_COMSUMED, true);
-                leoPreference.putBoolean(PrefConst.KEY_VID_REDDOT_EXIST, true);
-//                mMoreFragment.updateHideRedTip();
-            }
-        }
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mProcessAlreadyTimeout = true;
-                if (mProcessedMgr != null) {
-                    startProcessFinishAnim(mProcessedScore);
-                }
-            }
-        }, 2000);
-    }
-
-    public void onProcessFinish(int increaseScore, String mgr) {
-        LeoLog.d(TAG, "onProcessFinish, mgr: " + mgr + " | increaseScore: " + increaseScore);
-        int scoreAfterProcess = mPrivacyHelper.getSecurityScore();
-        if (scoreAfterProcess != mScoreBeforeProcess) {
-            // 处理前后分数不一样了，分数不再继续累加
-            increaseScore = scoreAfterProcess - mScoreBeforeProcess;
-            increaseScore = increaseScore < 0 ? 0 : increaseScore;
-        }
-        LeoLog.d(TAG, "onProcessFinish, increaseScore again: " + increaseScore);
-
-//        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(
-//                MgrContext.MGR_INTRUDE_SECURITY);
-//        boolean intruderAdded = LeoPreference.getInstance().getBoolean(
-//                PrefConst.KEY_INTRUDER_ADDED, false);
-//        int intruderScore = 0;
-//        if (!ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && !intruderAdded) {
-//            // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
-//            intruderScore = ism.getMaxScore();
-//            mPrivacyHelper.increaseScore(MgrContext.MGR_INTRUDE_SECURITY, intruderScore);
-//            LeoPreference.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
-//        }
-
-        mProcessedMgr = mgr;
-//        increaseScore += intruderScore;
-        mProcessedScore = increaseScore;
-        LeoLog.d(TAG, "onProcessFinish, increaseScore again: " + increaseScore +
-                " | mProcessTimeout:" + mProcessAlreadyTimeout);
-        if (mProcessAlreadyTimeout) {
-            startProcessFinishAnim(increaseScore);
-        }
-    }
-
-    /**
-     * 开始处理完之后的动画
-     *
-     * @param increaseScore
-     */
-    private void startProcessFinishAnim(int increaseScore) {
-        if (mTabFragment.isTabDismiss() && mScanningFragment == null) {
-            // 1、tab消失  2、不处于扫描状态
-//            mPrivacyFragment.startLoadingRiseAnim(increaseScore);
-            LeoLog.d(TAG, "startProcessFinishAnim, startLoadingRiseAnim..." + increaseScore);
-        } else {
-//            mPrivacyFragment.startIncreaseSocreAnim(increaseScore);
-            LeoLog.d(TAG, "startProcessFinishAnim, startIncreaseSocreAnim..." + increaseScore);
-        }
-    }
-
     public boolean isTabDismiss() {
         return mTabFragment.isTabDismiss();
     }
-
-    public void onIgnoreClick(int increaseScore, String mgr) {
-//        LeoLog.d(TAG, "onIgnoreClick, increaseScore: " + increaseScore + " | mgr: " + mgr);
-//        int score = mPrivacyHelper.getSecurityScore(mgr);
-//        int totalScore = mPrivacyHelper.getSecurityScore();
-//        Manager manager = MgrContext.getManager(mgr);
-//        if (score > manager.getMaxScore() || (totalScore + increaseScore) > 100) {
-//            increaseScore = 0;
-//        }
-//        LeoLog.d(TAG, "onIgnoreClick, increaseScore again: " + increaseScore);
-//        mPrivacyFragment.startIncreaseSocreAnim(increaseScore);
-//        mPrivacyFragment.increaseStepAnim();
-//        jumpToNextFragment(false);
-    }
-
-    public void resetToolbarColor() {
-        mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-//        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
-    }
-
 
     public int getLockAppNum() {
         return mLockAppNum;

@@ -7,13 +7,13 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.home.PrivacyNewAdaper.PrivacyNewHolder;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
@@ -350,7 +350,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
 
     }
 
-    protected DisplayImageOptions getMediaOptions() {
+    public static DisplayImageOptions getMediaOptions() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.pic_loading_shape)
                 .showImageForEmptyUri(R.drawable.pic_loading_shape)
@@ -434,6 +434,13 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         public RippleView clickRv;
         public ImageView arrow;
         public TextView count;
+    }
+
+    public static class PrivacyNewHolder {
+        public ImageView imageView;
+        public TextView title;
+        public TextView summary;
+        public CheckBox checkBox;
     }
 
     private static class SelectionInfo {

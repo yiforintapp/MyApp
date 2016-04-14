@@ -13,15 +13,13 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.home.PrivacyNewVideoFragment;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -33,6 +31,7 @@ import java.util.List;
 public class NewHideVidActivity extends BaseFragmentActivity {
 
     private static final String TAG = NewHideVidActivity.class.getSimpleName();
+    private static final int FOLDER_VIDEO_COUNT = 30;
 
     private CommonToolbar mTtileBar;
     private LEOAlarmDialog mDialog;
@@ -80,7 +79,7 @@ public class NewHideVidActivity extends BaseFragmentActivity {
 //        mFragment.setVisibility(View.GONE);
         Privacy privacy = PrivacyHelper.getVideoPrivacy();
         mVideoList = privacy.getNewList();
-        Fragment fragment = PrivacyNewVideoFragment.getNewVidFragment(mVideoList);
+        Fragment fragment = getNewVidFragment(mVideoList);
         LeoLog.v(TAG, "fragment != null : " + (fragment != null));
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -88,6 +87,25 @@ public class NewHideVidActivity extends BaseFragmentActivity {
         ft.commit();
         mLoading.setVisibility(View.GONE);
         mFragment.setVisibility(View.VISIBLE);
+    }
+
+    public static Fragment getNewVidFragment(List<VideoItemBean> list) {
+        Fragment fragment = null;
+        if (list.size() < FOLDER_VIDEO_COUNT) {
+            fragment = NewVideoFragment.newInstance();
+            ((NewVideoFragment) fragment).setData(list, "");
+        } else {
+            if (DataUtils.differentDirVid(list)) {
+                fragment = FolderNewVideoFragment.newInstance();
+                ((FolderNewVideoFragment) fragment).setData(list);
+            } else {
+                fragment = NewVideoFragment.newInstance();
+                ((NewVideoFragment) fragment).setData(list, "");
+            }
+
+        }
+
+        return fragment;
     }
 
 }
