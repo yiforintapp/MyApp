@@ -32,6 +32,7 @@ import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.eventbus.event.MediaChangeEvent;
+import com.leo.appmaster.imagehide.ImagePreviewUtil;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.privacy.Privacy;
@@ -54,6 +55,8 @@ import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
+import com.leo.imageloader.core.ImageSize;
+import com.leo.imageloader.core.SimpleImageLoadingListener;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
@@ -104,6 +107,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private boolean mDataChanged;
     private boolean mEnterSubPage;
     private boolean mOnCreated;
+    private ImageSize mNewImageSize;
 
     private void loadDone() {
         adapter = new HideVideoAdapter(this, hideVideos);
@@ -367,6 +371,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .build();
+        mNewImageSize = ImagePreviewUtil.getNewPreviewSize();
         mImageLoader = ImageLoader.getInstance();
         mImageLoader.init(ImageLoaderConfiguration.createDefault(this));
     }
@@ -647,52 +652,30 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             }
             String path = list.get(position).getPath();
             String uri = ImageDownloader.Scheme.VIDEOFILE.wrap(path);
-//            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
-//                uri = ImageDownloader.Scheme.CRYPTO.wrap(path);
-//            } else {
-//                uri = ImageDownloader.Scheme.FILE.wrap(path);
-//            }
-//            mImageLoader.displayImage(uri, iv, mOptions);
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     goNewHideVActivity();
                 }
             });
-
-            mImageLoader.loadImage(uri, mOptions, new ImageLoadingListener() {
-                @Override
-                public void onLoadingStarted(String imageUri, View view) {
-                    iv.setImageResource(R.drawable.img_vid_loading);
-                }
-
-                @Override
-                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    LeoLog.i("newpic", "loading failed    " + imageUri);
-                    iv.setImageResource(R.drawable.img_vid_loading);
-                }
-
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    if (list.size() > 5 && position == 4) {
+            if (position < 4) {
+                mImageLoader.displayImage(uri, iv, mOptions, mNewImageSize);
+            } else {
+                mImageLoader.loadImage(uri, mNewImageSize, mOptions, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         LeoLog.i("newpic", "try blur ");
                         try {
-                            loadedImage = Bitmap.createScaledBitmap(loadedImage, 50, 50, true);
+                            int size = mNewImageSize.getWidth();
+                            loadedImage = Bitmap.createScaledBitmap(loadedImage, size, size, true);
                             loadedImage = FastBlur.doBlur(loadedImage, 25, true);
-                            iv.setBackgroundDrawable(new BitmapDrawable(loadedImage));
+                            iv.setImageBitmap(loadedImage);
                         } catch (Throwable t) {
                             LeoLog.i("newpic", "blur error");
                         }
-                    } else {
-                        iv.setImageBitmap(loadedImage);
                     }
-                }
-
-                @Override
-                public void onLoadingCancelled(String imageUri, View view) {
-
-                }
-            });
+                });
+            }
 
             return convertView;
         }
