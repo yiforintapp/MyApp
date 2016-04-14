@@ -1125,7 +1125,7 @@
     <string name="secur_open_sucess_send_msm_toast">สมรรถนะการป้อนกันขโมยโทรศัพท์เปิดแล้วคำสั่งป้อนกันขโมยส่งถึงโทรศัพท์</string>
     <string name="secur_mody_sure_bt">ยอมรับ</string>
     <string name="secur_open_sucess_toast">สมรรถนะการป้อนกันขโมยโทรศัพท์เปิดแล้ว</string>
-    <string name="airsig_settings_activity_title">เซนชื่อ</string>
+   <!-- <string name="airsig_settings_activity_title">เซนชื่อ</string>-->
     <string name="airsig_settings_activity_set_one_on">เปิดเซนชื่อ</string>
     <string name="airsig_settings_activity_set_one_off">ปิดเซนชื่อ</string>
     <string name="airsig_settings_activity_set_two">เปลี่ยนท่าเซนชื่อ</string>
@@ -1195,4 +1195,11 @@
     <string name="uninstall_guide_tips">การรักษาขั้นสูงเปิดแล้ว กดตรงนี้จะสามารถถอนLEO Privacyออก</string>
     <string name="secur_add_num_tip">ป้อนกันความปลอดภัยยังไง</string>
     <string name="backup_instr_tip_str">สำรองข้อมูลคำสั่งป้อนการความปลอดภัยให้แก่เพื่อนโดยใช้SMS</string>
+
+    <string name="guide_page_title_one">อินเตอร์เฟสใหม่</string>
+    <string name="guide_page_title_two">ล็อคแอพ</string>
+    <string name="guide_page_title_three">กล่องนิรภัย</string>
+    <string name="guide_page_content_one">เสนอความเป็นส่วนตัว  จะดำเนินการสะดวกกว่า</string>
+    <string name="guide_page_content_two">ล็อคการประยุกต์ใช้ รักษาประยุกต์การใช้ของคุณทุกเวลา</string>
+    <string name="guide_page_content_three">แฝงรูปภาพ/เวดีโอ ความเป็นส่วนตัวปลอดภัยกว่า</string>
 </resources>

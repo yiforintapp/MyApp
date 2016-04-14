@@ -246,5 +246,5 @@ public abstract class BatteryManager extends Manager {
      * @param times 前台展示的次数
      * @param foregroundTime 前台展示的时间
      */
-    public abstract void reportBatteryError(int percent, int times, long foregroundTime);
+    public abstract void reportBatteryError(int percent, int times, long foregroundTime, String pkgInfos);
 }

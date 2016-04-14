@@ -7,13 +7,13 @@ import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.home.PrivacyNewAdaper.PrivacyNewHolder;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
@@ -50,7 +50,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
 
     private List<T> mSrcList;
     protected List<ItemsWrapper> mDataList;
-//    private List<T> mSelectData;
+    //    private List<T> mSelectData;
     private List<SelectionInfo> mSelectionInfo;
 
     protected LayoutInflater mInflater;
@@ -79,7 +79,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         mGroupIndexArray = new SparseIntArray();
     }
 
-    public List<ItemsWrapper> getDataList(){
+    public List<ItemsWrapper> getDataList() {
         return mDataList;
     }
 
@@ -123,12 +123,14 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
 
     public List<T> getSelectData() {
         List<T> result = new ArrayList<T>();
-        for (int i = 0; i < mSelectionInfo.size(); i++) {
-            SelectionInfo info = mSelectionInfo.get(i);
-            ItemsWrapper<T> wrapper = mDataList.get(i);
-            for (int j = 0; j < info.selectedArray.length; j++) {
-                if (info.selectedArray[j] == SELECTED) {
-                    result.add(wrapper.items.get(j));
+        if (mSelectionInfo != null && mSelectionInfo.size() > 0) {
+            for (int i = 0; i < mSelectionInfo.size(); i++) {
+                SelectionInfo info = mSelectionInfo.get(i);
+                ItemsWrapper<T> wrapper = mDataList.get(i);
+                for (int j = 0; j < info.selectedArray.length; j++) {
+                    if (info.selectedArray[j] == SELECTED) {
+                        result.add(wrapper.items.get(j));
+                    }
                 }
             }
         }
@@ -271,7 +273,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         return null;
     }
 
-    public void selectAllGroup(){
+    public void selectAllGroup() {
         for (int i = 0; i < mDataList.size(); i++) {
             ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(i);
             SelectionInfo info = mSelectionInfo.get(i);
@@ -309,7 +311,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         }
     }
 
-    public void deselectAllGroup(){
+    public void deselectAllGroup() {
         for (int i = 0; i < mDataList.size(); i++) {
             ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(i);
             SelectionInfo info = mSelectionInfo.get(i);
@@ -348,7 +350,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
 
     }
 
-    protected DisplayImageOptions getMediaOptions() {
+    public static DisplayImageOptions getMediaOptions() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.pic_loading_shape)
                 .showImageForEmptyUri(R.drawable.pic_loading_shape)
@@ -378,7 +380,7 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         for (T item : list) {
             String path = getPath(item);
             index = path.lastIndexOf("/");
-            if(index < 1) {
+            if (index < 1) {
                 continue;
             }
             String parentPath = path.substring(0, index);
@@ -432,6 +434,13 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
         public RippleView clickRv;
         public ImageView arrow;
         public TextView count;
+    }
+
+    public static class PrivacyNewHolder {
+        public ImageView imageView;
+        public TextView title;
+        public TextView summary;
+        public CheckBox checkBox;
     }
 
     private static class SelectionInfo {

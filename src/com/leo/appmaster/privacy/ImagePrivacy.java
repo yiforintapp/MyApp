@@ -15,6 +15,8 @@ import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.imagehide.NewHideImageActivity;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.PrefConst;
@@ -54,6 +56,13 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     }
 
     @Override
+    public void ignoreNew() {
+        clearNewList();
+        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+        pdm.haveCheckedPic();
+    }
+
+    @Override
     public String getNotificationText() {
         String result = LeoSettings.getString(PrefConst.KEY_NOTIFY_IMG_TITLE, null);
         if (result == null) {
@@ -90,14 +99,18 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     public void jumpAction(Activity activity) {
         Intent imageIntent = null;
         int status = getStatus();
+        Privacy privacy = PrivacyHelper.getImagePrivacy();
+//        pic_cli_$all/new/hidden+图片张数
         switch (status) {
             case STATUS_NEW_ADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_new_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "pic_cli_$new"+privacy.getPrivacyCountText());
                 imageIntent = new Intent(activity, NewHideImageActivity.class);
                 imageIntent.putExtra(Constants.FIRST_ENTER_PIC, NewHideImageActivity.NEW_ADD_PIC);
                 break;
             case STATUS_FOUND:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_all_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "pic_cli_$all"+privacy.getPrivacyCountText());
                 imageIntent = new Intent(activity, NewHideImageActivity.class);
                 imageIntent.putExtra(Constants.FIRST_ENTER_PIC, NewHideImageActivity.FOUND_PIC);
                 break;
@@ -105,10 +118,14 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_add_cli");
                 ImageHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, ImageHideMainActivity.class);
+                imageIntent.putExtra(Constants.ENTER_BY_TIPS, true);
                 break;
             case STATUS_PROCEED:
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_hidden_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "pic_cli_$hidden"+privacy.getPrivacyCountText());
                 ImageHideMainActivity.mFromHomeEnter = true;
                 imageIntent = new Intent(activity, ImageHideMainActivity.class);
+                imageIntent.putExtra(Constants.ENTER_BY_TIPS, true);
                 break;
         }
         activity.startActivity(imageIntent);
@@ -117,15 +134,19 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
     @Override
     public void reportExposure() {
         int status = getStatus();
+        Privacy privacy = PrivacyHelper.getImagePrivacy();
         switch (status) {
             case STATUS_NEW_ADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_new_sh");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "pic_cnts_$new"+privacy.getPrivacyCountText());
                 break;
             case STATUS_PROCEED:
-
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_hidden_cli");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "pic_cnts_$hidden"+privacy.getPrivacyCountText());
                 break;
             case STATUS_FOUND:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_all_sh");
+                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home_advice", "pic_cnts_$all"+privacy.getPrivacyCountText());
                 break;
             case STATUS_TOADD:
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "home", "hidpic_add_sh");

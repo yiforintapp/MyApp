@@ -19,14 +19,17 @@ import com.leo.appmaster.airsig.AirSigActivity;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.callfilter.BlackListInfo;
 import com.leo.appmaster.callfilter.CallFilterMainActivity;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.fragment.GuideFragment;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
@@ -66,6 +69,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private boolean mAnimating;
     private View mInterceptView;
     private View mMagicLockView;
+    public static final String FROM_HOME_APP = "from_home_app";
 
     public HomeTabFragment() {
 
@@ -306,6 +310,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         lm.updateMode(curMode);
                     } else {
                         intent = new Intent(getActivity(), AppLockListActivity.class);
+                        intent.putExtra(FROM_HOME_APP, true);
                         LeoSettings.setBoolean(PrefConst.KEY_APP_COMSUMED, true);
                         startActivity(intent);
                     }
@@ -317,8 +322,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     ImageHideMainActivity.mFromHomeEnter = false;
                     intent = new Intent(activity, ImageHideMainActivity.class);
                     activity.startActivity(intent);
-                    LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
-
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic");
                     break;
                 case R.id.home_video:
@@ -328,16 +331,26 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     VideoHideMainActivity.mFromHomeEnter = false;
                     intent = new Intent(activity, VideoHideMainActivity.class);
                     activity.startActivity(intent);
-                    LeoSettings.setBoolean(PrefConst.KEY_VID_COMSUMED, true);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvideo");
                     break;
                 case R.id.home_intercept:
                     goToCallfilter();
+//                    CallFilterManager mCmp = (CallFilterManager) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
+//
+//                    List<BlackListInfo> infost = new ArrayList<BlackListInfo>();
+//                    BlackListInfo info = new BlackListInfo();
+//                    info.number = "18790729990";
+//                    info.name = "run";
+//                    info.blackNum = 24123412;
+//                    info.markNum = 1231;
+//                    infost.add(info);
+//                    mCmp.addBlackList(infost, false);
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "block");
                     break;
                 case R.id.home_magiclock:
                     Intent intent2 = new Intent(activity, AirSigActivity.class);
                     startActivity(intent2);
-
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "airsig");
                     break;
                 case R.id.home_more:
                     LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED, true);
@@ -347,10 +360,15 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     // 更多
 //                    Intent intent1 = new Intent(mActivity,PhoneSecurityActivity.class);
 //                    startActivity(intent1);
+                    if (GuideFragment.mIsClickMoreTip) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "more_gd_cli");
+                        GuideFragment.mIsClickMoreTip = false;
+                    }
                     break;
             }
         }
     }
+
     private void goToCallfilter() {
         int count = LeoSettings.getInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, 0);
         LeoSettings.setInteger(PrefConst.KEY_ACCUMULATIVE_TOTAL_ENTER_CALLFILTER, count + 1);

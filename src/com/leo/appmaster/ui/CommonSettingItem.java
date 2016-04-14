@@ -114,7 +114,6 @@ public class CommonSettingItem extends RelativeLayout {
                 RelativeLayout.LayoutParams lp = (LayoutParams) mIvArrow.getLayoutParams();
                 lp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                lp.addRule(RelativeLayout.CENTER_IN_PARENT);
                 mIvArrow.setLayoutParams(lp);
                 mIvArrow.setImageResource(R.drawable.icn_settings_arrow);
                 break;
@@ -127,7 +126,6 @@ public class CommonSettingItem extends RelativeLayout {
                 RelativeLayout.LayoutParams lp2 = (LayoutParams) mCb.getLayoutParams();
                 lp2.width = ViewGroup.LayoutParams.WRAP_CONTENT;
                 lp2.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                lp2.addRule(RelativeLayout.CENTER_IN_PARENT);
                 mCb.setLayoutParams(lp2);
                 mCb.setButtonDrawable(R.drawable.selector_checkbox);
                 mCb.setGravity(Gravity.CENTER);

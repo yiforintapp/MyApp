@@ -2,7 +2,6 @@ package com.leo.appmaster.imagehide;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.home.FolderPicFragment;
-import com.leo.appmaster.home.HomeScanningFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.HeaderGridView;
 import com.leo.appmaster.ui.XHeaderView;
@@ -45,53 +41,9 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
     private LEOCircleProgressDialog mProgressDialog;
 
     private TextView mNewImageNum;
+    public static boolean mIsNewImgFromNoti;
 
 
-    public static Fragment getFragment(HomeScanningFragment.PhotoList list) {
-        Fragment fragment = null;
-        if (list == null) {
-            return fragment;
-        }
-        if (list.photoItems.size() > 60) {
-            if (list.inDifferentDir) {
-                fragment = FolderPicFragment.newInstance();
-            } else {
-                fragment = NewImageFragment.newInstance();
-            }
-        } else {
-            fragment = NewImageFragment.newInstance();
-        }
-        if (fragment instanceof FolderPicFragment) {
-            ((FolderPicFragment) fragment).setData(list.photoItems);
-        } else if (fragment instanceof NewImageFragment) {
-            ((NewImageFragment) fragment).setData(list.photoItems, "");
-        }
-
-        return fragment;
-    }
-
-    public static Fragment getImageFragment(HomeScanningFragment.PhotoList list) {
-        Fragment fragment = null;
-        if (list == null) {
-            return fragment;
-        }
-        if (list.photoItems.size() > 60) {
-            if (list.inDifferentDir) {
-                fragment = FolderNewImageFragment.newInstance();
-            } else {
-                fragment = NewImageFragment.newInstance();
-            }
-        } else {
-            fragment = NewImageFragment.newInstance();
-        }
-        if (fragment instanceof FolderNewImageFragment) {
-            ((FolderNewImageFragment) fragment).setData(list.photoItems);
-        } else if (fragment instanceof NewImageFragment) {
-            ((NewImageFragment) fragment).setData(list.photoItems, "");
-        }
-
-        return fragment;
-    }
 
     public static NewImageFragment newInstance() {
         NewImageFragment fragment = new NewImageFragment();
@@ -208,6 +160,10 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_$" + selectList.size());
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$" + selectList.size());
+                    if (mIsNewImgFromNoti) {
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_pic");
+                        mIsNewImgFromNoti = false;
+                    }
                 }
             }
         });
@@ -238,12 +194,6 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
         mProgressDialog.setTitle(title);
         mProgressDialog.setMessage(message);
         mProgressDialog.show();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        PrivacyHelper.getImagePrivacy().clearNewList();
     }
 
     private void hideAllPicBackground(final List<String> photoItems, final int incScore) {

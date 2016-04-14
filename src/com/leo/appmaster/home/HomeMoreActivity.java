@@ -76,13 +76,13 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     private CommonToolbar mCtbMain;
 
-    private CommonSettingItem mItemAirSigEntry;
+//    private CommonSettingItem mItemAirSigEntry;
 
     private CommonSettingItem mItemIntruderEntry;
     private CommonSettingItem mItemFindLostEntry;
     private CommonSettingItem mItemBatteryScreenEntry;
     private CommonSettingItem mItemSettingEntry;
-    private CommonSettingItem mItemCallfilterEntry;
+    /*private CommonSettingItem mItemCallfilterEntry;*/
     private CommonSettingItem mItemQuickHelperEntry;
     private CommonSettingItem mItemWifiEntry;
     private CommonSettingItem mItemFlowEntry;
@@ -130,28 +130,28 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         checkCallFilterRecordCount();
-        updateAirSig();
+//        updateAirSig();
     }
 
     private void initUI() {
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
-        mCtbMain.setToolbarTitle(R.string.lock_more);
+        mCtbMain.setToolbarTitle(R.string.home_more);
 
         //签字解锁部分
-        mItemAirSigEntry = (CommonSettingItem) findViewById(R.id.item_airsig);
-        mItemAirSigEntry.setIcon(ICON_ID_SIGNATURE_LOCK);
-        mItemAirSigEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToOpenAirSig();
-            }
-        });
+//        mItemAirSigEntry = (CommonSettingItem) findViewById(R.id.item_airsig);
+//        mItemAirSigEntry.setIcon(ICON_ID_SIGNATURE_LOCK);
+//        mItemAirSigEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                goToOpenAirSig();
+//            }
+//        });
 
 //        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
 //        if (isAigSigCanUse) {
 //            SDKWrapper.addEvent(this, SDKWrapper.P1, "settings", "airsig_sh");
 //            //签字解锁部分
-        mItemAirSigEntry.setTitle(STRID_SIGNATURE_LOCK);
+//        mItemAirSigEntry.setTitle(STRID_SIGNATURE_LOCK);
         //设置默认解锁方式部分
 //        } else {
 //            View line1 = findViewById(R.id.line_1);
@@ -255,7 +255,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        //骚扰拦截
+    /*    //骚扰拦截
         mItemCallfilterEntry = (CommonSettingItem) findViewById(R.id.item_callfilter);
         mItemCallfilterEntry.setIcon(ICON_ID_CALLFILTER);
         mItemCallfilterEntry.setTitle(STRID_CALLFILTER);
@@ -265,7 +265,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             public void onClick(View v) {
                 goToCallfilter();
             }
-        });
+        });*/
 
         //wifi
         mItemWifiEntry = (CommonSettingItem) findViewById(R.id.item_wifi);
@@ -305,20 +305,20 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void updateAirSig() {
-        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
-        if (!isAirSigVaild) {
-            mItemAirSigEntry.setSummary(STRID_DID_NOT_OPEN);
-            return;
-        }
-
-        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-        if (isAirsigOn) {
-            mItemAirSigEntry.setSummary(STRID_OPENED);
-        } else {
-            mItemAirSigEntry.setSummary(STRID_DID_NOT_OPEN);
-        }
-    }
+//    private void updateAirSig() {
+//        boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+//        if (!isAirSigVaild) {
+//            mItemAirSigEntry.setSummary(STRID_DID_NOT_OPEN);
+//            return;
+//        }
+//
+//        boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+//        if (isAirsigOn) {
+//            mItemAirSigEntry.setSummary(STRID_OPENED);
+//        } else {
+//            mItemAirSigEntry.setSummary(STRID_DID_NOT_OPEN);
+//        }
+//    }
 
     @Override
     protected void onDestroy() {

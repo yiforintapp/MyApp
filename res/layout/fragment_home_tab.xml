@@ -15,8 +15,8 @@
             android:id="@+id/home_app_lock_tv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/icon_home_top_1"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingTop="@dimen/icon_home_top_1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_applock"
@@ -71,8 +71,8 @@
             android:id="@+id/home_img"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/icon_home_top_1"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingTop="@dimen/icon_home_top_1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_img"
@@ -100,8 +100,8 @@
             android:id="@+id/home_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/icon_home_top_1"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingTop="@dimen/icon_home_top_1">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_video"
@@ -141,8 +141,8 @@
             android:id="@+id/home_intercept"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/icon_home_top_2"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingTop="@dimen/icon_home_top_2">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_intercept"
@@ -162,7 +162,7 @@
                 <TextView
                     style="@style/HomeTabText"
                     android:layout_below="@id/home_ic_intercept"
-                    android:text="@string/quick_helper_callfilter"/>
+                    android:text="@string/call_filter_name"/>
             </RelativeLayout>
         </RelativeLayout>
 
@@ -175,8 +175,8 @@
             android:id="@+id/home_magiclock"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/icon_home_top_2"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingTop="@dimen/icon_home_top_2">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_magiclock"
@@ -205,8 +205,8 @@
             android:id="@+id/home_more"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/icon_home_top_2"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingTop="@dimen/icon_home_top_2">
 
             <RelativeLayout
                 android:id="@+id/rl_home_tab_more"

@@ -1,5 +1,6 @@
 package com.leo.appmaster.privacy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -181,7 +182,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     public void initPrivacyStatus() {
         boolean isScreenOn = ScreenOnOffListener.isScreenOn();
         LeoLog.d(TAG, "<ls> initPrivacyStatus...isScreenOn: " + isScreenOn);
-        mExecutor.execute(new Runnable() {
+        ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
                 setPrivacyListAndCount();
@@ -240,14 +241,28 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         LeoLog.d(TAG, "<ls> set privacy: " + sLockPrivacy.toString());
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+//        int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
         List<PhotoItem> picList = pdm.getAddPic();
-        sImagePrivacy.setNewList(picList);
+//        if (lastRecord > 0) {
+            sImagePrivacy.setNewList(picList);
+//            sImagePrivacy.setNewListFoundStatus(picList);
+//        } else {
+//            sImagePrivacy.setNewList(null);
+//            sImagePrivacy.setNewListFoundStatus(picList);
+//        }
         sImagePrivacy.setProceedCount(pdm.getHidePicsNum());
         sImagePrivacy.setTotalCount(pdm.getNormalPicsNum());
         LeoLog.d(TAG, "<ls> set privacy: " + sImagePrivacy.toString());
 
+//        lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
         List<VideoItemBean> vidList = pdm.getAddVid();
-        sVideoPrivacy.setNewList(vidList);
+//        if (lastRecord > 0) {
+            sVideoPrivacy.setNewList(vidList);
+//            sVideoPrivacy.setNewListFoundStatus(vidList);
+//        } else {
+//            sVideoPrivacy.setNewList(null);
+//            sVideoPrivacy.setNewListFoundStatus(vidList);
+//        }
         sVideoPrivacy.setProceedCount(pdm.getHideVidsNum());
         sVideoPrivacy.setTotalCount(pdm.getNormalVidsNum());
         LeoLog.d(TAG, "<ls> set privacy: " + sVideoPrivacy.toString());
@@ -296,18 +311,18 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             if (!isForeground && !isSameDay) {
                 int currHour = TimeUtil.getHourOfDay(currentTs);
                 LeoLog.d(TAG, "<ls> checkOrNotifyDecScore, currHour: " + currHour);
-                if (currHour > 7) {
-                    // 当前时间大于7点钟，弹出通知
+                if (currHour > 7 && currHour < 23) {
+                    // 当前时间大于7点钟并且小于23点，弹出通知
                     notifyDecreasePrivacy(privacyType);
                 } else {
-                    // 当前时间小于7点钟，延时7个小时再弹通知
-                    long hour7 = 7 * 60 * 60 * 1000;
+                    // 8小时后再弹出
+                    long hour8 = 8 * 60 * 60 * 1000;
                     if (mDalayNotifyFuture != null) {
                         mDalayNotifyFuture.cancel(false);
                     }
                     mDelayNotifyTask = new DelayTimerTask(privacyType);
                     mDalayNotifyFuture = ThreadManager.getAsyncExecutor().schedule(
-                            mDelayNotifyTask, hour7, TimeUnit.MILLISECONDS);
+                            mDelayNotifyTask, hour8, TimeUnit.MILLISECONDS);
                 }
 
             }

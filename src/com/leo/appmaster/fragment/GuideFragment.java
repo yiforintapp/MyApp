@@ -46,7 +46,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
     private View mTopView;
     private View mLightView; // 高亮View
     private View mRightView;
-
+    public static boolean mIsClickMoreTip;
 
     /*引导类型*/
     public enum GUIDE_TYPE {
@@ -341,6 +341,7 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
 //                LeoEventBus.getDefaultBus().post(event);
 //                GuideFragment.HOME_GUIDE_SHOW_STATUS = false;
                 LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_TIP, true);
+                mIsClickMoreTip = true;
                 break;
             case R.id.pic_vid_edit_rt:
                 mRootView.setVisibility(View.GONE);

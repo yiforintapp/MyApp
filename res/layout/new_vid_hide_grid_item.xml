@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/hide_pictrue_imge_frame_width"
-    android:layout_height="@dimen/hide_pictrue_imge_frame_width"
+    android:layout_width="109dp"
+    android:layout_height="109dp"
     android:paddingLeft="8dp">
 
     <RelativeLayout
@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="@dimen/hide_pictrue_imge_frame_width"
-            android:layout_height="@dimen/hide_pictrue_imge_frame_width"
+            android:layout_width="109dp"
+            android:layout_height="109dp"
             android:adjustViewBounds="true"
             android:background="@drawable/video_loading"
             android:scaleType="center" />

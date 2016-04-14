@@ -76,6 +76,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private LEOMessageDialog mMessageDialog;
 
     private TextView mToEmailTextView;
+    private String from;
 
     private final static int[] sCategoryIds = {
             R.string.home_tab_wifi, R.string.home_tab_lost,
@@ -122,10 +123,17 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
 
         }
 
-        String from = intent.getStringExtra("from");
+        from = intent.getStringExtra("from");
         if (!Utilities.isEmpty(from) && from.equals("airsig")) {
             if (mCategory != null) {
-                mCategory.setText(getString(R.string.airsig_settings_activity_title));
+                if (mNeedHide) {
+                    mCategory.setText(sNewCategoryIds[7]);
+                    mCategoryPos = 7;
+                } else {
+                    mCategory.setText(sCategoryIds[9]);
+                    mCategoryPos = 9;
+                }
+                mCategory.setTag(1);
             }
         }
     }

@@ -39,6 +39,7 @@ import java.util.List;
 
 public class CallFilterFragment extends BaseFragment implements View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private static final String TAG = "CallFilterFragment";
+    private static final boolean DBG = false;
 
     private ListView mCallListView;
     private View mNothingToShowView;
@@ -65,6 +66,17 @@ public class CallFilterFragment extends BaseFragment implements View.OnClickList
     private void loadDone(boolean isFirstLoadDone) {
         if (this.isAdded()) {
             mProgressBar.setVisibility(View.GONE);
+            //测试数据
+            if (DBG) {
+                mFilterList = new ArrayList<CallFilterInfo>();
+                for (int i = 0; i <= 10; i++) {
+                    CallFilterInfo info = new CallFilterInfo();
+                    info.number = "1000000" + i;
+                    info.filterType = 1;
+                    info.numberName = "测试" + i;
+                    mFilterList.add(info);
+                }
+            }
             if (mFilterList == null || mFilterList.size() < 1) {
                 showEmpty();
             } else {

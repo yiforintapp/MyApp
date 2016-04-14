@@ -51,6 +51,7 @@ import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
@@ -124,6 +125,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             mIsCamouflageLockSuccess/* 伪装是否解锁成功 */;
 
     private int airsigFailTimes;
+    private boolean isFileThreeTimes = false;
 
     /*-------------------end-------------------*/
 
@@ -471,6 +473,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                         airsigFailTimes++;
                     } else {
                         airsigFailTimes = 0;
+                        isFileThreeTimes = true;
+                        makeDevicePoint();
                         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_airsig_cha");
                         //switch to normal lock
                         changeNormalLockType();
@@ -481,6 +485,15 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
             }
         });
+    }
+
+    private void makeDevicePoint() {
+        boolean isLockUpdateYet = LeoSettings.getBoolean(LOCK_FAILE, false);
+        if (!isLockUpdateYet) {
+            String strings = DeviceUtil.getAirSigDeives(mActivity);
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_sdk", "unlock_fail_" + strings);
+            LeoSettings.setBoolean(LOCK_FAILE, true);
+        }
     }
 
     private void changeNormalLockType() {
@@ -979,6 +992,9 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         String password = pref.getPassword();
         // AM-2936, no gesture, just unlock
         if (Utilities.isEmpty(password) || password.equals(mTempPasswd)) {
+            if (isFileThreeTimes) {
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_other_suc");
+            }
             ((LockScreenActivity) mActivity).onUnlockSucceed();
             mIsIntruded = false;
         } else {

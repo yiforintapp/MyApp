@@ -28,6 +28,8 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -56,9 +58,16 @@ public class InitCoreBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        // init lock manager
         long start = SystemClock.elapsedRealtime();
-        AppLoadEngine.getInstance(mApp);
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        lockManager.init();
         long end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, LockManager.getInstance.init: " + (end - start));
+
+        start = SystemClock.elapsedRealtime();
+        AppLoadEngine.getInstance(mApp);
+        end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, AppLoadEngine.getInstance: " + (end - start));
 
         registerPackageChangedBroadcast();
@@ -175,8 +184,9 @@ public class InitCoreBootstrap extends Bootstrap {
                     R.integer.guide_page_version);
             pref.setLastGuideVersion(currentGuideVersion);
         } else {
-            LeoLog.i("value", "start");
-            AppMasterPreference.getInstance(mApp).setNewAppLockTip(true);
+            if (AppMasterPreference.getInstance(mApp).isNewAppLockTip()) {
+                AppMasterPreference.getInstance(mApp).setNewAppLockTip(true);
+            }
             LeoSettings.setBoolean(PrefConst.KEY_IS_NEW_INSTALL, false);
 //            if(DeviceReceiverNewOne.isActive(AppMasterApplication.getInstance()) && (!pref.getHasAutoSwitch()) && (Integer.parseInt(lastVercode) < 70)) {
 //                IntrudeSecurityManager m = (IntrudeSecurityManager)MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);

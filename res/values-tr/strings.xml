@@ -1129,7 +1129,7 @@
     <string name="secur_open_sucess_send_msm_toast">Anti-hırsızlık fonksiyonu açılması başarılı,Anti-hırsızlık talimatları mesaj olarak kayıtlı telefona gönderildi.</string>
     <string name="secur_mody_sure_bt">Onay</string>
     <string name="secur_open_sucess_toast">Cep telefonu anti-hırsızlık aç başarılı</string>
-    <string name="airsig_settings_activity_title">İmza kilidini</string>
+    <!--<string name="airsig_settings_activity_title">İmza kilidini</string>-->
     <string name="airsig_settings_activity_set_one_on">Açık</string>
     <string name="airsig_settings_activity_set_one_off">kapalı</string>
     <string name="airsig_settings_activity_set_two">imzayı değiştir</string>
@@ -1200,4 +1200,11 @@
     <string name="secur_add_num_tip">Hırsızlık nasıl engellenir</string>
     <string name="backup_instr_tip_str">Anti-hırsızlık talimatları mesaj ile bir yedekleme olarak  akraba telefona gönderin</string>
 
+
+    <string name="guide_page_title_one">Yeni Arayüz</string>
+    <string name="guide_page_title_two">Uygulama Kilidi</string>
+    <string name="guide_page_title_three">Güvenli Klasör</string>
+    <string name="guide_page_content_one">Gizlilik önerileri,İşlem için daha kolay</string>
+    <string name="guide_page_content_two">Uygulamaların kilidi açıldığında uygulamalarınızı koruyacak</string>
+    <string name="guide_page_content_three">Gizliliğïniz daha fazla güvenli için resim videoleri gizleyin</string>
 </resources>

@@ -409,10 +409,12 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             @Override
             public void onClick(View v) {
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "sure");
-                if (AppUtil.appInstalled(UpdateActivity.this,
-                        Constants.GP_PACKAGE)) {
-                    mLockManager.filterSelfOneMinites();
-                }
+//                if (AppUtil.appInstalled(UpdateActivity.this,
+//                        Constants.GP_PACKAGE)) {
+//                    mLockManager.filterSelfOneMinites();
+//                }
+                //jump where just lock one min
+                mLockManager.filterSelfOneMinites();
                 mManager.onConfirmDownload();
             }
         });
@@ -425,7 +427,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "cancel");
                 mUserCancel = true;
                 mManager.onCancelUpdate();
-                LeoLog.i("UpdateActivity", "加锁应用："+mLockManager.getLastPackage());
+                LeoLog.i("UpdateActivity", "加锁应用：" + mLockManager.getLastPackage());
                 mLockManager.filterAll(1000);
                 finish();
             }

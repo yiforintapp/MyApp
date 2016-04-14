@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cbg">
+    android:background="#f0f3f7">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_main"
@@ -11,12 +11,9 @@
 
     <RelativeLayout
         android:id="@+id/open_airsig"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/ctb_main"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         android:background="@color/white">
 
         <com.leo.appmaster.ui.RippleView
@@ -51,14 +48,20 @@
         </com.leo.appmaster.ui.RippleView>
     </RelativeLayout>
 
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/open_airsig"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#cbcbcb" />
+
     <RelativeLayout
         android:id="@+id/reset_airsig"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/open_airsig"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_below="@id/line"
         android:background="@color/white">
 
         <com.leo.appmaster.ui.RippleView

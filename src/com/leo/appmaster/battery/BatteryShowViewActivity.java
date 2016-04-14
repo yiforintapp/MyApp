@@ -334,10 +334,10 @@ public class BatteryShowViewActivity extends BaseFragmentActivity implements Bat
 
         if (AppMasterApplication.getInstance().isHomeOnTopAndBackground()) {
             LeoLog.d("isOnHome", "yes");
-            mHandler.sendEmptyMessageDelayed(ADD_LOCK, 2000);
+            mHandler.sendEmptyMessage(ADD_LOCK);
         } else {
             LeoLog.d("isOnHome", "no");
-            mHandler.sendEmptyMessageDelayed(ADD_LOCK, 3000);
+            mHandler.sendEmptyMessageDelayed(ADD_LOCK, 1000);
         }
 
     }

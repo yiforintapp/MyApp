@@ -1,4 +1,3 @@
-
 package com.leo.appmaster;
 
 import android.net.Uri;
@@ -542,4 +541,7 @@ public class Constants {
 
     public static final String FIRST_ENTER_PIC = "first_enter_pic";  // 首次进入图片新增页
     public static final String FIRST_ENTER_VID = "first_enter_vid";  // 首次进入视频新增页
+
+    // 从首页上面的提示条进入
+    public static final String ENTER_BY_TIPS = "entery_by_tips";
 }

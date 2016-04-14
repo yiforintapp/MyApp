@@ -21,18 +21,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.leo.appmaster.ui.CommonSettingItem
-                android:id="@+id/item_airsig"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            <!--<com.leo.appmaster.ui.CommonSettingItem-->
+            <!--android:id="@+id/item_airsig"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
 
             <View
                 android:id="@+id/line_1"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_intruder"
@@ -43,9 +41,7 @@
                 android:id="@+id/line_3"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_findlost"
@@ -56,35 +52,29 @@
                 android:id="@+id/line_4"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_chargescr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <View
+           <!-- <View
                 android:id="@+id/line_5"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_callfilter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" />-->
 
             <View
                 android:id="@+id/line_6"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_quickhelper"
@@ -95,9 +85,7 @@
                 android:id="@+id/line_7"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_wifi"
@@ -108,9 +96,7 @@
                 android:id="@+id/line_8"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_flow"
@@ -121,9 +107,7 @@
                 android:id="@+id/line_9"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_battery"
@@ -134,9 +118,7 @@
                 android:id="@+id/line_10"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_uninstall"
@@ -147,9 +129,7 @@
                 android:id="@+id/line_11"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_backup"
@@ -160,9 +140,7 @@
                 android:id="@+id/line_12"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#cbcbcb" />
+                android:background="@drawable/divider_setting" />
 
             <com.leo.appmaster.ui.CommonSettingItem
                 android:id="@+id/item_privacycontact"

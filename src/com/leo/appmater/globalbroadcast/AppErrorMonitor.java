@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.SystemClock;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoSettings;
@@ -49,7 +48,7 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
         LeoLog.d(TAG, "<ls> onScreenChanged...action: " + action);
         if (Intent.ACTION_SCREEN_ON.equals(action)) {
             checkLostPicAndVid();
-            checkBatteryUsage();
+            checkBatteryAndReport();
         }
     }
 
@@ -64,7 +63,7 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
         }, 500);
     }
 
-    private void checkBatteryUsage() {
+    private void checkBatteryAndReport() {
         ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
             @Override
             public void run() {
@@ -89,18 +88,25 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
                 }
 
                 StringBuilder sb = new StringBuilder();
+                BatteryComsuption leoBattery = null;
                 for (BatteryComsuption comsuption : apps) {
                     String pkgName = comsuption.getDefaultPackageName();
                     if (pkgName != null && pkgName.equals(mContext.getPackageName())) {
                         double percent = comsuption.getPercentOfTotal();
                         if (percent > 3) {
-                            batteryManager.reportBatteryError((int) percent, times, foregroundTime);
+                            leoBattery = comsuption;
                         }
                         break;
                     }
-                    sb.append(pkgName).append("-").append(comsuption.getPercentOfTotal()).append(";");
+                    int percent = (int) comsuption.getPercentOfTotal();
+                    sb.append(pkgName).append("-").append(percent).append(";");
                 }
-                LeoLog.d(TAG, "<ls> checkBatteryUsage, apps: " + sb.toString());
+                LeoLog.d(TAG, "<ls> checkBatteryAndReport, apps: " + sb.toString());
+                int percent = leoBattery == null ? 0 : (int) leoBattery.getPercentOfTotal();
+                if (leoBattery != null) {
+                    LeoLog.d(TAG, "<ls> checkBatteryAndReport, do report battery error. ");
+                    batteryManager.reportBatteryError(percent, times, foregroundTime, sb.toString());
+                }
 
                 // 存储电量上报的时间
                 LeoSettings.setLong(PrefConst.KEY_BATTERY_TS, currentTs);

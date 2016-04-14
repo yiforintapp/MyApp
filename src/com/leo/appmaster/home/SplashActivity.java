@@ -608,61 +608,53 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         Button enterAppButton;
         ImageView bigImage = null;
         int initColor = 0;
-        mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
-        mPageColors[5] = getResources().getColor(R.color.new_guide_page4_background_color);
-        /*骚扰拦截引导*/
-        mPageColors[6] = getResources().getColor(R.color.new_guide_page1_background_color);
+        mPageColors[3] = getResources().getColor(R.color.new_guide_page2_background_color);
+        mPageColors[4] = getResources().getColor(R.color.new_guide_page4_background_color);
+//        /*骚扰拦截引导*/
+//        mPageColors[5] = getResources().getColor(R.color.new_guide_page1_background_color);
 
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
         /* 显示跳过按钮 */
         setSkipClickListener();
-
-        //显示新名字引导处理
-        String language = Locale.getDefault().getLanguage();
-        if (!ZH.equalsIgnoreCase(language)) {
-            mPageColors[3] = getResources().getColor(R.color.new_guide_page2_background_color);
             /* page1 */
-            ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-            bigImage = (ImageView) page1.findViewById(R.id.guide_image);
-            bigImage.setImageDrawable(getResources().getDrawable(R.drawable.gd_leo_pic));
-            tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
-            tvTitle.setText(getResources().getString(R.string.gde_renm_title));
-            tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
-            tvContent.setText(getResources().getString(R.string.gde_renm_content));
-            mNewFuncPageViews.add(page1);
-            initColor = 3;
-        }else{
-            initColor = 4;
-        }
+        ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+        bigImage = (ImageView) page1.findViewById(R.id.guide_image);
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
+        tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
+        tvTitle.setText(getResources().getString(R.string.guide_page_title_one));
+        tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
+        tvContent.setText(getResources().getString(R.string.guide_page_content_one));
+        mNewFuncPageViews.add(page1);
+        initColor = 3;
         mNewPageBackgroundView.initBackgroundColor(mPageColors[initColor]);
 
-        /* page2 */
-        ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page2.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
-        tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.privacy_scan));
-        tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.one_key_confirm_privacy));
-        mNewFuncPageViews.add(page2);
+//        /* page2 */
+//        ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page2.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
+//        tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.privacy_scan));
+//        tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.one_key_confirm_privacy));
+//        mNewFuncPageViews.add(page2);
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
         bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_4));
         tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.secur_feedbk_type));
+        tvTitle.setText(getResources().getString(R.string.guide_page_title_two));
         tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.phone_security_tips));
+        tvContent.setText(getResources().getString(R.string.guide_page_content_two));
         mNewFuncPageViews.add(page3);
         /*骚扰拦截引导：page4*/
-        ViewGroup page4 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page4.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.callfilter_page));
-        tvTitle = (TextView) page4.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.call_filter_name));
-        tvContent = (TextView) page4.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.gud_page_call_fil));
-        mNewFuncPageViews.add(page4);
+//        ViewGroup page4 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page4.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.callfilter_page));
+//        tvTitle = (TextView) page4.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.call_filter_name));
+//        tvContent = (TextView) page4.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.gud_page_call_fil));
+//        mNewFuncPageViews.add(page4);
 
         mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
         mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
@@ -678,10 +670,10 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         mIndicator.setViewPager(mNewFuncViewPager);
         mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, initColor));
 
-        enterAppButton = (Button) page4.findViewById(R.id.button_guide);
+        enterAppButton = (Button) page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
         enterAppButton.setTextColor(getResources().getColor(
-                R.color.new_guide_page1_background_color));
+                R.color.new_guide_page4_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             @Override

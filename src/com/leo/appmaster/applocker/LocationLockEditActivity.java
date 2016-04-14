@@ -46,6 +46,7 @@ import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.WifiAdmin;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class LocationLockEditActivity extends BaseActivity implements
@@ -457,7 +458,7 @@ public class LocationLockEditActivity extends BaseActivity implements
             }
         });
 
-        List<String> wifiList = new ArrayList<String>();
+        HashSet<String> wifiList = new HashSet<String>();
 //        WifiAdmin wa = new WifiAdmin(this);
         WifiAdmin wa = WifiAdmin.getInstance(this);
         wa.startScan();
@@ -473,13 +474,13 @@ public class LocationLockEditActivity extends BaseActivity implements
             if (mNoWifiTv != null) {
                 mNoWifiTv.setVisibility(View.GONE);
             }
-            ListAdapter adapter = new WifiListAdapter(this, wifiList);
+            ListAdapter adapter = new WifiListAdapter(this,  new ArrayList(wifiList));
             mModeList.setAdapter(adapter);
         } else {
             if (mNoWifiTv != null) {
                 mNoWifiTv.setVisibility(View.VISIBLE);
             }
-            ListAdapter adapter = new WifiListAdapter(this, wifiList);
+            ListAdapter adapter = new WifiListAdapter(this, new ArrayList(wifiList));
             mModeList.setAdapter(adapter);
         }
         mWifiListDialog.show();

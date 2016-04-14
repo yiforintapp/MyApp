@@ -153,6 +153,8 @@
             android:layout_marginRight="@dimen/home_det_tip_txt_marg_right"
             android:layout_toLeftOf="@+id/det_tip_arrow_iv"
             android:layout_toRightOf="@id/det_tip_icon_iv"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:text="@string/home_det_tip"
             android:textColor="#fe8600"
             android:textSize="13dp"/>

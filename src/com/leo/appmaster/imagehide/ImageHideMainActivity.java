@@ -26,12 +26,14 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.GradeEvent;
 import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
+import com.leo.appmaster.privacy.Privacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -99,6 +101,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
     private boolean mEnterSubPage;
     private boolean mDataChanged;
+    private boolean mOnCreated;
 
     public void onBackPressed() {
         LeoLog.d(TAG, "mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false) = " + mPt.getBoolean(PrefConst.KEY_HAS_ASK_CREATE_SHOTCUT_HIDE_PIC, false));
@@ -222,7 +225,18 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         initUI();
 
         mDataChanged = true;
+        mOnCreated = true;
         LeoEventBus.getDefaultBus().register(this);
+    }
+
+    private void markIgnoreIfNeed() {
+        boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
+        int status = PrivacyHelper.getImagePrivacy().getStatus();
+        if (enterByTips || status == Privacy.STATUS_FOUND) {
+            // 1、从banner进入
+            // 2、从tab进入，并且状态为“x张待处理视频”
+            markNewPicCheckedAsy();
+        }
     }
 
     private void handleIntent() {
@@ -375,6 +389,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         }
 
         LeoEventBus.getDefaultBus().unregister(this);
+
+//        Privacy privacy = PrivacyHelper.getImagePrivacy();
+//        int status = privacy.getStatus();
+//        if (status == Privacy.STATUS_FOUND) {
+//            privacy.ignoreNew();
+//        }
     }
 
     @Override
@@ -389,6 +409,12 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
             asyncLoad();
             newLoadDone();
+        }
+
+        if (mOnCreated) {
+            markIgnoreIfNeed();
+            LeoSettings.setBoolean(PrefConst.KEY_PIC_COMSUMED, true);
+            mOnCreated = false;
         }
     }
 
@@ -424,7 +450,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).haveCheckedPic();
+                PrivacyHelper.getImagePrivacy().ignoreNew();
             }
         });
     }

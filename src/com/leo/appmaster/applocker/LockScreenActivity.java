@@ -598,6 +598,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //    }
 
 	private void tryShowNoPermissionTip() {
+		if (mLockMode == LockManager.LOCK_MODE_PURE) {
+			return;
+		}
 		LeoLog.i("Tip", "try show");
 		LeoLog.i("Tip", "Build.VERSION.SDK_INT = " + Build.VERSION.SDK_INT);
 		LeoLog.i("Tip", "TaskDetectService.sDetectSpecial = " + TaskDetectService.sDetectSpecial);
@@ -1399,6 +1402,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
 					@Override
 					public void onBitmapLoadDone(final String url, final Bitmap loadedImage) {
+                        if (loadedImage == null) {
+                            return;
+                        }
 						SDKWrapper.addEvent(LockScreenActivity.this.getApplicationContext(),
 								"max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
 

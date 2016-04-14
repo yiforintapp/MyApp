@@ -389,7 +389,14 @@
     <dimen name="home_shied_center_good_heigh">38.67dp</dimen>
     <dimen name="home_shied_center_no_width">14dp</dimen>
     <dimen name="home_shied_center_no_heigh">63.33dp</dimen>
-    <integer name="shield_center_blue_offset_x">41</integer>
+    <integer name="shield_center_blue_offset_x">39</integer>
     <integer name="shield_center_red_offset_x">53</integer>
     <dimen name="home_det_result_tv3_padd_left">101dp</dimen>
+
+    <dimen name="ph_sec_guide_top_iv_width">192dp</dimen>
+    <dimen name="ph_sec_guide_top_iv_height">90dp</dimen>
+
+    <dimen name="icon_home_top_1">34dp</dimen>
+    <dimen name="icon_home_top_2">20dp</dimen>
+    <dimen name="home_tab_tv_top">13dp</dimen>
 </resources>
