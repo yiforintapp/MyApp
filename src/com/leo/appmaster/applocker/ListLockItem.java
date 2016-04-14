@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spannable;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppInfo;
@@ -52,6 +54,14 @@ public class ListLockItem extends RelativeLayout {
     }
 
     public void setIcon(Drawable icon) {
+        Context ctx = AppMasterApplication.getInstance();
+        if (icon == null && mInfo != null) {
+            // 加保护icon为空，先动态获取
+            try {
+                icon = ctx.getPackageManager().getApplicationIcon(mInfo.packageName);
+            } catch (PackageManager.NameNotFoundException e) {
+            }
+        }
         iconview.setImageDrawable(icon);
     }
 
