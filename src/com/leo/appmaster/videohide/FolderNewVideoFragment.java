@@ -165,7 +165,7 @@ public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> imp
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_pics_$" + list.size());
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_new_$" + list.size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "new_vid", "vid_new_$" + list.size());
                     if (mIsFolderVidFromNoti) {
                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_vid");
                         mIsFolderVidFromNoti = false;

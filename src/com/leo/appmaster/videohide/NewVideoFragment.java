@@ -3,7 +3,6 @@ package com.leo.appmaster.videohide;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,6 @@ import com.leo.appmaster.ui.HeaderGridView;
 import com.leo.appmaster.ui.XHeaderView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
-import com.leo.appmaster.utils.DataUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -179,7 +177,7 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_Video", "vid_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts_$" + list.size());
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_new_$" + list.size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "new_vid", "vid_new_$" + list.size());
                     if (mIsVidFromNoti) {
                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_vid");
                         mIsVidFromNoti = false;

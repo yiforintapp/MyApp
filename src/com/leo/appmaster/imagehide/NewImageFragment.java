@@ -159,7 +159,7 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_$" + selectList.size());
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$" + selectList.size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "new_pic", "pic_new_$" + selectList.size());
                     if (mIsNewImgFromNoti) {
                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_pic");
                         mIsNewImgFromNoti = false;
