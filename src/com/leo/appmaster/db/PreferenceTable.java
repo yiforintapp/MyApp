@@ -256,6 +256,9 @@ public class PreferenceTable extends BaseTable {
         }
 
         for (String key : map.keySet()) {
+            if (mValues.containsKey(key)) {
+                continue;
+            }
             String value = String.valueOf(map.get(key));
             value = transBooleanToInteger(value);
             mValues.put(key, value);

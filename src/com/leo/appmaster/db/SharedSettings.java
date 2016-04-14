@@ -135,6 +135,9 @@ public class SharedSettings extends ISettings {
                 if (editor == null) {
                     editor = preferences.edit();
                 }
+                if (mValues.containsKey(key)) {
+                    continue;
+                }
                 String value = String.valueOf(object);
                 mValues.put(key, value);
                 editor.putString(key, value);
