@@ -17,7 +17,6 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
@@ -166,7 +165,7 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                     }
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic", "pic_hide_cnts");
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + mAdapter.getSelectData().size());
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_$" + mAdapter.getSelectData().size());
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_new_$" + mAdapter.getSelectData().size());
                     if (mIsNewFolderImgFromNoti) {
                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_pic");
