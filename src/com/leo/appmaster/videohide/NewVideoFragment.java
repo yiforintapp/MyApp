@@ -135,6 +135,7 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
                         setLabelCount();
                         mAdapter.notifyDataSetChanged();
                     } else {
+                        hideDone();
                         Toast.makeText(mActivity, R.string.hide_complete_new_vid, Toast.LENGTH_LONG).show();
                         mActivity.finish();
                     }
