@@ -15,6 +15,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.imagehide.FolderNewFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -119,6 +121,7 @@ public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> imp
                         setLabelCount();
                     } else {
                         Toast.makeText(mActivity, R.string.hide_complete_new_vid, Toast.LENGTH_LONG).show();
+                        LeoEventBus.getDefaultBus().post(new MediaChangeEvent(false));
                         mActivity.finish();
                     }
                 }

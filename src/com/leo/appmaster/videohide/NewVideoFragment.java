@@ -16,6 +16,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.MediaChangeEvent;
 import com.leo.appmaster.imagehide.NewFragment;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -135,6 +137,7 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
                         mAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mActivity, R.string.hide_complete_new_vid, Toast.LENGTH_LONG).show();
+                        LeoEventBus.getDefaultBus().post(new MediaChangeEvent(false));
                         mActivity.finish();
                     }
                 }
