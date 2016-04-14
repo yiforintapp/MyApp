@@ -642,8 +642,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             TextView tv = (TextView) convertView.findViewById(R.id.tv_more);
             if (list.size() > 5 && position == 4) {
                 tv.setText("+" + (list.size() - 4));
+                convertView.findViewById(R.id.v_mask).setVisibility(View.VISIBLE);
             }
-
             String path = list.get(position).getPath();
             String uri = ImageDownloader.Scheme.VIDEOFILE.wrap(path);
 //            if (path != null && path.endsWith(Constants.CRYPTO_SUFFIX)) {
