@@ -296,7 +296,7 @@ public class TutorialActivity extends BaseActivity {
 			pressTouchArea(true);
 			if (mCurrentStep == Step.WritePractice && mWritePracticeTextView != null) {
 				mWritePracticeTextView.setText(getResources().getString(R.string.airsig_tutorial_step_write_practice2));
-				mWritePracticeImageView.setAnimatedGif(R.raw.airsig_ani_tutorial_holding_posture, AnimatedGifImageView.TYPE.FIT_CENTER);
+				mWritePracticeImageView.setAnimatedGif(R.raw.airsig_ani_tutorial_total, AnimatedGifImageView.TYPE.FIT_CENTER);
 				mWritePracticeImageView.setAnimatedGifPlayTime(0,  3900, 0);
 				ASEngine.getSharedInstance().startRecordingSensor(new ASEngine.OnSensorEventListener() {
 					@Override
@@ -347,7 +347,7 @@ public class TutorialActivity extends BaseActivity {
 							break;
 						case TRAINING_INVALID_HOLDING_POSTURE:
 							showImageMessage(getResources().getString(R.string.airsig_tutorial_err_posture),
-								R.raw.airsig_ani_tutorial_holding_posture,
+								R.raw.airsig_ani_tutorial_total,
 								null, new OnClickListener() {
 									@Override
 									public void onClick(View v) {
@@ -359,7 +359,7 @@ public class TutorialActivity extends BaseActivity {
 							break;
 						case TRAINING_INVALID_FEW_WRIST:
 							showImageMessage(getResources().getString(R.string.airsig_tutorial_err_few_wrist),
-								R.raw.airsig_ani_tutorial_holding_posture,
+								R.raw.airsig_ani_tutorial_total,
 								null, new OnClickListener() {
 									@Override
 									public void onClick(View v) {

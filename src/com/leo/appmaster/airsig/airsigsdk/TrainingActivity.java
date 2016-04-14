@@ -736,7 +736,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                                     } else {
                                         mTryTimes++;
                                     }
-                                    showImageMessage(getResources().getString(R.string.airsig_training_err_invalid_holding_posture), R.raw.airsig_ani_tutorial_holding_posture, null,
+                                    showImageMessage(getResources().getString(R.string.airsig_training_err_invalid_holding_posture), R.raw.airsig_ani_tutorial_total, null,
                                             new OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
@@ -758,7 +758,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                                     SpannableString fw1 = new SpannableString(getResources().getString(R.string.airsig_training_err_few_wrist1));
                                     String fw2 = getResources().getString(R.string.airsig_training_err_few_wrist2);
                                     fw1.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.airsig_text_gray)), 0, fw1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                    showImageMessage(TextUtils.concat(fw1, "\n", fw2), R.raw.airsig_ani_tutorial_holding_posture, null,
+                                    showImageMessage(TextUtils.concat(fw1, "\n", fw2), R.raw.airsig_ani_tutorial_total, null,
                                             new OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
