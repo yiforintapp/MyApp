@@ -170,11 +170,12 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
 
                 if (success) {
 
+                    int fileTimes = TrainingActivity.mFaileTimes;
                     if (TrainingActivity.isEnterTutorPage) {
-                        SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc," + "yes");
+                        SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc_" + fileTimes + ",yes");
                         TrainingActivity.isEnterTutorPage = false;
                     } else {
-                        SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc," + "no");
+                        SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc_" + fileTimes + ",no");
                     }
 
 
@@ -184,13 +185,17 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
                     if ((now - inTime > 3000)) {
                         inTime = System.currentTimeMillis();
                         if (isNormalSet) {
+                            LeoLog.d("testAirSig", "normal set done");
                             SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_set", "airsig_enable_suc");
                         } else {
+                            LeoLog.d("testAirSig", "reset done");
                             SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_set", "airsig_reset_suc");
                         }
                         mHandler.sendEmptyMessage(SET_DONE);
                     }
                 }
+
+                TrainingActivity.mFaileTimes = 0;
             }
         });
     }
@@ -275,5 +280,6 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
             mConfirmCloseDialog.dismiss();
             mConfirmCloseDialog = null;
         }
+        TrainingActivity.mFaileTimes = 0;
     }
 }

@@ -103,6 +103,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         mCsiChangeGstOrPsw.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SDKWrapper.addEvent(MainSettingActivity.this, SDKWrapper.P1, "settings", "password");
                 goToChangeLockType();
             }
         });
@@ -213,7 +214,7 @@ public class MainSettingActivity extends BaseActivity implements View.OnClickLis
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, component);
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getString(R.string.device_admin_extra));
         try {
-            startActivityForResult(intent ,1);
+            startActivityForResult(intent, 1);
         } catch (Exception e) {
             e.printStackTrace();
         }

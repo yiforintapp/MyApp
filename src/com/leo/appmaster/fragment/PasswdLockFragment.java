@@ -475,6 +475,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                         airsigFailTimes = 0;
                         isFileThreeTimes = true;
                         makeDevicePoint();
+                        LeoLog.d("testAirSig", "unlock_airsig_cha");
                         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_airsig_cha");
                         //switch to normal lock
                         changeNormalLockType();
@@ -953,10 +954,11 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             if (!isAirSigVaild) {
                 showUpdateDialog();
             } else {
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_func", "change_airsig");
                 changeAirSigLockType();
-
             }
         } else {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_func", "change_num");
             changeNormalLockType();
         }
     }
@@ -993,6 +995,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         // AM-2936, no gesture, just unlock
         if (Utilities.isEmpty(password) || password.equals(mTempPasswd)) {
             if (isFileThreeTimes) {
+                LeoLog.d("testAirSig", "unlock_other_suc");
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_other_suc");
             }
             ((LockScreenActivity) mActivity).onUnlockSucceed();

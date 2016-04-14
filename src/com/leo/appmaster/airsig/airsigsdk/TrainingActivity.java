@@ -144,6 +144,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
     private View mHelpPage;
     private Button mHelpPageButton;
     private boolean isFirstIn = false;
+    public static int mFaileTimes = 0;
 
     // other UI components
     private ProgressBar mProgressBar;
@@ -179,6 +180,8 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.airsig_activity_training);
 
+
+        mFaileTimes = 0;
         isFirstIn = true;
         // customize action bar:
         // 1. no App icon
@@ -385,7 +388,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_CLICK_LEAVE, null);
 
         if (isTrainingNotCompleted()) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_sdk", "leave");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_sdk", "leave_" + mFaileTimes);
             showTipsDialog(getResources().getString(R.string.airsig_training_dialog_confirm_exit_detail),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_postive_button),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_negative_button),
@@ -912,6 +915,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
     }
 
     private void showFailDialog() {
+        mFaileTimes++;
         mTryTimes = 0;
         if (mConfirmCloseDialog == null) {
             mConfirmCloseDialog = new LEOAlarmDialog(this);

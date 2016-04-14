@@ -320,6 +320,7 @@ public class GestureLockFragment extends LockFragment implements
                     } else {
                         isFileThreeTimes = true;
                         airsigFailTimes = 0;
+                        LeoLog.d("testAirSig", "unlock_airsig_cha");
                         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_airsig_cha");
                         makeDevicePoint();
                         //switch to normal lock
@@ -620,6 +621,7 @@ public class GestureLockFragment extends LockFragment implements
         // AM-2936, no gesture, just unlock
         if (Utilities.isEmpty(savedGesture) || savedGesture.equals(gesture)) {
             if (isFileThreeTimes) {
+                LeoLog.d("testAirSig", "unlock_other_suc");
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "airsig_set", "unlock_other_suc");
             }
             ((LockScreenActivity) mActivity).onUnlockSucceed();
@@ -717,9 +719,11 @@ public class GestureLockFragment extends LockFragment implements
             if (!isAirSigVaild) {
                 showUpdateDialog();
             } else {
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_func", "change_airsig");
                 changeAirSigLockType();
             }
         } else {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "app_func", "change_ges");
             changeNormalLockType();
         }
     }
