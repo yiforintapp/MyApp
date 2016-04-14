@@ -445,4 +445,6 @@
 
     <dimen name="ph_sec_guide_top_iv_width">192dp</dimen>
     <dimen name="ph_sec_guide_top_iv_height">90dp</dimen>
+
+    <dimen name="new_added_image_item">64dp</dimen>
 </resources>
