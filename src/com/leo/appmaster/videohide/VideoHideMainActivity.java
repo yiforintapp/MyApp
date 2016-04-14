@@ -677,11 +677,13 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             mImageLoader.loadImage(uri, mOptions, new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
+                    iv.setImageResource(R.drawable.img_vid_loading);
                 }
 
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                     LeoLog.i("newpic", "loading failed    " + imageUri);
+                    iv.setImageResource(R.drawable.img_vid_loading);
                 }
 
                 @Override

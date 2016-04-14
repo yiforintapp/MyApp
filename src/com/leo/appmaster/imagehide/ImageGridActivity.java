@@ -536,6 +536,12 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                     uri = ImageDownloader.Scheme.FILE.wrap(path);
                 }
                 mImageLoader.displayImage(uri, holder.imageView, mOptions, mImageSize);
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LeoLog.i("w_h", "holder.imageView : " + holder.imageView.getWidth() + "  " + holder.imageView.getHeight());
+                    }
+                }, 2000);
             }
             return view;
         }
