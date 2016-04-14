@@ -180,11 +180,11 @@ public class VideoGriActivity extends BaseFragmentActivity implements OnItemClic
                         int targetNum = savevidNum - mProcessNum;
                         if (vidnum >= targetNum) {
                             LeoLog.d("checkLostPic", "everything ok");
-                            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, vidnum);
+                            LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
                         } else {
                             LeoLog.d("checkLostPic", "lost vid");
                             mPDManager.reportDisappearError(false, PrivacyDataManager.LABEL_DEL_BY_SELF);
-                            LeoSettings.setInteger(Constants.HIDE_PICS_NUM, vidnum);
+                            LeoSettings.setInteger(Constants.HIDE_VIDS_NUM, vidnum);
                         }
                     }
                 } else {
