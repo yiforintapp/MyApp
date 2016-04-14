@@ -13,6 +13,7 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
@@ -22,17 +23,22 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.MessageCallLogBean;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class PrivacyContactManagerImpl extends PrivacyContactManager {
@@ -436,6 +442,10 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
                 sms.sendTextMessage(number, null, content, sentPI, null);
             }
             LeoLog.d(TAG, "msm send success!");
+
+            //记录短信发送次数
+            int sendCount = LeoSettings.getInteger(PrefConst.KEY_SEND_MSM_COUNT, 0) + 1;
+            LeoSettings.setInteger(PrefConst.KEY_SEND_MSM_COUNT, sendCount);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -563,5 +573,30 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
         } catch (Exception e) {
         }
         return false;
+    }
+
+    @Override
+    public void reportSendMsm() {
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        String version = DeviceUtil.getAndroidVersion();
+        String vender = DeviceUtil.getVendor();
+        String deviceName = DeviceUtil.getDeviceName();
+        String apiLevel = DeviceUtil.getApiLevel();
+        String appVer = DeviceUtil.getAppVer(context);
+        String channelCode = DeviceUtil.getChannelCode(context);
+        String contry = DeviceUtil.getCountry(context);
+        String language = DeviceUtil.getLanguage(context);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(version);
+        sb.append(vender);
+        sb.append(deviceName);
+        sb.append(apiLevel);
+        sb.append(appVer);
+        sb.append(channelCode);
+        sb.append(contry);
+        sb.append(language);
+
+        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft1", "message_$" + sb.toString());
     }
 }

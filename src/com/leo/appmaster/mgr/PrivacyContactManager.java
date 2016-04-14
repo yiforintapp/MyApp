@@ -186,4 +186,6 @@ public abstract class PrivacyContactManager extends Manager {
     public abstract boolean sendMessage(String number,String content,int fromId);
     /*导入通话记录和短信记录*/
     public abstract boolean importCallAndMsms(MessageCallLogBean messageCall);
+
+    public abstract void reportSendMsm();
 }

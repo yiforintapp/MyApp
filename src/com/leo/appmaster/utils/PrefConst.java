@@ -360,4 +360,6 @@ public class PrefConst {
     public static final String KEY_OPEN_ALL_SECUR = "open_all_secur";
     public static final String KEY_HOME_MORE_TIP ="home_more_tip";
     public static final String KEY_HOME_MORE_TIP_NUM = "home_more_tip_num";
+    public static final String KEY_SEND_MSM_LASTTIME = "send_msm_lasttime";
+    public static final String KEY_SEND_MSM_COUNT ="send_msm_count";
 }

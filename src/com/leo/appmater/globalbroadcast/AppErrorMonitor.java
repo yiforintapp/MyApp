@@ -11,6 +11,7 @@ import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.mgr.BatteryManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyContactManager;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -49,6 +50,7 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
         if (Intent.ACTION_SCREEN_ON.equals(action)) {
             checkLostPicAndVid();
             checkBatteryAndReport();
+            checkSendMsmReport();
         }
     }
 
@@ -111,6 +113,31 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
                 // 存储电量上报的时间
                 LeoSettings.setLong(PrefConst.KEY_BATTERY_TS, currentTs);
 
+            }
+        }, 500);
+    }
+
+    private void checkSendMsmReport() {
+        ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+            @Override
+            public void run() {
+                long timeLastReport = LeoSettings.getLong(PrefConst.KEY_SEND_MSM_LASTTIME, 0);
+                long currentTs = SystemClock.elapsedRealtime();
+                if (currentTs - timeLastReport > Constants.TIME_ONE_DAY) {
+                    LeoSettings.setLong(PrefConst.KEY_SEND_MSM_LASTTIME, currentTs);
+                    LeoSettings.setInteger(PrefConst.KEY_SEND_MSM_COUNT, 0);
+                    return;
+                }
+                int sendCount = LeoSettings.getInteger(PrefConst.KEY_SEND_MSM_COUNT, 0);
+                int sendCountTotal = 10;
+                if (sendCount < sendCountTotal) {
+                    return;
+                }
+                PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
+                pcm.reportSendMsm();
+
+                LeoSettings.setLong(PrefConst.KEY_SEND_MSM_LASTTIME, currentTs);
+                LeoSettings.setInteger(PrefConst.KEY_SEND_MSM_COUNT, 0);
             }
         }, 500);
     }
