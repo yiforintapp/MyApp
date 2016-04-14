@@ -124,7 +124,7 @@ public class InitAsyncBootstrap extends Bootstrap {
     /*保存sim标识*/
     private void saveSimIMEI() {
         String simNu = LeoPreference.getInstance().getString(PrefConst.KEY_SIM_IMEI);
-        if (Utilities.isEmpty(simNu)) {
+        if (simNu == null) {
             LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
             manager.setSimIMEI();
         }

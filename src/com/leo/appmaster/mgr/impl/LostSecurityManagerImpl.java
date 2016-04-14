@@ -738,7 +738,11 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             TelephonyManager teleManger = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             String currentSimIMEI = teleManger.getSimSerialNumber();
             String imei = LeoPreference.getInstance().getString(PrefConst.KEY_SIM_IMEI);
-            if (!Utilities.isEmpty(imei)) {
+
+            if (imei != null) {
+                if (currentSimIMEI == null) {
+                    currentSimIMEI = "";
+                }
                 if (!imei.equals(currentSimIMEI)) {
                     //sim卡发生了变化
                     PrivacyContactManagerImpl mgr = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
@@ -751,10 +755,10 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                         String[] numbers = name_number.split(":");
                         sendNumber = numbers[1];
                     }
-                    LeoLog.i(TAG, "SIM卡更换发送短信！");
+                    LeoLog.i(TAG, "sim imei chanage send msm");
                     LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                     manager.setSimIMEI();
-                    boolean result = mgr.sendMessage(sendNumber, body,MTKSendMsmHandler.SIM_CHANAGE_ID);
+                    boolean result = mgr.sendMessage(sendNumber, body, MTKSendMsmHandler.SIM_CHANAGE_ID);
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_use_SIM");
                     return true;
                 }
@@ -769,13 +773,20 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             TelephonyManager teleManger = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             String currentSimIMEI = teleManger.getSimSerialNumber();
             String imeiBefor = LeoPreference.getInstance().getString(PrefConst.KEY_SIM_IMEI);
-            if (!Utilities.isEmpty(imeiBefor)) {
+            if (imeiBefor != null) {
                 if (!imeiBefor.equals(currentSimIMEI)) {
-                    LeoLog.i(TAG, "保存sim卡IMEI：" + currentSimIMEI);
+                    if (currentSimIMEI == null) {
+                        currentSimIMEI = "";
+                    }
+                    LeoLog.i(TAG, "save sim imei:" + currentSimIMEI);
                     LeoPreference.getInstance().putString(PrefConst.KEY_SIM_IMEI, currentSimIMEI);
                 }
             } else {
-                LeoLog.i(TAG, "保存sim卡IMEI：" + currentSimIMEI);
+
+                if (currentSimIMEI == null) {
+                    currentSimIMEI = "";
+                }
+                LeoLog.i(TAG, "save sim imei:" + currentSimIMEI);
                 LeoPreference.getInstance().putString(PrefConst.KEY_SIM_IMEI, currentSimIMEI);
             }
             return true;
