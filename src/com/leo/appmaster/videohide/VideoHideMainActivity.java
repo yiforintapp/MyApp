@@ -279,7 +279,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private void markIgnoreIfNeed() {
         boolean enterByTips = getIntent().getBooleanExtra(Constants.ENTER_BY_TIPS, false);
         int status = PrivacyHelper.getVideoPrivacy().getStatus();
-        if (enterByTips || status == Privacy.STATUS_FOUND) {
+        if (enterByTips || status != Privacy.STATUS_NEW_ADD) {
             // 1、从banner进入
             // 2、从tab进入，并且状态为“x张待处理视频”
             markNewVidCheckedAsy();

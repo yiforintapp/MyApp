@@ -57,9 +57,9 @@ public class ImagePrivacy extends Privacy<PhotoItem> {
 
     @Override
     public void ignoreNew() {
-        clearNewList();
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
         pdm.haveCheckedPic();
+        clearNewList();
     }
 
     @Override
