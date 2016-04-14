@@ -182,6 +182,7 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_vid_operation", "vid_add_cnts_$" + list.size());
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "new_vid", "vid_new_$" + list.size());
                     if (mIsVidFromNoti) {
+                        LeoLog.d("notificatinHide", "notificatinHideVideo");
                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_vid");
                         mIsVidFromNoti = false;
                     }

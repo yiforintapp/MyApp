@@ -29,6 +29,9 @@ import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.privacy.ImagePrivacy;
+import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.privacy.VideoPrivacy;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.LeoLog;
@@ -48,7 +51,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final boolean DBG = false;
 
     private ImageView mRedDot;
-    // 首页4个tab
     private View mAppLockView;
     private View mIntruderView;
     private View mWifiSecurityView;
@@ -349,6 +351,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     Intent intent2 = new Intent(activity, AirSigActivity.class);
                     startActivity(intent2);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "airsig");
+
+//                    VideoPrivacy vp = (VideoPrivacy) PrivacyHelper.getInstance(getActivity()).getPrivacy(PrivacyHelper.PRIVACY_HIDE_VID);
+//                    vp.showNotification();
                     break;
                 case R.id.home_more:
                     LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED, true);
@@ -362,6 +367,9 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "more_gd_cli");
                         GuideFragment.mIsClickMoreTip = false;
                     }
+                    //测试
+//                    ImagePrivacy ip = (ImagePrivacy) PrivacyHelper.getInstance(getActivity()).getPrivacy(PrivacyHelper.PRIVACY_HIDE_PIC);
+//                    ip.showNotification();
                     break;
             }
         }

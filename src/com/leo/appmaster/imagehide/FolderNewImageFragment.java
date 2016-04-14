@@ -171,6 +171,7 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_$" + mAdapter.getSelectData().size());
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "new_pic", "pic_new_$" + mAdapter.getSelectData().size());
                     if (mIsNewFolderImgFromNoti) {
+                        LeoLog.d("notificatinHide", "notificatinHideImage");
                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "prilevel", "prilevel_add_pic");
                         mIsNewFolderImgFromNoti = false;
                     }
