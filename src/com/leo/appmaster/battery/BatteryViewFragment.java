@@ -2373,13 +2373,13 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShouldLoadAd = amp.getADOnScreenSaver() == 1;
         if (mShouldLoadAd) {
             mAdSource = amp.getChargingAdConfig();
-            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
+            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, Constants.UNIT_ID_CHARGING , new ADEngineWrapper.WrappedAdListener() {
                 @Override
-                public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
+                public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
-                        LeoLog.d(TAG, "Ad data ready ad title: " + campaign.get(0).getAppName());
-                        sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign.get(0));
-                        ImageLoader.getInstance().loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
+                        LeoLog.d(TAG, "Ad data ready ad title: " + campaign.getAppName());
+                        sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign);
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
                     }
                 }
 
@@ -2415,7 +2415,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void releaseAd() {
         if (mShouldLoadAd) {
             LeoLog.d(TAG, "release ad");
-            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, Constants.UNIT_ID_CHARGING, mAdView);
+            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, Constants.UNIT_ID_CHARGING);
         }
     }
 

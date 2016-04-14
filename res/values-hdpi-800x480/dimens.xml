@@ -1,14 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 3.6 -->
-    <dimen name="boost_template_layout_height">182dp</dimen>
-    <dimen name="boost_template_item_height">48dp</dimen>
-    <dimen name="boost_template_item_width">266dp</dimen>
-
-    <dimen name="boost_template_item_icon_width">36dp</dimen>
-    <dimen name="boost_template_item_icon_height">36dp</dimen>
-    
-
-    <dimen name="boost_template_item_btn_width">54dp</dimen>
-    <dimen name="boost_template_item_btn_height">24dp</dimen>
 </resources>

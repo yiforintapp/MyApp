@@ -2,26 +2,21 @@
 package com.leo.appmaster.cleanmemory;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +46,6 @@ import com.leo.tools.animator.ObjectAnimator;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 public class HomeBoostActivity extends Activity {
@@ -61,7 +55,6 @@ public class HomeBoostActivity extends Activity {
     private View mStatusBar;
     //private MobvistaEngine mAdEngine;
 	private ADEngineWrapper mAdEngine;
-	private int mAdType = ADEngineWrapper.AD_TYPE_TEMPLATE;
     private boolean isClean = false;
     private ProcessCleaner mCleaner;
     private long mLastUsedMem;
@@ -118,106 +111,22 @@ public class HomeBoostActivity extends Activity {
     private void loadAD() {
 		
 		mAdEngine = ADEngineWrapper.getInstance(this);
-		mAdEngine.loadAd(mAdSource, Constants.UNIT_ID_62, mAdType, new ADEngineWrapper.WrappedAdListener() {
+		mAdEngine.loadAd(mAdSource, Constants.UNIT_ID_62, new ADEngineWrapper.WrappedAdListener() {
 			/**
 			 * 广告请求回调
 			 *
 			 * @param code     返回码，如ERR_PARAMS_NULL
-			 * @param campaigns 请求成功的广告结构体，失败为null
+			 * @param campaign 请求成功的广告结构体，失败为null
 			 * @param msg      请求失败sdk返回的描述，成功为null
 			 */
 			@Override
-			public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaigns, String msg) {
-				if (code == MobvistaEngine.ERR_OK  && campaigns != null) {
-					sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaigns);
-
-					//判断是否一个图片还算多模板
-					String imageUrl = null;
-					boolean aPic = campaigns != null && campaigns.size() == 1;
-
-					int w = (aPic) ? 262 : 48;
-					int h = (aPic) ? 130 : 48;
-					int index = 0;
-					for (WrappedCampaign campaign : campaigns) {
-
-						if (aPic) {
-
-							RelativeLayout adZone = (RelativeLayout) findViewById(R.id.rl_ad_bg);
-							ViewGroup.LayoutParams params = adZone.getLayoutParams();
-
-							params.width = (int) HomeBoostActivity.this.getResources().getDimension(R.dimen.ad_content_width);
-							params.height = (int) HomeBoostActivity.this.getResources().getDimension(R.dimen.ad_content_height);
-
-							adZone.setLayoutParams(params);
-
-							findViewById(R.id.template_zone).setVisibility(View.GONE);
-
-							findViewById(R.id.ad_info_zone).setVisibility(View.VISIBLE);
-							TextView appname = (TextView) findViewById(R.id.tv_ad_appname);
-							if(appname != null) {
-								appname.setText(campaign.getAppName());
-							}
-
-							TextView appdesc = (TextView) findViewById(R.id.tv_ad_appdesc);
-							if(appdesc != null) {
-								appdesc.setText(campaign.getDescription());
-							}
-
-							Button call = (Button) findViewById(R.id.btn_ad_appcall);
-							if(call != null) {
-								call.setText(campaign.getAdCall());
-								mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
-							}
-						} else {
-
-							TextView textView1, textView2, textView3;
-							Button btn1, btn2, btn3;
-
-
-							textView1 = (TextView) findViewById(R.id.ad_title1);
-							textView2 = (TextView) findViewById(R.id.ad_title2);
-							textView3 = (TextView) findViewById(R.id.ad_title3);
-
-							btn1 = (Button) findViewById(R.id.button1);
-							btn2 = (Button) findViewById(R.id.button2);
-							btn3 = (Button) findViewById(R.id.button3);
-
-							btn1.setClickable(false);
-							btn2.setClickable(false);
-							btn3.setClickable(false);
-
-
-							switch (index) {
-								case 0:
-									textView1.setText(campaign.getAppName());
-									btn1.setText(campaign.getAdCall());
-
-									break;
-								case 1:
-									textView2.setText(campaign.getAppName());
-									btn2.setText(campaign.getAdCall());
-
-									break;
-								case 2:
-									textView3.setText(campaign.getAppName());
-									btn3.setText(campaign.getAdCall());
-
-									break;
-							}
-							index++;
-
-						}
-						
-						imageUrl = (campaigns != null && campaigns.size() > 1)
-								? campaign.getIconUrl() : campaign.getImageUrl();
-						if (imageUrl != null && !"".equals(imageUrl)) {
-							ImageLoader.getInstance().loadImage(imageUrl,
-									new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, w),
-											DipPixelUtil.dip2px(HomeBoostActivity.this, h)), options, sAdImageListener);
-						}
-					}
-
-					mAdEngine.proloadTemplate(Constants.UNIT_ID_62);
+			public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+				if (code == MobvistaEngine.ERR_OK  && campaign != null) {
+					sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaign);
+					ImageLoader.getInstance().loadImage(campaign.getImageUrl(),
+							new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 262),
+									DipPixelUtil.dip2px(HomeBoostActivity.this, 130)),
+							sAdImageListener);
 				}
 			}
 
@@ -229,7 +138,7 @@ public class HomeBoostActivity extends Activity {
 			 */
 			@Override
 			public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
-				//HomeBoostActivity.this.finish();
+				HomeBoostActivity.this.finish();
 				HashMap<String, String> map = new HashMap<String, String>();
 				map.put("unitId", unitID);
 				SDKWrapper.addEvent(HomeBoostActivity.this.getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_click", "click", mAdSource, map);
@@ -244,13 +153,13 @@ public class HomeBoostActivity extends Activity {
      */
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
         WeakReference<HomeBoostActivity> mActivity;
-		List<WrappedCampaign> mCampaign;
+		WrappedCampaign mCampaign;
 		
 		HashMap<String, String> map  = new HashMap<String, String>();
 
-        public AdPreviewLoaderListener (HomeBoostActivity activity, final List<WrappedCampaign> campaigns) {
+        public AdPreviewLoaderListener (HomeBoostActivity activity, final WrappedCampaign campaign) {
             mActivity = new WeakReference<HomeBoostActivity>(activity);
-            mCampaign = campaigns;
+            mCampaign = campaign;
 			
 			map.put("unitId", Constants.UNIT_ID_62);
         }
@@ -270,22 +179,8 @@ public class HomeBoostActivity extends Activity {
             HomeBoostActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
                 LeoLog.d(TAG, "[HomeBoostActivity] onLoadingComplete -> " + imageUri);
+				activity.notifyAdLoadFinish(mCampaign, loadedImage);
 				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
-				WrappedCampaign campaign = null;
-				String imgUrl = null;
-				//是否单图
-				boolean aPic = mCampaign != null && mCampaign.size() == 1;
-				for (WrappedCampaign c : mCampaign) {
-					//单个图用大图url来比较， 多模板用icon 的url来比较
-					imgUrl = (aPic && c != null) ? c.getImageUrl() : c.getIconUrl();
-					
-					if (imgUrl != null && imgUrl.equals(imageUri)) {
-						campaign = c;
-						break;
-					}
-					
-				}
-                activity.notifyAdLoadFinish(campaign, loadedImage, mCampaign.indexOf(campaign), aPic);
                 SDKWrapper.addEvent(activity, SDKWrapper.P1, "ad_act", "adv_shws_bst");
             }
         }
@@ -297,7 +192,7 @@ public class HomeBoostActivity extends Activity {
     }
     private static AdPreviewLoaderListener sAdImageListener;
 
-    private void notifyAdLoadFinish(WrappedCampaign campaign, Bitmap previewBitmap, int index, boolean aPic){
+    private void notifyAdLoadFinish(WrappedCampaign campaign, Bitmap previewBitmap){
         if (campaign == null && previewBitmap == null || previewBitmap.isRecycled()) {
             return;
         }
@@ -306,53 +201,35 @@ public class HomeBoostActivity extends Activity {
         LeoLog.e("poha", "loaded!");
         long currentTime = System.currentTimeMillis();
         AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);
-		if (aPic) {
-
-			findViewById(R.id.template_zone).setVisibility(View.GONE);
-			loadADPic(campaign.getIconUrl(),
-					new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
-							DipPixelUtil.dip2px(HomeBoostActivity.this, 48)),
-					(ImageView) findViewById(R.id.iv_ad_icon));
-
-			ImageView previewImageView = (ImageView) findViewById(R.id.iv_ad_bg);
-			previewImageView.setVisibility(View.VISIBLE);
-			findViewById(R.id.ad_info_zone).setVisibility(View.VISIBLE);
-			
-			if(previewImageView != null) {
-				previewImageView.setImageBitmap(previewBitmap);
-			}
-
-			mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
-		} else {
-			
-			ImageView imageView1, imageView2, imageView3;
-
-			imageView1 = (ImageView) findViewById(R.id.imageView1);
-			imageView2 = (ImageView) findViewById(R.id.imageView2);
-			imageView3 = (ImageView) findViewById(R.id.imageView3);
-
-			switch (index) {
-				case 0:
-					imageView1.setImageBitmap(previewBitmap);
-
-					mAdEngine.registerTemplateView((View)imageView1.getParent(), 0,  Constants.UNIT_ID_62);
-					break;
-				case 1:
-					imageView2.setImageBitmap(previewBitmap);
-
-					mAdEngine.registerTemplateView((View)imageView2.getParent(), 1,  Constants.UNIT_ID_62);
-					break;
-				case 2:
-					imageView3.setImageBitmap(previewBitmap);
-
-					mAdEngine.registerTemplateView((View)imageView3.getParent(), 2,  Constants.UNIT_ID_62);
-					break;
-			}
-
+		loadADPic(campaign.getIconUrl(),
+				new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
+						DipPixelUtil
+								.dip2px(HomeBoostActivity.this, 48)),
+				(ImageView) findViewById(R.id.iv_ad_icon));
+		ImageView previewImageView = (ImageView) findViewById(R.id.iv_ad_bg);
+		if(previewImageView != null) {
+			previewImageView.setImageBitmap(previewBitmap);
 		}
+		TextView appname = (TextView) findViewById(R.id.tv_ad_appname);
+		if(appname != null) {
+			appname.setText(campaign.getAppName());
+		}
+
+		TextView appdesc = (TextView) findViewById(R.id.tv_ad_appdesc);
+		if(appdesc != null) {
+			appdesc.setText(campaign.getDescription());
+		}
+
+		Button call = (Button) findViewById(R.id.btn_ad_appcall);
+		if(call != null) {
+			call.setText(campaign.getAdCall());
+			mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
+		}
+
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("unitId", Constants.UNIT_ID_62 );
 		SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_show", "show", mAdSource, map);
+		
 		
 		
     }
@@ -655,10 +532,6 @@ public class HomeBoostActivity extends Activity {
                 public void onFinish() {
                     counter.setText(0+"");
                     HomeBoostActivity.this.finish();
-					WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-					DisplayMetrics metrics = new DisplayMetrics();
-					windowManager.getDefaultDisplay().getMetrics(metrics);
-					Log.e("DEBUG", metrics.widthPixels + "|" + metrics.heightPixels + metrics.densityDpi );
 
                 }
             };
@@ -766,12 +639,7 @@ public class HomeBoostActivity extends Activity {
         super.onDestroy();
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
         if(mAdEngine!=null){
-			
-			if (mAdType == ADEngineWrapper.AD_TYPE_TEMPLATE) {
-				mAdEngine.releaseTemplateAd(Constants.UNIT_ID_62);
-			} else {
-            	mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, mRlResultWithAD);
-			}
+            mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62);
         }
         if (mAdAnim != null) {
             mAdAnim.cancel();

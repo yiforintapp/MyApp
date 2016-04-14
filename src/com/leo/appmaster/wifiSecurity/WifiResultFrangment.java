@@ -22,7 +22,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.ad.ADEngineWrapper;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.appmanage.FlowActivity;
@@ -40,10 +39,9 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
-import com.mobvista.msdk.out.Campaign;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 /**
  * Created by qili on 15-10-27.
@@ -129,7 +127,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     public void onDestroyView() {
         super.onDestroyView();
         if (mDidLoadAd) {
-            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60, mAdView);
+            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60);
         }
         ImageLoader.getInstance().clearMemoryCache();
         if (mFiveStarLayout != null) {
@@ -267,15 +265,14 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         if (amp.getADWifiScan() == 1) {
             mDidLoadAd = true;
             LeoLog.d("MobvistaEngine", "Wifi result position start to load ad");
-            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, ADEngineWrapper.AD_TYPE_NATIVE,
-			new MobvistaListener() {
+            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, new MobvistaListener() {
 
                 @Override
-                public void onMobvistaFinished(int code, final List<Campaign> campaign, String msg) {
+                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
                         LeoLog.d("MobvistaEngine", "Wifi result position ad data ready");
-                        sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaign.get(0));
-                        ImageLoader.getInstance().loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
+                        sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaign);
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
                     }
                 }
 

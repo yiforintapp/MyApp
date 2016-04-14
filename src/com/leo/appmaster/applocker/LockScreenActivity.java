@@ -133,6 +133,7 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
 import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
+import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -212,6 +213,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 	private TextView mText;
 	private View mLockClean;
 	private ActivityManager mAm;
+	private MobvistaAdWall wallAd;
 
 	public boolean mRestartForThemeChanged;
 	public boolean mQuickLockMode;
@@ -334,13 +336,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
         // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
-//        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
-//        if (wallAd != null) {
-//            // preload the wall data
-//            wallAd.preloadWall();
-//        }
+        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+        if (wallAd != null) {
+            // preload the wall data
+            wallAd.preloadWall();
+        }
 
-		MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
+//		MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
     }
 
     public void takePicture(final CameraSurfacePreview view, final String packagename) {
@@ -1217,7 +1219,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         //LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
                         // 3.3.2 封装Max与Mob SDK
                         if (mDidLoadAd) {
-                            ADEngineWrapper.getInstance(LockScreenActivity.this).releaseAd(mAdSource, id, mAdView);
+                            ADEngineWrapper.getInstance(LockScreenActivity.this).releaseAd(mAdSource, id);
                         }
                     }
                 }
@@ -1352,7 +1354,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		mBannerContainer.removeAllViews();
         /*调用sdk前，明确是哪个sdk，mobvista or max ? */
 		AppMasterPreference sp = AppMasterPreference.getInstance(this.getApplicationContext());
-		mAdSource = 2;//sp.getLockBannerAdConfig();
+		mAdSource = sp.getLockBannerAdConfig();
 		long start = SystemClock.elapsedRealtime();
 		asyncLoadAd(forceLoad);
 		LeoLog.d(TAG, "TsCost, loadAD..." + (SystemClock.elapsedRealtime() - start));
@@ -1380,18 +1382,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		 * @param msg      请求失败sdk返回的描述，成功为null
 		 */
 		@Override
-		public synchronized void onWrappedAdLoadFinished(int code, final List<WrappedCampaign> campaigns, String msg) {
+		public synchronized void onWrappedAdLoadFinished(int code, final WrappedCampaign campaign, String msg) {
 			if (code != MobvistaEngine.ERR_OK) {
 				return;
 			}
-			if (campaigns != null) {
-				mAdMap.put(unitId, campaigns.get(0));
+			if (campaign != null) {
+				mAdMap.put(unitId, campaign);
 
                         /* 开始load 广告大图 */
-				LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for [" + unitId + "] ready: " + campaigns.get(0).getAppName());
+				LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for [" + unitId + "] ready: " + campaign.getAppName());
 				final HashMap<String, String> map = new HashMap<String, String>();
 				map.put("unitId", unitId);
-				mImageFetcher.loadBitmap(campaigns.get(0).getImageUrl(), new PreviewImageFetcher.ImageFetcherListener() {
+				mImageFetcher.loadBitmap(campaign.getImageUrl(), new PreviewImageFetcher.ImageFetcherListener() {
 					@Override
 					public void onBitmapLoadStarted(String url) {
 						LeoLog.d("LockScreenActivity_AD_DEBUG", "[" + unitId + "]start to load preview for: " + url);
@@ -1529,7 +1531,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 						otherAdSwitcher = false;
 					}
 
-					ADEngineWrapper.getInstance(LockScreenActivity.this).removeMobAdData(mAdSource, unitID, mAdView);
+					ADEngineWrapper.getInstance(LockScreenActivity.this).removeMobAdData(mAdSource, unitID);
 					mAdapterCycle.clearView();
 					mBannerContainer.removeAllViews();
 					new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -2268,12 +2270,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // wallAd.clickWall();
                 mAmp.setIsADAppwallNeedUpdate(false);
                 try {
-//                    Intent mWallIntent = wallAd.getWallIntent();
-//                    startActivity(mWallIntent);
-//                    wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
-//                    wallAd.preloadWall();
-//                    wallAd.clickWall();
-					MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
+                    //Intent mWallIntent = wallAd.getWallIntent();
+                    //startActivity(mWallIntent);
+                    wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
+                    wallAd.preloadWall();
+                    wallAd.clickWall();
+//					MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_63);
                 } catch (Exception e) {
                 }
                 if (!mHaveNewThings && !clickShakeIcon) {

@@ -43,6 +43,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 
 public class DeskProxyActivity extends Activity {
@@ -68,7 +69,7 @@ public class DeskProxyActivity extends Activity {
 
     private static final int IDX_HOME = 9999;
 
-//    private MobvistaAdWall wallAd;
+    private MobvistaAdWall wallAd;
 
     private boolean mDelayFinish = false;
     private Handler mHandler;
@@ -294,10 +295,10 @@ public class DeskProxyActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        /*if (wallAd != null) {
+        if (wallAd != null) {
             wallAd.release();
             wallAd = null;
-        }*/
+        }
         if (mHasRegistered) {
             try {
                 unregisterReceiver(mPresentReceiver);
@@ -314,13 +315,13 @@ public class DeskProxyActivity extends Activity {
         }
         mLockManager.filterPackage(this.getPackageName(), 1000);
         // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
-        /*wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_61);
+        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_61);
 
         if (wallAd != null) {
             wallAd.preloadWall();
             wallAd.clickWall();
-        }*/
-		MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_61);
+        }
+		//MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_61);
     }
 
     private void gotoHomeActivity(){

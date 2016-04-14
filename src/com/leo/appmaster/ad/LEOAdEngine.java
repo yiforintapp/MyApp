@@ -105,7 +105,7 @@ public class LEOAdEngine {
     
     private LEOAdEngine(Context ctx) {
         // 必须初始化
-        MaxSdk.init(ctx, "appmaster", "com.leo.appmaster.ad.Bean");
+        MaxSdk.init(ctx, "appmaster");
 
         mAppContext = ctx.getApplicationContext();
         mPref = AppMasterPreference.getInstance(ctx);

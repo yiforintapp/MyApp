@@ -182,7 +182,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLayout.stopAnim();
         }
         if (mShouldLoadAd) {
-            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID, mAdView);
+            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
         }
 //        finish();
     }
@@ -409,13 +409,13 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         mShouldLoadAd = (amp.getADIntruder() == 1);
         if (mShouldLoadAd) {
-			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
+			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, new ADEngineWrapper.WrappedAdListener() {
 				@Override
-				public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaign, String msg) {
+				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
 					if (code == MobvistaEngine.ERR_OK) {
-						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.get(0).getAppName());
-						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign.get(0));
-						mImageLoader.loadImage(campaign.get(0).getImageUrl(), sAdImageListener);
+						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
+						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
+						mImageLoader.loadImage(campaign.getImageUrl(), sAdImageListener);
 					}
 				}
 
