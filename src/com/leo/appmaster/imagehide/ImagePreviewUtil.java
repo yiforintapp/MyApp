@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageSize;
@@ -32,6 +33,13 @@ public class ImagePreviewUtil {
     public static ImageSize getPreviewSize() {
         Context ctx = AppMasterApplication.getInstance();
         int size = ctx.getResources().getDimensionPixelSize(R.dimen.hide_album_image_frame_width);
+
+        return new ImageSize(size, size);
+    }
+
+    public static ImageSize getNewPreviewSize() {
+        Context ctx = AppMasterApplication.getInstance();
+        int size = DipPixelUtil.dip2px(ctx, 64);
 
         return new ImageSize(size, size);
     }

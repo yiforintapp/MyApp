@@ -31,12 +31,12 @@
 
             <TextView
                 android:id="@+id/tv_new_amount_tip"
-                android:textColor="@color/c2"
-                android:textSize="@dimen/f4"
-                android:layout_marginLeft="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="23423423423" />
+                android:layout_marginLeft="7dp"
+                android:text="23423423423"
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f4" />
 
 
         </LinearLayout>
@@ -48,18 +48,17 @@
             app:rippleColor="@color/cm"
             app:rippleDuration="250"
             app:rippleHover="true"
-            app:rippleOverlay="true"
-            >
+            app:rippleOverlay="true">
 
             <Button
                 android:id="@+id/bt_hidenew"
-                android:textSize="@dimen/f4"
-                android:textColor="@color/c1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/blue_radius_btn_shape"
                 android:minWidth="64dp"
                 android:text="@string/hide_immediately"
-                android:background="@drawable/blue_radius_btn_shape"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:textColor="@color/c1"
+                android:textSize="@dimen/f4" />
 
         </com.leo.appmaster.ui.RippleView>
 
@@ -67,33 +66,33 @@
     </LinearLayout>
 
     <GridView
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/ll_amount_and_hide"
         android:id="@+id/gv_newpic"
-        android:listSelector="@android:color/transparent"
-        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_marginRight="16dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/ll_amount_and_hide"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:columnWidth="50dp"
-        android:stretchMode="columnWidth"
+        android:columnWidth="64dp"
         android:horizontalSpacing="2dp"
-        android:numColumns="5"></GridView>
+        android:listSelector="@android:color/transparent"
+        android:numColumns="5"
+        android:scrollbars="none"
+        android:stretchMode="columnWidth" />
 
     <TextView
-        android:text="@string/pri_pro_ignore2"
         android:id="@+id/tv_ignore"
-        android:layout_marginTop="12dp"
-        android:gravity="center_vertical|right"
-        android:textSize="@dimen/f5"
-        android:maxLines="1"
-        android:layout_marginRight="16dp"
-        android:textColor="#9393ad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/gv_newpic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical|right"
+        android:maxLines="1"
+        android:text="@string/pri_pro_ignore2"
+        android:textColor="#9393ad"
+        android:textSize="@dimen/f5" />
 
 
 </RelativeLayout>

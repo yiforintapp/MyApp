@@ -52,6 +52,7 @@ import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.core.ImageSize;
+import com.leo.imageloader.core.SimpleImageLoadingListener;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.PropertyValuesHolder;
@@ -95,6 +96,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private Toast mToast;
 
     private ImageSize mImageSize;
+    private ImageSize mNewImageSize;
 
     public static boolean mIsFromConfirm;
     public static boolean mFromHomeEnter;
@@ -379,6 +381,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .build();
         mImageSize = ImagePreviewUtil.getPreviewSize();
+        mNewImageSize = ImagePreviewUtil.getNewPreviewSize();
         mImageLoader = ImageLoader.getInstance();
     }
 
@@ -519,41 +522,24 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                     goNewHideImageActivity();
                 }
             });
-
-            mImageLoader.loadImage(uri,mOptions, new ImageLoadingListener() {
-                @Override
-                public void onLoadingStarted(String imageUri, View view) {
-                    iv.setImageResource(R.drawable.img_vid_loading);
-                }
-
-                @Override
-                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    LeoLog.i("newpic","loading failed    " + imageUri);
-                    iv.setImageResource(R.drawable.img_vid_loading);
-                }
-
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    if (list.size() > 5 && position == 4) {
-                        LeoLog.i("newpic","try blur ");
-                        try {
-                            loadedImage = Bitmap.createScaledBitmap(loadedImage,50,50,true);
-                            loadedImage = FastBlur.doBlur(loadedImage, 25, true);
-                            iv.setBackgroundDrawable(new BitmapDrawable(loadedImage));
-                        } catch (Throwable t) {
-                            LeoLog.i("newpic","blur error");
-                        }
-                    } else {
-                        iv.setImageBitmap(loadedImage);
+            if (position < 4) {
+                mImageLoader.displayImage(uri, iv, mOptions, mNewImageSize);
+            } else {
+                mImageLoader.loadImage(uri, mNewImageSize, mOptions, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            LeoLog.i("newpic", "try blur ");
+                            try {
+                                int size = mNewImageSize.getWidth();
+                                loadedImage = Bitmap.createScaledBitmap(loadedImage, size, size, true);
+                                loadedImage = FastBlur.doBlur(loadedImage, 25, true);
+                                iv.setImageBitmap(loadedImage);
+                            } catch (Throwable t) {
+                                LeoLog.i("newpic", "blur error");
+                            }
                     }
-                }
-
-                @Override
-                public void onLoadingCancelled(String imageUri, View view) {
-
-                }
-            });
-//            iv.setImageResource(R.drawable.ic_launcher);
+                });
+            }
             return convertView;
         }
     }

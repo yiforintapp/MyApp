@@ -3,56 +3,44 @@
     xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
     <LinearLayout
-        android:layout_below="@id/layout_title_bar"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!--<ProgressBar
-            android:id="@+id/pb_loading_pic"
-            style="@style/ProgressBarCricle"
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:layout_gravity="center"
-            android:layout_weight="1" />-->
-
-
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title_bar"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/rl_whole_show_content"
             android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_weight="1"
-            android:visibility="visible"
-            android:layout_height="1dp">
+            android:visibility="visible">
 
             <include
                 android:id="@+id/layout_newpic"
-                layout="@layout/header_new_hide"/>
-
+                layout="@layout/header_new_hide" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_below="@id/layout_newpic"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_below="@id/layout_newpic">
 
                 <GridView
-                    android:horizontalSpacing="0dp"
-                    android:layout_marginTop="10dp"
-                    android:verticalSpacing="12dp"
                     android:id="@+id/Image_hide_folder"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
                     android:fadingEdge="none"
                     android:gravity="center"
+                    android:horizontalSpacing="0dp"
                     android:listSelector="@android:color/transparent"
                     android:numColumns="2"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp"/>
+                    android:paddingRight="5dp"
+                    android:verticalSpacing="12dp" />
 
                 <ProgressBar
                     android:id="@+id/pb_loading_pic"
@@ -60,8 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                     />
+                    android:layout_gravity="center" />
 
                 <RelativeLayout
                     android:id="@+id/no_hide"
@@ -134,7 +121,6 @@
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
 
 </RelativeLayout>
