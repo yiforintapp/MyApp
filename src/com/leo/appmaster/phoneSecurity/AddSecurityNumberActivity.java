@@ -186,10 +186,12 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ContactBean contact = mPhoneContact.get(position);
-        if (!TextUtils.isEmpty(contact.getContactNumber())) {
-            mInputEdit.setText(contact.getContactNumber());
-            mIsInput = true;
+        if (mPhoneContact != null && mPhoneContact.size() > 0) {
+            ContactBean contact = mPhoneContact.get(position);
+            if (!TextUtils.isEmpty(contact.getContactNumber())) {
+                mInputEdit.setText(contact.getContactNumber());
+                mIsInput = true;
+            }
         }
     }
 
