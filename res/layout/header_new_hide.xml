@@ -76,6 +76,8 @@
         android:layout_marginRight="16dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:columnWidth="50dp"
+        android:stretchMode="columnWidth"
         android:horizontalSpacing="2dp"
         android:numColumns="5"></GridView>
 
