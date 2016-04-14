@@ -39,7 +39,7 @@ public class SecurityDetailActivity extends Activity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        SDKWrapper.addEvent(this,SDKWrapper.P1,"theft","theft_order");
+        SDKWrapper.addEvent(this,SDKWrapper.P1,"theft1","theft_order");
     }
 
     private void initUI() {
@@ -67,7 +67,7 @@ public class SecurityDetailActivity extends Activity implements View.OnClickList
             case R.id.secur_bt:
                 //backup instruct button
                 backupInstructsDialog();
-                SDKWrapper.addEvent(SecurityDetailActivity.this,SDKWrapper.P1,"theft","theft_backup");
+                SDKWrapper.addEvent(SecurityDetailActivity.this,SDKWrapper.P1,"theft1","theft_backup");
                 break;
             default:
                 break;

@@ -101,7 +101,7 @@ public class PhoneSecurityGuideActivity extends BaseActivity implements View.OnC
                     String noSimText = getResources().getString(R.string.no_sim_tip);
                     Toast.makeText(PhoneSecurityGuideActivity.this, noSimText, Toast.LENGTH_SHORT).show();
                 }
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_enable");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft1", "theft_enable");
                 break;
             case R.id.secur_know_msm_click:
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_authoriz_clk");

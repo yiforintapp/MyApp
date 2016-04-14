@@ -200,7 +200,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         switch (v.getId()) {
             case R.id.add_bt:
                 addSecurNumHandler();
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_enable");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "theft1", "theft_tel_enable");
                 break;
             case R.id.top_tip_instr_tv:
                 Intent intentDet = new Intent(AddSecurityNumberActivity.this, SecurityDetailActivity.class);
@@ -227,10 +227,10 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             if (flag) {
                 if (mIsInput) {
                     //点击联系人输入
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_choose");
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "theft1", "theft_tel_choose");
                 } else {
                     //手动输入
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_tel_input");
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "theft1", "theft_tel_input");
                 }
                 Intent intent = new Intent(AddSecurityNumberActivity.this, PhoneSecurityActivity.class);
 
@@ -298,7 +298,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             case R.id.checkBx:
                 mIsCheckB = isChecked;
                 if (isChecked == false) {
-                    SDKWrapper.addEvent(AddSecurityNumberActivity.this, SDKWrapper.P1, "theft", "theft_backup_off");
+                    SDKWrapper.addEvent(AddSecurityNumberActivity.this, SDKWrapper.P1, "theft1", "theft_backup_off");
                 }
                 break;
             default:
