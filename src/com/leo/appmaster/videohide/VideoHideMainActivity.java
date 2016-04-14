@@ -266,8 +266,8 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         if (mDataChanged) {
             mNewDataList = PrivacyHelper.getVideoPrivacy().getNewList();
             asyncLoad();
-            newLoadDone();
         }
+        newLoadDone();
 
         if (mOnCreated) {
             markIgnoreIfNeed();

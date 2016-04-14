@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="117dp"
     android:background="@color/white"
     android:paddingLeft="8dp"
     >
@@ -9,8 +9,10 @@
 
         <ImageView
             android:id="@+id/image"
+            android:maxWidth="109dp"
+            android:layout_centerInParent="true"
             android:layout_width="match_parent"
-            android:layout_height="109dp"
+            android:layout_height="117dp"
             android:scaleType="centerCrop" />
 
     <ImageView
@@ -21,7 +23,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/image"
         android:paddingBottom="5dp"
-        android:paddingRight="5dp"
+        android:paddingRight="11dp"
         android:src="@drawable/ic_media_check_normal" />
 
 </RelativeLayout>

@@ -7,11 +7,13 @@
     <RelativeLayout
         android:id="@+id/fralay_top"
         android:layout_width="match_parent"
-        android:layout_height="109dp"
+        android:layout_height="116dp"
         android:layout_marginTop="8dp">
 
         <ImageView
             android:id="@+id/image"
+            android:layout_centerInParent="true"
+            android:maxWidth="109dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -30,7 +32,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="11dp"
 
             android:src="@drawable/pic_choose_normal" />
 

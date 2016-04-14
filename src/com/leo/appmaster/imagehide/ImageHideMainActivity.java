@@ -409,8 +409,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         if (mDataChanged) {
             mNewAddPic = PrivacyHelper.getImagePrivacy().getNewList();
             asyncLoad();
-            newLoadDone();
         }
+        newLoadDone();
 
         if (mOnCreated) {
             markIgnoreIfNeed();
