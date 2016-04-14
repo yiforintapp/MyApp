@@ -681,7 +681,7 @@ public class GestureLockFragment extends LockFragment implements
 
     @Override
     public void onLockPackageChanged(String lockedPackage) {
-        if (!TextUtils.equals(lockedPackage, mPackageName) && !TextUtils.isEmpty(lockedPackage)) {
+        if (!TextUtils.isEmpty(lockedPackage) && !TextUtils.equals(lockedPackage, mPackageName)) {
             mPackageName = lockedPackage;
             mInputCount = 0;
             if (mGestureTip != null) {

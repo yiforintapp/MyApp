@@ -1394,7 +1394,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         if (mAppIcon == null) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
         }
-        if (!TextUtils.equals(lockedPackage, mPackageName) && !TextUtils.isEmpty(lockedPackage)) {
+        if (!TextUtils.isEmpty(lockedPackage) && !TextUtils.equals(lockedPackage, mPackageName)) {
             mPackageName = lockedPackage;
             mInputCount = 0;
             mPasswdTip.setText(R.string.passwd_hint);
