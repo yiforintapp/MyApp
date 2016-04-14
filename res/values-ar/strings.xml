@@ -1228,7 +1228,7 @@
     <string name="airsig_settings_activity_two_set_dialog">لم يتم تمكين قفل التوقيع. تمكين الآن؟</string>
     <string name="airsig_settings_lock_fragment_normal">تغيير إلى النمط</string>
     <string name="airsig_settings_lock_fragment_normal_psw">تغيير إلى رمز PIN</string>
-    <string name="airsig_settings_lock_fragment_airsig">Magic Lock إلى Airsig</string>
+    <string name="airsig_settings_lock_fragment_airsig">تغيير إلى Magic Lock</string>
     <string name="change_gesture_or_password">تغيير إلى النمط/رمز PIN</string>
     <string name="gesture_or_password">النمط/رمز PIN</string>
     <string name="did_not_open">غير مُمكَّنة</string>
