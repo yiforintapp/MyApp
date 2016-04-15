@@ -597,10 +597,17 @@ public class LockManagerImpl extends LockManager {
 
     @Override
     public void addPkg2Mode(List<String> pkgs, LockMode mode) {
+        if (pkgs == null || pkgs.isEmpty() || mode == null) {
+            return;
+        }
+        long start = SystemClock.elapsedRealtime();
         List<String> ignoreList = InstalledAppTable.getInstance().getIgnoredList();
+        long end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "<ls> addPkg2Mode, getIgnoredList cost: " + (end - start));
         final List<String> coreChgList = new ArrayList<String>();
-        synchronized (this) {
-            if (pkgs != null && mode != null && mode.lockList != null && mode.defaultFlag != 0) {
+        start = SystemClock.elapsedRealtime();
+//        synchronized (this) {
+            if (mode.lockList != null && mode.defaultFlag != 0) {
                 for (String pkg : pkgs) {
                     if (!TextUtils.isEmpty(pkg) && !mode.lockList.contains(pkg)) {
                         mode.lockList.add(0, pkg);
@@ -615,19 +622,20 @@ public class LockManagerImpl extends LockManager {
                 return;
             }
 
-            // add self pkg
-            if (!mode.lockList.contains(mContext.getPackageName())) {
-                mode.lockList.add(mContext.getPackageName());
-            }
+//        }
+        // add self pkg
+        if (!mode.lockList.contains(mContext.getPackageName())) {
+            mode.lockList.add(mContext.getPackageName());
         }
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "<ls> addPkg2Mode, synchronized cost: " + (end - start));
 
         if (mode.isCurrentUsed) {
-//            PrivacyHelper.getInstance(mContext).computePrivacyLevel(PrivacyHelper.VARABLE_APP_LOCK);
+            notifySecurityChange();
             mCachedScore += SPA * coreChgList.size();
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
-                    notifySecurityChange();
                     InstalledAppTable.getInstance().insertIgnoreList(coreChgList);
                 }
             });
@@ -640,10 +648,13 @@ public class LockManagerImpl extends LockManager {
 
     @Override
     public void removePkgFromMode(List<String> pkgs, LockMode mode, boolean notifyChange) {
+        if (pkgs == null || mode == null) {
+            return;
+        }
         long a = System.currentTimeMillis();
-        synchronized (this) {
+//        synchronized (this) {
             long c = System.currentTimeMillis();
-            if (pkgs != null && mode != null && mode.lockList != null) {
+            if (mode.lockList != null) {
                 for (String pkg : pkgs) {
                     if (mode.lockList.contains(pkg)) {
                         mode.lockList.remove(pkg);
@@ -656,7 +667,7 @@ public class LockManagerImpl extends LockManager {
             }
             long d = System.currentTimeMillis();
             LeoLog.d("testWhoNull", "part inner : " + (d - c));
-        }
+//        }
         long b = System.currentTimeMillis();
         LeoLog.d("testWhoNull", "part 123 : " + (b - a));
 
@@ -1342,16 +1353,6 @@ public class LockManagerImpl extends LockManager {
 
         mCachedScore = score;
         return score < 0 ? 0 : score;
-//        int score = 0;
-//        if (mCachedScore != NO_CACHE) {
-//            score = mCachedScore < 0 ? 0 : mCachedScore;
-//            return score;
-//        }
-//
-//        score = calSecurityScore();
-//
-//        mCachedScore = score;
-//        return score < 0 ? 0 : score;
     }
 
     @Override

@@ -185,7 +185,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
-                setPrivacyListAndCount();
+                setPrivacyListAndCount(true, true, true);
             }
         });
         if (isScreenOn) {
@@ -210,7 +210,12 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     @Override
     public void onSecurityChange(final String description, int securityScore) {
         LeoLog.d(TAG, "<ls> onSecurityChange, description: " + description);
-        setPrivacyListAndCount();
+
+        if (MgrContext.MGR_APPLOCKER.equals(description)) {
+            setPrivacyListAndCount(true, false, false);
+        } else {
+            setPrivacyListAndCount(false, true, true);
+        }
     }
 
     private class ScoreTimerTask implements Runnable {
@@ -224,7 +229,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             long currentTs = System.currentTimeMillis();
             mLastScanTs = currentTs;
 
-            setPrivacyListAndCount();
+            setPrivacyListAndCount(true, true, true);
 
             checkOrNotifyPrivacy(PRIVACY_APP_LOCK);
             checkOrNotifyPrivacy(PRIVACY_HIDE_PIC);
@@ -232,40 +237,38 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         }
     }
 
-    private void setPrivacyListAndCount() {
-        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        List<AppItemInfo> appList = lm.getNewAppList();
-        sLockPrivacy.setNewList(appList);
-        sLockPrivacy.setProceedCount(lm.getLockedAppCount());
-        sLockPrivacy.setTotalCount(lm.getAllAppCount());
-        LeoLog.d(TAG, "<ls> set privacy: " + sLockPrivacy.toString());
+    private void setPrivacyListAndCount(boolean setApp, boolean setImage, boolean setVideo) {
+        if (setApp) {
+            final LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            // 仅仅把获取个数防盗调用线程一起，防止用户点击加锁后，迅速返回到首页，个数没有更新的问题
+            sLockPrivacy.setProceedCount(lm.getLockedAppCount());
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    List<AppItemInfo> appList = lm.getNewAppList();
+                    sLockPrivacy.setNewList(appList);
+                    sLockPrivacy.setTotalCount(lm.getAllAppCount());
+                    LeoLog.d(TAG, "<ls> set privacy: " + sLockPrivacy.toString());
+                }
+            });
+        }
 
         PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-//        int lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_PIC, 0);
-        List<PhotoItem> picList = pdm.getAddPic();
-//        if (lastRecord > 0) {
+        if (setImage) {
+            List<PhotoItem> picList = pdm.getAddPic();
             sImagePrivacy.setNewList(picList);
-//            sImagePrivacy.setNewListFoundStatus(picList);
-//        } else {
-//            sImagePrivacy.setNewList(null);
-//            sImagePrivacy.setNewListFoundStatus(picList);
-//        }
-        sImagePrivacy.setProceedCount(pdm.getHidePicsNum());
-        sImagePrivacy.setTotalCount(pdm.getNormalPicsNum());
-        LeoLog.d(TAG, "<ls> set privacy: " + sImagePrivacy.toString());
+            sImagePrivacy.setProceedCount(pdm.getHidePicsNum());
+            sImagePrivacy.setTotalCount(pdm.getNormalPicsNum());
+            LeoLog.d(TAG, "<ls> set privacy: " + sImagePrivacy.toString());
+        }
 
-//        lastRecord = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
-        List<VideoItemBean> vidList = pdm.getAddVid();
-//        if (lastRecord > 0) {
+        if (setVideo) {
+            List<VideoItemBean> vidList = pdm.getAddVid();
             sVideoPrivacy.setNewList(vidList);
-//            sVideoPrivacy.setNewListFoundStatus(vidList);
-//        } else {
-//            sVideoPrivacy.setNewList(null);
-//            sVideoPrivacy.setNewListFoundStatus(vidList);
-//        }
-        sVideoPrivacy.setProceedCount(pdm.getHideVidsNum());
-        sVideoPrivacy.setTotalCount(pdm.getNormalVidsNum());
-        LeoLog.d(TAG, "<ls> set privacy: " + sVideoPrivacy.toString());
+            sVideoPrivacy.setProceedCount(pdm.getHideVidsNum());
+            sVideoPrivacy.setTotalCount(pdm.getNormalVidsNum());
+            LeoLog.d(TAG, "<ls> set privacy: " + sVideoPrivacy.toString());
+        }
     }
 
     private class DelayTimerTask implements Runnable {
