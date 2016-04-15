@@ -1372,9 +1372,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     //取消首页更多按钮引导
     private void cancelHomeMoreGuide() {
-        if (!mIsShowMoreTip) {
-            return;
-        }
         if (mHomeMoreGuideFragment != null) {
             mHomeMoreGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
         }

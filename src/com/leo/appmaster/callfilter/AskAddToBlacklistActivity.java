@@ -38,7 +38,7 @@ import java.util.List;
 
 
 public class AskAddToBlacklistActivity extends BaseActivity {
-    private final String  TAG = "AskAddToBlacklistActivity";
+    private final String TAG = "AskAddToBlacklistActivity";
     private CallFilterManager mCmp;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmrMark;
     private MultiChoicesWitchSummaryDialog mDialogAskAddWithSmr;
@@ -83,7 +83,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
 //        super.onNewIntent(intent);
 //        handleIntent(intent);
 //    }
-    
+
     private void handleIntent(Intent intent) {
         mPhoneNumber = intent.getStringExtra(EXTRA_NUMBER);
         int intExtra = intent.getIntExtra(EXTRA_WHAT_TO_SHOW, -1);
@@ -134,19 +134,19 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             }
         });
         mFlowTipDialog.setOnClickListener(new OnDiaogClickListener() {
-          @Override
-          public void onClick(int which) {
-              if (which == 0) {
-                  SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "datapage", "data_cnts_notify");
-                  // 关闭网络
-                  setMobileNetUnable();
-              }
-              mFlowTipDialog.cancel();
-          }
-      });
+            @Override
+            public void onClick(int which) {
+                if (which == 0) {
+                    SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "datapage", "data_cnts_notify");
+                    // 关闭网络
+                    setMobileNetUnable();
+                }
+                mFlowTipDialog.cancel();
+            }
+        });
         mFlowTipDialog.show();
     }
-    
+
     private void showTooShortDialog() {
         long durationMax = mCmp.getCallDurationMax();
         mDialogTooShort = CallFIlterUIHelper.getInstance().getCallHandleDialogWithSummary(mPhoneNumber, this, true, 0, false);
@@ -207,7 +207,6 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mDialogTooShort.show();
         SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_5s_sh");
     }
-
 
 
     private void showAskAddBlackWithMark(int[] filterTip) {
@@ -419,11 +418,11 @@ public class AskAddToBlacklistActivity extends BaseActivity {
             }
         }
     }
-    
+
     public boolean invokeMethod(String methodName, Object[] arg)
             throws Exception {
 
-        ConnectivityManager mConnectivityManager = (ConnectivityManager) 
+        ConnectivityManager mConnectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
 
         Class ownerClass = mConnectivityManager.getClass();
@@ -444,7 +443,7 @@ public class AskAddToBlacklistActivity extends BaseActivity {
     public Object invokeBooleanArgMethod(String methodName, boolean value)
             throws Exception {
 
-        ConnectivityManager mConnectivityManager = (ConnectivityManager) 
+        ConnectivityManager mConnectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
 
         Class ownerClass = mConnectivityManager.getClass();
@@ -457,17 +456,22 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         return method.invoke(mConnectivityManager, value);
     }
 
-    private  void showShareDialog() {
+    private void showShareDialog() {
 
         if (mShareDialog == null) {
             mShareDialog = new LEOAlarmDialog(this);
             mShareDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
-                    if (mShareDialog != null) {
-                        mShareDialog = null;
+                    try {
+                        if (mShareDialog != null) {
+                            mShareDialog = null;
+                        }
+                        AskAddToBlacklistActivity.this.finish();
+                    } catch (Exception e) {
+                    } catch (Error e) {
+
                     }
-                    AskAddToBlacklistActivity.this.finish();
                 }
             });
         }
@@ -490,33 +494,48 @@ public class AskAddToBlacklistActivity extends BaseActivity {
         mShareDialog.setLeftBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (mShareDialog != null && mShareDialog.isShowing()) {
-                    mShareDialog.dismiss();
-                    mShareDialog = null;
+                try {
+                    if (mShareDialog != null && mShareDialog.isShowing()) {
+                        mShareDialog.dismiss();
+                        mShareDialog = null;
+                    }
+                    SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block_noshare");
+                } catch (Exception e) {
+                } catch (Error e) {
+
                 }
-                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block_noshare");
             }
         });
         mShareDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (mShareDialog != null && mShareDialog.isShowing()) {
-                    mShareDialog.dismiss();
-                    mShareDialog = null;
+
+                try {
+                    if (mShareDialog != null && mShareDialog.isShowing()) {
+                        mShareDialog.dismiss();
+                        mShareDialog = null;
+                    }
+                    SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block_share");
+                    shareApps(shareLeoPreference);
+                } catch (Exception e) {
+                } catch (Error e) {
+
                 }
-                SDKWrapper.addEvent(AskAddToBlacklistActivity.this, SDKWrapper.P1, "block", "calling_block_share");
-                shareApps(shareLeoPreference);
             }
         });
-        if (mShareDialog.getWindow() != null) {
+        if (mShareDialog != null && mShareDialog.getWindow() != null) {
             mShareDialog.getWindow().setWindowAnimations(R.style.dialogAnim);
         }
-        mShareDialog.show();
+        if (!this.isFinishing() && mShareDialog != null) {
+            mShareDialog.show();
+        }
     }
 
 
-    /** 分享应用 */
-    private  void shareApps(LeoPreference leoPreference) {
+    /**
+     * 分享应用
+     */
+    private void shareApps(LeoPreference leoPreference) {
         LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mLockManager.filterSelfOneMinites();
         boolean isContentEmpty = TextUtils.isEmpty(
