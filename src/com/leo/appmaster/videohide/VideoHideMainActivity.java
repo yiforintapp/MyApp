@@ -107,6 +107,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     private boolean mDataChanged;
     private boolean mEnterSubPage;
     private boolean mOnCreated;
+    private boolean mHasCheck = false;
     private ImageSize mNewImageSize;
 
     private void loadDone() {
@@ -123,27 +124,6 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 //                mRlWholeShowContent.setVisibility(View.GONE);
                 mNohideVideo.setText(getString(R.string.app_no_video_hide));
             }
-//            if (mNewVidAdapter != null) {
-//                if (mNewDataList == null || mNewDataList.size() == 0) {
-//                    mIncludeLayoutNewVid.setVisibility(View.GONE);
-//                } else {
-//                    mIncludeLayoutNewVid.setVisibility(View.VISIBLE);
-//                    mNewVidAdapter.setDataList(mNewDataList);
-//                    mNewVidAdapter.notifyDataSetChanged();
-//                    updateTips();
-//                }
-//            }
-
-//            if (mNewPicAdapter != null) {
-//                if (mNewDataList == null || mNewDataList.size() == 0) {
-//                    mIncludeLayoutNewPic.setVisibility(View.GONE);
-//                } else {
-//                    mIncludeLayoutNewPic.setVisibility(View.VISIBLE);
-////                    mNewPicAdapter.setDataList(mNewDataList);
-////                    mNewPicAdapter.notifyDataSetChanged();
-////                    updateTips();
-//                }
-//            }
         }
     }
 
@@ -172,7 +152,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
 
     private void newLoadDone() {
-        if (mHasShowNew) {
+        if (mHasShowNew && mHasCheck) {
             mIncludeLayoutNewVid.setVisibility(View.GONE);
         }
         if (mNewVidAdapter != null) {
@@ -186,7 +166,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
                 updateTips();
             } else {
                 mHasShowNew = true;
-                mIncludeLayoutNewVid.setVisibility(View.GONE);
+//                mIncludeLayoutNewVid.setVisibility(View.GONE);
             }
         }
     }
@@ -287,7 +267,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             PrivacyHelper.getVideoPrivacy().clearNewList();
             // 1、从banner进入
             // 2、从tab进入，并且状态为“x张待处理视频”
-            markNewVidCheckedAsy();
+            markNewVidCheckedAsy(false);
         }
     }
 
@@ -380,6 +360,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         mRlWholeShowContent = (RelativeLayout) findViewById(R.id.rl_whole_show_content);
         mIncludeLayoutNewVid = findViewById(R.id.layout_newpic);
+        mIncludeLayoutNewVid.setVisibility(View.GONE);
         ImageView f = (ImageView)mIncludeLayoutNewVid.findViewById(R.id.iv_hide_type);
         f.setImageResource(R.drawable.tips_video_icon);
         mRvHideNew = (RippleView) mIncludeLayoutNewVid.findViewById(R.id.rv_hide_new);
@@ -393,7 +374,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mTvIgnoreNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                markNewVidCheckedAsy();
+                markNewVidCheckedAsy(true);
                 hideHeadLayout();
             }
         });
@@ -418,7 +399,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(VideoHideMainActivity.this, VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
-                markNewVidCheckedAsy();
+                markNewVidCheckedAsy(true);
                 mEnterSubPage = true;
             }
         });
@@ -574,7 +555,10 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
     }
 
-    private void markNewVidCheckedAsy() {
+    private void markNewVidCheckedAsy(boolean needChangeFlag) {
+        if (needChangeFlag) {
+            mHasCheck = true;
+        }
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
@@ -599,7 +583,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         try {
             startActivityForResult(intent, REQUEST_CODE_OPTION);
-            markNewVidCheckedAsy();
+            markNewVidCheckedAsy(true);
         } catch (Exception e) {
         }
         mEnterSubPage = true;
@@ -694,7 +678,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GO_NEW) {
-            markNewVidCheckedAsy();
+            markNewVidCheckedAsy(true);
         }
     }
 

@@ -104,6 +104,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private boolean mEnterSubPage;
     private boolean mDataChanged;
     private boolean mOnCreated;
+    private boolean mHasCheck = false;
 
     @Override
     public void onBackPressed() {
@@ -196,9 +197,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     }
 
     private void newLoadDone() {
-        LeoLog.i("newpic", "total : " + PrivacyHelper.getImagePrivacy().getTotalCount() + "        new : " +
-                PrivacyHelper.getImagePrivacy().getNewCount());
-        if (mHasShowNew) {
+//        LeoLog.i("newpic", "total : " + PrivacyHelper.getImagePrivacy().getTotalCount() + "        new : " +
+//                PrivacyHelper.getImagePrivacy().getNewCount());
+
+        if (mHasShowNew && mHasCheck) {
             mIncludeLayoutNewPic.setVisibility(View.GONE);
         }
         if (mNewPicAdapter != null) {
@@ -215,7 +217,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
                 updateTips();
             } else {
                 mHasShowNew = true;
-                mIncludeLayoutNewPic.setVisibility(View.GONE);
+//                mIncludeLayoutNewPic.setVisibility(View.GONE);
             }
         }
     }
@@ -242,7 +244,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             PrivacyHelper.getImagePrivacy().clearNewList();
             // 1、从banner进入
             // 2、从tab进入，并且状态为“x张待处理视频”
-            markNewPicCheckedAsy();
+            markNewPicCheckedAsy(false);
         }
     }
 
@@ -274,7 +276,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_GO_NEW) {
-            markNewPicCheckedAsy();
+            markNewPicCheckedAsy(true);
         }
     }
 
@@ -290,6 +292,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private void initUI() {
         mRlWholeShowContent = (RelativeLayout) findViewById(R.id.rl_whole_show_content);
         mIncludeLayoutNewPic = findViewById(R.id.layout_newpic);
+        mIncludeLayoutNewPic.setVisibility(View.GONE);
         mRvHideNew = (RippleView) mIncludeLayoutNewPic.findViewById(R.id.rv_hide_new);
         mRvHideNew.setOnClickListener(new OnClickListener() {
             @Override
@@ -301,7 +304,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         mTvIgnoreNew.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                markNewPicCheckedAsy();
+                markNewPicCheckedAsy(true);
                 hideHeadLayout();
                 SDKWrapper.addEvent(ImageHideMainActivity.this, SDKWrapper.P1, "hide_pic", "pic_card_no");
             }
@@ -331,7 +334,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
-                markNewPicCheckedAsy();
+                markNewPicCheckedAsy(true);
                 mEnterSubPage = true;
             }
         });
@@ -450,11 +453,14 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
         intent.putExtras(bundle);
         startActivityForResult(intent, REQUEST_CODE_OPTION);
-        markNewPicCheckedAsy();
+        markNewPicCheckedAsy(true);
         mEnterSubPage = true;
     }
 
-    private void markNewPicCheckedAsy() {
+    private void markNewPicCheckedAsy(boolean needChangeFlag) {
+        if (needChangeFlag) {
+            mHasCheck = true;
+        }
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
