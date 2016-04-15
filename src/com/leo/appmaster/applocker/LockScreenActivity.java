@@ -2951,31 +2951,33 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             if (position == 0) {
                 float alpha = 1 - positionOffset;
-                if (alpha > 0) {
-                    int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
-                    if (type == LockFragment.LOCK_TYPE_PASSWD) {
-                        ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(alpha);
-                        ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(alpha);
-                    } else {
-                        ((GestureLockFragment) mLockFragment).getIconView().setAlpha(alpha);
-                    }
-                    if (mLockAppTitleView != null) {
-                        TextView tv = mTtileBar.getTitleView();
-                        if (tv != null) {
-                            tv.setAlpha(alpha);
+                if(mLockFragment != null){
+                    if (alpha > 0) {
+                        int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
+                        if (type == LockFragment.LOCK_TYPE_PASSWD) {
+                            ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(alpha);
+                            ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(alpha);
+                        } else {
+                            ((GestureLockFragment) mLockFragment).getIconView().setAlpha(alpha);
                         }
-                        mLockAppTitleView.setAlpha(1 - alpha);
-                    }
-                } else {
-                    int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
-                    if (type == LockFragment.LOCK_TYPE_PASSWD) {
-                        if (((PasswdLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
-                            ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
-                            ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(0.0f);
+                        if (mLockAppTitleView != null) {
+                            TextView tv = mTtileBar.getTitleView();
+                            if (tv != null) {
+                                tv.setAlpha(alpha);
+                            }
+                            mLockAppTitleView.setAlpha(1 - alpha);
                         }
                     } else {
-                        if (((GestureLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
-                            ((GestureLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+                        int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
+                        if (type == LockFragment.LOCK_TYPE_PASSWD) {
+                            if (((PasswdLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
+                                ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+                                ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(0.0f);
+                            }
+                        } else {
+                            if (((GestureLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
+                                ((GestureLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+                            }
                         }
                     }
                 }

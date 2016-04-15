@@ -53,6 +53,7 @@ public class BatteryNotifyHelper {
     private boolean mNeedUpdateLevel = false;
 
     private static BatteryNotifyHelper sInstance;
+
     private BatteryNotifyHelper(Context context, BatteryManager batteryManager) {
         mContext = context;
         mManager = batteryManager;
@@ -65,7 +66,7 @@ public class BatteryNotifyHelper {
         fireTimerAction();
     }
 
-    public static BatteryNotifyHelper getInstance (Context context, BatteryManager batteryManager) {
+    public static BatteryNotifyHelper getInstance(Context context, BatteryManager batteryManager) {
         if (sInstance == null) {
             sInstance = new BatteryNotifyHelper(context, batteryManager);
         }
@@ -157,7 +158,7 @@ public class BatteryNotifyHelper {
                             final List<BatteryComsuption> list = mManager.getBatteryDrainApps();
                             LeoLog.d(TAG, "apps count: " + list.size()
                                     + "/" + mManager.getAppThreshold());
-                            if (list.size() > mManager.getAppThreshold() && !LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI,false)) {
+                            if (list.size() > mManager.getAppThreshold() && !LeoSettings.getBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, false)) {
                                 ThreadManager.executeOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -181,6 +182,10 @@ public class BatteryNotifyHelper {
         NotificationManager mNotificationManager =
                 (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if (mNotificationManager == null) {
+            return;
+        }
+
         /* 充满后不显示屏保 - 直接去掉 */
         if (level == 100) {
             mNotificationManager.cancel(SAVER_NOTIFICATION_ID);
@@ -188,9 +193,9 @@ public class BatteryNotifyHelper {
         }
 
         int remainSecond = mManager.getRemainChargingTime(level);
-        int hours = remainSecond/(60*60);
-        int minutes = (remainSecond%(60*60))/60;
-        LeoLog.d(TAG, "remainSecond:"+remainSecond+"; hours:"+hours+";minutes:"+minutes);
+        int hours = remainSecond / (60 * 60);
+        int minutes = (remainSecond % (60 * 60)) / 60;
+        LeoLog.d(TAG, "remainSecond:" + remainSecond + "; hours:" + hours + ";minutes:" + minutes);
 
         LeoLog.d("BatteryNotifyHelper", "in showNotificationForScreenSaver, level = "
                 + level + "; onSystemLockScreen = " + onSystemLockScreen);
@@ -214,6 +219,9 @@ public class BatteryNotifyHelper {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
+        if (mBuilder == null) {
+            return;
+        }
         mBuilder.setContent(view_custom)
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
                 .setTicker(mContext.getApplicationContext().getString(R.string.batterymanage_switch_screen))
@@ -235,7 +243,9 @@ public class BatteryNotifyHelper {
 
         Notification notify = mBuilder.build();
         notify.contentView = view_custom;
-        mNotificationManager.notify(SAVER_NOTIFICATION_ID, notify);
+        if (notify != null) {
+            mNotificationManager.notify(SAVER_NOTIFICATION_ID, notify);
+        }
         mNeedUpdateLevel = true;
     }
 

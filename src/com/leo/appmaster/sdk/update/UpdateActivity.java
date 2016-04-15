@@ -376,6 +376,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         rvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mManager == null) {
+                    return;
+                }
                 mUserCancel = true;
                 mManager.onCancelCheck();
                 finish();
