@@ -154,6 +154,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     private Privacy mVideoPrivacy;
     private HomeDetectFragment mDetectFragment;
     private boolean mJudgeShowGradeTip;
+    private GuideFragment mHomeMoreGuideFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -384,7 +385,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mDetectFragment = (HomeDetectFragment) getSupportFragmentManager().findFragmentById(R.id.home_anim_ft);
         mTabFragment = (HomeTabFragment) getSupportFragmentManager().findFragmentById(R.id.home_tab_ft);
         mGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.home_guide);
-        mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+//        mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+
+        mHomeMoreGuideFragment = (GuideFragment) getSupportFragmentManager().findFragmentById(R.id.home_guide_more_fg);
+        mHomeMoreGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
 
         mComingOutAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_out);
 
@@ -462,16 +466,16 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 //                LeoLog.e(TAG, "ex on onExitScanning...", e);
 //            }
 //        } else {
-            finish();
+        finish();
 
-            // ===== AMAM-1336 ========
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            try {
-                startActivity(intent);
-            } catch (Exception e) {
-            }
+        // ===== AMAM-1336 ========
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+        }
 //        }
 
     }
@@ -580,8 +584,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         openAdvanceProtectDialogHandler();
         showGradeDialog();
         judgeShowGradeTip();
-        if (!mJudgeShowGradeTip && mNeedDialogShow && !mUninstallGuideShow && mIsShowMoreTip) {
-            SDKWrapper.addEvent(this,SDKWrapper.P1,"home","more_gd_sh");
+        if (!mJudgeShowGradeTip
+                && mNeedDialogShow
+                && !mUninstallGuideShow
+                && mIsShowMoreTip) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "more_gd_sh");
             showHomeMoreGuide();
         }
         if (!LeoEventBus.getDefaultBus().isRegistered(this)) {
@@ -1324,9 +1331,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     //首页更多按钮引导
     private synchronized void showHomeMoreGuide() {
-        if (mGuideFragment != null) {
+        if (mHomeMoreGuideFragment != null) {
             int moreTipCount = LeoSettings.getInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, 1);
-            mGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+            mHomeMoreGuideFragment.setEnable(true, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
             int count = moreTipCount + 1;
             LeoSettings.setInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, count);
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -1342,10 +1349,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         boolean isMoreTip = LeoSettings.getBoolean(PrefConst.KEY_HOME_MORE_TIP, false);
         int moreTipCount = LeoSettings.getInteger(PrefConst.KEY_HOME_MORE_TIP_NUM, 1);
         boolean isEnoughMoreTipCount = (moreTipCount > MORE_TIP_COUNT);
+        boolean isTip = LeoSettings.getBoolean(PrefConst.KEY_HOME_GUIDE_MORE, false);
         LeoLog.e("setIsShowMoreGuide", "setIsShowMoreGuide:" + moreTipCount);
-        if (isMoreTip || isEnoughMoreTipCount) {
+        if (isMoreTip || isEnoughMoreTipCount || isTip) {
             return;
         }
+
         mIsShowMoreTip = true;
     }
 
@@ -1358,12 +1367,16 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onStop() {
         super.onStop();
+        cancelHomeMoreGuide();
     }
 
     //取消首页更多按钮引导
     private void cancelHomeMoreGuide() {
-        if (mGuideFragment != null) {
-            mGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
+        if (!mIsShowMoreTip) {
+            return;
+        }
+        if (mHomeMoreGuideFragment != null) {
+            mHomeMoreGuideFragment.setEnable(false, GuideFragment.GUIDE_TYPE.HOME_MORE_GUIDE);
         }
     }
 

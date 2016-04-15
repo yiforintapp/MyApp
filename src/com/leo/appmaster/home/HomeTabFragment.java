@@ -351,12 +351,10 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     Intent intent2 = new Intent(activity, AirSigActivity.class);
                     startActivity(intent2);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "airsig");
-
-//                    VideoPrivacy vp = (VideoPrivacy) PrivacyHelper.getInstance(getActivity()).getPrivacy(PrivacyHelper.PRIVACY_HIDE_VID);
-//                    vp.showNotification();
                     break;
                 case R.id.home_more:
                     LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED, true);
+                    LeoSettings.setBoolean(PrefConst.KEY_HOME_GUIDE_MORE, true);
                     intent = new Intent(activity, HomeMoreActivity.class);
                     activity.startActivity(intent);
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "more");
@@ -367,9 +365,6 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "more_gd_cli");
                         GuideFragment.mIsClickMoreTip = false;
                     }
-                    //测试
-//                    ImagePrivacy ip = (ImagePrivacy) PrivacyHelper.getInstance(getActivity()).getPrivacy(PrivacyHelper.PRIVACY_HIDE_PIC);
-//                    ip.showNotification();
                     break;
             }
         }

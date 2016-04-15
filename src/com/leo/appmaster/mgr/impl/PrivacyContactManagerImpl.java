@@ -589,13 +589,21 @@ public class PrivacyContactManagerImpl extends PrivacyContactManager {
 
         StringBuilder sb = new StringBuilder();
         sb.append(version);
+        sb.append(";");
         sb.append(vender);
+        sb.append(";");
         sb.append(deviceName);
+        sb.append(";");
         sb.append(apiLevel);
+        sb.append(";");
         sb.append(appVer);
+        sb.append(";");
         sb.append(channelCode);
+        sb.append(";");
         sb.append(contry);
+        sb.append(";");
         sb.append(language);
+        sb.append(";");
 
         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft1", "message_$" + sb.toString());
     }
