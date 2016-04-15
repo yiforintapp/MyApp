@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2011-2014 Sergey Tarasevich
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,10 +19,13 @@ package com.leo.imageloader;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.telecom.Log;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.leo.appmaster.AppMasterConfig;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.cache.DiskCache;
 import com.leo.imageloader.cache.MemoryCache;
 import com.leo.imageloader.core.FailReason;
@@ -69,7 +72,9 @@ public class ImageLoader {
 
     private volatile static ImageLoader instance;
 
-    /** Returns singleton class instance */
+    /**
+     * Returns singleton class instance
+     */
     public static ImageLoader getInstance() {
         if (instance == null) {
             synchronized (ImageLoader.class) {
@@ -92,9 +97,9 @@ public class ImageLoader {
      * {@linkplain #destroy() destroy ImageLoader} at first.
      *
      * @param configuration {@linkplain ImageLoaderConfiguration ImageLoader
-     *            configuration}
+     *                      configuration}
      * @throws IllegalArgumentException if <b>configuration</b> parameter is
-     *             null
+     *                                  null
      */
     public synchronized void init(ImageLoaderConfiguration configuration) {
         if (configuration == null) {
@@ -126,12 +131,12 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri        Image URI (i.e. "http://site.com/image.png",
+     *                   "file:///mnt/sdcard/image.png")
      * @param imageAware {@linkplain com.leo.imageloader.core.ImageAware Image
-     *            aware view} which should display image
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                   aware view} which should display image
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageAware</b> is null
      */
     public void displayImage(String uri, ImageAware imageAware) {
@@ -146,15 +151,15 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri        Image URI (i.e. "http://site.com/image.png",
+     *                   "file:///mnt/sdcard/image.png")
      * @param imageAware {@linkplain com.leo.imageloader.core.ImageAware Image
-     *            aware view} which should display image
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                   aware view} which should display image
+     * @param listener   {@linkplain ImageLoadingListener Listener} for image
+     *                   loading process. Listener fires events on UI thread if this
+     *                   method is called on UI thread.
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageAware</b> is null
      */
     public void displayImage(String uri, ImageAware imageAware, ImageLoadingListener listener) {
@@ -167,17 +172,17 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri        Image URI (i.e. "http://site.com/image.png",
+     *                   "file:///mnt/sdcard/image.png")
      * @param imageAware {@linkplain com.leo.imageloader.core.ImageAware Image
-     *            aware view} which should display image
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                   aware view} which should display image
+     * @param options    {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                   Options} for image decoding and displaying. If <b>null</b> -
+     *                   default display image options
+     *                   {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                   from configuration} will be used.
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageAware</b> is null
      */
     public void displayImage(String uri, ImageAware imageAware, DisplayImageOptions options) {
@@ -190,24 +195,24 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri        Image URI (i.e. "http://site.com/image.png",
+     *                   "file:///mnt/sdcard/image.png")
      * @param imageAware {@linkplain com.leo.imageloader.core.ImageAware Image
-     *            aware view} which should display image
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                   aware view} which should display image
+     * @param options    {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                   Options} for image decoding and displaying. If <b>null</b> -
+     *                   default display image options
+     *                   {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                   from configuration} will be used.
+     * @param listener   {@linkplain ImageLoadingListener Listener} for image
+     *                   loading process. Listener fires events on UI thread if this
+     *                   method is called on UI thread.
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageAware</b> is null
      */
     public void displayImage(String uri, ImageAware imageAware, DisplayImageOptions options,
-            ImageLoadingListener listener) {
+                             ImageLoadingListener listener) {
         displayImage(uri, imageAware, options, listener, null);
     }
 
@@ -291,30 +296,30 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
-     * @param imageAware {@linkplain com.leo.imageloader.core.ImageAware Image
-     *            aware view} which should display image
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
+     * @param uri              Image URI (i.e. "http://site.com/image.png",
+     *                         "file:///mnt/sdcard/image.png")
+     * @param imageAware       {@linkplain com.leo.imageloader.core.ImageAware Image
+     *                         aware view} which should display image
+     * @param options          {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                         Options} for image decoding and displaying. If <b>null</b> -
+     *                         default display image options
+     *                         {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                         from configuration} will be used.
+     * @param listener         {@linkplain ImageLoadingListener Listener} for image
+     *                         loading process. Listener fires events on UI thread if this
+     *                         method is called on UI thread.
      * @param progressListener {@linkplain com.leo.imageloader.core.ImageLoadingProgressListener
-     *            Listener} for image loading progress. Listener fires events on
-     *            UI thread if this method is called on UI thread. Caching on
-     *            disk should be enabled in
-     *            {@linkplain com.leo.imageloader.DisplayImageOptions options}
-     *            to make this listener work.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                         Listener} for image loading progress. Listener fires events on
+     *                         UI thread if this method is called on UI thread. Caching on
+     *                         disk should be enabled in
+     *                         {@linkplain com.leo.imageloader.DisplayImageOptions options}
+     *                         to make this listener work.
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageAware</b> is null
      */
     public void displayImage(String uri, ImageAware imageAware, DisplayImageOptions options,
-            ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
+                             ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
         displayImage(uri, imageAware, options, listener, progressListener, null);
     }
 
@@ -326,11 +331,11 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri       Image URI (i.e. "http://site.com/image.png",
+     *                  "file:///mnt/sdcard/image.png")
      * @param imageView {@link ImageView} which should display image
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageView</b> is null
      */
     public void displayImage(String uri, ImageView imageView) {
@@ -343,16 +348,16 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri       Image URI (i.e. "http://site.com/image.png",
+     *                  "file:///mnt/sdcard/image.png")
      * @param imageView {@link ImageView} which should display image
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     * @param options   {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                  Options} for image decoding and displaying. If <b>null</b> -
+     *                  default display image options
+     *                  {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                  from configuration} will be used.
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageView</b> is null
      */
     public void displayImage(String uri, ImageView imageView, DisplayImageOptions options) {
@@ -371,14 +376,14 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri       Image URI (i.e. "http://site.com/image.png",
+     *                  "file:///mnt/sdcard/image.png")
      * @param imageView {@link ImageView} which should display image
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     * @param listener  {@linkplain ImageLoadingListener Listener} for image
+     *                  loading process. Listener fires events on UI thread if this
+     *                  method is called on UI thread.
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageView</b> is null
      */
     public void displayImage(String uri, ImageView imageView, ImageLoadingListener listener) {
@@ -391,23 +396,23 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri       Image URI (i.e. "http://site.com/image.png",
+     *                  "file:///mnt/sdcard/image.png")
      * @param imageView {@link ImageView} which should display image
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     * @param options   {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                  Options} for image decoding and displaying. If <b>null</b> -
+     *                  default display image options
+     *                  {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                  from configuration} will be used.
+     * @param listener  {@linkplain ImageLoadingListener Listener} for image
+     *                  loading process. Listener fires events on UI thread if this
+     *                  method is called on UI thread.
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageView</b> is null
      */
     public void displayImage(String uri, ImageView imageView, DisplayImageOptions options,
-            ImageLoadingListener listener) {
+                             ImageLoadingListener listener) {
         displayImage(uri, imageView, options, listener, null);
     }
 
@@ -417,29 +422,29 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
-     * @param imageView {@link ImageView} which should display image
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
+     * @param uri              Image URI (i.e. "http://site.com/image.png",
+     *                         "file:///mnt/sdcard/image.png")
+     * @param imageView        {@link ImageView} which should display image
+     * @param options          {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                         Options} for image decoding and displaying. If <b>null</b> -
+     *                         default display image options
+     *                         {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                         from configuration} will be used.
+     * @param listener         {@linkplain ImageLoadingListener Listener} for image
+     *                         loading process. Listener fires events on UI thread if this
+     *                         method is called on UI thread.
      * @param progressListener {@linkplain com.leo.imageloader.core.ImageLoadingProgressListener
-     *            Listener} for image loading progress. Listener fires events on
-     *            UI thread if this method is called on UI thread. Caching on
-     *            disk should be enabled in
-     *            {@linkplain com.leo.imageloader.DisplayImageOptions options}
-     *            to make this listener work.
-     * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                         Listener} for image loading progress. Listener fires events on
+     *                         UI thread if this method is called on UI thread. Caching on
+     *                         disk should be enabled in
+     *                         {@linkplain com.leo.imageloader.DisplayImageOptions options}
+     *                         to make this listener work.
+     * @throws IllegalStateException    if {@link #init(ImageLoaderConfiguration)}
+     *                                  method wasn't called before
      * @throws IllegalArgumentException if passed <b>imageView</b> is null
      */
     public void displayImage(String uri, ImageView imageView, DisplayImageOptions options,
-            ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
+                             ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
         displayImage(uri, new ImageViewAware(imageView), options, listener, progressListener);
     }
 
@@ -450,13 +455,13 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri      Image URI (i.e. "http://site.com/image.png",
+     *                 "file:///mnt/sdcard/image.png")
      * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
+     *                 loading process. Listener fires events on UI thread if this
+     *                 method is called on UI thread.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public void loadImage(String uri, ImageLoadingListener listener) {
         loadImage(uri, null, null, listener, null);
@@ -469,19 +474,19 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri             Image URI (i.e. "http://site.com/image.png",
+     *                        "file:///mnt/sdcard/image.png")
      * @param targetImageSize Minimal size for {@link Bitmap} which will be
-     *            returned in
-     *            {@linkplain ImageLoadingListener#onLoadingComplete(String, android.view.View, android.graphics.Bitmap)}
-     *            callback}. Downloaded image will be decoded and scaled to
-     *            {@link Bitmap} of the size which is <b>equal or larger</b>
-     *            (usually a bit larger) than incoming targetImageSize.
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
+     *                        returned in
+     *                        {@linkplain ImageLoadingListener#onLoadingComplete(String, android.view.View, android.graphics.Bitmap)}
+     *                        callback}. Downloaded image will be decoded and scaled to
+     *                        {@link Bitmap} of the size which is <b>equal or larger</b>
+     *                        (usually a bit larger) than incoming targetImageSize.
+     * @param listener        {@linkplain ImageLoadingListener Listener} for image
+     *                        loading process. Listener fires events on UI thread if this
+     *                        method is called on UI thread.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public void loadImage(String uri, ImageSize targetImageSize, ImageLoadingListener listener) {
         loadImage(uri, targetImageSize, null, listener, null);
@@ -494,18 +499,18 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.<br />
+     * @param uri      Image URI (i.e. "http://site.com/image.png",
+     *                 "file:///mnt/sdcard/image.png")
+     * @param options  {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                 Options} for image decoding and displaying. If <b>null</b> -
+     *                 default display image options
+     *                 {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                 from configuration} will be used.<br />
      * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
+     *                 loading process. Listener fires events on UI thread if this
+     *                 method is called on UI thread.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public void loadImage(String uri, DisplayImageOptions options, ImageLoadingListener listener) {
         loadImage(uri, null, options, listener, null);
@@ -518,27 +523,27 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri             Image URI (i.e. "http://site.com/image.png",
+     *                        "file:///mnt/sdcard/image.png")
      * @param targetImageSize Minimal size for {@link Bitmap} which will be
-     *            returned in
-     *            {@linkplain ImageLoadingListener#onLoadingComplete(String, android.view.View, android.graphics.Bitmap)}
-     *            callback}. Downloaded image will be decoded and scaled to
-     *            {@link Bitmap} of the size which is <b>equal or larger</b>
-     *            (usually a bit larger) than incoming targetImageSize.
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.<br />
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
+     *                        returned in
+     *                        {@linkplain ImageLoadingListener#onLoadingComplete(String, android.view.View, android.graphics.Bitmap)}
+     *                        callback}. Downloaded image will be decoded and scaled to
+     *                        {@link Bitmap} of the size which is <b>equal or larger</b>
+     *                        (usually a bit larger) than incoming targetImageSize.
+     * @param options         {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                        Options} for image decoding and displaying. If <b>null</b> -
+     *                        default display image options
+     *                        {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                        from configuration} will be used.<br />
+     * @param listener        {@linkplain ImageLoadingListener Listener} for image
+     *                        loading process. Listener fires events on UI thread if this
+     *                        method is called on UI thread.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public void loadImage(String uri, ImageSize targetImageSize, DisplayImageOptions options,
-            ImageLoadingListener listener) {
+                          ImageLoadingListener listener) {
         loadImage(uri, targetImageSize, options, listener, null);
     }
 
@@ -549,33 +554,33 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
-     * @param targetImageSize Minimal size for {@link Bitmap} which will be
-     *            returned in
-     *            {@linkplain ImageLoadingListener#onLoadingComplete(String, android.view.View, android.graphics.Bitmap)}
-     *            callback}. Downloaded image will be decoded and scaled to
-     *            {@link Bitmap} of the size which is <b>equal or larger</b>
-     *            (usually a bit larger) than incoming targetImageSize.
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and displaying. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.<br />
-     * @param listener {@linkplain ImageLoadingListener Listener} for image
-     *            loading process. Listener fires events on UI thread if this
-     *            method is called on UI thread.
+     * @param uri              Image URI (i.e. "http://site.com/image.png",
+     *                         "file:///mnt/sdcard/image.png")
+     * @param targetImageSize  Minimal size for {@link Bitmap} which will be
+     *                         returned in
+     *                         {@linkplain ImageLoadingListener#onLoadingComplete(String, android.view.View, android.graphics.Bitmap)}
+     *                         callback}. Downloaded image will be decoded and scaled to
+     *                         {@link Bitmap} of the size which is <b>equal or larger</b>
+     *                         (usually a bit larger) than incoming targetImageSize.
+     * @param options          {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                         Options} for image decoding and displaying. If <b>null</b> -
+     *                         default display image options
+     *                         {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                         from configuration} will be used.<br />
+     * @param listener         {@linkplain ImageLoadingListener Listener} for image
+     *                         loading process. Listener fires events on UI thread if this
+     *                         method is called on UI thread.
      * @param progressListener {@linkplain com.leo.imageloader.core.ImageLoadingProgressListener
-     *            Listener} for image loading progress. Listener fires events on
-     *            UI thread if this method is called on UI thread. Caching on
-     *            disk should be enabled in
-     *            {@linkplain com.leo.imageloader.DisplayImageOptions options}
-     *            to make this listener work.
+     *                         Listener} for image loading progress. Listener fires events on
+     *                         UI thread if this method is called on UI thread. Caching on
+     *                         disk should be enabled in
+     *                         {@linkplain com.leo.imageloader.DisplayImageOptions options}
+     *                         to make this listener work.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public void loadImage(String uri, ImageSize targetImageSize, DisplayImageOptions options,
-            ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
+                          ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
         checkConfiguration();
         if (targetImageSize == null) {
             targetImageSize = configuration.getMaxImageSize();
@@ -599,9 +604,9 @@ public class ImageLoader {
      * @param uri Image URI (i.e. "http://site.com/image.png",
      *            "file:///mnt/sdcard/image.png")
      * @return Result image Bitmap. Can be <b>null</b> if image loading/decoding
-     *         was failed or cancelled.
+     * was failed or cancelled.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public Bitmap loadImageSync(String uri) {
         return loadImageSync(uri, null, null);
@@ -612,17 +617,17 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri     Image URI (i.e. "http://site.com/image.png",
+     *                "file:///mnt/sdcard/image.png")
      * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and scaling. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
+     *                Options} for image decoding and scaling. If <b>null</b> -
+     *                default display image options
+     *                {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                from configuration} will be used.
      * @return Result image Bitmap. Can be <b>null</b> if image loading/decoding
-     *         was failed or cancelled.
+     * was failed or cancelled.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public Bitmap loadImageSync(String uri, DisplayImageOptions options) {
         return loadImageSync(uri, null, options);
@@ -636,16 +641,16 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri             Image URI (i.e. "http://site.com/image.png",
+     *                        "file:///mnt/sdcard/image.png")
      * @param targetImageSize Minimal size for {@link Bitmap} which will be
-     *            returned. Downloaded image will be decoded and scaled to
-     *            {@link Bitmap} of the size which is <b>equal or larger</b>
-     *            (usually a bit larger) than incoming targetImageSize.
+     *                        returned. Downloaded image will be decoded and scaled to
+     *                        {@link Bitmap} of the size which is <b>equal or larger</b>
+     *                        (usually a bit larger) than incoming targetImageSize.
      * @return Result image Bitmap. Can be <b>null</b> if image loading/decoding
-     *         was failed or cancelled.
+     * was failed or cancelled.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public Bitmap loadImageSync(String uri, ImageSize targetImageSize) {
         return loadImageSync(uri, targetImageSize, null);
@@ -656,21 +661,21 @@ public class ImageLoader {
      * <b>NOTE:</b> {@link #init(ImageLoaderConfiguration)} method must be
      * called before this method call
      *
-     * @param uri Image URI (i.e. "http://site.com/image.png",
-     *            "file:///mnt/sdcard/image.png")
+     * @param uri             Image URI (i.e. "http://site.com/image.png",
+     *                        "file:///mnt/sdcard/image.png")
      * @param targetImageSize Minimal size for {@link Bitmap} which will be
-     *            returned. Downloaded image will be decoded and scaled to
-     *            {@link Bitmap} of the size which is <b>equal or larger</b>
-     *            (usually a bit larger) than incoming targetImageSize.
-     * @param options {@linkplain com.leo.imageloader.DisplayImageOptions
-     *            Options} for image decoding and scaling. If <b>null</b> -
-     *            default display image options
-     *            {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
-     *            from configuration} will be used.
+     *                        returned. Downloaded image will be decoded and scaled to
+     *                        {@link Bitmap} of the size which is <b>equal or larger</b>
+     *                        (usually a bit larger) than incoming targetImageSize.
+     * @param options         {@linkplain com.leo.imageloader.DisplayImageOptions
+     *                        Options} for image decoding and scaling. If <b>null</b> -
+     *                        default display image options
+     *                        {@linkplain ImageLoaderConfiguration.Builder#defaultDisplayImageOptions(DisplayImageOptions)
+     *                        from configuration} will be used.
      * @return Result image Bitmap. Can be <b>null</b> if image loading/decoding
-     *         was failed or cancelled.
+     * was failed or cancelled.
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public Bitmap loadImageSync(String uri, ImageSize targetImageSize, DisplayImageOptions options) {
         if (options == null) {
@@ -690,7 +695,12 @@ public class ImageLoader {
      */
     private void checkConfiguration() {
         if (configuration == null) {
-            throw new IllegalStateException(ERROR_NOT_INIT);
+            boolean isLoggable = AppMasterConfig.LOGGABLE;
+            if (isLoggable) {
+                throw new IllegalStateException(ERROR_NOT_INIT);
+            } else {
+                LeoLog.e(TAG, ERROR_NOT_INIT);
+            }
         }
     }
 
@@ -698,7 +708,7 @@ public class ImageLoader {
      * Returns memory cache
      *
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public MemoryCache getMemoryCache() {
         checkConfiguration();
@@ -709,7 +719,7 @@ public class ImageLoader {
      * Clears memory cache
      *
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public void clearMemoryCache() {
         checkConfiguration();
@@ -720,7 +730,7 @@ public class ImageLoader {
      * Returns disk cache
      *
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      * @deprecated Use {@link #getDiskCache()} instead
      */
     @Deprecated
@@ -732,7 +742,7 @@ public class ImageLoader {
      * Returns disk cache
      *
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public DiskCache getDiskCache() {
         checkConfiguration();
@@ -743,7 +753,7 @@ public class ImageLoader {
      * Clears disk cache.
      *
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      * @deprecated Use {@link #clearDiskCache()} instead
      */
     @Deprecated
@@ -755,7 +765,7 @@ public class ImageLoader {
      * Clears disk cache.
      *
      * @throws IllegalStateException if {@link #init(ImageLoaderConfiguration)}
-     *             method wasn't called before
+     *                               method wasn't called before
      */
     public void clearDiskCache() {
         checkConfiguration();
@@ -783,7 +793,7 @@ public class ImageLoader {
      * {@link com.leo.imageloader.core.ImageAware ImageAware}.
      *
      * @param imageAware {@link com.leo.imageloader.core.ImageAware ImageAware}
-     *            for which display task will be cancelled
+     *                   for which display task will be cancelled
      */
     public void cancelDisplayTask(ImageAware imageAware) {
         engine.cancelDisplayTaskFor(imageAware);
@@ -794,7 +804,7 @@ public class ImageLoader {
      * {@link android.widget.ImageView ImageView}.
      *
      * @param imageView {@link android.widget.ImageView ImageView} for which
-     *            display task will be cancelled
+     *                  display task will be cancelled
      */
     public void cancelDisplayTask(ImageView imageView) {
         engine.cancelDisplayTaskFor(new ImageViewAware(imageView));
@@ -808,8 +818,8 @@ public class ImageLoader {
      * callback will be fired with {@link FailReason.FailType#NETWORK_DENIED}
      *
      * @param denyNetworkDownloads pass <b>true</b> - to deny engine to download
-     *            images from the network; <b>false</b> - to allow engine to
-     *            download images from network.
+     *                             images from the network; <b>false</b> - to allow engine to
+     *                             download images from network.
      */
     public void denyNetworkDownloads(boolean denyNetworkDownloads) {
         engine.denyNetworkDownloads(denyNetworkDownloads);
@@ -822,8 +832,8 @@ public class ImageLoader {
      * problem</a> or not.
      *
      * @param handleSlowNetwork pass <b>true</b> - to use
-     *            {@link FlushedInputStream} for network downloads; <b>false</b>
-     *            - otherwise.
+     *                          {@link FlushedInputStream} for network downloads; <b>false</b>
+     *                          - otherwise.
      */
     public void handleSlowNetwork(boolean handleSlowNetwork) {
         engine.handleSlowNetwork(handleSlowNetwork);
@@ -838,7 +848,9 @@ public class ImageLoader {
         engine.pause();
     }
 
-    /** Resumes waiting "load&display" tasks */
+    /**
+     * Resumes waiting "load&display" tasks
+     */
     public void resume() {
         engine.resume();
     }
