@@ -114,6 +114,7 @@ public class SDKWrapper {
         } catch (Exception e) {
             com.leo.stat.StatService.setMarketId("0000a");
         }
+        // com.leo.stat.StatService.setDebugOn(AppMasterConfig.LOGGABLE);
         com.leo.stat.StatService.setsDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
         com.leo.stat.StatService.initialize(ctx);
     }

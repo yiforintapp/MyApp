@@ -22,6 +22,7 @@ import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
+import com.leo.appmaster.privacycontact.SingleContactReceiver;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmater.globalbroadcast.AppErrorMonitor;
@@ -41,22 +42,21 @@ public class InitCoreDelayBootstrap extends Bootstrap {
     private PrivacyMessageContentObserver mContactObserver;
     private PrivacyContactReceiver mPrivacyReceiver;
 
-    private ITelephony mITelephony;
+    public static ITelephony mITelephony;
     private AudioManager mAudioManager;
 
     @Override
     protected boolean doStrap() {
         LeoLog.d(TAG, "<ls> doStrap, curr_tid:" + Thread.currentThread().getId() + " | main_tid:" + ThreadManager.getMainThreadId());
         long start = SystemClock.elapsedRealtime();
-        registerReceiveMessageCallIntercept();
+        SDKWrapper.iniSDK(mApp);
         long end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, registerReceiveMessageCallIntercept: " + (end - start));
-
+        LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
 
         start = SystemClock.elapsedRealtime();
-        SDKWrapper.iniSDK(mApp);
+        registerReceiveMessageCallIntercept();
         end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
+        LeoLog.i(TAG, "cost, registerReceiveMessageCallIntercept: " + (end - start));
 
         AppBackupRestoreManager.getInstance(mApp);
 
@@ -100,6 +100,7 @@ public class InitCoreDelayBootstrap extends Bootstrap {
                     mContactObserver);
         }
         openEndCall();
+        SingleContactReceiver.setTelephony(mITelephony, mAudioManager);
         mPrivacyReceiver = new PrivacyContactReceiver(mITelephony, mAudioManager);
         IntentFilter filter = new IntentFilter();
         filter.setPriority(Integer.MAX_VALUE);

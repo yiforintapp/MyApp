@@ -16,6 +16,7 @@ import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.bootstrap.InitCoreDelayBootstrap;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.phoneSecurity.MTKSendMsmHandler;
@@ -31,20 +32,17 @@ import java.text.SimpleDateFormat;
 public class SingleContactReceiver extends BroadcastReceiver {
     private static final String TAG = "PrivacyContactReceiver";
     private static final boolean DBG = false;
-    private ITelephony mITelephony;
-    private AudioManager mAudioManager;
+    private static ITelephony mITelephony;
+    private static AudioManager mAudioManager;
     private int mAnswer = 1;
     private String mPhoneNumber, mMessgeBody;
     private long mSendDate;
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
 
-    public SingleContactReceiver() {
-    }
-
-    public SingleContactReceiver(ITelephony itelephony, AudioManager audioManager) {
-        this.mITelephony = itelephony;
-        this.mAudioManager = audioManager;
+    public static void setTelephony(ITelephony telephony, AudioManager audioManager) {
+        mITelephony = telephony;
+        mAudioManager = audioManager;
     }
 
     @Override
@@ -133,12 +131,13 @@ public class SingleContactReceiver extends BroadcastReceiver {
             //数据初始化和准备
             final String phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
             final String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
-            PrivacyContactManager.getInstance(mContext).testValue = true;
+            PrivacyContactManager pcm = PrivacyContactManager.getInstance(mContext);
+            pcm.testValue = true;
 
             /**
              * 隐私联系人处理
              */
-            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+            if (mITelephony == null || mAudioManager == null || pcm.getPrivacyContactsCount() == 0) {
                 return;
             }
 
@@ -149,10 +148,10 @@ public class SingleContactReceiver extends BroadcastReceiver {
             if (!TextUtils.isEmpty(phoneNumber)) {
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(phoneNumber);
                 /*查询该号码是否挂断拦截*/
-                ContactBean contact = PrivacyContactManager.getInstance(mContext).getPrivateContact(formateNumber);
+                ContactBean contact = pcm.getPrivateContact(formateNumber);
                 /*查询该号码是否为隐私联系人*/
-                ContactBean privacyConatact = PrivacyContactManager.getInstance(mContext).getPrivateMessage(formateNumber, mContext);
-                PrivacyContactManager.getInstance(mContext).setLastCall(privacyConatact);
+                ContactBean privacyConatact = pcm.getPrivateMessage(formateNumber, mContext);
+                pcm.setLastCall(privacyConatact);
                 if (contact != null) {
                     if (state.equalsIgnoreCase(TelephonyManager.EXTRA_STATE_RINGING)) {
                         // 先静音处理
