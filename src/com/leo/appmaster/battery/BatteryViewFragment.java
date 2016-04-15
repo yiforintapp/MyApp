@@ -69,6 +69,8 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+import com.mobvista.msdk.out.Campaign;
+import com.mobvista.msdk.out.MvNativeHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -234,6 +236,9 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     public static String[] days = AppMasterApplication.getInstance().getResources()
             .getStringArray(R.array.days_of_week);
 
+	
+	private MvNativeHandler mvNativeHandler;
+	private Campaign mCampaign;
 
     //开始首页动画
     private android.os.Handler mHandler = new android.os.Handler() {
@@ -2373,17 +2378,39 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
         mShouldLoadAd = amp.getADOnScreenSaver() == 1;
         if (mShouldLoadAd) {
             mAdSource = amp.getChargingAdConfig();
-            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, Constants.UNIT_ID_CHARGING , new ADEngineWrapper.WrappedAdListener() {
-                @Override
-                public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
-                    if (code == MobvistaEngine.ERR_OK) {
-                        LeoLog.d(TAG, "Ad data ready ad title: " + campaign.getAppName());
-                        sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
-                    }
-                }
+            ADEngineWrapper.getInstance(mActivity).loadAd(mAdSource, Constants.UNIT_ID_CHARGING, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
+				/**
+				 * 广告请求回调
+				 *
+				 * @param code     返回码，如ERR_PARAMS_NULL
+				 * @param campaign 请求成功的广告结构体，失败为null
+				 * @param handler
+				 * @param msg      请求失败sdk返回的描述，成功为null
+				 * @param obj
+				 */
+				@Override
+				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, Object handler, String msg, Object obj) {
+					if (code == MobvistaEngine.ERR_OK) {
+						LeoLog.d(TAG, "Ad data ready ad title: " + campaign.getAppName());
+						sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign);
+						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
 
-                @Override
+						if (handler != null && handler instanceof MvNativeHandler) {
+							mvNativeHandler = (MvNativeHandler) handler;
+						}
+						
+						if (obj != null && obj instanceof List) {
+							mCampaign = (Campaign)((List) obj).get(0);
+						}
+					}
+				}
+
+				@Override
+				public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList, Object handler, String msg, Object obj, Object... flag) {
+
+				}
+
+				@Override
                 public void onWrappedAdClick(WrappedCampaign campaign, String unitID) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_screen");
 					HashMap<String, String> map = new HashMap<String, String>();
@@ -2415,7 +2442,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
     private void releaseAd() {
         if (mShouldLoadAd) {
             LeoLog.d(TAG, "release ad");
-            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, Constants.UNIT_ID_CHARGING);
+            ADEngineWrapper.getInstance(mActivity).releaseAd(mAdSource, Constants.UNIT_ID_CHARGING, mAdView, mCampaign, mvNativeHandler);
         }
     }
 
@@ -2536,7 +2563,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         // make the count correct
         //MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
-        ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING);
+        ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING, mCampaign);
         mAdWrapper.setOnClickListener(this);
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("unitId", Constants.UNIT_ID_CHARGING );

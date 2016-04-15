@@ -18,11 +18,11 @@
     <color name="mobvista_bg_main">#ffe5e0d7</color>
     <color name="mobvista_black_grid">#ff330066</color>
     <color name="mobvista_green">#ff2bac5f</color>
-     <color name="mobvista_black_light">#66000000</color>
-     <color name="mobvista_black">#ff000000</color>
-     <color name="mobvista_selected">#ff333333</color>
-     <color name="mobvista_white">#ffffffff</color>
-     <color name="mobvista_gray">#ff999999</color>
-     <color name="mobvista_layer_text">#ff343434</color>
-     <color name="mobvista_indicator_underline">#ff249848</color>
+    <color name="mobvista_black_light">#66000000</color>
+    <color name="mobvista_black">#ff000000</color>
+    <color name="mobvista_selected">#ff333333</color>
+    <color name="mobvista_white">#ffffffff</color>
+    <color name="mobvista_gray">#ff999999</color>
+    <color name="mobvista_layer_text">#ff343434</color>
+    <color name="mobvista_indicator_underline">#ff249848</color>
 </resources>

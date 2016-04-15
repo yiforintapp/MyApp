@@ -12,11 +12,13 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,9 +45,13 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
+import com.mobvista.msdk.out.Campaign;
+import com.mobvista.msdk.out.MvNativeHandler;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class HomeBoostActivity extends Activity {
@@ -73,6 +79,11 @@ public class HomeBoostActivity extends Activity {
     private AnimatorSet mRocketAnim;
     private AnimatorSet mAdAnim;
     private Random mRandom = new Random();
+	
+	private List<Campaign> mCampaignList;
+	private MvNativeHandler mvNativeHandler;
+	
+	private List<View> mAdViews = new ArrayList<View>();
 
 	private static int mAdSource = ADEngineWrapper.SOURCE_MOB; // 默认值
 	
@@ -111,25 +122,127 @@ public class HomeBoostActivity extends Activity {
     private void loadAD() {
 		
 		mAdEngine = ADEngineWrapper.getInstance(this);
-		mAdEngine.loadAd(mAdSource, Constants.UNIT_ID_62, new ADEngineWrapper.WrappedAdListener() {
+		mAdEngine.loadAd(mAdSource, Constants.UNIT_ID_62, ADEngineWrapper.AD_TYPE_TEMPLATE, new ADEngineWrapper.WrappedAdListener() {
+
 			/**
 			 * 广告请求回调
 			 *
 			 * @param code     返回码，如ERR_PARAMS_NULL
 			 * @param campaign 请求成功的广告结构体，失败为null
+			 * @param handler
 			 * @param msg      请求失败sdk返回的描述，成功为null
+			 * @param obj
 			 */
 			@Override
-			public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
-				if (code == MobvistaEngine.ERR_OK  && campaign != null) {
-					sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaign);
-					ImageLoader.getInstance().loadImage(campaign.getImageUrl(),
-							new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 262),
-									DipPixelUtil.dip2px(HomeBoostActivity.this, 130)),
-							sAdImageListener);
-				}
+			public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, Object handler, String msg, Object obj) {
+
 			}
 
+			@Override
+			public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList, Object handler, String msg, Object obj, Object... flag) {
+				if (code == MobvistaEngine.ERR_OK  && campaignList != null) {
+					sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaignList);
+
+					if (obj != null && obj instanceof List) {
+						mCampaignList = (List)obj;
+					}
+					
+					//判断是否一个图片还算多模板
+					String imageUrl = null;
+					boolean aPic = campaignList != null && campaignList.size() == 1;
+
+					int w = (aPic) ? 262 : 48;
+					int h = (aPic) ? 130 : 48;
+					int index = 0;
+
+					if (aPic) {
+
+						RelativeLayout adZone = (RelativeLayout) findViewById(R.id.rl_ad_bg);
+						ViewGroup.LayoutParams params = adZone.getLayoutParams();
+
+						params.width = (int) HomeBoostActivity.this.getResources().getDimension(R.dimen.ad_content_width);
+						params.height = (int) HomeBoostActivity.this.getResources().getDimension(R.dimen.ad_content_height);
+
+						adZone.setLayoutParams(params);
+
+						findViewById(R.id.template_zone).setVisibility(View.GONE);
+
+						findViewById(R.id.ad_info_zone).setVisibility(View.VISIBLE);
+						TextView appname = (TextView) findViewById(R.id.tv_ad_appname);
+						if(appname != null) {
+							appname.setText(campaignList.get(0).getAppName());
+						}
+
+						TextView appdesc = (TextView) findViewById(R.id.tv_ad_appdesc);
+						if(appdesc != null) {
+							appdesc.setText(campaignList.get(0).getDescription());
+						}
+
+						Button call = (Button) findViewById(R.id.btn_ad_appcall);
+						if(call != null) {
+							call.setText(campaignList.get(0).getAdCall());
+						}
+						imageUrl = campaignList.get(0).getImageUrl();
+						if (imageUrl != null && !"".equals(imageUrl)) {
+							ImageLoader.getInstance().loadImage(imageUrl,
+									new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, w),
+											DipPixelUtil.dip2px(HomeBoostActivity.this, h)), options, sAdImageListener);
+						}
+					} else {
+
+						TextView textView1, textView2, textView3;
+						Button btn1, btn2, btn3;
+
+
+						textView1 = (TextView) findViewById(R.id.ad_title1);
+						textView2 = (TextView) findViewById(R.id.ad_title2);
+						textView3 = (TextView) findViewById(R.id.ad_title3);
+
+						btn1 = (Button) findViewById(R.id.button1);
+						btn2 = (Button) findViewById(R.id.button2);
+						btn3 = (Button) findViewById(R.id.button3);
+
+						btn1.setClickable(false);
+						btn2.setClickable(false);
+						btn3.setClickable(false);
+
+						for (WrappedCampaign campaign : campaignList) {
+
+							switch (index) {
+								case 0:
+									textView1.setText(campaign.getAppName());
+									btn1.setText(campaign.getAdCall());
+
+									break;
+								case 1:
+									textView2.setText(campaign.getAppName());
+									btn2.setText(campaign.getAdCall());
+
+									break;
+								case 2:
+									textView3.setText(campaign.getAppName());
+									btn3.setText(campaign.getAdCall());
+
+									break;
+							}
+							index++;
+
+							imageUrl = campaign.getIconUrl();
+							if (imageUrl != null && !"".equals(imageUrl)) {
+								ImageLoader.getInstance().loadImage(imageUrl,
+										new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, w),
+												DipPixelUtil.dip2px(HomeBoostActivity.this, h)), options, sAdImageListener);
+							}
+						}
+						
+
+					}
+
+					
+					
+
+				}
+			}
 			/**
 			 * 广告点击回调
 			 *
@@ -153,13 +266,13 @@ public class HomeBoostActivity extends Activity {
      */
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
         WeakReference<HomeBoostActivity> mActivity;
-		WrappedCampaign mCampaign;
+		List<WrappedCampaign> mCampaign;
 		
 		HashMap<String, String> map  = new HashMap<String, String>();
 
-        public AdPreviewLoaderListener (HomeBoostActivity activity, final WrappedCampaign campaign) {
+        public AdPreviewLoaderListener (HomeBoostActivity activity, final List<WrappedCampaign> campaigns) {
             mActivity = new WeakReference<HomeBoostActivity>(activity);
-            mCampaign = campaign;
+            mCampaign = campaigns;
 			
 			map.put("unitId", Constants.UNIT_ID_62);
         }
@@ -179,8 +292,22 @@ public class HomeBoostActivity extends Activity {
             HomeBoostActivity activity = mActivity.get();
             if (loadedImage != null && activity != null) {
                 LeoLog.d(TAG, "[HomeBoostActivity] onLoadingComplete -> " + imageUri);
-				activity.notifyAdLoadFinish(mCampaign, loadedImage);
 				SDKWrapper.addEvent(AppMasterApplication.getInstance().getApplicationContext(), "max_ad", SDKWrapper.P1, "ad_load_image", "got:" + loadedImage.getByteCount(), mAdSource, map);
+				WrappedCampaign campaign = null;
+				String imgUrl = null;
+				//是否单图
+				boolean aPic = mCampaign != null && mCampaign.size() == 1;
+				for (WrappedCampaign c : mCampaign) {
+					//单个图用大图url来比较， 多模板用icon 的url来比较
+					imgUrl = (aPic && c != null) ? c.getImageUrl() : c.getIconUrl();
+					
+					if (imgUrl != null && imgUrl.equals(imageUri)) {
+						campaign = c;
+						break;
+					}
+					
+				}
+                activity.notifyAdLoadFinish(campaign, loadedImage, mCampaign.indexOf(campaign), aPic);
                 SDKWrapper.addEvent(activity, SDKWrapper.P1, "ad_act", "adv_shws_bst");
             }
         }
@@ -192,7 +319,7 @@ public class HomeBoostActivity extends Activity {
     }
     private static AdPreviewLoaderListener sAdImageListener;
 
-    private void notifyAdLoadFinish(WrappedCampaign campaign, Bitmap previewBitmap){
+    private void notifyAdLoadFinish(WrappedCampaign campaign, Bitmap previewBitmap, int index, boolean aPic){
         if (campaign == null && previewBitmap == null || previewBitmap.isRecycled()) {
             return;
         }
@@ -201,29 +328,50 @@ public class HomeBoostActivity extends Activity {
         LeoLog.e("poha", "loaded!");
         long currentTime = System.currentTimeMillis();
         AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);
-		loadADPic(campaign.getIconUrl(),
-				new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
-						DipPixelUtil
-								.dip2px(HomeBoostActivity.this, 48)),
-				(ImageView) findViewById(R.id.iv_ad_icon));
-		ImageView previewImageView = (ImageView) findViewById(R.id.iv_ad_bg);
-		if(previewImageView != null) {
-			previewImageView.setImageBitmap(previewBitmap);
-		}
-		TextView appname = (TextView) findViewById(R.id.tv_ad_appname);
-		if(appname != null) {
-			appname.setText(campaign.getAppName());
-		}
+		if (aPic) {
 
-		TextView appdesc = (TextView) findViewById(R.id.tv_ad_appdesc);
-		if(appdesc != null) {
-			appdesc.setText(campaign.getDescription());
-		}
+			findViewById(R.id.template_zone).setVisibility(View.GONE);
+			loadADPic(campaign.getIconUrl(),
+					new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
+							DipPixelUtil.dip2px(HomeBoostActivity.this, 48)),
+					(ImageView) findViewById(R.id.iv_ad_icon));
 
-		Button call = (Button) findViewById(R.id.btn_ad_appcall);
-		if(call != null) {
-			call.setText(campaign.getAdCall());
-			mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62);
+			ImageView previewImageView = (ImageView) findViewById(R.id.iv_ad_bg);
+			previewImageView.setVisibility(View.VISIBLE);
+			findViewById(R.id.ad_info_zone).setVisibility(View.VISIBLE);
+
+			if(previewImageView != null) {
+				previewImageView.setImageBitmap(previewBitmap);
+			}
+
+			mAdViews.add(mRlResultWithAD);
+			mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62, mCampaignList.get(0));
+		} else {
+
+			ImageView imageView1, imageView2, imageView3;
+
+			imageView1 = (ImageView) findViewById(R.id.imageView1);
+			imageView2 = (ImageView) findViewById(R.id.imageView2);
+			imageView3 = (ImageView) findViewById(R.id.imageView3);
+
+			switch (index) {
+				case 0:
+					imageView1.setImageBitmap(previewBitmap);
+					mAdViews.add((View)imageView1.getParent());
+					mAdEngine.registerTemplateView((View)imageView1.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62);
+					break;
+				case 1:
+					imageView2.setImageBitmap(previewBitmap);
+					mAdViews.add((View)imageView2.getParent());
+					mAdEngine.registerTemplateView((View)imageView2.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62);
+					break;
+				case 2:
+					imageView3.setImageBitmap(previewBitmap);
+					mAdViews.add((View)imageView3.getParent());
+					mAdEngine.registerTemplateView((View)imageView3.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62);
+					break;
+			}
+
 		}
 
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -638,8 +786,11 @@ public class HomeBoostActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
-        if(mAdEngine!=null){
-            mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62);
+        if(mAdEngine != null && mCampaignList != null) {
+			for (int i = 0; i < mCampaignList.size(); i++) {
+				mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, mAdViews.get(i),mCampaignList.get(i), mvNativeHandler);
+			}
+			
         }
         if (mAdAnim != null) {
             mAdAnim.cancel();
