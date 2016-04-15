@@ -32,4 +32,6 @@
     <dimen name="home_det_result_tv3_padd_left">101dp</dimen>
 
     <dimen name="new_added_image_item">75dp</dimen>
+
+<!--    <dimen name="home_det_height">400dp</dimen>-->
 </resources>

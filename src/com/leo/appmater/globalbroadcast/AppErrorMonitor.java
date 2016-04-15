@@ -133,7 +133,7 @@ public class AppErrorMonitor implements ScreenOnOffListener.ScreenChangeListener
                 if (sendCount < sendCountTotal) {
                     return;
                 }
-                PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
+                PrivacyContactManager pcm = (PrivacyContactManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
                 pcm.reportSendMsm();
 
                 LeoSettings.setLong(PrefConst.KEY_SEND_MSM_LASTTIME, currentTs);
