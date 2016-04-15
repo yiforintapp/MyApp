@@ -38,4 +38,6 @@
     <dimen name="icon_home_top_1">25dp</dimen>
     <dimen name="icon_home_top_2">10dp</dimen>
     <dimen name="home_tab_tv_top">8dp</dimen>
+
+    <dimen name="home_guide_marg_up">124dp</dimen>
 </resources>
