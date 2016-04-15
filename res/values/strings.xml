@@ -575,7 +575,7 @@
     <string name="scan_app_start">Scanning apps</string>
     <string name="scan_vid_start">Scanning videos</string>
     <string name="call_filter_add_strange_num">Add to blacklist</string>
-    <string name="lock_app_item_desc_cb_color"><Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> locked by others</string>
+    <string name="lock_app_item_desc_cb_color"><Data><![CDATA[<font color="#2674f6">%1$s</font>]]></Data> locked by others</string>
     <string name="menu_left_item_problem">FAQ</string>
     <string name="filter_number_type_saorao">Crank call</string>
     <string name="filter_number_type_zhapian">Fraud call</string>

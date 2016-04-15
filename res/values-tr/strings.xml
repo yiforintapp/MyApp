@@ -861,7 +861,7 @@
     <string name="scan_find_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> adet gizlenebilir video bulundu</string>
     <string name="call_filter_add_strange_num">Kara Listeye Ekle</string>
     <string name="call_filter_clear_all_black">Temizle</string>
-    <string name="lock_app_item_desc_cb_color"><Data><![CDATA[<font color="#00a8ff">%1$s</font>]]></Data> kilitli</string>
+    <string name="lock_app_item_desc_cb_color"><Data><![CDATA[<font color="#2674f6">%1$s</font>]]></Data> kilitli</string>
     <string name="lock_app_item_desc_cb">%1$s kilitli</string>
     <string name="menu_left_item_problem">SSS</string>
     <string name="feedback_problem_text">SSS Git</string>
