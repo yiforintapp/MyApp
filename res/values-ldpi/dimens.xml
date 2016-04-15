@@ -271,6 +271,7 @@
     <dimen name="bay_pro_three_icon_m_top">5dp</dimen>
     <dimen name="hide_grid_image_width">109dp</dimen>
     <dimen name="home_det_height">238dp</dimen>
+    <dimen name="home_det_height2">238dp</dimen>
     <dimen name="detect_shield_margin_tip">40dp</dimen>
 
 

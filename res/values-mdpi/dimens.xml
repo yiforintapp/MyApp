@@ -191,6 +191,7 @@
     <dimen name="hide_grid_image_width">109dp</dimen>
     <dimen name="add_num_cb_padding">10dp</dimen>
     <dimen name="home_det_height">268dp</dimen>
+    <dimen name="home_det_height2">268dp</dimen>
     <dimen name="detect_shield_margin_tip">58dp</dimen>
 
     <dimen name="home_shield_width">105.48dp</dimen>

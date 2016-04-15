@@ -4,6 +4,7 @@ package com.leo.appmaster.home;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -121,6 +122,8 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     private boolean mCenterBanner;
 
     private boolean mMemoryLess; // 内存小于等于512M
+    private View mView;
+    private boolean mIsOnCreateFrm;
 
     @Override
     public void onAttach(Activity activity) {
@@ -140,9 +143,16 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
         return inflater.inflate(R.layout.fragment_home_detect, container, false);
     }
 
+    public boolean hasNavBar(Resources resources) {
+        int id = resources.getIdentifier("config_showNavigationBar", "bool", "android");
+        return (id > 0 && resources.getBoolean(id));
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mIsOnCreateFrm = true;
+        mView = view;
         mDetectPresenter.attachView(this);
         initUI(view);
 
@@ -154,6 +164,19 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+
+        //存在底部虚拟按键
+        if (mIsOnCreateFrm) {
+            boolean isNavBar = Utilities.hasNavigationBar(getActivity());
+            int height = 0;
+            if (isNavBar) {
+                height = getActivity().getResources().getDimensionPixelSize(R.dimen.home_det_height);
+            } else {
+                height = getActivity().getResources().getDimensionPixelSize(R.dimen.home_det_height2);
+            }
+            mView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, height));
+            mIsOnCreateFrm = false;
+        }
         LeoLog.d(TAG, "onResume...");
         // 刷新状态
         refreshDetectStatus();
@@ -735,6 +758,7 @@ public class HomeDetectFragment extends Fragment implements View.OnClickListener
 
     /***
      * 小于512M内存直接显示
+     *
      * @param top
      * @param left
      * @param right

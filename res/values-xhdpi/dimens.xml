@@ -199,6 +199,7 @@
     <dimen name="pas_four_icon_m_top">25dp</dimen>
     <dimen name="hide_grid_image_width">109dp</dimen>
     <dimen name="home_det_height">358dp</dimen>
+    <dimen name="home_det_height2">358dp</dimen>
     <dimen name="detect_shield_margin_tip">117dp</dimen>
 
     <dimen name="home_shield_width">118.67dp</dimen>
