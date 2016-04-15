@@ -554,6 +554,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         LeoLog.d(TAG, "onResume...");
         mCanTakePhoto = true;
+		handleLoadAd();
         whichTypeShow();
         LeoLog.d("HomeReceiver_Lock", "onresume! tryHideToast has clicked? = " + mHasClickGoGrantPermission);
 //        if (mHasClickGoGrantPermission) {
@@ -793,11 +794,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
     }
 
+	
+	
     @Override
     protected void onStart() {
         super.onStart();
         LeoLog.d(TAG, "onStart...");
-        handleLoadAd();
 
         mForceLoad = false;
     }

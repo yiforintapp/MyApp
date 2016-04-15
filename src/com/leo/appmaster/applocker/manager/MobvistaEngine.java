@@ -187,7 +187,7 @@ public class MobvistaEngine {
 			LeoLog.d(TAG, "create new MobvistaAdNative and start to load");
 			MvNativeHandler nativeHandler = new MvNativeHandler(properties, mAppContext);
 			
-			nativeHandler.addTemplate(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 3));
+			nativeHandler.addTemplate(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));
 			
 			nativeHandler.setAdListener(new AdListenerImpl(unitId, listener, nativeHandler));
 
@@ -209,7 +209,10 @@ public class MobvistaEngine {
 		preloadMap.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));
 		preloadMap.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId);
 
-		preloadMap.put(MobVistaConstans.PROPERTIES_AD_NUM, 10);
+		preloadMap.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);
+		List<MvNativeHandler.Template> list = new ArrayList<MvNativeHandler.Template>();
+		list.add(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));
+		preloadMap.put(MobVistaConstans.NATIVE_INFO, MvNativeHandler.getTemplateString(list));
 		sSdk.preload(preloadMap);
 	}
 	
@@ -231,8 +234,8 @@ public class MobvistaEngine {
 			final MvNativeHandler templateNativeHandler = new MvNativeHandler(properties, mAppContext);
 			
 			//支持大图模板，请求一条大图广告（只支持1条）
-			templateNativeHandler.addTemplate(new MvNativeHandler.Template(
-					MobVistaConstans.TEMPLATE_BIG_IMG, 10));
+			/*templateNativeHandler.addTemplate(new MvNativeHandler.Template(
+					MobVistaConstans.TEMPLATE_BIG_IMG, 10));*/
 			//支持多图模板，请求3条多图。（支持1-10条）
 			templateNativeHandler.addTemplate(new MvNativeHandler.Template(
 					MobVistaConstans.TEMPLATE_MULTIPLE_IMG, 3));
@@ -302,11 +305,11 @@ public class MobvistaEngine {
 		// 设置mobvista 的unit id
 		proloadMap.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId);
 
-//		proloadMap.put(MobVistaConstans.PROPERTIES_AD_NUM, 10);
+		proloadMap.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);
 		
 		List<MvNativeHandler.Template> list = new ArrayList<MvNativeHandler.Template>();
 		// 设置一张大图 
-		list.add(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));
+		/*list.add(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));*/
 		// 设置多模板广告请求的监听 
 		list.add(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_MULTIPLE_IMG, 12));
 		
