@@ -93,7 +93,7 @@ public abstract class NewAdaper<T> extends BaseAdapter {
     }
 
     public void toggle(int pos) {
-        if (pos < 0) {
+        if (mSelectedArray == null || pos < 0 || pos >= mSelectedArray.length) {
             return;
         }
         boolean isChecked = false;
