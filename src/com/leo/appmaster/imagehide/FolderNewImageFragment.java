@@ -128,7 +128,6 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                         setLabelCount();
                     } else {
                         Toast.makeText(mActivity, R.string.hide_complete_new_image, Toast.LENGTH_LONG).show();
-                        LeoEventBus.getDefaultBus().post(new MediaChangeEvent(true));
                         mActivity.finish();
                     }
                     LeoEventBus.getDefaultBus().post(new MediaChangeEvent(true));
