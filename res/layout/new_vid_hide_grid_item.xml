@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="109dp"
-    android:layout_height="109dp"
-    android:paddingLeft="8dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
 
-    <RelativeLayout
+    <com.leo.appmaster.ui.HFitWSquareLayout
         android:id="@+id/fralay_top"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        >
 
         <ImageView
             android:id="@+id/image"
-            android:layout_width="109dp"
-            android:layout_height="109dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:background="@drawable/video_loading"
             android:scaleType="center" />
 
-    </RelativeLayout>
+        <CheckBox
+            android:id="@+id/video_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:button="@null"
+            android:background="@drawable/media_check_box_selector"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:clickable="true" />
 
-    <CheckBox
-        android:id="@+id/video_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignBottom="@+id/fralay_top"
-        android:button="@null"
-        android:background="@drawable/media_check_box_selector"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:clickable="true" />
+    </com.leo.appmaster.ui.HFitWSquareLayout>
+
 
     <TextView
         android:id="@+id/txt_item_picture"
-        android:layout_width="140dp"
+        android:layout_width="match_parent"
         android:layout_marginTop="9dp"
         android:layout_marginBottom="8dp"
         android:includeFontPadding="false"
