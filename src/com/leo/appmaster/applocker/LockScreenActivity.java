@@ -1224,7 +1224,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         //LEOAdEngine.getInstance(LockScreenActivity.this.getApplicationContext()).release(id);
                         // 3.3.2 封装Max与Mob SDK
                         if (mDidLoadAd) {
-                            ADEngineWrapper.getInstance(LockScreenActivity.this).releaseAd(mAdSource, id, mAdView.get(id), mCampaignList.get(id), mvNativeHandlerList.get(id));
+							MvNativeHandler handler;
+                            ADEngineWrapper.getInstance(LockScreenActivity.this).releaseAd(mAdSource, id, mAdView.get(id), mCampaignList.get(id), (handler = mvNativeHandlerList.get(id)));
 							if (mImageFetcher != null && mCampaignList != null && mCampaignList.get(id) != null) {
 								Bitmap bitmap = mImageFetcher.getBitmap(mCampaignList.get(id).getImageUrl());
 								if (bitmap != null && !bitmap.isRecycled()) {
@@ -1232,6 +1233,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 									bitmap = null;
 								}
 							}
+							handler = null;
                         }
                     }
 					mvNativeHandlerList.clear();
@@ -1395,12 +1397,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		 *
 		 * @param code     返回码，如ERR_PARAMS_NULL
 		 * @param campaign 请求成功的广告结构体，失败为null
-		 * @param handler
 		 * @param msg      请求失败sdk返回的描述，成功为null
 		 * @param obj
 		 */
 		@Override
-		public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, Object handler, String msg, Object obj) {
+		public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg, Object obj) {
 			if (code != MobvistaEngine.ERR_OK) {
 				return;
 			}
@@ -1411,10 +1412,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 					LeoLog.e(TAG, obj.toString());
 				}
 				
-				if (handler != null && handler instanceof MvNativeHandler) {
-					mvNativeHandlerList.put(unitId, (MvNativeHandler) handler);
-					LeoLog.e(TAG, handler.toString());
-				}
 
                         /* 开始load 广告大图 */
 				LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for [" + unitId + "] ready: " + campaign.getAppName());
@@ -1541,7 +1538,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 		}
 
 		@Override
-		public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList, Object handler, String msg, Object obj, Object... flag) {
+		public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList, String msg, Object obj, Object... flag) {
 
 		}
 		
@@ -1605,7 +1602,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         for (int i = 0; i < mBannerAdids.length; i++) {
             listeners[i] = new WpdListener(mBannerAdids[i]);
         }
-        ADEngineWrapper.getInstance(this).loadAdBatch(sources, mBannerAdids, listeners, forceLoad);
+		MvNativeHandler[] mvNativeHandlers = null;
+		if (mAdSource == ADEngineWrapper.SOURCE_MOB) {
+			
+			mvNativeHandlerList.put(mBannerAdids[0], ADEngineWrapper.getInstance(this).getMvNativeHandler(mBannerAdids[0], ADEngineWrapper.AD_TYPE_NATIVE));
+			mvNativeHandlerList.put(mBannerAdids[1], ADEngineWrapper.getInstance(this).getMvNativeHandler(mBannerAdids[1], ADEngineWrapper.AD_TYPE_NATIVE));
+			mvNativeHandlerList.put(mBannerAdids[2], ADEngineWrapper.getInstance(this).getMvNativeHandler(mBannerAdids[2], ADEngineWrapper.AD_TYPE_NATIVE));
+			mvNativeHandlers = new MvNativeHandler[mBannerAdids.length];
+			mvNativeHandlers[0] = mvNativeHandlerList.get(mBannerAdids[0]);
+			mvNativeHandlers[1] = mvNativeHandlerList.get(mBannerAdids[1]);
+			mvNativeHandlers[2] = mvNativeHandlerList.get(mBannerAdids[2]);
+		}
+        ADEngineWrapper.getInstance(this).loadAdBatch(sources, mBannerAdids, listeners, forceLoad, mvNativeHandlers);
 
     }
 

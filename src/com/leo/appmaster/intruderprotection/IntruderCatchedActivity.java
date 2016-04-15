@@ -413,27 +413,23 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private void loadAd() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         mShouldLoadAd = (amp.getADIntruder() == 1);
+		mvNativeHandler = ADEngineWrapper.getInstance(this).getMvNativeHandler(INTRUDER_AD_ID, ADEngineWrapper.AD_TYPE_NATIVE);
         if (mShouldLoadAd) {
-			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, ADEngineWrapper.AD_TYPE_NATIVE, new ADEngineWrapper.WrappedAdListener() {
+			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, ADEngineWrapper.AD_TYPE_NATIVE, mvNativeHandler, new ADEngineWrapper.WrappedAdListener() {
 				/**
 				 * 广告请求回调
 				 *
 				 * @param code     返回码，如ERR_PARAMS_NULL
 				 * @param campaign 请求成功的广告结构体，失败为null
-				 * @param handler
 				 * @param msg      请求失败sdk返回的描述，成功为null
 				 * @param obj
 				 */
 				@Override
-				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, Object handler, String msg, Object obj) {
+				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg, Object obj) {
 					if (code == MobvistaEngine.ERR_OK) {
 						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
 						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
 						mImageLoader.loadImage(campaign.getImageUrl(), sAdImageListener);
-
-						if (handler != null && handler instanceof MvNativeHandler) {
-							mvNativeHandler = (MvNativeHandler) handler;
-						}
 
 						if (obj != null && obj instanceof List) {
 							mCampaign = (Campaign)((List) obj).get(0);
@@ -443,7 +439,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 				}
 
 				@Override
-				public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList, Object handler, String msg, Object obj, Object... flag) {
+				public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList, String msg, Object obj, Object... flag) {
 
 				}
 

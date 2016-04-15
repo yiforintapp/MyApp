@@ -79,7 +79,7 @@ public class MobvistaEngine {
 
 
     private Map<String, String> mUnitIdToPlacementIdMap;
-
+	
 
 	public interface MobvistaListener {
         /**
@@ -89,7 +89,7 @@ public class MobvistaEngine {
          * @param campaigns 请求成功的广告结构体集合，失败为null
          * @param msg      请求失败sdk返回的描述，成功为null
          */
-        public void onMobvistaFinished(int code, List<Campaign> campaigns, MvNativeHandler handler, String msg);
+        public void onMobvistaFinished(int code, List<Campaign> campaigns, String msg);
 
         /**
          * 广告点击回调
@@ -155,50 +155,44 @@ public class MobvistaEngine {
 	 * @param unitId
 	 * @param listener
 	 */
-	public void loadMobvista(String unitId, MobvistaListener listener) {
+	public void loadMobvista(String unitId, MvNativeHandler mvNativeHandler, MobvistaListener listener) {
 		LeoLog.i(TAG, "Attach to Native Ad");
 		if (listener == null) return;
 
 		if (TextUtils.isEmpty(unitId)) {
 			LeoLog.i(TAG, "unit id is null.");
-			listener.onMobvistaFinished(ERR_UNITID_NULL, null, null, null);
+			listener.onMobvistaFinished(ERR_UNITID_NULL, null, null);
 			return;
 		}
 
 
-		loadSingleMobAd(unitId, listener);
+		loadSingleMobAd(unitId, listener, mvNativeHandler);
 	}
 	
 
-    private void loadSingleMobAd(String unitId, MobvistaListener listener) {
+    private void loadSingleMobAd(String unitId, MobvistaListener listener, MvNativeHandler mvNativeHandler) {
 		
 		try {
 			long start = SystemClock.elapsedRealtime();
-			String placementId = mUnitIdToPlacementIdMap.get(unitId);
 			
-			Map<String, Object> properties = new HashMap<String, Object>();
 
-			properties.put(MobVistaConstans.PROPERTIES_LAYOUT_TYPE, MobVistaConstans.LAYOUT_NATIVE);//广告样式
-			properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));//Facebook id
-			properties.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId); //unit id
-			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);// 请求广告条数，不设默认为1
 			
 
 			LeoLog.d(TAG, "create new MobvistaAdNative and start to load");
-			MvNativeHandler nativeHandler = new MvNativeHandler(properties, mAppContext);
-			
-			nativeHandler.addTemplate(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));
-			
-			nativeHandler.setAdListener(new AdListenerImpl(unitId, listener, nativeHandler));
+
+			mvNativeHandler.addTemplate(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));
+			AdListenerImpl adListener = new AdListenerImpl(unitId, listener);
+			mvNativeHandler.setAdListener(adListener);
 
 			LeoLog.i(TAG, "loadSingleMobAd -> ad[" + unitId + "], cost time = " + (SystemClock.elapsedRealtime() - start));
-			nativeHandler.setMustBrowser(true);
-			nativeHandler.load();
+			mvNativeHandler.setMustBrowser(true);
+			mvNativeHandler.load();
 		} catch (Throwable thr) {
 			return;
 		}
 
     }
+	
 
 	/**
 	 * 程序启动，获取所有广告位的数据作为缓存
@@ -225,10 +219,8 @@ public class MobvistaEngine {
 			LeoLog.d(TAG, "有广告位 在申请广告 广告位 unit id: " + unitId);
 			//通过unitId 申请广告
 			Map<String, Object> properties = MvNativeHandler.getNativeProperties(unitId);
-
 			//注入facebook的placementId
 			properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));
-			
 			properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);
 			//通过这个配置产生一个广告调用对象
 			final MvNativeHandler templateNativeHandler = new MvNativeHandler(properties, mAppContext);
@@ -242,45 +234,9 @@ public class MobvistaEngine {
 			//设置在没有应用市场情况下，必须浏览器来承接响应
 			templateNativeHandler.setMustBrowser(true);
 			//设置多模板广告请求的监听
-			templateNativeHandler.setAdListener(new MvNativeHandler.NativeAdListener() {
-				@Override
-				public void onAdLoaded(List<Campaign> campaigns, int template) {
-					if (campaigns != null && campaigns.size() > 0) {
-						LeoLog.i(TAG, "on template AdLoaded[" + unitId + "], campaign's size: " + campaigns.size());
-						// 将load成功的 MobvistaAdNative 对象移动到 MobvistaAdData 中
 
-						if (listener != null) {
-							listener.onMobvistaFinished((campaigns != null || campaigns.size() > 2) 
-									? ERR_OK : ERR_MOBVISTA_RESULT_NULL, campaigns, templateNativeHandler,  null);
-						}
-					}
-					preloadTemplateNative(unitId);
-				}
-
-				@Override
-				public void onAdLoadError(String s) {
-					LeoLog.i(TAG, "onAdLoadError[" + unitId + "], msg: " + s);
-
-					if (listener != null) {
-						listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, null, s);
-					}
-
-				}
-
-				@Override
-				public void onAdClick(Campaign campaign) {
-					if (listener != null) {
-						listener.onMobvistaClick(campaign, unitId);
-					}
-					// 点击之后，重新load此位置的广告
-					LeoLog.i(TAG, "reload the clicked template");
-				}
-
-				@Override
-				public void onAdFramesLoaded(List<Frame> frames) {
-
-				}
-			});
+			AdTemplateListener adTemplateListener = new AdTemplateListener(unitId, listener, templateNativeHandler);
+			templateNativeHandler.setAdListener(adTemplateListener);
 
 			try {
 				templateNativeHandler.load();
@@ -289,7 +245,7 @@ public class MobvistaEngine {
 
 				// 并且告诉广告调用者， 请求广告的时候发生了问题。 
 				if (listener != null) {
-					listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, null, "a error was occured on load template ad");
+					listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null,  "a error was occured on load template ad");
 				}
 				templateNativeHandler.release();
 			}
@@ -317,7 +273,28 @@ public class MobvistaEngine {
 		
 		sSdk.preload(proloadMap);
 	}
+	
+	public MvNativeHandler getTemplateHandler(String unitId) {
+		//通过unitId 申请广告
+		Map<String, Object> properties = MvNativeHandler.getNativeProperties(unitId);
+		//注入facebook的placementId
+		properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));
+		properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);
+		//通过这个配置产生一个广告调用对象
+		return new MvNativeHandler(properties, mAppContext);
+	}
 
+	
+	public MvNativeHandler getMvNativeHandler(String unitId) {
+		Map<String, Object> properties = new HashMap<String, Object>();
+
+		properties.put(MobVistaConstans.PROPERTIES_LAYOUT_TYPE, MobVistaConstans.LAYOUT_NATIVE);//广告样式
+		properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));//Facebook id
+		properties.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId); //unit id
+		properties.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);// 请求广告条数，不设默认为1
+		
+		return new MvNativeHandler(properties, mAppContext);
+	}
     
 
 	public void createAdWallController(Activity activity, String unitId) {
@@ -391,10 +368,14 @@ public class MobvistaEngine {
         try {
             
 			if (handler != null && campaign != null) {
+				
+				handler.setAdListener(null);
+				
 				handler.unregisterView(view, campaign);
 				handler.release();
 				handler = null;
-				LeoLog.e("llb", (campaign == null) ? "campaign is null" : campaign.toString() + "|" + ((handler == null) ? "handler is null" : handler.toString()));
+				
+				
 			}
         } catch (Exception e) {
             e.printStackTrace();
@@ -407,11 +388,9 @@ public class MobvistaEngine {
 	private class AdListenerImpl implements MvNativeHandler.NativeAdListener {
 		private String mUnitId;
 		private MobvistaListener l;
-		private MvNativeHandler h;
-		public AdListenerImpl(String unitId, MobvistaListener listener, MvNativeHandler handler) {
+		public AdListenerImpl(String unitId, MobvistaListener listener) {
 			this.mUnitId = unitId;
 			this.l = listener;
-			this.h = handler;
 		}
 
 
@@ -420,7 +399,7 @@ public class MobvistaEngine {
 			
 			if (l != null) {
 				l.onMobvistaFinished((campaigns != null && campaigns.size() > 0 && campaigns.get(0) != null) 
-						? ERR_OK: ERR_MOBVISTA_RESULT_NULL, campaigns, h, null);
+						? ERR_OK: ERR_MOBVISTA_RESULT_NULL, campaigns, null);
 			}
 			
 			preloadMobvistaAds(mUnitId);
@@ -430,7 +409,7 @@ public class MobvistaEngine {
 		public void onAdLoadError(String s) {
 			LeoLog.i(TAG, "onAdLoadError[" + mUnitId + "], msg: " + s);
 			if (l != null) {
-				l.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, null, s);
+				l.onMobvistaFinished(ERR_MOBVISTA_FAIL, null,  s);
 			}
 		}
 
@@ -445,6 +424,58 @@ public class MobvistaEngine {
 			if (l != null) {
 				l.onMobvistaClick(campaign, mUnitId);
 			}
+		}
+
+
+	}
+
+	private class AdTemplateListener implements MvNativeHandler.NativeAdListener {
+		private String unitId;
+		private MobvistaListener l;
+		private MvNativeHandler h;
+		public AdTemplateListener(String unitId, MobvistaListener listener, MvNativeHandler handler) {
+			this.unitId = unitId;
+			this.l = listener;
+			this.h = handler;
+		}
+
+
+		@Override
+		public void onAdLoaded(List<Campaign> campaigns, int template) {
+			if (campaigns != null && campaigns.size() > 0) {
+				LeoLog.i(TAG, "on template AdLoaded[" + unitId + "], campaign's size: " + campaigns.size());
+				// 将load成功的 MobvistaAdNative 对象移动到 MobvistaAdData 中
+
+				if (l != null) {
+					l.onMobvistaFinished((campaigns != null || campaigns.size() > 2)
+							? ERR_OK : ERR_MOBVISTA_RESULT_NULL, campaigns,   null);
+				}
+			}
+			preloadTemplateNative(unitId);
+		}
+
+		@Override
+		public void onAdLoadError(String s) {
+			LeoLog.i(TAG, "onAdLoadError[" + unitId + "], msg: " + s);
+
+			if (l != null) {
+				l.onMobvistaFinished(ERR_MOBVISTA_FAIL, null,  s);
+			}
+
+		}
+
+		@Override
+		public void onAdClick(Campaign campaign) {
+			if (l != null) {
+				l.onMobvistaClick(campaign, unitId);
+			}
+			// 点击之后，重新load此位置的广告
+			LeoLog.i(TAG, "reload the clicked template");
+		}
+
+		@Override
+		public void onAdFramesLoaded(List<Frame> frames) {
+
 		}
 
 

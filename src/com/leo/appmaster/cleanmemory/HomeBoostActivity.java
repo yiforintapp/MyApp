@@ -122,24 +122,27 @@ public class HomeBoostActivity extends Activity {
     private void loadAD() {
 		
 		mAdEngine = ADEngineWrapper.getInstance(this);
-		mAdEngine.loadAd(mAdSource, Constants.UNIT_ID_62, ADEngineWrapper.AD_TYPE_TEMPLATE, new ADEngineWrapper.WrappedAdListener() {
+		if (mAdSource == ADEngineWrapper.SOURCE_MOB) {
+			mvNativeHandler = mAdEngine.getMvNativeHandler(Constants.UNIT_ID_62, ADEngineWrapper.AD_TYPE_TEMPLATE);	
+		}
+		 
+		mAdEngine.loadAd(mAdSource, Constants.UNIT_ID_62, ADEngineWrapper.AD_TYPE_TEMPLATE, mvNativeHandler, new ADEngineWrapper.WrappedAdListener() {
 
 			/**
 			 * 广告请求回调
 			 *
 			 * @param code     返回码，如ERR_PARAMS_NULL
 			 * @param campaign 请求成功的广告结构体，失败为null
-			 * @param handler
 			 * @param msg      请求失败sdk返回的描述，成功为null
 			 * @param obj
 			 */
 			@Override
-			public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, Object handler, String msg, Object obj) {
+			public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign,  String msg, Object obj) {
 
 			}
 
 			@Override
-			public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList, Object handler, String msg, Object obj, Object... flag) {
+			public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList,  String msg, Object obj, Object... flag) {
 				if (code == MobvistaEngine.ERR_OK  && campaignList != null) {
 					sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaignList);
 
@@ -787,7 +790,7 @@ public class HomeBoostActivity extends Activity {
         super.onDestroy();
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
         if(mAdEngine != null && mCampaignList != null) {
-			for (int i = 0; i < mCampaignList.size(); i++) {
+			for (int i = 0; (mCampaignList.size() > 0 && i < mCampaignList.size()); i++) {
 				mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, mAdViews.get(i),mCampaignList.get(i), mvNativeHandler);
 			}
 			

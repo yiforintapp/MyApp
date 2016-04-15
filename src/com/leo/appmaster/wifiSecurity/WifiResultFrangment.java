@@ -270,25 +270,23 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         if (amp.getADWifiScan() == 1) {
             mDidLoadAd = true;
             LeoLog.d("MobvistaEngine", "Wifi result position start to load ad");
-            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, new MobvistaListener() {
+			
+			mvNativeHandler = MobvistaEngine.getInstance(mActivity).getMvNativeHandler(Constants.UNIT_ID_60);
+            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, mvNativeHandler, new MobvistaListener() {
 				/**
 				 * 广告请求回调
 				 *
 				 * @param code      返回码，如ERR_PARAMS_NULL
 				 * @param campaigns 请求成功的广告结构体集合，失败为null
-				 * @param handler
 				 * @param msg       请求失败sdk返回的描述，成功为null
 				 */
 				@Override
-				public void onMobvistaFinished(int code, List<Campaign> campaigns, MvNativeHandler handler, String msg) {
+				public void onMobvistaFinished(int code, List<Campaign> campaigns,  String msg) {
 					if (code == MobvistaEngine.ERR_OK && campaigns.size() > 0 && campaigns.get(0) != null) {
 						LeoLog.d("MobvistaEngine", "Wifi result position ad data ready");
 						sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaigns.get(0));
 						ImageLoader.getInstance().loadImage(campaigns.get(0).getImageUrl(), sAdImageListener);
 						
-						if (handler != null) {
-							mvNativeHandler = handler;
-						}
 						mCampaign = campaigns.get(0);
 					}
 				}
