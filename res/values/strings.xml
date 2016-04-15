@@ -1219,7 +1219,7 @@
     <string name="hd_hide_vid_privacy_title">Hide private videos</string>
     <string name="hd_hide_vid_privacy_summary">Some new videos found, please hide them to protect your privacy</string>
     <string name="hd_add_locked_app">Add apps</string>
-    <string name="hd_add_hide_pic">Add the hidden images</string>
+    <string name="hd_add_hide_pic">Add images</string>
     <string name="hd_add_hide_vid">Add videos</string>
     <string name="hd_privacy_danger">%1$d privacy risks to be processed</string>
     <string name="hd_app_danger_tip">Suggest to lock </string>
