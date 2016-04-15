@@ -244,7 +244,11 @@ public class BatteryNotifyHelper {
         Notification notify = mBuilder.build();
         notify.contentView = view_custom;
         if (notify != null) {
-            mNotificationManager.notify(SAVER_NOTIFICATION_ID, notify);
+            try {
+                mNotificationManager.notify(SAVER_NOTIFICATION_ID, notify);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         mNeedUpdateLevel = true;
     }
