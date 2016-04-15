@@ -119,6 +119,7 @@ public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> imp
                     if (mDataList.size() > 0) {
                         mAdapter.setList(mDataList);
                         mAdapter.notifyDataSetChanged();
+                        hideDone();
                         setLabelCount();
                     } else {
                         Toast.makeText(mActivity, R.string.hide_complete_new_vid, Toast.LENGTH_LONG).show();

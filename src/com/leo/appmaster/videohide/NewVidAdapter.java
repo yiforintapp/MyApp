@@ -26,7 +26,7 @@ public class NewVidAdapter extends NewAdaper<VideoItemBean> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         PrivacyNewHolder holder = null;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.new_vid_hide_grid_item, null);
+            convertView = mInflater.inflate(R.layout.new_vid_hide_grid_item, parent,false);
 
             holder = new PrivacyNewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.image);

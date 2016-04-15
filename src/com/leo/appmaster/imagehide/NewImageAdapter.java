@@ -26,7 +26,7 @@ public class NewImageAdapter extends NewAdaper<PhotoItem> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         PrivacyNewHolder holder = null;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.pri_pro_new_pic_item, null);
+            convertView = mInflater.inflate(R.layout.pri_pro_new_pic_item, parent,false);
 
             holder = new PrivacyNewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.pp_pic_iv);
