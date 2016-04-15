@@ -388,7 +388,10 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
         EventLogger.logEvent(EventLogger.EVENT_NAME_TRAINING_CLICK_LEAVE, null);
 
         if (isTrainingNotCompleted()) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_sdk", "leave_" + mFaileTimes);
+            LeoLog.d("testAirSig", "leave_" + mFaileTimes);
+            for (int i = 0; i < 1000; i++) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_sdk", "leave_" + mFaileTimes);
+            }
             showTipsDialog(getResources().getString(R.string.airsig_training_dialog_confirm_exit_detail),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_postive_button),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_negative_button),
@@ -706,7 +709,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                             switch (error) {
                                 case TRAINING_INVALID_LONG_SIGNATURE:
                                     LeoLog.d("testAirSig", "error 1");
-
+                                    mFaileTimes++;
                                     if (mTryTimes >= 2) {
                                         //failed time over 3 times
 //                                        showFailDialog();
@@ -732,6 +735,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                                     return;
                                 case TRAINING_INVALID_HOLDING_POSTURE:
                                     LeoLog.d("testAirSig", "error 3");
+                                    mFaileTimes++;
                                     if (mTryTimes >= 2) {
                                         //failed time over 3 times
 //                                        showFailDialog();
@@ -751,6 +755,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                                     break;
                                 case TRAINING_INVALID_FEW_WRIST:
                                     LeoLog.d("testAirSig", "error 4");
+                                    mFaileTimes++;
                                     if (mTryTimes >= 2) {
                                         //failed time over 3 times
 //                                        showFailDialog();
@@ -773,6 +778,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                                     break;
                                 case TRAINING_INVALID_FEW_WORDS:
                                     LeoLog.d("testAirSig", "error 5");
+                                    mFaileTimes++;
                                     if (mTryTimes >= 2) {
                                         //failed time over 3 times
 //                                        showFailDialog();
@@ -787,6 +793,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                                     break;
                                 case TRAINING_DIFFERENT_SIGNATURE:
                                     LeoLog.d("testAirSig", "error 6");
+                                    mFaileTimes++;
                                     if (mTryTimes >= 2) {
                                         //failed time over 3 times
 //                                        showFailDialog();
@@ -819,6 +826,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                                     break;
                                 case TRAINING_THE_SECOND_SIGNATURE_IS_TOO_DIFFERNT:
                                     LeoLog.d("testAirSig", "error 7");
+                                    mFaileTimes++;
                                     if (mTryTimes >= 2) {
                                         //failed time over 3 times
 //                                        showFailDialog();
@@ -847,6 +855,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
                                     break;
                                 case TRAINING_FAILED:
                                     LeoLog.d("testAirSig", "error 8");
+                                    mFaileTimes++;
                                     if (mTryTimes >= 2) {
                                         //failed time over 3 times
 //                                        showFailDialog();
@@ -915,7 +924,6 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
     }
 
     private void showFailDialog() {
-        mFaileTimes++;
         mTryTimes = 0;
         if (mConfirmCloseDialog == null) {
             mConfirmCloseDialog = new LEOAlarmDialog(this);

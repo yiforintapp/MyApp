@@ -172,9 +172,17 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
 
                     int fileTimes = TrainingActivity.mFaileTimes;
                     if (TrainingActivity.isEnterTutorPage) {
+                        LeoLog.d("testAirSig", "suc_" + fileTimes + ",yes");
+                        for (int i = 0; i < 1000; i++) {
+                            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc_" + fileTimes + ",yes");
+                        }
                         SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc_" + fileTimes + ",yes");
                         TrainingActivity.isEnterTutorPage = false;
                     } else {
+                        for (int i = 0; i < 1000; i++) {
+                            SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc_" + fileTimes + ",no");
+                        }
+                        LeoLog.d("testAirSig", "suc_" + fileTimes + ",no");
                         SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_sdk", "suc_" + fileTimes + ",no");
                     }
 
