@@ -207,6 +207,9 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
     }
 
     public void toggle(int group, int child) {
+        if (mSelectionInfo == null) {
+            return;
+        }
         SelectionInfo info = mSelectionInfo.get(group);
         byte selection = info.selectedArray[child];
         if (selection == SELECTED) {
@@ -274,6 +277,9 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
     }
 
     public void selectAllGroup() {
+        if (mSelectionInfo == null) {
+            return;
+        }
         for (int i = 0; i < mDataList.size(); i++) {
             ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(i);
             SelectionInfo info = mSelectionInfo.get(i);
@@ -293,6 +299,9 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
     }
 
     public void selectAll(int groupPosition) {
+        if (mSelectionInfo == null) {
+            return;
+        }
         ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(groupPosition);
         SelectionInfo info = mSelectionInfo.get(groupPosition);
         if (info.selectedCount != wrapper.items.size()) {
@@ -312,6 +321,9 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
     }
 
     public void deselectAllGroup() {
+        if (mSelectionInfo == null) {
+            return;
+        }
         for (int i = 0; i < mDataList.size(); i++) {
             ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(i);
             SelectionInfo info = mSelectionInfo.get(i);
@@ -331,6 +343,9 @@ public abstract class FolderNewAdapter<T> extends BaseExpandableListAdapter {
     }
 
     public void deselectAll(int groupPosition) {
+        if (mSelectionInfo == null) {
+            return;
+        }
         ItemsWrapper<T> wrapper = (ItemsWrapper) getGroup(groupPosition);
         SelectionInfo info = mSelectionInfo.get(groupPosition);
         if (info.selectedCount == wrapper.items.size()) {
