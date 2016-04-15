@@ -36,6 +36,7 @@
         <com.leo.appmaster.ui.HeaderGridView
             android:id="@+id/Image_hide_folder"
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="1dp"
             android:layout_weight="1"
             android:background="@color/transparent"
@@ -46,7 +47,9 @@
             android:numColumns="3"
             android:overScrollMode="never"
             android:paddingRight="7dp"
+            android:paddingLeft="7dp"
             android:scrollbars="none"
+            android:horizontalSpacing="7dp"
             android:stretchMode="columnWidth"
             android:verticalSpacing="7dp" />
 

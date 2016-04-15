@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.appmaster.ui.HFitWSquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="117dp"
+    android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingLeft="8dp"
     >
-
 
         <ImageView
             android:id="@+id/image"
             android:maxWidth="109dp"
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
-            android:layout_height="117dp"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop" />
 
     <ImageView
@@ -22,11 +20,11 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/image"
-        android:paddingBottom="5dp"
-        android:paddingRight="11dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
         android:src="@drawable/ic_media_check_normal" />
 
-</RelativeLayout>
+</com.leo.appmaster.ui.HFitWSquareLayout>
 
 
 <!--
