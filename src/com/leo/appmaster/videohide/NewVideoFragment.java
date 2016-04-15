@@ -137,9 +137,9 @@ public class NewVideoFragment extends NewFragment implements AdapterView.OnItemC
                         mAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mActivity, R.string.hide_complete_new_vid, Toast.LENGTH_LONG).show();
-                        LeoEventBus.getDefaultBus().post(new MediaChangeEvent(false));
                         mActivity.finish();
                     }
+                    LeoEventBus.getDefaultBus().post(new MediaChangeEvent(false));
                 }
             }
         });

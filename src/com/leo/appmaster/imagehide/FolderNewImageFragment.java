@@ -131,6 +131,7 @@ public class FolderNewImageFragment extends FolderNewFragment<PhotoItem> {
                         LeoEventBus.getDefaultBus().post(new MediaChangeEvent(true));
                         mActivity.finish();
                     }
+                    LeoEventBus.getDefaultBus().post(new MediaChangeEvent(true));
                 }
             }
         });

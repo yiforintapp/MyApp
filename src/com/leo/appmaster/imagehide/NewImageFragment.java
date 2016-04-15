@@ -254,9 +254,9 @@ public class NewImageFragment extends NewFragment implements AdapterView.OnItemC
                         mAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(mActivity, R.string.hide_complete_new_image, Toast.LENGTH_LONG).show();
-                        LeoEventBus.getDefaultBus().post(new MediaChangeEvent(true));
                         mActivity.finish();
                     }
+                    LeoEventBus.getDefaultBus().post(new MediaChangeEvent(true));
                 }
             }
         });
