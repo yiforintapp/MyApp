@@ -33,5 +33,9 @@
 
     <dimen name="new_added_image_item">75dp</dimen>
 
-<!--    <dimen name="home_det_height">400dp</dimen>-->
+    <dimen name="home_det_height">370dp</dimen>
+
+    <dimen name="icon_home_top_1">25dp</dimen>
+    <dimen name="icon_home_top_2">10dp</dimen>
+    <dimen name="home_tab_tv_top">8dp</dimen>
 </resources>
