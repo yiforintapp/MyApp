@@ -389,9 +389,7 @@ public class TrainingActivity extends BaseActivity implements OnClickListener {
 
         if (isTrainingNotCompleted()) {
             LeoLog.d("testAirSig", "leave_" + mFaileTimes);
-            for (int i = 0; i < 1000; i++) {
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_sdk", "leave_" + mFaileTimes);
-            }
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_sdk", "leave_" + mFaileTimes);
             showTipsDialog(getResources().getString(R.string.airsig_training_dialog_confirm_exit_detail),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_postive_button),
                     getResources().getString(R.string.airsig_training_dialog_confirm_exit_negative_button),
