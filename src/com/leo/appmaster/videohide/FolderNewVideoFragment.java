@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -246,6 +247,14 @@ public class FolderNewVideoFragment extends FolderNewFragment<VideoItemBean> imp
         final View view = mActivity.getLayoutInflater().inflate(R.layout.image_folder_header_view, null);
         mNewImageNum = (TextView) view.findViewById(R.id.tv_image_hide_header);
         setLabelCount();
+
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mTopViewHeight = view.getHeight();
+                view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
         return view;
     }
 
