@@ -133,7 +133,7 @@ public class ADEngineWrapper {
 							listener.onWrappedAdLoadFinished(code, wrappedCampaignList,  msg, campaigns);
 						} else {
 
-							listener.onWrappedAdLoadFinished(code, null,null, msg, null);
+							listener.onWrappedAdLoadFinished(code, null,null, msg, new Object[]{});
 						}
 					}
 				}
@@ -276,7 +276,7 @@ public class ADEngineWrapper {
     }
 	
 	public void registerTemplateView(View view, Campaign campaign,  String unitId) {
-		mMobEngine.registerTemplateView(view, campaign,  unitId);
+		mMobEngine.registerTemplateView(view, campaign, unitId);
 	}
 
     public void registerView (int source, View view, String unitId, Campaign campagin) {
