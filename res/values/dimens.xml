@@ -384,6 +384,7 @@
     <dimen name="home_det_result_tv1_margin">10.3dp</dimen>
     <dimen name="home_det_result_tv1_padding">5dp</dimen>
     <dimen name="home_det_height">350dp</dimen>
+    <dimen name="home_det_height2">350dp</dimen>
     <dimen name="home_det_tip_height">46dp</dimen>
     <dimen name="home_det_tip_icon_marg_left">17dp</dimen>
     <dimen name="home_det_tip_txt_marg_left">10dp</dimen>
@@ -432,8 +433,8 @@
     <dimen name="home_result_height">50dp</dimen>
     <dimen name="home_shield_width">118.67dp</dimen>
     <dimen name="home_shield_height">118dp</dimen>
-    <dimen name = "home_result_bg_width">328dp</dimen>
-    <dimen name = "home_result_bg_height">59dp</dimen>
+    <dimen name="home_result_bg_width">328dp</dimen>
+    <dimen name="home_result_bg_height">59dp</dimen>
     <dimen name="home_shied_center_good_width">48.33dp</dimen>
     <dimen name="home_shied_center_good_heigh">38.67dp</dimen>
     <dimen name="home_shied_center_no_width">14dp</dimen>
