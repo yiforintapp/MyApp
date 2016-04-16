@@ -78,7 +78,8 @@ public class PreviewImageFetcher {
             Bitmap bitmap = mBitmaps.get(key);
             if (bitmap != null) {
                 bitmap.recycle();
-            }
+				LeoLog.e("llb", bitmap.toString() + "|" +bitmap.isRecycled());
+			}
         }
         mBitmaps.clear();
     }

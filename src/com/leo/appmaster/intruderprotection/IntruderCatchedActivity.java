@@ -74,6 +74,8 @@ import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.utils.IoUtils;
+import com.mobvista.msdk.out.Campaign;
+import com.mobvista.msdk.out.MvNativeHandler;
 
 import java.io.File;
 import java.io.InputStream;
@@ -150,6 +152,9 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 	
 	private View mAdView;
 
+	private MvNativeHandler mvNativeHandler;
+	private Campaign mCampaign;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,7 +187,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
             mLayout.stopAnim();
         }
         if (mShouldLoadAd) {
-            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID);
+            ADEngineWrapper.getInstance(this).releaseAd(mAdSource, INTRUDER_AD_ID, mAdView, mCampaign, mvNativeHandler);
         }
 //        finish();
     }
@@ -408,15 +413,34 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
     private void loadAd() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         mShouldLoadAd = (amp.getADIntruder() == 1);
+		mvNativeHandler = ADEngineWrapper.getInstance(this).getMvNativeHandler(INTRUDER_AD_ID, ADEngineWrapper.AD_TYPE_NATIVE);
         if (mShouldLoadAd) {
-			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, new ADEngineWrapper.WrappedAdListener() {
+			ADEngineWrapper.getInstance(this).loadAd(mAdSource, INTRUDER_AD_ID, ADEngineWrapper.AD_TYPE_NATIVE, mvNativeHandler, new ADEngineWrapper.WrappedAdListener() {
+				/**
+				 * 广告请求回调
+				 *
+				 * @param code     返回码，如ERR_PARAMS_NULL
+				 * @param campaign 请求成功的广告结构体，失败为null
+				 * @param msg      请求失败sdk返回的描述，成功为null
+				 * @param obj
+				 */
 				@Override
-				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg) {
+				public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg, Object obj) {
 					if (code == MobvistaEngine.ERR_OK) {
 						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
 						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
 						mImageLoader.loadImage(campaign.getImageUrl(), sAdImageListener);
+
+						if (obj != null && obj instanceof List) {
+							mCampaign = (Campaign)((List) obj).get(0);
+						}
+						
 					}
+				}
+
+				@Override
+				public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList, String msg, Object obj, Object... flag) {
+
 				}
 
 				@Override
@@ -517,7 +541,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
 		mAdView = adView;
-		ADEngineWrapper.getInstance(this).registerView(mAdSource, adView, INTRUDER_AD_ID);
+		ADEngineWrapper.getInstance(this).registerView(mAdSource, adView, INTRUDER_AD_ID, mCampaign);
         //MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
                 "ad_act", "adv_shws_capture");

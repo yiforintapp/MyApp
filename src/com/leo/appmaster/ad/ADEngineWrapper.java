@@ -10,6 +10,8 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.db.PrefTableHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
+import com.mobvista.msdk.out.Campaign;
+import com.mobvista.msdk.out.MvNativeHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +27,9 @@ import java.util.TreeMap;
 public class ADEngineWrapper {
 
     private static final String TAG = "ADEngineWrapper [AD_DEBUG]";
+	
+	public static final int AD_TYPE_NATIVE = 0;
+	public static final int AD_TYPE_TEMPLATE = 1;
 
     /* 两个可选的广告来源 */
     public static final int SOURCE_MOB = AppMasterPreference.AD_SDK_SOURCE_USE_3TH;
@@ -32,7 +37,7 @@ public class ADEngineWrapper {
 
     private LEOAdEngine mMaxEngine;
     private MobvistaEngine mMobEngine;
-
+	
     private Map<String, Iterator<Integer>> mRandomMap = new HashMap<String, Iterator<Integer>>();
 
     public static interface WrappedAdListener {
@@ -42,7 +47,9 @@ public class ADEngineWrapper {
          * @param campaign 请求成功的广告结构体，失败为null
          * @param msg 请求失败sdk返回的描述，成功为null
          */
-        public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg);
+        public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign, String msg, Object obj);
+		
+		public void onWrappedAdLoadFinished(int code, List<WrappedCampaign> campaignList,  String msg, Object obj, Object...flag);
         /**
          * 广告点击回调
          * @param campaign
@@ -58,10 +65,18 @@ public class ADEngineWrapper {
 
     public static ADEngineWrapper getInstance (Context context) {
         if (sInstance == null) {
-            sInstance = new ADEngineWrapper(context);
+            sInstance = new ADEngineWrapper(context.getApplicationContext());
         }
         return sInstance;
     }
+	
+	public MvNativeHandler getMvNativeHandler(String unitId, int adType) {
+		if(adType == AD_TYPE_NATIVE) {
+			return mMobEngine.getMvNativeHandler(unitId);
+		} else {
+			return mMobEngine.getTemplateHandler(unitId);
+		}
+	}
 
     /**
      * 批量加载广告，目前仅仅用于Lock页三个大图, 一次概率控制三个广告展示
@@ -70,7 +85,7 @@ public class ADEngineWrapper {
      * @param listeners
      * @param forceLoad 不管概率如何，强制加载
      */
-    public void loadAdBatch(int[] sources, String[] unitIds, WrappedAdListener[] listeners, boolean forceLoad) {
+    public void loadAdBatch(int[] sources, String[] unitIds, WrappedAdListener[] listeners, boolean forceLoad, MvNativeHandler...mvNativeHandler) {
         if (sources == null || sources.length <= 0 || unitIds == null || unitIds.length <=0 || sources.length != unitIds.length) {
             return;
         }
@@ -82,7 +97,7 @@ public class ADEngineWrapper {
                     if (listener == null) {
                         continue;
                     }
-                    listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, "probability is not hit.");
+                    listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, null, null, "probability is not hit.");
                 }
             }
             return;
@@ -94,24 +109,31 @@ public class ADEngineWrapper {
             } catch (Exception e) {
                 // 可以不用传listener进来，catch住所有异常忽略掉
             }
-            loadAdForce(sources[i], unitIds[i], listener);
+			if (sources[i] == SOURCE_MOB) {
+				loadAdForce(sources[i], unitIds[i], listener, mvNativeHandler[i]);	
+			} else {
+				loadAdForce(sources[i], unitIds[i], listener, null);
+			}
+            
         }
     }
+	
+	
 
 
-	/*private void loadMobTemplate(final String unitId, final WrappedAdListener listener) {
+	private void loadMobTemplate(final String unitId, final WrappedAdListener listener) {
 		if (unitId!= null && listener != null) {
 			mMobEngine.loadMobvistaTemplate(unitId, new MobvistaEngine.MobvistaListener() {
 				@Override
-				public void onMobvistaFinished(int code, List<Campaign> campaigns, String msg) {
+				public void onMobvistaFinished(int code, List<Campaign> campaigns,  String msg) {
 					if (listener != null) {
 
 						if (code == LEOAdEngine.ERR_OK) {
 							List<WrappedCampaign> wrappedCampaignList = WrappedCampaign.fromMabVistaSDK(campaigns);
-							listener.onWrappedAdLoadFinished(code, wrappedCampaignList, msg);
+							listener.onWrappedAdLoadFinished(code, wrappedCampaignList,  msg, campaigns);
 						} else {
 
-							listener.onWrappedAdLoadFinished(code, null, msg);
+							listener.onWrappedAdLoadFinished(code, null,null, msg, null);
 						}
 					}
 				}
@@ -125,24 +147,33 @@ public class ADEngineWrapper {
 				}
 			});
 		}
-	}*/
+	}
 
     /***
      * 请求广告数据
      */
-    public void loadAd (final int source, final String unitId, final WrappedAdListener listener) {
+    public void loadAd (final int source, final String unitId, final int adType, MvNativeHandler mvNativeHandler, final WrappedAdListener listener) {
         if (!isHitProbability(unitId)) {
             // 未命中显示概率，不显示广告
             if (listener != null) {
-                listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, "probability is not hit.");
+                listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, null, null, "probability is not hit.");
             }
             return;
         }
+		
+		if (source == AppMasterPreference.AD_SDK_SOURCE_USE_3TH && adType == AD_TYPE_TEMPLATE) {
+			if (listener == null) {
+				listener.onWrappedAdLoadFinished(LEOAdEngine.ERR_MOBVISTA_RESULT_NULL, null, null, null, "call back is null.");
+				return;
+			}
+			loadMobTemplate(unitId, listener);
+			return;
+		}
 
-		loadAdForce(source, unitId, listener);
+		loadAdForce(source, unitId, listener, mvNativeHandler);
     }
 
-    private void loadAdForce(final int source, final String unitId,  final WrappedAdListener listener) {
+    private void loadAdForce(final int source, final String unitId,  final WrappedAdListener listener, MvNativeHandler mvNativeHandler) {
 		LeoLog.e(TAG, "AD TYPE :" + source + " AD ID: " + unitId);
 		
 		String sdk = (source == 2) ? "Max" : "Mobvista";
@@ -157,7 +188,7 @@ public class ADEngineWrapper {
                     LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
                     WrappedCampaign wrappedCampaign = null;
                     if (code == LEOAdEngine.ERR_OK) {
-						wrappedCampaign = WrappedCampaign.fromMaxSDK(campaign);
+						wrappedCampaign = WrappedCampaign.converCampaignFromMax(campaign);
 
 						if (wrappedCampaign != null) {
 							map.put("msg", msg);
@@ -169,31 +200,31 @@ public class ADEngineWrapper {
 
 						SDKWrapper.addEvent(AppMasterApplication.getInstance(), "max_ad", SDKWrapper.P1, "ad_onLoadFinished", "fail", source, map);
 					}
-                    listener.onWrappedAdLoadFinished(code, wrappedCampaign, msg);
+                    listener.onWrappedAdLoadFinished(code, wrappedCampaign,  msg, null);
                 }
 
                 @Override
                 public void onLeoAdClick(LEONativeAdData campaign, String unitID) {
-                    listener.onWrappedAdClick(WrappedCampaign.fromMaxSDK(campaign), unitID);
+                    listener.onWrappedAdClick(WrappedCampaign.converCampaignFromMax(campaign), unitID);
                 }
             });
         } else {
 			
-			mMobEngine.loadMobvista(unitId, new MobvistaEngine.MobvistaListener() {
+			mMobEngine.loadMobvista(unitId, mvNativeHandler, new MobvistaEngine.MobvistaListener() {
 				@Override
-				public void onMobvistaFinished(int code, com.mobvista.sdk.m.core.entity.Campaign campaigns, String msg) {
+				public void onMobvistaFinished(int code, List<Campaign> campaign,  String msg) {
 					LeoLog.d(TAG, "[" + unitId + "] source = " + source + "; code = " + code);
 					WrappedCampaign wrappedCampaign = null;
-					if (code == MobvistaEngine.ERR_OK) {
-						wrappedCampaign = WrappedCampaign.fromMabVistaSDK(campaigns);
+					if (code == MobvistaEngine.ERR_OK && campaign != null && campaign.size() > 0) {
+						wrappedCampaign = WrappedCampaign.converCampaignFromMob(campaign.get(0));
 					}
-					listener.onWrappedAdLoadFinished(code, wrappedCampaign, msg);
+					
+					listener.onWrappedAdLoadFinished(code, wrappedCampaign,  msg, campaign);
 				}
 
 				@Override
-				public void onMobvistaClick(com.mobvista.sdk.m.core.entity.Campaign campaign, String unitID) {
-					
-					listener.onWrappedAdClick(WrappedCampaign.fromMabVistaSDK(campaign), unitID);
+				public void onMobvistaClick(Campaign campaign, String unitID) {
+					listener.onWrappedAdClick(WrappedCampaign.converCampaignFromMob(campaign), unitID);
 				}
 			});
 
@@ -244,32 +275,29 @@ public class ADEngineWrapper {
         }
     }
 	
-	/*public void registerTemplateView(View view, int index,  String unitId) {
-		mMobEngine.registerTemplateView(view, index, unitId);
-	}*/
+	public void registerTemplateView(View view, Campaign campaign,  String unitId) {
+		mMobEngine.registerTemplateView(view, campaign,  unitId);
+	}
 
-    public void registerView (int source, View view, String unitId) {
+    public void registerView (int source, View view, String unitId, Campaign campagin) {
         LeoLog.d(TAG, "registerView called");
         if (source == SOURCE_MAX) {
             mMaxEngine.registerView(unitId, view);
         } else {
-            mMobEngine.registerView(unitId, view);
+            mMobEngine.registerView(unitId, view, campagin);
         }
     }
-
-    public void releaseAd (int source, String unitId) {
+    public void releaseAd (int source, String unitId, View view, Campaign campaign, MvNativeHandler handler) {
         if (source == SOURCE_MAX) {
             mMaxEngine.release(unitId);
         } else {
-            mMobEngine.release(unitId);
+            mMobEngine.release(unitId, view, campaign, handler);
         }
     }
 	
 	public void removeMobAdData(int source, String unitId) {
 		if (source == SOURCE_MAX) {
 			mMaxEngine.removeMobAdData(unitId);
-		} else {
-			mMobEngine.removeMobAdData(unitId);
 		}
 	}
 	
@@ -280,6 +308,11 @@ public class ADEngineWrapper {
 			return mMobEngine.isADCacheEmpty();
 		}
 	}
+	
+	public void preloadAppWall(String unitId) {
+		mMobEngine.preloadAppWall(unitId);
+	}
+	
 	/*public void proloadTemplate(String unitId) {
 		mMobEngine.proloadTemplate(unitId);
 	}

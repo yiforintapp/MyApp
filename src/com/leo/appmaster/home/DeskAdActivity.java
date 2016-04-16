@@ -6,21 +6,20 @@ import android.os.Bundle;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
-import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class DeskAdActivity extends Activity {
-    private MobvistaAdWall mWallAd;
+//    private MobvistaAdWall mWallAd;
 //    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mWallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_61);
+        /*mWallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_61);
         if (mWallAd != null) {
             mWallAd.preloadWall();
-        }
+        }*/
 
-//		MobvistaEngine.getInstance(this).createAdWallController1(this, Constants.UNIT_ID_61);
+		MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_61);
         // LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         // LockManager.getInstatnce().timeFilterSelf();
 //        SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_cli", "adv_cnts_desktop");

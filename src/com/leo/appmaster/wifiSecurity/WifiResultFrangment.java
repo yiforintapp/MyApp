@@ -39,9 +39,11 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
-import com.mobvista.sdk.m.core.entity.Campaign;
+import com.mobvista.msdk.out.Campaign;
+import com.mobvista.msdk.out.MvNativeHandler;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 /**
  * Created by qili on 15-10-27.
@@ -97,6 +99,9 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 	
 	private View mAdView;
 
+	private MvNativeHandler mvNativeHandler;
+	private Campaign mCampaign;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -127,7 +132,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
     public void onDestroyView() {
         super.onDestroyView();
         if (mDidLoadAd) {
-            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60);
+            MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_60, mAdView, mCampaign, mvNativeHandler);
         }
         ImageLoader.getInstance().clearMemoryCache();
         if (mFiveStarLayout != null) {
@@ -265,18 +270,28 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         if (amp.getADWifiScan() == 1) {
             mDidLoadAd = true;
             LeoLog.d("MobvistaEngine", "Wifi result position start to load ad");
-            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, new MobvistaListener() {
-
-                @Override
-                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
-                    if (code == MobvistaEngine.ERR_OK) {
-                        LeoLog.d("MobvistaEngine", "Wifi result position ad data ready");
-                        sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
-                    }
-                }
-
-                @Override
+			
+			mvNativeHandler = MobvistaEngine.getInstance(mActivity).getMvNativeHandler(Constants.UNIT_ID_60);
+            MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, mvNativeHandler, new MobvistaListener() {
+				/**
+				 * 广告请求回调
+				 *
+				 * @param code      返回码，如ERR_PARAMS_NULL
+				 * @param campaigns 请求成功的广告结构体集合，失败为null
+				 * @param msg       请求失败sdk返回的描述，成功为null
+				 */
+				@Override
+				public void onMobvistaFinished(int code, List<Campaign> campaigns,  String msg) {
+					if (code == MobvistaEngine.ERR_OK && campaigns.size() > 0 && campaigns.get(0) != null) {
+						LeoLog.d("MobvistaEngine", "Wifi result position ad data ready");
+						sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaigns.get(0));
+						ImageLoader.getInstance().loadImage(campaigns.get(0).getImageUrl(), sAdImageListener);
+						
+						mCampaign = campaigns.get(0);
+					}
+				}
+				
+				@Override
                 public void onMobvistaClick(Campaign campaign, String unitID) {
                     LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
                     lm.filterSelfOneMinites();
@@ -302,7 +317,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
 		mAdView = adView;
-        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, adView);
+        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, adView, null, campaign);
     }
 
     public void showTab(boolean isWifiSafe, boolean isWifiConnect) {

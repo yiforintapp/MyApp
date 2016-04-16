@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.applocker.manager;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -19,6 +17,8 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LockManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
+
+import java.util.List;
 
 public class TaskChangeHandler {
     private static final String TAG = "TaskChangeHandler";
@@ -39,6 +39,7 @@ public class TaskChangeHandler {
     // public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
     public static final String LAUNCHERBOOST = "HomeBoostActivity";
+	public static final String ADLOADING = "LoadingActivity";
 
     //
     public static final String APPWALL = "AdMobvistaAct";
@@ -167,6 +168,7 @@ public class TaskChangeHandler {
                         || activity.contains(PROXYNAME)
                         || activity.contains(WAITNAME)
                         || activity.contains(UPDATE)
+						|| activity.contains(ADLOADING)
                         || activity.contains(INTRUDERCATCH)
                         || activity.contains(WEBVIEW)
                         || activity.contains(BLACK_LIST)
@@ -189,6 +191,7 @@ public class TaskChangeHandler {
                         || activity.contains(SPLASHNAME)
                         || activity.contains(PROXYNAME)
                         || activity.contains(UPDATE)
+						|| activity.contains(ADLOADING)
                         || activity.contains(INTRUDERCATCH)
                         || activity.contains(WAITNAME)
                         || activity.contains(BLACK_LIST)
