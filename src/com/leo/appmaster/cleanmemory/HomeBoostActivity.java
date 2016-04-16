@@ -138,7 +138,9 @@ public class HomeBoostActivity extends Activity {
 			 */
 			@Override
 			public void onWrappedAdLoadFinished(int code, WrappedCampaign campaign,  String msg, Object obj) {
-
+				List<WrappedCampaign> campaignList = new ArrayList<WrappedCampaign>();
+				campaignList.add(campaign);
+				onWrappedAdLoadFinished(code, campaignList, msg, obj);
 			}
 
 			@Override
@@ -348,9 +350,16 @@ public class HomeBoostActivity extends Activity {
 			}
 
 			mAdViews.add(mRlResultWithAD);
-			mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62, mCampaignList.get(0));
+			if (mAdSource == ADEngineWrapper.SOURCE_MOB) {
+				mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62, mCampaignList.get(0));	
+			} else {
+				mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62, null);
+			}
+			
 		} else {
-
+			if (mAdSource == ADEngineWrapper.SOURCE_MAX) {
+				return;
+			}
 			ImageView imageView1, imageView2, imageView3;
 
 			imageView1 = (ImageView) findViewById(R.id.imageView1);

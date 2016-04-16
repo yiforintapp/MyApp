@@ -109,7 +109,12 @@ public class ADEngineWrapper {
             } catch (Exception e) {
                 // 可以不用传listener进来，catch住所有异常忽略掉
             }
-            loadAdForce(sources[i], unitIds[i], listener, mvNativeHandler[i]);
+			if (sources[i] == SOURCE_MOB) {
+				loadAdForce(sources[i], unitIds[i], listener, mvNativeHandler[i]);	
+			} else {
+				loadAdForce(sources[i], unitIds[i], listener, null);
+			}
+            
         }
     }
 	

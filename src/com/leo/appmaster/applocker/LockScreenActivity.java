@@ -2922,7 +2922,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mAdapterCycle.setLasterSlectedPage(index);
 
             }
-
+			((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(null);
             ((ImageView) view.findViewById(R.id.ad_image)).setImageBitmap(bitmap);
             ((TextView) view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
             view.findViewById(R.id.ad_title).setTag(unitId);
