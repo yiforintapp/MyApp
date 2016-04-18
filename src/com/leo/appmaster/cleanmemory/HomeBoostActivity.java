@@ -800,17 +800,22 @@ public class HomeBoostActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
-        if(mAdEngine != null && mCampaignList != null) {
-			for (int i = 0; (mCampaignList.size() > 0 && i < mCampaignList.size()); i++) {
-				if (mAdViews.size() > 0 && i < mAdViews.size()) {
-					mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, mAdViews.get(i),mCampaignList.get(i), mvNativeHandler);
-				} else if (i >= mAdViews.size()) {
+		if (mAdSource == AppMasterPreference.AD_SDK_SOURCE_USE_MAX) {
+			mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, null, null, null);
+		} else {
 
-					mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, null ,mCampaignList.get(i), mvNativeHandler);
+			if(mAdEngine != null && mCampaignList != null) {
+				for (int i = 0; (mCampaignList.size() > 0 && i < mCampaignList.size()); i++) {
+					if (mAdViews.size() > 0 && i < mAdViews.size()) {
+						mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, mAdViews.get(i),mCampaignList.get(i), mvNativeHandler);
+					} else if (i >= mAdViews.size()) {
+
+						mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, null ,mCampaignList.get(i), mvNativeHandler);
+					}
 				}
+
 			}
-			
-        }
+		}
         if (mAdAnim != null) {
             mAdAnim.cancel();
             mAdAnim = null;

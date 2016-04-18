@@ -541,7 +541,18 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
 		mAdView = adView;
-		ADEngineWrapper.getInstance(this).registerView(mAdSource, adView, INTRUDER_AD_ID, mCampaign, mvNativeHandler);
+		if (mAdSource == AppMasterPreference.AD_SDK_SOURCE_USE_3TH) {
+			ThreadManager.executeOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					ADEngineWrapper.getInstance(IntruderCatchedActivity.this).registerView(mAdSource, mAdView, INTRUDER_AD_ID, mCampaign, mvNativeHandler);		
+				}
+			});
+			
+		} else {
+			ADEngineWrapper.getInstance(this).registerView(mAdSource, adView, INTRUDER_AD_ID, mCampaign, mvNativeHandler);	
+		}
+		
         //MobvistaEngine.getInstance(this).registerView(INTRUDER_AD_ID, adView);
         SDKWrapper.addEvent(IntruderCatchedActivity.this, 0,
                 "ad_act", "adv_shws_capture");
