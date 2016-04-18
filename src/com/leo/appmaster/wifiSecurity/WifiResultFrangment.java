@@ -248,13 +248,18 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         }
 
         @Override
-        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            WifiResultFrangment fragment = mFragment.get();
-            if (loadedImage != null && fragment != null) {
-                LeoLog.d("MobvistaEngine", "onLoadingComplete -> " + imageUri);
-                fragment.initAdLayout(fragment.mRootView, mCampaign, Constants.UNIT_ID_60, loadedImage);
-                SDKWrapper.addEvent(fragment.mActivity, SDKWrapper.P1, "ad_act", "adv_shws_wifi");
-            }
+        public void onLoadingComplete(final String imageUri, View view, final Bitmap loadedImage) {
+            ThreadManager.executeOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WifiResultFrangment fragment = mFragment.get();
+                    if (loadedImage != null && fragment != null) {
+                        LeoLog.d("MobvistaEngine", "onLoadingComplete -> " + imageUri);
+                        fragment.initAdLayout(fragment.mRootView, mCampaign, Constants.UNIT_ID_60, loadedImage);
+                        SDKWrapper.addEvent(fragment.mActivity, SDKWrapper.P1, "ad_act", "adv_shws_wifi");
+                    }
+                }
+            });
         }
 
         @Override
