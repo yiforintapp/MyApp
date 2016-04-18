@@ -333,7 +333,7 @@
                     android:layout_height="34dp"
                     android:background="@drawable/green_btn_selector"
                     android:text="@string/secur_help_feedback_tip_button"
-                    android:textColor="#15c937"
+                    android:textColor="@color/button_blue"
                     android:textSize="14dp" />
             </com.leo.appmaster.ui.MaterialRippleLayout>
         </RelativeLayout>

@@ -1,11 +1,6 @@
 
 package com.leo.appmaster.imagehide;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import uk.co.senab.photoview.PhotoView;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -49,6 +44,11 @@ import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageDownloader;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageScaleType;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import uk.co.senab.photoview.PhotoView;
 
 public class PictureViewPager extends BaseActivity implements OnClickListener {
     private CommonTitleBar mTtileBar;
@@ -541,7 +541,13 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                     if (dialogType == UNHIDE_DIALOG_TYPE) {
                         unhidePicture();
                     } else if (dialogType == DELETE_DIALOG_TYPE) {
-                        deletePicture();
+                        ThreadManager.executeOnAsyncThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                deletePicture();
+                            }
+                        });
+
                     }
                 }
 
