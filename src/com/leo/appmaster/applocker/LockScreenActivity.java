@@ -200,7 +200,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LinkedHashMap<String, WrappedCampaign> mAdMap = new LinkedHashMap<String, WrappedCampaign>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
-    private static final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2};
+    private static final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK/*, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2*/};
     private boolean otherAdSwitcher = false;
     private boolean mDidLoadAd = false;
     //private String[] mBannerAdids = {"12346_00001"};
@@ -1600,11 +1600,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         Arrays.fill(sources, mAdSource);
 
         ADEngineWrapper.WrappedAdListener[] listeners = new ADEngineWrapper.WrappedAdListener[mBannerAdids.length];
-        for (int i = 0; i < mBannerAdids.length; i++) {
-            listeners[i] = new WpdListener(mBannerAdids[i]);
-        }
-		MvNativeHandler[] mvNativeHandlers = null;
-		if (mAdSource == ADEngineWrapper.SOURCE_MOB) {
+		MvNativeHandler[] mvNativeHandlers = new MvNativeHandler[mBannerAdids.length];
+		for (int i = 0; i < mBannerAdids.length; i++) {
+			listeners[i] = new WpdListener(mBannerAdids[i]);
+			if (mAdSource == ADEngineWrapper.SOURCE_MOB) {
+				mvNativeHandlerList.put(mBannerAdids[i], ADEngineWrapper.getInstance(this).getMvNativeHandler(mBannerAdids[i], ADEngineWrapper.AD_TYPE_NATIVE));
+				mvNativeHandlers[i] = mvNativeHandlerList.get(mBannerAdids[i]);
+			}
+		}
+		/*if (mAdSource == ADEngineWrapper.SOURCE_MOB) {
 			
 			mvNativeHandlerList.put(mBannerAdids[0], ADEngineWrapper.getInstance(this).getMvNativeHandler(mBannerAdids[0], ADEngineWrapper.AD_TYPE_NATIVE));
 			mvNativeHandlerList.put(mBannerAdids[1], ADEngineWrapper.getInstance(this).getMvNativeHandler(mBannerAdids[1], ADEngineWrapper.AD_TYPE_NATIVE));
@@ -1613,7 +1617,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 			mvNativeHandlers[0] = mvNativeHandlerList.get(mBannerAdids[0]);
 			mvNativeHandlers[1] = mvNativeHandlerList.get(mBannerAdids[1]);
 			mvNativeHandlers[2] = mvNativeHandlerList.get(mBannerAdids[2]);
-		}
+		}*/
         ADEngineWrapper.getInstance(this).loadAdBatch(sources, mBannerAdids, listeners, forceLoad, mvNativeHandlers);
 
     }
