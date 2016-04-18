@@ -200,7 +200,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LinkedHashMap<String, WrappedCampaign> mAdMap = new LinkedHashMap<String, WrappedCampaign>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
-    private static final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK/*, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2*/};
+    private static final String[] mBannerAdids = {LEOAdManager.UNIT_ID_LOCK, LEOAdManager.UNIT_ID_LOCK_1, LEOAdManager.UNIT_ID_LOCK_2};
     private boolean otherAdSwitcher = false;
     private boolean mDidLoadAd = false;
     //private String[] mBannerAdids = {"12346_00001"};
