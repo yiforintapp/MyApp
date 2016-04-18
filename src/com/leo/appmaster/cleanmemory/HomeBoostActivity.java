@@ -802,7 +802,12 @@ public class HomeBoostActivity extends Activity {
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
         if(mAdEngine != null && mCampaignList != null) {
 			for (int i = 0; (mCampaignList.size() > 0 && i < mCampaignList.size()); i++) {
-				mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, mAdViews.get(i),mCampaignList.get(i), mvNativeHandler);
+				if (mAdViews.size() > 0 && i < mAdViews.size()) {
+					mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, mAdViews.get(i),mCampaignList.get(i), mvNativeHandler);
+				} else if (i >= mAdViews.size()) {
+
+					mAdEngine.releaseAd(mAdSource, Constants.UNIT_ID_62, null ,mCampaignList.get(i), mvNativeHandler);
+				}
 			}
 			
         }

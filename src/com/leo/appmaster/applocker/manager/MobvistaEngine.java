@@ -203,7 +203,7 @@ public class MobvistaEngine {
 
 		preloadMap.put(MobVistaConstans.PROPERTIES_AD_NUM, 1);
 		List<MvNativeHandler.Template> list = new ArrayList<MvNativeHandler.Template>();
-		list.add(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));
+		list.add(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 10));
 		preloadMap.put(MobVistaConstans.NATIVE_INFO, MvNativeHandler.getTemplateString(list));
 		sSdk.preload(preloadMap);
 	}
@@ -369,8 +369,9 @@ public class MobvistaEngine {
 			if (handler != null && campaign != null) {
 				
 				handler.setAdListener(null);
-				
-				handler.unregisterView(view, campaign);
+				if (view != null) {
+					handler.unregisterView(view, campaign);
+				}
 				handler.release();
 				handler = null;
 				
