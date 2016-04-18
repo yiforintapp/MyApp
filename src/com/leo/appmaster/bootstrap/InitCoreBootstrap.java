@@ -177,6 +177,12 @@ public class InitCoreBootstrap extends Bootstrap {
             } else if (versionCode >= 41) {
                 installBoostShortcut();
             }
+
+            /**
+             * 3.6版本不管新，老用户都不显示引导页处理
+             */
+            updateShowGuidePage(versionCode == 71 ? false : true);
+
             pref.setIsUpdateQuickGestureUser(false);
             setUpdateTipData();
             /* 新用户保存引导号 */
@@ -206,7 +212,8 @@ public class InitCoreBootstrap extends Bootstrap {
                         R.integer.guide_page_version);
                 int lastGuideVersion = pref.getLastGuideVersion();
                 /* 升级是否需要显示引导页，需要手动配置：true-显示，false-不显示 */
-                updateShowGuidePage(lastCode < 46 || (currentGuideVersion > lastGuideVersion && currentGuideVersion > 1));
+                updateShowGuidePage((lastCode < 46 || (currentGuideVersion > lastGuideVersion && currentGuideVersion > 1))
+                        && (versionCode == 71 ? false : true)/*3.6版本引导页特殊处理，所有升级到3.6版本均不显示*/);
                 pref.setLastGuideVersion(currentGuideVersion);
                 pref.setIsUpdateQuickGestureUser(true);
                 // 每次升级都重新刷新googleplay提示规则
@@ -232,7 +239,7 @@ public class InitCoreBootstrap extends Bootstrap {
             //新安裝用户
             if (versionCode >= Constants.VERSION_CODE_TO_HIDE_BATTERY_FLOW_AND_WIFI) {
                 //取值时，默认值要用false
-                LeoSettings.setBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI,true);
+                LeoSettings.setBoolean(PrefConst.KEY_NEED_HIDE_BATTERY_FLOW_AND_WIFI, true);
                 LeoLog.i("need hide", "set true");
             }
         } else {
