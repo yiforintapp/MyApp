@@ -281,30 +281,30 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 				 * @param msg       请求失败sdk返回的描述，成功为null
 				 */
 				@Override
-				public void onMobvistaFinished(int code, List<Campaign> campaigns,  String msg) {
+				public void onMobvistaFinished(int code, List<Campaign> campaigns, String msg) {
 					if (code == MobvistaEngine.ERR_OK && campaigns.size() > 0 && campaigns.get(0) != null) {
 						LeoLog.d("MobvistaEngine", "Wifi result position ad data ready");
 						sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaigns.get(0));
-						LeoLog.e("Wifi", "[" + Constants.UNIT_ID_60 +"] load image  url = " + campaigns.get(0).getImageUrl());
+						LeoLog.e("Wifi", "[" + Constants.UNIT_ID_60 + "] load image  url = " + campaigns.get(0).getImageUrl());
 						ImageLoader.getInstance().loadImage(campaigns.get(0).getImageUrl(), sAdImageListener);
-						
+
 						mCampaign = campaigns.get(0);
 					}
 				}
-				
-				@Override
-                public void onMobvistaClick(Campaign campaign, String unitID) {
-                    LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                    lm.filterSelfOneMinites();
 
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_wifi");
-                }
-            });
+				@Override
+				public void onMobvistaClick(Campaign campaign, String unitID) {
+					LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+					lm.filterSelfOneMinites();
+
+					SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_wifi");
+				}
+			});
         }
     }
 
 
-    private void initAdLayout(View rootView, Campaign campaign, String unitId, Bitmap previewImage) {
+    private void initAdLayout(View rootView, final Campaign campaign, String unitId, Bitmap previewImage) {
         View adView = rootView.findViewById(R.id.ad_content);
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
@@ -318,7 +318,13 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
         preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
 		mAdView = adView;
-        MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, adView, null, campaign);
+		ThreadManager.executeOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, mAdView, null, campaign);		
+			}
+		});
+        
     }
 
     public void showTab(boolean isWifiSafe, boolean isWifiConnect) {

@@ -355,7 +355,11 @@ public class MobvistaEngine {
 		
 		MvNativeHandler handler = new MvNativeHandler(properties, mAppContext);
 
-		handler.registerView(view, campaign);
+		try {
+			handler.registerView(view, campaign);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		LeoLog.e("llb", unitId + "<----registerView on MobvistaEngine");
     }
 
