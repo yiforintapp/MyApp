@@ -74,7 +74,7 @@ public class PreferenceTable extends BaseTable {
                     loadPreference();
                 }
             }
-        }, 3000);
+        }, 2000);
 
     }
 
@@ -82,38 +82,41 @@ public class PreferenceTable extends BaseTable {
         if (mLoaded) return;
 
         LeoLog.d(TAG, "<ls> start to load loadPreference");
-        if (BuildProperties.isApiLevel14()) {
-            try {
-                Map<String, ?> all = mPrefs.getAll();
-                for (String key : all.keySet()) {
-                    mValues.put(key, (String) all.get(key));
+        try {
+            if (BuildProperties.isApiLevel14()) {
+                try {
+                    Map<String, ?> all = mPrefs.getAll();
+                    for (String key : all.keySet()) {
+                        mValues.put(key, (String) all.get(key));
+                    }
+                } catch (Exception e) {
                 }
-            } catch (Exception e) {
-            }
-        } else {
-            SQLiteDatabase db = getHelper().getReadableDatabase();
-            if (db == null) return;
+            } else {
+                SQLiteDatabase db = getHelper().getReadableDatabase();
+                if (db == null) return;
 
-            Cursor cursor = null;
-            try {
-                cursor = db.query(TABLE_NAME, new String[]{COL_KEY, COL_VALUE}, null,
-                        null, null, null, null);
-                if (cursor != null && cursor.getCount() > 0) {
-                    cursor.moveToFirst();
-                    do {
-                        String key = cursor.getString(cursor.getColumnIndex(COL_KEY));
-                        String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
-                        LeoLog.d(TABLE_NAME, "[" + key + " : " + value + "]");
-                        mValues.put(key, value);
-                    } while (cursor.moveToNext());
+                Cursor cursor = null;
+                try {
+                    cursor = db.query(TABLE_NAME, new String[]{COL_KEY, COL_VALUE}, null,
+                            null, null, null, null);
+                    if (cursor != null && cursor.getCount() > 0) {
+                        cursor.moveToFirst();
+                        do {
+                            String key = cursor.getString(cursor.getColumnIndex(COL_KEY));
+                            String value = cursor.getString(cursor.getColumnIndex(COL_VALUE));
+                            LeoLog.d(TABLE_NAME, "[" + key + " : " + value + "]");
+                            mValues.put(key, value);
+                        } while (cursor.moveToNext());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    IoUtils.closeSilently(cursor);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                IoUtils.closeSilently(cursor);
             }
+        } finally {
+            notifyAll();
         }
-        notifyAll();
 
         mLoaded = true;
         LeoLog.d(TAG, "<ls> end to load loadPreference");

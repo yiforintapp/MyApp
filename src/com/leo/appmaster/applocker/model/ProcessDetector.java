@@ -531,7 +531,8 @@ public class ProcessDetector {
                 "com.google.android.googlequicksearchbox",
                 "com.google.android.gms.persistent",
                 "com.android.systemui",
-                "com.baidu.superservice"
+                "com.baidu.superservice",
+                "lbesec.monitor"
         };
 
         private static final String PKG_SETTINGS = "com.android.settings";
