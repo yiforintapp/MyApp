@@ -275,16 +275,16 @@ public class ADEngineWrapper {
         }
     }
 	
-	public void registerTemplateView(View view, Campaign campaign,  String unitId) {
-		mMobEngine.registerTemplateView(view, campaign, unitId);
+	public void registerTemplateView(View view, Campaign campaign,  String unitId, MvNativeHandler handler) {
+		mMobEngine.registerTemplateView(view, campaign, unitId, handler);
 	}
 
-    public void registerView (int source, View view, String unitId, Campaign campagin) {
+    public void registerView (int source, View view, String unitId, Campaign campagin, MvNativeHandler handler) {
         LeoLog.d(TAG, "registerView called");
         if (source == SOURCE_MAX) {
             mMaxEngine.registerView(unitId, view);
         } else {
-            mMobEngine.registerView(unitId, view, campagin);
+            mMobEngine.registerView(unitId, view, campagin, handler);
         }
     }
     public void releaseAd (int source, String unitId, View view, Campaign campaign, MvNativeHandler handler) {

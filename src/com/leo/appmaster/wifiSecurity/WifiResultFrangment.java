@@ -321,7 +321,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 		ThreadManager.executeOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, mAdView, null, campaign);		
+				MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, mAdView, null, campaign, mvNativeHandler);		
 			}
 		});
         

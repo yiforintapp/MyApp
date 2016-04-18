@@ -2939,7 +2939,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				if (mCampaignList.size() > 0) {
 					LeoLog.e(TAG, mCampaignList.get(unitId).toString() + "<-------registerView");
 				}
-                mWrapperEngine.registerView(mAdSource, clickArea, unitId, mCampaignList.get(unitId));
+                mWrapperEngine.registerView(mAdSource, clickArea, unitId, mCampaignList.get(unitId), mvNativeHandlerList.get(unitId));
             }
 
             View leftArea = view.findViewById(R.id.left_click_area);

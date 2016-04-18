@@ -2564,7 +2564,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 
         // make the count correct
         //MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_CHARGING, mAdView);
-        ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING, mCampaign);
+        ADEngineWrapper.getInstance(mActivity).registerView(mAdSource, mAdView, Constants.UNIT_ID_CHARGING, mCampaign, mvNativeHandler);
         mAdWrapper.setOnClickListener(this);
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("unitId", Constants.UNIT_ID_CHARGING );

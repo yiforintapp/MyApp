@@ -310,15 +310,17 @@ public class MobvistaEngine {
 	}
 	
 
-	public void registerTemplateView(View view, Campaign campaign, String unitId) {
+	public void registerTemplateView(View view, Campaign campaign, String unitId, MvNativeHandler handler) {
 		if (view != null && campaign != null) {
-			Map<String, Object> properties = new HashMap<String, Object>();
+			/*Map<String, Object> properties = new HashMap<String, Object>();
 			properties.put(MobVistaConstans.PROPERTIES_LAYOUT_TYPE, MobVistaConstans.LAYOUT_NATIVE);//广告样式
 			properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));//Facebook id
 			properties.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId); //unit id
 
-			MvNativeHandler handler = new MvNativeHandler(properties, mAppContext);
-			handler.registerView(view, campaign);
+			MvNativeHandler handler = new MvNativeHandler(properties, mAppContext);*/
+			if (handler != null) {
+				handler.registerView(view, campaign);
+			}
 			
 		}
 	}
@@ -329,9 +331,9 @@ public class MobvistaEngine {
      * @param unitId
      * @param view
      */
-    public void registerView(String unitId, View view, Campaign campaign) {
+    public void registerView(String unitId, View view, Campaign campaign, MvNativeHandler handler) {
 		if (!TextUtils.isEmpty(unitId) && view != null && campaign != null) {
-			registerView(unitId, view, null, campaign);
+			registerView(unitId, view, null, campaign, handler);
 		}
     }
 
@@ -342,21 +344,23 @@ public class MobvistaEngine {
      * @param view
      * @param listener 用新listener替换旧的
      */
-    public void registerView(String unitId, View view, MobvistaListener listener, Campaign campaign) {
+    public void registerView(String unitId, View view, MobvistaListener listener, Campaign campaign, MvNativeHandler handler) {
 
 
         LeoLog.i(TAG, "registerView");
 		
-		Map<String, Object> properties = new HashMap<String, Object>();
+		/*Map<String, Object> properties = new HashMap<String, Object>();
 
 		properties.put(MobVistaConstans.PROPERTIES_LAYOUT_TYPE, MobVistaConstans.LAYOUT_NATIVE);//广告样式
 		properties.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));//Facebook id
 		properties.put(MobVistaConstans.PROPERTIES_UNIT_ID, unitId); //unit id
 		
 		MvNativeHandler handler = new MvNativeHandler(properties, mAppContext);
-
+*/
 		try {
-			handler.registerView(view, campaign);
+			if (handler != null) {
+				handler.registerView(view, campaign);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

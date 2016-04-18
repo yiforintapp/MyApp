@@ -353,9 +353,9 @@ public class HomeBoostActivity extends Activity {
 
 			mAdViews.add(mRlResultWithAD);
 			if (mAdSource == ADEngineWrapper.SOURCE_MOB) {
-				mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62, mCampaignList.get(0));	
+				mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62, mCampaignList.get(0), mvNativeHandler);	
 			} else {
-				mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62, null);
+				mAdEngine.registerView(mAdSource, mRlResultWithAD, Constants.UNIT_ID_62, null, mvNativeHandler);
 			}
 			
 		} else {
@@ -372,17 +372,17 @@ public class HomeBoostActivity extends Activity {
 				case 0:
 					imageView1.setImageBitmap(previewBitmap);
 					mAdViews.add((View)imageView1.getParent());
-					mAdEngine.registerTemplateView((View)imageView1.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62);
+					mAdEngine.registerTemplateView((View)imageView1.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62, mvNativeHandler);
 					break;
 				case 1:
 					imageView2.setImageBitmap(previewBitmap);
 					mAdViews.add((View)imageView2.getParent());
-					mAdEngine.registerTemplateView((View)imageView2.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62);
+					mAdEngine.registerTemplateView((View)imageView2.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62, mvNativeHandler);
 					break;
 				case 2:
 					imageView3.setImageBitmap(previewBitmap);
 					mAdViews.add((View)imageView3.getParent());
-					mAdEngine.registerTemplateView((View)imageView3.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62);
+					mAdEngine.registerTemplateView((View)imageView3.getParent(), mCampaignList.get(index), Constants.UNIT_ID_62, mvNativeHandler);
 					break;
 			}
 
