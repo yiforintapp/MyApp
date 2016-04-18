@@ -189,6 +189,7 @@ public class HomeBoostActivity extends Activity {
 						}
 						imageUrl = campaignList.get(0).getImageUrl();
 						if (imageUrl != null && !"".equals(imageUrl)) {
+							LeoLog.e(TAG, "[" + Constants.UNIT_ID_62 +"] load image  url = " + imageUrl);
 							ImageLoader.getInstance().loadImage(imageUrl,
 									new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, w),
 											DipPixelUtil.dip2px(HomeBoostActivity.this, h)), options, sAdImageListener);
@@ -234,6 +235,7 @@ public class HomeBoostActivity extends Activity {
 
 							imageUrl = campaign.getIconUrl();
 							if (imageUrl != null && !"".equals(imageUrl)) {
+								LeoLog.e(TAG, "[" + Constants.UNIT_ID_62 +"] load image  url = " + imageUrl);
 								ImageLoader.getInstance().loadImage(imageUrl,
 										new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, w),
 												DipPixelUtil.dip2px(HomeBoostActivity.this, h)), options, sAdImageListener);

@@ -2396,6 +2396,7 @@ public class BatteryViewFragment extends BaseFragment implements View.OnTouchLis
 					if (code == MobvistaEngine.ERR_OK) {
 						LeoLog.d(TAG, "Ad data ready ad title: " + campaign.getAppName());
 						sAdImageListener = new AdPreviewLoaderListener(BatteryViewFragment.this, campaign);
+						LeoLog.e(TAG, "[" + Constants.UNIT_ID_CHARGING +"] load image  url = " + campaign.getImageUrl());
 						ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
 
 						

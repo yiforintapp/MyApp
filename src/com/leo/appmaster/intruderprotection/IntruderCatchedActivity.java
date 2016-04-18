@@ -430,7 +430,7 @@ public class IntruderCatchedActivity extends BaseActivity implements View.OnClic
 						LeoLog.d("IntruderAd", "onMobvistaFinished: " + campaign.getAppName());
 						sAdImageListener = new AdPreviewLoaderListener(IntruderCatchedActivity.this, campaign);
 						mImageLoader.loadImage(campaign.getImageUrl(), sAdImageListener);
-
+						LeoLog.e(TAG, "[" + INTRUDER_AD_ID +"] load image  url = " + campaign.getImageUrl());
 						if (obj != null && obj instanceof List) {
 							mCampaign = (Campaign)((List) obj).get(0);
 						}

@@ -1417,6 +1417,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 				LeoLog.d("LockScreenActivity_AD_DEBUG", "Ad Data for [" + unitId + "] ready: " + campaign.getAppName());
 				final HashMap<String, String> map = new HashMap<String, String>();
 				map.put("unitId", unitId);
+				LeoLog.e(TAG, "[" + unitId +"] load image  url = " + campaign.getImageUrl());
 				mImageFetcher.loadBitmap(campaign.getImageUrl(), new PreviewImageFetcher.ImageFetcherListener() {
 					@Override
 					public void onBitmapLoadStarted(String url) {

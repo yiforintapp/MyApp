@@ -285,6 +285,7 @@ public class WifiResultFrangment extends Fragment implements View.OnClickListene
 					if (code == MobvistaEngine.ERR_OK && campaigns.size() > 0 && campaigns.get(0) != null) {
 						LeoLog.d("MobvistaEngine", "Wifi result position ad data ready");
 						sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaigns.get(0));
+						LeoLog.e("Wifi", "[" + Constants.UNIT_ID_60 +"] load image  url = " + campaigns.get(0).getImageUrl());
 						ImageLoader.getInstance().loadImage(campaigns.get(0).getImageUrl(), sAdImageListener);
 						
 						mCampaign = campaigns.get(0);

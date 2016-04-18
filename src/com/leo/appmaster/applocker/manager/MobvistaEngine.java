@@ -174,11 +174,7 @@ public class MobvistaEngine {
 		
 		try {
 			long start = SystemClock.elapsedRealtime();
-			
 
-			
-
-			LeoLog.d(TAG, "create new MobvistaAdNative and start to load");
 
 			mvNativeHandler.addTemplate(new MvNativeHandler.Template(MobVistaConstans.TEMPLATE_BIG_IMG, 1));
 			AdListenerImpl adListener = new AdListenerImpl(unitId, listener);
@@ -186,6 +182,7 @@ public class MobvistaEngine {
 
 			LeoLog.i(TAG, "loadSingleMobAd -> ad[" + unitId + "], cost time = " + (SystemClock.elapsedRealtime() - start));
 			mvNativeHandler.setMustBrowser(true);
+			LeoLog.i(TAG, "load ad | type = native | unitid = ["+ unitId +"]");
 			mvNativeHandler.load();
 		} catch (Throwable thr) {
 			return;
@@ -198,6 +195,7 @@ public class MobvistaEngine {
 	 * 程序启动，获取所有广告位的数据作为缓存
 	 */
 	public void preloadMobvistaAds(String unitId) {
+		LeoLog.i(TAG, " preload  native ad | unitid = ["+ unitId +"]");
 		Map<String, Object> preloadMap = new HashMap<String, Object>();
 		preloadMap.put(MobVistaConstans.PROPERTIES_LAYOUT_TYPE, MobVistaConstans.LAYOUT_NATIVE);
 		preloadMap.put(MobVistaConstans.ID_FACE_BOOK_PLACEMENT, mUnitIdToPlacementIdMap.get(unitId));
@@ -216,7 +214,6 @@ public class MobvistaEngine {
 	 */
 	public void loadMobvistaTemplate(final String unitId, final MobvistaListener listener) {
 		if (unitId != null && listener != null) {
-			LeoLog.d(TAG, "有广告位 在申请广告 广告位 unit id: " + unitId);
 			//通过unitId 申请广告
 			Map<String, Object> properties = MvNativeHandler.getNativeProperties(unitId);
 			//注入facebook的placementId
@@ -239,6 +236,7 @@ public class MobvistaEngine {
 			templateNativeHandler.setAdListener(adTemplateListener);
 
 			try {
+				LeoLog.i(TAG, "load ad | type = template | unitid = ["+ unitId +"]");
 				templateNativeHandler.load();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -253,6 +251,7 @@ public class MobvistaEngine {
 	}
 	
 	public void preloadTemplateNative(final String unitId) {
+		LeoLog.i(TAG, " preload  Template ad | unitid = ["+ unitId +"]");
 		Map<String, Object> proloadMap = new HashMap<String, Object>();
 		 //设置layout类型 
 		proloadMap.put(MobVistaConstans.PROPERTIES_LAYOUT_TYPE, MobVistaConstans.LAYOUT_NATIVE);
@@ -400,8 +399,8 @@ public class MobvistaEngine {
 			if (l != null) {
 				l.onMobvistaFinished((campaigns != null && campaigns.size() > 0 && campaigns.get(0) != null) 
 						? ERR_OK: ERR_MOBVISTA_RESULT_NULL, campaigns, null);
+				LeoLog.i(TAG, " onAdLoaded  | type = native | unitid = ["+ mUnitId +"]");
 			}
-			
 			preloadMobvistaAds(mUnitId);
 		}
 
@@ -443,7 +442,7 @@ public class MobvistaEngine {
 		@Override
 		public void onAdLoaded(List<Campaign> campaigns, int template) {
 			if (campaigns != null && campaigns.size() > 0) {
-				LeoLog.i(TAG, "on template AdLoaded[" + unitId + "], campaign's size: " + campaigns.size());
+				LeoLog.i(TAG, " onAdLoaded  | type = template | unitid = ["+ unitId +"]");
 				// 将load成功的 MobvistaAdNative 对象移动到 MobvistaAdData 中
 
 				if (l != null) {
