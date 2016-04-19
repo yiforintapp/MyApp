@@ -55,7 +55,14 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -197,7 +204,85 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
         mImageAdapter = new ImageAdapter();
         mGridView.setAdapter(mImageAdapter);
         mSelectAll.setEnabled(true);
+
     }
+
+    private void findFile(final String path) {
+        LeoLog.d("testFindFile", "path " + path);
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+//                do_exec("stat " + path);
+//                do_exec("ls -i " + path);
+//                do_exec("df");
+                do_exec("stat " + path);
+
+//                Process localProcess = null;
+//                try {
+//                    localProcess = Runtime.getRuntime().exec("su ");//经过Root处理的android系统即有su命令
+//                    OutputStream localOutputStream = localProcess.getOutputStream();
+//                    DataOutputStream localDataOutputStream = new DataOutputStream(localOutputStream);
+//                    InputStream localInputStream = localProcess.getInputStream();
+//                    DataInputStream localDataInputStream = new DataInputStream(localInputStream);
+//                    String str1 = String.valueOf(path);
+//                    String str2 = str1 + "\n";
+//                    localDataOutputStream.writeBytes(str2);
+//                    localDataOutputStream.flush();
+//                    String str3 = localDataInputStream.readLine();
+//                    LeoLog.d("testFindFile", "str3 " + str3);
+//                    localDataOutputStream.writeBytes("exit\n");
+//                    localDataOutputStream.flush();
+//                    localProcess.waitFor();
+//                } catch (Exception localException) {
+//                    localException.printStackTrace();
+//                }
+//                try {
+//                    localProcess = Runtime.getRuntime().exec("stat " + path);
+//                    BufferedReader buf = new BufferedReader(new InputStreamReader(localProcess.getInputStream()));
+//                    String str;
+//                    String lastLine = "";
+//                    while ((str = buf.readLine()) != null) {
+//                        lastLine = str;
+//                    }
+//                    LeoLog.d("testFindFile", "string " + buf.toString());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
+            }
+        });
+
+    }
+
+
+    private String do_exec(String cmd) {
+        String s = "";
+        List<String> lists = new ArrayList<String>();
+        try {
+            Process p = Runtime.getRuntime().exec(cmd);
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(p.getInputStream()));
+            String line = null;
+//            s = in.toString();
+            while ((line = in.readLine()) != null) {
+                s += line + ",";
+                lists.add(line);
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        LeoLog.d("testFindFile", "str3 " + s);
+
+        if (lists.size() > 0) {
+            for (int i = 0; i < lists.size(); i++) {
+                LeoLog.d("testFindFile", i + " : " + lists.get(i));
+            }
+        }
+
+        return cmd;
+    }
+
 
     private void asyncLoad() {
         ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -337,6 +422,8 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
             for (PhotoItem item : mPicturesList) {
                 mAllListPath.add(item.getPath());
             }
+
+            findFile(mPicturesList.get(0).getPath());
         }
         if (mActicityMode == SELECT_HIDE_MODE) {
             mHidePicture.setText(R.string.app_hide_image);
