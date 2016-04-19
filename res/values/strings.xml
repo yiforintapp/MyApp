@@ -1233,7 +1233,7 @@
     <string name="uninstall_guide_tips">Advanced Protection was enabled, please click here to uninstall LEO Privacy</string>
     <string name="secur_add_num_tip">How Anti-Theft function works?</string>
     <string name="backup_instr_tip_str">You can send commands backup via SMS to your reserved number.</string>
-    <string name="air_sig_tips_content">Oops, there were some problems with your gyroscope, unable to use Magic Lock</string>
+    <string name="air_sig_tips_content">We are sorry, Magic Lock is not supported by your device.</string>
     <string name="air_sig_tips_content_two">If you failed to set it multiple times, it may be gyroscope problems</string>
 
     <string name="guide_page_title_one">New Interface</string>

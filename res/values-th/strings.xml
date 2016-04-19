@@ -1202,4 +1202,6 @@
     <string name="guide_page_content_one">เสนอความเป็นส่วนตัว  จะดำเนินการสะดวกกว่า</string>
     <string name="guide_page_content_two">ล็อคการประยุกต์ใช้ รักษาประยุกต์การใช้ของคุณทุกเวลา</string>
     <string name="guide_page_content_three">แฝงรูปภาพ/เวดีโอ ความเป็นส่วนตัวปลอดภัยกว่า</string>
+
+    <string name="air_sig_tips_content">เนื่องจากการจำกัดของอุปกรณ์ เสียใจที่โทรศัพท์ของคุณไม่สนับสนุน Magic Lock</string>
 </resources>

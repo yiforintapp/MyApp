@@ -1184,7 +1184,7 @@
     <string name="airsig_settings_generic">Универсальный режим</string>
     <string name="airsig_settings_control">Режим управления</string>
 
-    <string name="air_sig_tips_content">У твоего жироскопа мобильника есть проблемы, Magic Lock не работает</string>
+    <string name="air_sig_tips_content">Из-за ограничений оборудования, извините,ваш мобильник не поддерживает Magic Lock</string>
     <string name="air_sig_tips_content_two">Если вы настроили не успешно,может быть, жироскоп мобильника не работает</string>
 
     <string name="guide_page_title_one">Новый интерфейс</string>

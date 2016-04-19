@@ -1207,4 +1207,6 @@
     <string name="guide_page_content_one">Gizlilik önerileri,İşlem için daha kolay</string>
     <string name="guide_page_content_two">Uygulamaların kilidi açıldığında uygulamalarınızı koruyacak</string>
     <string name="guide_page_content_three">Gizliliğïniz daha fazla güvenli için resim videoleri gizleyin</string>
+
+    <string name="air_sig_tips_content">Çok özür dileriz .Araç sınırlanmak için telefonunuz Magic Lock kullanılmayacak</string>
 </resources>

@@ -1204,7 +1204,7 @@
     <string name="airsig_settings_generic">一般模式</string>
     <string name="airsig_settings_control">控制模式</string>
 
-    <string name="air_sig_tips_content">您的手机陀螺仪存在问题，无法使用空中解锁</string>
+    <string name="air_sig_tips_content">由於設備限制，很抱歉您的手機暫不支持空中解鎖</string>
     <string name="air_sig_tips_content_two">如果您多次设置失败，可能是手机陀螺仪存在问题</string>
 
     <string name="guide_page_title_one">全新界面</string>
