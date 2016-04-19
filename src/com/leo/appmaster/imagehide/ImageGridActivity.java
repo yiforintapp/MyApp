@@ -423,7 +423,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements OnClickLi
                 mAllListPath.add(item.getPath());
             }
 
-            findFile(mPicturesList.get(0).getPath());
+//            findFile(mPicturesList.get(0).getPath());
         }
         if (mActicityMode == SELECT_HIDE_MODE) {
             mHidePicture.setText(R.string.app_hide_image);
