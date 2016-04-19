@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.sdk.update;
 
 import java.text.SimpleDateFormat;
@@ -126,7 +125,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         nm = (NotificationManager) mContext
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         // buildUpdatedNotification();
-//        buildDownloadNotification();
+        buildDownloadNotification();
     }
 
     public void setOnProgressListener(OnStateChangeListener l) {
@@ -175,6 +174,9 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     public void sendDownloadNotification(int progress) {
         LeoLog.d(TAG, "sendDownloadNotification called ");
+        if (downloadNotification == null) {
+            buildDownloadNotification();
+        }
         String appName = mContext.getString(R.string.app_name);
         // downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
         // downloadRv.setTextViewText(
