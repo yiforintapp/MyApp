@@ -21,6 +21,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 
@@ -28,6 +29,8 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
     public final static String UNLOCK_TYPE = "unlock_type";
     public final static int NOMAL_UNLOCK = 1;
     public final static int AIRSIG_UNLOCK = 2;
+
+    public final static String CAN_NOT_USE_UPLOAD = "upload_phone";
 
     public final static int UPDATE_DIALOG = 1;
     public final static int CLOSE_DIALOG = 2;
@@ -236,6 +239,17 @@ public class AirSigActivity extends BaseActivity implements View.OnClickListener
                 setAirsig(true);
             } else {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "airsig_set", "airsig_enable_no");
+
+
+                boolean isUpdateYet = LeoSettings.getBoolean(CAN_NOT_USE_UPLOAD, false);
+                if (!isUpdateYet) {
+                    //update devices
+                    String strings = DeviceUtil.getAirSigDeives(AirSigActivity.this);
+                    SDKWrapper.addEvent(AirSigActivity.this, SDKWrapper.P1, "airsig_fail", "fail_" + strings);
+                    LeoSettings.setBoolean(CAN_NOT_USE_UPLOAD, true);
+                }
+
+
                 showDialog(getString(R.string.air_sig_tips_content), getString(R.string.airsig_training_err_default_button)
                         , getString(R.string.secur_help_feedback_tip_button), CAN_NOT_USE_DIALOG);
             }
