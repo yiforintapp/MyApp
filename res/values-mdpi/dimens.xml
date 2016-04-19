@@ -211,7 +211,7 @@
     <dimen name="ph_sec_guide_top_iv_width">192dp</dimen>
     <dimen name="ph_sec_guide_top_iv_height">90dp</dimen>
 
-    <dimen name="icon_home_top_1">34dp</dimen>
-    <dimen name="icon_home_top_2">20dp</dimen>
-    <dimen name="home_tab_tv_top">13dp</dimen>
+    <dimen name="icon_home_top_1">20dp</dimen>
+    <dimen name="icon_home_top_2">15dp</dimen>
+    <dimen name="home_tab_tv_top">5dp</dimen>
 </resources>
