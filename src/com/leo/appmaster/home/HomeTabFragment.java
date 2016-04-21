@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.airsig.AirSigActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -28,7 +30,11 @@ import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.mgr.CallFilterManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.ImagePrivacy;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacy.VideoPrivacy;
@@ -69,7 +75,10 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private boolean mAnimating;
     private View mInterceptView;
     private View mMagicLockView;
+    private View mPhoneLostView;
     public static final String FROM_HOME_APP = "from_home_app";
+
+    private boolean isAirSigCanUse = false;
 
     public HomeTabFragment() {
 
@@ -120,6 +129,7 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isAirSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
     }
 
     @Override
@@ -173,6 +183,8 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .create();
         mInterceptView.setOnClickListener(this);
 
+
+//        if (isAirSigCanUse) {
         mMagicLockView = view.findViewById(R.id.home_magiclock);
         MaterialRippleLayout.on(mMagicLockView)
                 .rippleColor(getResources().getColor(R.color.home_tab_pressed))
@@ -181,6 +193,28 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                 .rippleHover(true)
                 .create();
         mMagicLockView.setOnClickListener(this);
+
+        ImageView iv_icon = (ImageView) view.findViewById(R.id.home_ic_magiclock);
+        TextView tv_icon = (TextView) view.findViewById(R.id.tv_magiclock);
+        if (!isAirSigCanUse) {
+            iv_icon.setBackgroundResource(R.drawable.icon_home_antitheft);
+            tv_icon.setText(getString(R.string.home_tab_lost));
+        } else {
+            iv_icon.setBackgroundResource(R.drawable.icon_home_magiclock);
+            tv_icon.setText(getString(R.string.airsig_settings_activity_title));
+        }
+
+
+//        } else {
+//            mPhoneLostView = view.findViewById(R.id.home_phone_protect);
+//            MaterialRippleLayout.on(mPhoneLostView)
+//                    .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+//                    .rippleAlpha(1f)
+//                    .rippleDuration(250)
+//                    .rippleHover(true)
+//                    .create();
+//            mPhoneLostView.setOnClickListener(this);
+//        }
 
 
         mLostSecurityView = view.findViewById(R.id.home_more);
@@ -348,9 +382,13 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "block");
                     break;
                 case R.id.home_magiclock:
-                    Intent intent2 = new Intent(activity, AirSigActivity.class);
-                    startActivity(intent2);
-                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "airsig");
+                    if (isAirSigCanUse) {
+                        Intent intent2 = new Intent(activity, AirSigActivity.class);
+                        startActivity(intent2);
+                        SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "airsig");
+                    } else {
+                        gotoPhoneLost();
+                    }
                     break;
                 case R.id.home_more:
                     LeoSettings.setBoolean(PrefConst.KEY_HOME_MORE_CONSUMED, true);
@@ -366,7 +404,28 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
                         GuideFragment.mIsClickMoreTip = false;
                     }
                     break;
+//                case R.id.home_phone_protect:
+//
+//                    break;
             }
+        }
+    }
+
+    private void gotoPhoneLost() {
+        LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+        boolean flag = manager.isUsePhoneSecurity();
+        Intent lostIntent = null;
+        if (!flag) {
+            lostIntent = new Intent(mActivity, PhoneSecurityGuideActivity.class);
+            lostIntent.putExtra(PhoneSecurityConstants.KEY_FORM_HOME_SECUR, true);
+        } else {
+            lostIntent = new Intent(mActivity, PhoneSecurityActivity.class);
+        }
+        try {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "more", "theft");
+            startActivity(lostIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

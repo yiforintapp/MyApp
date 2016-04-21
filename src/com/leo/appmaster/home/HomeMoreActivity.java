@@ -68,6 +68,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
     private final int ICON_ID_BACKUP = R.drawable.ic_more_backup;
     private final int ICON_ID_PRIVACY_CONTACT = R.drawable.ic_more_privacy_contact;
     private final int ICON_ID_SETTING = R.drawable.ic_more_setting;
+    private final int ICON_ID_MAGIC_LOCK = R.drawable.more_list_magiclock;
 
     //Summary部分的文案
     private final int STRID_GESTURE_OR_PSW = R.string.gesture_or_password;
@@ -76,7 +77,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
     private CommonToolbar mCtbMain;
 
-//    private CommonSettingItem mItemAirSigEntry;
+    private CommonSettingItem mItemAirSigEntry;
 
     private CommonSettingItem mItemIntruderEntry;
     private CommonSettingItem mItemFindLostEntry;
@@ -137,15 +138,42 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
         mCtbMain = (CommonToolbar) findViewById(R.id.ctb_main);
         mCtbMain.setToolbarTitle(R.string.home_more);
 
-        //签字解锁部分
-//        mItemAirSigEntry = (CommonSettingItem) findViewById(R.id.item_airsig);
-//        mItemAirSigEntry.setIcon(ICON_ID_SIGNATURE_LOCK);
-//        mItemAirSigEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                goToOpenAirSig();
-//            }
-//        });
+        boolean isAirSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+
+        mItemAirSigEntry = (CommonSettingItem) findViewById(R.id.airsig_item);
+        mItemFindLostEntry = (CommonSettingItem) findViewById(R.id.item_findlost);
+        if (!isAirSigCanUse) {
+            //签字解锁部分
+            mItemFindLostEntry.setVisibility(View.GONE);
+            View line = findViewById(R.id.line_4);
+            line.setVisibility(View.GONE);
+            mItemAirSigEntry.setVisibility(View.VISIBLE);
+            mItemAirSigEntry.setIcon(ICON_ID_MAGIC_LOCK);
+            mItemAirSigEntry.setTitle(STRID_SIGNATURE_LOCK);
+            mItemAirSigEntry.setSummaryVisable(false);
+            mItemAirSigEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToOpenAirSig();
+                }
+            });
+        } else {
+            //手机防盗
+            mItemAirSigEntry.setVisibility(View.GONE);
+            mItemFindLostEntry.setVisibility(View.VISIBLE);
+            View line = findViewById(R.id.line_4);
+            line.setVisibility(View.VISIBLE);
+            mItemFindLostEntry.setIcon(ICON_ID_FINDLOST);
+            mItemFindLostEntry.setTitle(STRID_FINDLOST);
+            mItemFindLostEntry.setSummaryVisable(false);
+            mItemFindLostEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToFindLost();
+                }
+            });
+        }
+
 
 //        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
 //        if (isAigSigCanUse) {
@@ -216,18 +244,6 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 goToIntruderPretection();
-            }
-        });
-
-        //手机防盗
-        mItemFindLostEntry = (CommonSettingItem) findViewById(R.id.item_findlost);
-        mItemFindLostEntry.setIcon(ICON_ID_FINDLOST);
-        mItemFindLostEntry.setTitle(STRID_FINDLOST);
-        mItemFindLostEntry.setSummaryVisable(false);
-        mItemFindLostEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToFindLost();
             }
         });
 

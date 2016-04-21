@@ -26,6 +26,12 @@
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="wrap_content" />-->
 
+            <com.leo.appmaster.ui.CommonSettingItem
+                android:id="@+id/airsig_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
             <View
                 android:id="@+id/line_1"
                 android:layout_width="match_parent"
@@ -59,16 +65,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-           <!-- <View
-                android:id="@+id/line_5"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@drawable/divider_setting" />
+            <!-- <View
+                 android:id="@+id/line_5"
+                 android:layout_width="match_parent"
+                 android:layout_height="1px"
+                 android:background="@drawable/divider_setting" />
 
-            <com.leo.appmaster.ui.CommonSettingItem
-                android:id="@+id/item_callfilter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />-->
+             <com.leo.appmaster.ui.CommonSettingItem
+                 android:id="@+id/item_callfilter"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content" />-->
 
             <View
                 android:id="@+id/line_6"
