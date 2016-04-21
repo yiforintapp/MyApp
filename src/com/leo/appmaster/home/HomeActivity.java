@@ -49,6 +49,7 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.DeviceReceiverNewOne;
@@ -189,6 +190,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         registerLocaleChange();
 
         setIsShowMoreGuide();
+        reportAirsigOncely();
     }
 
     private void printSignature() {
@@ -203,6 +205,30 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         } catch (PackageManager.NameNotFoundException e) {
         } catch (NoSuchAlgorithmException e) {
         }
+    }
+
+    private void reportAirsigOncely() {
+        boolean isReported = LeoSettings.getBoolean(PrefConst.KEY_AIRSIG_REPORT, false);
+        if (isReported) {
+            return;
+        }
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                LeoSettings.setBoolean(PrefConst.KEY_AIRSIG_REPORT, true);
+
+                String devices = DeviceUtil.getAirSigDeives(HomeActivity.this);
+                boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+                LeoLog.d(TAG, "<ls> reportAirsig, devices: " + devices);
+                if (isAigSigCanUse) {
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "airsig_user", "yes");
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "airsig_yes", devices);
+                } else {
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "airsig_user", "no");
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "airsig_no", devices);
+                }
+            }
+        }, 5 * 1000);
     }
 
     private void requestCamera() {
