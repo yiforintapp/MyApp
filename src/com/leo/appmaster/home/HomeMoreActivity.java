@@ -142,22 +142,7 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
 
         mItemAirSigEntry = (CommonSettingItem) findViewById(R.id.airsig_item);
         mItemFindLostEntry = (CommonSettingItem) findViewById(R.id.item_findlost);
-        if (!isAirSigCanUse) {
-            //签字解锁部分
-            mItemFindLostEntry.setVisibility(View.GONE);
-            View line = findViewById(R.id.line_4);
-            line.setVisibility(View.GONE);
-            mItemAirSigEntry.setVisibility(View.VISIBLE);
-            mItemAirSigEntry.setIcon(ICON_ID_MAGIC_LOCK);
-            mItemAirSigEntry.setTitle(STRID_SIGNATURE_LOCK);
-            mItemAirSigEntry.setSummaryVisable(false);
-            mItemAirSigEntry.setRippleViewOnClickLinstener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    goToOpenAirSig();
-                }
-            });
-        } else {
+        if (isAirSigCanUse) {
             //手机防盗
             mItemAirSigEntry.setVisibility(View.GONE);
             mItemFindLostEntry.setVisibility(View.VISIBLE);
@@ -172,8 +157,12 @@ public class HomeMoreActivity extends BaseActivity implements View.OnClickListen
                     goToFindLost();
                 }
             });
+        } else {
+            mItemAirSigEntry.setVisibility(View.GONE);
+            mItemFindLostEntry.setVisibility(View.GONE);
+            View line = findViewById(R.id.line_4);
+            line.setVisibility(View.GONE);
         }
-
 
 //        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
 //        if (isAigSigCanUse) {
