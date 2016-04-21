@@ -184,20 +184,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     @Override
     protected void onResume() {
-//        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                if (isAdminActive() || isNewAdminActive()) {
-//                    mForbidUninstall.setChecked(true);
-//                    mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
-//                } else {
-//                    mForbidUninstall.setChecked(false);
-//                    mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
-//                }
-//            }
-//        }, 500);
-
         if (haveProtect()) {
             mSetProtect.setTitle(R.string.passwd_protect);
         } else {
@@ -216,14 +202,23 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mLockerTheme.setTitle(R.string.lockerTheme);
         }
 
-        if (mAirSigSetting != null) {
-            boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
-            boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
 
-            if (isAirsigOn && isAirSigVaild) {
-                mAirSigSetting.setSummary(getString(R.string.has_opened));
+        if (mAirSigSetting != null) {
+            boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+            if (!isAigSigCanUse) {
+                try {
+                    getPreferenceScreen().removePreference(mAirSigSetting);
+                } catch (Exception e) {
+                }
             } else {
-                mAirSigSetting.setSummary(getString(R.string.did_not_open));
+                boolean isAirsigOn = LeoSettings.getBoolean(AirSigActivity.AIRSIG_SWITCH, false);
+                boolean isAirSigVaild = ASGui.getSharedInstance().isValidLicense();
+
+                if (isAirsigOn && isAirSigVaild) {
+                    mAirSigSetting.setSummary(getString(R.string.has_opened));
+                } else {
+                    mAirSigSetting.setSummary(getString(R.string.did_not_open));
+                }
             }
         }
 

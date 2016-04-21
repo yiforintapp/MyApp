@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.airsig.airsigsdk.ASGui;
 import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.home.MenuFaqBrowserActivity;
@@ -214,6 +215,13 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         } else {
             for (int i = 0; i < sCategoryIds.length; i++) {
                 mCategories.add(getString(sCategoryIds[i]));
+            }
+        }
+        boolean isAigSigCanUse = ASGui.getSharedInstance().isSensorAvailable();
+        if (!isAigSigCanUse) {
+            String airsig = getString(R.string.airsig_settings_activity_title);
+            if (mCategories.contains(airsig)) {
+                mCategories.remove(airsig);
             }
         }
 
