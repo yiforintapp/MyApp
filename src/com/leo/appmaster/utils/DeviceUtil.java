@@ -231,24 +231,53 @@ public class DeviceUtil {
         return strings;
     }
 
+//    public static String getAirSigDeives(Context ctx) {
+//        String model = getModel();
+//        String phoneVersion = getAndroidVersion();
+//        String apiLevel = getApiLevel();
+//        String pgVersion = getAppVer(ctx);
+//        String language = getLanguage(ctx);
+//        String country = getCountry(ctx);
+//        String channelCode = getChannelCode(ctx);
+//        // 品牌名稱
+//        String brand = Build.BRAND;
+//        // 設備名稱
+//        String device = Build.DEVICE;
+//        // 版本號碼
+//        String display = Build.DISPLAY;
+//
+//        String strings = model + "," + phoneVersion + "," + apiLevel + "," + pgVersion
+//                + "," + language + "," + country + "," + channelCode + "," + brand
+//                + "," + device + "," + display;
+//
+//        return strings;
+//    }
+
     public static String getAirSigDeives(Context ctx) {
         String model = getModel();
-        String phoneVersion = getAndroidVersion();
+//        String phoneVersion = getAndroidVersion();
         String apiLevel = getApiLevel();
-        String pgVersion = getAppVer(ctx);
-        String language = getLanguage(ctx);
+//        String pgVersion = getAppVer(ctx);
+//        String language = getLanguage(ctx);
         String country = getCountry(ctx);
-        String channelCode = getChannelCode(ctx);
+//        String channelCode = getChannelCode(ctx);
         // 品牌名稱
         String brand = Build.BRAND;
-        // 設備名稱
-        String device = Build.DEVICE;
-        // 版本號碼
+//        // 設備名稱
+//        String device = Build.DEVICE;
+
         String display = Build.DISPLAY;
 
-        String strings = model + "," + phoneVersion + "," + apiLevel + "," + pgVersion
-                + "," + language + "," + country + "," + channelCode + "," + brand
-                + "," + device + "," + display;
+        // 版本號碼
+        String id = Build.ID;
+
+
+//        String strings = model + "," + phoneVersion + "," + apiLevel + "," + pgVersion
+//                + "," + language + "," + country + "," + channelCode + "," + brand
+//                + "," + device + "," + display;
+        String strings = model + "," + brand + "," + apiLevel + "," + display + "," + country +
+                "," + id;
+        LeoLog.d("testAIrSig", "devices : " + strings);
 
         return strings;
     }

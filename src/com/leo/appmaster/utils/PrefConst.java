@@ -363,4 +363,6 @@ public class PrefConst {
     public static final String KEY_SEND_MSM_LASTTIME = "send_msm_lasttime";
     public static final String KEY_SEND_MSM_COUNT ="send_msm_count";
     public static final String KEY_HOME_GUIDE_MORE = "home_guide_more";
+
+    public static final String KEY_AIRSIG_REPORT = "airsig_report";
 }
