@@ -1,5 +1,10 @@
 package com.leo.appmaster.cloud.crypto;
 
+import android.text.TextUtils;
+import android.util.Base64;
+
+import com.leo.appmaster.AppMasterApplication;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidAlgorithmParameterException;
@@ -14,13 +19,6 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import android.text.TextUtils;
-import android.util.Base64;
-
-import com.leo.appmaster.AppMasterApplication;
 
 /**
  * 加密工具类
@@ -132,15 +130,15 @@ public class CryptoUtils {
         }
         synchronized (LOCK) {
             AppMasterApplication application = AppMasterApplication.getInstance();
-            String[] keys = application.getKeyArray();
-            if (keys == null || keys.length <= 0) {
-                throw new RuntimeException("key is null.");
-            }
-            byte[] keyByte = HexStringToByteArray(keys[0]);
-            sAesKey = new SecretKeySpec(keyByte, "AES");
-
-            byte[] ivByte = HexStringToByteArray(keys[1]);
-            sAesIv = new IvParameterSpec(ivByte);
+//            String[] keys = application.getKeyArray();
+//            if (keys == null || keys.length <= 0) {
+//                throw new RuntimeException("key is null.");
+//            }
+//            byte[] keyByte = HexStringToByteArray(keys[0]);
+//            sAesKey = new SecretKeySpec(keyByte, "AES");
+//
+//            byte[] ivByte = HexStringToByteArray(keys[1]);
+//            sAesIv = new IvParameterSpec(ivByte);
         }
     }
 

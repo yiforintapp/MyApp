@@ -432,7 +432,7 @@ public class SplashBootstrap extends Bootstrap {
         if (Utilities.isEmpty(sb.toString())) {
             return false;
         }
-        Bitmap result = AppUtil.add2Bitmap(sb.toString(), R.drawable.spl_share_qr);
+        Bitmap result = AppUtil.add2Bitmap(sb.toString(), R.drawable.ic_launcher);
         StringBuilder sbShar = new StringBuilder(path);
         sbShar.append(Constants.SPL_SHARE_QR_NAME);
         boolean isOutPutSuc = AppUtil.outPutImage(sbShar.toString(), result);

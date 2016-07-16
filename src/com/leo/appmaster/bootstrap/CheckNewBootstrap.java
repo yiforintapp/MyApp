@@ -1,13 +1,6 @@
 
 package com.leo.appmaster.bootstrap;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -27,16 +20,16 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.ProxyActivity;
-import com.leo.appmaster.schedule.ScreenRecommentJob;
-import com.leo.appmaster.sdk.push.PushNotification;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 检查更新延时程序 1、checkNewTheme 2、checkNewAppBusiness
@@ -47,7 +40,6 @@ public class CheckNewBootstrap extends Bootstrap {
     private static final String TAG = "CheckNewBootstrap";
 
     private static NewAppRequestListener mAppRequestListener;
-    private static NewThemeRequestListener mThemeRequestListener;
 
     public static final int CHECKTHEME = 0;
     public static final int CHECKHOTAPP = 1;
@@ -57,7 +49,6 @@ public class CheckNewBootstrap extends Bootstrap {
         super();
 
         mAppRequestListener = new NewAppRequestListener();
-        mThemeRequestListener = new NewThemeRequestListener();
         LeoLog.d(TAG, "instance !");
     }
 
@@ -68,11 +59,8 @@ public class CheckNewBootstrap extends Bootstrap {
             checkProxy();
         }
 
-        checkNewTheme();
 
-        ScreenRecommentJob.initialize();
 //        checkNewAppBusiness();
-//        ISwipUpdateRequestManager.getInstance(mApp).loadIswipCheckNew();
         return true;
     }
 
@@ -81,41 +69,6 @@ public class CheckNewBootstrap extends Bootstrap {
         return TAG;
     }
 
-    public static void checkNewTheme() {
-        LeoLog.d(TAG, "checkNewTheme !");
-        AppMasterApplication app = AppMasterApplication.getInstance();
-        final AppMasterPreference pref = AppMasterPreference.getInstance(app);
-        long curTime = System.currentTimeMillis();
-
-        long lastCheckTime = pref.getLastCheckThemeTime();
-        if ((lastCheckTime > 0
-                && (Math.abs(curTime - lastCheckTime)) > pref.getThemeCurrentStrategy())
-                || isFromPush) {
-            LeoLog.d(TAG, "NewTheme时间符合 !");
-            HttpRequestAgent.getInstance(app).checkNewTheme(mThemeRequestListener,
-                    mThemeRequestListener);
-        } else {
-            LeoLog.d(TAG, "NewTheme时间不符合 !");
-            TimerTask recheckTask = new TimerTask() {
-                @Override
-                public void run() {
-                    checkNewTheme();
-                }
-            };
-            Timer timer = ThreadManager.getTimer();
-            if (lastCheckTime == 0) { // First time, check theme after 24 hours
-                lastCheckTime = curTime;
-                pref.setLastCheckThemeTime(curTime);
-                pref.setThemeStrategy(AppMasterConfig.TIME_24_HOUR, AppMasterConfig.TIME_12_HOUR,
-                        AppMasterConfig.TIME_2_HOUR);
-            }
-            long delay = pref.getThemeCurrentStrategy()
-                    - (curTime - lastCheckTime);
-            // long delay = 180000;
-            LeoLog.d(TAG, "delay : " + delay);
-            timer.schedule(recheckTask, delay);
-        }
-    }
 
     public static void checkNewAppBusiness() {
         LeoLog.d(TAG, "checkNewAppBusiness !");
@@ -173,12 +126,6 @@ public class CheckNewBootstrap extends Bootstrap {
             }
 
             // unified notification
-            PushNotification mThemeNoti = new PushNotification(app);
-            intent = new Intent(app, StatusBarEventService.class);
-            intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-                    StatusBarEventService.EVENT_NEW_THEME);
-//            mThemeNoti.showNewThemeNoti(intent, title, content);
-            mThemeNoti.showNotification(intent, title, content, 0, PushNotification.NOTI_THEME);
 
             isFromPush = false;
             // show new theme status tip
@@ -220,13 +167,6 @@ public class CheckNewBootstrap extends Bootstrap {
 
             // unified notification
             Intent intent = null;
-            PushNotification mHotAppNoti = new PushNotification(app);
-            intent = new Intent(app, StatusBarEventService.class);
-            intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-                    StatusBarEventService.EVENT_BUSINESS_APP);
-//            mHotAppNoti.showNewAppNoti(intent, title, content);
-            mHotAppNoti.showNotification(intent, title, content, 0, PushNotification.NOTI_HOTAPP);
-
             isFromPush = false;
             // show business status tip
             // Intent intent = null;
@@ -333,9 +273,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     String pkgList[] = pi.pkgList;
                     if (pkgList != null && pkgList.length > 0) {
                         String pkgName = pkgList[0];
-                        if (TaskDetectService.SYSTEMUI_PKG.equals(pkgName)) {
-                            continue;
-                        }
+
                         return pkgName;
                     }
                 }
@@ -352,95 +290,6 @@ public class CheckNewBootstrap extends Bootstrap {
         return null;
     }
 
-    private static class NewThemeRequestListener implements Listener<JSONObject>, ErrorListener {
-
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            LeoLog.d(TAG, "checkNewTheme  onErrorResponse!");
-            AppMasterApplication app = AppMasterApplication.getInstance();
-            AppMasterPreference pref = AppMasterPreference.getInstance(app);
-            LeoLog.e("checkNewTheme", error.getMessage());
-            pref.setThemeStrategy(pref.getThemeFailStrategy(),
-                    pref.getThemeSuccessStrategy(), pref.getThemeFailStrategy());
-            TimerTask recheckTask = new TimerTask() {
-                @Override
-                public void run() {
-                    checkNewTheme();
-                }
-            };
-            Timer timer = ThreadManager.getTimer();
-            timer.schedule(recheckTask, pref.getThemeCurrentStrategy());
-        }
-
-        @Override
-        public void onResponse(JSONObject response, boolean noMidify) {
-            LeoLog.d(TAG, "checkNewTheme  onResponse!" + response.toString());
-            AppMasterApplication app = AppMasterApplication.getInstance();
-            AppMasterPreference pref = AppMasterPreference.getInstance(app);
-            if (response != null) {
-                try {
-                    JSONObject dataObject = response.getJSONObject("data");
-                    JSONObject strategyObject = response.getJSONObject("strategy");
-                    JSONObject noticeObject = response.getJSONObject("notice");
-
-                    long successStrategy = pref.getThemeSuccessStrategy();
-                    long failStrategy = pref.getThemeFailStrategy();
-                    if (strategyObject != null) {
-                        successStrategy = strategyObject.getLong("s");
-                        if (successStrategy < AppMasterConfig.MIN_PULL_TIME) {
-                            successStrategy = AppMasterConfig.MIN_PULL_TIME;
-                        }
-                        failStrategy = strategyObject.getLong("f");
-                        if (failStrategy < AppMasterConfig.MIN_PULL_TIME) {
-                            failStrategy = AppMasterConfig.MIN_PULL_TIME;
-                        }
-                    }
-                    pref.setThemeStrategy(successStrategy, successStrategy, failStrategy);
-
-                    if (dataObject != null) {
-                        boolean hasNewTheme = dataObject.getBoolean("need_update");
-                        String serialNumber = dataObject.getString("update_flag");
-
-                        if (!hasNewTheme) {
-                            LeoLog.d(TAG, "checkNewTheme  !!hasNewTheme!");
-                            pref.setLocalThemeSerialNumber(serialNumber);
-                        }
-                        pref.setOnlineThemeSerialNumber(serialNumber);
-
-                        if (hasNewTheme) {
-//                            LeoPreference.getInstance().putBoolean(Constants.IS_CLICK_LOCK_TAB, false);
-                            LeoLog.d(TAG, "checkNewTheme  hasNewTheme!");
-                            String title = null;
-                            String content = null;
-                            if (noticeObject != null) {
-                                title = noticeObject.getString("title");
-                                content = noticeObject.getString("content");
-                            }
-
-                            LeoEventBus.getDefaultBus().postSticky(
-                                    new NewThemeEvent(EventId.EVENT_NEW_THEME, "new theme", true));
-
-                            showNewThemeTip(title, content);
-                        }
-                        pref.setLastCheckThemeTime(System.currentTimeMillis());
-                    }
-
-                    TimerTask recheckTask = new TimerTask() {
-                        @Override
-                        public void run() {
-                            checkNewTheme();
-                        }
-                    };
-                    Timer timer = ThreadManager.getTimer();
-                    timer.schedule(recheckTask, pref.getThemeCurrentStrategy());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    LeoLog.e("checkNewTheme", e.getMessage());
-                }
-            }
-        }
-
-    }
 
     private static class NewAppRequestListener implements Listener<JSONObject>, ErrorListener {
 

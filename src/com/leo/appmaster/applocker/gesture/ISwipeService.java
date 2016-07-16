@@ -1,9 +1,6 @@
 
 package com.leo.appmaster.applocker.gesture;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -12,11 +9,9 @@ import android.os.RemoteException;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.model.ISwipeInterface;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.privacycontact.ContactBean;
-import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.utils.LeoLog;
+
+import java.util.List;
 
 /**
  * ISwipe相关Service
@@ -24,7 +19,6 @@ import com.leo.appmaster.utils.LeoLog;
 public class ISwipeService extends Service {
     private static final String TAG = "ISwipeService";
 
-    private LockManager mLockManager;
 
     public ISwipeService() {
     }
@@ -32,8 +26,6 @@ public class ISwipeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         LeoLog.i(TAG, "onCreate.");
     }
 
@@ -48,7 +40,6 @@ public class ISwipeService extends Service {
         @Override
         public void onISwipeDismiss() throws RemoteException {
             // 1秒以内不出现锁屏
-            mLockManager.filterAll(1000);
             LeoLog.i(TAG, "onISwipeDismiss");
         }
 
@@ -60,20 +51,12 @@ public class ISwipeService extends Service {
                 LeoLog.i(TAG, "getLockModeList lock type is none.");
                 return null;
             }
-            return mLockManager.getLockMode();
+            return null;
         }
 
         @Override
         public List<String> getPrivacyContacts() throws RemoteException {
-            List<ContactBean> contacts = PrivacyContactManager.getInstance(ISwipeService.this)
-                    .getPrivateContacts();
-            if (contacts != null && contacts.size() > 0) {
-                List<String> privacyNumbers = new ArrayList<String>();
-                for (ContactBean contactBean : contacts) {
-                    privacyNumbers.add(contactBean.getContactNumber());
-                }
-                return privacyNumbers;
-            }
+
             return null;
         }
     };

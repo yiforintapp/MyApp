@@ -1,14 +1,6 @@
 
 package com.leo.appmaster.home;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -41,22 +33,22 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NinePatchChunk;
 import com.leo.appmaster.utils.Utilities;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class SplashActivity extends BaseActivity implements OnClickListener {
     private static final String TAG = "SplashActivity";
@@ -211,7 +203,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 //                sb.append(Constants.SPL_SHARE_QR_NAME);
                 sb.append(Constants.SPLASH_NAME);
                 /*facebook分享闪屏*/
-                mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
 
                 Intent shareIntent = AppUtil.shareImageToApp(sb.toString());
                 shareIntent.setPackage(Constants.FACEBOOK_PKG_NAME);
@@ -226,7 +217,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "screen_cli", "share_cnts");
                 break;
             default:
                 break;
@@ -241,13 +231,9 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.splashRL:
-                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
-                            "screen_cli", "go");
-                    skipModeHandle();
+
                     break;
                 case R.id.skip_to_pg_bt:
-                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
-                            "screen_cli", "skip");
                     startHome();
                     if (mEventHandler != null) {
                         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
@@ -324,7 +310,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
             mSplaFacRt.setVisibility(View.VISIBLE);
             mSplaFacRt.setOnClickListener(this);
             LeoLog.i(TAG, "install facebook");
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "screen_cli", "share_shw");
         } else {
             LeoLog.i(TAG, "no install facebook");
         }
@@ -363,7 +348,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         super.onResume();
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         splashDelayShow();
-        mLockManager.clearFilterList();
         long currentTs = SystemClock.elapsedRealtime();
         if (AppMasterApplication.sCheckTs) {
             LeoLog.i("TsCost", "App onCreate ~ Splash onResume: " +
@@ -411,7 +395,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         LeoLog.d(TAG, "<ls> onEvent, result: " + event.mUnlockResult);
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
             if (getPackageName() != null && getPackageName().equals(event.mUnlockedPkg)) {
-                Intent intent = new Intent(this, HomeActivity.class);
+                Intent intent = new Intent(this, HomeTestActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 AppMasterApplication.getInstance().startActivity(intent);
                 AppMasterApplication.sIsSplashActioned = true;
@@ -433,7 +417,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LAUNCH_HOME_ACTIVITY:
-                    if (AppMasterPreference.getInstance(SplashActivity.this).getGuidePageFirstUse()) {
+                    if (/*AppMasterPreference.getInstance(SplashActivity.this).getGuidePageFirstUse()*/true) {
                         boolean guidNotShown = mNewGuideMain == null
                                 || mNewGuideMain.getVisibility() != View.VISIBLE;
                         if (guidNotShown) {
@@ -457,7 +441,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                         LeoLog.d(TAG, "teststart, handleMessage--else...");
                         startHome();
                     }
-                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, "screen_cli", "none");
+
                     break;
 
                 default:
@@ -469,20 +453,28 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     private void startHome() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            if (mLockManager.inRelockTime(getPackageName())) {
-                Intent intent = new Intent(this, HomeActivity.class);
+            if (/*mLockManager.inRelockTime(getPackageName())*/true) {
+                Intent intent = new Intent(this, HomeTestActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             } else {
-                LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
-                amp.setLastFilterSelfTime(0);
-                mLockManager.applyLock(LockManager.LOCK_MODE_FULL, getPackageName(), true, null);
-                amp.setDoubleCheck(null);
+//                LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
+//                amp.setLastFilterSelfTime(0);
+//                mLockManager.applyLock(LockManager.LOCK_MODE_FULL, getPackageName(), true, null);
+//                amp.setDoubleCheck(null);
+                Intent intent = new Intent(this, HomeTestActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
         } else {
-            Intent intent = new Intent(this, LockSettingActivity.class);
-            intent.putExtra("from_splash", true);
+//            Intent intent = new Intent(this, LockSettingActivity.class);
+//            intent.putExtra("from_splash", true);
+//            startActivity(intent);
+//            finish();
+            Intent intent = new Intent(this, HomeTestActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         }
@@ -611,7 +603,9 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         mPageColors[3] = getResources().getColor(R.color.new_guide_page2_background_color);
         mPageColors[4] = getResources().getColor(R.color.new_guide_page4_background_color);
 //        /*骚扰拦截引导*/
-//        mPageColors[5] = getResources().getColor(R.color.new_guide_page1_background_color);
+        mPageColors[5] = getResources().getColor(R.color.new_guide_page1_background_color);
+
+//        mPageColors[6] = getResources().getColor(R.color.new_guide_page2_background_color);
 
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
         /* 显示跳过按钮 */
@@ -628,15 +622,15 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         initColor = 3;
         mNewPageBackgroundView.initBackgroundColor(mPageColors[initColor]);
 
-//        /* page2 */
-//        ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-//        bigImage = (ImageView) page2.findViewById(R.id.guide_image);
-//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
-//        tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
-//        tvTitle.setText(getResources().getString(R.string.privacy_scan));
-//        tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
-//        tvContent.setText(getResources().getString(R.string.one_key_confirm_privacy));
-//        mNewFuncPageViews.add(page2);
+        /* page2 */
+        ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+        bigImage = (ImageView) page2.findViewById(R.id.guide_image);
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
+        tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
+        tvTitle.setText(getResources().getString(R.string.privacy_scan));
+        tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
+        tvContent.setText(getResources().getString(R.string.one_key_confirm_privacy));
+        mNewFuncPageViews.add(page2);
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
@@ -649,7 +643,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         /*骚扰拦截引导：page4*/
 //        ViewGroup page4 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
 //        bigImage = (ImageView) page4.findViewById(R.id.guide_image);
-//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.callfilter_page));
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher));
 //        tvTitle = (TextView) page4.findViewById(R.id.guide_tv_title);
 //        tvTitle.setText(getResources().getString(R.string.call_filter_name));
 //        tvContent = (TextView) page4.findViewById(R.id.guide_tv_content);
@@ -776,8 +770,6 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                         try {
                             /* 存在客户端 */
 
-                            mLockManager.filterPackage(Constants.PKG_FACEBOOK, 1000);
-
                             Intent intent = Intent.parseUri(clientIntent, 0);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -793,19 +785,18 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
                         /* 不存在指定客户端 */
                         Log.i(TAG, "去客户端但是链接为空进入到WebView");
                         startIntentForWebViewActivity(url);
-                        finishForSkip(true);
-                    }
+                        finishForSkip(true);                    }
                 }
             }
         }
     }
 
     private void startIntentForWebViewActivity(String url) {
-        Intent intent = new Intent(this, WebViewActivity.class);
-        intent.putExtra(WebViewActivity.WEB_URL, url);
-        intent.putExtra(SPLASH_TO_WEBVIEW, SPLASH_TO_WEBVIEW);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+//        Intent intent = new Intent(this, WebViewActivity.class);
+//        intent.putExtra(WebViewActivity.WEB_URL, url);
+//        intent.putExtra(SPLASH_TO_WEBVIEW, SPLASH_TO_WEBVIEW);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        startActivity(intent);
         Log.i(TAG, "跳转到PG的WebView中，URL=" + url);
     }
 }

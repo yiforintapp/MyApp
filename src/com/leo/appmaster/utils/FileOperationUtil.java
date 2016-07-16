@@ -1,26 +1,9 @@
 package com.leo.appmaster.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -35,12 +18,17 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.db.LeoPreference;
-import com.leo.appmaster.imagehide.PhotoAibum;
-import com.leo.appmaster.imagehide.PhotoItem;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileOperationUtil {
     private static final String TAG = "FileOperationUtil";
@@ -88,23 +76,13 @@ public class FileOperationUtil {
     }
 
     public static final String[] STORE_IMAGES = {
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.BUCKET_DISPLAY_NAME
+            Images.Media.DISPLAY_NAME,
+            Images.Media.DATA,
+            Images.Media._ID,
+            Images.Media.BUCKET_DISPLAY_NAME
             // dir name
     };
 
-    public static Comparator<PhotoAibum> mFolderCamparator = new Comparator<PhotoAibum>() {
-
-        public final int compare(PhotoAibum a, PhotoAibum b) {
-            if (a.getLastmodified().before(b.getLastmodified()))
-                return 1;
-            if (a.getLastmodified().after(b.getLastmodified()))
-                return -1;
-            return 0;
-        }
-    };
 
     public static String getNameFromFilepath(String filepath) {
         if (filepath != null) {
@@ -549,70 +527,6 @@ public class FileOperationUtil {
         return false;
     }
 
-    public static Uri updateVedioMediaEntry(String vedioPath, boolean isHide, String MIME_TYPE, Context context) {
-        String[] string = {vedioPath};
-        ContentValues v = new ContentValues();
-        v.put(MediaStore.Video.Media.MIME_TYPE, MIME_TYPE);
-
-        ContentResolver c = context.getContentResolver();
-        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        try {
-            Cursor cursor = c.query(uri, null, MediaColumns.DATA + " LIKE ?", new String[]{vedioPath}, null);
-            if (cursor.getCount() > 0) {
-                LeoLog.d("testVedio", "update");
-                if (isHide) {
-                    cursor.moveToFirst();
-                    int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
-                    LeoLog.d("testVedio", "id is:" + id);
-
-                    int saveId = LeoPreference.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
-
-                    PrivacyDataManager manager = (PrivacyDataManager)
-                            MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                    int hideId = manager.getNextToTargetId(id);
-                    LeoLog.d("testVedio", "NextToTargetId is:" + hideId);
-                    if (hideId == 0) {
-                        if (id >= saveId) {
-                            LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, id);
-                        }
-                    } else {
-                        LeoPreference.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, hideId);
-                    }
-                }
-                c.update(uri, v, MediaColumns.DATA + " LIKE ?", string);
-            } else {
-                LeoLog.d("testVedio", "insert");
-                saveFileMediaEntry(vedioPath, context);
-            }
-
-            LeoLog.d("testVedio", "update done!");
-        } catch (Exception e) {
-            LeoLog.d("testVedio", "catch the fuck !");
-        }
-
-        return null;
-    }
-
-    public static Uri updateFileMediaEntry(String oldPath, String newPath, String MIME_TYPE, Context context) {
-        String[] string = {oldPath};
-        ContentValues v = new ContentValues();
-        File f = new File(newPath);
-        v.put(MediaStore.Video.Media.TITLE, f.getName());
-        v.put(MediaStore.Video.Media.DISPLAY_NAME, f.getName());
-        v.put(MediaStore.Video.Media.SIZE, f.length());
-        v.put(MediaStore.Video.Media.DATA, newPath);
-//        v.put(MediaColumns.MIME_TYPE, MIME_TYPE);
-
-        ContentResolver c = context.getContentResolver();
-        Uri uri = Files.getContentUri("external");
-        try {
-            int result = c.update(uri, v, MediaStore.Video.Media.DATA, string);
-            LeoLog.d("testVedio", "result : " + result);
-        } catch (Exception e) {
-            LeoLog.d("testVedio", "catch the fuck !");
-        }
-        return null;
-    }
 
     public static Uri saveFileMediaEntry(String imagePath, Context context) {
         ContentValues v = new ContentValues();
@@ -652,7 +566,7 @@ public class FileOperationUtil {
         // MediaStore.Images.Media.DATA + " LIKE ?", params);
 
         context.getContentResolver().delete(uri,
-                MediaStore.Images.Media.DATA + " LIKE ?", params);
+                Images.Media.DATA + " LIKE ?", params);
     }
 
     public static void deleteVideoMediaEntry(String videoPath, Context context) {
@@ -661,7 +575,7 @@ public class FileOperationUtil {
         };
         Uri uri = Files.getContentUri("external");
         context.getContentResolver().delete(uri,
-                MediaStore.Files.FileColumns.DATA + " LIKE ?", params);
+                Files.FileColumns.DATA + " LIKE ?", params);
     }
 
     public static Uri saveVideoMediaEntry(String videoPath, Context context) {
@@ -698,10 +612,10 @@ public class FileOperationUtil {
         v.put(Images.Media.SIZE, f.length());
         f = null;
 
-        v.put(MediaStore.Images.Media.DATA, imagePath);
+        v.put(Images.Media.DATA, imagePath);
         ContentResolver c = context.getContentResolver();
 
-        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        Uri uri = Images.Media.EXTERNAL_CONTENT_URI;
         Uri result = null;
         String params[] = new String[]{
                 imagePath
@@ -723,118 +637,6 @@ public class FileOperationUtil {
         return result;
     }
 
-    /*
-     * get image folder list
-     */
-    public static List<PhotoAibum> getPhotoAlbum(Context context, String mSuffix) {
-        List<String> filterVideoTypes = getFilterVideoType();
-        List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
-        int picNumFromDir;
-        Cursor cursor = null;
-
-        Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
-        PhotoAibum pa = null;
-        try {
-            cursor = MediaStore.Images.Media.query(
-                    context.getContentResolver(),
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES,
-                    null, MediaColumns.DATE_MODIFIED + " desc");
-            LeoLog.d("getPhotoAlbum", "cursor size : " + cursor.getCount());
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    String path = cursor.getString(1);
-                    LeoLog.d("getPhotoAlbum", "path is : " + path);
-                    String dir = cursor.getString(3);
-                    String dir_path = getDirPathFromFilepath(path);
-
-
-//                    LeoLog.d("testMainPic", "path is : " + path);
-//                    long ADD_TIME = cursor.getLong(cursor
-//                            .getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
-//                    long MODYFY_TIME = cursor.getLong(cursor
-//                            .getColumnIndex(MediaStore.Images.Media.DATE_MODIFIED));
-//                    LeoLog.d("testMainPic", "path is : " + path + "   ADD_TIME : " + ADD_TIME + "  MODYFY_TIME : " + MODYFY_TIME);
-
-                    if (dir.contains("videoCache")) {
-                        LeoLog.d(TAG, "Image Path：" + path);
-                    }
-                    if (path.startsWith(SYSTEM_PREFIX)) {
-                        continue;
-                    }
-                    boolean isFilterVideoType = false;
-                    for (String videoType : filterVideoTypes) {
-                        isFilterVideoType = isFilterVideoType(path, videoType);
-                    }
-                    if (isFilterVideoType) {
-                        continue;
-                    }
-                    if (!countMap.containsKey(dir_path)) {
-                        pa = new PhotoAibum();
-                        pa.setName(dir);
-                        pa.setCount("1");
-                        pa.setDirPath(dir_path);
-                        pa.getBitList().add(new PhotoItem(path));
-                        countMap.put(dir_path, pa);
-                        LeoLog.d("testMainPic", "add dir_path is : " + dir_path);
-                    } else {
-                        if (mSuffix != null && mSuffix.equals(PrivacyDataManagerImpl.CHECK_APART)) {
-                            picNumFromDir = pa.getBitList().size();
-                            if (picNumFromDir < PrivacyDataManagerImpl.MAX_NUM) {
-                                LeoLog.d("testGetAllPicFlie", "<MAXNUM picNumFromDir : " + picNumFromDir);
-                                File f = new File(path);
-                                if (f.exists()) {
-                                    pa = countMap.get(dir_path);
-                                    pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                                    LeoLog.d("testGetAllPicFlie", "pic_path--:" + path);
-                                    pa.getBitList().add(new PhotoItem(path));
-                                }
-                            } else {
-                                LeoLog.d("testGetAllPicFlie", ">MAXNUM picNumFromDir");
-                                pa = countMap.get(dir_path);
-                                pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                                pa.getBitList().add(new PhotoItem(path));
-                            }
-                        } else {
-                            File f = new File(path);
-                            if (f.exists()) {
-                                pa = countMap.get(dir_path);
-                                pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                                pa.getBitList().add(new PhotoItem(path));
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-
-
-        //splashPath
-        String splashPath = FileOperationUtil.getSplashPath();
-        if (splashPath != null) {
-            StringBuffer str = new StringBuffer(splashPath);
-            String lastIndex = String.valueOf(str.charAt(str.length() - 1));
-            if ("/".equals(lastIndex)) {
-                int pos = splashPath.lastIndexOf('/');
-                splashPath = splashPath.substring(0, pos);
-            }
-            countMap.remove(splashPath);
-        }
-
-        Iterable<String> it = countMap.keySet();
-        for (String key : it) {
-            LeoLog.d("testMainPic", "key is : " + key);
-            aibumList.add(countMap.get(key));
-        }
-        Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
-
-        return aibumList;
-    }
 
     /*
      * 防止读取图片时读取到类似于系统Android/data等videoCache文件里的视频，需要过略的视频格式(使用时注意，返回值不能为空)
@@ -1203,9 +1005,9 @@ public class FileOperationUtil {
         String params[] = new String[]{
                 picUri
         };
-        Uri uri = MediaStore.Files.getContentUri("external");
+        Uri uri = Files.getContentUri("external");
         int result = AppMasterApplication.getInstance().getContentResolver().delete(uri,
-                MediaStore.MediaColumns.DATA + " LIKE ?", params);
+                MediaColumns.DATA + " LIKE ?", params);
 
         LeoLog.e("deletePicFromDatebase", "result----:" + result);
         return result;

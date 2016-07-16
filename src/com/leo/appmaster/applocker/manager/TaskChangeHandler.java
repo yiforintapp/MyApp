@@ -5,19 +5,14 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.LockManagerImpl;
 import com.leo.appmaster.utils.LeoLog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskChangeHandler {
@@ -31,7 +26,6 @@ public class TaskChangeHandler {
     public static final String PROXYNAME = "ProxyActivity";
     public static final String DESKPROXYNAME = "DeskProxyActivity";
     public static final String BATTERYVIEW = "BatteryShowViewActivity";
-    public static final String WAITNAME = "WaitActivity";
     public static final String WEBVIEW = "WebViewActivity";
     public static final String UPDATE = "UpdateActivity";
     public static final String INTRUDERCATCH = "IntruderCatchedActivity";
@@ -43,7 +37,6 @@ public class TaskChangeHandler {
 
     //
     public static final String APPWALL = "AdMobvistaAct";
-    public static final String DESKAD = "DeskAdActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
     private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
@@ -148,8 +141,7 @@ public class TaskChangeHandler {
         boolean doubleCheck = checkPkg != null && checkPkg.equals(pkg);
         boolean isCurrentSelf = pkg.equals(myPackage);
         boolean isLastSelf = mLastRunningPkg.equals(myPackage);
-        boolean selfUnlock = isCurrentSelf && isLastSelf && !unlocked
-                && !LockScreenActivity.sLockFilterFlag;
+        boolean selfUnlock = isCurrentSelf && isLastSelf && !unlocked;
         boolean packageCheck = !pkg.equals(mLastRunningPkg) || selfUnlock;
         if (((doubleCheck && !unlocked) || packageCheck)
                 && !TextUtils.isEmpty(mLastRunningPkg)) {
@@ -161,12 +153,10 @@ public class TaskChangeHandler {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf && (activity.contains(DESKPROXYNAME)
                         || activity.contains(BATTERYVIEW)/* && mIgnoreBattery)*/
-                        || activity.contains(DESKAD)
                         // || activity.contains(APPWALL)
                         || activity.contains(LAUNCHERBOOST)
                         || activity.contains(SPLASHNAME)
                         || activity.contains(PROXYNAME)
-                        || activity.contains(WAITNAME)
                         || activity.contains(UPDATE)
 						|| activity.contains(ADLOADING)
                         || activity.contains(INTRUDERCATCH)
@@ -185,7 +175,6 @@ public class TaskChangeHandler {
                         || (isCurrentSelf
                         && (activity.contains(DESKPROXYNAME)
                         || activity.contains(BATTERYVIEW)/* && mIgnoreBattery)*/
-                        || activity.contains(DESKAD)
                         // || activity.contains(APPWALL)
                         || activity.contains(LAUNCHERBOOST)
                         || activity.contains(SPLASHNAME)
@@ -193,7 +182,6 @@ public class TaskChangeHandler {
                         || activity.contains(UPDATE)
 						|| activity.contains(ADLOADING)
                         || activity.contains(INTRUDERCATCH)
-                        || activity.contains(WAITNAME)
                         || activity.contains(BLACK_LIST)
                         || (activity.contains(WEBVIEW)
                         // 如果锁屏前的pkg是联想的屏保，则不过滤掉webviewActivity
@@ -208,10 +196,6 @@ public class TaskChangeHandler {
                 }
             }
 
-            // reset this filter flag
-            if (LockScreenActivity.sLockFilterFlag) {
-                LockScreenActivity.sLockFilterFlag = false;
-            }
 
             // No need to lock activities in lock screen's task
             if (!currentLockScreen
@@ -224,12 +208,8 @@ public class TaskChangeHandler {
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
 
-            LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,
-                    System.currentTimeMillis());
-
             // LeoLog.d("checkScreen", "get in");
-            List<String> lockList = lockManager.getCurLockList();
+            List<String> lockList = new ArrayList<String>();
             boolean lock = false;
             if (lockList != null) {
                 lock = lockList.contains(pkg);
@@ -239,18 +219,18 @@ public class TaskChangeHandler {
                 }
             }
             if (lock) {
-
-                if (Build.VERSION.SDK_INT > 19 && LockManagerImpl.isScreenOnYet) {
-                    LockManagerImpl.isScreenOnYet = false;
-                    return;
-                }
-
-                LeoLog.d("Track Lock Screen",
-                        "apply lockscreen form TaskChangeHandler");
-                // LeoLog.d("checkScreen", "lock");
-                if (lockManager.applyLock(LockManager.LOCK_MODE_FULL, pkg, false, null)) {
-                    amp.setUnlocked(false);
-                }
+//
+//                if (Build.VERSION.SDK_INT > 19 && LockManagerImpl.isScreenOnYet) {
+//                    LockManagerImpl.isScreenOnYet = false;
+//                    return;
+//                }
+//
+//                LeoLog.d("Track Lock Screen",
+//                        "apply lockscreen form TaskChangeHandler");
+//                // LeoLog.d("checkScreen", "lock");
+//                if (lockManager.applyLock(LockManager.LOCK_MODE_FULL, pkg, false, null)) {
+//                    amp.setUnlocked(false);
+//                }
             }
         } else {
             // LeoLog.d("checkScreen", "not get in");

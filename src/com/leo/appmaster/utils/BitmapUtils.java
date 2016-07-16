@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.utils;
 
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -20,21 +19,11 @@ import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
-import android.text.TextUtils;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.LeoPreference;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.VirtualEvent;
-import com.leo.appmaster.ui.VirtualBitmap;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 
 public class BitmapUtils {
 
@@ -228,132 +217,6 @@ public class BitmapUtils {
         return bitmapt;
     }
 
-    /** 得到屏保需要drawable */
-    public static Drawable getDeskTopBitmap(final Context context, final LeoPreference leoPreference) {
-        try {
-            ThreadManager.getSubThreadHandler().post(new Runnable() {
-                @Override
-                public void run() {
-                    asyncVirtualPic(context, leoPreference);
-                }
-            });
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
 
-        return getFinalDrawable(context);
-
-    }
-
-    /** 异步虚化图片 */
-    public static void asyncVirtualPic(Context context, LeoPreference leoPreference) {
-        final WallpaperManager wallpaperManager = WallpaperManager
-                .getInstance(context);
-        // 获取当前壁纸
-        final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        // 将Drawable转成Bitmap
-        final Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
-        long theSaveCode = leoPreference.getLong(PrefConst.VIRTUAL_IMG_HASH_CODE, 0);
-        LeoLog.e("getDeskTopBitmap", "theSaveCode:" + theSaveCode + "bm.hashCode():" + bm.hashCode());
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(android.os.Environment.MEDIA_MOUNTED);
-        boolean isSaveFileExist = false;
-        if (sdCardExist) {
-            String path = Environment.getExternalStorageDirectory().toString()
-                    .concat(Constants.VIRTUAL_DESKTOP_PIC);
-            isSaveFileExist = new File(path).exists();
-        }
-        boolean codeLike = (theSaveCode == bm.hashCode());
-        if (!codeLike || (codeLike && !isSaveFileExist)) {
-            LeoLog.e("getDeskTopBitmap", "start");
-            Drawable drawable = VirtualBitmap.BlurImages(bm, context);
-            saveVirtualBitmap(drawable);
-            leoPreference.putLong(PrefConst.VIRTUAL_IMG_HASH_CODE, bm.hashCode());
-            ThreadManager.executeOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    LeoEventBus.getDefaultBus().postSticky(new VirtualEvent(true));
-                    LeoLog.e("getDeskTopBitmap", "end");
-                }
-            });
-
-        }
-    }
-
-    /** 获得最终虚化后的图片 */
-    public static Drawable getFinalDrawable(Context context) {
-        Drawable drawable = null;
-        Bitmap bitmap = null;
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(android.os.Environment.MEDIA_MOUNTED);
-        if (sdCardExist) {
-            String path = Environment.getExternalStorageDirectory().toString()
-                    .concat(Constants.VIRTUAL_DESKTOP_PIC);
-            if (new File(path).exists()) {
-                bitmap = getVirtualBitmap(path, context);
-            }
-        }
-        if (bitmap != null) {
-            drawable = bitmapToDrawable(bitmap);
-        } else {
-            WallpaperManager wallpaperManager = WallpaperManager
-                    .getInstance(context);
-            drawable = wallpaperManager.getDrawable();
-        }
-        return drawable;
-    }
-
-    /**  保存虚化后的桌面壁纸图片*/
-    public static void saveVirtualBitmap(Drawable drawable){
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(android.os.Environment.MEDIA_MOUNTED);
-        if (!sdCardExist || drawable == null) {
-            return;
-        }
-        Bitmap bitmap = drawableToBitmap(drawable);
-        File f = null;
-        FileOutputStream fOut = null;
-        try {
-            f = new File(Environment.getExternalStorageDirectory().toString()
-                    .concat(Constants.VIRTUAL_DESKTOP_PIC));
-
-            if (f.exists()) {
-                f.delete();
-            }
-            f.createNewFile();
-            fOut = new FileOutputStream(f);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 80, fOut);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fOut.flush();
-                fOut.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static Bitmap getVirtualBitmap(String path, Context context) {
-        Bitmap bitmap = null;
-        try {
-            final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(path, options);
-            int[] pix = AppUtil.getScreenPix(context);
-            int needWidth = pix[0];
-            int needHeight = pix[1];
-            options.inSampleSize = AppUtil.calculateInSampleSize(options, needWidth, needHeight);
-            options.inJustDecodeBounds = false;
-            if (!TextUtils.isEmpty(path)) {
-                bitmap = BitmapFactory.decodeFile(path, options);
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return  bitmap;
-    }
 
 }

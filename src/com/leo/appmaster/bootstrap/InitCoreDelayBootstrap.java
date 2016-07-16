@@ -2,30 +2,15 @@ package com.leo.appmaster.bootstrap;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
-import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 
 import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.appmanage.business.AppBusinessManager;
-import com.leo.appmaster.backup.AppBackupRestoreManager;
-import com.leo.appmaster.mgr.DeviceManager;
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.WifiSecurityManager;
-import com.leo.appmaster.privacycontact.PrivacyContactReceiver;
-import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
-import com.leo.appmaster.privacycontact.SingleContactReceiver;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmater.globalbroadcast.AppErrorMonitor;
 
 import java.lang.reflect.Method;
 
@@ -37,10 +22,6 @@ public class InitCoreDelayBootstrap extends Bootstrap {
 
     public Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private PrivacyMessageContentObserver mMessageObserver;
-    private PrivacyMessageContentObserver mCallLogObserver;
-    private PrivacyMessageContentObserver mContactObserver;
-    private PrivacyContactReceiver mPrivacyReceiver;
 
     public static ITelephony mITelephony;
     private AudioManager mAudioManager;
@@ -49,7 +30,6 @@ public class InitCoreDelayBootstrap extends Bootstrap {
     protected boolean doStrap() {
         LeoLog.d(TAG, "<ls> doStrap, curr_tid:" + Thread.currentThread().getId() + " | main_tid:" + ThreadManager.getMainThreadId());
         long start = SystemClock.elapsedRealtime();
-        SDKWrapper.iniSDK(mApp);
         long end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
 
@@ -58,20 +38,11 @@ public class InitCoreDelayBootstrap extends Bootstrap {
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, registerReceiveMessageCallIntercept: " + (end - start));
 
-        AppBackupRestoreManager.getInstance(mApp);
 
         start = SystemClock.elapsedRealtime();
-        AppBusinessManager.getInstance(mApp).init();
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, AppBusinessManager.getInstance.init: " + (end - start));
 
-        //init DeviceImp
-        DeviceManager deviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
-        deviceManager.init();
-        WifiSecurityManager wifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
-
-        // 开始文件丢失监控
-        AppErrorMonitor.get().startMonitor();
         return false;
     }
 
@@ -86,31 +57,9 @@ public class InitCoreDelayBootstrap extends Bootstrap {
     private void registerReceiveMessageCallIntercept() {
         ContentResolver cr = mApp.getContentResolver();
         if (cr != null) {
-            mMessageObserver = new PrivacyMessageContentObserver(mApp, mHandler,
-                    PrivacyMessageContentObserver.MESSAGE_MODEL);
-            cr.registerContentObserver(PrivacyContactUtils.SMS_INBOXS, true,
-                    mMessageObserver);
-            mCallLogObserver = new PrivacyMessageContentObserver(mApp, mHandler,
-                    PrivacyMessageContentObserver.CALL_LOG_MODEL);
-            cr.registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true, mCallLogObserver);
-            mContactObserver = new PrivacyMessageContentObserver(mApp, mHandler,
-                    PrivacyMessageContentObserver.CONTACT_MODEL);
-            cr.registerContentObserver(
-                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true,
-                    mContactObserver);
+
         }
         openEndCall();
-        SingleContactReceiver.setTelephony(mITelephony, mAudioManager);
-        mPrivacyReceiver = new PrivacyContactReceiver(mITelephony, mAudioManager);
-        IntentFilter filter = new IntentFilter();
-        filter.setPriority(Integer.MAX_VALUE);
-        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION);
-        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2);
-        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3);
-        filter.addAction(PrivacyContactUtils.CALL_RECEIVER_ACTION);
-        filter.addAction(PrivacyContactUtils.SENT_SMS_ACTION);
-        filter.addAction(PrivacyContactUtils.NEW_OUTGOING_CALL);
-        mApp.registerReceiver(mPrivacyReceiver, filter);
     }
 
     // 打开endCall

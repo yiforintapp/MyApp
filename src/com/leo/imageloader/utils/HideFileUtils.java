@@ -1,18 +1,7 @@
 
 package com.leo.imageloader.utils;
 
-import java.io.File;
-
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.provider.MediaStore;
-import android.provider.MediaStore.Files;
-import android.provider.MediaStore.MediaColumns;
-
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
 
 public class HideFileUtils {
 

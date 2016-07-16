@@ -1,17 +1,11 @@
 
 package com.leo.appmaster.utils;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-
 import android.content.Context;
 
-import com.leo.appmaster.model.TrafficsInfo;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ManagerFlowUtils {
 
@@ -123,54 +117,6 @@ public class ManagerFlowUtils {
         }
         return str;
     }
-    
-    public static String refreshTraffic_home_app_KB(float lg) {
-        String str = "0KB";
-        int a = 0, b = 1024, c = 1048576;
 
-        if (lg < 1) {
-            str = "0KB";
-        }
-        else if (lg >= 1 && lg < 1024) {
-            int d = (int) lg;
-            str = d + "KB";
-        }
-        else {
-            double e = (double) lg / 1024;
-            java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
-            str = df.format(e) + "MB";
-        }
-        return str;
-    }
-
-    public static float BToKb(float B) {
-        float KB = 0;
-        if (B < 1024) {
-            KB = 0;
-        } else {
-            KB = B / 1024;
-        }
-        return KB;
-    }
-
-    public static float KbToMB(int Kb) {
-
-        float a = Kb / 1024;
-        BigDecimal b = new BigDecimal(a);
-        float f1 = b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-        return f1;
-    }
-
-    public static List<TrafficsInfo> makeSort(List<TrafficsInfo> readytosort) {        
-        Collections.sort(readytosort, new Comparator<TrafficsInfo>() {
-            
-            @Override
-            public int compare(TrafficsInfo lhs, TrafficsInfo rhs) {
-                return rhs.getApp_all_traffic_for_show().compareTo(lhs.getApp_all_traffic_for_show());
-            }
-        });
-        
-        return readytosort;
-    }
 
 }

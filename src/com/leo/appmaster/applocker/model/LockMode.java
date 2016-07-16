@@ -1,16 +1,11 @@
 
 package com.leo.appmaster.applocker.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.R;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LockMode implements Parcelable {
     /**
@@ -44,25 +39,6 @@ public class LockMode implements Parcelable {
     public boolean selected;
 
     public LockMode() {
-    }
-
-    public Drawable getModeDrawable() {
-        int drawableId = 0;
-        switch (defaultFlag) {
-            case MODE_VISITOR:
-                drawableId = R.drawable.lock_mode_visitor;
-                break;
-            case MODE_FAMILY:
-                drawableId = R.drawable.lock_mode_family;
-                break;
-            case MODE_OTHER:
-            default:
-                drawableId = R.drawable.lock_mode_default;
-                break;
-        }
-        
-        Context ctx = AppMasterApplication.getInstance();
-        return ctx.getResources().getDrawable(drawableId);
     }
 
     @Override

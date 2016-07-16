@@ -21,7 +21,7 @@
         android:id="@+id/video_edit_guide"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout="@layout/video_edit_bt_guide" />
+        android:layout="@layout/pic_vid_edit_bt_guide" />
     <!--屏幕保护进入设置引导-->
     <ViewStub
         android:id="@+id/battery_protect_guide"

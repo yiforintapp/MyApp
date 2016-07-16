@@ -1,43 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 3.0 -->
-    <dimen name="fragment_lock_margin_top">80dp</dimen>
-    <dimen name="fragment_lock_large_banner_out_height">176dp</dimen>
-    <dimen name="fragment_lock_large_banner_image_height">128dp</dimen>
-    <dimen name="fragment_lock_large_banner_out_width">282dp</dimen>
-    <dimen name="fragment_lock_large_banner_image_width">260dp</dimen>
-    <dimen name="fragment_lock_large_banner_image_top">11dp</dimen>
-    <dimen name="fragment_lock_large_banner_button_height">22dp</dimen>
-    <dimen name="fragment_lock_large_banner_button_width">64dp</dimen>
-    <dimen name="fragment_lock_large_banner_button_text_size">10dp</dimen>
-    <dimen name="fragment_lock_large_banner_button_top">7dp</dimen>
-    <dimen name="fragment_lock_large_banner_title_size">12dp</dimen>
-    <dimen name="fragment_lock_large_banner_msg_size">10dp</dimen>
-    <dimen name="fragment_lock_large_banner_spacing">52.5dp</dimen>
-    <dimen name="fragment_lock_large_banner_pading">63.5dp</dimen>
-    <!-- 3.3.1 -->
-    <dimen name="home_more_empty_height">193dp</dimen>
-    <dimen name="hide_grid_image_width">129dp</dimen>
 
-    <dimen name="home_shield_width">118.67dp</dimen>
-    <dimen name="home_shield_height">118dp</dimen>
-    <dimen name = "home_result_bg_width">328dp</dimen>
-    <dimen name = "home_result_bg_height">59dp</dimen>
-    <dimen name="home_shied_center_good_width">48.33dp</dimen>
-    <dimen name="home_shied_center_good_heigh">38.67dp</dimen>
-    <dimen name="home_shied_center_no_width">14dp</dimen>
-    <dimen name="home_shied_center_no_heigh">63.33dp</dimen>
-    <integer name="shield_center_blue_offset_x">41</integer>
-    <integer name="shield_center_red_offset_x">53</integer>
-    <dimen name="home_det_result_tv3_padd_left">101dp</dimen>
-
-    <dimen name="new_added_image_item">75dp</dimen>
-
-    <dimen name="home_det_height">370dp</dimen>
-    <dimen name="home_det_height2">430dp</dimen>
-    <dimen name="icon_home_top_1">25dp</dimen>
-    <dimen name="icon_home_top_2">10dp</dimen>
-    <dimen name="home_tab_tv_top">8dp</dimen>
-
-    <dimen name="home_guide_marg_up">124dp</dimen>
 </resources>

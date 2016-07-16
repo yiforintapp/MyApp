@@ -12,9 +12,6 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
-import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.sdk.SDKWrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -308,8 +305,6 @@ public class BuildProperties {
 
     public static void startHuaWeiSysManageIntent(Context context) {
         try {
-            LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            manager.filterSelfOneMinites();
             Intent intent = new Intent();
             String className = null;
             // Log.e(Constants.RUN_TAG,"checkIsHuaWeiEmotion31()="+checkIsHuaWeiEmotion31());
@@ -327,12 +322,9 @@ public class BuildProperties {
             intent.setClassName("com.huawei.systemmanager", className);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                manager.filterPackage("com.huawei.systemmanager", false);
                 context.startActivity(intent);
                 // Log.e(Constants.RUN_TAG, "华为P6,P8进入权限管理界面");
             } catch (Exception e) {
-                SDKWrapper.addEvent(context, SDKWrapper.P1, "qs_open_error", "reason_"
-                        + BuildProperties.getPoneModel());
                 className = "com.huawei.notificationmanager.ui.NotificationManagmentActivity";
                 intent.setClassName("com.huawei.systemmanager", className);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -379,8 +371,6 @@ public class BuildProperties {
 
     // back:{true,false}(ture:sucessful,false:failure)
     public static boolean startOppoManageIntent(Context context) {
-        LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-        manager.filterSelfOneMinites();
         Intent intent = new Intent();
         intent.setClassName("com.oppo.safe",
                 "com.oppo.safe.permission.PermissionTopActivity");

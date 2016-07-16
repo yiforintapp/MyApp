@@ -2,11 +2,8 @@
 package com.leo.appmaster;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -18,24 +15,16 @@ import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
-import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.DeviceUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.LeoUrls;
 import com.leo.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,8 +109,8 @@ public class HttpRequestAgent {
      */
     private String getPostLanguage() {
         String requestLanguage;
-        String language = AppwallHttpUtil.getLanguage();
-        String country = AppwallHttpUtil.getCountry();
+        String language = "kjljkl";
+        String country = "jk;l";
         if ("zh".equalsIgnoreCase(language)) {
             if ("CN".equalsIgnoreCase(country)) {
                 requestLanguage = language;
@@ -314,7 +303,7 @@ public class HttpRequestAgent {
                                ErrorListener errorListener, final Map<String, String> params, final String device) {
         String bodyString = null;
         int method = Method.POST;
-        JsonObjectRequest request = new JsonObjectRequest(method, LeoUrls.URL_FEEDBACK, bodyString, listener,
+        JsonObjectRequest request = new JsonObjectRequest(method, "ghkghkg", bodyString, listener,
                 errorListener) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -332,73 +321,9 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
-    /**
-     * 加载游戏推荐
-     *
-     * @param listener
-     * @param errorListener
-     */
-    public void loadGameData(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String url = Utilities.getURL(Constants.PATH_GAME_DATA);
-        String language = AppwallHttpUtil.getLanguage();
-        String code = AppMasterApplication.getInstance().getString(R.string.channel_code);
-        final Map<String, String> map = new HashMap<String, String>();
-        map.put("language_type", language);
-        map.put("market_id", code);
-
-        String body = null;
-        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url, body, listener,
-                errorListener) {
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                return map;
-            }
-
-        };
-        mRequestQueue.add(request);
-    }
 
 
-    /* 加载ISwip更新提示 */
-    public void loadISwipCheckNew(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String object = "";
-        String iswipeUrl = "/appmaster/iswipeswitch.html";
-        String url = Utilities.getURL(iswipeUrl);
-        Log.d(TAG, "iSwipe访问连接：" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
-        request.setShouldCache(true);
-        mRequestQueue.add(request);
-    }
 
-    /* 加载推荐应用 */
-    public void getAppLockList(Listener<JSONObject> listener, ErrorListener eListener) {
-        String url = Utilities.getURL(Constants.APP_LOCK_LIST_URL);
-        JsonObjectRequest request = new JsonObjectRequest(url, null, listener, eListener);
-        LeoLog.d("LockRecomment", "访问连接：" + url);
-        request.setShouldCache(true);
-        mRequestQueue.add(request);
-    }
-
-    /* 加载广告展示方式 */
-    public void loadADShowType(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String object = "";
-        // String iswipeUrl = "/appmaster/config?ai=0000a.html";
-        String versionCodeString = null;
-        try {
-            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-            versionCodeString = String.valueOf(versionCode);
-        } catch (NameNotFoundException e) {
-        }
-        String adtypeurl = "/appmaster/adconfig.html?app_version_code=" + versionCodeString;
-        String url = Utilities.getURL(adtypeurl);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
-        LeoLog.d("poha", "adtype，访问连接：" + url);
-        request.setShouldCache(false);
-        mRequestQueue.add(request);
-    }
 
     /**
      * 加载消息中心列表
@@ -432,263 +357,7 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
-    /* 加载手机防盗数据 */
-    public void loadPhoneSecurity(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String object = "";
-        String securUrl = PhoneSecurityConstants.PHONE_SECUR_URL;
-        String url = Utilities.getURL(securUrl);
-        LeoLog.i(TAG, "手机防盗访问连接：" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
-        request.setShouldCache(true);
-        // 最多重试3次
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        mRequestQueue.add(request);
-    }
 
-    /* 加载通用配置数据 */
-    public void loadCommentSettings(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String object = "";
-        String settingUrl = "/appmaster/commonconfig/d.html";
-        String url = Utilities.getURL(settingUrl);
-        LeoLog.i(TAG, "通用配置链接：" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
-        request.setShouldCache(true);
-        // 最多重试3次
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        mRequestQueue.add(request);
-    }
-
-    /**
-     * 加载Swifty卡片数据
-     *
-     * @param listener
-     * @param errorListener
-     */
-    public void loadSwiftySecurity(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String object = "";
-        Context context = AppMasterApplication.getInstance();
-        String language = getPostLanguage();
-        String country = Utilities.getCountryID(context);
-        String versionCodeString = "";
-        try {
-            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-            versionCodeString = String.valueOf(versionCode);
-        } catch (NameNotFoundException e) {
-        }
-        String channelCode = mContext.getString(R.string.channel_code);
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Utilities.getURL(Constants.SWIFTY_SECURITY_URL)).append("/")
-                .append(country).append("/")
-                .append(language).append("/")
-                .append(versionCodeString).append("/")
-                .append(channelCode)
-                .append(".html");
-        String url = stringBuilder.toString();
-        LeoLog.i("SwiftyFetchJob", "load url: " + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
-        request.setShouldCache(true);
-        // 最多重试3次
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        mRequestQueue.add(request);
-    }
-
-    /**
-     * 加载卡片数据
-     *
-     * @param listener
-     * @param errorListener
-     */
-    public void loadCardMsg(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String object = "";
-        Context context = AppMasterApplication.getInstance();
-        String language = getPostLanguage();
-        String country = Utilities.getCountryID(context);
-        String versionCodeString = "";
-        try {
-            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-            versionCodeString = String.valueOf(versionCode);
-        } catch (NameNotFoundException e) {
-        }
-        String channelCode = mContext.getString(R.string.channel_code);
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Utilities.getURL(Constants.PRIVACY_WIFI_URL)).append("/")
-                .append(country).append("/")
-                .append(language).append("/")
-                .append(versionCodeString).append("/")
-                .append(channelCode)
-                .append(".html");
-        String url = stringBuilder.toString();
-        LeoLog.i("CardFetchJob", "load url: " + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
-        request.setShouldCache(true);
-        // 最多重试3次
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        mRequestQueue.add(request);
-    }
-
-    /**
-     * 上传黑名单列表
-     *
-     * @param listener
-     * @param errorListener
-     * @param bodyString
-     */
-    public void commitBlackList(Listener<String> listener,
-                                ErrorListener errorListener, final String bodyString) {
-        int method = Method.POST;
-        String uri = LeoUrls.URL_UPLOAD_BLACK;
-//        String uri = "http://192.168.1.205/report";
-        StringRequest request = new StringRequest(method, uri, listener, errorListener) {
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                byte[] bytes = null;
-                try {
-                    bytes = bodyString.getBytes("utf-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                return bytes;
-            }
-        };
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        request.setBodyNeedCompress();
-        request.setBodyNeedEncrypt();
-        request.setShouldCache(false);
-        Context context = AppMasterApplication.getInstance();
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            String versionCode = String.valueOf(info.versionCode);
-            request.addEncryptHeader("ver_cd", versionCode);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        mRequestQueue.add(request);
-    }
-
-    /**
-     * 加载黑名单的配置文件
-     *
-     * @param listener
-     * @param errorListener
-     */
-    public void loadBlackList(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String object = "";
-        String url = LeoUrls.URI_BLACK_LIST;
-//        String url = "http://192.168.1.205/app/config";
-        LeoLog.i("BlackConfigFetchJob",url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
-        request.setShouldCache(true);
-        request.setBodyNeedCompress();
-        request.setBodyNeedEncrypt();
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        Context context = AppMasterApplication.getInstance();
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            String versionCode = String.valueOf(info.versionCode);
-            request.addEncryptHeader("ver_cd", versionCode);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        mRequestQueue.add(request);
-    }
-
-    /**
-     * 下载黑名单列表文件
-     *
-     * @param filePath
-     * @param listener
-     * @param errorListener
-     */
-    public void downloadBlackList(String filePath, Listener<File> listener, ErrorListener errorListener) {
-        CallFilterManagerImpl pm = (CallFilterManagerImpl) MgrContext.getManager(MgrContext.MGR_CALL_FILTER);
-        String uri = pm.getSerBlackFilePath();
-        FileRequest request = new FileRequest(Method.GET, uri, filePath, listener, errorListener);
-        request.setShouldCache(true);
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        request.setBodyNeedCompress();
-        request.setBodyNeedEncrypt();
-        Context context = AppMasterApplication.getInstance();
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            String versionCode = String.valueOf(info.versionCode);
-            request.addEncryptHeader("ver_cd", versionCode);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        mRequestQueue.add(request);
-    }
-
-    /**
-     * 请求5.1及以上未开启应用使用情况权限的引导开启文案
-     */
-    
-//    api.leomaster.com/appmaster/guidecopy/cn/en/2.5/0001a.html
-//
-//    appmaster是产品编号，cn是国家，en是语言，2.5是版本，0001a是渠道
-    public void requestAppUsageStateGuideString(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String body = "";
-        Context context = AppMasterApplication.getInstance();
-        String language = getPostLanguage();
-        String country = Utilities.getCountryID(context);
-        String productId = "appmaster";
-        String unitName = "copy";//TODO
-        String versionCodeString = "";
-        try {
-            int versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-            versionCodeString = String.valueOf(versionCode);
-        } catch (NameNotFoundException e) {
-        }
-        String channelCode = mContext.getString(R.string.channel_code);
-        StringBuilder sb = new StringBuilder();
-        sb.append(Utilities.getURL("")).append("/")
-        .append(productId).append("/")
-        .append(unitName).append("/")
-        .append(country).append("/")
-        .append(language).append("/")
-        .append(versionCodeString).append("/")
-        .append(channelCode)
-        .append(".html");
-        String url = sb.toString();
-//        url = "http://api.leomaster.com/appmaster/copy/cn/en/3.0/0001a.html";
-        LeoLog.i("LockPermissionTipStringFetchJob", "request url: " + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, body, listener,
-                errorListener);
-        request.setShouldCache(true);
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        mRequestQueue.add(request);
-    }
-    
     /**
      * 加载自分享数据
      *
@@ -711,40 +380,6 @@ public class HttpRequestAgent {
                   .append(".html");
         String url = stringBuilder.toString();
         LeoLog.i("ShareFetchJob", "load url: " + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
-                errorListener);
-        request.setShouldCache(true);
-        // 最多重试3次
-        int retryCount = 3;
-        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
-                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        request.setRetryPolicy(policy);
-        mRequestQueue.add(request);
-    }
-
-    /**
-     * 获取屏保推荐列表
-     * @param listener
-     * @param errorListener
-     */
-    public void loadBatteryRecommendList(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String object = "";
-        int versionCode = 0;
-        try {
-            versionCode = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
-        } catch (NameNotFoundException e) {
-        }
-        String channelCode = mContext.getString(R.string.channel_code);
-        Context context = AppMasterApplication.getInstance();
-        String country = Utilities.getCountryID(context);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(LeoUrls.URL_BATTERY_RECOMMEND).append("/")
-                .append(country).append("/")
-                .append(versionCode).append("/")
-                .append(channelCode)
-                .append(".html");
-        String url = stringBuilder.toString();
-        LeoLog.i(TAG, "loadBatteryRecommendList, load url: " + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);

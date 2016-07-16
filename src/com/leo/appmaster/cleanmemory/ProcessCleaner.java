@@ -12,7 +12,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.ProcessUtils;
@@ -128,22 +127,7 @@ public class ProcessCleaner {
                 }
             }
         } else {
-            ArrayList<AppItemInfo> appList = AppLoadEngine.getInstance(mContext).getAllPkgInfo();
-            try {
-                int index = 0;
-                for (AppItemInfo appItem : appList) {
-                    // Kill  20 progress at max
-                    if(index > 20) {
-                        break;
-                    }
-                    if (!launchers.contains(appItem.packageName)
-                            && !AppUtil.belongToLeoFamily(appItem.packageName)) {
-                        mAm.killBackgroundProcesses(appItem.packageName);
-                        index ++;
-                    }
-                }
-            } catch (Exception e) {
-            }
+
         }
 
         mCurUsedMem = ProcessUtils.getUsedMem(cxt);

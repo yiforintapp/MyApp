@@ -1,19 +1,8 @@
 package com.leo.appmaster.mgr;
 
-import java.util.HashMap;
-
 import android.text.TextUtils;
 
-import com.leo.appmaster.mgr.impl.BatteryManagerImpl;
-import com.leo.appmaster.mgr.impl.CallFilterManagerImpl;
-import com.leo.appmaster.mgr.impl.DeviceManagerImpl;
-import com.leo.appmaster.mgr.impl.IntrudeSecurityManagerImpl;
-import com.leo.appmaster.mgr.impl.LockManagerImpl;
-import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
-import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
-import com.leo.appmaster.mgr.impl.PrivacyDataManagerImpl;
-import com.leo.appmaster.mgr.impl.ThridAppManagerImpl;
-import com.leo.appmaster.mgr.impl.WifiSecurityManagerImpl;
+import java.util.HashMap;
 
 
 /**
@@ -85,26 +74,8 @@ public class MgrContext {
         Manager manager = sManagerMap.get(mgr);
         if (manager != null) return manager;
 
-        if (MGR_APPLOCKER.equals(mgr)) {
-            manager = new LockManagerImpl();
-        } else if (MGR_PRIVACY_DATA.equals(mgr)) {
-            manager = new PrivacyDataManagerImpl();
-        } else if (MGR_PRIVACY_CONTACT.equals(mgr)) {
-            manager = new PrivacyContactManagerImpl();
-        } else if (MGR_DEVICE.equals(mgr)) {
-            manager = new DeviceManagerImpl();
-        } else if (MGR_THIRD_APP.equals(mgr)) {
-            manager = new ThridAppManagerImpl();
-        } else if (MGR_INTRUDE_SECURITY.equals(mgr)) {
-            manager = new IntrudeSecurityManagerImpl();
-        } else if (MGR_WIFI_SECURITY.equals(mgr)) {
-            manager = new WifiSecurityManagerImpl();
-        } else if (MGR_LOST_SECURITY.equals(mgr)) {
-            manager = new LostSecurityManagerImpl();
-        } else if(MGR_CALL_FILTER.equals(mgr)){
-            manager = new CallFilterManagerImpl();
-        } else if (MGR_BATTERY.equals(mgr)) {
-            manager = new BatteryManagerImpl();
+        if (MGR_DEVICE.equals(mgr)) {
+//            manager = new DeviceManagerImpl();
         }
 
         if (manager != null) {

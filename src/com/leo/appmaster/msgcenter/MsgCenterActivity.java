@@ -9,11 +9,9 @@ import android.widget.ListView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.MsgCenterTable;
-import com.leo.appmaster.feedback.FeedbackActivity;
+import com.leo.appmaster.home.BaseActivity;
+import com.leo.appmaster.home.HomeTestActivity;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
-import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.imageloader.ImageLoader;
@@ -63,11 +61,7 @@ public class MsgCenterActivity extends BaseActivity implements
 
     private void handlerIntent() {
         Intent intent=this.getIntent();
-        boolean isFormPush=intent.getBooleanExtra(PushInvoke.PUSH_GOTO_MSGCENTER, false);
-        if(isFormPush){
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh", "InfoCtr_push");
-            intent.removeExtra(PushInvoke.PUSH_GOTO_MSGCENTER);
-        }
+
     }
 
     @Override
@@ -77,8 +71,7 @@ public class MsgCenterActivity extends BaseActivity implements
                 finish();
                 break;
             case R.id.msg_center_feedback_tv:
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "Infofb", "Infofb_cnts");
-                Intent feedback = new Intent(this, FeedbackActivity.class);
+                Intent feedback = new Intent(this, HomeTestActivity.class);
                 startActivity(feedback);
                 break;
         }
@@ -98,7 +91,6 @@ public class MsgCenterActivity extends BaseActivity implements
             descPrefix = "upd_";
         }
         if (descPrefix != null) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoContent_cnts", descPrefix + msg.title);
         }
         MsgCenterBrowserActivity.startMsgCenterWeb(this, msg.title, msg.jumpUrl, msg.isCategoryUpdate());
         ThreadManager.executeOnFileThread(new Runnable() {

@@ -1,21 +1,5 @@
 package com.leo.appmaster.schedule;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.os.Environment;
 import android.os.SystemClock;
@@ -34,9 +18,24 @@ import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.msgcenter.Message;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 消息中心抓取任务
@@ -84,7 +83,6 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         }
 
         Context ctx = AppMasterApplication.getInstance();
-        SDKWrapper.addEvent(ctx, SDKWrapper.P1, "InfoGet", "get_data");
 
         JSONArray array = (JSONArray) response;
         LeoLog.i(TAG, "onFetchSuccess, response: " + array.toString() + " | noModify: " + noMidify);
@@ -328,12 +326,10 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         LeoLog.i(TAG, "checkAndAddResSuccEvent, value: " + atomicInteger.get() + " | success:" + success);
         if (success && msg.hasCacheFile()) {
             // 所有资源文件都缓存成功
-            SDKWrapper.addEvent(ctx, SDKWrapper.P1, "InfoGet", "get_cacheOK");
         } else if (!success) {
             // 只要有一个失败，则都认为失败
             if (atomicInteger.get() != REQUEST_FAIL) {
                 // 只报一次
-                SDKWrapper.addEvent(ctx, SDKWrapper.P1, "InfoGet", "get_cacheFail");
                 atomicInteger.set(REQUEST_FAIL);
             }
         }

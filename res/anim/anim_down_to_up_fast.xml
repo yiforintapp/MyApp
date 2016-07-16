@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 新的从下往上 -->
-<translate xmlns:android="http://schemas.android.com/apk/res/android"
-    android:interpolator="@anim/decelerate_cubic"
-    android:duration="800"
-    android:fromYDelta="100%"
-    android:toXDelta="0%"
-    />

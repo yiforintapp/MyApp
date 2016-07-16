@@ -42,12 +42,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/empty_page_text_m_top"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:includeFontPadding="false"
             android:text="@string/msg_center_empty"
             android:textColor="@color/mc_empty_tips"
-            android:textSize="@dimen/kongbaiye_text_size" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"

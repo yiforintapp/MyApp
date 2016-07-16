@@ -1,100 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="lockscreen_permissiontip_marginbottom">15dp</dimen>
-    <dimen name="batteryscreen_slidearea_height">70dp</dimen>
-    <dimen name="batteryscreen_bossview_height">300dp</dimen>
-    <dimen name="batterymanage_toplayout_height">183dp</dimen>
-    <dimen name="batterymanage_toplayout_ball">154dp</dimen>
-    <dimen name="home_left_list_item_height">60dp</dimen>
     <dimen name="setting_item_height">55dp</dimen>
-    <dimen name="lock_icon_width">22dp</dimen>
-    <dimen name="lock_icon_X">28dp</dimen>
-    <dimen name="lock_icon_Y">26dp</dimen>
-    <dimen name="lock_pattern_button_width">60dp</dimen>
-    <dimen name="hide_album_frame_width">109dp</dimen>
-    <dimen name="hide_album_image_frame_width">115dp</dimen>
-    <dimen name="hide_grid_image_width">109dp</dimen>
-    <dimen name="hide_album_image_frame_left">16dp</dimen>
-    <dimen name="hide_album_image_frame_top">16dp</dimen>
-    <dimen name="hide_pictrue_imge_frame_width">109dp</dimen>
-    <dimen name="hide_picture_image_frame_left">6dp</dimen>
-    <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
-    <dimen name="hide_video_checkbox_right">5dp</dimen>
-    <dimen name="hide_video_checkbox_bottom">5dp</dimen>
-    <dimen name="digital_item_width">55dp</dimen>
-    <dimen name="digital_item_height">55dp</dimen>
-    <dimen name="digital_item_marginTop">6dp</dimen>
-    <dimen name="digital_item_marginBottom">6dp</dimen>
-    <dimen name="lockPatternView_height">280dp</dimen>
-    <dimen name="air_sig_lock_patten_height">240dp</dimen>
-    <dimen name="air_sig_lock_patten_width">230dp</dimen>
-    <dimen name="layout_four_passwd_marginTop">13dp</dimen>
     <dimen name="indicator_right_padding">10dp</dimen>
     <dimen name="indicator_internal_padding">4dp</dimen>
     <dimen name="header_footer_left_right_padding">24dp</dimen>
     <dimen name="header_footer_top_bottom_padding">12dp</dimen>
-    <dimen name="circle_count_text_size">74dp</dimen>
-    <dimen name="circle_tip_text_size">14dp</dimen>
-    <dimen name="circle_vertical_padding">14dp</dimen>
-    <dimen name="circle_lock_icon_small_size">16dp</dimen>
-    <dimen name="circle_lock_icon_big_size">28dp</dimen>
-    <dimen name="circle_text_vertical_padding">10dp</dimen>
     <dimen name="app_size">48dip</dimen>
     <!-- action view -->
-    <dimen name="success_lock_imageiv">75dp</dimen>
     <dimen name="splash_icon_margin_top">100dp</dimen>
     <dimen name="splash_icon_height">160dp</dimen>
-    <dimen name="about_icon_margin_top">20dp</dimen>
-    <dimen name="about_bottom_height">200dp</dimen>
-    <dimen name="about_logo_width">112dp</dimen>
-    <dimen name="about_logo_height">120dp</dimen>
-    <dimen name="default_lock_recomment_pagedgrideview_top">15dp</dimen>
-    <dimen name="default_lock_icon_width">23dp</dimen>
-    <dimen name="lock_icon_height">24dp</dimen>
-
 
     <dimen name="help_icon_width">18dp</dimen>
     <dimen name="help_icon_height">24dp</dimen>
-    <dimen name="help_setting_margintop">18dp</dimen>
-    <dimen name="fragment_lock_password_appicon_width">48dp</dimen>
-    <dimen name="fragment_lock_password_appicon_height">48dp</dimen>
-    <dimen name="fragment_lock_password_layout_passwd_height">20dp</dimen>
-    <dimen name="fragment_lock_password_tv_passwd_width">20dp</dimen>
-    <dimen name="fragment_lock_password_tv_small_dot">13dp</dimen>
-    <dimen name="fragment_lock_password_tv_small_dot_m_r">26dp</dimen>
-    <dimen name="fragment_lock_password_tv_passwd_marginleft">40dp</dimen>
-    <dimen name="fragment_lock_password_tv_passwd_marginright">40dp</dimen>
-    <dimen name="fragment_lock_password_tv_passwd_m_l">35dp</dimen>
-    <dimen name="fragment_lock_password_tv_passwd_m_r">35dp</dimen>
-    <dimen name="fragment_lock_password_setting_layout_passwd_height">40dp</dimen>
-    <dimen name="fragment_lock_password_setting_passwd_input_tip_textsize">26dp</dimen>
-    <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">14dp</dimen>
-    <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
-    <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
-    <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">18dp</dimen>
-    <dimen name="fragment_lock_tilte_icon_width">32dp</dimen>
-    <dimen name="fragment_lock_tilte_icon_space">12dp</dimen>
-    <dimen name="activity_wait_textView1_marginbottom">165dp</dimen>
-    <dimen name="list_item_locktheme_tick_sel_width">64px</dimen>
-    <dimen name="list_item_locktheme_tick_sel_height">64px</dimen>
-    <dimen name="fragment_lock_password_setting_tv_bottom">50dp</dimen>
-    <dimen name="fragment_lock_password_setting_layout_passwd">10dp</dimen>
-    <dimen name="lock_help_item_pager_card_width">308dp</dimen>
-    <dimen name="lock_help_item_pager_card_height">233dp</dimen>
-    <dimen name="lock_help_item_pager_button_width">232dp</dimen>
-    <dimen name="lock_help_item_pager_button_height">33dp</dimen>
-    <dimen name="lock_help_item_pager_bottom_width">308dp</dimen>
-    <dimen name="lock_help_item_pager_bottom_height">56dp</dimen>
-    <dimen name="lock_help_item_pager_lock_help_title_margintop">18dp</dimen>
-    <dimen name="lock_help_item_pager_lock_help_content_margintop">20dp</dimen>
-
     <dimen name="help_icon_width_parent">50dp</dimen>
-    <dimen name="locker_theme_guide_width">267dp</dimen>
-    <dimen name="locker_theme_guide_guideImageIV_marginTop">28dp</dimen>
-    <dimen name="locker_theme_guide_guideTitleTV_marginTop">26dp</dimen>
-    <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
-    <dimen name="memery_dialog_button_width">100dp</dimen>
-    <dimen name="memery_dialog_button_height">35dp</dimen>
+
+    <dimen name="guide_skip_margin">10dp</dimen>
 
     <!-- guide pages begin -->
     <dimen name="guide_page_image_margin_top">73dp</dimen>
@@ -109,66 +29,11 @@
     <dimen name="guide_go_button_bottom">21dp</dimen>
     <!-- guide pages end -->
     <dimen name="dlg_horizental_margin">250dp</dimen>
-    <dimen name="day_view_width">45dp</dimen>
-
-    <!-- lock mode begin -->
-    <dimen name="home_lock_mode_guide_image_width">150dp</dimen>
-    <dimen name="home_lock_mode_guide_image_height">150dp</dimen>
-    <dimen name="home_lock_mode_guide_image_margin_top">36dp</dimen>
-    <dimen name="home_lock_mode_guide_text_margin_top">34dp</dimen>
-    <dimen name="home_lock_mode_guide_text_size">14dp</dimen>
-    <dimen name="home_lock_mode_guide_btn_width">100dp</dimen>
-    <dimen name="home_lock_mode_guide_btn_height">30dp</dimen>
-    <dimen name="home_lock_mode_guide_btn_margin_top">38dp</dimen>
-    <dimen name="home_lock_mode_active_tip_width">224dp</dimen>
-    <dimen name="home_lock_mode_active_tip_image_margin_top">9dp</dimen>
-    <dimen name="home_lock_mode_active_tip_text_margin_top">16dp</dimen>
-    <dimen name="home_lock_mode_active_tip_text_margin_bottom">24dp</dimen>
-    <!-- lock mode end -->
-
-    <dimen name="statusbar_height">25dp</dimen>
-
-    <!-- weizhuang -->
-    <dimen name="weizhaung_guide_image_margin_top">60dp</dimen>
-    <dimen name="dialog_list_width">270dp</dimen>
-    <dimen name="dialog_list_btn_height">42dp</dimen>
-    <dimen name="dialog_list_item_height">50dp</dimen>
-    <dimen name="dialog_contact_item_height">66dp</dimen>
-    <dimen name="weizhuang_zhiwen_text_m_top">50dp</dimen>
-
-    <!-- quick gesture start -->
-    <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
-    <!-- quick gesutre end -->
-
-    <dimen name="privacy_contact_high_red_tip_x">164dp</dimen>
-    <dimen name="privacy_contact_high_red_tip_y">8dp</dimen>
-    <dimen name="privacy_contact_red_tip_x">94dp</dimen>
-    <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="dialog_btn_height">48dp</dimen>
-    <dimen name="text_icon_margin">5dp</dimen>
-    <!-- 2.5 start -->
-    <dimen name="lock_setting_title_margintop">22dp</dimen>
-    <!-- 2.5 end -->
 
-
-    <!-- 2.6 start -->
-    <dimen name="webview_icon_margin">60dp</dimen>
-    <dimen name="webview_title_width">232dp</dimen>
-    <dimen name="privacy_default_text_margin_top">8dp</dimen>
-    <dimen name="guide_skip_margin">10dp</dimen>
-    <dimen name="privacy_default_image_width">100dp</dimen>
-    <dimen name="privacy_default_image_height">100dp</dimen>
-    <dimen name="privacy_auto_add_btn_margin_top">42dp</dimen>
-    <dimen name="app_manager_headview_three_text_margin_top">3dp</dimen>
-    <dimen name="app_manager_flow_chart_margin_top">4dp</dimen>
-    <dimen name="app_manager_lineview_margin_top">2dp</dimen>
-    <!-- 2.6 end -->
     <!-- 2.7start -->
     <dimen name="splash_skip_button_padding">20dp</dimen>
     <!-- 2.7end -->
-    <!-- 2.8 start -->
-    <dimen name="iswipe_update_tip_dialog_width">286dp</dimen>
-    <!-- 2.8 end -->
     <dimen name="home_left_iv_menu_margin_right">2dp</dimen>
     <dimen name="home_left_iv_menu_margin_top">10dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
@@ -183,129 +48,12 @@
     <dimen name="mc_empty_iv_top_margin">124dp</dimen>
     <dimen name="mc_empty_tv2_top_margin">10dp</dimen>
     <dimen name="mc_empty_tv3_top_margin">20dp</dimen>
-    <dimen name="app_about_content">10dp</dimen>
-    <dimen name="app_about_version">18dp</dimen>
-    <dimen name="advance_protect_pic_top">25dp</dimen>
-    <dimen name="advance_protect_title_text_top">20dp</dimen>
-    <dimen name="advance_protect_title_text_size">18dp</dimen>
-    <dimen name="advance_protect_context_text_top">14dp</dimen>
-    <dimen name="advance_protect_context_text_size">13dp</dimen>
-    <dimen name="advance_protect_button_top">20dp</dimen>
 
     <!-- 3.0 -->
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="ic_toolbar_width">50dp</dimen>
-    <dimen name="home_tab_ic_size">32dp</dimen>
-    <dimen name="home_tab_height">244dp</dimen>
-    <dimen name="home_shield_bg_circle_margin">40dp</dimen>
-    <dimen name="home_shield_score">50dp</dimen>
-    <dimen name="home_shield_status">12dp</dimen>
-    <dimen name="home_anim_progress">4dp</dimen>
-    <dimen name="home_arrow_gap">3dp</dimen>
-    <dimen name="pri_pro_header">237dp</dimen>
-    <dimen name="pri_pro_header_padding">181dp</dimen>
-    <dimen name="pri_pro_final_header">170dp</dimen>
-    <dimen name="pri_pro_top_margin">60dp</dimen>
-    <dimen name="pri_pro_new">62dp</dimen>
-    <dimen name="pri_pro_new_label">18dp</dimen>
-    <dimen name="pri_folder_summary">13dp</dimen>
-    <dimen name="pri_empty_header_height">287dp</dimen>
-    <dimen name="pri_new_app_item">68dp</dimen>
-    <dimen name="pri_new_list_padding">8dp</dimen>
-    <dimen name="secur_bottom_text_size">10dp</dimen>
-    <dimen name="scan_scanning_gap">3dp</dimen>
-    <dimen name="scan_percent">46dp</dimen>
-    <dimen name="scan_percent_label">16dp</dimen>
-    <!--<dimen name="scan_shield_offset">34dp</dimen>-->
-    <dimen name="scan_shield_offset">60dp</dimen>
-    <dimen name="home_menu_divider_left">50dp</dimen>
-    <dimen name="privacy_contact_textview_margintop">40dp</dimen>
-    <dimen name="home_menu_divider_right">0dp</dimen>
-    <dimen name="home_privacy_loading">80dp</dimen>
-    <dimen name="home_loading_stroke">3dp</dimen>
-    <dimen name="home_wifi_loading">20dp</dimen>
-    <dimen name="home_wifi_loading_stroke">2dp</dimen>
-    <dimen name="loading_baseline_margin">28dp</dimen>
-    <dimen name="home_loading">16dp</dimen>
-    <dimen name="home_loading_rise">220dp</dimen>
-    <dimen name="home_step_width">164dp</dimen>
-    <dimen name="home_step_height">20dp</dimen>
-    <dimen name="home_step_middle">8dp</dimen>
-    <dimen name="home_step_small">6dp</dimen>
-    <dimen name="home_step_line">28dp</dimen>
-    <dimen name="step_line_big_height">8dp</dimen>
-    <dimen name="step_line_small_height">2dp</dimen>
-    <dimen name="step_line_margin_bottom">10dp</dimen>
-    <dimen name="home_more_arrow_width">100dp</dimen>
     <!-- 一些通用配置 -->
     <dimen name="common_btn_radius">2dp</dimen>
-    <!--手机防盗-->
-    <dimen name="phone_security_add_number_TV_size">14dp</dimen>
-    <dimen name="phone_secur_add_bt_height">48dp</dimen>
-    <dimen name="scur_contact_char">27dp</dimen>
-    <dimen name="secur_instru_grid_itme_hor_spac">44dp</dimen>
-
-    <dimen name="security_guide_top_iv_margin_top">48dp</dimen>
-    <dimen name="security_guide_open_number_lt_margin_top">26dp</dimen>
-    <dimen name="security_guide_tv_content_margintop">8dp</dimen>
-    <dimen name="security_guide_tv_content_marginbottom">28dp</dimen>
-    <dimen name="security_guide_title_margin_top">16dp</dimen>
-    <dimen name="security_guide_content_margin_top">8dp</dimen>
-    <dimen name="secur_no_know_msm_lt_margin_top">23dp</dimen>
-    <dimen name="secur_know_msm_lt_margin_top">22dp</dimen>
-    <dimen name="secur_help_iv_margin_top">32dp</dimen>
-    <dimen name="secur_help_tv_margin_top">40dp</dimen>
-    <dimen name="secur_help_rp_margin_top">30dp</dimen>
-    <dimen name="security_guide_rv_width">210dp</dimen>
-    <dimen name="security_guide_rv_height">40dp</dimen>
-    <dimen name="security_guide_rv_top">7dp</dimen>
-    <dimen name="security_guide_title_size">18dp</dimen>
-    <dimen name="security_guide_content_size">12dp</dimen>
-    <dimen name="ph_sec_nu_bkup_cb">14dp</dimen>
-    <dimen name="ph_sec_nu_bkup_cb_top">19dp</dimen>
-    <dimen name="ph_sec_nu_bkup_cb_pd_left">11dp</dimen>
-    <dimen name="open_adv_cb">14dp</dimen>
-    <dimen name="secur_bom_bt_hi">40dp</dimen>
-    <dimen name="secur_bom_bt_wt">210dp</dimen>
-    <dimen name="secur_nb_lt_hi">44dp</dimen>
-    <dimen name="secur_bt_rt_hi">63dp</dimen>
-    <dimen name="ph_sec_add_nb_tv_tp">16dp</dimen>
-    <dimen name="ph_sec_add_nb_til_tv">16dp</dimen>
-    <dimen name="sec_nub_hi">53dp</dimen>
-    <dimen name="ph_sec_nb_sim_tip_top">10dp</dimen>
-    <dimen name="op_suc_iv_wt">102dp</dimen>
-    <dimen name="op_sc_iv_hi">106dp</dimen>
-    <dimen name="op_ad_cb_btm">117.8dp</dimen>
-    <dimen name="op_suc_lis_tv_tp">16dp</dimen>
-    <dimen name="sec_did_v_tp">20dp</dimen>
-    <dimen name="no_op_suc_tv">20dp</dimen>
-    <dimen name="no_open_suc_lv_tp">20dp</dimen>
-    <dimen name="open_suc_lv_tp">20dp</dimen>
-    <dimen name="op_adv_suc_tv">150dp</dimen>
-    <dimen name="open_suc_tv_pd_tp">9dp</dimen>
-    <dimen name="open_suc_tv_pd_bt">16dp</dimen>
-    <dimen name="secur_number_tp">2dp</dimen>
-    <dimen name="secur_number_name_size">16dp</dimen>
-    <dimen name="secur_number_size">14dp</dimen>
-    <dimen name="secur_fin_iv_wt">170dp</dimen>
-    <dimen name="secur_fin_iv_hi">170dp</dimen>
-    <dimen name="secur_fin_iv_tp">16dp</dimen>
-    <dimen name="secur_op_tip_tv_tp">18dp</dimen>
-    <dimen name="secur_op_tip_tv_bt">16dp</dimen>
-    <dimen name="sec_op_tip_tv_pd_lf">40dp</dimen>
-    <dimen name="sec_op_tip_tv_pd_rt">40dp</dimen>
-    <dimen name="sec_op_tip_tv_size">16dp</dimen>
-
-    <dimen name="sec_op_suc_numb_lt">52dp</dimen>
-    <dimen name="sec_num_name_tv_size">17dp</dimen>
-    <dimen name="sec_nub_tv">2dp</dimen>
-    <dimen name="sec_nub_size">14dp</dimen>
-    <dimen name="sec_suc_instr_tip_tp">9dp</dimen>
-    <dimen name="privacy_input_cb_pd_lf">24dp</dimen>
-    <dimen name="sec_gde_content_pd">35dp</dimen>
-
-    <dimen name="pp_process_rv_width">210dp</dimen>
-    <dimen name="add_priv_cont_pad">7dp</dimen>
 
     <!-- 3.0标准字体规范 -->
     <dimen name="f1">20dp</dimen>
@@ -316,146 +64,11 @@
     <dimen name="f6">11dp</dimen>
 
     <!-- 3.1 -->
-    <dimen name="arrow_translate">7dp</dimen>
     <dimen name="spl_fc_share_bt_size">46dp</dimen>
-    <dimen name="secur_list_height">400dp</dimen>
-    <dimen name="secur_ckb_hgt">35dp</dimen>
-
-    <dimen name="ad_parent_width">345dp</dimen>
-    <dimen name="ad_content_width">318dp</dimen>
-    <dimen name="ad_content_height">158dp</dimen>
-    <dimen name="ad_clean_text_width">218dp</dimen>
-    <dimen name="ad_view_width">335dp</dimen>
-    <dimen name="ad_view_height">284dp</dimen>
-    <dimen name="ad_ll_margin_top">256dp</dimen>
-
-    <dimen name="shield_offsetY">3dp</dimen>
-    <dimen name="contact_icon_scale_size">98dp</dimen>
-    <dimen name="home_more_click_height">50dp</dimen>
 
     <dimen name="home_guide_trans_y">13dp</dimen>
     <dimen name="home_guide_marg">11dp</dimen>
-    <dimen name="home_guide_marg_up">94dp</dimen>
-
-    <!-- 3.2 -->
-    <dimen name="pp_shield_x_padding">10dp</dimen>
-    <dimen name="pp_img_loading_padding">9dp</dimen>
-    <dimen name="pp_img_loading_stroke">4dp</dimen>
-    <!-- 3.3 -->
-    <dimen name="scan_ad_preview_height">159dp</dimen>
-    <!-- 3.3.1 -->
-    <dimen name="home_more_empty_height">93dp</dimen>
 
 
-    <dimen name="toolbar_height_re_less">46dp</dimen>
 
-    <!-- 3.3.2-->
-    <dimen name="battery_screen_ad_margin">20dp</dimen>
-    <dimen name="battery_boost_padding">31dp</dimen>
-
-    <dimen name="battery_clean_result_margingTop">33dp</dimen>
-    <!--3.5-->
-    <dimen name="lock_tip_margin">20dp</dimen>
-    <dimen name="filter_record_title_margin">60dp</dimen>
-
-    <!-- Action Bar -->
-    <dimen name="airsig_actionbar_height">56dp</dimen>
-    <dimen name="airsig_actionbar_title_textsize">20sp</dimen>
-
-    <!-- Text Size -->
-    <dimen name="airsig_textsize_title">22sp</dimen>
-    <dimen name="airsig_textsize_content">17sp</dimen>
-    <dimen name="airsig_textsize_content_small">14sp</dimen>
-    <dimen name="airsig_textsize_button">14sp</dimen>
-    <dimen name="airsig_text_lineSpacingExtra">2dp</dimen>
-
-    <!-- Margins -->
-    <dimen name="airsig_horizontal_margin">14dp</dimen>
-    <dimen name="airsig_vertical_margin">8dp</dimen>
-
-    <!-- AirSig used -->
-    <dimen name="airsig_small_message_box_height">168dp</dimen>
-    <dimen name="airsig_full_message_box_height">380dp</dimen>
-    <integer name="airsig_message_box_animation_duration">400</integer>
-
-    <dimen name="secur_open_ui_iv_width">126dp</dimen>
-    <!--首页-->
-    <dimen name="home_det_result_tv2_margin">3dp</dimen>
-    <dimen name="home_det_result_tv1_margin">10.3dp</dimen>
-    <dimen name="home_det_result_tv1_padding">5dp</dimen>
-    <dimen name="home_det_height">350dp</dimen>
-    <dimen name="home_det_height2">350dp</dimen>
-    <dimen name="home_det_tip_height">46dp</dimen>
-    <dimen name="home_det_tip_icon_marg_left">17dp</dimen>
-    <dimen name="home_det_tip_txt_marg_left">10dp</dimen>
-    <dimen name="home_det_tip_txt_marg_right">15dp</dimen>
-    <dimen name="home_det_tip_arrow_marg_right">15dp</dimen>
-    <integer name="shield_left_offset">2</integer>
-    <integer name="shield_right_offset">2</integer>
-    <integer name="shield_top_offset">16</integer>
-    <integer name="shield_offset">10</integer>
-    <integer name="shield_center_blue_offset_x">41</integer>
-    <integer name="shield_center_blue_offset_y">12</integer>
-    <integer name="shield_center_red_offset_x">53</integer>
-    <integer name="shield_center_red_offset_y">10</integer>
-    <integer name="shield_top_y_trans">38</integer>
-    <integer name="shield_left_x_trans">34</integer>
-    <integer name="shield_right_x_trans">34</integer>
-    <dimen name="home_det_result_tv2_padd_left">130dp</dimen>
-    <dimen name="home_det_result_tv3_padd_left">101dp</dimen>
-    <dimen name="home_det_margin_left">19dp</dimen>
-    <dimen name="home_det_margin_right">20dp</dimen>
-    <dimen name="ph_secur_add_num_top_tip_marg_top">72dp</dimen>
-    <dimen name="ph_secur_add_num_top_tip_drawpadd">7dp</dimen>
-    <dimen name="ph_secur_top_tip_lt_marg_left">17dp</dimen>
-    <dimen name="top_tip_instr_tv_marg_top">10dp</dimen>
-    <dimen name="top_tip_instr_tv_marg_botm">16dp</dimen>
-    <dimen name="add_num_secur_botm_bt_heigth">63dp</dimen>
-    <dimen name="add_num_botm_bt_width">210dp</dimen>
-    <dimen name="add_num_botm_bt_height">40dp</dimen>
-    <dimen name="secur_open_suc_top_rl_marg_top">74dp</dimen>
-    <dimen name="secur_top_tip_instr_tv_marg_top">15dp</dimen>
-    <dimen name="secur_top_tip_instr_tv_padd_butm">18dp</dimen>
-    <dimen name="secur_mody_bt_width">74dp</dimen>
-    <dimen name="secur_mody_bt_height">30dp</dimen>
-    <dimen name="secur_nromal_tip_tv_marg_left">40dp</dimen>
-    <dimen name="secur_open_line2">18dp</dimen>
-    <dimen name="det_result_icon_margin_right">10.3dp</dimen>
-    <dimen name="home_det_result_tv1_padd_left">142dp</dimen>
-    <dimen name="home_det_result_tv1_padd_right">20dp</dimen>
-    <dimen name="det_result_icon_margin_top">13dp</dimen>
-    <dimen name="det_result_saft_content_margin_top">14dp</dimen>
-    <dimen name="det_result_danger_content_margin_top">5dp</dimen>
-    <dimen name="add_num_cb_padding">10dp</dimen>
-    <dimen name="detect_shield_margin_tip">118dp</dimen>
-    <!-- 3.6 -->
-
-    <dimen name="boost_template_layout_height">212dp</dimen>
-    <dimen name="boost_template_item_height">60dp</dimen>
-    <dimen name="boost_template_item_width">286dp</dimen>
-    <dimen name="boost_template_item_icon_width">48dp</dimen>
-    <dimen name="boost_template_item_icon_height">48dp</dimen>
-
-    <dimen name="boost_template_item_btn_width">66dp</dimen>
-    <dimen name="boost_template_item_btn_height">29dp</dimen>
-    
-    <dimen name="home_result_width">328dp</dimen>
-    <dimen name="home_result_height">50dp</dimen>
-    <dimen name="home_shield_width">118.67dp</dimen>
-    <dimen name="home_shield_height">118dp</dimen>
-    <dimen name="home_result_bg_width">328dp</dimen>
-    <dimen name="home_result_bg_height">59dp</dimen>
-    <dimen name="home_shied_center_good_width">48.33dp</dimen>
-    <dimen name="home_shied_center_good_heigh">38.67dp</dimen>
-    <dimen name="home_shied_center_no_width">14dp</dimen>
-    <dimen name="home_shied_center_no_heigh">63.33dp</dimen>
-
-    <dimen name="icon_home_top_1">34dp</dimen>
-    <dimen name="icon_home_top_2">20dp</dimen>
-    <dimen name="home_tab_tv_top">13dp</dimen>
-
-    <dimen name="ph_sec_guide_top_iv_width">192dp</dimen>
-    <dimen name="ph_sec_guide_top_iv_height">90dp</dimen>
-
-    <dimen name="new_added_image_item">64dp</dimen>
 </resources>

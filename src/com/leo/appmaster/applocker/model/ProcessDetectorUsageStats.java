@@ -1,10 +1,5 @@
 package com.leo.appmaster.applocker.model;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import android.annotation.SuppressLint;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -14,9 +9,13 @@ import android.content.pm.ResolveInfo;
 import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * 使用UsageStatsManager获取最近历史
@@ -67,9 +66,6 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
             return null;
         }
         UsageStatsManager statsManager = (UsageStatsManager) mStatsManager;
-//        long currentTs = System.currentTimeMillis();
-//        long startTs = currentTs - Constants.TIME_ONE_WEEK;
-//        long endTs = currentTs + Constants.TIME_ONE_WEEK;
 
         Calendar calendar = Calendar.getInstance();
         long endTs = calendar.getTimeInMillis();

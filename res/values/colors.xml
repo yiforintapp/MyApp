@@ -3,40 +3,12 @@
 
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
-    <color name="gallery_bg">#80000000</color>
     <color name="white">#ffffffff</color>
-    <color name="text_color_blue">#0582ff</color>
-    <color name="grey">#ff333333</color>
-    <color name="dialog_pro_start">#6ba3d4</color>
-    <color name="dialog_pro_end">#5285b7</color>
-    <color name="dialog_pro_bg">#dedede</color>
-    <color name="dialog_pro_progress">#4285f4</color>
-    <color name="dialog_title_area_bg">#2893fe</color>
-    <color name="dialog_btn_area_bg">#f7f7f7</color>
-    <color name="item_backup_grey">#f7f7f7</color>
     <color name="option_text_color">#505050</color>
-    <color name="picture_click_color">#66FFFFFF</color>
     <color name="gray">#c0c0c0</color>
-    <color name="backup_item">#E4E5E5</color>
-    <color name="help_setting_tip">#f8f8f8</color>
-    <color name="help_setting_title">#007fff</color>
-    <color name="help_setting_content">#888888</color>
     <color name="vpi__background_holo_light">#fff3f3f3</color>
     <color name="vpi__bright_foreground_holo_dark">@color/vpi__background_holo_light</color>
     <color name="vpi__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
-    <color name="all_backgroud">#f3f3f3</color>
-    <color name="flow_blue_text">#0096ff</color>
-    <color name="flow_item_total">#646464</color>
-    <color name="flow_item_small">#a7a7a7</color>
-    <color name="app_usage_text">#01bafd</color>
-    <color name="progress_bar_show">#dedede</color>
-    <color name="flow_setting_tv">#414141</color>
-    <color name="message_item_backgroud_blue">#dfebff</color>
-    <color name="manager_hot_app_game_text">#55e300</color>
-    <color name="selector_done_text">#0084ff</color>
-    <color name="selector_traffic_text">#4fd300</color>
-    <color name="selector_back_list_bg">#e3edfd</color>
-    <color name="nothing_show_text">#d3d3d4</color>
     <!-- guide page begin -->
     <color name="guide_page2_background_color">#ffc000</color>
     <color name="guide_page4_background_color">#ffc000</color>
@@ -45,18 +17,10 @@
     <color name="new_guide_page4_background_color">#00ac7d</color>
     <!-- guide page begin -->
 
-    <color name="weisuo_text">#636363</color>
-    <color name="weisuo_text_show">#808080</color>
-    <color name="weisuo_zhiwen_bg">#242424</color>
-    <color name="weisuo_error_bg">#4285f4</color>
-
     <drawable name="transparent">#00000000</drawable>
 
-    <color name="home_btn_lock_pressed">#e3edfd</color>
     <color name="webview_pro_bg">#e4e4e4</color>
-    <color name="cool_red">#ff2a00</color>
     <color name="translucent_background">#b2000000</color>
-    <color name="translucent_background_more_light">#52000000</color>
 
     <!-- msg center -->
     <color name="mc_title">#414141</color>
@@ -69,70 +33,16 @@
     <color name="ic_toolbar_pressed">#23000000</color>
     <!--通用标题栏按下背景-->
     <color name="home_tab_pressed">#ececec</color>
-    <color name="home_tab_divider">#ebebeb</color>
-    <color name="home_bg_level1_up">#1063ee</color>
-    <color name="home_bg_level1_down">#0d7cee</color>
-    <color name="home_bg_level2_up">#811cff</color>
-    <color name="home_bg_level2_dwon">#974aff</color>
-    <color name="home_bg_level3_up">#019a16</color>
-    <color name="home_bg_level3_down">#0daa01</color>
-    <color name="home_bg_level4_up">#eb8a00</color>
-    <color name="home_bg_level4_down">#f79d00</color>
-    <color name="home_bg_level5_up">#f55d12</color>
-    <color name="home_bg_level5_down">#fd6e0e</color>
-    <color name="home_bg_level6_up">#d32d29</color>
-    <color name="home_bg_level6_down">#e24f32</color>
     <color name="home_pop_bg">#efffffff</color>
-    <color name="home_step_big_circle">#4cffffff</color>
-    <color name="home_step_small_circle">#66ffffff</color>
-    <color name="pri_pro_divider">#b6b6b6</color>
-    <color name="pri_pro_list_bg">#ebebed</color>
-    <color name="green_button">#2675f6</color>
-    <color name="green_button_ripple">#0453d6</color>
-	 <color name="home_menu_text">#636363</color>
-    <color name="wifi_result_safe_start">#0057e8</color>
-    <color name="wifi_result_safe_end">#3c73ff</color>
-    <color name="wifi_result_unsafe_start">#d8322f</color>
-    <color name="wifi_result_unsafe_end">#e75f3a</color>
-
-    <color name="wifi_result_blue">#2c80f2</color>
-
-    <color name="security_grade">#91bbff</color>
-    <color name="security_swifty">#2674f6</color>
-    <color name="security_lost">#fa6060</color>
-    <color name="security_intruder">#19d2c4</color>
-    <color name="security_contact">#fdbf16</color>
-    <color name="security_wifi">#6196ff</color>
-    <color name="process_btn_pressed">#e2f2e5</color>
-    <color name="scanning_sub_title">#66ffffff</color>
-    <color name="wifi_error_red">#d8322f</color>
-    <color name="wifi_icon_text">#b9d0ff</color>
-    <color name="wifi_bg_color">#015cf4</color>
-    <color name="wifi_loading_color">#3b82ff</color>
-    <color name="wifi_loading_icon_bg">#b3000000</color>
-    <color name="wifi_loading_icon_unsafe">#ff1200</color>
-    <color name="wifi_loading_icon_safe">#00a8ff</color>
 
     <!-- 绿色按钮 -->
     <color name="button_blue">#2675f6</color>
     <!-- 绿色按钮波纹效果 -->
-    <color name="button_green_ripple">#0453d6</color>
-    <!-- 绿色按钮波纹效果 -->
     <color name="button_blue_ripple">#0453d6</color>
     <!-- 蓝色按钮波纹效果 -->
-    <color name="button_red_ripple">#d41900</color>
-    <!-- 红色按钮波纹效果 -->
     <color name="button_gray_ripple">#dadada</color>
-    <!-- 绿色边框按钮波纹效果 -->
-    <color name="button_blue_stroke_ripple">#b4d0ff</color>
-    <!-- 蓝色边框按钮波纹效果 -->
     <!-- 标题栏波纹色值 -->
     <color name="menu_ripple">#1e000000</color>
-    <!-- 通用列表pressed色值 -->
-    <color name="white_list_item">#f1f1f1</color>
-    <!-- 通用列表波纹效果 -->
-    <color name="white_list_item_ripple">#dadada</color>
-
 
     <!-- 标准色 -->
 
@@ -144,64 +54,14 @@
     <color name="c150">#e0ffffff</color>
     <!--深色字-->
     <color name="c2">#333333</color>
-    <!--中色字-->
-    <color name="c3">#666666</color>
     <!--浅色字，深分割线-->
     <color name="c4">#999999</color>
-    <!--浅色分割线-->
-    <color name="c5">#cbcbcb</color>
     <!--公共蓝-->
     <color name="cb">#2674f6</color>
     <!--强调色-->
     <color name="cb2">#00a8ff</color>
-    <!--功能操作按钮-->
-    <color name="cgn">#00c65d</color>
-    <!--不可操作按钮-->
-    <color name="cgy">#cbcbcb</color>
-    <!--背景色-->
-    <color name="cbg">#ededed</color>
-    <!--点击蒙板-->
-    <color name="cm">#33000000</color>
-    <!--分栏-->
-    <color name="fl">#f0f3f7</color>
-
-    <color name="contact_no_select">#cbcbcb</color>
-    <color name="pp_img_load_bg">#4d000000</color>
-
-    <!--屏保也有弧度的推广卡片背景颜色-->
-    <color name="batter_card_bg">#33ffffff</color>
 
     <color name="cb_trans">#db004eff</color>
-    <color name="green_back_normal">#88fd8b</color>
-    <color name="blue_back_normal">#91d4ff</color>
-    <color name="yellow_back_normal">#ffebaf</color>
-
-    <color name="airsig_background_white">#FFFFFF</color>
-    <color name="airsig_background_gray">#EDEDED</color>
-    <color name="airsig_actionbar_background">#323b75</color>
-    <color name="airsig_actionbar_title">#FFFFFF</color>
-    <color name="airsig_training_message_box_background">#2674F6</color>
-    <color name="airsig_training_message_box_button">#2674F6</color>
-    <color name="airsig_text_white">#FFFFFF</color>
-    <color name="airsig_text_black">#333333</color>
-    <color name="airsig_text_gray">#999999</color>
-    <color name="airsig_text_blue">#2674F6</color>
-    <color name="airsig_text_red">#D0021B</color>
-    <color name="airsig_text_bright_blue">#4FC3F7</color>
-    <color name="airsig_text_bright_red">#FF5500</color>
-    <color name="airsig_button_blue">#2674F6</color>
-    <color name="airsig_button_black">#333333</color>
-    <color name="airsig_button_white">#FFFFFF</color>
-    <color name="airsig_blue">#3EB8E7</color>
-
-    <color name="airsig_arcprogress_unfinished">#E4E4E4</color>
-    <color name="airsig_arcprogress_finished_start">#38BEEF</color>
-    <color name="airsig_arcprogress_finished_end">#3BFFDA</color>
-    <color name="airsig_arcprogress_text">#09455B</color>
-    <color name="home_det_result_num_txt">#fe8f00</color>
-    <color name="cfl">#f0f3f7</color>
 
     <color name="uninstall_guide_bg">#99000000</color>
-    <color name="battery_view_bg">#1167f0</color>
-
 </resources>

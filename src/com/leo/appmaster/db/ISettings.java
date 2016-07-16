@@ -30,7 +30,6 @@ public abstract class ISettings {
             AppMasterPreference.PREF_NEED_CUT_BACKUP_UNINSTALL_AND_PRIVACYCONTRACT,
             AppMasterPreference.PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG,
             AppMasterPreference.PREF_UPDATE_QUICK_GESTURE_USER,
-            AppMasterPreference.PREF_UPDATE_RECOVERY_DEFAULT_DATA,
             AppMasterPreference.PREF_LAST_GUIDE_VERSION,
             AppMasterPreference.PREF_FIRST_USE_APP,
             AppMasterPreference.PREF_UNLOCK_COUNT,

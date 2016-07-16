@@ -13,10 +13,8 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.home.BaseBrowserActivity;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
-import com.leo.appmaster.sdk.BaseBrowserActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -154,7 +152,6 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         if (getWebView().getVisibility() == View.VISIBLE) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoGet", "get_dataOK");
         }
     }
 
@@ -177,10 +174,10 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
         if (MsgConsts.PATH_WEBVIEW.equals(path)) {
             // 打开webview，3.0支持以前
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoJump_cnts", "act_" + mTitle);
-            Intent intent = new Intent(this, WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, pUrl);
-            startActivity(intent);
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoJump_cnts", "act_" + mTitle);
+//            Intent intent = new Intent(this, WebViewActivity.class);
+//            intent.putExtra(WebViewActivity.WEB_URL, pUrl);
+//            startActivity(intent);
 
             return true;
         } else if (MsgConsts.PATH_DOWNLOAD.equals(path)) {
@@ -190,8 +187,6 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(pUrl));
                 startActivity(intent);
-
-                mLockManager.filterSelfOneMinites();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -203,7 +198,6 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 Intent intent = Intent.parseUri(pUrl, 0);
                 startActivity(intent);
 
-                mLockManager.filterSelfOneMinites();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -212,7 +206,6 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             // facebook，3.1开始支持
             try {
                 MsgUtil.openFacebook(pUrl, this);
-                mLockManager.filterSelfOneMinites();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -221,7 +214,6 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             // googleplay，3.1开始支持
             try {
                 MsgUtil.openGooglePlay(pUrl, this);
-                mLockManager.filterSelfOneMinites();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -237,7 +229,6 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 e.printStackTrace();
             }
             if (success) {
-                mLockManager.filterSelfOneMinites();
             }
             return true;
         } else if (MsgConsts.PATH_ANDROIDID.equals(path)) {

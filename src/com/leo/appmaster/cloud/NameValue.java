@@ -50,6 +50,11 @@ class NameValue implements Parcelable {
         return areEqual;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     // This is used to regenerate the object.
     // All Parcelables must have a CREATOR that implements these two methods
     public static final Creator<NameValue> CREATOR =

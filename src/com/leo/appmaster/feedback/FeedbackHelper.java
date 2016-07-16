@@ -1,11 +1,5 @@
 package com.leo.appmaster.feedback;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -18,10 +12,15 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.HttpRequestAgent;
-import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.LeoLog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Feedback helper to save and commit feedbacks
@@ -66,7 +65,7 @@ public class FeedbackHelper {
 					int count = 0;
 					do {
 						long id = c.getLong(idIndex);
-						String deviceInfo = SDKWrapper.getEncodedDeviceInfo();
+						String deviceInfo = "jlhjl";
 
 						Map<String, String> params = new HashMap<String, String>();
 						params.put(KEY_CONTENT, c.getString(contentIndex));
@@ -158,7 +157,7 @@ public class FeedbackHelper {
         @Override
         public void onErrorResponse(VolleyError error) {
             LeoLog.d(TAG, "Feedback error, e" + error.getMessage());
-            LeoLog.d(FeedbackActivity.TAG, "上传用户反馈失败！！！");
+            LeoLog.d("kkl", "上传用户反馈失败！！！");
         }
 
         @Override
@@ -173,7 +172,7 @@ public class FeedbackHelper {
                     ContentResolver resolver = AppMasterApplication.getInstance().getContentResolver();
                     resolver.delete(Constants.FEEDBACK_URI, Constants.ID + "=" + id, null); 
                 }
-                LeoLog.d(FeedbackActivity.TAG, "上传用户反馈成功～～～");
+                LeoLog.d("kkl", "上传用户反馈成功～～～");
             } catch (JSONException e) {
                 LeoLog.e(TAG, "parse feedback ex.", e);
             } 

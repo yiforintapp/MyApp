@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.callfilter.CallFilterConstants;
 
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 
@@ -157,7 +156,6 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     private static final String[] TABLES = {
             "com.leo.appmaster.db.MsgCenterTable",
-            "com.leo.appmaster.db.IntruderPhotoTable",
             "com.leo.appmaster.db.PreferenceTable",
             "com.leo.appmaster.db.InstalledAppTable",
             "com.leo.appmaster.db.LockRecommentTable",
@@ -247,9 +245,7 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     /*骚扰拦截*/
     private void execSQLForFilter(SQLiteDatabase db) {
-        db.execSQL(CallFilterConstants.CREATE_FILTER_GR_TAB);
-        db.execSQL(CallFilterConstants.CREATE_FILTER_DET_TAB);
-        db.execSQL(CallFilterConstants.CREATE_STRANGER_TP_TAB);
+
     }
 
     @Override

@@ -17,7 +17,6 @@ import com.leo.appmaster.db.LeoPreference;
 import com.leo.appmaster.db.LeoSettings;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.CommonEvent;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.PrefConst;
 import com.leo.tools.animator.ObjectAnimator;
 
@@ -168,9 +167,9 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
             return;
         }
         View inCloude = viewStub.inflate();
-        mVideoGuideRt = (RelativeLayout) inCloude.findViewById(R.id.video_edit_rt);
+        mVideoGuideRt = (RelativeLayout) inCloude.findViewById(R.id.pic_vid_edit_rt);
         mVideoGuideRt.setOnClickListener(this);
-        mVideoText = (TextView) inCloude.findViewById(R.id.video_guide_text_tip);
+        mVideoText = (TextView) inCloude.findViewById(R.id.guide_text_tip);
     }
 
     /*屏幕保护进入设置引导*/
@@ -269,7 +268,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
 
             if (mHomeGuideRt != null) {
 
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "list_bub");
 
                 mHomeGuideRt.setVisibility(View.VISIBLE);
                 float tranY = getActivity().getResources().getDimension(R.dimen.home_guide_trans_y);
@@ -278,7 +276,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         } else if (GUIDE_TYPE.PIC_GUIDE == type) {
             if (mPicVideoGuideRt != null) {
 
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic_bub");
 
                 mPicVideoGuideRt.setVisibility(View.VISIBLE);
                 mPicText.setText(R.string.pic_video_guide_txt);
@@ -289,7 +286,6 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
         } else if (GUIDE_TYPE.VIDEO_GUIDE == type) {
             if (mVideoGuideRt != null) {
 
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_bub");
 
                 mVideoGuideRt.setVisibility(View.VISIBLE);
                 mVideoText.setText(R.string.video_guide_txt);
@@ -348,14 +344,11 @@ public class GuideFragment extends Fragment implements View.OnClickListener {
                 LeoPreference pre = LeoPreference.getInstance();
                 pre.putBoolean(PrefConst.KEY_PIC_EDIT_GUIDE, true);
 
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic_bub_cnts");
                 break;
-            case R.id.video_edit_rt:
+            case R.id.guide_text_tip:
                 mRootView.setVisibility(View.GONE);
                 LeoPreference preTab = LeoPreference.getInstance();
                 preTab.putBoolean(PrefConst.KEY_VIDEO_EDIT_GUIDE, true);
-
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvid_bub_cnts");
                 break;
             case R.id.bay_edit_rt:
                 mRootView.setVisibility(View.GONE);

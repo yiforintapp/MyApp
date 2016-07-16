@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class GuideItemView extends View {
+public class  GuideItemView extends View {
     
     private int mInitialColor;
     private int mCurrentColor;

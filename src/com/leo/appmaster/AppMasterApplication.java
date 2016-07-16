@@ -1,34 +1,27 @@
-
 package com.leo.appmaster;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Debug;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.os.UserManager;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
-import com.leo.appmaster.db.LeoSettings;
-import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.home.HomeTestActivity;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class AppMasterApplication extends Application {
     private static final String TAG = "AppMasterApplication";
@@ -40,6 +33,8 @@ public class AppMasterApplication extends Application {
     public static boolean sCheckTs = true;
     public static long sAppOnCrate;
     public static boolean sIsSplashActioned = false;
+
+    private static boolean sNeedRestart;
 
     public static boolean DGB_TRACE = false;
     public static final String TRACE = "MotoG11.trace";
@@ -72,13 +67,11 @@ public class AppMasterApplication extends Application {
         try {
             System.loadLibrary("leo_service");
             LeoLog.d(TAG, "load service lib succ.");
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LeoLog.e(TAG, "load service lib ex.", e);
         }
     }
 
-    private native void restartApplocker(int sdk, String userSerial);
-    public native String[] getKeyArray();
 
     @Override
     public void onCreate() {
@@ -92,6 +85,7 @@ public class AppMasterApplication extends Application {
         }
         sStartTs = SystemClock.elapsedRealtime();
         sInstance = this;
+
         // Use old sor
         try {
             System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
@@ -100,16 +94,8 @@ public class AppMasterApplication extends Application {
         long start = SystemClock.elapsedRealtime();
 
         ThreadManager.initialize();
-        LeoSettings.initialize();
         LeoLog.d(TAG, "initialize cost: " + (SystemClock.elapsedRealtime() - start));
 
-        AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        String lastVer = pref.getLastVersion();
-        try {
-            sLastVersion = Integer.parseInt(lastVer);
-        } catch (NumberFormatException e) {
-            LeoLog.e(TAG, "parse last ver ex." + e.getMessage());
-        }
         mActivityList = new ArrayList<WeakReference<Activity>>();
         mResumedList = new ArrayList<WeakReference<Activity>>();
         mStartedList = new ArrayList<WeakReference<Activity>>();
@@ -118,14 +104,15 @@ public class AppMasterApplication extends Application {
         sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE);
         usedThemePackage = sharedPreferences.getString("packageName", Constants.DEFAULT_THEME);
 
-        // For android L and above, daemon service is not work, so disable it
-        if (PhoneInfo.getAndroidVersion() < 20) {
-            try {
-                restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
+        initScreenSize();
+        mRootBootstrap = new BootstrapGroup();
+        mRootBootstrap.mStepIds = mRootSteps;
+
+        // 启动引导程序，包含：前台、后台、延时程序
+        mRootBootstrap.execute();
+    }
+
+    private void initScreenSize() {
         try {
             WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
             DisplayMetrics metrics = new DisplayMetrics();
@@ -136,42 +123,30 @@ public class AppMasterApplication extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        mRootBootstrap = new BootstrapGroup();
-        mRootBootstrap.mStepIds = mRootSteps;
-
-        // 启动引导程序，包含：前台、后台、延时程序
-        mRootBootstrap.execute();
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    private String getUserSerial() {
-        String userSerial = null;
-        if (PhoneInfo.getAndroidVersion() >= 17) {
-            try {
-                UserManager userManager = (UserManager) getSystemService(Context.USER_SERVICE);
-                if (userManager != null) {
-                    userSerial = String.valueOf(userManager
-                            .getSerialNumberForUser(android.os.Process.myUserHandle()));
-                }
-            } catch (Exception e) {
-            } catch (Error error) {
-            }
-        }
-        return userSerial;
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        ImageLoader.getInstance().clearMemoryCache();
+        try {
+            ImageLoader.getInstance().clearMemoryCache();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onTerminate() {
         super.onTerminate();
         ImageLoader.getInstance().clearMemoryCache();
-        SDKWrapper.endSession(this);
+    }
+
+    public boolean needRestart() {
+        return sNeedRestart;
+    }
+
+    public void setNeedRestart(boolean needRestart) {
+        sNeedRestart = needRestart;
     }
 
     public static AppMasterApplication getInstance() {
@@ -322,7 +297,7 @@ public class AppMasterApplication extends Application {
         if (mActivityList.size() == 1) {
             WeakReference<Activity> reference = mActivityList.get(0);
             Activity activity = reference.get();
-            if (activity != null && (activity instanceof HomeActivity)) {
+            if (activity != null && (activity instanceof HomeTestActivity)) {
                 return true;
             }
         } else if (mActivityList.size() > 1) {
@@ -330,8 +305,7 @@ public class AppMasterApplication extends Application {
             WeakReference<Activity> reference1 = mActivityList.get(1);
             Activity activity0 = reference0.get();
             Activity activity1 = reference1.get();
-            if (activity0 != null && (activity0 instanceof HomeActivity)
-                    && activity1 != null && (activity1 instanceof LockScreenActivity)) {
+            if (activity0 != null && (activity0 instanceof HomeTestActivity)) {
                 return true;
             }
         }
@@ -374,4 +348,5 @@ public class AppMasterApplication extends Application {
         int versionCode = PhoneInfo.getVersionCode(sInstance);
         return versionCode > sLastVersion;
     }
+
 }

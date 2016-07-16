@@ -1,7 +1,0 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@color/selector_back_list_bg" android:state_pressed="true"/>
-    <item android:drawable="@color/selector_back_list_bg" android:state_focused="true"/>
-    <item android:drawable="@color/transparent"/>
-
-</selector>

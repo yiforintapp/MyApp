@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:bottom="38dp">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/home_tab_divider"/>
-        </shape>
-    </item>
-</layer-list>

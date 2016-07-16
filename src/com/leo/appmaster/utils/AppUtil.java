@@ -25,11 +25,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.imageloader.utils.L;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -82,28 +79,7 @@ public class AppUtil {
         }
     }
 
-    public static void downloadFromGp(Context context, String packageGp) {
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("market://details?id=" + packageGp));
-        intent.setPackage(Constants.GP_PACKAGE);
-        try {
-            LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-            mLockManager.filterPackage(Constants.PKG_GOOLEPLAY, 1000);
-            context.startActivity(intent);
-        } catch (Exception e) {
-        }
-    }
 
-    public static ApplicationInfo getApplicationInfo(String pkg, Context ctx) {
-        ApplicationInfo info = null;
-        try {
-            ctx.getPackageManager().getApplicationInfo(pkg,
-                    PackageManager.GET_UNINSTALLED_PACKAGES);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return info;
-    }
 
     public static String getAppLabel(String pkg, Context ctx) {
         try {
@@ -136,37 +112,8 @@ public class AppUtil {
         return totalTraffic - getMobileTraffic();
     }
 
-    public static Drawable getAppIcon(PackageManager pm, String pkg) {
-        Drawable d = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppIcon(pkg);
-        if (d == null) {
-            d = loadAppIconDensity(pkg);
-        }
-        return d;
-    }
 
-    public static Drawable getAppIcon(String pkg) {
-        Drawable d = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppIcon(pkg);
-        if (d == null) {
-            d = loadAppIconDensity(pkg);
-        }
-        return d;
-    }
 
-    public static String getAppLabel(PackageManager pm, String pkg) {
-        String label = null;
-        AppItemInfo app = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppInfo(pkg);
-        if (app != null) {
-            label = app.label;
-        }
-        if (Utilities.isEmpty(label)) {
-            try {
-                label = pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString();
-            } catch (Exception e) {
-                label = "";
-            }
-        }
-        return label;
-    }
 
     /**
      * 获取app图标Drawble
@@ -407,21 +354,6 @@ public class AppUtil {
         int height = displayMetrics.heightPixels;
         pix[1] = height;
         return pix;
-    }
-
-    /**
-     * 检查是否安装了带有充电屏保的竞品
-     * @param context
-     * @return
-     */
-    public static boolean hasOtherScreenSaverInstalled(Context context) {
-        for (int i=0; i<Constants.SCREEN_SAVE_PKG_NAMES.length; i++) {
-            if (AppLoadEngine.getInstance(context)
-                    .isInstallApp(Constants.SCREEN_SAVE_PKG_NAMES[i])) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /***
