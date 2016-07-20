@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.applocker.gesture;
+package com.user.appmaster.applocker.gesture;
 
 import android.app.Service;
 import android.content.Intent;

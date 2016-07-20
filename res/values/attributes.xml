@@ -13,4 +13,6 @@
         <attr name="ripplePersistent" format="boolean" localization="suggested" />
         <attr name="rippleInAdapter" format="boolean" localization="suggested" />
     </declare-styleable>
+
+
 </resources>

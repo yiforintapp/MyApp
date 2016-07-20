@@ -742,6 +742,7 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
             if (startColorIndex != 0) {
                 backGroundView = mNewPageBackgroundView;
             }
+            backGroundView.getResources().getColor(R.color.black);
         }
     }
 

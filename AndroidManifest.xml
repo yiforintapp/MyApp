@@ -45,6 +45,13 @@
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".login.LoginActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
         <!-- android:theme="@style/translucent" -->
 
 

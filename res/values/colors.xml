@@ -56,6 +56,7 @@
     <color name="c2">#333333</color>
     <!--浅色字，深分割线-->
     <color name="c4">#999999</color>
+    <color name="c5">#cbcbcb</color>
     <!--公共蓝-->
     <color name="cb">#2674f6</color>
     <!--强调色-->

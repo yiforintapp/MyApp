@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f3f7"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/personal_bg_selector">
+
+                <View
+                    android:id="@+id/line_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/divider_setting" />
+
+                <RelativeLayout
+                    android:id="@+id/rv_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/line_1"
+                    android:minHeight="58dp"
+                    android:paddingBottom="11dp"
+                    android:paddingTop="11dp">
+
+                    <ImageView
+                        android:id="@+id/iv_icon"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/default_normal_avatar" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_text_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_toLeftOf="@+id/rl_content_tip"
+                        android:layout_toRightOf="@+id/iv_icon"
+                        android:gravity="left">
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:includeFontPadding="false"
+                            android:maxLines="4"
+                            android:text="点击登录"
+                            android:textColor="@color/c2"
+                            android:textSize="@dimen/f3" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_content_tip"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="26dp"
+                        android:gravity="center_vertical|right">
+
+                        <ImageView
+                            android:id="@+id/iv_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/icn_settings_arrow" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:id="@+id/line_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/rv_main"
+                    android:background="@drawable/divider_setting" />
+
+            </RelativeLayout>
+
+
+            <com.leo.appmaster.ui.CommonSettingItem
+                android:id="@+id/user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.leo.appmaster.ui.CommonSettingItem
+                android:id="@+id/vip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.leo.appmaster.ui.CommonSettingItem
+                android:id="@+id/client"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" />
+
+
+            <com.leo.appmaster.ui.CommonSettingItem
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.leo.appmaster.ui.CommonSettingItem
+                android:id="@+id/setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

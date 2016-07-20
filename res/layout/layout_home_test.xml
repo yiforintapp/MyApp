@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:text="Hello World"/>
 
-</LinearLayout>
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.leo.appmaster.ui.MyViewPager
+            android:id="@+id/home_ViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+        <ListView
+            android:id="@+id/menu_list"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="60dp"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/toolbar_height"
+            android:background="@color/white"
+            android:divider="@drawable/home_menu_list_divider"
+            android:dividerHeight="1px"
+            android:listSelector="@null"            android:overScrollMode="never"
+            android:scrollbars="none"/>
+    </android.support.v4.widget.DrawerLayout>
+
+
+
+    <com.leo.appmaster.ui.HomeToolbar
+        android:id="@+id/home_toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="top"/>
+
+    <include layout="@layout/home_tab_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"/>
+
+</FrameLayout>

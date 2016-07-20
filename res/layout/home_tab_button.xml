@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/main_navigation_background">
+
+    <RelativeLayout
+        android:id="@+id/home_tab"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/home_img"
+            style="@style/home_tab_img"
+            android:src="@drawable/main_navigation_home"/>
+
+        <TextView
+            style="@style/home_tab_text"
+            android:layout_below="@+id/home_img"
+            android:text="行情"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/user_tab"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/user_img"
+            style="@style/home_tab_img"
+            android:src="@drawable/main_navigation_catagory"/>
+
+        <TextView
+            style="@style/home_tab_text"
+            android:layout_below="@+id/user_img"
+            android:text="交易"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/trade_tab"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/grade_img"
+            style="@style/home_tab_img"
+            android:src="@drawable/main_navigation_car"/>
+
+        <TextView
+            style="@style/home_tab_text"
+            android:layout_below="@+id/grade_img"
+            android:text="资讯"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/find_tab"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/find_img"
+            style="@style/home_tab_img"
+            android:src="@drawable/main_navigation_more"/>
+
+        <TextView
+            style="@style/home_tab_text"
+            android:layout_below="@+id/find_img"
+            android:text="服务"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/personal_tab"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/personal_img"
+            style="@style/home_tab_img"
+            android:src="@drawable/main_navigation_personal"/>
+
+        <TextView
+            style="@style/home_tab_text"
+            android:layout_below="@+id/personal_img"
+            android:text="我的"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
