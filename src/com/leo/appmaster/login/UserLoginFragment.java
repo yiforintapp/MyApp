@@ -60,7 +60,7 @@ public class UserLoginFragment extends BaseFragment implements View.OnClickListe
 
     private boolean isAccountAndPasswordEmpty() {
         if (TextUtils.isEmpty(mAccountEdt.getText().toString().trim())) {
-            mLoginToast.setText("账号不能为空  ");
+            mLoginToast.setText("账号不能为空");
             mLoginToast.setVisibility(View.VISIBLE);
             return  true;
         } else if (TextUtils.isEmpty(mPasswordEdt.getText().toString().trim())) {
