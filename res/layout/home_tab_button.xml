@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="@drawable/main_navigation_background">
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/home_tab"
@@ -11,13 +11,14 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/home_img"
+            android:id="@+id/home_iv"
             style="@style/home_tab_img"
-            android:src="@drawable/main_navigation_home"/>
+            android:src="@drawable/icon_price_pre"/>
 
         <TextView
+            android:id="@+id/home_tv"
             style="@style/home_tab_text"
-            android:layout_below="@+id/home_img"
+            android:layout_below="@+id/home_iv"
             android:text="行情"/>
 
     </RelativeLayout>
@@ -29,13 +30,14 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/user_img"
+            android:id="@+id/user_iv"
             style="@style/home_tab_img"
-            android:src="@drawable/main_navigation_catagory"/>
+            android:src="@drawable/icon_trade_nor"/>
 
         <TextView
+            android:id="@+id/user_tv"
             style="@style/home_tab_text"
-            android:layout_below="@+id/user_img"
+            android:layout_below="@+id/user_iv"
             android:text="交易"/>
 
     </RelativeLayout>
@@ -47,13 +49,14 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/grade_img"
+            android:id="@+id/trade_iv"
             style="@style/home_tab_img"
-            android:src="@drawable/main_navigation_car"/>
+            android:src="@drawable/icon_news_nor"/>
 
         <TextView
+            android:id="@+id/trade_tv"
             style="@style/home_tab_text"
-            android:layout_below="@+id/grade_img"
+            android:layout_below="@+id/trade_iv"
             android:text="资讯"/>
 
     </RelativeLayout>
@@ -65,13 +68,14 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/find_img"
+            android:id="@+id/find_iv"
             style="@style/home_tab_img"
-            android:src="@drawable/main_navigation_more"/>
+            android:src="@drawable/icon_service_nor"/>
 
         <TextView
+            android:id="@+id/find_tv"
             style="@style/home_tab_text"
-            android:layout_below="@+id/find_img"
+            android:layout_below="@+id/find_iv"
             android:text="服务"/>
 
     </RelativeLayout>
@@ -83,13 +87,14 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/personal_img"
+            android:id="@+id/personal_iv"
             style="@style/home_tab_img"
-            android:src="@drawable/main_navigation_personal"/>
+            android:src="@drawable/icon_personal_nor"/>
 
         <TextView
+            android:id="@+id/personal_tv"
             style="@style/home_tab_text"
-            android:layout_below="@+id/personal_img"
+            android:layout_below="@+id/personal_iv"
             android:text="我的"/>
 
     </RelativeLayout>

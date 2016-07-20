@@ -40,6 +40,11 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         mClient.setIcon(R.drawable.ic_mine_zxkf);
         mMessage.setIcon(R.drawable.ic_mine_xx);
         mSetting.setIcon(R.drawable.ic_mine_sz);
+        mUser.setTitle("我的账户");
+        mVip.setTitle("会员等级");
+        mClient.setTitle("在线客服");
+        mMessage.setTitle("消息");
+        mSetting.setTitle("设置");
         View line_one = mClient.findViewById(R.id.line_2);
         line_one.setVisibility(View.VISIBLE);
         View line_two = mSetting.findViewById(R.id.line_2);

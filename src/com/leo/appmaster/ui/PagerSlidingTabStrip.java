@@ -98,7 +98,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	private Locale locale;
 
-	private int selectedTabTextColor = 0xFFCC0000; // 选中项颜色
+	private int selectedTabTextColor = 0xD83A3E; // 选中项颜色
 
 	private int selectedPosition = 0; // 选中项位置
 

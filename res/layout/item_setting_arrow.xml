@@ -18,16 +18,16 @@
         android:id="@+id/rv_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="58dp"
-        android:paddingBottom="11dp"
-        android:paddingTop="11dp"
+        android:minHeight="38dp"
+        android:paddingBottom="7dp"
+        android:paddingTop="7dp"
         android:background="@drawable/personal_bg_selector"
         android:layout_below="@+id/line_1">
 
         <ImageView
             android:id="@+id/iv_icon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
             android:src="@drawable/ic_launcher" />

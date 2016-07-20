@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,11 +46,25 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
     private RelativeLayout mTradeTab;
     private RelativeLayout mFindTab;
     private RelativeLayout mPersonalTab;
+
+    private ImageView mHomeTabIv;
+    private ImageView mUserTabIv;
+    private ImageView mTradeIv;
+    private ImageView mFindIv;
+    private ImageView mPersonalIv;
+
+    private TextView mHomeTabTv;
+    private TextView mUserTabTv;
+    private TextView mTradeTv;
+    private TextView mFindTv;
+    private TextView mPersonalTv;
+
     private HomeTabFragment mHomeTabFragment;
     private UserTabFragment mUserTabFragment;
     private TradeTabFragment mTradeTabFragment;
     private FindTabFragment mFindTabFragment;
     private PersonalFragment mPersonalFragment;
+
     private DrawerLayout mDrawerLayout;
     private HomeToolbar mToolBar;
     private ListView mMenuList;
@@ -69,11 +84,26 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
 
     private void init() {
         mViewPager = (MyViewPager) findViewById(R.id.home_ViewPager);
+
         mHomeTab = (RelativeLayout) findViewById(R.id.home_tab);
         mUserTab = (RelativeLayout) findViewById(R.id.user_tab);
         mTradeTab = (RelativeLayout) findViewById(R.id.trade_tab);
         mFindTab = (RelativeLayout) findViewById(R.id.find_tab);
         mPersonalTab = (RelativeLayout) findViewById(R.id.personal_tab);
+
+        mHomeTabIv = (ImageView) findViewById(R.id.home_iv);
+        mUserTabIv = (ImageView) findViewById(R.id.user_iv);
+        mTradeIv = (ImageView) findViewById(R.id.trade_iv);
+        mFindIv = (ImageView) findViewById(R.id.find_iv);
+        mPersonalIv = (ImageView) findViewById(R.id.personal_iv);
+
+        mHomeTabTv = (TextView) findViewById(R.id.home_tv);
+        mUserTabTv = (TextView) findViewById(R.id.user_tv);
+        mTradeTv = (TextView) findViewById(R.id.trade_tv);
+        mFindTv = (TextView) findViewById(R.id.find_tv);
+        mPersonalTv = (TextView) findViewById(R.id.personal_tv);
+        mHomeTabTv.setTextColor(Color.parseColor("#D83A3E"));
+
         mToolBar = (HomeToolbar) findViewById(R.id.home_toolBar);
         mMenuList = (ListView) findViewById(R.id.menu_list);
         mCenterTitle = (TextView) findViewById(R.id.center_title_tv);
@@ -81,11 +111,6 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
         mViewPager.setAdapter(new HomeTabAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2); //预加载2个
         mViewPager.setCurrentItem(0);
-        mHomeTab.setBackgroundResource(R.drawable.home_btn_bg_s);
-        mUserTab.setBackgroundResource(R.drawable.main_navigation_background);
-        mTradeTab.setBackgroundResource(R.drawable.main_navigation_background);
-        mFindTab.setBackgroundResource(R.drawable.main_navigation_background);
-        mPersonalTab.setBackgroundResource(R.drawable.main_navigation_background);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -146,43 +171,68 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
     private void changeButtonBg(int position) {
         switch (position) {
             case 0:
-                mHomeTab.setBackgroundResource(R.drawable.home_btn_bg_s);
-                mUserTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mTradeTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mFindTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mPersonalTab.setBackgroundResource(R.drawable.main_navigation_background);
+                mHomeTabTv.setTextColor(Color.parseColor("#D83A3E"));
+                mHomeTabIv.setImageResource(R.drawable.icon_price_pre);
+                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
+                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
+                mTradeTv.setTextColor(getResources().getColor(R.color.black));
+                mTradeIv.setImageResource(R.drawable.icon_news_nor);
+                mFindTv.setTextColor(getResources().getColor(R.color.black));
+                mFindIv.setImageResource(R.drawable.icon_service_nor);
+                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
+                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
                 mCenterTitle.setText("行情");
                 break;
             case 1:
-                mHomeTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mUserTab.setBackgroundResource(R.drawable.home_btn_bg_s);
-                mTradeTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mFindTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mPersonalTab.setBackgroundResource(R.drawable.main_navigation_background);
+                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
+                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
+                mUserTabTv.setTextColor(Color.parseColor("#D83A3E"));
+                mUserTabIv.setImageResource(R.drawable.icon_trade_pre);
+                mTradeTv.setTextColor(getResources().getColor(R.color.black));
+                mTradeIv.setImageResource(R.drawable.icon_news_nor);
+                mFindTv.setTextColor(getResources().getColor(R.color.black));
+                mFindIv.setImageResource(R.drawable.icon_service_nor);
+                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
+                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
                 mCenterTitle.setText("交易");
                 break;
             case 2:
-                mHomeTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mUserTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mTradeTab.setBackgroundResource(R.drawable.home_btn_bg_s);
-                mFindTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mPersonalTab.setBackgroundResource(R.drawable.main_navigation_background);
+                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
+                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
+                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
+                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
+                mTradeTv.setTextColor(Color.parseColor("#D83A3E"));
+                mTradeIv.setImageResource(R.drawable.icon_news_pre);
+                mFindTv.setTextColor(getResources().getColor(R.color.black));
+                mFindIv.setImageResource(R.drawable.icon_service_nor);
+                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
+                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
                 mCenterTitle.setText("资讯");
                 break;
             case 3:
-                mHomeTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mUserTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mTradeTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mFindTab.setBackgroundResource(R.drawable.home_btn_bg_s);
-                mPersonalTab.setBackgroundResource(R.drawable.main_navigation_background);
+                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
+                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
+                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
+                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
+                mTradeTv.setTextColor(getResources().getColor(R.color.black));
+                mTradeIv.setImageResource(R.drawable.icon_news_nor);
+                mFindTv.setTextColor(Color.parseColor("#D83A3E"));
+                mFindIv.setImageResource(R.drawable.icon_service_pre);
+                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
+                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
                 mCenterTitle.setText("服务");
                 break;
             case 4:
-                mHomeTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mUserTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mTradeTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mFindTab.setBackgroundResource(R.drawable.main_navigation_background);
-                mPersonalTab.setBackgroundResource(R.drawable.home_btn_bg_s);
+                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
+                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
+                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
+                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
+                mTradeTv.setTextColor(getResources().getColor(R.color.black));
+                mTradeIv.setImageResource(R.drawable.icon_news_nor);
+                mFindTv.setTextColor(getResources().getColor(R.color.black));
+                mFindIv.setImageResource(R.drawable.icon_service_nor);
+                mPersonalTv.setTextColor(Color.parseColor("#D83A3E"));
+                mPersonalIv.setImageResource(R.drawable.icon_personal_pre);
                 mCenterTitle.setText("我的");
                 break;
         }
@@ -278,7 +328,6 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
                 break;
             case R.id.trade_tab:
                 mViewPager.setCurrentItem(2);
-                mHomeTab.setBackgroundResource(R.drawable.home_btn_bg_s);
                 changeButtonBg(2);
                 break;
             case R.id.find_tab:

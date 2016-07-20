@@ -27,7 +27,8 @@
             android:background="@color/white"
             android:divider="@drawable/home_menu_list_divider"
             android:dividerHeight="1px"
-            android:listSelector="@null"            android:overScrollMode="never"
+            android:listSelector="@null"
+            android:overScrollMode="never"
             android:scrollbars="none"/>
     </android.support.v4.widget.DrawerLayout>
 
@@ -38,6 +39,13 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_gravity="top"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="60dp"
+        android:background="@color/black"/>
 
     <include layout="@layout/home_tab_button"
         android:layout_width="match_parent"
