@@ -91,7 +91,7 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
         mFindTab = (RelativeLayout) findViewById(R.id.find_tab);
         mPersonalTab = (RelativeLayout) findViewById(R.id.personal_tab);
 
-        //
+        //test
         mHomeTabIv = (ImageView) findViewById(R.id.home_iv);
         mUserTabIv = (ImageView) findViewById(R.id.user_iv);
         mTradeIv = (ImageView) findViewById(R.id.trade_iv);
