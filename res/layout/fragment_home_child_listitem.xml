@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/list_item_name"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        android:text="名称"
+        android:gravity="left|center_vertical"
+        android:textColor="@color/black"
+        android:paddingLeft="15dp"/>
+
+    <TextView
+        android:id="@+id/list_item_price"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="最新价"/>
+
+    <TextView
+        android:id="@+id/list_item_range"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textColor="@color/black"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="涨跌幅"/>
+
+</LinearLayout>

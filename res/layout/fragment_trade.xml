@@ -1,12 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/home_tab_pressed"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="trade"/>
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
+        android:layout_marginTop="55dp"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天津贵金属交易所"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="25dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="交易系统升级至津贵所挂牌期间，请选择交易系统进行登录："
+            android:layout_marginTop="5dp"/>
+
+        <Button
+            style="@style/grade_tab_btn"
+            android:text="现货挂牌交易系统"/>
+
+        <TextView
+            style="@style/grade_tab_tv"
+            android:text="交易所新交易模式" />
+
+        <Button
+            style="@style/grade_tab_btn"
+            android:text="现货延期交易系统"/>
+
+        <TextView
+            style="@style/grade_tab_tv"
+            android:text="交易所现行交易模式" />
+
+        <Button
+            style="@style/grade_tab_btn"
+            android:text="齐鲁商品交易中心"/>
+
+    </LinearLayout>
+
+</ScrollView>

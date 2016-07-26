@@ -52,6 +52,7 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+
         <!-- android:theme="@style/translucent" -->
 
 

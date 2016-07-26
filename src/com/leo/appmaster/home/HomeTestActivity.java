@@ -73,6 +73,8 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
     private TextView mCenterTitle;
     private HomeFragmentHolder[] mFragmentHolders = new HomeFragmentHolder[5];
 
+    private int mIndex = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +94,7 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
         mPersonalTab = (RelativeLayout) findViewById(R.id.personal_tab);
 
         //test something
-        //test fuck
+
         mHomeTabIv = (ImageView) findViewById(R.id.home_iv);
         mUserTabIv = (ImageView) findViewById(R.id.user_iv);
         mTradeIv = (ImageView) findViewById(R.id.trade_iv);
@@ -168,74 +170,70 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
 
 
     /**
-     * 更改tab按钮背景
+     * 更改tab背景
      */
-    private void changeButtonBg(int position) {
+    private void changeTabBg(int position) {
         switch (position) {
             case 0:
                 mHomeTabTv.setTextColor(Color.parseColor("#D83A3E"));
                 mHomeTabIv.setImageResource(R.drawable.icon_price_pre);
-                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
-                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
-                mTradeTv.setTextColor(getResources().getColor(R.color.black));
-                mTradeIv.setImageResource(R.drawable.icon_news_nor);
-                mFindTv.setTextColor(getResources().getColor(R.color.black));
-                mFindIv.setImageResource(R.drawable.icon_service_nor);
-                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
-                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
+                changeUnSelectBg(mIndex);
+                mIndex = 0;
                 mCenterTitle.setText("行情");
                 break;
             case 1:
-                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
-                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
                 mUserTabTv.setTextColor(Color.parseColor("#D83A3E"));
                 mUserTabIv.setImageResource(R.drawable.icon_trade_pre);
-                mTradeTv.setTextColor(getResources().getColor(R.color.black));
-                mTradeIv.setImageResource(R.drawable.icon_news_nor);
-                mFindTv.setTextColor(getResources().getColor(R.color.black));
-                mFindIv.setImageResource(R.drawable.icon_service_nor);
-                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
-                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
+                changeUnSelectBg(mIndex);
+                mIndex = 1;
                 mCenterTitle.setText("交易");
                 break;
             case 2:
-                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
-                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
-                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
-                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
                 mTradeTv.setTextColor(Color.parseColor("#D83A3E"));
                 mTradeIv.setImageResource(R.drawable.icon_news_pre);
-                mFindTv.setTextColor(getResources().getColor(R.color.black));
-                mFindIv.setImageResource(R.drawable.icon_service_nor);
-                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
-                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
+                changeUnSelectBg(mIndex);
+                mIndex = 2;
                 mCenterTitle.setText("资讯");
                 break;
             case 3:
-                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
-                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
-                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
-                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
-                mTradeTv.setTextColor(getResources().getColor(R.color.black));
-                mTradeIv.setImageResource(R.drawable.icon_news_nor);
                 mFindTv.setTextColor(Color.parseColor("#D83A3E"));
                 mFindIv.setImageResource(R.drawable.icon_service_pre);
-                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
-                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
+                changeUnSelectBg(mIndex);
+                mIndex = 3;
                 mCenterTitle.setText("服务");
                 break;
             case 4:
-                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
-                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
-                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
-                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
-                mTradeTv.setTextColor(getResources().getColor(R.color.black));
-                mTradeIv.setImageResource(R.drawable.icon_news_nor);
-                mFindTv.setTextColor(getResources().getColor(R.color.black));
-                mFindIv.setImageResource(R.drawable.icon_service_nor);
                 mPersonalTv.setTextColor(Color.parseColor("#D83A3E"));
                 mPersonalIv.setImageResource(R.drawable.icon_personal_pre);
+                changeUnSelectBg(mIndex);
+                mIndex = 4;
                 mCenterTitle.setText("我的");
+                break;
+        }
+    }
+
+    /** 改变上次选中tab颜色为未选中 */
+    private void changeUnSelectBg(int position) {
+        switch (position) {
+            case 0:
+                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
+                mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
+                break;
+            case 1:
+                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
+                mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
+                break;
+            case 2:
+                mTradeTv.setTextColor(getResources().getColor(R.color.black));
+                mTradeIv.setImageResource(R.drawable.icon_news_nor);
+                break;
+            case 3:
+                mFindTv.setTextColor(getResources().getColor(R.color.black));
+                mFindIv.setImageResource(R.drawable.icon_service_nor);
+                break;
+            case 4:
+                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
+                mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
                 break;
         }
     }
@@ -253,14 +251,14 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
 
         holder = new HomeFragmentHolder();
         holder.title = "自选";
-        mUserTabFragment = new UserTabFragment();
-        holder.fragment = mUserTabFragment;
+        mTradeTabFragment = new TradeTabFragment();
+        holder.fragment = mTradeTabFragment;
         mFragmentHolders[1] = holder;
 
         holder = new HomeFragmentHolder();
         holder.title = "交易";
-        mTradeTabFragment = new TradeTabFragment();
-        holder.fragment = mTradeTabFragment;
+        mUserTabFragment = new UserTabFragment();
+        holder.fragment = mUserTabFragment;
         mFragmentHolders[2] = holder;
 
         holder = new HomeFragmentHolder();
@@ -321,24 +319,39 @@ public class HomeTestActivity extends BaseFragmentActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.home_tab:
+                if (mIndex == 0) {
+                    return;
+                }
                 mViewPager.setCurrentItem(0);
-                changeButtonBg(0);
+                changeTabBg(0);
                 break;
             case R.id.user_tab:
+                if (mIndex == 1) {
+                    return;
+                }
                 mViewPager.setCurrentItem(1);
-                changeButtonBg(1);
+                changeTabBg(1);
                 break;
             case R.id.trade_tab:
+                if (mIndex == 2) {
+                    return;
+                }
                 mViewPager.setCurrentItem(2);
-                changeButtonBg(2);
+                changeTabBg(2);
                 break;
             case R.id.find_tab:
+                if (mIndex == 3) {
+                    return;
+                }
                 mViewPager.setCurrentItem(3);
-                changeButtonBg(3);
+                changeTabBg(3);
                 break;
             case R.id.personal_tab:
+                if (mIndex == 4) {
+                    return;
+                }
                 mViewPager.setCurrentItem(4);
-                changeButtonBg(4);
+                changeTabBg(4);
         }
     }
 
