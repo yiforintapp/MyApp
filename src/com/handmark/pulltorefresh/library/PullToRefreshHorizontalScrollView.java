@@ -15,7 +15,7 @@
  *******************************************************************************/
 package com.handmark.pulltorefresh.library;
 
-import com.leo.appmaster.R;
+import com.zlf.appmaster.R;
 
 import android.annotation.TargetApi;
 import android.content.Context;

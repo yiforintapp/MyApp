@@ -1,4 +1,4 @@
-<com.leo.appmaster.ui.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zlf.appmaster.ui.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -32,4 +32,4 @@
             android:src="@drawable/red_dot"
             android:visibility="gone" />
     </LinearLayout>
-</com.leo.appmaster.ui.MaterialRippleLayout>
+</com.zlf.appmaster.ui.MaterialRippleLayout>

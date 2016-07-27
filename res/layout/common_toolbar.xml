@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_height">
 
-    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.zlf.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ct_back_rl0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
                 android:clickable="true"
                 android:src="@drawable/ic_toolbar_back" />
         </RelativeLayout>
-    </com.leo.appmaster.ui.MaterialRippleLayout>
+    </com.zlf.appmaster.ui.MaterialRippleLayout>
 
     <TextView
         android:id="@+id/ct_title_tv"
@@ -48,7 +48,7 @@
         android:layout_alignParentRight="true"
         android:orientation="horizontal">
 
-        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.zlf.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rippleColor="@color/menu_ripple"
@@ -69,9 +69,9 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_toolbar_more" />
             </RelativeLayout>
-        </com.leo.appmaster.ui.MaterialRippleLayout>
+        </com.zlf.appmaster.ui.MaterialRippleLayout>
 
-        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.zlf.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rippleColor="@color/menu_ripple"
@@ -92,7 +92,7 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/ic_toolbar_more" />
             </RelativeLayout>
-        </com.leo.appmaster.ui.MaterialRippleLayout>
+        </com.zlf.appmaster.ui.MaterialRippleLayout>
 
     </LinearLayout>
 

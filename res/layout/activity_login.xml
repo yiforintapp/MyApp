@@ -6,13 +6,13 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-    <com.leo.appmaster.ui.CommonToolbar
+    <com.zlf.appmaster.ui.CommonToolbar
         android:id="@+id/call_filter_toolbar"
         android:layout_width="match_parent"
         android:layout_height="55dp" />
 
 
-    <com.leo.appmaster.ui.PagerSlidingTabStrip
+    <com.zlf.appmaster.ui.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="50dp"

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.leo.appmaster.ui.MyViewPager
+        <com.zlf.appmaster.ui.MyViewPager
             android:id="@+id/home_ViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -34,7 +34,7 @@
 
 
 
-    <com.leo.appmaster.ui.HomeToolbar
+    <com.zlf.appmaster.ui.HomeToolbar
         android:id="@+id/home_toolBar"
         android:layout_width="match_parent"
         android:layout_height="55dp"

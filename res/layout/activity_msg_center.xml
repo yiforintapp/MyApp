@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <com.leo.appmaster.ui.CommonToolbar
+    <com.zlf.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             android:textColor="@color/mc_empty_tips"
             android:textSize="14dp" />
 
-        <com.leo.appmaster.ui.RippleView
+        <com.zlf.appmaster.ui.RippleView
             android:id="@+id/msg_center_feedback_tv"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
@@ -80,7 +80,7 @@
                 android:text="@string/msg_center_feedback"
                 android:textColor="@color/white"
                 android:textSize="17dp" />
-        </com.leo.appmaster.ui.RippleView>
+        </com.zlf.appmaster.ui.RippleView>
 
     </LinearLayout>
 

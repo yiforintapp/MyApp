@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
-        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.zlf.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ct_back_rl0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                     android:clickable="true"
                     android:src="@drawable/ic_toolbar_back" />
             </RelativeLayout>
-        </com.leo.appmaster.ui.MaterialRippleLayout>
+        </com.zlf.appmaster.ui.MaterialRippleLayout>
 
         <TextView
             android:id="@+id/ct_title_tv"
@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical">
 
-            <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            <com.zlf.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:rippleColor="@color/menu_ripple"
@@ -93,7 +93,7 @@
                         android:src="@drawable/logo"
                         android:visibility="gone" />
                 </RelativeLayout>
-            </com.leo.appmaster.ui.MaterialRippleLayout>
+            </com.zlf.appmaster.ui.MaterialRippleLayout>
 
             <RelativeLayout
                 android:id="@+id/title_container"
@@ -131,7 +131,7 @@
         android:textSize="16dp"
         android:visibility="gone" />
 
-    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.zlf.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tv_option_image_content0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                 android:adjustViewBounds="true"
                 android:clickable="true" />
         </RelativeLayout>
-    </com.leo.appmaster.ui.MaterialRippleLayout>
+    </com.zlf.appmaster.ui.MaterialRippleLayout>
 
     <LinearLayout
         android:id="@+id/layout_right"
@@ -177,7 +177,7 @@
     </LinearLayout>
 
 
- <com.leo.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+ <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
      	android:id="@+id/mr_gift"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -212,7 +212,7 @@
             android:background="@drawable/red_dot"
             android:visibility="gone" />
     </RelativeLayout>
-    </com.leo.appmaster.ui.RippleView>
+    </com.zlf.appmaster.ui.RippleView>
     <!-- ad icon -->
 
     <RelativeLayout

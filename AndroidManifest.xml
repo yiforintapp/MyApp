@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.leo.appmaster"
+    package="com.zlf.appmaster"
     android:versionCode="71"
     android:versionName="@string/version_name">
 
@@ -111,7 +111,7 @@
 
         <provider
             android:name=".db.AppMasterProvider"
-            android:authorities="com.leo.appmaster.provider"
+            android:authorities="com.zlf.appmaster.provider"
             android:exported="false" />
 
 
@@ -121,19 +121,9 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.leo.appmaster.action.SCHEDULE" />
+                <action android:name="com.zlf.appmaster.action.SCHEDULE" />
             </intent-filter>
         </receiver>
-
-        <service
-            android:name=".mgr.service.IpcRequestService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="com.leo.appmaster.permission.IPC_REQUEST">
-            <intent-filter>
-                <action android:name="com.leo.appmaster.IPC_REQUEST" />
-            </intent-filter>
-        </service>
 
 
         <uses-library
@@ -143,9 +133,9 @@
         <receiver
             android:name=".mgr.service.IpcSignatureReceiver"
             android:exported="true"
-            android:permission="com.leo.appmaster.permission.IPC_RECEIVER_SIG">
+            android:permission="com.zlf.appmaster.permission.IPC_RECEIVER_SIG">
             <intent-filter>
-                <action android:name="com.leo.appmaster.action.IPC_RECEIVER" />
+                <action android:name="com.zlf.appmaster.action.IPC_RECEIVER" />
             </intent-filter>
         </receiver>
 

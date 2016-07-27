@@ -23,7 +23,7 @@
         android:id="@+id/np__numberpicker_input"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        class="com.leo.appmaster.applocker.NumberPicker$CustomEditText"
+        class="com.zlf.appmaster.applocker.NumberPicker$CustomEditText"
         android:background="@null"
         android:gravity="center"
         android:singleLine="true"

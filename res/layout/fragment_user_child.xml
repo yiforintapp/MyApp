@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/user_fragment_child_list"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:layout_marginTop="55dp"
-    android:background="@color/white"
-    android:divider="@drawable/home_menu_list_divider"
-    android:dividerHeight="1px"
-    android:listSelector="@null"
-    android:overScrollMode="never"
-    android:scrollbars="none">
+    android:orientation="vertical">
 
-</ListView>
+    <View
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
+
+    <include
+        android:id="@+id/header_View"
+        layout="@layout/fragment_home_child_listhead"/>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/user_fragment_child_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        android:divider="@drawable/home_menu_list_divider"
+        android:dividerHeight="1px"
+        android:listSelector="@null"
+        android:overScrollMode="never"
+        android:layout_marginBottom="60dp"
+        android:scrollbars="none">
+
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+</LinearLayout>

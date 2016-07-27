@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.leo.appmaster.msgcenter.MsgCenterBrowserActivity">
+    tools:context="com.zlf.appmaster.msgcenter.MsgCenterBrowserActivity">
 
-    <com.leo.appmaster.ui.CommonToolbar
+    <com.zlf.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
