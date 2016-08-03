@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <!-- action bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/title_bar_bg"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:id="@+id/title_bar"
+            style="@style/title_bar_bg">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/stocktrade_detail_title_comment"
+                    style="@style/stock_trade_detail_title_comment"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true" />
+
+                <RelativeLayout
+                    android:id="@+id/stocktrade_title_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/stocktrade_detail_title_comment"
+                    android:background="@color/title_bar_bg">
+
+                    <TextView
+                        android:id="@+id/stocktrade_detail_title"
+                        style="@style/stock_trade_detail_title"
+                        android:textColor="#2B2B2B"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true" />
+
+                    <TextView
+                        android:id="@+id/stocktrade_detail_title_ah"
+                        style="@style/stock_trade_detail_title_ah"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_toRightOf="@id/stocktrade_detail_title"
+                        android:text="@string/ah_stock"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                style="@style/title_bar_back_icon"
+                android:onClick="onBack" />
+
+            <ImageView
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:onClick="onSearch"
+                android:paddingLeft="18.3dp"
+                android:paddingRight="18.3dp"
+                android:src="@drawable/icon_stock_quotations_search" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+    <!--界面区域-->
+    <com.handmark.pulltorefresh.library.xlistview.XListView
+        android:id="@+id/stock_detail_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        android:divider="@null"
+     />
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <com.zlf.appmaster.ui.stock.StockBaseInfoView
+            android:id="@+id/cache_stock_base_info_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+        <com.iqiniu.qiniu.view.StockChartView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_my_setting"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="#f4f4f4"
+        >
+        <LinearLayout
+            android:id="@+id/btn_stock_favorite_add"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/combination_edit_item_selector"
+            >
+            <ImageView
+                android:id="@+id/icon_stock_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/txt_stock_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stock_favorite_add"
+                android:textSize="15sp"
+                android:layout_marginLeft="3dp"
+                />
+        </LinearLayout>
+        <View
+            android:visibility="gone"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/split_line"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            />
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/btn_combination_add"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/combination_edit_item_selector"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_combination_add"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stock_combination_add"
+                android:textSize="15sp"
+                android:layout_marginLeft="3dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

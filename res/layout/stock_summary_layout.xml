@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 股票概况布局 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
+
+    <TextView
+        style="@style/font_stock_summary_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stock_company_intro" />
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8.7dp"
+        android:layout_marginRight="8.7dp"
+        android:background="@drawable/stock_more_info_table_bg"
+        android:shrinkColumns="1"
+        >
+
+        <TableRow>
+
+            <TextView
+                style="@style/font_stock_summary_content_title"
+                android:text="@string/stock_company_name" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_summary_content"
+                android:gravity="right"
+                android:id="@+id/stock_company_name" 
+                />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line"/>
+        <TableRow>
+
+            <TextView
+                style="@style/font_stock_summary_content_title"
+                android:text="@string/stock_market_start_date" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_summary_content"
+                android:gravity="right"
+                android:id="@+id/stock_market_start_date"/>
+
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line"/>
+        <TableRow>
+
+            <TextView
+                style="@style/font_stock_summary_content_title"
+                android:text="@string/stock_market_start_price" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_summary_content"
+                android:gravity="right"
+                android:id="@+id/stock_market_start_price"/>
+
+        </TableRow>
+
+        <View style="@style/font_stock_finance_table_row_line"/>
+        
+        <TableRow>
+
+            <TextView
+                style="@style/font_stock_summary_content_title"
+                android:text="@string/stock_market_start_num" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_summary_content"
+                android:gravity="right"
+                android:id="@+id/stock_market_start_num"/>
+
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line"/>
+         <TableRow>
+
+            <TextView
+                style="@style/font_stock_summary_content_title"
+                android:text="@string/stock_area" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_summary_content"
+                android:gravity="right"
+                android:id="@+id/stock_area"/>
+
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line"/>
+        <TableRow>
+
+            <TextView
+                style="@style/font_stock_summary_content_title"
+                android:text="@string/stock_industry" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_summary_content"
+                android:gravity="right"
+                android:id="@+id/stock_industry"/>
+
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line"/>
+        <TableRow>
+
+            <TextView
+                style="@style/font_stock_summary_content_title"
+                android:text="@string/stock_main_business" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_summary_content"
+                android:gravity="right"
+                android:id="@+id/stock_main_business"/>
+
+        </TableRow>
+    </TableLayout>
+    
+    
+    <include layout="@layout/stock_shareholders_layout"/>
+
+</LinearLayout>

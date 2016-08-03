@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard android:keyWidth="20%p" android:keyHeight="@dimen/key_height" android:horizontalGap="0.2%p" android:verticalGap="0.2%p"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <Row>
+        <Key android:codes="1600" android:keyOutputText="600" android:keyLabel="600" />
+        <Key android:codes="49" android:keyLabel="1" />
+        <Key android:codes="50" android:keyLabel="2" />
+        <Key android:codes="51" android:keyLabel="3" />
+        <Key android:codes="-5" android:keyEdgeFlags="right" android:keyIcon="@drawable/kb_delete_over" />
+    </Row>
+    <Row>
+        <Key android:codes="1300" android:keyOutputText="300" android:keyLabel="300" />
+        <Key android:codes="52" android:keyLabel="4" />
+        <Key android:codes="53" android:keyLabel="5" />
+        <Key android:codes="54" android:keyLabel="6" />
+        <Key android:codes="1999" android:keyEdgeFlags="right" android:isRepeatable="true" android:keyLabel="清空" />
+    </Row>
+    <Row>
+        <Key android:codes="1000" android:keyOutputText="000" android:keyLabel="000" />
+        <Key android:codes="55" android:keyLabel="7" />
+        <Key android:codes="56" android:keyLabel="8" />
+        <Key android:codes="57" android:keyLabel="9" />
+        <Key android:codes="-3" android:keyEdgeFlags="right" android:isRepeatable="true" android:keyLabel="隐藏"  />
+    </Row>
+    <Row>
+        <Key android:keyWidth="19.8%p" android:codes="-2" android:keyLabel="ABC" />
+        <Key android:keyWidth="19.8%p" android:codes="1001" android:keyLabel="系统键"/>
+        <Key android:keyWidth="19.8%p" android:codes="48" android:keyLabel="0" />
+        <Key android:keyWidth="39.8%p" android:codes="1998" android:isRepeatable="true" android:keyLabel="搜索" />
+    </Row>
+</Keyboard>

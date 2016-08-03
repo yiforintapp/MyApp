@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1px"
+    android:background="@color/split_line"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="26.7dp"
+        android:background="#f4f4f4"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:paddingLeft="12dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="395"
+            android:gravity="center_vertical"
+            android:textColor="@color/tv_combination_gray"
+            android:textSize="12sp"
+            android:text="@string/stock_title_name_code"
+             />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="225"
+            android:gravity="center_vertical|right"
+            android:textColor="@color/tv_combination_gray"
+            android:textSize="12sp"
+            android:text="@string/stock_title_new_price" />
+
+        <TextView
+            android:paddingRight="43.7dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="460"
+            android:gravity="center_vertical|right"
+            android:textColor="@color/tv_combination_gray"
+            android:textSize="12sp"
+            android:text="@string/stock_title_percent" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/split_line"/>
+</LinearLayout>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/list_item_selector"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:paddingLeft="12dp"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/stock_search_list_item_height"
+            android:baselineAligned="false">
+
+        <!-- 具体信息 -->
+            <TextView
+                android:id="@+id/stock_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:textSize="16sp"
+                android:textColor="#333333"/>
+
+            <TextView
+                android:id="@+id/stock_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                style="@style/stock_search_item_txt"/>
+
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1">
+
+                <TextView
+                    android:layout_gravity="right"
+                    android:id="@+id/stock_add"
+                    android:paddingLeft="12dip"
+                    android:paddingRight="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="@string/add_stock_favorite"
+                    android:background="@null"
+                    android:textSize="16sp"
+                    android:textColor="#333333"
+                    android:drawablePadding="3dp"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/btn_stock_search_add" />
+
+                <TextView
+                    android:layout_gravity="right"
+                    android:id="@+id/stock_add_succeed"
+                    android:paddingLeft="12dip"
+                    android:paddingRight="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:text="@string/stock_add_succeed"
+                    android:background="@null"
+                    android:textSize="16sp"
+                    android:textColor="#dcdcdc"
+                    android:drawablePadding="3dp"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/icon_stock_favorite_selected" />
+
+                <!--<TextView
+                    android:layout_gravity="right|center"
+                    android:id="@+id/stock_add_succeed"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="12dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/stock_search_item_txt"
+                    android:text="@string/stock_add_succeed" />-->
+          </FrameLayout>
+
+        </LinearLayout>
+
+    <TextView android:background="@color/defeat_split_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px" />
+
+</LinearLayout>

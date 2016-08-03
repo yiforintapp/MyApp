@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <RadioGroup
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="11.7dp"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="性别"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:checked="true"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/radio_industry"
+            android:button="@null"
+            android:background="@drawable/btn_distribution_tab_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16.7dp"
+            android:paddingRight="16.7dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:text="@string/industry"/>
+
+        <RadioButton
+            android:id="@+id/radio_topic"
+            android:button="@null"
+            android:background="@drawable/btn_distribution_tab_selector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16.7dp"
+            android:paddingRight="16.7dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:text="@string/topic"/>
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_below="@id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="266.7dp"
+        android:orientation="vertical">
+        <com.iqiniu.qiniu.view.StockPie.TopicPieView
+            android:visibility="gone"
+            android:id="@+id/stock_favorite_topic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/list_item_selector"/>
+        <com.iqiniu.qiniu.view.StockPie.IndustryPieView
+            android:id="@+id/stock_favorite_industry"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/list_item_selector"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

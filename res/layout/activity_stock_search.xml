@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/app_default_background">
+
+        <RelativeLayout
+            android:id="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_red">
+
+            <LinearLayout
+                style="@style/title_bar_bg"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/search_stock"
+                    android:layout_width="0dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/general_margin_left"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_stock_search_title_edit_text"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/search_stock_prompt"
+                    android:singleLine="true"
+                    android:textColorHint="@color/stock_search_item_txt"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/btn_search_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/cancel"
+                    android:textColor="@drawable/btn_actionbar_click_font"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/title_bar"
+            android:layout_gravity="center">
+
+            <ListView
+                android:id="@+id/all_stock_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null" />
+
+            <ProgressBar
+                android:id="@+id/content_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboard_view"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/keyboard_stock_search_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:keyBackground="@drawable/keyboard_btn_stock_search_key"
+            android:keyTextColor="@color/black"
+            android:shadowColor="#00000000"
+            android:shadowRadius="0.0"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/live_space"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/live_operation_bottom_height" />
+
+</LinearLayout>

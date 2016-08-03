@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_selector"
+    android:orientation="vertical">
+
+    <LinearLayout
+        style="@style/stock_list_item_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- 股票信息 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical">
+
+            <LinearLayout
+                android:paddingLeft="@dimen/general_margin_left"
+                android:layout_width="0dp"
+                android:layout_weight="395"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/stock_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    style="@style/stock_item_name" />
+                <TextView
+                    android:id="@+id/stock_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/stock_item_code"/>
+            </LinearLayout>
+
+
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/stock_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="240"
+                android:layout_gravity="center_vertical"
+                style="@style/stock_item_content_right" />
+
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:paddingRight="35.7dp"
+                android:id="@+id/stock_percent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="445"
+                android:layout_gravity="center_vertical"
+                style="@style/stock_item_content_right" />
+
+            <TextView
+                android:paddingRight="45dp"
+                android:visibility="gone"
+                android:id="@+id/stock_trade_suspended"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="445"
+                android:layout_gravity="center_vertical"
+                style="@style/stock_item_content_right"
+                android:text="@string/stock_trade_suspended"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView android:background="@color/defeat_split_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px" />
+</LinearLayout>
