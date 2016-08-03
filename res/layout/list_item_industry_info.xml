@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    >
+    
+	<LinearLayout
+        android:paddingLeft="11.3dp"
+        android:paddingRight="11.3dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/stock_list_item_height"
+        android:orientation="horizontal"
+        android:background="@drawable/list_item_selector"
+        >
+
+        <!-- 具体信息 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.42"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/industry_name"
+                android:layout_gravity="left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/industry_item_name" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.37"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/stock_percent"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                style="@style/stock_item_content" />
+
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="0.21"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/stock_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/stock_item_name"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/stock_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/stock_item_code" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/split_line"/>
+</LinearLayout>

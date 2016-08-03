@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/stock_picture_title_bg"
+        android:orientation="horizontal" >
+
+        <com.zlf.appmaster.ui.stock.TabButton
+            xmlns:titleattr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/stock_news"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            titleattr:titleText="@string/stock_news"
+            />
+        <!--先屏蔽-->
+        <com.zlf.appmaster.ui.stock.TabButton
+            xmlns:titleattr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/stock_announcement"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            titleattr:titleText="@string/stock_announcement" />
+
+
+        <com.zlf.appmaster.ui.stock.TabButton
+            xmlns:titleattr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/stock_report"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            titleattr:titleText="@string/stock_report" />
+
+        <com.zlf.appmaster.ui.stock.TabButton
+            xmlns:titleattr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/stock_summary"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            titleattr:titleText="@string/stock_summary" />
+
+
+        <com.zlf.appmaster.ui.stock.TabButton
+            xmlns:titleattr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/stock_finance"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            titleattr:titleText="@string/stock_finance" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/no_extra_info_data_II"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="center"
+            style="@style/font_stock_extra_info_promt" />
+
+        <ProgressBar
+            android:id="@+id/extra_info_loading_II"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerInParent="true" />
+
+        <com.zlf.appmaster.ui.stock.StockNewsView
+            android:visibility="gone"
+            android:id="@+id/stock_news_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.zlf.appmaster.ui.stock.StockAnnouncementView
+            android:visibility="gone"
+            android:id="@+id/stock_announcement_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <com.zlf.appmaster.ui.stock.StockSummaryView
+            android:visibility="gone"
+            android:id="@+id/stock_summary_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.zlf.appmaster.ui.stock.StockReportsView
+            android:visibility="gone"
+            android:id="@+id/stock_report_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        
+        <com.zlf.appmaster.ui.stock.StockFinanceView
+            android:visibility="gone"
+            android:id="@+id/stock_finance_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

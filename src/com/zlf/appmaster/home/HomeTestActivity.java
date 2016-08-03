@@ -26,9 +26,7 @@ import android.widget.Toast;
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.home.PersonalFragment;
-import com.zlf.appmaster.home.TradeTabFragment;
-import com.zlf.appmaster.home.UserTabFragment;
+import com.zlf.appmaster.userTab.StockFavoriteFragment;
 import com.zlf.appmaster.ui.HomeToolbar;
 import com.zlf.appmaster.ui.MaterialRippleLayout;
 import com.zlf.appmaster.ui.MyViewPager;
@@ -62,10 +60,10 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private TextView mFindTv;
     private TextView mPersonalTv;
 
-    private com.zlf.appmaster.home.HomeTabFragment mHomeTabFragment;
+    private HomeTabFragment mHomeTabFragment;
     private UserTabFragment mUserTabFragment;
-    private TradeTabFragment mTradeTabFragment;
-    private com.zlf.appmaster.home.FindTabFragment mFindTabFragment;
+    private StockFavoriteFragment mStockFavoriteFragment;
+    private FindTabFragment mFindTabFragment;
     private PersonalFragment mPersonalFragment;
 
     private DrawerLayout mDrawerLayout;
@@ -248,14 +246,14 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private void initFragment() {
         HomeFragmentHolder holder = new HomeFragmentHolder();
         holder.title = /*this.getString(R.string.call_filter_black_list_tab)*/"首页内容";
-        mHomeTabFragment = new com.zlf.appmaster.home.HomeTabFragment();
+        mHomeTabFragment = new HomeTabFragment();
         holder.fragment = mHomeTabFragment;
         mFragmentHolders[0] = holder;
 
         holder = new HomeFragmentHolder();
         holder.title = "自选";
-        mTradeTabFragment = new TradeTabFragment();
-        holder.fragment = mTradeTabFragment;
+        mStockFavoriteFragment = new StockFavoriteFragment();
+        holder.fragment = mStockFavoriteFragment;
         mFragmentHolders[1] = holder;
 
         holder = new HomeFragmentHolder();

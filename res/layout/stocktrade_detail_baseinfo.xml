@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--基本信息标题头-->
+    <LinearLayout
+        android:id="@+id/layout_base_info"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="870"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/stock_price"
+                android:layout_width="wrap_content"
+                android:minWidth="91dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="11.3dp"
+                android:text="@string/default_gain"
+                android:textSize="40dp"/>
+
+            <TextView
+                android:id="@+id/stock_trade_suspended"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="11.3dp"
+                android:text="@string/stock_trade_suspended"
+                android:textSize="40dp"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@id/stock_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <com.zlf.appmaster.ui.stock.StockTextView
+                    android:id="@+id/stock_point"
+                    style="@style/stock_item_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:singleLine="true" />
+
+                <com.zlf.appmaster.ui.stock.StockTextView
+                    android:id="@+id/stock_percent"
+                    style="@style/stock_item_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:singleLine="true" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <!--屏蔽改功能 Date:20160517-->
+        <LinearLayout
+            android:visibility="invisible"
+            android:id="@+id/go_dimensionView"
+            android:layout_width="0dp"
+            android:layout_weight="210"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingRight="11.3dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/icon_stock_tradeinfo_weidu" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="基本面"
+                    android:textColor="@color/stock_rise"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="12dp"
+                android:src="@drawable/stock_tradeinfo_weidu_arrow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--分割线-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/split_line" />
+
+        <LinearLayout
+            android:id="@+id/stock_base_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/stock_detail_base_info_row_span">
+
+                <TextView
+                    style="@style/font_stock_mini_title"
+                    android:text="@string/today_start_price" />
+
+                <TextView
+                    style="@style/font_stock_mini_title"
+                    android:text="@string/yesterday_start_price" />
+
+                <TextView
+                    style="@style/font_stock_mini_title"
+                    android:text="@string/max_price" />
+
+                <TextView
+                    style="@style/font_stock_mini_title"
+                    android:text="@string/min_price" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/general_margin_bottom">
+
+                <TextView
+                    android:id="@+id/today_start_price"
+                    style="@style/font_stock_mini_comment"
+                    android:text="@string/default_gain" />
+
+                <TextView
+                    android:id="@+id/yesterday_start_price"
+                    style="@style/font_stock_mini_comment"
+                    android:text="@string/default_gain" />
+
+
+                <TextView
+                    android:id="@+id/max_price"
+                    style="@style/font_stock_mini_comment"
+                    android:text="@string/default_gain" />
+
+
+                <TextView
+                    android:id="@+id/min_price"
+                    style="@style/font_stock_mini_comment"
+                    android:text="@string/default_gain" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/stock_detail_base_info_row_span">
+
+                <TextView
+                    style="@style/font_stock_mini_title"
+                    android:text="@string/trade_money" />
+
+                <TextView
+                    style="@style/font_stock_mini_title"
+                    android:text="@string/all_price" />
+
+                <TextView
+                    style="@style/font_stock_mini_title"
+                    android:text="@string/pre_ratio" />
+
+                <TextView
+                    style="@style/font_stock_mini_title"
+                    android:text="@string/book_value" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/volume"
+                    style="@style/font_stock_mini_comment"
+                    android:text="@string/default_gain" />
+
+                <TextView
+                    android:id="@+id/all_price"
+                    style="@style/font_stock_mini_comment"
+                    android:text="@string/default_gain" />
+
+                <TextView
+                    android:id="@+id/pre_ratio"
+                    style="@style/font_stock_mini_comment"
+                    android:text="@string/default_gain" />
+
+                <TextView
+                    android:id="@+id/book_value"
+                    style="@style/font_stock_mini_comment"
+                    android:text="@string/default_gain" />
+            </LinearLayout>
+
+            <!-- 更多信息 -->
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/general_margin_top"
+                android:id="@+id/stock_more_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/stock_detail_base_info_row_span">
+
+                    <TextView
+                        style="@style/font_stock_mini_title"
+                        android:text="@string/max_price_52_weeks" />
+
+
+                    <TextView
+                        style="@style/font_stock_mini_title"
+                        android:text="@string/min_price_52_weeks" />
+
+
+                    <TextView
+                        style="@style/font_stock_mini_title"
+                        android:text="@string/EPS" />
+
+                    <TextView
+                        style="@style/font_stock_mini_title"
+                        android:text="@string/share_repurchase" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/max_price_52_weeks"
+                        style="@style/font_stock_mini_comment"
+                        android:text="@string/default_gain" />
+
+                    <TextView
+                        android:id="@+id/min_price_52_weeks"
+                        style="@style/font_stock_mini_comment"
+                        android:text="@string/default_gain" />
+
+                    <TextView
+                        android:id="@+id/EPS"
+                        style="@style/font_stock_mini_comment"
+                        android:text="@string/default_gain" />
+
+                    <TextView
+                        android:id="@+id/share_repurchase"
+                        style="@style/font_stock_mini_comment"
+                        android:text="@string/default_gain" />
+
+                </LinearLayout>
+                <View
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/split_line"
+                    />
+                <com.zlf.appmaster.ui.stock.StockDetailTopicTagLayout
+                    android:layout_marginTop="6.7dp"
+                    android:id="@+id/topic_tag_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/expanded_stock_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="6.7dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/icon_stock_detail_base_info_default" />
+    </LinearLayout>
+
+</LinearLayout>

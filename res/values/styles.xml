@@ -6,8 +6,12 @@
         <item name="android:excludeFromRecents">true</item>
     </style>
 
-    <style name="activity_theme" parent="BaseTheme">
+    <style name="AppTheme" parent="BaseTheme">
 
+    </style>
+
+    <style name="search_theme" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="ThemeWidthActionBar" parent="android:Theme.Holo.Light.DarkActionBar">
@@ -212,6 +216,256 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+
+    <!-- 策略选股 -->
+    <style name="stock_list_item_padding">
+        <item name="android:paddingTop">@dimen/list_item_padding_top</item>
+        <item name="android:paddingBottom">@dimen/list_item_padding_bottom</item>
+    </style>
+
+    <style name="stock_item_name"><!-- 股票名称 -->
+        <item name="android:textColor">#1D1D1D</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <style name="stock_item_code"><!-- 股票代码 -->
+        <item name="android:textSize">12sp</item>
+        <item name="android:text">--</item>
+        <item name="android:textColor">#A5A5A5</item>
+    </style>
+    <style name="stock_item_content_right"><!-- 股票内容 -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">right</item>
+        <item name="android:text">@string/default_gain</item>
+    </style>
+    <!-- 自选模块 -->
+    <style name="self_select_empty_font_prompt">
+        <item name="android:textColor">#333333</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="stock_search_item_txt"><!-- 搜索Item股票名称 -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">@color/stock_search_item_txt</item>
+    </style>
+
+    <!--标题栏Icon样式-->
+    <style name="title_bar_bg">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/activity_title_bar_height</item>
+        <item name="android:background">@color/title_bar_bg</item>
+    </style>
+
+    <style name="font_stock_mini_title">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">#878c92</item>
+    </style>
+
+    <style name="font_stock_mini_comment">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="font_stock_extra_info_promt">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+
+    <declare-styleable name="TabButton">
+        <attr name="titleText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="StockNews">
+        <attr name="max_item" format="integer" />
+    </declare-styleable>
+
+    <style name="font_stock_finance_title">
+        <item name="android:paddingLeft">8.7dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">16.3dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/stock_tradeinfo_extra_tab_font_selected</item>
+    </style>
+
+    <style name="font_stock_finance_content_title">
+        <item name="android:paddingLeft">8.7dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#787878</item>
+        <item name="android:layout_weight">30</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="font_stock_finance_table_vertical_line">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#dcdcdc</item>
+    </style>
+
+    <style name="font_stock_finance_content">
+        <item name="android:paddingRight">8.7dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:layout_weight">70</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="font_stock_finance_table_row_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">#dcdcdc</item>
+    </style>
+
+    <style name="stock_item_content"><!-- 股票内容 -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:text">@string/default_gain</item>
+    </style>
+
+    <style name="stock_trade_detail_title_comment">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#2B2B2B</item>
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <!--  个股界面风格 -->
+    <style name="stock_trade_detail_title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <!-- 沪港通标题-->
+    <style name="stock_trade_detail_title_ah">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:paddingLeft">3dp</item>
+        <item name="android:paddingRight">3dp</item>
+        <item name="android:background">@drawable/stock_detail_ah_bg</item>
+    </style>
+
+    <!-- 返回按钮（需要应用于RelativeLayout中） -->
+    <style name="title_bar_back_icon">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:src">@drawable/btn_actionbar_back</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="font_stock_summary_title">
+        <item name="android:paddingLeft">8.7dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">16.3dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/stock_tradeinfo_extra_tab_font_selected</item>
+    </style>
+
+    <style name="font_stock_summary_content_title">
+        <item name="android:paddingLeft">8.7dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#787878</item>
+        <item name="android:layout_weight">30</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="font_stock_summary_content">
+        <item name="android:paddingRight">8.7dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:layout_weight">70</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="font_stock_holder_item_title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#787878</item>
+        <item name="android:paddingLeft">8.7dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="font_stock_holder_item_content_title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:paddingLeft">8.7dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <style name="font_stock_holder_item_content">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
+    <!-- 股票显示listItem -->
+    <style name="stock_list_item_header_txt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">13.3sp</item>
+        <item name="android:textColor">@color/tv_combination_gray</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginLeft">15dp</item>
+    </style>
+
+    <style name="stock_list_item_header_more_txt">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/title_more_color</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">13.3dp</item>
+        <item name="android:paddingLeft">13.3dp</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
+    <style name="industry_item_name">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#1D1D1D</item>
+    </style>
+
+    <style name="sliding_tab_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">38.3dip</item>
+        <item name="android:background">#f4f4f4</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textSize">13.3sp</item>
+        <item name="pstsDividerColor">#f4f4f4</item>
+        <item name="pstsIndicatorColor">#d70a23</item>
+        <item name="pstsIndicatorHeight">3px</item>
+<!--        <item name="pstsIndicatorPadding">10dp</item>-->
+        <item name="pstsUnderlineColor">@color/split_line</item>
+        <item name="pstsUnderlineHeight">1px</item>
+        <item name="android:layout_marginTop">55dp</item>
+        <item name="pstsTabBackground">@android:color/transparent</item>
     </style>
 
 </resources>

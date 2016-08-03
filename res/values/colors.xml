@@ -67,4 +67,39 @@
     <color name="uninstall_guide_bg">#99000000</color>
 
 
+    <!--股票-->
+    <color name="main_red">#d70a23</color> <!--股票的红色-->
+
+    <!-- 股票涨跌的颜色 -->
+    <color name="stock_rise">#d70a23</color>
+    <color name="stock_slumped">#1bc07d</color>
+    <color name="split_line">#c0c0c0</color>
+    <color name="title_bar_split">#727272</color>
+    <color name="tv_gray">@color/title_bar_split</color><!--TextView中的灰色字-->
+    <color name="tv_combination_gray">@color/tv_gray</color>
+    <color name="item_background">#ffffff</color>
+    <color name="selector_background">#f0f0f0</color>
+    <color name="defeat_split_line">#cccccc</color>
+    <!-- 应用程序界面背景色 -->
+    <color name="app_default_background">#f2f0f0</color>
+
+    <color name="xlistview_header_bg">#f4f4f4</color>
+    <color name="xlistview_prompt_font">#999999</color>
+    <!-- 股票搜索 -->
+    <color name="stock_search_item_txt">#b5b5b5</color>
+    <color name="main_icon_red">#fe4502</color><!--主icon风格色调-->
+    <color name="title_bar_txt">#2b2b2b</color>
+    <color name="title_bar_bg">@color/app_default_background</color>
+    <color name="tab_button_font_selected">#d33a31</color>
+    <color name="tab_button_font_unselected">#666666</color>
+    <color name="main_tab_selected">#d33a31</color>
+    <color name="news_title_color">#25282d</color>
+    <color name="news_time_color">#a0a0a0</color>
+    <color name="stock_tradeinfo_extra_tab_font_selected">#d33a31</color>
+    <color name="combination_edit_bg_press">#dfdfdf</color>
+    <color name="combination_edit_bg">#f4f4f4</color>
+    <color name="item_header_background">#f4f4f4</color>
+    <color name="title_more_color">@color/main_red</color>
+    <color name="tab_background">@color/white</color>
+
 </resources>

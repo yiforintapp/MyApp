@@ -1,20 +1,15 @@
 package com.zlf.appmaster.login;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.home.BaseFragmentActivity;
-import com.zlf.appmaster.login.PhoneLoginFragment;
-import com.zlf.appmaster.login.UserLoginFragment;
 import com.zlf.appmaster.ui.PagerSlidingTabStrip;
 
 import java.util.List;
@@ -44,26 +39,10 @@ public class LoginActivity  extends BaseFragmentActivity {
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setCurrentItem(0);
         mPagerSlidingTab = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        // 设置Tab是自动填充满屏幕的
+        mPagerSlidingTab.setBackgroundResource(R.color.tab_background);
         mPagerSlidingTab.setShouldExpand(true);
-        // 设置Tab的分割线是透明的
-        mPagerSlidingTab.setDividerColor(Color.TRANSPARENT);
-        // 设置Tab底部线的高度
-        mPagerSlidingTab.setUnderlineHeight((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 1, dm));
-         // 设置Tab Indicator的高度
-        mPagerSlidingTab.setIndicatorHeight((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 4, dm));
-        // 设置Tab标题文字的大小
-        mPagerSlidingTab.setTextSize((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP, 16, dm));
-        // 设置Tab Indicator的颜色
-        mPagerSlidingTab.setIndicatorColor(Color.parseColor("#D83A3E"));
-        // 设置选中Tab文字的颜色 (这是我自定义的一个方法)
-        mPagerSlidingTab.setSelectedTextColor(Color.parseColor("#D83A3E"));
-        // 取消点击Tab时的背景色
-        mPagerSlidingTab.setTabBackground(0);
+        mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.main_icon_red));
+        mPagerSlidingTab.setDividerColor(0xffffffff);
         mPagerSlidingTab.setViewPager(mViewPager);
     }
 

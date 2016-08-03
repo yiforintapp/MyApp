@@ -52,4 +52,101 @@
     <string name="guide_page_content_one">Simple tips &amp; one-click operation</string>
     <string name="guide_page_content_two">Lock apps at any time !</string>
     <string name="guide_page_content_three">Hide images/videos,avoid privacy leaking !</string>
+
+
+    <!--股票-->
+    <string name="stock">股票</string>
+    <string name="stock_title_name_code">名称代码</string>
+    <string name="stock_title_new_price">最新价</string>
+    <string name="stock_title_percent">涨跌幅</string>
+    <string name="industry">行业</string>
+    <string name="topic">题材</string>
+    <string name="default_gain">--</string>
+    <string name="stock_trade_suspended">停牌</string>
+    <string name="network_server_busy">系统繁忙,请稍后再试!</string>
+    <string name="network_analysis_error">网络解析错误</string>
+    <string name="network_error">您当前的网络不给力</string>
+    <string name="lr_error_notexist">账号不存在</string>
+    <string name="lr_error_phoneregister">该手机号已被注册</string>
+    <string name="add_stock_favorite_btn">添加自选股</string>
+
+    <string name="xlistview_footer_hint_normal">更多</string>
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_last_time">上次更新：</string>
+    <string name="xlistview_footer_hint_ready">加载</string>
+    <string name="xlistview_header_hint_loading">更新中...</string>
+    <string name="xlistview_header_hint_ready">释放刷新</string>
+
+    <string name="stock_favorite_delete">删除自选</string>
+    <string name="delete">删除</string>
+    <string name="favorite_top">置顶</string>
+    <string name="network_unconnected">未连接网络</string>
+    <string name="network_get_code_too_frequency">获取验证码太频繁或当天验证码已获取超过5次</string>
+    <string name="network_timeout">网络连接超时</string>
+
+    <string name="add_stock_favorite">加自选</string>
+    <string name="stock_add_succeed">已添加</string>
+    <string name="search_history">历史搜索记录</string>
+    <string name="all_search">大家都在搜</string>
+    <string name="clean">清除</string>
+    <string name="search_stock_prompt">请输入股票代码/拼音首字母/简称</string>
+    <string name="stock_favorite_add">加入自选</string>
+
+    <string name="today_start_price">今开</string>
+    <string name="yesterday_start_price">昨收</string>
+    <string name="max_price_52_weeks">52周最高</string>
+    <string name="min_price_52_weeks">52周最低</string>
+    <string name="share_repurchase">每股净资产</string>
+    <string name="EPS">每股收益</string>
+    <string name="pre_ratio">市盈率</string>
+    <string name="book_value">市净率</string>
+    <string name="all_price">总市值</string>
+    <string name="trade_money">成交金额</string>
+    <string name="max_price">最高</string>
+    <string name="min_price">最低</string>
+    <string name="click_get_more">点击查看更多</string>
+    <string name="stock_profit_sheet">利润表</string>
+    <string name="earnings_per_share">每股收益</string>
+    <string name="operating_revenue">营业收入</string>
+    <string name="invest_income">投资收益</string>
+    <string name="net_profit">净利润</string>
+    <string name="stock_balance_sheet">资产负债表</string>
+    <string name="non_current_assets">非流动资产</string>
+    <string name="current_assets">流动资产</string>
+    <string name="total_assets">资产总计</string>
+    <string name="current_liability">流动负债</string>
+    <string name="total_liability">负债总计</string>
+    <string name="shareholder_equity">股东权益</string>
+    <string name="long_termloan">长期借款</string>
+    <string name="cash_flow_sheet">现金流表</string>
+    <string name="net_operate_cashflow">经营现金流净额</string>
+    <string name="net_invest_cashflow">投资现金流净额</string>
+    <string name="net_finance_cashflow">筹资现金流净额</string>
+    <string name="stock_news">新闻</string>
+    <string name="stock_announcement">公告</string>
+    <string name="stock_report">研报</string>
+    <string name="stock_finance">财务</string>
+    <string name="stock_summary">简况</string>
+    <string name="ah_stock">沪港通</string>
+    <string name="stock_combination_add">基金调仓</string>
+    <string name="stock_company_intro">公司简介</string>
+    <string name="stock_company_name">公司名称</string>
+    <string name="stock_market_start_date">上市日期</string>
+    <string name="stock_market_start_price">发行价格</string>
+    <string name="stock_market_start_num">发行数量</string>
+    <string name="stock_area">所属地区</string>
+    <string name="stock_industry">所属行业</string>
+    <string name="stock_main_business">主营业务</string>
+    <string name="stock_shares">股东</string>
+    <string name="stock_total_share">总股本</string>
+    <string name="stock_circulation_share">流通A股</string>
+    <string name="stock_top_ten_shareholders">十大流通股东</string>
+    <string name="stock_fund_shareholders">基金持股</string>
+    <string name="stock_holder_percent">占比</string>
+    <string name="stock_holder_change">变动</string>
+    <string name="industry_percent">涨跌幅</string>
+    <string name="industry_led_stock">领涨股</string>
+    <string name="index_foreign_info_title">全球（延）</string>
+    <string name="more_info">更多</string>
+
 </resources>

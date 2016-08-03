@@ -1,0 +1,267 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/font_stock_finance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stock_profit_sheet" />
+
+        <TextView
+            android:id="@+id/stock_profit_data_source"
+            style="@style/font_stock_finance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+    </RelativeLayout>
+
+    <!-- 利润表 -->
+	<TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1"
+        android:layout_marginLeft="8.7dp"
+        android:layout_marginRight="8.7dp"
+        android:background="@drawable/stock_more_info_table_bg">
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/earnings_per_share" />
+
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/earnings_per_share" />
+        </TableRow>
+
+        <View style="@style/font_stock_finance_table_row_line" />
+
+	    <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/operating_revenue" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/operating_revenue" />
+        </TableRow>
+
+        <View style="@style/font_stock_finance_table_row_line" />
+        
+	    <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/invest_income" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/invest_income" />
+        </TableRow>
+
+        <View style="@style/font_stock_finance_table_row_line" />
+        
+	    <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/net_profit" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/net_profit" />
+        </TableRow>
+        
+	</TableLayout>
+	
+	
+	<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/font_stock_finance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stock_balance_sheet" />
+
+        <TextView
+            android:id="@+id/stock_balance_data_source"
+            style="@style/font_stock_finance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+    </RelativeLayout>
+    <!-- 资产负债表 -->
+	<TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1"
+        android:layout_marginLeft="8.7dp"
+        android:layout_marginRight="8.7dp"
+        android:background="@drawable/stock_more_info_table_bg">
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/non_current_assets" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/non_current_assets" />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line" />
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/current_assets" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/current_assets" />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line" />
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/total_assets" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/total_assets" />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line" />
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/current_liability" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/current_liability" />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line" />
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/total_liability" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/total_liability" />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line" />
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/shareholder_equity" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/shareholder_equity" />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line" />
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:text="@string/long_termloan" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:gravity="right"
+                android:id="@+id/long_termloan" />
+        </TableRow>
+    </TableLayout>
+    
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/font_stock_finance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cash_flow_sheet" />
+
+        <TextView
+            android:id="@+id/stock_cashflow_data_source"
+            style="@style/font_stock_finance_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp" />
+    </RelativeLayout>
+    <!-- 资产负债表 -->
+	<TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1"
+        android:layout_marginLeft="8.7dp"
+        android:layout_marginRight="8.7dp"
+        android:background="@drawable/stock_more_info_table_bg">
+	     <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:layout_weight="40"
+                android:text="@string/net_operate_cashflow" />
+             <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:layout_weight="60"
+                android:gravity="right"
+                android:id="@+id/net_operate_cashflow" />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line" />
+        <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:layout_weight="40"
+                android:text="@string/net_invest_cashflow" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:layout_weight="60"
+                android:gravity="right"
+                android:id="@+id/net_invest_cashflow" />
+        </TableRow>
+        <View style="@style/font_stock_finance_table_row_line" />
+        <TableRow>
+            <TextView
+                style="@style/font_stock_finance_content_title"
+                android:layout_weight="40"
+                android:text="@string/net_finance_cashflow" />
+            <View style="@style/font_stock_finance_table_vertical_line"/>
+            <TextView
+                style="@style/font_stock_finance_content"
+                android:layout_weight="60"
+                android:gravity="right"
+                android:id="@+id/net_finance_cashflow" />
+        </TableRow>
+     </TableLayout>
+</LinearLayout>

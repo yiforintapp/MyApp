@@ -154,6 +154,7 @@
         <attr name="pstsIndicatorColor" format="color" />
         <attr name="pstsUnderlineColor" format="color" />
         <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorPadding" format="dimension" />
         <attr name="pstsIndicatorHeight" format="dimension" />
         <attr name="pstsUnderlineHeight" format="dimension" />
         <attr name="pstsDividerPadding" format="dimension" />
@@ -162,6 +163,10 @@
         <attr name="pstsTabBackground" format="reference" />
         <attr name="pstsShouldExpand" format="boolean" />
         <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="LiveDisplay">
+        <attr name="is_live" format="boolean" />
     </declare-styleable>
 
 

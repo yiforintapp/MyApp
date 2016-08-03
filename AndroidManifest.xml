@@ -9,6 +9,10 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:name=".AppMasterApplication"
@@ -17,7 +21,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/activity_theme">
+        android:theme="@style/AppTheme">
         <activity
             android:name=".home.SplashActivity"
             android:excludeFromRecents="true"
@@ -52,6 +56,18 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".stocksearch.StockSearchActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
+            android:theme="@style/search_theme"></activity>
+
+        <activity
+            android:name=".stocktrade.StockTradeDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/search_theme"></activity>
+
 
         <!-- android:theme="@style/translucent" -->
 
@@ -142,6 +158,16 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="integer/google_play_services_version" />
+
+        <!--预置数据的版本 value不支持long型，改为字符串V1430215200411 V1429661605971-->
+        <!-- 股票数据-->
+        <meta-data android:value="V1463659145066" android:name="QINIU_DATA_VERSION_1"></meta-data>
+        <!-- 行业数据-->
+        <meta-data android:value="V1427791484118" android:name="QINIU_DATA_VERSION_2"></meta-data>
+        <!-- 题材数据-->
+        <meta-data android:value="V1435219796970" android:name="QINIU_DATA_VERSION_3"></meta-data>
+
+
     </application>
 
 </manifest>
