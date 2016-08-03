@@ -128,6 +128,7 @@ public class StockIndexFragment extends BaseFragment {
 //                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
 //                    }
 //                    mContext.startActivity(intent);
+//
                 }
             }
         });
