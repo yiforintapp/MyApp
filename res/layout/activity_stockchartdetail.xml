@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="36.7dp"
+        android:background="#f6f6f6">
+        <LinearLayout
+            android:id="@+id/layout_title_normal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="visible"
+            >
+            <!--名称、代码、价格、涨跌、完整时间，叉叉-->
+            <!-- 返回按钮 -->
+            <ImageButton
+                android:id="@+id/btn_exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_chart_close_selector"
+                android:background="@null"
+                />
+            <!-- 名称 -->
+            <TextView
+                android:id="@+id/tv_stockname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="----"
+                />
+            <!-- 代码 -->
+            <TextView
+                android:id="@+id/tv_stockcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:textSize="22sp"
+                android:text="----"
+                />
+
+
+            <!-- 股价-->
+            <TextView
+                android:id="@+id/tv_stockprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="25sp"
+                android:text="----"
+                />
+            <!-- 涨跌幅  -->
+            <TextView
+                android:id="@+id/tv_stockpercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:text="0.00%"
+                />
+
+            <!-- 成交笔数-->
+            <TextView
+                android:id="@+id/tv_stockvolume"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal|bottom"
+                android:textSize="15sp"
+                android:visibility="gone"
+                android:text="----"
+                />
+            <!-- 时间  -->
+            <TextView
+                android:id="@+id/tv_stocktime"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center|right"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:layout_marginRight="16dp"
+                android:text="----"
+                />
+        </LinearLayout>
+
+        <!--点击分时后的title-->
+        <LinearLayout
+            android:id="@+id/layout_title_min"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            >
+            <!--时间、价格、涨跌、成交、均价-->
+            <TextView
+                android:id="@+id/tv_min_time"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:text="--:--"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="价格"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_min_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="17sp"
+                    android:text="--.--"
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="涨跌"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_min_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="17sp"
+                    android:text="--.--"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="成交"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_min_volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="17sp"
+                    android:text="--"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_min_ma"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="均价"
+                    android:visibility="visible"
+                    />
+                <TextView
+                    android:id="@+id/tv_min_ma"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="17sp"
+                    android:visibility="visible"
+                    android:text="--.--"
+                    />
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <!--点击K线后的title-->
+        <LinearLayout
+            android:id="@+id/layout_title_kline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            >
+            <!--时间、开、高、低、收 涨跌-->
+            <TextView
+                android:id="@+id/tv_kline_time"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:text="09-17"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="开"
+                    />
+                <TextView
+                    android:id="@+id/tv_kline_open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="17sp"
+                    android:text="12.40"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="高"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_kline_high"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="17sp"
+                    android:text="12.40"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="低"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_kline_low"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="17sp"
+                    android:text="12.40"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="收"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_kline_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="17sp"
+                    android:text="12.40"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:text="涨跌"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_kline_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="17sp"
+                    android:text="12.40"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        >
+	    <!-- 分时、日周月K -->
+	    <!-- 详情 -->
+	    <!-- 图 -->
+		<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+
+            >
+            <com.zlf.appmaster.chartview.chart.MinuteLine
+                xmlns:MinuteLine="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/mline"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                MinuteLine:minute_mode="2"
+                />
+
+            <!-- 盘口  -->
+            <LinearLayout
+                android:id="@+id/handicap_layout"
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TableLayout
+                    style="@style/font_stock_handicap_table_span"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="*"
+                    android:gravity="center">
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_sell_5" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_5_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_5_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_sell_4" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_4_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_4_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_sell_3" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_3_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_3_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_sell_2" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_2_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_2_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_sell_1" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_1_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_1_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="#878c92"
+                        />
+                    <TableRow
+                        style="@style/font_stock_handicap_row_span">
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_buy_1" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_1_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_1_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_buy_2" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_2_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_2_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_buy_3" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_3_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_3_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_buy_4" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_4_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_4_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/font_stock_handicap_title"
+                            android:text="@string/stock_buy_5" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_5_price"
+                            style="@style/font_stock_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_5_count"
+                            style="@style/font_stock_handicap_count" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <com.zlf.appmaster.chartview.chart.KLineChart
+            xmlns:KLine="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/kline_daily"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            KLine:KLine_mode="1"/>
+
+        <com.zlf.appmaster.chartview.chart.KLineChart
+            xmlns:KLine="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/kline_weekly"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            KLine:KLine_mode="1"/>
+
+        <com.zlf.appmaster.chartview.chart.KLineChart
+            xmlns:KLine="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/kline_monthly"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            KLine:KLine_mode="1"/>
+
+	    <ProgressBar
+	        android:id="@+id/content_loading"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"/>
+    </FrameLayout>
+    
+    <!-- tab -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/min_line"
+            style="@style/stock_title_radio_btn"
+            android:text="@string/min_line" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/stock_picture_tite_line" />
+
+        <TextView
+            android:id="@+id/daily_line"
+            style="@style/stock_title_radio_btn"
+            android:text="@string/daily_line" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/stock_picture_tite_line" />
+
+        <TextView
+            android:id="@+id/weekly_line"
+            style="@style/stock_title_radio_btn"
+            android:text="@string/weekly_line" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/stock_picture_tite_line" />
+
+        <TextView
+            android:id="@+id/monthly_line"
+            style="@style/stock_title_radio_btn"
+            android:text="@string/monthly_line" />
+        
+    </LinearLayout>
+    
+</LinearLayout>

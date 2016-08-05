@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- K线画图区  包括盘口信息 -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal" >
+
+            <com.zlf.appmaster.chartview.chart.MinuteLine
+                android:id="@+id/mline"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="7"
+                />
+
+            <com.zlf.appmaster.chartview.chart.KLineChart
+                android:id="@+id/kline_daily"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="7"
+                android:visibility="gone" />
+
+            <com.zlf.appmaster.chartview.chart.KLineChart
+                android:id="@+id/kline_weekly"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="7"
+                android:visibility="gone" />
+
+            <com.zlf.appmaster.chartview.chart.KLineChart
+                android:id="@+id/kline_monthly"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="7"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/handicap_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical" >
+
+                <TableLayout
+                    style="@style/font_stock_handicap_table_span"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*" >
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_sell_5" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_5_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_5_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_sell_4" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_4_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_4_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_sell_3" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_3_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_3_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_sell_2" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_2_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_2_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_sell_1" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_sell_1_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_sell_1_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="#878c92"
+                        />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+                    <TableRow
+                        style="@style/font_stock_handicap_row_span">
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_buy_1" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_1_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_1_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_buy_2" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_2_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_2_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_buy_3" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_3_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_3_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_buy_4" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_4_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_4_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+
+                    <TableRow style="@style/font_stock_handicap_row_span" >
+
+                        <TextView
+                            style="@style/chart_handicap_title"
+                            android:text="@string/stock_buy_5" />
+
+                        <com.zlf.appmaster.ui.stock.StockTextView
+                            android:id="@+id/stock_buy_5_price"
+                            style="@style/chart_handicap_price" />
+
+                        <TextView
+                            android:id="@+id/stock_buy_5_count"
+                            style="@style/chart_handicap_count" />
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </LinearLayout>
+        
+        <ProgressBar
+            android:id="@+id/content_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+        
+    </FrameLayout>
+
+</LinearLayout><!-- From: file:/E:/QiNiuProject/AndroidstudioProjects/QiNiu/qiNiuChart/src/main/res/layout/view_stock_detail_chart.xml -->

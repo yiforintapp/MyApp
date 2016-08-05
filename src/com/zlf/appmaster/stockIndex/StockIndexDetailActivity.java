@@ -1,0 +1,306 @@
+package com.zlf.appmaster.stockIndex;
+
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.handmark.pulltorefresh.library.xlistview.XListView;
+import com.zlf.appmaster.R;
+import com.zlf.appmaster.cache.StockJsonCache;
+import com.zlf.appmaster.client.OnRequestListener;
+import com.zlf.appmaster.client.StockClient;
+import com.zlf.appmaster.model.stock.StockIndex;
+import com.zlf.appmaster.model.stock.StockTradeInfo;
+import com.zlf.appmaster.stocksearch.StockSearchActivity;
+import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class StockIndexDetailActivity extends Activity {
+	public static final String INTENT_FLAG_INDEXCODE = "intent_flag_index_code";
+    public static final String INTENT_FLAG_INDEXNAME = "intent_flag_index_name";
+
+	private static final String TAG = StockIndexDetailActivity.class.getSimpleName();
+    private static final int MSG_UPDATE_INDEX = 1;
+    private static final int MSG_UPDATE_LED_UP_LIST = 2;
+
+    private Context mContext;
+    private StockClient mStockClient;
+    private StockIndex mStockIndex;
+    private List<StockTradeInfo> mData;
+    private int mDataType = 0;
+
+    private String mStockIndexID,mStockIndexName;
+
+    private TextView mActivityTitleTV;
+    private TextView mActivityTitleCommentTV;
+    private String mTitleComment1;
+    private String mTitleComment2;
+
+    private StockIndexDetailListAdapter mStockIndexDetailAdapter;
+    private XListView mListView;
+
+    private ProgressBar mProgressBar;
+    private int mCurEndIndex = 0;
+    private static final int LOAD_ITEM_NUM = 9;
+
+
+    public Handler mHandler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            switch (msg.what) {
+                case MSG_UPDATE_INDEX:
+                    updateViews(mStockIndex);
+                    break;
+                case MSG_UPDATE_LED_UP_LIST:
+                  //  updateLedUpInfoList();
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+
+    };
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_stockindex_detail);
+		
+		initViews();
+
+        initData();
+	}
+
+	public void initViews(){
+        mContext = this;
+
+        mStockClient = new StockClient(this);
+        mStockIndexID = getIntent().getStringExtra(INTENT_FLAG_INDEXCODE);
+        mStockIndexName = getIntent().getStringExtra(INTENT_FLAG_INDEXNAME);
+
+        mActivityTitleTV 		= (TextView)findViewById(R.id.stocktrade_detail_title);
+        mActivityTitleCommentTV = (TextView)findViewById(R.id.stocktrade_detail_title_comment);
+        mActivityTitleTV.setText(mStockIndexName + " " + mStockIndexID);
+
+
+        mListView = (XListView)findViewById(R.id.stock_index_detail_list);
+        mListView.setPullRefreshEnable(true);
+        mListView.setPullLoadEnable(false);
+        mListView.setXListViewListener(new XListView.IXListViewListener() {
+            @Override
+            public void onRefresh() {
+                refreshList();
+            }
+
+            @Override
+            public void onLoadMore() {
+                loadMoreList();
+            }
+        });
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                position = position -1;//   用的是xlistview
+                StockTradeInfo stockTradeInfo = (StockTradeInfo)mStockIndexDetailAdapter.getItem(position);
+                if (null != stockTradeInfo){
+                    Intent intent = new Intent(mContext, StockTradeDetailActivity.class);
+                    intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKNAME, stockTradeInfo.getName());
+                    intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKCODE, stockTradeInfo.getCode());
+                    startActivity(intent);
+                }
+            }
+        });
+	}
+
+    private void initData(){
+
+        // 从缓存中加载
+        mStockIndex = loadCache(mContext, mStockIndexID, mStockIndexName);
+
+        // 初始化数据
+
+        mData = new ArrayList<StockTradeInfo>();
+        mStockIndexDetailAdapter = new StockIndexDetailListAdapter(mContext, mStockClient, mStockIndex, mData);
+
+        mStockIndexDetailAdapter.setOnTabChange(new StockIndexDetailListAdapter.OnTabChange() {
+            @Override
+            public void onChange(int type) {
+                mDataType = type;
+
+                // 刷新涨跌幅榜
+                mCurEndIndex = 0;
+                mData.clear();
+                loadMoreList();
+            }
+        });
+
+        mListView.setAdapter(mStockIndexDetailAdapter);
+
+        requestData(false);
+    }
+
+    private StockIndex loadCache(Context context, String code, String name){
+        StockIndex stockIndex = null;
+
+        try{
+            stockIndex = StockIndex.resolveIndexJsonObject(StockJsonCache.loadFromFile(code, context, StockJsonCache.CACHEID_EXTRA_INFO_INDEX_DETAIL));
+        }catch (JSONException e){
+
+        }
+
+        if (stockIndex == null){
+            stockIndex = new StockIndex();      // 不能为空
+            stockIndex.setCode(code);
+            stockIndex.setName(name);
+        }
+
+        return stockIndex;
+    }
+
+
+    public void updateViews(StockIndex stockIndex){
+
+        if(null == stockIndex) return;
+
+
+
+        mTitleComment1 = " 交易中" + stockIndex.getDataTimeFormat();
+        int marketStatus = stockIndex.getMarketStatus();
+        if(marketStatus != StockTradeInfo.MARKET_STATUS_NORMAL){
+            mTitleComment1 = " 休市中 " + stockIndex.getDataTimeFormat();
+
+            // 休市则终止自动刷新
+            //stopAutoRefresh();
+        }
+        mActivityTitleCommentTV.setText(mTitleComment1);
+        mTitleComment2 = stockIndex.getCurPriceFormat() + "  " +stockIndex.getCurPriceComment();
+
+
+    }
+
+
+
+    private void requestData(final boolean autoRefresh){
+        mStockClient.requestStockIndexDetail(mStockIndexID, new OnRequestListener() {
+
+            @Override
+            public void onError(int errorCode, String errorString) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onDataFinish(Object object) {
+                // TODO Auto-generated method stub
+                mStockIndex.copy((StockIndex)object);
+                updateViews(mStockIndex);
+                //mStockIndexDetailAdapter.notifyDataSetChanged();
+
+                // mHandler.sendEmptyMessage(MSG_UPDATE_INDEX);
+
+                loadMoreList();
+            }
+        });
+    }
+
+    //刷新
+    private void refreshList() {
+        mCurEndIndex = 0;
+        //mListView.setPullLoadEnable(true);
+
+        requestData(false);
+
+        mStockIndexDetailAdapter.refreshKLineView();
+    }
+
+
+    private void loadMoreList(){
+
+        mStockClient.requestIndexPopularStock(mStockIndexID, mCurEndIndex, mCurEndIndex + LOAD_ITEM_NUM, mDataType, new OnRequestListener() {
+            @Override
+            public void onDataFinish(Object object) {
+                onLoaded();
+//                mProgressBar.setVisibility(View.GONE);
+
+                if (null != object) {
+                    //mDataItems.clear();
+                    if (mCurEndIndex == 0) {//刷新的 要清除
+                        mData.clear();
+                    }
+
+                    mData.addAll((List<StockTradeInfo>) object);
+                    mListView.setVisibility(View.VISIBLE);
+                }
+
+                int num = mData.size();
+
+                if (num - mCurEndIndex > LOAD_ITEM_NUM / 2) {//大于要求加载的一半算是有更多的，否则没有
+                    mCurEndIndex = num;
+                    mListView.setPullLoadEnable(true);
+                } else {
+                    //没有更多了
+                    mListView.setPullLoadEnable(false);
+                }
+
+                //mHandler.sendEmptyMessage(MSG_UPDATE_LED_UP_LIST);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStockIndexDetailAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void onError(int errorCode, String errorString) {
+                onLoaded();
+         //       mProgressBar.setVisibility(View.GONE);
+                mListView.setPullLoadEnable(false);
+            }
+        });
+    }
+
+    private void onLoaded() {
+        mListView.stopRefresh();
+        mListView.stopLoadMore();
+    }
+	
+	public void onBack(View v){
+		finish();
+	}
+
+    public void onSearch(View v){
+        Intent intent = new Intent(mContext, StockSearchActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+//		MobclickAgent.onPageStart(TAG);
+//		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+//        MobclickAgent.onPageEnd(TAG); // 保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息
+//        MobclickAgent.onPause(this);
+	}
+}

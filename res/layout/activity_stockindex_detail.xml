@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <!-- action bar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/title_bar_bg"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:id="@+id/title_bar"
+            style="@style/title_bar_bg">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/stocktrade_detail_title_comment"
+                    style="@style/stock_trade_detail_title_comment"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true" />
+
+                <TextView
+                    android:id="@+id/stocktrade_detail_title"
+                    style="@style/stock_trade_detail_title"
+                    android:textColor="#2B2B2B"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/stocktrade_detail_title_comment"
+                    android:gravity="center_horizontal" />
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                style="@style/title_bar_back_icon"
+                android:onClick="onBack" />
+
+            <ImageView
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:onClick="onSearch"
+                android:paddingLeft="18.3dp"
+                android:paddingRight="18.3dp"
+                android:src="@drawable/icon_stock_quotations_search" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <!--界面区域-->
+    <com.handmark.pulltorefresh.library.xlistview.XListView
+        android:id="@+id/stock_index_detail_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null"
+        android:scrollbars="none" />
+
+
+</LinearLayout>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/split_line"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48.3dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_today_gain"
+            android:layout_marginLeft="11.3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18.3sp"
+            android:text="0.00%"/>
+        <TextView
+            android:id="@+id/tv_days"
+            android:layout_toRightOf="@id/tv_today_gain"
+            android:layout_marginLeft="6.7dp"
+            android:textColor="@color/tv_combination_black"
+            android:textSize="12sp"
+            android:layout_alignBaseline="@id/tv_today_gain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cur_topic_today_percent"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/split_line"/>
+    <LinearLayout
+        android:id="@+id/layout_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|right"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="9dp"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/tv_combination_black"
+                android:layout_height="wrap_content"
+                android:text="@string/cur_topic_trend"/>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right|center_vertical"
+                >
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="2dp"
+                    android:background="#d70a23"
+                    android:layout_marginRight="3dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本题材"
+                    android:textColor="@color/tv_combination_gray"
+                    android:textSize="13.3sp"
+                    />
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="2dp"
+                    android:background="#008ad3"
+                    android:layout_marginLeft="17.3dp"
+                    android:layout_marginRight="3dp"
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="沪深300"
+                    android:textColor="@color/tv_combination_gray"
+                    android:textSize="13.3sp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!--line view-->
+        <com.zlf.appmaster.chartview.gain.GainGraphView
+            xmlns:gaingraphviewattr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/view_gain_line"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            gaingraphviewattr:show_percent="false"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="63.3dp"
+        android:gravity="center"
+        android:text="暂无数据"
+        android:visibility="gone"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/split_line"
+        />
+</LinearLayout>

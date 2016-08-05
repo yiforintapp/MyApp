@@ -1,0 +1,568 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include layout="@layout/back_format_top" />
+    
+    <ScrollView
+        android:id="@+id/sv_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+      <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >      
+
+            <LinearLayout
+                style="@style/stock_detail_info_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    >
+
+                    <TextView
+                        android:id="@+id/stock_name"
+                        style="@style/font_stock_deal_title_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                         />
+
+                    <TextView
+                        android:id="@+id/stock_code"
+                        style="@style/font_stock_deal_title_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                         />
+
+                    <TextView
+                        style="@style/font_stock_deal_title_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/now_price" />
+
+                    <TextView
+                        android:id="@+id/now_price"
+                        style="@style/font_stock_deal_title_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/default_gain" />
+
+                    <TextView
+                        style="@style/font_stock_deal_title_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:text="@string/stock_percent2" />
+
+                    <com.zlf.appmaster.ui.stock.StockTextView
+                        android:id="@+id/now_percent"
+                        style="@style/font_stock_deal_title_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/default_gain" 
+                        />
+                </LinearLayout>
+
+                <!-- K线盘口信息 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal" >
+
+                    <com.zlf.appmaster.chartview.chart.MinLineChart
+                        android:id="@+id/stock_k_line_view"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="7"
+
+                        />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:layout_marginLeft="5dp"
+                        android:orientation="vertical" >
+
+                        <TableLayout
+                            style="@style/font_stock_handicap_table_span2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:stretchColumns="*" >
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_sell_5" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_sell_5_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_sell_5_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_sell_4" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_sell_4_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_sell_4_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_sell_3" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_sell_3_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_sell_3_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_sell_2" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_sell_2_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_sell_2_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_sell_1" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_sell_1_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_sell_1_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1px"
+                                android:background="@color/split_line"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                />
+
+                            <TableRow
+
+                                style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_buy_1" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_buy_1_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_buy_1_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_buy_2" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_buy_2_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_buy_2_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_buy_3" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_buy_3_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_buy_3_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_buy_4" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_buy_4_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_buy_4_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+
+                            <TableRow style="@style/font_stock_handicap_row_span2" >
+
+                                <TextView
+                                    style="@style/font_stock_handicap_title2"
+                                    android:text="@string/stock_buy_5" />
+
+                                <com.zlf.appmaster.ui.stock.StockTextView
+                                    android:id="@+id/stock_buy_5_price"
+                                    style="@style/font_stock_handicap_price2" />
+
+                                <TextView
+                                    android:id="@+id/stock_buy_5_count"
+                                    style="@style/font_stock_handicap_count2" />
+                            </TableRow>
+                        </TableLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <!-- 买入卖出Tab -->
+
+            <LinearLayout
+                android:id="@+id/stock_deal_sellorbuy_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/stock_deal_sellorbuy_bg"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:id="@+id/stock_buy_tab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/stock_buy"
+                        android:textColor="@drawable/tab_text_selector"
+                        android:textSize="20sp" >
+                    </TextView>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@drawable/tab_stock_self_select_title_indicator"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="6dp"
+                    android:background="#c7c7c7" />
+
+                <LinearLayout
+                    android:id="@+id/stock_sell_tab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/stock_sell"
+                        android:textColor="@drawable/tab_text_selector"
+                        android:textSize="20sp" >
+                    </TextView>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@drawable/tab_stock_self_select_title_indicator" />
+                </LinearLayout>
+            </LinearLayout>
+            
+            <!-- 交易明细 -->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:stretchColumns="*" >
+
+                <TableRow style="@style/font_stock_deal_info_row_span" >
+
+                    <TextView
+                        android:id="@+id/stock_money"
+                        android:layout_marginLeft="15dp"
+                        style="@style/font_stock_deal_info_txt"/>
+
+                    <TextView
+                        android:id="@+id/stock_max"
+                        android:layout_marginLeft="15dp"
+                        style="@style/font_stock_deal_info_txt"/>
+                </TableRow>
+
+                <TableRow style="@style/font_stock_deal_info_row_span" >
+
+                    <TextView
+                        android:id="@+id/stock_buyorsell_count"
+                        android:layout_marginLeft="15dp"
+                        style="@style/font_stock_deal_info_txt"/>
+
+                    <TextView
+                        android:id="@+id/stock_value"
+                        android:layout_marginLeft="15dp"
+                        style="@style/font_stock_deal_info_txt"/>
+                    
+                </TableRow>
+            </TableLayout>
+
+         <!-- 市价交易 -->
+         <LinearLayout 
+            android:id="@+id/market_price_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >   
+            <RadioGroup
+                android:id="@+id/stock_num_radiogroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/radio_one_fifth"
+                    style="@style/font_stock_deal_num_radio_btn"
+                    android:checked="true"
+                    android:text="@string/stock_num_one_fifth" />
+
+                <RadioButton
+                    android:id="@+id/radio_one_fourth"
+                    style="@style/font_stock_deal_num_radio_btn"
+                    android:text="@string/stock_num_one_fourth" />
+
+                <RadioButton
+                    android:id="@+id/radio_one_third"
+                    style="@style/font_stock_deal_num_radio_btn"
+                    android:text="@string/stock_num_one_third" />
+
+                <RadioButton
+                    android:id="@+id/radio_half"
+                    style="@style/font_stock_deal_num_radio_btn"
+                    android:text="@string/stock_num_a_half" />
+
+                <RadioButton
+                    android:id="@+id/radio_all"
+                    style="@style/font_stock_deal_num_radio_btn"
+                    android:text="@string/stock_num_all" />
+            </RadioGroup>
+
+            <!-- android:progressDrawable="@drawable/seek_bar_stock_deal" -->
+            <SeekBar
+                android:id="@+id/stock_num_seekbar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:thumb="@drawable/seek_bar_stock_thumb" />
+
+            <TextView
+                android:id="@+id/stock_deal_prompt1"
+                style="@style/font_stock_deal_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/stock_deal_prompt1" />
+
+            <TextView
+                style="@style/font_stock_deal_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/stock_deal_prompt2" />
+
+            <Button
+                android:id="@+id/btn_stock_deal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/btn_stock_deal_buy"
+                android:text="@string/stock_buy"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                />
+            
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/user_price_layout"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            	<!-- 限价买卖价格数量填写 -->
+            	<LinearLayout 
+            	    android:layout_width="match_parent"
+            	    android:layout_height="wrap_content"
+            	    android:orientation="horizontal">
+            	    <LinearLayout 
+            	        android:layout_width="0dp"
+            	        android:layout_weight="1"
+            	        android:layout_height="wrap_content"
+            	        android:orientation="horizontal"
+            	        android:layout_marginLeft="15dp"
+            	        android:layout_marginRight="15dp">
+            	        <TextView
+            	            style="@style/font_stock_deal_info_txt"
+            	            android:layout_width="wrap_content"
+            	            android:layout_height="wrap_content"
+            	            android:layout_gravity="bottom"
+            	            android:text="@string/stock_deal_price"/>
+            	        <EditText 
+            	            android:id="@+id/stock_deal_price_edit"
+            	            android:layout_height="wrap_content"
+            	            android:layout_width="0dp"
+            	            android:layout_weight="1"
+            	            android:maxLength="8"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+            	            android:background="@drawable/trade_edittext_bg"
+            	            android:inputType="numberDecimal"/>
+            	        <TextView
+            	            style="@style/font_stock_deal_info_txt"
+            	            android:layout_width="wrap_content"
+            	            android:layout_height="wrap_content"
+            	            android:layout_gravity="bottom"
+            	            android:text="@string/stock_deal_price_unit"/>
+            	    </LinearLayout>
+            	    <LinearLayout 
+            	        android:layout_width="0dp"
+            	        android:layout_weight="1"
+            	        android:layout_height="wrap_content"
+            	        android:orientation="horizontal"
+            	        android:layout_marginLeft="15dp"
+            	        android:layout_marginRight="15dp">
+            	        <TextView
+            	            style="@style/font_stock_deal_info_txt"
+            	            android:layout_width="wrap_content"
+            	            android:layout_height="wrap_content"
+            	            android:layout_gravity="bottom"
+            	            android:text="@string/stock_deal_count"/>
+            	        <EditText 
+            	            android:id="@+id/stock_deal_count_edit"
+            	            android:layout_height="wrap_content"
+            	            android:layout_width="0dp"
+            	            android:layout_weight="1"
+            	            android:maxLength="8"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+            	            android:background="@drawable/trade_edittext_bg"
+            	            android:inputType="numberDecimal"/>
+            	        <TextView
+            	            style="@style/font_stock_deal_info_txt"
+            	            android:layout_width="wrap_content"
+            	            android:layout_height="wrap_content"
+            	            android:layout_gravity="bottom"
+            	            android:text="@string/stock_deal_count_unit"/>
+            	    </LinearLayout>
+            	</LinearLayout>
+            	<!-- 限价买卖按钮 -->
+            	<LinearLayout 
+            	    android:layout_width="match_parent"
+            	    android:layout_height="wrap_content"
+            	    android:layout_marginTop="10dp"
+            	    android:orientation="horizontal">
+            	    <Button
+               	 		android:id="@+id/btn_stock_deal_sell"
+               			android:layout_width="0dp"
+               			android:layout_weight="1"
+                		android:layout_height="wrap_content"
+                		android:layout_margin="10dp"
+                		android:background="@drawable/btn_stock_deal_sell"
+                		android:text="@string/stock_sell"
+                		android:textSize="20sp"
+                        android:textColor="@color/white"
+                        />
+            	    
+            	    <Button
+                		android:id="@+id/btn_stock_deal_buy"
+                		android:layout_width="0dp"
+               			android:layout_weight="1"
+                		android:layout_height="wrap_content"
+                		android:layout_margin="10dp"
+                		android:background="@drawable/btn_stock_deal_buy"
+                		android:text="@string/stock_buy"
+                		android:textSize="20sp"
+                        android:textColor="@color/white"/>
+            	</LinearLayout>	
+            </LinearLayout>
+         
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 进度条 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" >
+
+        <ProgressBar
+            android:id="@+id/content_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
+    
+</RelativeLayout>

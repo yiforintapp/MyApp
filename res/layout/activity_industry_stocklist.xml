@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_default_background"
+    android:id="@+id/industry_view"
+    android:orientation="vertical">
+
+    <include layout="@layout/back_format_top"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <com.handmark.pulltorefresh.library.xlistview.XListView
+        	android:id="@android:id/list"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+            android:divider="@null"/>
+
+        <ProgressBar
+            android:id="@+id/content_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+    <View
+        android:id="@+id/live_space"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/live_operation_bottom_height" />
+
+</LinearLayout>

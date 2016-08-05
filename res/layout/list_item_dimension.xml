@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability= "blocksDescendants"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <!--title-->
+        <TextView
+            android:id="@+id/tv_dimension_name"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="17sp"
+            />
+        <!--btn-->
+        <Button
+            android:id="@+id/btn_dimension_compare"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:text="比较"
+            android:background="@drawable/btn_dimension_selector"
+            android:focusable = "false"
+            />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/split_line"
+        />
+</LinearLayout><!-- From: file:/E:/QiNiuProject/AndroidstudioProjects/QiNiu/qiNiuChart/src/main/res/layout/list_item_dimension.xml -->

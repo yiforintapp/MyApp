@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <!--chart-->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3">
+                    <com.zlf.appmaster.chartview.chart.CandleChart
+                        android:id="@+id/candle_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:id="@+id/kline_handle_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="29dp"
+                        android:visibility="gone">
+                        <ImageView
+                            android:id="@+id/kline_move_handle"
+                            android:layout_width="29dp"
+                            android:layout_height="29dp"
+                            android:src="@drawable/btn_arrow_2_right"
+                            android:layout_marginLeft="6.7dp"/>
+                        <com.zlf.appmaster.chartview.view.LongClickImageView
+                            android:id="@+id/kline_move_left"
+                            android:layout_width="29dp"
+                            android:layout_height="29dp"
+                            android:src="@drawable/btn_move_2_left"
+                            android:visibility="gone"
+                            android:layout_marginLeft="40dp"/>
+                        <com.zlf.appmaster.chartview.view.LongClickImageView
+                            android:id="@+id/kline_move_right"
+                            android:layout_width="29dp"
+                            android:layout_height="29dp"
+                            android:src="@drawable/btn_move_2_right"
+                            android:visibility="gone"
+                            android:layout_marginLeft="40dp"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <com.zlf.appmaster.chartview.chart.VolumeChart
+                    android:id="@+id/volume_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+                <com.zlf.appmaster.chartview.chart.KDJChart
+                    android:id="@+id/kdj_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    />
+
+                <com.zlf.appmaster.chartview.chart.MACDChart
+                    android:id="@+id/macd_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/extra_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="成交量"
+                android:textSize="12.6dp"
+                android:textColor="@color/item_white"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_marginLeft="3.3dp"
+                android:background="@drawable/chart_text_bg"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="70dp"/>
+
+            <com.zlf.appmaster.chartview.view.ChartTextLayout
+                android:id="@+id/chart_text_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                />
+
+            <ProgressBar
+                android:id="@+id/progress_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                />
+        </FrameLayout>
+
+        <!--change volume text-->
+        <LinearLayout
+            android:id="@+id/layout_select_extra"
+            android:layout_width="62dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+            <LinearLayout
+                android:id="@+id/layout_repair"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#f6f6f6"
+                >
+                <TextView
+                    android:id="@+id/tv_repair_forward"
+                    android:text="前复权"
+                    style="@style/k_line_extra_text_font_style_big"
+                    />
+                <TextView
+                    android:id="@+id/tv_repair_no"
+                    style="@style/k_line_extra_text_font_style_big"
+                    android:text="不复权"
+                    android:layout_marginTop="9.3dp"
+                    android:layout_marginBottom="9.3dp"
+                    />
+                <TextView
+                    android:id="@+id/tv_repair_backward"
+                    style="@style/k_line_extra_text_font_style_big"
+                    android:text="后复权"
+                    />
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="4dp"
+                android:background="#f6f6f6"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:id="@+id/tv_select_volume"
+                        style="@style/k_line_extra_text_font_style_small"
+                        android:text="成交量"
+                        />
+                    <TextView
+                        android:id="@+id/tv_select_kdj"
+                        style="@style/k_line_extra_text_font_style_small"
+                        android:text="KDJ"
+                        android:layout_marginTop="9.3dp"
+                        android:layout_marginBottom="9.3dp"
+                        />
+                    <TextView
+                        android:id="@+id/tv_select_macd"
+                        style="@style/k_line_extra_text_font_style_small"
+                        android:text="MACD"
+                        />
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout><!-- From: file:/E:/QiNiuProject/AndroidstudioProjects/QiNiu/qiNiuChart/src/main/res/layout/layout_stock_kline_chart.xml -->
