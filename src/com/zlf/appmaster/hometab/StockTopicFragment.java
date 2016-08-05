@@ -1,6 +1,7 @@
 package com.zlf.appmaster.hometab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
@@ -12,6 +13,7 @@ import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.topic.TopicInfo;
+import com.zlf.appmaster.stocktopic.TopicDetailActivity;
 import com.zlf.appmaster.utils.LiveRecordingUtil;
 
 import org.json.JSONException;
@@ -104,20 +106,20 @@ public class StockTopicFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position > 0) {
-//                    TopicInfo topicInfo = (TopicInfo) mTopicInfoListAdapter.getItem(position - 1);
-//                    if (null != topicInfo) {
-//                        if(!mLiveRecordingUtil.isLiveRecording()) {
-//                            Intent intent = new Intent(mContext, TopicDetailActivity.class);
-//                            intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_ID, topicInfo.getTopicID());
-//                            intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_NAME, topicInfo.getName());
-//                            mContext.startActivity(intent);
-//                        }else{
-//                            Intent intent = new Intent(mContext, TopicDetailActivity.class);
-//                            intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_ID, topicInfo.getTopicID());
-//                            intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_NAME, topicInfo.getName());
-//                            mContext.startActivity(intent);
-//                        }
-//                    }
+                    TopicInfo topicInfo = (TopicInfo) mTopicInfoListAdapter.getItem(position - 1);
+                    if (null != topicInfo) {
+                        if(!mLiveRecordingUtil.isLiveRecording()) {
+                            Intent intent = new Intent(mActivity, TopicDetailActivity.class);
+                            intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_ID, topicInfo.getTopicID());
+                            intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_NAME, topicInfo.getName());
+                            mActivity.startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(mActivity, TopicDetailActivity.class);
+                            intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_ID, topicInfo.getTopicID());
+                            intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_NAME, topicInfo.getName());
+                            mActivity.startActivity(intent);
+                        }
+                    }
                 }
             }
         });

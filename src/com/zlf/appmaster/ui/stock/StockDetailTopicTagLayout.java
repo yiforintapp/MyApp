@@ -1,6 +1,7 @@
 package com.zlf.appmaster.ui.stock;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.topic.TopicItem;
+import com.zlf.appmaster.stocktopic.TopicDetailActivity;
 import com.zlf.appmaster.utils.LiveRecordingUtil;
 import com.zlf.appmaster.utils.QLog;
 
@@ -152,10 +154,10 @@ public class StockDetailTopicTagLayout extends LinearLayout {
             }
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(mContext, TopicDetailActivity.class);
-//                intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_ID, mTopicId);
-//                intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_NAME, mTopicName);
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, TopicDetailActivity.class);
+                intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_ID, mTopicId);
+                intent.putExtra(TopicDetailActivity.INTENT_FLAG_TOPIC_NAME, mTopicName);
+                mContext.startActivity(intent);
             }
         }
     }

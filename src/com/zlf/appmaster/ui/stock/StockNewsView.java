@@ -1,6 +1,7 @@
 package com.zlf.appmaster.ui.stock;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -9,7 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.client.NewsClient;
 import com.zlf.appmaster.model.news.NewsFlashItem;
+import com.zlf.appmaster.stocknews.NewsDetailActivity;
+import com.zlf.appmaster.stocktrade.StockTradeDetailNewsActivity;
 import com.zlf.appmaster.utils.LiveRecordingUtil;
 import com.zlf.appmaster.utils.TimeUtil;
 
@@ -75,11 +79,11 @@ public class StockNewsView extends LinearLayout {
             mMoreView.setOnClickListener(new OnClickListener(){
                 @Override
                 public void onClick(View view) {
-//                    Intent intent = new Intent(mContext, StockTradeDetailNewsActivity.class);
-//                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_STOCK_CODE, stockCode);
-//                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_LABEL, NewsClient.STOCK_NEWS_LABEL_NEWS);
-//                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_LIVE, true);
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, StockTradeDetailNewsActivity.class);
+                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_STOCK_CODE, stockCode);
+                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_LABEL, NewsClient.STOCK_NEWS_LABEL_NEWS);
+                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_LIVE, true);
+                    mContext.startActivity(intent);
                 }
             });
             len = MAX_COUNT;
@@ -134,14 +138,14 @@ public class StockNewsView extends LinearLayout {
         @Override
         public void onClick(View view) {
             if (null != mItemData){
-//                Intent intent = new Intent(mContext,
-//                        NewsDetailActivity.class);
-//                intent.putExtra(
-//                        NewsDetailActivity.KEY_INTENT_NEWS_CATALOGUE,
-//                        "新闻详情");
-//                intent.putExtra(NewsDetailActivity.KEY_INTENT_NEWS_ID,
-//                        mItemData.getId());
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext,
+                        NewsDetailActivity.class);
+                intent.putExtra(
+                        NewsDetailActivity.KEY_INTENT_NEWS_CATALOGUE,
+                        "新闻详情");
+                intent.putExtra(NewsDetailActivity.KEY_INTENT_NEWS_ID,
+                        mItemData.getId());
+                mContext.startActivity(intent);
             }
         }
     }

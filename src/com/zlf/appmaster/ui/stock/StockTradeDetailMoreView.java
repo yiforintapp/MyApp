@@ -2,6 +2,7 @@ package com.zlf.appmaster.ui.stock;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -18,11 +19,13 @@ import com.zlf.appmaster.client.NewsClient;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockClient;
 import com.zlf.appmaster.model.news.NewsFlashItem;
+import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
 import com.zlf.appmaster.utils.QLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +41,7 @@ public class StockTradeDetailMoreView extends LinearLayout {
     private View[] mTab = new View[TAB_COUNT];
     private OnRadioChangeListener mOnRadioChangeListener = new OnRadioChangeListener();
 
-    private Context mContext;
+    private static Context mContext;
     private String mStockCode;
 
     private View mStockExtraInfoTabSelectedII;	//记录当前选中的tab
@@ -145,7 +148,9 @@ public class StockTradeDetailMoreView extends LinearLayout {
         mStockFinanceView = (StockFinanceView)findViewById(R.id.stock_finance_view);
         mStockSummaryView = (StockSummaryView)findViewById(R.id.stock_summary_view);
 
-
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
         mHandler.sendEmptyMessageDelayed(MSG_UPDATE_STOCK_NEWS, 1000);
     }
 
@@ -180,15 +185,26 @@ public class StockTradeDetailMoreView extends LinearLayout {
             @Override
             public void onError(int errorCode, String errorString) {
                 // TODO Auto-generated method stub
-                mExtraInfoProgressBar_II.setVisibility(View.GONE);
-                showExtraInfoPrompt(mExtraInfoDataPromptViewII, EXTRA_INFO_STATUS_ERROR);
+                ((StockTradeDetailActivity)mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mExtraInfoProgressBar_II.setVisibility(View.GONE);
+                        showExtraInfoPrompt(mExtraInfoDataPromptViewII, EXTRA_INFO_STATUS_ERROR);
+                    }
+                });
             }
 
             @Override
             public void onDataFinish(Object object) {
+                final ArrayList<NewsFlashItem> list = (ArrayList<NewsFlashItem>)object;
                 // TODO Auto-generated method stub
-                mExtraInfoProgressBar_II.setVisibility(View.GONE);
-                updateStockNewsViews((List<NewsFlashItem>) object);
+                ((StockTradeDetailActivity)mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mExtraInfoProgressBar_II.setVisibility(View.GONE);
+                        updateStockNewsViews(list);
+                    }
+                });
                 mbLoadedNewsView = true;
             }
         });
@@ -229,16 +245,26 @@ public class StockTradeDetailMoreView extends LinearLayout {
             @Override
             public void onError(int errorCode, String errorString) {
                 // TODO Auto-generated method stub
-                mExtraInfoProgressBar_II.setVisibility(View.GONE);
-                showExtraInfoPrompt(mExtraInfoDataPromptViewII, EXTRA_INFO_STATUS_ERROR);
+                ((StockTradeDetailActivity)mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mExtraInfoProgressBar_II.setVisibility(View.GONE);
+                        showExtraInfoPrompt(mExtraInfoDataPromptViewII, EXTRA_INFO_STATUS_ERROR);
+                    }
+                });
             }
 
             @Override
             public void onDataFinish(Object object) {
                 // TODO Auto-generated method stub
-                mExtraInfoProgressBar_II.setVisibility(View.GONE);
-                updateStockReportViews((List<NewsFlashItem>) object);
-
+                final ArrayList<NewsFlashItem> list = (ArrayList<NewsFlashItem>)object;
+                ((StockTradeDetailActivity)mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mExtraInfoProgressBar_II.setVisibility(View.GONE);
+                        updateStockReportViews(list);
+                    }
+                });
                 mbLoadedReportsView = true;
             }
         });
@@ -491,6 +517,9 @@ public class StockTradeDetailMoreView extends LinearLayout {
     }
 
     private void jumpToExtraView(int viewID){
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
         switch (viewID){
             case R.id.stock_news:
                 mHandler.sendEmptyMessage(MSG_UPDATE_STOCK_NEWS);

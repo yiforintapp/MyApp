@@ -41,6 +41,7 @@ import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.FileOperationUtil;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.NinePatchChunk;
+import com.zlf.appmaster.utils.PreDataTool;
 import com.zlf.appmaster.utils.Utilities;
 
 import java.io.File;
@@ -583,6 +584,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
     }
 
     private void enterHome() {
+        PreDataTool.loadInitData(this);
         AppMasterPreference.getInstance(SplashActivity.this).setGuidePageFirstUse(false);
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         startHome();

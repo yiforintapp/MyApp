@@ -32,6 +32,7 @@ import com.zlf.appmaster.model.sync.SyncBaseBean;
 import com.zlf.appmaster.model.sync.SyncOperator;
 import com.zlf.appmaster.model.sync.SyncRequest;
 import com.zlf.appmaster.model.topic.TopicItem;
+import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
 import com.zlf.appmaster.stocksearch.StockSearchActivity;
 import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
 import com.zlf.appmaster.utils.QConstants;
@@ -294,10 +295,10 @@ public class StockFavoriteFragment extends BaseFragment {
                         intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKCODE, stockFavoriteItem.getStockCode());
                         startActivityForResult(intent, 0);
                     } else {
-//                        Intent intent = new Intent(mActivity, StockIndexDetailActivity.class);
-//                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, stockFavoriteItem.getStockCode());
-//                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, stockFavoriteItem.getStockName());
-//                        startActivity(intent);
+                        Intent intent = new Intent(mActivity, StockIndexDetailActivity.class);
+                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, stockFavoriteItem.getStockCode());
+                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, stockFavoriteItem.getStockName());
+                        startActivity(intent);
                     }
                 }
             }
@@ -415,10 +416,14 @@ public class StockFavoriteFragment extends BaseFragment {
                         mIndustryItemArray.addAll(industryItems);
 
                         //mHandler.sendEmptyMessage(MSG_REFREASH_VIEW);
-                        mStockFavoriteListAdapter.notifyDataSetChanged();
-
-                        mProgressBar.setVisibility(View.GONE);
-                        onLoaded();
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mStockFavoriteListAdapter.notifyDataSetChanged();
+                                mProgressBar.setVisibility(View.GONE);
+                                onLoaded();
+                            }
+                        });
                     }
                 });
 

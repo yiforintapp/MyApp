@@ -94,7 +94,7 @@
             android:id="@+id/cache_stock_base_info_view"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
-        <com.iqiniu.qiniu.view.StockChartView
+        <com.zlf.appmaster.chartview.view.StockChartView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
     </LinearLayout>

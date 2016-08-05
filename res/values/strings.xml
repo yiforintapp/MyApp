@@ -149,4 +149,59 @@
     <string name="index_foreign_info_title">全球（延）</string>
     <string name="more_info">更多</string>
 
+
+    <string name="daily_line">日K</string>
+    <string name="min_line">分时</string>
+    <string name="monthly_line">月K</string>
+    <string name="stock_buy_1">买1</string>
+    <string name="stock_buy_2">买2</string>
+    <string name="stock_buy_3">买3</string>
+    <string name="stock_buy_4">买4</string>
+    <string name="stock_buy_5">买5</string>
+    <string name="stock_sell_1">卖1</string>
+    <string name="stock_sell_2">卖2</string>
+    <string name="stock_sell_3">卖3</string>
+    <string name="stock_sell_4">卖4</string>
+    <string name="stock_sell_5">卖5</string>
+    <string name="weekly_line">周K</string>
+
+    <string name="up_count">上涨数</string>
+    <string name="down_count">下跌数</string>
+    <string name="deuce_count">平盘数</string>
+    <string name="stock_led_up_list">涨幅榜</string>
+    <string name="stock_led_down_list">跌幅榜</string>
+    <string name="title">兆利丰</string>
+    <string name="cur_topic_today_percent">今日涨跌</string>
+    <string name="cur_topic_trend">本题材走势</string>
+    <string name="cur_topic_5days_percent">近5个交易日累计涨跌</string>
+    <string name="cur_topic_20days_percent">近20个交易日累计涨跌</string>
+    <string name="cur_topic_60days_percent">近60个交易日累计涨跌</string>
+
+    <string name="stock_favorite_industry_title">自选股行业分布</string>
+    <string name="stock_favorite_topic_title">自选股题材分布</string>
+    <string name="stock_market_price">市价</string>
+    <string name="stock_price_deal">限价委托</string>
+    <string name="stock_market_price_deal">市价委托</string>
+    <string name="stock_user_price">限价</string>
+    <string name="stock_sell">卖出</string>
+    <string name="stock_buy">买入</string>
+    <string name="now_price">现价</string>
+    <string name="stock_percent2">涨跌</string>
+    <string name="stock_num_one_fifth">1/5</string>
+    <string name="stock_num_one_fourth">1/4</string>
+    <string name="stock_num_one_third">1/3</string>
+    <string name="stock_num_a_half">1/2</string>
+    <string name="stock_num_all">全部</string>
+    <string name ="stock_deal_prompt1">买入数量必须为100的整数倍</string>
+    <string name ="stock_deal_prompt2">交易费0.03%沪指过户费按成交股数的千分之一收取,起点1元</string>
+    <string name="stock_deal_price">价格:</string>
+    <string name="stock_deal_price_unit">元</string>
+    <string name="stock_deal_count">数量:</string>
+    <string name="stock_deal_count_unit">股</string>
+    <string name="stock_agent_successed_title">委托单已提交</string>
+    <!--个股公告 -->
+    <string name="see_announcement_detail">点击查看全文</string>
+    <string name="stock_agent_successed_content">你可以在交易模块查看详情</string>
+    <string name="sure">确定</string>
+
 </resources>

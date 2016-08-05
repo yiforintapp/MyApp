@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.zlf.appmaster.model.stock.StockItem;
 import com.zlf.appmaster.model.industry.IndustryItem;

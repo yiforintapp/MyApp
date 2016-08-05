@@ -170,4 +170,17 @@
     </declare-styleable>
 
 
+
+    <declare-styleable name="GainGraphView">
+        <attr format="boolean" name="show_percent"/>
+    </declare-styleable>
+
+    <declare-styleable name="KLine">
+        <attr name="KLine_mode" format="integer" localization="suggested"/>
+    </declare-styleable>
+
+    <declare-styleable name="MinuteLine">
+        <attr name="minute_mode" format="integer" localization="suggested"/>
+    </declare-styleable>
+
 </resources>

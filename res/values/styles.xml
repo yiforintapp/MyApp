@@ -460,12 +460,164 @@
         <item name="android:textSize">13.3sp</item>
         <item name="pstsDividerColor">#f4f4f4</item>
         <item name="pstsIndicatorColor">#d70a23</item>
-        <item name="pstsIndicatorHeight">3px</item>
+        <item name="pstsIndicatorHeight">10px</item>
 <!--        <item name="pstsIndicatorPadding">10dp</item>-->
         <item name="pstsUnderlineColor">@color/split_line</item>
         <item name="pstsUnderlineHeight">1px</item>
         <item name="android:layout_marginTop">55dp</item>
         <item name="pstsTabBackground">@android:color/transparent</item>
+    </style>
+
+
+
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="chart_handicap_count">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#878c92</item>
+        <item name="android:gravity">right</item>
+        <item name="android:text">--</item>
+    </style>
+    <style name="chart_handicap_price">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#878c92</item>
+        <item name="android:text">--</item>
+    </style>
+    <style name="chart_handicap_title">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#878c92</item>
+    </style>
+    <style name="font_stock_handicap_row_span">
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+    <style name="font_stock_handicap_table_span">
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+    <style name="k_line_extra_text_font_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/k_line_extra_color_selector</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+    <style name="k_line_extra_text_font_style_big" parent="k_line_extra_text_font_style">
+        <item name="android:textSize">12.6sp</item>
+    </style>
+    <style name="k_line_extra_text_font_style_small" parent="k_line_extra_text_font_style">
+        <item name="android:textSize">11.3sp</item>
+    </style>
+
+    <!-- 盘口 -->
+    <style name="font_stock_handicap_title">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#878c92</item>
+    </style>
+
+    <style name="font_stock_handicap_count">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#878c92</item>
+        <item name="android:gravity">right</item>
+        <item name="android:text">--</item>
+    </style>
+
+    <style name="stock_title_radio_btn">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@drawable/stock_title_radio_background</item>
+    </style>
+
+    <style name="font_stock_handicap_price">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#878c92</item>
+        <item name="android:text">--</item>
+    </style>
+
+    <style name="title_bar_text">
+        <item name="android:textColor">@color/title_bar_txt</item>
+        <item name="android:textSize">15.3sp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="stock_detail_info_bg">
+        <item name="android:background">#f6f6f6</item>
+    </style>
+
+    <!-- 股票交易界面 -->
+    <style name="font_stock_deal_title_txt">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="font_stock_handicap_table_span2">
+        <item name="android:layout_marginLeft">1dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+    </style>
+
+    <style name="font_stock_handicap_row_span2">
+        <item name="android:layout_marginBottom">1dp</item>
+    </style>
+
+    <style name="font_stock_handicap_title2">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">#878c92</item>
+    </style>
+
+    <style name="font_stock_handicap_count2">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">#878c92</item>
+        <item name="android:gravity">right</item>
+        <item name="android:text">@string/default_gain</item>
+    </style>
+
+    <style name="font_stock_deal_info_row_span">
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+    <style name="font_stock_deal_info_txt">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#333333</item>
+    </style>
+
+    <style name="font_stock_deal_num_radio_btn">
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="font_stock_deal_prompt">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">#d4d4d4</item>
+    </style>
+
+    <!-- 图片放大效果 -->
+    <style name="qdialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="font_stock_handicap_price2">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">#878c92</item>
+        <item name="android:text">@string/default_gain</item>
     </style>
 
 </resources>

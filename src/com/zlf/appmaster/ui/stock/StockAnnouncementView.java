@@ -1,6 +1,7 @@
 package com.zlf.appmaster.ui.stock;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.client.NewsClient;
 import com.zlf.appmaster.model.news.NewsFlashItem;
+import com.zlf.appmaster.stocknews.AnnouncementDetailActivity;
+import com.zlf.appmaster.stocktrade.StockTradeDetailNewsActivity;
 import com.zlf.appmaster.utils.TimeUtil;
 
 import java.util.ArrayList;
@@ -57,10 +61,10 @@ public class StockAnnouncementView extends LinearLayout {
             mMoreView.setOnClickListener(new OnClickListener(){
                 @Override
                 public void onClick(View view) {
-//                    Intent intent = new Intent(mContext, StockTradeDetailNewsActivity.class);
-//                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_STOCK_CODE, stockCode);
-//                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_LABEL, NewsClient.STOCK_NEWS_LABEL_ANNOUNCEMENT);
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, StockTradeDetailNewsActivity.class);
+                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_STOCK_CODE, stockCode);
+                    intent.putExtra(StockTradeDetailNewsActivity.INTENT_FLAG_LABEL, NewsClient.STOCK_NEWS_LABEL_ANNOUNCEMENT);
+                    mContext.startActivity(intent);
                 }
             });
             len = MAX_COUNT;
@@ -116,9 +120,9 @@ public class StockAnnouncementView extends LinearLayout {
         @Override
         public void onClick(View view) {
             if (null != mItemData){
-//                Intent intent = new Intent(mContext, AnnouncementDetailActivity.class);
-//                intent.putExtra(AnnouncementDetailActivity.INTENT_FLAG_DATA, mItemData);
-//                mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, AnnouncementDetailActivity.class);
+                intent.putExtra(AnnouncementDetailActivity.INTENT_FLAG_DATA, mItemData);
+                mContext.startActivity(intent);
             }
 
         }

@@ -8,8 +8,9 @@ import android.support.v4.view.ViewPager;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.stocknews.NewsFlashFragment;
 import com.zlf.appmaster.ui.PagerSlidingTabStrip;
-import com.zlf.appmaster.userTab.UserTabChildFragment;
+import com.zlf.appmaster.ui.stock.StockBaseFragment;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ import java.util.List;
 public class UserTabFragment  extends BaseFragment {
 
     private ViewPager mViewPager;
-    private UserTabHolder[] mUserHolders = new UserTabHolder[5];
-    private UserTabChildFragment mCommentFragment;
+    private UserTabHolder[] mUserHolders = new UserTabHolder[1];
+    private NewsFlashFragment mNewsFlashFragment;
     private PagerSlidingTabStrip mPagerSlidingTab;
 
     @Override
@@ -66,33 +67,9 @@ public class UserTabFragment  extends BaseFragment {
     private void initFragment() {
         UserTabHolder holder = new UserTabHolder();
         holder.title = "国鑫评论";
-        mCommentFragment = new UserTabChildFragment();
-        holder.fragment = mCommentFragment;
+        mNewsFlashFragment = new NewsFlashFragment();
+        holder.fragment = mNewsFlashFragment;
         mUserHolders[0] = holder;
-
-        holder = new UserTabHolder();
-        holder.title = "分析研究";
-        mCommentFragment = new UserTabChildFragment();
-        holder.fragment = mCommentFragment;
-        mUserHolders[1] = holder;
-
-        holder = new UserTabHolder();
-        holder.title = "国际财经";
-        mCommentFragment = new UserTabChildFragment();
-        holder.fragment = mCommentFragment;
-        mUserHolders[2] = holder;
-
-        holder = new UserTabHolder();
-        holder.title = "机构观点";
-        mCommentFragment = new UserTabChildFragment();
-        holder.fragment = mCommentFragment;
-        mUserHolders[3] = holder;
-
-        holder = new UserTabHolder();
-        holder.title = "市场动态";
-        mCommentFragment = new UserTabChildFragment();
-        holder.fragment = mCommentFragment;
-        mUserHolders[4] = holder;
 
 
         FragmentManager fm = getChildFragmentManager();
@@ -133,6 +110,6 @@ public class UserTabFragment  extends BaseFragment {
 
     class UserTabHolder {
         String title;
-        BaseFragment fragment;
+        StockBaseFragment fragment;
     }
 }

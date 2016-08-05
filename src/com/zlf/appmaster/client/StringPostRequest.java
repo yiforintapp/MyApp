@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
+import  com.android.volley.Response.ErrorListener;
+import  com.android.volley.Response.Listener;
+import  com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.zlf.appmaster.utils.QLog;
 import com.zlf.appmaster.utils.UrlConstants;
@@ -46,7 +46,7 @@ public class StringPostRequest {
 		StringRequest sRequest = new StringRequest(Request.Method.POST, url,
 				new Listener<String>() {
 					@Override
-					public void onResponse(String response, boolean noMidify) {
+					public void onResponse(String response) {
 						if (isReturnJson) {
 							try {
 								JSONObject jsonObject = new JSONObject(response);

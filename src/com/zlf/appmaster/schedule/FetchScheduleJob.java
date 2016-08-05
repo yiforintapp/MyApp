@@ -6,14 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.zlfandroid.zlfvolley.Response;
+import com.zlfandroid.zlfvolley.VolleyError;
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.AppMasterPreference;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.db.LeoPreference;
-import com.zlf.appmaster.schedule.ScheduleJob;
-import com.zlf.appmaster.schedule.ScheduleReceiver;
 import com.zlf.appmaster.utils.LeoLog;
 
 import org.json.JSONArray;

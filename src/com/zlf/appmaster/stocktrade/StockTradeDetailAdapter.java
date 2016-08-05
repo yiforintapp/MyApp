@@ -1,6 +1,7 @@
 package com.zlf.appmaster.stocktrade;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -9,14 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.iqiniu.qiniu.bean.StockKLine;
-import com.iqiniu.qiniu.bean.StockMinutes;
-import com.iqiniu.qiniu.tool.OnGetDailyKLinesListener;
-import com.iqiniu.qiniu.tool.OnGetHandicapListener;
-import com.iqiniu.qiniu.tool.OnGetMinuteDataListener;
-import com.iqiniu.qiniu.tool.StockChartTool;
-import com.iqiniu.qiniu.view.OnClickChartListener;
-import com.iqiniu.qiniu.view.StockChartView;
+import com.zlf.appmaster.chartview.bean.StockKLine;
+import com.zlf.appmaster.chartview.bean.StockMinutes;
+import com.zlf.appmaster.chartview.tool.OnGetDailyKLinesListener;
+import com.zlf.appmaster.chartview.tool.OnGetHandicapListener;
+import com.zlf.appmaster.chartview.tool.OnGetMinuteDataListener;
+import com.zlf.appmaster.chartview.tool.StockChartTool;
+import com.zlf.appmaster.chartview.view.OnClickChartListener;
+import com.zlf.appmaster.chartview.view.StockChartView;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockClient;
 import com.zlf.appmaster.db.stock.StockKLineTable;
@@ -24,6 +25,7 @@ import com.zlf.appmaster.db.stock.StockMinuteTable;
 import com.zlf.appmaster.model.stock.StockTradeInfo;
 import com.zlf.appmaster.ui.stock.StockBaseInfoView;
 import com.zlf.appmaster.ui.stock.StockTradeDetailMoreView;
+import com.zlf.appmaster.utils.QLog;
 
 import org.json.JSONObject;
 
@@ -245,6 +247,7 @@ public class StockTradeDetailAdapter extends BaseAdapter {
 
                 //获取数据
                 listener.onDataFinish((JSONObject) object);
+
             }
 
             @Override
@@ -259,6 +262,7 @@ public class StockTradeDetailAdapter extends BaseAdapter {
      * @param listener
      */
     public void getStockDailyKLines(final OnGetDailyKLinesListener listener) {
+        QLog.e("StockChartView", "getStockDailyKLines start");
         //获取下起始时间点 大于1则说明有数据，可直接显示
         long startTime = 1;
 
@@ -310,6 +314,7 @@ public class StockTradeDetailAdapter extends BaseAdapter {
 
                 //保存起来
                 mKLineTable.saveKLineData(mStockCode, data, mDailyKLines.get(mDailyKLines.size()-1).getDataTime());
+                QLog.e("StockChartView", "getStockDailyKLines end");
             }
         });
 
@@ -320,6 +325,7 @@ public class StockTradeDetailAdapter extends BaseAdapter {
      * @param listener
      */
     private void getStockMinuteData(final OnGetMinuteDataListener listener) {
+        QLog.e("StockChartView", "getStockMinuteData start");
         if (mStockTradeInfo != null ){
             if (mStockTradeInfo.getStockStatus() == StockTradeInfo.STATUS_OPEN_PREPARE
                     || mStockTradeInfo.getStockStatus() == StockTradeInfo.STATUS_STOP){
@@ -329,6 +335,7 @@ public class StockTradeDetailAdapter extends BaseAdapter {
                 return;
             }
         }
+        QLog.e("StockChartView", "1");
         long lastTime = 0;//去掉毫秒
         //先从数据库中读取显示
         StockMinuteTable table = new StockMinuteTable(mContext);
@@ -339,13 +346,14 @@ public class StockTradeDetailAdapter extends BaseAdapter {
                 listener.onDataFinish(dataArrayList);
                 //修改为数据库的时间
                 lastTime = dataArrayList.get(dataArrayList.size()-1).getDataTime();
+                QLog.e("StockChartView", "3");
             }
         }
 
         //再去读取网络的
         //设置最后一笔的时间点
         final long endTime = 99999999999999L;
-
+        QLog.e("StockChartView", "2");
         mStockClient.getMinuteInfoByLastTime(mStockCode, 0,
                 lastTime,
                 new OnRequestListener() {
@@ -353,6 +361,7 @@ public class StockTradeDetailAdapter extends BaseAdapter {
                     @Override
                     public void onError(int errorCode, String errorString) {
                         // TODO Auto-generated method stub
+                        QLog.e("StockChartView", "getStockMinuteData error");
                     }
 
                     @Override
@@ -370,6 +379,8 @@ public class StockTradeDetailAdapter extends BaseAdapter {
                         StockMinuteTable table = new StockMinuteTable(mContext);
                         table.saveMintueData(mStockCode, StockMinutes.toByteArray(dataArrayList), endTime);
                         table.close();
+
+                        QLog.e("StockChartView", "getStockMinuteData end");
                     }
                 });
 
@@ -381,16 +392,16 @@ public class StockTradeDetailAdapter extends BaseAdapter {
      */
     private void enterChartDetail(int type) {
 
-//        Intent intent = new Intent(mContext,StockChartDetailActivity.class);
-//        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_LINE_TYPE, type);
-//        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_IS_STOCK, true);
-//        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_ID, mStockCode);
-//        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_NAME, mStockName);
-//        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_STATE,
-//                mStockTradeInfo.getStockStatus());
-//        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_PRICE,
-//                mStockTradeInfo.getCurPrice());
-//        mContext.startActivity(intent);
+        Intent intent = new Intent(mContext,StockChartDetailActivity.class);
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_LINE_TYPE, type);
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_IS_STOCK, true);
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_ID, mStockCode);
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_NAME, mStockName);
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_STATE,
+                mStockTradeInfo.getStockStatus());
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_PRICE,
+                mStockTradeInfo.getCurPrice());
+        mContext.startActivity(intent);
     }
 
 }

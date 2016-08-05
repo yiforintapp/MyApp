@@ -5,18 +5,17 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.toolbox.FileRequest;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.zlf.appmaster.R;
+import com.zlfandroid.zlfvolley.AuthFailureError;
+import com.zlfandroid.zlfvolley.DefaultRetryPolicy;
+import com.zlfandroid.zlfvolley.Request.Method;
+import com.zlfandroid.zlfvolley.RequestQueue;
+import com.zlfandroid.zlfvolley.Response.ErrorListener;
+import com.zlfandroid.zlfvolley.Response.Listener;
+import com.zlfandroid.zlfvolley.toolbox.FileRequest;
+import com.zlfandroid.zlfvolley.toolbox.ImageRequest;
+import com.zlfandroid.zlfvolley.toolbox.JsonArrayRequest;
+import com.zlfandroid.zlfvolley.toolbox.JsonObjectRequest;
+import com.zlfandroid.zlfvolley.toolbox.Volley;
 import com.zlf.appmaster.utils.DeviceUtil;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.Utilities;
@@ -274,6 +273,7 @@ public class HttpRequestAgent {
         LeoLog.i(TAG, "闪屏请求链接：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
+
         request.setShouldCache(false);
         mRequestQueue.add(request);
     }

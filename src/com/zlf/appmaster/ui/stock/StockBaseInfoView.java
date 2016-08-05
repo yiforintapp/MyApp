@@ -191,7 +191,7 @@ public class StockBaseInfoView extends LinearLayout {
         return mStockPriceTV.getBottom();
     }
 
-    private class OnExpandViewClickListener implements OnClickListener {
+    private class OnExpandViewClickListener implements OnClickListener{
         private StockTradeInfo mStockTradeInfo;
         public OnExpandViewClickListener(StockTradeInfo stockTradeInfo){
             mStockTradeInfo = stockTradeInfo;

@@ -67,9 +67,42 @@
         <activity
             android:name=".stocktrade.StockTradeDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/search_theme"></activity>
+            android:theme="@style/activity_theme"></activity>
 
+        <activity
+            android:name=".stocktrade.StockChartDetailActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/activity_theme"></activity>
 
+        <activity
+            android:name=".stockIndex.StockIndexDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".stocktopic.TopicDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".stockindustry.IndustryStockListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".stocknews.NewsDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".stocktrade.StockTradeDetailNewsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".stocknews.AnnouncementDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
         <!-- android:theme="@style/translucent" -->
 
 

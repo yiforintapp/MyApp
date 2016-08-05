@@ -102,4 +102,15 @@
     <color name="title_more_color">@color/main_red</color>
     <color name="tab_background">@color/white</color>
 
+
+
+    <color name="bar">#C0202020</color>
+    <color name="blue">#3399ff</color>
+    <color name="item_white">#ffffffff</color>
+    <color name="main_tab_unselected">#929292</color>
+
+    <!--combination-->
+    <color name="tv_black">@color/title_bar_txt</color><!--TextView中的黑色字-->
+    <color name="tv_combination_black">@color/tv_black</color>
+
 </resources>

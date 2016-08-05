@@ -32,6 +32,7 @@ import com.zlf.appmaster.utils.DipPixelUtil;
 import com.zlf.appmaster.utils.QConstants;
 import com.zlf.appmaster.utils.QLog;
 import com.zlf.appmaster.utils.UrlConstants;
+import com.zlf.appmaster.utils.UserUtils;
 import com.zlf.appmaster.utils.Utils;
 
 
@@ -185,9 +186,9 @@ public class StockTradeDetailActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 
-//                if (!UserUtils.checkLogin(view,StockTradeDetailActivity.this,StockTradeDetailActivity.this))
-//                    return;
-//
+                if (!UserUtils.checkLogin(view,StockTradeDetailActivity.this,StockTradeDetailActivity.this))
+                    return;
+
 //                ContactsTableOld table = new ContactsTableOld(mContext);
 //                if (table.hasCreateCombination()) {
 //                    Intent intent = new Intent(StockTradeDetailActivity.this, CombinationAddInActivity.class);

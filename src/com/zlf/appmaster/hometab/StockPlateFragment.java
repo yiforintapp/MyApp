@@ -1,6 +1,7 @@
 package com.zlf.appmaster.hometab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
@@ -12,6 +13,7 @@ import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockClient;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.industry.IndustryInfo;
+import com.zlf.appmaster.stockindustry.IndustryStockListActivity;
 import com.zlf.appmaster.utils.LiveRecordingUtil;
 
 import org.json.JSONException;
@@ -119,23 +121,23 @@ public class StockPlateFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-//                IndustryInfo industryInfo = (IndustryInfo)mStockPlateAdapter.getItem(position - 1);
-//
-//                if (null != industryInfo){
-//                    if(!mLiveRecordingUtil.isLiveRecording()) {
-//                        Intent intent = new Intent(mContext, IndustryStockListActivity.class);
-//                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_INDUSTRYID, industryInfo.getIndustryID());
-//                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_INDUSTRYNAME, industryInfo.getName());
-//                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_DISPLAY_TYPE, 1);
-//                        startActivity(intent);
-//                    }else{
-//                        Intent intent = new Intent(mContext, IndustryStockListActivity.class);
-//                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_INDUSTRYID, industryInfo.getIndustryID());
-//                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_INDUSTRYNAME, industryInfo.getName());
-//                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_DISPLAY_TYPE, 1);
-//                        startActivity(intent);
-//                    }
-//                }
+                IndustryInfo industryInfo = (IndustryInfo)mStockPlateAdapter.getItem(position - 1);
+
+                if (null != industryInfo){
+                    if(!mLiveRecordingUtil.isLiveRecording()) {
+                        Intent intent = new Intent(mActivity, IndustryStockListActivity.class);
+                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_INDUSTRYID, industryInfo.getIndustryID());
+                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_INDUSTRYNAME, industryInfo.getName());
+                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_DISPLAY_TYPE, 1);
+                        startActivity(intent);
+                    }else{
+                        Intent intent = new Intent(mActivity, IndustryStockListActivity.class);
+                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_INDUSTRYID, industryInfo.getIndustryID());
+                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_INDUSTRYNAME, industryInfo.getName());
+                        intent.putExtra(IndustryStockListActivity.INTENT_FLAG_DISPLAY_TYPE, 1);
+                        startActivity(intent);
+                    }
+                }
 
             }
         });
@@ -193,9 +195,13 @@ public class StockPlateFragment extends BaseFragment {
             @Override
             public void onError(int errorCode, String errorString) {
                 // TODO Auto-generated method stub
-                mProgressBar.setVisibility(View.GONE);
-
-                onLoaded();
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressBar.setVisibility(View.GONE);
+                        onLoaded();
+                    }
+                });
             }
 
             @Override
@@ -206,11 +212,14 @@ public class StockPlateFragment extends BaseFragment {
                 mIndustryLedUpArray.addAll((List<IndustryInfo>) object);
 
 
-                mStockPlateAdapter.notifyDataSetChanged();
-
-                //mListView.setVisibility(View.VISIBLE);
-                onLoaded();
-                mProgressBar.setVisibility(View.GONE);
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStockPlateAdapter.notifyDataSetChanged();
+                        onLoaded();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
             }
         });
 

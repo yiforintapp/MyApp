@@ -5,12 +5,12 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.FileRequest;
-import com.android.volley.toolbox.HttpStack;
-import com.android.volley.toolbox.HurlStack;
+import com.zlfandroid.zlfvolley.DefaultRetryPolicy;
+import com.zlfandroid.zlfvolley.Response;
+import com.zlfandroid.zlfvolley.VolleyError;
+import com.zlfandroid.zlfvolley.toolbox.FileRequest;
+import com.zlfandroid.zlfvolley.toolbox.HttpStack;
+import com.zlfandroid.zlfvolley.toolbox.HurlStack;
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.HttpRequestAgent;
 import com.zlf.appmaster.ThreadManager;

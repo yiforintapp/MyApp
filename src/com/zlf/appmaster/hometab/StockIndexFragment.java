@@ -1,6 +1,7 @@
 package com.zlf.appmaster.hometab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +14,7 @@ import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.stock.StockIndex;
+import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
 import com.zlf.appmaster.utils.LiveRecordingUtil;
 
 import org.json.JSONException;
@@ -109,26 +111,26 @@ public class StockIndexFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position - 1);
                 if (null != item) {
-//                    Class targetClass;
-//
+                    Class targetClass;
+
 //                    if(mLiveRecordingUtil.isLiveRecording()){
 //                        targetClass = LiveAnchorLectureActivity.class;
 //                    }else{
-//                        targetClass = StockIndexDetailActivity.class;
+                        targetClass = StockIndexDetailActivity.class;
 //                    }
-//                    Intent intent = new Intent(mContext, targetClass);
-//
+                    Intent intent = new Intent(mActivity, targetClass);
+
 //                    if(targetClass == LiveAnchorLectureActivity.class){
 //                        mLiveRecordingUtil.setStockName(item.getName());
 //                        mLiveRecordingUtil.setStockCode(item.getCode());
 //                        mLiveRecordingUtil.setStock(false);
 //                        intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    }else{
-//                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, item.getCode());
-//                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
+                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, item.getCode());
+                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
 //                    }
-//                    mContext.startActivity(intent);
-//
+                    mActivity.startActivity(intent);
+
                 }
             }
         });
@@ -190,8 +192,13 @@ public class StockIndexFragment extends BaseFragment {
             @Override
             public void onError(int errorCode, String errorString) {
 
-                mProgressBar.setVisibility(View.GONE);
-                onLoaded();
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressBar.setVisibility(View.GONE);
+                        onLoaded();
+                    }
+                });
             }
         });
     }

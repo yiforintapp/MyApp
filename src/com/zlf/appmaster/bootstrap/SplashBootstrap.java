@@ -3,9 +3,9 @@ package com.zlf.appmaster.bootstrap;
 
 import android.graphics.Bitmap;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
+import com.zlfandroid.zlfvolley.Response.ErrorListener;
+import com.zlfandroid.zlfvolley.Response.Listener;
+import com.zlfandroid.zlfvolley.VolleyError;
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.AppMasterConfig;
 import com.zlf.appmaster.AppMasterPreference;
@@ -151,7 +151,7 @@ public class SplashBootstrap extends com.zlf.appmaster.bootstrap.Bootstrap {
         }
 
         @Override
-        public void onResponse(JSONObject response, boolean noMidify) {
+        public void onResponse(JSONObject response, boolean modify) {
             if (response != null) {
                 // Log.e(Constants.RUN_TAG, "拉取成功:");
                 LeoLog.d(TAG, "拉取成功！");
@@ -390,7 +390,7 @@ public class SplashBootstrap extends com.zlf.appmaster.bootstrap.Bootstrap {
         HttpRequestAgent.getInstance(mApp).loadSplashImage(url, dir, new Listener<File>() {
 
             @Override
-            public void onResponse(File response, boolean noMidify) {
+            public void onResponse(File response, boolean modify) {
                 pref.setLastLoadSplashTime(System.currentTimeMillis());
                 /*下载成功后生成二维码图保存*/
 //                boolean isSaveShare = shareSplashImage();

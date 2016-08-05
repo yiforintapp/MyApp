@@ -84,5 +84,6 @@
     <dimen name="list_item_padding_left">@dimen/general_margin_left</dimen>
     <dimen name="list_item_padding_right">@dimen/general_margin_right</dimen>
     <dimen name="stock_list_item_height">56.7dp</dimen>
+    <dimen name="activity_title_bar_split_height">0.667dp</dimen>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.zlf.appmaster.hometab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
@@ -12,6 +13,7 @@ import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.stock.StockTradeInfo;
+import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
 import com.zlf.appmaster.utils.LiveRecordingUtil;
 
 import org.json.JSONArray;
@@ -137,27 +139,27 @@ public class StockRiseInfoFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 StockTradeInfo item = (StockTradeInfo) mStockRiseInfoAdapter.getItem(position - 1);
-//                if (null != item) {
-//                    Class targetClass;
+                if (null != item) {
+                    Class targetClass;
 //                    if(isLiveIntent == true){
 //                        targetClass = LiveAnchorLectureActivity.class;
 //                    }else{
-//                        targetClass = StockTradeDetailActivity.class;
+                        targetClass = StockTradeDetailActivity.class;
 //                    }
-//                    Intent intent = new Intent(mContext, targetClass);
-//
+                    Intent intent = new Intent(mActivity, targetClass);
+
 //                    if(targetClass == LiveAnchorLectureActivity.class){
 //                        mLiveRecordingUtil.setStockName(item.getName());
 //                        mLiveRecordingUtil.setStockCode(item.getCode());
 //                        mLiveRecordingUtil.setStock(true);
 //                        intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    }else{
-//                        intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKNAME, item.getName());
-//                        intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKCODE, item.getCode());
+                        intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKNAME, item.getName());
+                        intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKCODE, item.getCode());
 //                    }
-//
-//                    startActivityForResult(intent, 0);
-//                }
+
+                    startActivityForResult(intent, 0);
+                }
             }
         });
 
@@ -210,10 +212,14 @@ public class StockRiseInfoFragment extends BaseFragment {
                     mStockLedDownArray.addAll((ArrayList<StockTradeInfo>) objectArray[1]);
 
                 }
-                mStockRiseInfoAdapter.notifyDataSetChanged();
-
-                mProgressBar.setVisibility(View.GONE);
-                onLoaded();
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStockRiseInfoAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                        onLoaded();
+                    }
+                });
             }
 
             @Override

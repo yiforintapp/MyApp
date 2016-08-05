@@ -1,6 +1,7 @@
 package com.zlf.appmaster.userTab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.zlf.appmaster.ui.stock.IndustryPieView;
 import com.zlf.appmaster.ui.stock.StockTextView;
 import com.zlf.appmaster.ui.stock.TopicPieView;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class StockFavoriteListAdapter extends BaseAdapter {
@@ -192,10 +194,10 @@ public class StockFavoriteListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View view) {
                             if (null != mIndustryItems && !mIndustryItems.isEmpty()){
-//                                Intent intent = new Intent(mContext, StockFavoriteIndustryActivity.class);
-//                                intent.putExtra(StockFavoriteIndustryActivity.INTENT_FLAG_DATA, (Serializable) mIndustryItems);
-//                                intent.putExtra(StockFavoriteIndustryActivity.INTENT_FLAG_TITLE, mContext.getString(R.string.stock_favorite_industry_title));
-//                                mContext.startActivity(intent);
+                                Intent intent = new Intent(mContext, StockFavoriteIndustryActivity.class);
+                                intent.putExtra(StockFavoriteIndustryActivity.INTENT_FLAG_DATA, (Serializable) mIndustryItems);
+                                intent.putExtra(StockFavoriteIndustryActivity.INTENT_FLAG_TITLE, mContext.getString(R.string.stock_favorite_industry_title));
+                                mContext.startActivity(intent);
                             }
 
                         }
@@ -204,10 +206,10 @@ public class StockFavoriteListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View view) {
                             if (null != mTopicItems && !mTopicItems.isEmpty()) {
-//                                Intent intent = new Intent(mContext, StockFavoriteIndustryActivity.class);
-//                                intent.putExtra(StockFavoriteIndustryActivity.INTENT_FLAG_DATA, (Serializable) mTopicItems);
-//                                intent.putExtra(StockFavoriteIndustryActivity.INTENT_FLAG_TITLE, mContext.getString(R.string.stock_favorite_topic_title));
-//                                mContext.startActivity(intent);
+                                Intent intent = new Intent(mContext, StockFavoriteIndustryActivity.class);
+                                intent.putExtra(StockFavoriteIndustryActivity.INTENT_FLAG_DATA, (Serializable) mTopicItems);
+                                intent.putExtra(StockFavoriteIndustryActivity.INTENT_FLAG_TITLE, mContext.getString(R.string.stock_favorite_topic_title));
+                                mContext.startActivity(intent);
                             }
 
                         }
