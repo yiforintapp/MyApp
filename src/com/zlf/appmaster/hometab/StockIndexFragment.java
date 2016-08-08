@@ -192,13 +192,8 @@ public class StockIndexFragment extends BaseFragment {
             @Override
             public void onError(int errorCode, String errorString) {
 
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mProgressBar.setVisibility(View.GONE);
-                        onLoaded();
-                    }
-                });
+                mProgressBar.setVisibility(View.GONE);
+                onLoaded();
             }
         });
     }

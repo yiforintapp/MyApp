@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.chartview.bean.StockKLine;
@@ -30,6 +31,8 @@ import com.zlf.appmaster.stocktrade.StockChartDetailActivity;
 import com.zlf.appmaster.ui.stock.IndexBaseInfoView;
 import com.zlf.appmaster.ui.stock.StockTextView;
 import com.zlf.appmaster.ui.stock.TabButton;
+import com.zlf.appmaster.utils.QLog;
+import com.zlf.appmaster.utils.QToast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +59,8 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
 
     private String mStockIndexID;
     private String mStockIndexName;
+
+    private boolean mAdapterNotify;  // 涨跌是否正在刷新
 
     private final static int REFRESH_KLINE_DATA = 1;
     public Handler mHandler = new Handler(){
@@ -246,6 +251,11 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
         }
         @Override
         public void onClick(View view) {
+            QLog.e("onChange", mAdapterNotify + ": mAdapterNotify");
+            if (mAdapterNotify) {
+                QToast.show(mContext, "当前正在刷新,sha", Toast.LENGTH_SHORT);
+                return;
+            }
             // 清除状态
             mViewHolder.btnLedDown.setEnabled(true);
             mViewHolder.btnLedDown.setSelected(false);
@@ -448,5 +458,10 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
             }
         });
 
+    }
+
+    /** 防止刷新途中再次点击切换 */
+    public void setAdapterNotify(boolean b) {
+        this.mAdapterNotify = b;
     }
 }

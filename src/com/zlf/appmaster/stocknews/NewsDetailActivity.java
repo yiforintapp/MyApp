@@ -157,13 +157,8 @@ public class NewsDetailActivity extends Activity {
                     public void onDataFinish(Object object) {
                         // TODO Auto-generated method stub
                         mNewsDetail = (NewsDetail) object;
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								setContent(mNewsDetail);
-								setActionBarIconVisibility(View.VISIBLE);
-							}
-						});
+						setContent(mNewsDetail);
+						setActionBarIconVisibility(View.VISIBLE);
                     }
 
                     @Override

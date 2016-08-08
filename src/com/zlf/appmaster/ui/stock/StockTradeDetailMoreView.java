@@ -185,26 +185,16 @@ public class StockTradeDetailMoreView extends LinearLayout {
             @Override
             public void onError(int errorCode, String errorString) {
                 // TODO Auto-generated method stub
-                ((StockTradeDetailActivity)mContext).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mExtraInfoProgressBar_II.setVisibility(View.GONE);
-                        showExtraInfoPrompt(mExtraInfoDataPromptViewII, EXTRA_INFO_STATUS_ERROR);
-                    }
-                });
+                mExtraInfoProgressBar_II.setVisibility(View.GONE);
+                showExtraInfoPrompt(mExtraInfoDataPromptViewII, EXTRA_INFO_STATUS_ERROR);
             }
 
             @Override
             public void onDataFinish(Object object) {
                 final ArrayList<NewsFlashItem> list = (ArrayList<NewsFlashItem>)object;
                 // TODO Auto-generated method stub
-                ((StockTradeDetailActivity)mContext).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mExtraInfoProgressBar_II.setVisibility(View.GONE);
-                        updateStockNewsViews(list);
-                    }
-                });
+                mExtraInfoProgressBar_II.setVisibility(View.GONE);
+                updateStockNewsViews(list);
                 mbLoadedNewsView = true;
             }
         });

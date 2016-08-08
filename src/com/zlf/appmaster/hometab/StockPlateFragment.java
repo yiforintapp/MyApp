@@ -195,13 +195,8 @@ public class StockPlateFragment extends BaseFragment {
             @Override
             public void onError(int errorCode, String errorString) {
                 // TODO Auto-generated method stub
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mProgressBar.setVisibility(View.GONE);
-                        onLoaded();
-                    }
-                });
+                mProgressBar.setVisibility(View.GONE);
+                onLoaded();
             }
 
             @Override
@@ -211,15 +206,9 @@ public class StockPlateFragment extends BaseFragment {
 
                 mIndustryLedUpArray.addAll((List<IndustryInfo>) object);
 
-
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mStockPlateAdapter.notifyDataSetChanged();
-                        onLoaded();
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-                });
+                mStockPlateAdapter.notifyDataSetChanged();
+                onLoaded();
+                mProgressBar.setVisibility(View.GONE);
             }
         });
 

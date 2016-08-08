@@ -212,14 +212,9 @@ public class StockRiseInfoFragment extends BaseFragment {
                     mStockLedDownArray.addAll((ArrayList<StockTradeInfo>) objectArray[1]);
 
                 }
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mStockRiseInfoAdapter.notifyDataSetChanged();
-                        mProgressBar.setVisibility(View.GONE);
-                        onLoaded();
-                    }
-                });
+                mStockRiseInfoAdapter.notifyDataSetChanged();
+                mProgressBar.setVisibility(View.GONE);
+                onLoaded();
             }
 
             @Override

@@ -56,6 +56,7 @@ public class StockIndexDetailActivity extends Activity {
     private static final int LOAD_ITEM_NUM = 9;
 
 
+
     public Handler mHandler = new Handler(){
 
         @Override
@@ -142,8 +143,8 @@ public class StockIndexDetailActivity extends Activity {
         mStockIndexDetailAdapter.setOnTabChange(new StockIndexDetailListAdapter.OnTabChange() {
             @Override
             public void onChange(int type) {
+                mStockIndexDetailAdapter.setAdapterNotify(true);
                 mDataType = type;
-
                 // 刷新涨跌幅榜
                 mCurEndIndex = 0;
                 mData.clear();
@@ -259,12 +260,8 @@ public class StockIndexDetailActivity extends Activity {
                 }
 
                 //mHandler.sendEmptyMessage(MSG_UPDATE_LED_UP_LIST);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mStockIndexDetailAdapter.notifyDataSetChanged();
-                    }
-                });
+                mStockIndexDetailAdapter.notifyDataSetChanged();
+                mStockIndexDetailAdapter.setAdapterNotify(false);
             }
 
             @Override
@@ -272,6 +269,7 @@ public class StockIndexDetailActivity extends Activity {
                 onLoaded();
          //       mProgressBar.setVisibility(View.GONE);
                 mListView.setPullLoadEnable(false);
+                mStockIndexDetailAdapter.setAdapterNotify(false);
             }
         });
     }
@@ -303,4 +301,5 @@ public class StockIndexDetailActivity extends Activity {
 //        MobclickAgent.onPageEnd(TAG); // 保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息
 //        MobclickAgent.onPause(this);
 	}
+
 }

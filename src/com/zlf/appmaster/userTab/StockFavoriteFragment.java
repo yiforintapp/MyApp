@@ -416,14 +416,9 @@ public class StockFavoriteFragment extends BaseFragment {
                         mIndustryItemArray.addAll(industryItems);
 
                         //mHandler.sendEmptyMessage(MSG_REFREASH_VIEW);
-                        mActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mStockFavoriteListAdapter.notifyDataSetChanged();
-                                mProgressBar.setVisibility(View.GONE);
-                                onLoaded();
-                            }
-                        });
+                        mStockFavoriteListAdapter.notifyDataSetChanged();
+                        mProgressBar.setVisibility(View.GONE);
+                        onLoaded();
                     }
                 });
 

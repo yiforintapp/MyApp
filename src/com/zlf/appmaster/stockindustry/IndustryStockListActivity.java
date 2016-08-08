@@ -100,14 +100,9 @@ public class IndustryStockListActivity extends ListActivity {
 			public void onDataFinish(Object object) {
 				// TODO Auto-generated method stub
 				mStockArray = (ArrayList<StockTradeInfo>) object;
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						mProgressBar.setVisibility(View.GONE);
-						mStockListAdapter = new  StockTradeInfoListAdapter(IndustryStockListActivity.this, mStockArray);
-						updateViews();
-					}
-				});
+				mProgressBar.setVisibility(View.GONE);
+				mStockListAdapter = new  StockTradeInfoListAdapter(IndustryStockListActivity.this, mStockArray);
+				updateViews();
 
 			}
 		});
