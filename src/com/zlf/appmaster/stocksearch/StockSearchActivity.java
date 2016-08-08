@@ -45,7 +45,7 @@ public class StockSearchActivity extends BaseStockSearchActivity {
 
         // 同步股票信息
         SyncRequest syncRequest = new SyncRequest(this, SyncBaseBean.SYNC_KEY_STOCK_BASE_DATA);
-        QLog.e("StockTable", "syncRequestStr===========>:" + syncRequest);
+        QLog.e("StockTable", "syncRequestStr===========>.:" + syncRequest);
         SyncClient.getInstance(this).requestSyncA(syncRequest, null);
     }
 
