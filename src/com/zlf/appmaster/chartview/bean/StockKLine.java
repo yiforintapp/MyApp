@@ -203,9 +203,6 @@ public class StockKLine extends StockVolume {
         if (ll > 30) {
             Log.e("hfgjfgj", "time:  " + stockkline.l + "");
             Date date = new Date(stockkline.l);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String dateStr = sdf.format(date);
-            Log.e("hfgjfgj", "SimpleDateFormat:  " + dateStr);
             Log.e("hfgjfgj", "low:  " + stockkline.d + "");
             Log.e("hfgjfgj", "high:  " + stockkline.c + "");
             Log.e("hfgjfgj", "open:  " + stockkline.a + "");
