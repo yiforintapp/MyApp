@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -597,6 +598,8 @@ public class StringUtil {
 				baos.write(buf, 0, num);
 			}
 			bytes = baos.toByteArray();
+
+
 			baos.flush();
 			baos.close();
 			gzip.close();

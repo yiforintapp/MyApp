@@ -44,6 +44,8 @@ public class StockIndex /*implements Parcelable*/{
 	private long mDataTime;					// 数据更新时间
 	private long mCurrentTime;				// 服务器当前时间
 
+	private String mIsOpen;  //是否开市
+
     public StockIndex(){
 
     }
@@ -70,6 +72,8 @@ public class StockIndex /*implements Parcelable*/{
 
         mDataTime = stockIndex.mDataTime;
         mCurrentTime = stockIndex.mCurrentTime;
+
+		mIsOpen = stockIndex.mIsOpen;
     }
 
 
@@ -239,6 +243,12 @@ public class StockIndex /*implements Parcelable*/{
 	}
 	public void setMarketStatus(int mMarketStatus) {
 		this.mMarketStatus = mMarketStatus;
+	}
+	public String getIsOPen() {
+		return mIsOpen;
+	}
+	public void setIsOPen(String isOpen) {
+		this.mIsOpen = isOpen;
 	}
 	
 	public static String getNameById(String indexId){

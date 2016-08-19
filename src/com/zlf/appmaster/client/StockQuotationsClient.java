@@ -137,6 +137,121 @@ public class StockQuotationsClient {
                 });
     }
 
+    public void requestNewIndexAll(final OnRequestListener requestFinished, String url){
+
+        UniversalRequest.requestNewUrlWithTimeOut("Tag", mContext, url,
+                new OnRequestListener() {
+
+                    @Override
+                    public void onError(int errorCode, String errorString) {
+                        // TODO Auto-generated method stub
+                        requestFinished.onError(errorCode, errorString);
+                    }
+
+                    @Override
+                    public void onDataFinish(Object object) {
+                        // TODO Auto-generated method stub
+                        Object objectRet[] = new Object[1];     // 固定2个回调者要知道顺序
+                        try {
+                            JSONArray response = (JSONArray) object;
+                            List<StockIndex> stockIndexes = new ArrayList<StockIndex>();
+                            for (int i = 0; i < response.length(); i ++) {
+                                JSONObject dataIndexJSON = response.getJSONObject(i);
+
+                                StockIndex item = new StockIndex();
+
+                                item.setCode(dataIndexJSON.getString("code"));
+                                item.setName(dataIndexJSON.getString("name"));
+
+                                item.setYesterdayIndex(dataIndexJSON.getDouble("lastclose"));
+                                item.setNowIndex(dataIndexJSON.getDouble("sell"));
+
+                                stockIndexes.add(item);
+                            }
+                            objectRet[0] = stockIndexes;
+
+                            if (requestFinished != null) {
+                                // save to cache
+//                                StockJsonCache.saveToFile(mContext,
+//                                        StockJsonCache.CACHEID_QUOTATIONS_INDEX, response);
+                                // call back
+                                requestFinished.onDataFinish(objectRet);
+                            }
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }, false, 0, false);
+
+    }
+
+
+    public void requestNewIndexItem(final OnRequestListener requestFinished, String url){
+
+        UniversalRequest.requestNewUrlWithTimeOut("Tag", mContext, url,
+                new OnRequestListener() {
+
+                    @Override
+                    public void onError(int errorCode, String errorString) {
+                        // TODO Auto-generated method stub
+                        requestFinished.onError(errorCode, errorString);
+                    }
+
+                    @Override
+                    public void onDataFinish(Object object) {
+                        // TODO Auto-generated method stub
+                        Object objectRet[] = new Object[1];     // 固定2个回调者要知道顺序
+                        try {
+                            JSONArray response = (JSONArray) object;
+                            List<StockIndex> stockIndexes = new ArrayList<StockIndex>();
+                            for (int i = 0; i < response.length(); i ++) {
+                                JSONObject dataIndexJSON = response.getJSONObject(i);
+
+                                StockIndex item = new StockIndex();
+
+                                item.setCode(dataIndexJSON.getString("code"));
+                                item.setName(dataIndexJSON.getString("name"));
+
+                                item.setTodayIndex(dataIndexJSON.optDouble("open"));
+                                item.setYesterdayIndex(dataIndexJSON.optDouble("lastclose"));
+                                item.setNowIndex(dataIndexJSON.optDouble("sell"));
+                                item.setHighestIndex(dataIndexJSON.optDouble("high"));
+                                item.setLowestIndex(dataIndexJSON.optDouble("low"));
+
+                                item.setTradeCount(99999);
+                                item.setTradePrice(99999999);
+
+                                item.setDataTime(dataIndexJSON.optLong("quoteTime"));
+
+                                item.setUpCount(999);
+                                item.setDeuceCount(999);
+                                item.setDownCount(999);
+                                item.setIsOPen(dataIndexJSON.getString("status"));
+
+                                item.setCurrentTime(System.currentTimeMillis());
+
+                                stockIndexes.add(item);
+
+                            }
+                            objectRet[0] = stockIndexes;
+
+                            if (requestFinished != null) {
+                                // save to cache
+//                                StockJsonCache.saveToFile(mContext,
+//                                        StockJsonCache.CACHEID_QUOTATIONS_INDEX, response);
+                                // call back
+                                requestFinished.onDataFinish(objectRet);
+                            }
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }, false, 0, false);
+
+    }
+
 
     /**
      * 获取涨跌幅板块

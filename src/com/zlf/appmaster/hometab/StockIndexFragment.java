@@ -222,7 +222,7 @@ public class StockIndexFragment extends BaseFragment {
         mLiveRecordingUtil = LiveRecordingUtil.getInstance();
         initViews(mLayout);
 
-        loadCache();
+//      loadCache();
         initData();
     }
 }

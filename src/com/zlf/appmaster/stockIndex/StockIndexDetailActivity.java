@@ -13,10 +13,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.xlistview.XListView;
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.cache.StockJsonCache;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockClient;
+import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.model.stock.StockTradeInfo;
 import com.zlf.appmaster.stocksearch.StockSearchActivity;
@@ -30,6 +32,7 @@ import java.util.List;
 public class StockIndexDetailActivity extends Activity {
 	public static final String INTENT_FLAG_INDEXCODE = "intent_flag_index_code";
     public static final String INTENT_FLAG_INDEXNAME = "intent_flag_index_name";
+    public static final String INTENT_FLAG_GUO_XIN = "intent_flag_index_guo_xin";
 
 	private static final String TAG = StockIndexDetailActivity.class.getSimpleName();
     private static final int MSG_UPDATE_INDEX = 1;
@@ -56,6 +59,8 @@ public class StockIndexDetailActivity extends Activity {
     private static final int LOAD_ITEM_NUM = 9;
 
 
+    private StockQuotationsClient mStockQuotationsClient;
+    private boolean mFromGuoXin;
 
     public Handler mHandler = new Handler(){
 
@@ -92,8 +97,10 @@ public class StockIndexDetailActivity extends Activity {
         mContext = this;
 
         mStockClient = new StockClient(this);
+        mStockQuotationsClient = StockQuotationsClient.getInstance(this);
         mStockIndexID = getIntent().getStringExtra(INTENT_FLAG_INDEXCODE);
         mStockIndexName = getIntent().getStringExtra(INTENT_FLAG_INDEXNAME);
+        mFromGuoXin = getIntent().getBooleanExtra(INTENT_FLAG_GUO_XIN, false);
 
         mActivityTitleTV 		= (TextView)findViewById(R.id.stocktrade_detail_title);
         mActivityTitleCommentTV = (TextView)findViewById(R.id.stocktrade_detail_title_comment);
@@ -138,7 +145,7 @@ public class StockIndexDetailActivity extends Activity {
         // 初始化数据
 
         mData = new ArrayList<StockTradeInfo>();
-        mStockIndexDetailAdapter = new StockIndexDetailListAdapter(mContext, mStockClient, mStockIndex, mData);
+        mStockIndexDetailAdapter = new StockIndexDetailListAdapter(mContext, mStockClient, mStockIndex, mData, mFromGuoXin);
 
         mStockIndexDetailAdapter.setOnTabChange(new StockIndexDetailListAdapter.OnTabChange() {
             @Override
@@ -183,12 +190,18 @@ public class StockIndexDetailActivity extends Activity {
 
 
         mTitleComment1 = " 交易中" + stockIndex.getDataTimeFormat();
-        int marketStatus = stockIndex.getMarketStatus();
-        if(marketStatus != StockTradeInfo.MARKET_STATUS_NORMAL){
-            mTitleComment1 = " 休市中 " + stockIndex.getDataTimeFormat();
+        if (mFromGuoXin) {
+            if (!"open".equals(mStockIndex.getIsOPen())) {
+                mTitleComment1 = " 休市中 " + stockIndex.getDataTimeFormat();
+            }
+        } else {
+            int marketStatus = stockIndex.getMarketStatus();
+            if (marketStatus != StockTradeInfo.MARKET_STATUS_NORMAL) {
+                mTitleComment1 = " 休市中 " + stockIndex.getDataTimeFormat();
 
-            // 休市则终止自动刷新
-            //stopAutoRefresh();
+                // 休市则终止自动刷新
+                //stopAutoRefresh();
+            }
         }
         mActivityTitleCommentTV.setText(mTitleComment1);
         mTitleComment2 = stockIndex.getCurPriceFormat() + "  " +stockIndex.getCurPriceComment();
@@ -199,25 +212,44 @@ public class StockIndexDetailActivity extends Activity {
 
 
     private void requestData(final boolean autoRefresh){
-        mStockClient.requestStockIndexDetail(mStockIndexID, new OnRequestListener() {
+        if (mFromGuoXin) {
+            mStockQuotationsClient.requestNewIndexItem(new OnRequestListener() {
+                @Override
+                public void onDataFinish(Object object) {
+                    Object[] objectArray = (Object[])object;
+                    mStockIndex.copy(((List<StockIndex>)objectArray[0]).get(0));
+                    updateViews(mStockIndex);
+                    mStockIndexDetailAdapter.notifyDataSetChanged();
+                    mStockIndexDetailAdapter.setAdapterNotify(false);
+                    loadMoreList();
+                }
 
-            @Override
-            public void onError(int errorCode, String errorString) {
-                // TODO Auto-generated method stub
-            }
+                @Override
+                public void onError(int errorCode, String errorString) {
 
-            @Override
-            public void onDataFinish(Object object) {
-                // TODO Auto-generated method stub
-                mStockIndex.copy((StockIndex)object);
-                updateViews(mStockIndex);
-                //mStockIndexDetailAdapter.notifyDataSetChanged();
+                }
+            }, Constants.JIN_GUI_INFO_ITEM.concat(mStockIndexID));
+        } else {
+            mStockClient.requestStockIndexDetail(mStockIndexID, new OnRequestListener() {
 
-                // mHandler.sendEmptyMessage(MSG_UPDATE_INDEX);
+                @Override
+                public void onError(int errorCode, String errorString) {
+                    // TODO Auto-generated method stub
+                }
 
-                loadMoreList();
-            }
-        });
+                @Override
+                public void onDataFinish(Object object) {
+                    // TODO Auto-generated method stub
+                    mStockIndex.copy((StockIndex) object);
+                    updateViews(mStockIndex);
+                    //mStockIndexDetailAdapter.notifyDataSetChanged();
+
+                    // mHandler.sendEmptyMessage(MSG_UPDATE_INDEX);
+
+                    loadMoreList();
+                }
+            });
+        }
     }
 
     //刷新

@@ -9,7 +9,9 @@ import android.support.v4.view.ViewPager;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.hometab.StockIndexFragment;
+import com.zlf.appmaster.hometab.StockJinGuiFragment;
 import com.zlf.appmaster.hometab.StockPlateFragment;
+import com.zlf.appmaster.hometab.StockQiLuFragment;
 import com.zlf.appmaster.hometab.StockRiseInfoFragment;
 import com.zlf.appmaster.hometab.StockTopicFragment;
 import com.zlf.appmaster.ui.PagerSlidingTabStrip;
@@ -23,8 +25,10 @@ import java.util.List;
 public class HomeTabFragment extends BaseFragment {
 
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[4];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[6];
 //    private HomeTabChildFragment mUserSelectFragment;
+    private StockJinGuiFragment mStockJinGuiFragment;
+    private StockQiLuFragment mStockQiLuFragment;
     private StockTopicFragment mStockTopicFragment;
     private StockIndexFragment mStockIndexFragment;
     private StockRiseInfoFragment mStockRiseInfoFragment;
@@ -61,28 +65,40 @@ public class HomeTabFragment extends BaseFragment {
 //        holder.fragment = mStockFavoriteFragment;
 //        mHomeHolders[0] = holder;
         HomeTabHolder holder = new HomeTabHolder();
+        holder.title = "津贵所";
+        mStockJinGuiFragment = new StockJinGuiFragment();
+        holder.fragment = mStockJinGuiFragment;
+        mHomeHolders[0] = holder;
+
+        holder = new HomeTabHolder();
+        holder.title = "齐鲁商品";
+        mStockQiLuFragment = new StockQiLuFragment();
+        holder.fragment = mStockQiLuFragment;
+        mHomeHolders[1] = holder;
+
+        holder = new HomeTabHolder();
         holder.title = "指数";
         mStockIndexFragment = new StockIndexFragment();
         holder.fragment = mStockIndexFragment;
-        mHomeHolders[0] = holder;
+        mHomeHolders[2] = holder;
 
         holder = new HomeTabHolder();
         holder.title = "涨跌";
         mStockRiseInfoFragment = new StockRiseInfoFragment();
         holder.fragment = mStockRiseInfoFragment;
-        mHomeHolders[1] = holder;
+        mHomeHolders[3] = holder;
 
         holder = new HomeTabHolder();
         holder.title = "行业";
         mStockPlateFragment = new StockPlateFragment();
         holder.fragment = mStockPlateFragment;
-        mHomeHolders[2] = holder;
+        mHomeHolders[4] = holder;
 
         holder = new HomeTabHolder();
         holder.title = "题材";
         mStockTopicFragment = new StockTopicFragment();
         holder.fragment = mStockTopicFragment;
-        mHomeHolders[3] = holder;
+        mHomeHolders[5] = holder;
 
 
         FragmentManager fm = getChildFragmentManager();

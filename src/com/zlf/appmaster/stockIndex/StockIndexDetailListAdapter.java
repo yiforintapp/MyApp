@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.chartview.bean.StockKLine;
 import com.zlf.appmaster.chartview.bean.StockMinutes;
@@ -62,6 +64,8 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
 
     private boolean mAdapterNotify;  // 涨跌是否正在刷新
 
+    private boolean mFromGuoXin;
+
     private final static int REFRESH_KLINE_DATA = 1;
     public Handler mHandler = new Handler(){
 
@@ -82,7 +86,7 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
 
     };
 
-    public StockIndexDetailListAdapter(Context context, StockClient stockClient, StockIndex index, List<StockTradeInfo> data) {
+    public StockIndexDetailListAdapter(Context context, StockClient stockClient, StockIndex index, List<StockTradeInfo> data, boolean fromGuoXin) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
 
@@ -93,6 +97,8 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
         mStockIndexName = mStockIndex.getName();
 
         mStockClient = stockClient;
+
+        mFromGuoXin = fromGuoXin;
 
         // 初始化K线view
         mStockChartView = new StockChartView(context);
@@ -305,12 +311,12 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
 
             @Override
             public void getMinuteData(final OnGetMinuteDataListener listener) {
-                getStockMinuteData(listener);
+                getStockMinuteData(listener, mFromGuoXin);
             }
 
             @Override
             public void getDailyKLines(final OnGetDailyKLinesListener listener) {
-                getStockDailyKLines(listener);
+                getStockDailyKLines(listener, mFromGuoXin);
             }
 
             @Override
@@ -340,60 +346,73 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
      * 获取分时数据
      * @param listener
      */
-    private void getStockMinuteData(final OnGetMinuteDataListener listener) {
-//        if (mStockIndex != null ){
-//            if (mStockIndex.getMarketStatus() == StockTradeInfo.MARKET_STATUS_NOT_SERVICE_TIME){
-//                //停牌 或 清数据时间
-//                listener.onError();
-//                mStockChartView.clearMinuteData((float)mStockIndex.getNowIndex());
-//                return;
-//            }
-//        }
-        long lastTime = 0;//去掉毫秒
-        //先从数据库中读取显示
-        IndexMinuteTable table = new IndexMinuteTable(mContext);//用指数的！！
-        byte[] b = table.getMintueData(mStockIndexID);
-        if (b != null && b.length > 0) {
-            ArrayList<StockMinutes> dataArrayList = StockMinutes.resloveByteArray(b);
-            if (dataArrayList != null && dataArrayList.size() > 0) {
-                listener.onDataFinish(dataArrayList);
-                //修改为数据库的时间
-                lastTime = dataArrayList.get(dataArrayList.size()-1).getDataTime();
+    private void getStockMinuteData(final OnGetMinuteDataListener listener, boolean fromGuoXin) {
+        if (fromGuoXin) {
+            mStockClient.requestNewMinuteData(new OnRequestListener() {
+                @Override
+                public void onDataFinish(Object object) {
+                    ArrayList<StockMinutes> dataArrayList = new ArrayList<StockMinutes>();
+                    dataArrayList.addAll((ArrayList<StockMinutes>)object);
+                    if (dataArrayList == null || dataArrayList.size() == 0) {
+                        //没有获取到数据
+                        listener.onError();
+                        return;
+                    }
+                    listener.onDataFinish(dataArrayList);
+                }
+
+                @Override
+                public void onError(int errorCode, String errorString) {
+
+                }
+            }, Constants.JIN_GUI_INFO_MINUTE.concat(mStockIndexID));
+        } else {
+            long lastTime = 0;//去掉毫秒
+            //先从数据库中读取显示
+            IndexMinuteTable table = new IndexMinuteTable(mContext);//用指数的！！
+            byte[] b = table.getMintueData(mStockIndexID);
+            if (b != null && b.length > 0) {
+                ArrayList<StockMinutes> dataArrayList = StockMinutes.resloveByteArray(b);
+                if (dataArrayList != null && dataArrayList.size() > 0) {
+                    listener.onDataFinish(dataArrayList);
+                    //修改为数据库的时间
+                    lastTime = dataArrayList.get(dataArrayList.size() - 1).getDataTime();
+                }
             }
-        }
-        table.close();
+            table.close();
 
-        int type = StockClient.TYPE_INDEX;
-        //再去读取网络的
-        //设置最后一笔的时间点
-        final long endTime = 99999999999999L;
+            int type = StockClient.TYPE_INDEX;
+            //再去读取网络的
+            //设置最后一笔的时间点
+            final long endTime = 99999999999999L;
 
-        mStockClient.getMinuteInfoByLastTime(mStockIndexID, type,
-                lastTime,
-                new OnRequestListener() {
+            mStockClient.getMinuteInfoByLastTime(mStockIndexID, type,
+                    lastTime,
+                    new OnRequestListener() {
 
-                    @Override
-                    public void onError(int errorCode, String errorString) {
-                        // TODO Auto-generated method stub
-                    }
-
-                    @Override
-                    public void onDataFinish(Object object) {
-
-                        ArrayList<StockMinutes> dataArrayList = StockMinutes.resloveMinutesData(object,false,endTime);
-                        if (dataArrayList == null || dataArrayList.size() == 0) {
-                            //没有获取到数据
-                            listener.onError();
-                            return;
+                        @Override
+                        public void onError(int errorCode, String errorString) {
+                            // TODO Auto-generated method stub
                         }
-                        listener.onDataFinish(dataArrayList);
 
-                        //保存到数据库
-                        IndexMinuteTable table = new IndexMinuteTable(mContext);
-                        table.saveMintueData(mStockIndexID, StockMinutes.toByteArray(dataArrayList), endTime);
-                        table.close();
-                    }
-                });
+                        @Override
+                        public void onDataFinish(Object object) {
+
+                            ArrayList<StockMinutes> dataArrayList = StockMinutes.resloveMinutesData(object, false, endTime);
+                            if (dataArrayList == null || dataArrayList.size() == 0) {
+                                //没有获取到数据
+                                listener.onError();
+                                return;
+                            }
+                            listener.onDataFinish(dataArrayList);
+
+                            //保存到数据库
+                            IndexMinuteTable table = new IndexMinuteTable(mContext);
+                            table.saveMintueData(mStockIndexID, StockMinutes.toByteArray(dataArrayList), endTime);
+                            table.close();
+                        }
+                    });
+        }
 
     }
 
@@ -401,62 +420,109 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
      * 获取日K数据
      * @param listener
      */
-    public void getStockDailyKLines(final OnGetDailyKLinesListener listener) {
-        //获取下起始时间点 大于1则说明有数据，可直接显示
-        long startTime = 1;
-
-        //从数据库中获取
-        IndexKLineTable mKLineTable = new IndexKLineTable(mContext);
-        byte[] b = mKLineTable.getKLineData(mStockIndexID);
-        if (b != null && b.length > 0) {
-            mDailyKLines = StockKLine.resloveKLineFromSql(b, mContext);
-            startTime = mDailyKLines.get(mDailyKLines.size()-1).getDataTime();//最后一条时间取起
-
-            if (listener != null) {
-                listener.onDataFinish(mDailyKLines);
-            }
-        }
-
-        //获取新的数据
-        //获取下起始时间点 大于1则说明有数据，可直接显示
-        long endTime = 32500886400000L;//2999/11/30 0:0:0
-
-        int type = StockClient.TYPE_INDEX;
-
-        //获取新的数据
-        mStockClient.getKlineInfo(mStockIndexID, StockClient.KLINE_TYPE_DAILY, type, startTime, endTime, new OnRequestListener() {
-
-            @Override
-            public void onError(int errorCode, String errorString) {
-                listener.onError();
-            }
-
-            @Override
-            public void onDataFinish(Object object) {
-                ArrayList<StockKLine> dataLines = StockKLine.resolveKLineZip(object, mContext);
-                if (dataLines == null || dataLines.size() == 0) {
-                    //没有获取到K线数据
+    public void getStockDailyKLines(final OnGetDailyKLinesListener listener, boolean fromGuoXin) {
+        if (mFromGuoXin) {
+            mStockClient.requestNewKLineData(new OnRequestListener() {
+                @Override
+                public void onDataFinish(Object object) {
+                    ArrayList<StockKLine> dataArrayList = new ArrayList<StockKLine>();
+                    dataArrayList.addAll((ArrayList<StockKLine>)object);
+                    if (dataArrayList == null || dataArrayList.size() == 0) {
+                        //没有获取到数据
+                        listener.onDataFinish(mDailyKLines);
+                        return;
+                    }
+                    listener.onDataFinish(dataArrayList);
+                    if (mDailyKLines != null) {
+                        mDailyKLines = StockKLine.addKLine(mDailyKLines, dataArrayList);
+                    } else {
+                        mDailyKLines = dataArrayList;
+                    }
                     listener.onDataFinish(mDailyKLines);
-                    return;
-                }
-                if (mDailyKLines != null) {
-                    mDailyKLines = StockKLine.addKLine(mDailyKLines, dataLines);
-                }else {
-                    mDailyKLines = dataLines;
                 }
 
+                @Override
+                public void onError(int errorCode, String errorString) {
 
-                listener.onDataFinish(mDailyKLines);
+                }
+            }, Constants.JIN_GUI_INFO_KLINE.concat(mStockIndexID));
+        } else {
+            //获取下起始时间点 大于1则说明有数据，可直接显示
+            long startTime = 1;
 
-                //要把之前的加进去
+            //从数据库中获取
+            IndexKLineTable mKLineTable = new IndexKLineTable(mContext);
+            byte[] b = mKLineTable.getKLineData(mStockIndexID);
+            if (b != null && b.length > 0) {
+                mDailyKLines = StockKLine.resloveKLineFromSql(b, mContext);
+                startTime = mDailyKLines.get(mDailyKLines.size() - 1).getDataTime();//最后一条时间取起
 
-                byte[] data = StockKLine.getKLineBytes(mDailyKLines);
-
-                //保存起来
-                IndexKLineTable mKLineTable = new IndexKLineTable(mContext);
-                mKLineTable.saveKLineData(mStockIndexID, data, mDailyKLines.get(mDailyKLines.size()-1).getDataTime());
+                if (listener != null) {
+                    listener.onDataFinish(mDailyKLines);
+                }
             }
-        });
+
+            //获取新的数据
+            //获取下起始时间点 大于1则说明有数据，可直接显示
+            long endTime = 32500886400000L;//2999/11/30 0:0:0
+
+            int type = StockClient.TYPE_INDEX;
+
+            //获取新的数据
+            mStockClient.getKlineInfo(mStockIndexID, StockClient.KLINE_TYPE_DAILY, type, startTime, endTime, new OnRequestListener() {
+
+                @Override
+                public void onError(int errorCode, String errorString) {
+                    listener.onError();
+                }
+
+                @Override
+                public void onDataFinish(Object object) {
+
+                    ArrayList<StockKLine> dataLines = StockKLine.resolveKLineZip(object, mContext);
+
+                    if (dataLines == null || dataLines.size() == 0) {
+                        //没有获取到K线数据
+                        listener.onDataFinish(mDailyKLines);
+                        return;
+                    }
+                    if (mDailyKLines != null) {
+                        mDailyKLines = StockKLine.addKLine(mDailyKLines, dataLines);
+                    } else {
+                        mDailyKLines = dataLines;
+                    }
+
+                    for (int i = 0; i < mDailyKLines.size(); i++) {
+                        StockKLine stockKLine = (StockKLine) mDailyKLines.get(i);
+                        Log.e("rtfgjfgjfg", "getLow:  " + stockKLine.getLow() + "");
+                        Log.e("rtfgjfgjfg", "getDataTime: " + stockKLine.getDataTime() + "");
+                        Log.e("rtfgjfgjfg", "getHigh: " + stockKLine.getHigh() + "");
+                        Log.e("rtfgjfgjfg", "getBackwardAdjust: " + stockKLine.getBackwardAdjust() + "");
+                        Log.e("rtfgjfgjfg", "getClose: " + stockKLine.getClose() + "");
+                        Log.e("rtfgjfgjfg", "getForwardAdjust: " + stockKLine.getForwardAdjust() + "");
+                        Log.e("rtfgjfgjfg", "getMa5: " + stockKLine.getMa5() + "");
+                        Log.e("rtfgjfgjfg", "getMa10: " + stockKLine.getMa10() + "");
+                        Log.e("rtfgjfgjfg", "getMa20: " + stockKLine.getMa20() + "");
+                        Log.e("rtfgjfgjfg", "getMa30: " + stockKLine.getMa30() + "");
+                        Log.e("rtfgjfgjfg", "getPercent: " + stockKLine.getPercent() + "");
+                        Log.e("rtfgjfgjfg", "getPreClose: " + stockKLine.getPreClose() + "");
+                        Log.e("rtfgjfgjfg", "getStockIsUp: " + stockKLine.getStockIsUp() + "");
+                        Log.e("rtfgjfgjfg", "getTradeCount: " + stockKLine.getTradeCount() + "");
+                        Log.e("rtfgjfgjfg", "isUp: " + stockKLine.isUp() + "");
+                        Log.e("rtfgjfgjfg", "------------------------------------");
+                    }
+                    listener.onDataFinish(mDailyKLines);
+
+                    //要把之前的加进去
+
+                    byte[] data = StockKLine.getKLineBytes(mDailyKLines);
+
+                    //保存起来
+                    IndexKLineTable mKLineTable = new IndexKLineTable(mContext);
+                    mKLineTable.saveKLineData(mStockIndexID, data, mDailyKLines.get(mDailyKLines.size() - 1).getDataTime());
+                }
+            });
+        }
 
     }
 

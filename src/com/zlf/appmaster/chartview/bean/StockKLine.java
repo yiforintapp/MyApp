@@ -1,17 +1,20 @@
 package com.zlf.appmaster.chartview.bean;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.zlf.appmaster.utils.ByteUtil;
 import com.zlf.appmaster.utils.QLog;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.appmaster.utils.TimeUtil;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -193,8 +196,24 @@ public class StockKLine extends StockVolume {
         return new KLineHeader(new KLineHeader.KLineKey(0, 3), new KLineHeader.KLineKey(4, 7), new KLineHeader.KLineKey(8, 11), new KLineHeader.KLineKey(12, 15), new KLineHeader.KLineKey(16, 19), new KLineHeader.KLineKey(24, 31), new KLineHeader.KLineKey(20, 23), 31);
     }
 
+    static int ll = 0;
     public static byte[] getItemBytes(StockKLine stockkline, KLineHeader klineheader) {
         ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
+        ll ++;
+        if (ll > 30) {
+            Log.e("hfgjfgj", "time:  " + stockkline.l + "");
+            Date date = new Date(stockkline.l);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String dateStr = sdf.format(date);
+            Log.e("hfgjfgj", "SimpleDateFormat:  " + dateStr);
+            Log.e("hfgjfgj", "low:  " + stockkline.d + "");
+            Log.e("hfgjfgj", "high:  " + stockkline.c + "");
+            Log.e("hfgjfgj", "open:  " + stockkline.a + "");
+            Log.e("hfgjfgj", "close:  " + stockkline.b + "");
+            Log.e("hfgjfgj", "preClose:  " + stockkline.e + "");
+            Log.e("hfgjfgj", "stockkline.getTradeCount():  " + stockkline.getTradeCount() + "");
+            Log.e("hfgjfgj", "------------------------------------");
+        }
         bytearrayoutputstream.write(ByteUtil.int2byte((int) (stockkline.l / 1000L)), 0, 4);
         bytearrayoutputstream.write(ByteUtil.float2byte(stockkline.d), 0, 4);
         bytearrayoutputstream.write(ByteUtil.float2byte(stockkline.c), 0, 4);
@@ -269,19 +288,25 @@ public class StockKLine extends StockVolume {
     public static ArrayList bytes2KLineList(byte abyte0[], int i1, KLineHeader klineheader) {
         ArrayList arraylist = new ArrayList();
         int j1 = klineheader.h + 1;
+
         for (int k1 = 0; i1 + j1 <= abyte0.length; k1++) {
+            Log.e("dfhdhdfhd", "j1:  "  + j1);
             byte abyte1[] = new byte[j1];
             for (int l1 = 0; l1 < j1; l1++)
                 abyte1[l1] = abyte0[i1 + l1];
+            try {
+                Log.e("dfhdhdfhd", "for:  "  + new String(abyte1));
+            } catch (Exception e) {
 
+            }
             StockKLine stockkline = resloveKLineString(abyte1, klineheader);
             arraylist.add(stockkline);
             i1 += j1;
         }
-
         addMaLine(arraylist);
         return arraylist;
     }
+
 
     public static ArrayList resloveKLineFromSql(byte abyte0[], Context context) {
         byte abyte1[] = StringUtil.unGZip(abyte0);
@@ -290,6 +315,8 @@ public class StockKLine extends StockVolume {
 
     public static ArrayList resolveKLineZip(Object obj, Context context) {
         byte abyte0[] = StringUtil.unGZip((byte[]) (byte[]) obj);
+
+        Log.e("dfhdhdfhd", "abyte0[]:  "  + abyte0);
         if (abyte0 == null || abyte0.length == 0) {
             QLog.e("StockKLine", "没有获取到K线数据");
             return null;
@@ -313,6 +340,7 @@ public class StockKLine extends StockVolume {
 
         try {
             String s = new String(abyte1, "utf-8");
+            Log.e("dfhdhdfhd", "title:  "  + s);
             JSONObject jsonobject = new JSONObject(s);
             klineheader = KLineHeader.resloveJsonObject(jsonobject);
         } catch (JSONException jsonexception) {
@@ -519,5 +547,27 @@ public class StockKLine extends StockVolume {
 
     public void setBackwardAdjust(float f1) {
         k = f1;
+    }
+
+    public static ArrayList<StockKLine> resloveNewKLineData(Object object) {
+        ArrayList<StockKLine> arrayList = new ArrayList<StockKLine>();
+
+        try {
+            JSONArray jsonArray = (JSONArray) object;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                float open = (float) jsonObject.optDouble("open");
+                float close = (float) jsonObject.optDouble("close");
+                float high = (float) jsonObject.optDouble("high");
+                float low = (float) jsonObject.optDouble("low");
+                long time = jsonObject.optLong("statisticsTime");
+                long volume = jsonObject.optLong("volume");
+                long count = 100000;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return arrayList;
     }
 }

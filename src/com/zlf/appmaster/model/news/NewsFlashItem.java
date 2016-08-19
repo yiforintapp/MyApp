@@ -65,11 +65,12 @@ public class NewsFlashItem implements Serializable {
 
     /**
      * 是否是股票相关的新闻
+     *
      * @param newsType
      * @return
      */
-    public static boolean isStockNewsType(int newsType){
-        switch (newsType){
+    public static boolean isStockNewsType(int newsType) {
+        switch (newsType) {
             case NEWS_TYPE_ANNOUNCEMENT:
             case NEWS_TYPE_STOCK:
             case NEWS_TYPE_SELF_STOCK:
@@ -81,8 +82,8 @@ public class NewsFlashItem implements Serializable {
     }
 
 
-    public static String getDefaultTitle(int newsType){
-        switch (newsType){
+    public static String getDefaultTitle(int newsType) {
+        switch (newsType) {
             case NEWS_TYPE_ANNOUNCEMENT:
                 return "个股公告";
 
@@ -116,9 +117,9 @@ public class NewsFlashItem implements Serializable {
 
     private long time;          //时间点
 
-    public static int getDefaultImg(int newsType){
+    public static int getDefaultImg(int newsType) {
         int drawableID = 0;
-        switch (newsType){
+        switch (newsType) {
             case NewsFlashItem.NEWS_TYPE_ANNOUNCEMENT:
                 drawableID = R.drawable.news_icon_announcemnt;
                 break;
@@ -152,26 +153,27 @@ public class NewsFlashItem implements Serializable {
 
         return drawableID;
     }
+
     private int classify;       //分类
     private boolean isChanged;  // 是否更改
     private String newsKey;       // 新闻类型
     private long id;            //新闻ID
     private String title;
-    private ArrayList<String> stockList,stockNameList;
+    private ArrayList<String> stockList, stockNameList;
     private String stockJsonArray;
     private String summary;
     private String media;
     private boolean isFavorite;//是否自选股新闻
 
-    public void setSummary(String summary){
+    public void setSummary(String summary) {
         this.summary = summary;
     }
 
-    public String getSummary(){
+    public String getSummary() {
         return summary;
     }
 
-    public String getStockJsonArray(){
+    public String getStockJsonArray() {
         return stockJsonArray;
     }
 
@@ -182,7 +184,6 @@ public class NewsFlashItem implements Serializable {
     public void setTime(long time) {
         this.time = time;
     }
-
 
 
     public int getClassify() {
@@ -240,15 +241,15 @@ public class NewsFlashItem implements Serializable {
     /**
      * 设置股票ID
      */
-    public void setStockList(JSONArray array){
-        if (array == null){
+    public void setStockList(JSONArray array) {
+        if (array == null) {
             return;
         }
 
         stockList = new ArrayList<String>();
         stockNameList = new ArrayList<String>();
         try {
-            for (int i = 0; i < array.length();i++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject stockObject = array.getJSONObject(i);
                 stockList.add(stockObject.optString("StockId"));
                 stockNameList.add(stockObject.optString("StockName"));
@@ -259,11 +260,11 @@ public class NewsFlashItem implements Serializable {
         stockJsonArray = array.toString();
     }
 
-    public ArrayList<String> getStockList(){
+    public ArrayList<String> getStockList() {
         return stockList;
     }
 
-    public ArrayList<String> getStockNameList(){
+    public ArrayList<String> getStockNameList() {
         return stockNameList;
     }
 
@@ -284,20 +285,20 @@ public class NewsFlashItem implements Serializable {
     }
 
 
-
     /**
      * 判断是否有自选股
+     *
      * @param stocks
      * @return
      */
     public static boolean hasFavorite(ArrayList<String> stocks, HashSet<String> mFavoriteStocks) {
-        if (mFavoriteStocks.isEmpty() || stocks.isEmpty()){
+        if (mFavoriteStocks.isEmpty() || stocks.isEmpty()) {
             return false;
         }
 
-        for (String stock:stocks){
-            if (mFavoriteStocks.contains(stock)){
-                QLog.i(TAG,"hasFavorite:"+stock+","+stocks.toString()+","+mFavoriteStocks.toString());
+        for (String stock : stocks) {
+            if (mFavoriteStocks.contains(stock)) {
+                QLog.i(TAG, "hasFavorite:" + stock + "," + stocks.toString() + "," + mFavoriteStocks.toString());
                 return true;
             }
         }
@@ -308,6 +309,7 @@ public class NewsFlashItem implements Serializable {
 
     /**
      * 解析新闻组
+     *
      * @param newsKey
      * @param response
      * @return
@@ -339,25 +341,27 @@ public class NewsFlashItem implements Serializable {
 
     /**
      * 解析个股的新闻组
+     *
      * @param stockCode
      * @param response
      * @return
      * @throws JSONException
      */
     public static List<NewsFlashItem> resolveStockNewsArray(String stockCode, JSONObject response) throws JSONException {
-        return  resolveNewsArray("10-"+stockCode, response);
+        return resolveNewsArray("10-" + stockCode, response);
     }
 
     /**
      * 解析新闻列表保存至数据库
+     *
      * @param object
      * @return
      */
-    public static List<NewsFlashItem> resolveNewsArrayAndSave(String newsKey, Object object, Context context){
+    public static List<NewsFlashItem> resolveNewsArrayAndSave(String newsKey, Object object, Context context) {
 
-        List<NewsFlashItem> items  = new ArrayList<NewsFlashItem>();
+        List<NewsFlashItem> items = new ArrayList<NewsFlashItem>();
         try {
-            items = resolveNewsArray(newsKey, (JSONObject)object);
+            items = resolveNewsArray(newsKey, (JSONObject) object);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -371,10 +375,10 @@ public class NewsFlashItem implements Serializable {
     }
 
 
-    public static void deleteNoTitles(ArrayList<NewsFlashItem> items){
-        for (int i=0;i<items.size();i++){
+    public static void deleteNoTitles(ArrayList<NewsFlashItem> items) {
+        for (int i = 0; i < items.size(); i++) {
             NewsFlashItem item = items.get(i);
-            if (TextUtils.isEmpty(item.getTitle())){
+            if (TextUtils.isEmpty(item.getTitle())) {
                 items.remove(i);
                 i -= 1;
             }
@@ -392,7 +396,6 @@ public class NewsFlashItem implements Serializable {
                 ", stockList=" + stockList +
                 '}';
     }
-
 
 
 }

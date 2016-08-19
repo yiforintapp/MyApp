@@ -151,6 +151,67 @@ public class StockMinutes extends StockVolume
     return localArrayList;
   }
 
+  public static StockMinutes resolveNewMinuteJsonObject(JSONObject paramJSONObject, boolean paramBoolean)
+  {
+//    if (paramBoolean)
+//    {
+//      float f1 = (float)paramJSONObject.optDouble("HQZJCJ", 0.0D);
+//      long l1 = paramJSONObject.optLong("HQCJSL");
+//      int i = paramJSONObject.optInt("stockStatus", 0);
+//      float f3 = (float)paramJSONObject.optDouble("HQZRSP", 0.0D);
+//      long l4 = (long)paramJSONObject.optDouble("time", 0.0D);
+//      long l6 = paramJSONObject.optLong("HQCJJE");
+//      return new StockMinutes(f3, f1, l1, l6, i, l4);
+//    }
+    float f1 = (float)paramJSONObject.optDouble("open", 0.0D);
+    float f2 = (float)paramJSONObject.optDouble("close", 0.0D);
+    long l2 = 370000 * 100L;
+    long l3 = (long)paramJSONObject.optDouble("statisticsTime", 0.0D);
+    long l5 = 570000000L;
+    return new StockMinutes(f2, f1, l2, l5, 0, l3);
+  }
+
+  public static ArrayList<StockMinutes> resloveNewMinutesData(Object paramObject, boolean paramBoolean)
+  {
+    JSONObject localJSONObject = (JSONObject)paramObject;
+    ArrayList localArrayList = new ArrayList();
+    float f1 = 0.0F;
+    try
+    {
+      JSONArray localJSONArray = localJSONObject.optJSONArray("data");
+      if ((localJSONArray == null) || (localJSONArray.length() == 0))
+        return null;
+      StockMinutes localStockMinutes1 = resolveNewMinuteJsonObject(localJSONArray.getJSONObject(0), paramBoolean);
+      f1 = localStockMinutes1.getYestodayPrice();
+      float f3 = f1;
+      int i;
+      if (localJSONArray.length() > 242)
+        i = 242;
+      else
+        i = localJSONArray.length();
+      long l = 0L;
+      for (int j = 0; j < i; j++)
+      {
+        StockMinutes localStockMinutes2 = resolveNewMinuteJsonObject(localJSONArray.getJSONObject(j), paramBoolean);
+
+          float f2 = localStockMinutes2.getNowPrice();
+          localArrayList.add(localStockMinutes2);
+          localStockMinutes2.setTradeCount(localStockMinutes2.getTradeCount() - l);
+          l += localStockMinutes2.getTradeCount();
+          if (f2 >= f3)
+            localStockMinutes2.setUp(true);
+          else
+            localStockMinutes2.setUp(false);
+          f3 = f2;
+        }
+    }
+    catch (JSONException localJSONException)
+    {
+      localJSONException.printStackTrace();
+    }
+    return localArrayList;
+  }
+
   public static byte[] toByteArray(ArrayList<StockMinutes> paramArrayList)
   {
     if ((paramArrayList == null) || (paramArrayList.size() == 0))
