@@ -199,10 +199,12 @@ public class StockKLine extends StockVolume {
     static int ll = 0;
     public static byte[] getItemBytes(StockKLine stockkline, KLineHeader klineheader) {
         ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-        ll ++;
-        if (ll > 30) {
+        if (ll < 10) {
             Log.e("hfgjfgj", "time:  " + stockkline.l + "");
             Date date = new Date(stockkline.l);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String dateStr = sdf.format(date);
+            Log.e("hfgjfgj", "SimpleDateFormat:  " + dateStr);
             Log.e("hfgjfgj", "low:  " + stockkline.d + "");
             Log.e("hfgjfgj", "high:  " + stockkline.c + "");
             Log.e("hfgjfgj", "open:  " + stockkline.a + "");
@@ -210,6 +212,7 @@ public class StockKLine extends StockVolume {
             Log.e("hfgjfgj", "preClose:  " + stockkline.e + "");
             Log.e("hfgjfgj", "stockkline.getTradeCount():  " + stockkline.getTradeCount() + "");
             Log.e("hfgjfgj", "------------------------------------");
+            ll ++;
         }
         bytearrayoutputstream.write(ByteUtil.int2byte((int) (stockkline.l / 1000L)), 0, 4);
         bytearrayoutputstream.write(ByteUtil.float2byte(stockkline.d), 0, 4);
