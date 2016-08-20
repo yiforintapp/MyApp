@@ -267,7 +267,6 @@ public class StockChartDetailView extends LinearLayout {
         k.setKLineData(StockKLine.changeDaily2Week(m));
         l.setKLineData(StockKLine.changeDaily2Month(m));
         StockKLine.calcAdjust(m);
-        Log.e("dfhdhdfhd", "changeData");
         ArrayList arraylist = StockKLine.getForwardList(m);
         j.setForwardData(arraylist);
         k.setForwardData(StockKLine.changeDaily2Week(arraylist));
