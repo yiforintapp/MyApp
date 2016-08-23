@@ -8,7 +8,9 @@ import android.support.v4.view.ViewPager;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.stocknews.NewsFlashFragment;
+import com.zlf.appmaster.stocknews.NewsAnalyFragment;
+import com.zlf.appmaster.stocknews.NewsInterFragment;
+import com.zlf.appmaster.stocknews.NewsMarketFragment;
 import com.zlf.appmaster.ui.PagerSlidingTabStrip;
 import com.zlf.appmaster.ui.stock.StockBaseFragment;
 
@@ -20,8 +22,10 @@ import java.util.List;
 public class UserTabFragment  extends BaseFragment {
 
     private ViewPager mViewPager;
-    private UserTabHolder[] mUserHolders = new UserTabHolder[1];
-    private NewsFlashFragment mNewsFlashFragment;
+    private UserTabHolder[] mUserHolders = new UserTabHolder[3];
+    private NewsAnalyFragment mNewsAnalyFragment;
+    private NewsInterFragment mNewsInterFragment;
+    private NewsMarketFragment mNewsMarketFragment;
     private PagerSlidingTabStrip mPagerSlidingTab;
 
     @Override
@@ -66,10 +70,22 @@ public class UserTabFragment  extends BaseFragment {
 
     private void initFragment() {
         UserTabHolder holder = new UserTabHolder();
-        holder.title = "国鑫评论";
-        mNewsFlashFragment = new NewsFlashFragment();
-        holder.fragment = mNewsFlashFragment;
+        holder.title = "分析研究";
+        mNewsAnalyFragment = new NewsAnalyFragment();
+        holder.fragment = mNewsAnalyFragment;
         mUserHolders[0] = holder;
+
+        holder = new UserTabHolder();
+        holder.title = "国际财经";
+        mNewsInterFragment = new NewsInterFragment();
+        holder.fragment = mNewsInterFragment;
+        mUserHolders[1] = holder;
+
+        holder = new UserTabHolder();
+        holder.title = "市场动态";
+        mNewsMarketFragment = new NewsMarketFragment();
+        holder.fragment = mNewsMarketFragment;
+        mUserHolders[2] = holder;
 
 
         FragmentManager fm = getChildFragmentManager();

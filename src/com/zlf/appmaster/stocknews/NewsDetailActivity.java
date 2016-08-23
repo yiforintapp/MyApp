@@ -24,17 +24,20 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.NewsClient;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.SyncClient;
+import com.zlf.appmaster.client.UniversalRequest;
 import com.zlf.appmaster.db.stock.NewsFavoriteTable;
 import com.zlf.appmaster.model.news.NewsDetail;
 import com.zlf.appmaster.model.sync.SyncBaseBean;
 import com.zlf.appmaster.model.sync.SyncOperator;
 import com.zlf.appmaster.model.sync.SyncRequest;
 import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
+import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.QConstants;
 import com.zlf.appmaster.utils.QToast;
 import com.zlf.appmaster.utils.UrlConstants;
 import com.zlf.appmaster.utils.Utils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -72,7 +75,7 @@ public class NewsDetailActivity extends Activity {
 	private TextView mNewsCagalogue;
 	private ProgressBar mProgressBar;
 	private int mNewsType;
-	private long mNewsID;
+	private String mNewsID;
    // private String mNewsCid;
 	private View mShareView,mFavoriteView,mSettingView;
 	private ImageView mFavoriteIconView;
@@ -98,7 +101,7 @@ public class NewsDetailActivity extends Activity {
 		mTable = new NewsFavoriteTable(mContext);
 
 		Intent intent = getIntent();
-		mNewsID = intent.getLongExtra(KEY_INTENT_NEWS_ID, 0);
+		mNewsID = intent.getStringExtra(KEY_INTENT_NEWS_ID);
 		mNewsType = intent.getIntExtra(KEY_INTENT_NEWS_TYPE, NEWS_TYPE_NORMAL);
 
 		mNewsCagalogue.setText(intent.getStringExtra(KEY_INTENT_NEWS_CATALOGUE));
@@ -131,44 +134,71 @@ public class NewsDetailActivity extends Activity {
 				});*/
 			}
 			else if (mNewsType == NEWS_TYPE_REPORT){
-				mNewsClient.requestStockReportByContentID(mNewsID, new OnRequestListener() {
-
-					@Override
-					public void onDataFinish(Object object) {
-						// TODO Auto-generated method stub
-						mNewsDetail = (NewsDetail) object;
-						setContent(mNewsDetail);
-						setActionBarIconVisibility(View.VISIBLE);
-					}
-
-					@Override
-					public void onError(int errorCode, String errorString) {
-						// TODO Auto-generated method stub
-						mProgressBar.setVisibility(View.GONE);
-						UrlConstants.showUrlErrorCode(NewsDetailActivity.this, errorCode);
-
-					}
-				});
+//				mNewsClient.requestStockReportByContentID(mNewsID, new OnRequestListener() {
+//
+//					@Override
+//					public void onDataFinish(Object object) {
+//						// TODO Auto-generated method stub
+//						mNewsDetail = (NewsDetail) object;
+//						setContent(mNewsDetail);
+//						setActionBarIconVisibility(View.VISIBLE);
+//					}
+//
+//					@Override
+//					public void onError(int errorCode, String errorString) {
+//						// TODO Auto-generated method stub
+//						mProgressBar.setVisibility(View.GONE);
+//						UrlConstants.showUrlErrorCode(NewsDetailActivity.this, errorCode);
+//
+//					}
+//				});
 			}
 			else {
-                mNewsClient.requestNewsByCid(mNewsID, new OnRequestListener() {
 
-                    @Override
-                    public void onDataFinish(Object object) {
-                        // TODO Auto-generated method stub
-                        mNewsDetail = (NewsDetail) object;
-						setContent(mNewsDetail);
-						setActionBarIconVisibility(View.VISIBLE);
-                    }
+				String url = "http://120.24.14.76:1688/work?proname=detils&id="+mNewsID;
+				LeoLog.d("testnewsJson" , "item url : " + url);
 
-                    @Override
-                    public void onError(int errorCode, String errorString) {
-                        // TODO Auto-generated method stub
-                        mProgressBar.setVisibility(View.GONE);
-                        UrlConstants.showUrlErrorCode(NewsDetailActivity.this, errorCode);
+				UniversalRequest.requestUrl("Tag", mContext, url,
+						new OnRequestListener() {
 
-                    }
-                });
+							@Override
+							public void onError(int errorCode, String errorString) {
+								mProgressBar.setVisibility(View.GONE);
+								UrlConstants.showUrlErrorCode(NewsDetailActivity.this, errorCode);
+							}
+
+							@Override
+							public void onDataFinish(Object object) {
+								JSONObject response = (JSONObject) object;
+								LeoLog.d("testnewsJson" , "item json : " + response.toString());
+
+								mNewsDetail = getContent(response);
+								if(mNewsDetail != null){
+									setContent(mNewsDetail);
+									setActionBarIconVisibility(View.VISIBLE);
+								}
+
+							}
+						});
+
+//                mNewsClient.requestNewsByCid(1532287684351885312L, new OnRequestListener() {
+//
+//                    @Override
+//                    public void onDataFinish(Object object) {
+//                        // TODO Auto-generated method stub
+//                        mNewsDetail = (NewsDetail) object;
+//                setContent(mNewsDetail);
+//                setActionBarIconVisibility(View.VISIBLE);
+//                    }
+//
+//                    @Override
+//                    public void onError(int errorCode, String errorString) {
+//                        // TODO Auto-generated method stub
+//                        mProgressBar.setVisibility(View.GONE);
+//                        UrlConstants.showUrlErrorCode(NewsDetailActivity.this, errorCode);
+//
+//                    }
+//                });
             }
 
 		} else {
@@ -194,15 +224,15 @@ public class NewsDetailActivity extends Activity {
 		mFavoriteView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				String uin = Utils.getAccountUin(mContext);
-				if (TextUtils.isEmpty(uin)){        // 需要注册用户才能添加
-					/*Intent intent = new Intent(mContext, EntryPopActivity.class);
-					mContext.startActivity(intent);*/
+//		String uin = Utils.getAccountUin(mContext);
+//				if (TextUtils.isEmpty(uin)){        // 需要注册用户才能添加
+//					/*Intent intent = new Intent(mContext, EntryPopActivity.class);
+//					mContext.startActivity(intent);*/
 //					showEntryFengNiuPopwindow(view);
-				}
-				else {
-					onFavorite();
-				}
+//				}
+//				else {
+//					onFavorite();
+//				}
 
 			}
 		});
@@ -216,14 +246,38 @@ public class NewsDetailActivity extends Activity {
 		webSettings.setDefaultTextEncodingName("UTF-8");
 		webSettings.setBuiltInZoomControls(false);
 		webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-		
+
 		// 回调本地代码
 		webSettings.setJavaScriptEnabled(true);
 
+		webSettings.setAllowContentAccess(true);
+		webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+		webSettings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
+		webSettings.setAllowFileAccess(true);
+		webSettings.setLoadsImagesAutomatically(true);
+
+//    webSettings.setUseWideViewPort(true);
+		webSettings.setLoadWithOverviewMode(true);
+//    webSettings.setBuiltInZoomControls(false);
+//    webSettings.setSupportZoom(false);
+
+
 		//modify
 		mWebView.addJavascriptInterface(new JsObject(), "Stock");
-		mSettingView = findViewById(R.id.layout_my_setting);
-		mSettingView.setVisibility(View.GONE);
+
+		mWebView.requestFocus();
+		mWebView.requestFocusFromTouch();
+		mWebView.setFocusable(true);
+		mWebView.setFocusableInTouchMode(true);
+
+		mWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+		mWebView.setVerticalScrollBarEnabled(false);
+		mWebView.setHorizontalScrollBarEnabled(false);
+		mWebView.setDrawingCacheEnabled(true);
+		// 屏蔽长按事件
+		mWebView.setOnCreateContextMenuListener(null);
+
+
 	}
 
 //	private void showEntryFengNiuPopwindow(View view) {
@@ -253,6 +307,37 @@ public class NewsDetailActivity extends Activity {
 		}
 	}
 
+
+	private NewsDetail getContent(JSONObject object) {
+		NewsDetail item = null;
+		try {
+			item = new NewsDetail();
+
+			JSONArray jsonArray = object.getJSONArray("table");
+
+			JSONObject itemObject = jsonArray.getJSONObject(0);
+
+			String title = itemObject.getString("title");
+			String summary = itemObject.getString("summary");
+			String date = itemObject.getString("adddate");
+			String content = itemObject.getString("content");
+
+			item.setContent(content);
+			item.setTime(date);
+			item.setTitle(title);
+			item.setBreviary(summary);
+			item.setMedia("");//详情名字
+			item.setIsFavorite(false);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+
+		return item;
+	}
+
+
 	public void setContent(NewsDetail newsDetail){
 		mInitFavoriteStockFlag = newsDetail.isFavorite();
 
@@ -266,6 +351,8 @@ public class NewsDetailActivity extends Activity {
 				//+ "<HR align=center width="+splitLineWidth+" color=#000000 noShade size=1>";
                 + "<HR align=center paddingLeft=15 color=#ececec noShade size=1>";
 
+
+//		String testContent = newsDetail.getContent();
 		String content = newstitle + resourcetime + newsDetail.getContent();
 		Utils.setWebViewLayout(mWebView, content);
 		mProgressBar.setVisibility(View.GONE);
@@ -274,7 +361,7 @@ public class NewsDetailActivity extends Activity {
 
 		//是否收藏
 		NewsFavoriteTable table = new NewsFavoriteTable(mContext);
-		mNewsDetail.setIsFavorite(table.isFavorite(mNewsID,mNewsType));
+//		mNewsDetail.setIsFavorite(table.isFavorite(mNewsID,mNewsType));
 	}
 	
 	/**
@@ -313,11 +400,13 @@ public class NewsDetailActivity extends Activity {
 	}
 	
 	public void setActionBarIconVisibility(int visibility){
-		if(visibility == View.VISIBLE){	// 处理收藏状态图标
-			handleFavoriteBtn(mNewsDetail.isFavorite());
-			mSettingView.setVisibility(View.VISIBLE);
-		}else {
-			mSettingView.setVisibility(View.GONE);
+		if(mSettingView != null){
+			if(visibility == View.VISIBLE){	// 处理收藏状态图标
+				handleFavoriteBtn(mNewsDetail.isFavorite());
+				mSettingView.setVisibility(View.VISIBLE);
+			}else {
+				mSettingView.setVisibility(View.GONE);
+			}
 		}
 	}
 
@@ -373,24 +462,24 @@ public class NewsDetailActivity extends Activity {
 	
 	
 
-	private void onFavorite(){
-		final boolean curFavoriteFlag = !mNewsDetail.isFavorite();
-		int favoriteType;
-		if (mNewsType == NEWS_TYPE_REPORT){
-			favoriteType = 2;
-		}
-		else {
-			favoriteType = 1;
-		}
-
-		mTable.saveNewsFavorite(mNewsID, favoriteType, curFavoriteFlag);
-		handleFavoriteBtn(curFavoriteFlag);
-		if(curFavoriteFlag){
-			QToast.showShortTime(NewsDetailActivity.this, "收藏成功");
-		}else {
-			QToast.showShortTime(NewsDetailActivity.this, "取消收藏成功");
-		}
-	}
+//	private void onFavorite(){
+//		final boolean curFavoriteFlag = !mNewsDetail.isFavorite();
+//		int favoriteType;
+//		if (mNewsType == NEWS_TYPE_REPORT){
+//			favoriteType = 2;
+//		}
+//		else {
+//			favoriteType = 1;
+//		}
+//
+//		mTable.saveNewsFavorite(mNewsID, favoriteType, curFavoriteFlag);
+//		handleFavoriteBtn(curFavoriteFlag);
+//		if(curFavoriteFlag){
+//			QToast.showShortTime(NewsDetailActivity.this, "收藏成功");
+//		}else {
+//			QToast.showShortTime(NewsDetailActivity.this, "取消收藏成功");
+//		}
+//	}
 	
 //	//分享
 //	private void share() {

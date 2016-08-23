@@ -66,6 +66,9 @@ public class NewsClient {
 	// 获取最新一条新闻
 	private static final String PATH_NEWS_NOTICE = UrlConstants.RequestHQURLString + "/QiNiuApp/core/news.notice.do?";
 
+	// 获取新闻列表NEW
+	public static final String PATH_FROM_CRM_NEWS = "http://120.24.14.76:1688/work?";
+
 
 	public void requestNewsNotice(final OnRequestListener requestListener){
 		UniversalRequest.requestBackground(mContext, PATH_NEWS_NOTICE, null, new OnRequestListener() {

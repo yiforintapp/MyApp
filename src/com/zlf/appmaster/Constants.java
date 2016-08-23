@@ -247,6 +247,7 @@ public class Constants {
 
     public static final String QI_LU_INFO = "http://hqs.91jin.com/market/query/quotation?excode=QILU&ver=3.0.8&src=app&code=";
 
-
-
+    public static final String NEWS_TYPE_ANALY = "analy";
+    public static final String NEWS_TYPE_INTER = "international";
+    public static final String NEWS_TYPE_MARKET = "market";
 }

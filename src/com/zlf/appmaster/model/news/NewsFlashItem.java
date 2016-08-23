@@ -165,6 +165,10 @@ public class NewsFlashItem implements Serializable {
     private String media;
     private boolean isFavorite;//是否自选股新闻
 
+    private String timeString;
+    private String idString;
+
+
     public void setSummary(String summary) {
         this.summary = summary;
     }
@@ -282,6 +286,22 @@ public class NewsFlashItem implements Serializable {
 
     public void setIsFavorite(boolean isFavorite) {
         this.isFavorite = isFavorite;
+    }
+
+    public String getTimeString(){
+        return timeString;
+    }
+
+    public void setTimeString(String mTime){
+        timeString = mTime;
+    }
+
+    public String getidString(){
+        return idString;
+    }
+
+    public void setidString(String mId){
+        idString = mId;
     }
 
 

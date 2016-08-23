@@ -459,7 +459,10 @@ public class UniversalRequest {
 
             @Override
             public void onResponse(JSONObject response) {
-                handleResponse(mContext, response, requestFinished, isBackground);
+				if(requestFinished != null){
+					requestFinished.onDataFinish(response);
+				}
+//                handleResponse(mContext, response, requestFinished, isBackground);
             }
 
         }, new ErrorListener() {

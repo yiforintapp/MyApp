@@ -68,7 +68,9 @@ public class NewsFlashAdapter extends ArrayAdapter<NewsFlashItem> {
                 viewHolder.topEmptyView.setVisibility(View.GONE);
             }
 
-            viewHolder.timeView.setText(TimeUtil.getChatTime(item.getTime()));
+            //            viewHolder.timeView.setText(TimeUtil.getChatTime(item.getTime()));
+            viewHolder.timeView.setText(item.getTimeString()+"");
+
             viewHolder.contentView.setText(item.getTitle());
 
         }
