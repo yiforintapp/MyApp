@@ -194,6 +194,7 @@ public class NewsMarketFragment extends StockBaseFragment {
                     @Override
                     public void onDataFinish(Object object) {
                         Message msg = new Message();
+                        //nothing
                         msg.what = HANDLER_MSG_REFRESH;
                         msg.obj = object;
                         mHandler.sendMessage(msg);
