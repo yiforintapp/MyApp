@@ -1,4 +1,4 @@
-package com.CirCularProgressView;
+package com.handmark.pulltorefresh.library.xlistview;
 
 /**
  * This class implements CircularProgressViewListener. Use this if you don't want to implement all methods for the listener.

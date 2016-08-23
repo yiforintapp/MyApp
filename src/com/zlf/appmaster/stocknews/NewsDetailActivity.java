@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.NewsClient;
 import com.zlf.appmaster.client.OnRequestListener;
@@ -73,7 +74,7 @@ public class NewsDetailActivity extends Activity {
 	private NewsClient mNewsClient;
 	private WebView mWebView;
 	private TextView mNewsCagalogue;
-	private ProgressBar mProgressBar;
+	private CircularProgressView mProgressBar;
 	private int mNewsType;
 	private String mNewsID;
    // private String mNewsCid;
@@ -211,7 +212,7 @@ public class NewsDetailActivity extends Activity {
 	@SuppressLint("SetJavaScriptEnabled")
 	private void initViews(){
 		mNewsCagalogue = (TextView)findViewById(R.id.title);
-		mProgressBar = (ProgressBar)findViewById(R.id.content_loading);
+		mProgressBar = (CircularProgressView)findViewById(R.id.content_loading);
 
 		mShareView = findViewById(R.id.layout_share);
 		mShareView.setOnClickListener(new OnClickListener() {

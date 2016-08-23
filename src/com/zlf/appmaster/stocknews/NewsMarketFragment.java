@@ -135,7 +135,7 @@ public class NewsMarketFragment extends StockBaseFragment {
 
                     if (null != item) {
                         Intent intent = new Intent(mContext, NewsDetailActivity.class);
-                        intent.putExtra(NewsDetailActivity.KEY_INTENT_NEWS_CATALOGUE, "分析研究");
+                        intent.putExtra(NewsDetailActivity.KEY_INTENT_NEWS_CATALOGUE, "市场动态");
                         intent.putExtra(NewsDetailActivity.KEY_INTENT_NEWS_ID, item.getidString());
                         mContext.startActivity(intent);
                     }

@@ -1,4 +1,4 @@
-package com.CirCularProgressView;
+package com.handmark.pulltorefresh.library.xlistview;
 
 /**
  * Listener interface to provide different callbacks for Circular Progress Views.

@@ -23,7 +23,7 @@ public class XListViewFooter extends LinearLayout {
 	private Context mContext;
 
 	private View mContentView;
-	private View mProgressBar;
+	private CircularProgressView mProgressBar;
 	private TextView mHintView;
 	
 	public XListViewFooter(Context context) {
@@ -107,7 +107,7 @@ public class XListViewFooter extends LinearLayout {
 		moreView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		
 		mContentView = moreView.findViewById(R.id.xlistview_footer_content);
-		mProgressBar = moreView.findViewById(R.id.xlistview_footer_progressbar);
+		mProgressBar = (CircularProgressView)moreView.findViewById(R.id.xlistview_footer_progressbar);
 		mHintView = (TextView)moreView.findViewById(R.id.xlistview_footer_hint_textview);
 	}
 	

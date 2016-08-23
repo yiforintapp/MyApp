@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
@@ -36,7 +37,7 @@ public class NewsAnalyFragment extends StockBaseFragment {
     private List<NewsFlashItem> mDataList = new ArrayList<NewsFlashItem>();
     private Context mContext;
     private XListView mListView;
-    private View mLoadingView;
+    private CircularProgressView mLoadingView;
     private NewsFlashAdapter mNewsFlashAdapter;
 
     /**
@@ -146,7 +147,7 @@ public class NewsAnalyFragment extends StockBaseFragment {
             }
         });
 
-        mLoadingView = v.findViewById(R.id.content_loading);
+        mLoadingView = (CircularProgressView)v.findViewById(R.id.content_loading);
     }
 
     private void initData(){

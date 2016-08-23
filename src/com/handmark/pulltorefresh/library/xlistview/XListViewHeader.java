@@ -23,7 +23,7 @@ import com.zlf.appmaster.R;
 public class XListViewHeader extends LinearLayout {
 	private LinearLayout mContainer;
 	private ImageView mArrowImageView;
-	private ProgressBar mProgressBar;
+	private CircularProgressView mProgressBar;
 	private TextView mHintTextView;
 	private int mState = STATE_NORMAL;
 
@@ -61,8 +61,8 @@ public class XListViewHeader extends LinearLayout {
 
 		mArrowImageView = (ImageView)findViewById(R.id.xlistview_header_arrow);
 		mHintTextView = (TextView)findViewById(R.id.xlistview_header_hint_textview);
-		mProgressBar = (ProgressBar)findViewById(R.id.xlistview_header_progressbar);
-		
+		mProgressBar = (CircularProgressView)findViewById(R.id.xlistview_header_progressbar);
+
 		mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);

@@ -1,4 +1,4 @@
-package com.CirCularProgressView;
+package com.handmark.pulltorefresh.library.xlistview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
