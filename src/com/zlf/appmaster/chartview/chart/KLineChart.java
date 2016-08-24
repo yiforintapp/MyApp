@@ -83,7 +83,7 @@ public class KLineChart extends FrameLayout
         E = null;
         F = null;
         G = 1;
-        H = 0;
+        H = 2;
         J = 0;
         a(context, attributeset);
         a(context);
@@ -98,7 +98,7 @@ public class KLineChart extends FrameLayout
         E = null;
         F = null;
         G = 1;
-        H = 0;
+        H = 2;
         J = 0;
         a(context, attributeset);
         a(context);
@@ -113,7 +113,7 @@ public class KLineChart extends FrameLayout
         E = null;
         F = null;
         G = 1;
-        H = 0;
+        H = 2;
         J = 0;
         a(context, ((AttributeSet) (null)));
         a(context);
@@ -154,7 +154,7 @@ public class KLineChart extends FrameLayout
         x.setOnClickListener(new o(this));
         y = (TextView)view.findViewById(R.id.tv_select_macd);
         y.setOnClickListener(new o(this));
-        b = c;
+        b = e;
         b.setShowLeftValue(false);
         a.setShowLeftValue(false);
         z = (TextView)view.findViewById(R.id.tv_repair_forward);
@@ -305,7 +305,7 @@ public class KLineChart extends FrameLayout
         n = 104;
         j = new ScaleGestureDetector(g, new n(this, null));
         u.setVisibility(0);
-        w.setSelected(true);
+        y.setSelected(true);
         b.setShowLeftValue(true);
         a.setShowLeftValue(true);
     }
@@ -318,14 +318,14 @@ public class KLineChart extends FrameLayout
             n = 104;
             j = new ScaleGestureDetector(g, new n(this, null));
             u.setVisibility(0);
-            w.setSelected(true);
+            y.setSelected(true);
             b.setShowLeftValue(true);
             a.setShowLeftValue(true);
         } else
         if (a.j == 2)
         {
             j = new ScaleGestureDetector(g, new n(this, null));
-            w.setSelected(true);
+            y.setSelected(true);
         }
     }
 

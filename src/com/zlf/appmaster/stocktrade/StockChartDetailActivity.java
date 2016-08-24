@@ -113,8 +113,8 @@ public class StockChartDetailActivity extends Activity {
             R.id.stock_sell_4_count, R.id.stock_sell_5_count};
 
 
-    private int mCurAdjustType;//复权类型
-    private int mCurExtraType;//指标类型
+    private int mCurAdjustType = 2;//复权类型
+    private int mCurExtraType = 2;//指标类型
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

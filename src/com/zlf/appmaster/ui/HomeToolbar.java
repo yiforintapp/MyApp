@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.zlf.appmaster.AppMasterConfig;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.msgcenter.MsgCenterActivity;
 
@@ -66,8 +65,6 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
         mMenuRedTipIv = (ImageView) findViewById(R.id.hm_tool_menu_red_tip_iv);
         mMsgCenterRedCount = (TextView) findViewById(R.id.hm_tool_mc_unread_tv);
 
-        mTitleTv = (TextView) findViewById(R.id.hm_tool_title_tv);
-        mTitleTv.setOnClickListener(this);
     }
 
     public void setDrawerLayout(DrawerLayout layout) {
@@ -128,12 +125,6 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
 //                mLeoPopMenu.setPopMenuItems(activity, getRightMenuItems(), getRightMenuIcons());
 //                mLeoPopMenu.showPopMenu(activity, mMoreRl, null, null);
 //                break;
-            case R.id.hm_tool_title_tv:
-                if (AppMasterConfig.LOGGABLE) {
-//                    Intent intent = new Intent(getContext(), DebugActivity.class);
-//                    getContext().startActivity(intent);
-                }
-                break;
         }
     }
 

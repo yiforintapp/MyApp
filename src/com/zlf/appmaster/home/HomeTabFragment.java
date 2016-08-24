@@ -51,10 +51,10 @@ public class HomeTabFragment extends BaseFragment {
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setCurrentItem(0);
         mPagerSlidingTab = (PagerSlidingTabStrip) findViewById(R.id.home_tab_tabs);
-        mPagerSlidingTab.setBackgroundResource(R.color.tab_background);
+        mPagerSlidingTab.setBackgroundResource(R.color.ctc);
         mPagerSlidingTab.setShouldExpand(true);
-        mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.main_icon_red));
-        mPagerSlidingTab.setDividerColor(0xffffffff);
+        mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.indicator_select_color));
+        mPagerSlidingTab.setDividerColor(getResources().getColor(R.color.ctc));
         mPagerSlidingTab.setViewPager(mViewPager);
     }
 

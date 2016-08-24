@@ -61,10 +61,10 @@ public class UserTabFragment  extends BaseFragment {
 //        mPagerSlidingTab.setSelectedTextColor(Color.parseColor("#D83A3E"));
 //        // 取消点击Tab时的背景色
 //        mPagerSlidingTab.setTabBackground(0);
-        mPagerSlidingTab.setBackgroundResource(R.color.tab_background);
+        mPagerSlidingTab.setBackgroundResource(R.color.ctc);
         mPagerSlidingTab.setShouldExpand(true);
-        mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.main_icon_red));
-        mPagerSlidingTab.setDividerColor(0xffffffff);
+        mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.indicator_select_color));
+        mPagerSlidingTab.setDividerColor(getResources().getColor(R.color.ctc));
         mPagerSlidingTab.setViewPager(mViewPager);
     }
 
