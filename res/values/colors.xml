@@ -115,4 +115,6 @@
 
     <color name="indicator_select_color">#E9BA17</color>
 
+    <color name="indicator_text_select_color">#3C8AEA</color>
+    <color name="indicator_text_color">#A7A7A7</color>
 </resources>

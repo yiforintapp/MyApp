@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="60dp"
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
     android:background="@color/white">
 
-    <RelativeLayout
-        android:id="@+id/home_tab"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/home_iv"
-            style="@style/home_tab_img"
-            android:src="@drawable/icon_price_pre"/>
 
-        <TextView
-            android:id="@+id/home_tv"
-            style="@style/home_tab_text"
-            android:layout_below="@+id/home_iv"
-            android:text="行情"/>
 
-    </RelativeLayout>
+        <com.zlf.appmaster.ui.RippleView
+            android:id="@+id/home_tab"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            leo:rippleColor="@color/button_gray_ripple"
+            leo:rippleDuration="250"
+            leo:rippleHover="false"
+            leo:rippleOverlay="false">
 
-    <RelativeLayout
+                <ImageView
+                    android:id="@+id/home_iv"
+                    style="@style/home_tab_img"
+                    android:src="@drawable/icon_price_pre"/>
+
+                <TextView
+                    android:id="@+id/home_tv"
+                    style="@style/home_tab_text"
+                    android:layout_below="@+id/home_iv"
+                    android:text="行情"/>
+
+        </com.zlf.appmaster.ui.RippleView>
+
+    <com.zlf.appmaster.ui.RippleView
         android:id="@+id/user_tab"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="match_parent">
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        leo:rippleColor="@color/button_gray_ripple"
+        leo:rippleDuration="250"
+        leo:rippleHover="false"
+        leo:rippleOverlay="false">
+
 
         <ImageView
             android:id="@+id/user_iv"
@@ -40,13 +56,18 @@
             android:layout_below="@+id/user_iv"
             android:text="交易"/>
 
-    </RelativeLayout>
+    </com.zlf.appmaster.ui.RippleView>
 
-    <RelativeLayout
+    <com.zlf.appmaster.ui.RippleView
         android:id="@+id/trade_tab"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="match_parent">
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        leo:rippleColor="@color/button_gray_ripple"
+        leo:rippleDuration="250"
+        leo:rippleHover="false"
+        leo:rippleOverlay="false">
 
         <ImageView
             android:id="@+id/trade_iv"
@@ -58,14 +79,19 @@
             style="@style/home_tab_text"
             android:layout_below="@+id/trade_iv"
             android:text="资讯"/>
+    </com.zlf.appmaster.ui.RippleView>
 
-    </RelativeLayout>
-
-    <RelativeLayout
+    <com.zlf.appmaster.ui.RippleView
         android:id="@+id/find_tab"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="match_parent">
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        leo:rippleColor="@color/button_gray_ripple"
+        leo:rippleDuration="250"
+        leo:rippleHover="false"
+        leo:rippleOverlay="false">
+
 
         <ImageView
             android:id="@+id/find_iv"
@@ -78,13 +104,20 @@
             android:layout_below="@+id/find_iv"
             android:text="服务"/>
 
-    </RelativeLayout>
+    </com.zlf.appmaster.ui.RippleView>
 
-    <RelativeLayout
+
+    <com.zlf.appmaster.ui.RippleView
         android:id="@+id/personal_tab"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="match_parent">
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        leo:rippleColor="@color/button_gray_ripple"
+        leo:rippleDuration="250"
+        leo:rippleHover="false"
+        leo:rippleOverlay="false">
+
 
         <ImageView
             android:id="@+id/personal_iv"
@@ -97,6 +130,6 @@
             android:layout_below="@+id/personal_iv"
             android:text="我的"/>
 
-    </RelativeLayout>
+    </com.zlf.appmaster.ui.RippleView>
 
 </LinearLayout>

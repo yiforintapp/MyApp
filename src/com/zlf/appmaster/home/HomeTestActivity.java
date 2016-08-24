@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.userTab.StockFavoriteFragment;
 import com.zlf.appmaster.ui.HomeToolbar;
 import com.zlf.appmaster.ui.MaterialRippleLayout;
@@ -76,6 +77,8 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 
     private int mIndex = 0;
 
+    private RippleView mOneRipple;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +110,9 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mTradeTv = (TextView) findViewById(R.id.trade_tv);
         mFindTv = (TextView) findViewById(R.id.find_tv);
         mPersonalTv = (TextView) findViewById(R.id.personal_tv);
-        mHomeTabTv.setTextColor(Color.parseColor("#D83A3E"));
+        mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
+
+        mOneRipple = (RippleView) findViewById(R.id.home_tab);
 
         mToolBar = (HomeToolbar) findViewById(R.id.home_toolBar);
         mMenuList = (ListView) findViewById(R.id.menu_list);
@@ -176,35 +181,36 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private void changeTabBg(int position) {
         switch (position) {
             case 0:
-                mHomeTabTv.setTextColor(Color.parseColor("#D83A3E"));
+
+                mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mHomeTabIv.setImageResource(R.drawable.icon_price_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 0;
                 mCenterTitle.setText("行情");
                 break;
             case 1:
-                mUserTabTv.setTextColor(Color.parseColor("#D83A3E"));
+                mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mUserTabIv.setImageResource(R.drawable.icon_trade_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 1;
                 mCenterTitle.setText("交易");
                 break;
             case 2:
-                mTradeTv.setTextColor(Color.parseColor("#D83A3E"));
+                mTradeTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mTradeIv.setImageResource(R.drawable.icon_news_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 2;
                 mCenterTitle.setText("资讯");
                 break;
             case 3:
-                mFindTv.setTextColor(Color.parseColor("#D83A3E"));
+                mFindTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mFindIv.setImageResource(R.drawable.icon_service_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 3;
                 mCenterTitle.setText("服务");
                 break;
             case 4:
-                mPersonalTv.setTextColor(Color.parseColor("#D83A3E"));
+                mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mPersonalIv.setImageResource(R.drawable.icon_personal_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 4;
@@ -217,23 +223,23 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private void changeUnSelectBg(int position) {
         switch (position) {
             case 0:
-                mHomeTabTv.setTextColor(getResources().getColor(R.color.black));
+                mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
                 break;
             case 1:
-                mUserTabTv.setTextColor(getResources().getColor(R.color.black));
+                mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
                 break;
             case 2:
-                mTradeTv.setTextColor(getResources().getColor(R.color.black));
+                mTradeTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mTradeIv.setImageResource(R.drawable.icon_news_nor);
                 break;
             case 3:
-                mFindTv.setTextColor(getResources().getColor(R.color.black));
+                mFindTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mFindIv.setImageResource(R.drawable.icon_service_nor);
                 break;
             case 4:
-                mPersonalTv.setTextColor(getResources().getColor(R.color.black));
+                mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
                 break;
         }
