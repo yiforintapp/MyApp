@@ -58,8 +58,6 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
         mMsgcenterRl = findViewById(R.id.hm_tool_msgcenter_rl);
         mMsgcenterRl.setOnClickListener(this);
 
-//        mMoreRl = findViewById(R.id.hm_tool_more_rl);
-//        mMoreRl.setOnClickListener(this);
 
         mMenuIv = (ImageView) findViewById(R.id.hm_tool_menu_iv);
         mMenuRedTipIv = (ImageView) findViewById(R.id.hm_tool_menu_red_tip_iv);
