@@ -48,7 +48,7 @@
         android:layout_height="1px"
         android:layout_gravity="bottom"
         android:layout_marginBottom="55dp"
-        android:background="@color/black"/>
+        android:background="@color/indicator_text_color"/>
 
     <include layout="@layout/home_tab_button"
         android:layout_width="match_parent"

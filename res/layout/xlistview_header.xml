@@ -56,22 +56,23 @@
             android:layout_alignLeft="@id/xlistview_header_text"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/default_ptr_flip" />
+            android:src="@drawable/icon_pulltorefresh_arrow_down" />
 
 
         <com.handmark.pulltorefresh.library.xlistview.CircularProgressView
             android:id="@+id/xlistview_header_progressbar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="-40dp"
             android:padding="0dp"
             android:visibility="invisible"
             android:layout_alignLeft="@id/xlistview_header_text"
+            app:cpv_color="@color/indicator_text_select_color"
             app:cpv_animAutostart="false"
             app:cpv_indeterminate="true"
-            app:cpv_thickness="4dp" />
+            app:cpv_thickness="2dp" />
 
 
         <!--<ProgressBar-->

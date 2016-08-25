@@ -10,6 +10,8 @@ import com.zlf.imageloader.DisplayImageOptions;
 import com.zlf.imageloader.ImageLoader;
 import com.zlf.imageloader.ImageLoaderConfiguration;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * 异步初始化，旧版本的startInitTask
  *
@@ -26,6 +28,7 @@ public class InitAsyncBootstrap extends com.zlf.appmaster.bootstrap.Bootstrap {
     protected boolean doStrap() {
 
 
+        initJPush();
         initImageLoader();
 //        PrivacyTrickUtil.clearOtherApps(mApp);
         quickGestureTipInit();
@@ -52,6 +55,11 @@ public class InitAsyncBootstrap extends com.zlf.appmaster.bootstrap.Bootstrap {
 
 
         return true;
+    }
+
+    private void initJPush() {
+        JPushInterface.setDebugMode(false);
+        JPushInterface.init(mApp);
     }
 
 
