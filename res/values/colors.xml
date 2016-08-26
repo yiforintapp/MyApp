@@ -117,4 +117,9 @@
 
     <color name="indicator_text_select_color">#3C8AEA</color>
     <color name="indicator_text_color">#A7A7A7</color>
+
+    <color name="login_bg">#F4F4F4</color>
+    <color name="login_rigister">#5C86AC</color>
+    <color name="login_logining">#EBB316</color>
+    <color name="login_hint">#C0C0C0</color>
 </resources>

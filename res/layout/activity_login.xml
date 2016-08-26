@@ -4,24 +4,178 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/login_bg">
 
     <com.zlf.appmaster.ui.CommonToolbar
-        android:id="@+id/call_filter_toolbar"
+        android:id="@+id/login_toolbar"
         android:layout_width="match_parent"
         android:layout_height="55dp" />
 
 
-    <com.zlf.appmaster.ui.PagerSlidingTabStrip
-        android:id="@+id/tabs"
-        style="@style/sliding_tab_style" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/login_viewpager"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/home_tab_pressed"
-        android:overScrollMode="never" />
+        android:layout_height="1px"
+        android:background="#DEDEDE"
+        android:layout_marginTop="15dp"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/user_iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/login_user_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="25dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"/>
+
+            <EditText
+                android:id="@+id/user_ev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/user_iv"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="5dp"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:hint="@string/login_user_hint"
+                android:textColorHint="@color/login_hint"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_toLeftOf="@+id/user_close_iv"/>
+
+            <ImageView
+                android:id="@+id/user_close_iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/input_clean"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#DEDEDE"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/pwd_iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/login_pwd_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="25dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"/>
+
+            <EditText
+                android:id="@+id/pwd_ev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/pwd_iv"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="5dp"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:hint="@string/login_pwd_hint"
+                android:textColorHint="@color/login_hint"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:layout_toLeftOf="@+id/pwd_close_iv"/>
+
+            <ImageView
+                android:id="@+id/pwd_close_iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/input_clean"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#DEDEDE" />
+
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_logining"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:background="@drawable/blue_radius_btn_shape"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="25dp">
+
+        <TextView
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="15sp"
+            android:textColor="@color/login_rigister"
+            android:text="@string/login_register"/>
+
+        <TextView
+            android:id="@+id/forget_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="15sp"
+            android:textColor="@color/login_rigister"
+            android:text="@string/login_forget_pwd"/>
+
+    </RelativeLayout>
 
 
 

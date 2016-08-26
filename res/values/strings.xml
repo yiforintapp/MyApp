@@ -204,4 +204,23 @@
     <string name="stock_agent_successed_content">你可以在交易模块查看详情</string>
     <string name="sure">确定</string>
 
+    <!--登录注册-->
+    <string name="login_logining">登录</string>
+    <string name="login_register">快速注册></string>
+    <string name="login_forget_pwd">忘记密码？</string>
+    <string name="login_user_hint">手机号</string>
+    <string name="login_pwd_hint">密码</string>
+    <string name="login_user_empty">手机号不能为空</string>
+    <string name="login_user_unlocal">手机号格式有误</string>
+    <string name="login_pwd_empty">密码不能为空</string>
+    <string name="login_new_pwd_empty">确认密码不能为空</string>
+    <string name="login_code_empty">验证码不能为空</string>
+    <string name="login_get_code">获取验证码</string>
+    <string name="login_input_code">输入验证码</string>
+    <string name="register">注册</string>
+    <string name="login_reset_password">输入新密码</string>
+    <string name="login_reset_new_password">再次输入新密码</string>
+    <string name="login_find_password">重设密码</string>
+    <string name="login_reset_complete">完成</string>
+
 </resources>
