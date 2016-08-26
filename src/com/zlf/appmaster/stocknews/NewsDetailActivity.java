@@ -44,14 +44,6 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-//import cn.sharesdk.framework.Platform;
-//import cn.sharesdk.framework.Platform.ShareParams;
-//import cn.sharesdk.framework.PlatformActionListener;
-//import cn.sharesdk.framework.ShareSDK;
-//import cn.sharesdk.sina.weibo.SinaWeibo;
-//import cn.sharesdk.tencent.qq.QQ;
-//import cn.sharesdk.wechat.friends.Wechat;
-//import cn.sharesdk.wechat.moments.WechatMoments;
 
 public class NewsDetailActivity extends Activity {
 	
@@ -78,13 +70,13 @@ public class NewsDetailActivity extends Activity {
 	private int mNewsType;
 	private String mNewsID;
    // private String mNewsCid;
-	private View mShareView,mFavoriteView,mSettingView;
+	private View mSettingView;
 	private ImageView mFavoriteIconView;
 	
 	private NewsDetail mNewsDetail;
 	private boolean mInitFavoriteStockFlag;
 	private Context mContext;
-	private MyHandler mHandler;
+//	private MyHandler mHandler;
 	private String mShareUrl;
 	private boolean isShareing;
 	private NewsFavoriteTable mTable;
@@ -97,7 +89,7 @@ public class NewsDetailActivity extends Activity {
 		initViews();
 		
 		mContext = this;
-		mHandler = new MyHandler(this);
+//		mHandler = new MyHandler(this);
 
 		mTable = new NewsFavoriteTable(mContext);
 
@@ -176,7 +168,7 @@ public class NewsDetailActivity extends Activity {
 								mNewsDetail = getContent(response);
 								if(mNewsDetail != null){
 									setContent(mNewsDetail);
-									setActionBarIconVisibility(View.VISIBLE);
+//									setActionBarIconVisibility(View.VISIBLE);
 								}
 
 							}
@@ -214,29 +206,6 @@ public class NewsDetailActivity extends Activity {
 		mNewsCagalogue = (TextView)findViewById(R.id.title);
 		mProgressBar = (CircularProgressView)findViewById(R.id.content_loading);
 
-		mShareView = findViewById(R.id.layout_share);
-		mShareView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-//				share();
-			}
-		});
-		mFavoriteView = findViewById(R.id.layout_favorite);
-		mFavoriteView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-//		String uin = Utils.getAccountUin(mContext);
-//				if (TextUtils.isEmpty(uin)){        // 需要注册用户才能添加
-//					/*Intent intent = new Intent(mContext, EntryPopActivity.class);
-//					mContext.startActivity(intent);*/
-//					showEntryFengNiuPopwindow(view);
-//				}
-//				else {
-//					onFavorite();
-//				}
-
-			}
-		});
 
 		mFavoriteIconView = (ImageView)findViewById(R.id.iv_icon);
 
@@ -353,7 +322,6 @@ public class NewsDetailActivity extends Activity {
                 + "<HR align=center paddingLeft=15 color=#ececec noShade size=1>";
 
 
-//		String testContent = newsDetail.getContent();
 		String content = newstitle + resourcetime + newsDetail.getContent();
 		Utils.setWebViewLayout(mWebView, content);
 		mProgressBar.setVisibility(View.GONE);
@@ -400,28 +368,28 @@ public class NewsDetailActivity extends Activity {
 		
 	}
 	
-	public void setActionBarIconVisibility(int visibility){
-		if(mSettingView != null){
-			if(visibility == View.VISIBLE){	// 处理收藏状态图标
-				handleFavoriteBtn(mNewsDetail.isFavorite());
-				mSettingView.setVisibility(View.VISIBLE);
-			}else {
-				mSettingView.setVisibility(View.GONE);
-			}
-		}
-	}
+//	public void setActionBarIconVisibility(int visibility){
+//		if(mSettingView != null){
+//			if(visibility == View.VISIBLE){	// 处理收藏状态图标
+//				handleFavoriteBtn(mNewsDetail.isFavorite());
+//				mSettingView.setVisibility(View.VISIBLE);
+//			}else {
+//				mSettingView.setVisibility(View.GONE);
+//			}
+//		}
+//	}
 
 
-	private  void handleFavoriteBtn(boolean isFavorite){
-		mNewsDetail.setIsFavorite(isFavorite);
-
-		if(isFavorite){
-			mFavoriteIconView.setImageResource(R.drawable.news_icon_favorite_yes);
-		}
-		else{
-			mFavoriteIconView.setImageResource(R.drawable.news_icon_favorite_no);
-		}
-	}
+//	private  void handleFavoriteBtn(boolean isFavorite){
+//		mNewsDetail.setIsFavorite(isFavorite);
+//
+//		if(isFavorite){
+//			mFavoriteIconView.setImageResource(R.drawable.news_icon_favorite_yes);
+//		}
+//		else{
+//			mFavoriteIconView.setImageResource(R.drawable.news_icon_favorite_no);
+//		}
+//	}
 	
 	/**
 	 * 回传值
@@ -699,36 +667,36 @@ public class NewsDetailActivity extends Activity {
 //	}
 	
 	
-	static class MyHandler extends Handler {
-		WeakReference<NewsDetailActivity> mReference;
-		
-		public MyHandler(NewsDetailActivity activity) {
-			mReference = new WeakReference<NewsDetailActivity>(activity);
-		}
+//	static class MyHandler extends Handler {
+//		WeakReference<NewsDetailActivity> mReference;
+//
+//		public MyHandler(NewsDetailActivity activity) {
+//			mReference = new WeakReference<NewsDetailActivity>(activity);
+//		}
+//
+//		@Override
+//		public void handleMessage(Message msg) {
+//			super.handleMessage(msg);
+//			NewsDetailActivity activity = mReference.get();
+//			switch (msg.what) {
+//			case SHARE_FLAG_CANCEL:
+//				break;
+//
+//			case SHARE_FLAG_SUCCESS:
+//				QToast.showShortTime(activity, "分享成功");
+//				break;
+//
+//			case SHARE_FLAG_FAIL:
+//				QToast.showShortTime(activity, "分享失败,请稍后再试");
+//				break;
+//
+//			default:
+//				break;
+//			}
+//
+//		}
+//	}
 
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			NewsDetailActivity activity = mReference.get();
-			switch (msg.what) {
-			case SHARE_FLAG_CANCEL:
-				break;
-				
-			case SHARE_FLAG_SUCCESS:
-				QToast.showShortTime(activity, "分享成功");
-				break;
-				
-			case SHARE_FLAG_FAIL:
-				QToast.showShortTime(activity, "分享失败,请稍后再试");
-				break;
-				
-			default:
-				break;
-			}
-			
-		}
-		
-	}
 
 	@Override
 	protected void onDestroy() {

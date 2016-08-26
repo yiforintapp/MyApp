@@ -217,7 +217,8 @@ public class NewsInterFragment extends StockBaseFragment {
                 item.setidString(itemObject.getString("id"));
                 item.setClassify(70);
                 item.setIsChanged(true);
-                item.setTimeString(itemObject.getString("created"));
+                item.setTimeStringShow(itemObject.getString("created_show"));
+                item.setTimeStringSort(itemObject.getString("created"));
                 item.setTitle(itemObject.getString("title"));
                 item.setSummary("");
                 item.setMedia("");
@@ -257,7 +258,7 @@ public class NewsInterFragment extends StockBaseFragment {
     private static final Comparator<NewsFlashItem> COMPARATOR = new Comparator<NewsFlashItem>() {
         @Override
         public int compare(NewsFlashItem lhs, NewsFlashItem rhs) {
-            return rhs.getTimeString().compareTo(lhs.getTimeString());
+            return rhs.getTimeStringSort().compareTo(lhs.getTimeStringSort());
         }
     };
 

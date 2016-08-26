@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.news.NewsFlashItem;
-import com.zlf.appmaster.utils.TimeUtil;
 
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class NewsFlashAdapter extends ArrayAdapter<NewsFlashItem> {
             }
 
             //            viewHolder.timeView.setText(TimeUtil.getChatTime(item.getTime()));
-            viewHolder.timeView.setText(item.getTimeString()+"");
+            viewHolder.timeView.setText(item.getTimeStringShow()+"");
 
             viewHolder.contentView.setText(item.getTitle());
 
