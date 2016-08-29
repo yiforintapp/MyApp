@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
@@ -17,6 +18,7 @@ import com.zlf.appmaster.client.NewsClient;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.UniversalRequest;
 import com.zlf.appmaster.model.news.NewsFlashItem;
+import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.stock.StockBaseFragment;
 import com.zlf.appmaster.utils.LeoLog;
 
@@ -31,13 +33,16 @@ import java.util.List;
 
 public class NewsMarketFragment extends StockBaseFragment {
     private static final int HANDLER_MSG_REFRESH = 2;
-
+    public static final int ERROR_TYPE = -1;
+    public static final int NORMAL_TYPE = 1;
     private View mLayout;
     private List<NewsFlashItem> mDataList = new ArrayList<NewsFlashItem>();
     private Context mContext;
     private XListView mListView;
-    private View mLoadingView;
+    private CircularProgressView mLoadingView;
     private NewsFlashAdapter mNewsFlashAdapter;
+    private View mEmptyView;
+    private RippleView mRefreshView;
 
     /**
      * 数据加载时用
@@ -49,6 +54,7 @@ public class NewsMarketFragment extends StockBaseFragment {
 
     static class MyHandler extends Handler {
         WeakReference<NewsMarketFragment> mReference;
+
         public MyHandler(NewsMarketFragment owner) {
             super();
             mReference = new WeakReference<NewsMarketFragment>(owner);
@@ -71,7 +77,6 @@ public class NewsMarketFragment extends StockBaseFragment {
             }
         }
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,10 +112,21 @@ public class NewsMarketFragment extends StockBaseFragment {
         super.onDestroyView();
     }
 
-    private void initViews(View v){
+    private void initViews(View v) {
         mContext = getActivity();
 
-        mListView = (XListView)v.findViewById(R.id.news_flash_list_view);
+        mEmptyView = v.findViewById(R.id.empty_view);
+        mLoadingView = (CircularProgressView) v.findViewById(R.id.content_loading);
+        mLoadingView.setVisibility(View.VISIBLE);
+        mRefreshView = (RippleView) v.findViewById(R.id.refresh_button);
+        mRefreshView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshLisrByButton();
+            }
+        });
+
+        mListView = (XListView) v.findViewById(R.id.news_flash_list_view);
         mListView.setPullLoadEnable(false);
         mListView.setPullRefreshEnable(true);
         mListView.setXListViewListener(new XListView.IXListViewListener() {
@@ -121,7 +137,7 @@ public class NewsMarketFragment extends StockBaseFragment {
 
             @Override
             public void onLoadMore() {
-                LeoLog.d("testnewsJson","loadMoreData");
+                LeoLog.d("testnewsJson", "loadMoreData");
                 mNowPage = mNowPage + 1;
                 loadMoreData();
             }
@@ -145,42 +161,51 @@ public class NewsMarketFragment extends StockBaseFragment {
 
             }
         });
-
-        mLoadingView = v.findViewById(R.id.content_loading);
     }
 
-    private void initData(){
+    private void refreshLisrByButton() {
+        mLoadingView.setVisibility(View.VISIBLE);
+        mListView.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.GONE);
+        refreshList();
+    }
+
+    private void initData() {
 
         // 加载缓存等
         // ..
         // .
 
-        mNewsFlashAdapter= new NewsFlashAdapter(mContext, R.layout.news_flash_item, mDataList);
+        mNewsFlashAdapter = new NewsFlashAdapter(mContext, R.layout.news_flash_item, mDataList);
         mListView.setAdapter(mNewsFlashAdapter);
 
-        mLoadingView.setVisibility(View.VISIBLE);
         refreshList();
 
     }
 
-    private void onLoaded() {
+    private void onLoaded(int type) {
         mListView.stopRefresh();
         mListView.stopLoadMore();
         mLoadingView.setVisibility(View.GONE);
+        if (type == ERROR_TYPE) {
+            mListView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
     }
 
 
-    private void refreshList(){
+    private void refreshList() {
         mNowPage = 1;
         loadMoreData();
     }
 
 
-    private void loadMoreData(){
+    private void loadMoreData() {
 
         String url = NewsClient.PATH_FROM_CRM_NEWS + "proname=" +
                 Constants.NEWS_TYPE_MARKET + "&pp=" + mNowPage;
-        LeoLog.d("testnewsJson","new url is  : " + url);
+
+        LeoLog.d("testnewsJson", "new url is  : " + url);
 
 
         UniversalRequest.requestNewUrlWithTimeOut("Tag", mContext, url,
@@ -188,13 +213,12 @@ public class NewsMarketFragment extends StockBaseFragment {
 
                     @Override
                     public void onError(int errorCode, String errorString) {
-                        onLoaded();
+                        onLoaded(ERROR_TYPE);
                     }
 
                     @Override
                     public void onDataFinish(Object object) {
                         Message msg = new Message();
-                        //nothing
                         msg.what = HANDLER_MSG_REFRESH;
                         msg.obj = object;
                         mHandler.sendMessage(msg);
@@ -205,11 +229,14 @@ public class NewsMarketFragment extends StockBaseFragment {
 
 
     //记得删除
-    private void showData(Object obj){
+    private void showData(Object obj) {
+        mLoadingView.setVisibility(View.GONE);
+
+
         List<NewsFlashItem> items = new ArrayList<NewsFlashItem>();
         JSONArray array = (JSONArray) obj;
 
-        try{
+        try {
             for (int i = 0; i < array.length(); i++) {
                 NewsFlashItem item = new NewsFlashItem();
 
@@ -238,22 +265,22 @@ public class NewsMarketFragment extends StockBaseFragment {
                 }
 
                 if (len > 0) {
+                    mListView.setVisibility(View.VISIBLE);
                     if (mNowPage == 1) {// 刷新
                         mDataList.clear();
                     }
 
-
                     mDataList.addAll(items);
                     mNewsFlashAdapter.notifyDataSetChanged();
+                } else {
+                    mEmptyView.setVisibility(View.VISIBLE);
                 }
-
+                onLoaded(NORMAL_TYPE);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            onLoaded();
+            onLoaded(ERROR_TYPE);
         }
-
     }
 
     private static final Comparator<NewsFlashItem> COMPARATOR = new Comparator<NewsFlashItem>() {
@@ -262,7 +289,6 @@ public class NewsMarketFragment extends StockBaseFragment {
             return rhs.getTimeStringSort().compareTo(lhs.getTimeStringSort());
         }
     };
-
 
 
 }

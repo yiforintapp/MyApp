@@ -13,4 +13,7 @@
     <string name="guide_page_content_one">隐私建议，操作更便捷</string>
     <string name="guide_page_content_two">应用加锁，随时保护你的应用</string>
     <string name="guide_page_content_three">图片/视频隐藏，隐私更安全</string>
+
+    <string name="nothing_show">暂无数据</string>
+    <string name="refresh_text">刷新</string>
 </resources>

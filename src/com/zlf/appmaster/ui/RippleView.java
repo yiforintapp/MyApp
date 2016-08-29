@@ -27,6 +27,7 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.stocknews.NewsAnalyFragment;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.tools.animator.Animator;
 import com.zlf.tools.animator.AnimatorListenerAdapter;
@@ -622,6 +623,8 @@ public class RippleView extends RelativeLayout {
     public void setNeedLongClick(boolean isNeedLongClick) {
         needLongClick = isNeedLongClick;
     }
+
+
 
     /*
      * Helper
