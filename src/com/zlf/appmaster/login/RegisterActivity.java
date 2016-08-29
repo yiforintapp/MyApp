@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewStub;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,9 @@ import com.zlf.appmaster.home.BaseActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.stock.LoginProgressDialog;
 import com.zlf.appmaster.utils.StringUtil;
+import com.zlf.tools.animator.Animator;
+import com.zlf.tools.animator.AnimatorSet;
+import com.zlf.tools.animator.ObjectAnimator;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -58,43 +62,40 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout mResetNewLayout;
     private View mResetNewView;
     private Toast mToast;
+    private RelativeLayout mPhoneLayout;
+    private RelativeLayout mPwdLayout;
+    private Button mComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         init();
-        setListener();
-
     }
 
     private void init() {
+        mToolBar = (CommonToolbar) findViewById(R.id.register_toolbar);
+        mFromRegister = getIntent().getBooleanExtra(FROM_REGISTER, false);
+
+        ViewStub userStub = (ViewStub) findViewById(R.id.user_viewStub);
+        userStub.inflate();
+        mPhoneLayout = (RelativeLayout) findViewById(R.id.phone_set_layout);
         mUserEt = (EditText) findViewById(R.id.user_ev);
         mUserClean = (ImageView) findViewById(R.id.user_close_iv);
-        mPasswordEt = (EditText) findViewById(R.id.pwd_ev);
-        mPasswordClean = (ImageView) findViewById(R.id.pwd_close_iv);
-        mNewPasswordEt = (EditText) findViewById(R.id.new_pwd_ev);
-        mNewPasswordClean = (ImageView) findViewById(R.id.new_pwd_close_iv);
         mCodeEt = (EditText) findViewById(R.id.code_ev);
         mGetCodeBtn = (Button) findViewById(R.id.login_code);
         mRegisterBtn = (Button) findViewById(R.id.register);
-        mToolBar = (CommonToolbar) findViewById(R.id.register_toolbar);
-        mResetNewLayout = (RelativeLayout) findViewById(R.id.reset_new_pwd);
-        mResetNewView = (View) findViewById(R.id.new_pwd_view);
+        mUserClean.setOnClickListener(this);
+        mGetCodeBtn.setOnClickListener(this);
+        mRegisterBtn.setOnClickListener(this);
+        mUserEt.addTextChangedListener(this);
 
-        mFromRegister = getIntent().getBooleanExtra(FROM_REGISTER, false);
         if(mFromRegister) {
             mToolBar.setToolbarTitle(getResources().getString(R.string.register));
             mRegisterBtn.setText(getResources().getString(R.string.register));
-            mPasswordEt.setHint(getResources().getString(R.string.login_pwd_hint));
-            mResetNewView.setVisibility(View.GONE);
-            mResetNewLayout.setVisibility(View.GONE);
         } else {
             mToolBar.setToolbarTitle(getResources().getString(R.string.login_find_password));
             mRegisterBtn.setText(getResources().getString(R.string.login_reset_complete));
-            mPasswordEt.setHint(getResources().getString(R.string.login_reset_password));
-            mResetNewView.setVisibility(View.VISIBLE);
-            mResetNewLayout.setVisibility(View.VISIBLE);
         }
 
         mUserEt.requestFocus();
@@ -106,16 +107,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 imm.showSoftInput(mUserEt, InputMethodManager.SHOW_IMPLICIT);
             }
         }, 200);
-    }
 
-    private void setListener() {
-        mUserClean.setOnClickListener(this);
-        mPasswordClean.setOnClickListener(this);
-        mGetCodeBtn.setOnClickListener(this);
-        mRegisterBtn.setOnClickListener(this);
-        mUserEt.addTextChangedListener(this);
-        mPasswordEt.addTextChangedListener(this);
-        mNewPasswordEt.addTextChangedListener(this);
     }
 
     @Override
@@ -125,22 +117,28 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (TextUtils.isEmpty(mUserEt.getText().toString().trim())) {
-            mUserClean.setVisibility(View.INVISIBLE);
-        } else {
-            mUserClean.setVisibility(View.VISIBLE);
+        if (mUserEt != null) {
+            if (TextUtils.isEmpty(mUserEt.getText().toString().trim())) {
+                mUserClean.setVisibility(View.INVISIBLE);
+            } else {
+                mUserClean.setVisibility(View.VISIBLE);
+            }
         }
 
-        if (TextUtils.isEmpty(mPasswordEt.getText().toString().trim())) {
-            mPasswordClean.setVisibility(View.INVISIBLE);
-        } else {
-            mPasswordClean.setVisibility(View.VISIBLE);
+        if (mPasswordEt != null) {
+            if (TextUtils.isEmpty(mPasswordEt.getText().toString().trim())) {
+                mPasswordClean.setVisibility(View.INVISIBLE);
+            } else {
+                mPasswordClean.setVisibility(View.VISIBLE);
+            }
         }
 
-        if (TextUtils.isEmpty(mNewPasswordEt.getText().toString().trim())) {
-            mNewPasswordClean.setVisibility(View.INVISIBLE);
-        } else {
-            mNewPasswordClean.setVisibility(View.VISIBLE);
+        if (mNewPasswordEt != null) {
+            if (TextUtils.isEmpty(mNewPasswordEt.getText().toString().trim())) {
+                mNewPasswordClean.setVisibility(View.INVISIBLE);
+            } else {
+                mNewPasswordClean.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -160,17 +158,104 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 mPasswordEt.getText().clear();
                 mPasswordClean.setVisibility(View.INVISIBLE);
                 break;
+            case R.id.new_pwd_ev:
+                mNewPasswordEt.getText().clear();
+                mNewPasswordClean.setVisibility(View.INVISIBLE);
+                break;
             case R.id.login_code:
-
+                if(!isPhoneNumberValidate()) {
+                    return ;
+                }
 //               getCode();
                 break;
             case R.id.register:
-                if (!isValidate()) {
-                    return;
+//                validateCode();
+                try {
+                    String test = "123456789";
+                    DesUtils des = new DesUtils("zlfmaster");//自定义密钥
+                    Log.e("fdjfgjk", "加密前的字符：" + test);
+                    Log.e("fdjfgjk", "加密后的字符：" + des.encrypt(test));
+                    Log.e("fdjfgjk", "解密后的字符：" + des.decrypt(des.encrypt(test)));
+
                 }
-                validateCode();
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                showPwdLayout();
+                break;
+            case R.id.register_complete:
+                finish();
                 break;
         }
+    }
+
+    private void showPwdLayout() {
+        ViewStub pwdStub = (ViewStub) findViewById(R.id.pwd_viewStub);
+        pwdStub.inflate();
+        mPwdLayout = (RelativeLayout) findViewById(R.id.pwd_set_layout);
+        mPasswordEt = (EditText) findViewById(R.id.pwd_ev);
+        mPasswordClean = (ImageView)findViewById(R.id.pwd_close_iv);
+        mNewPasswordEt = (EditText) findViewById(R.id.new_pwd_ev);
+        mNewPasswordClean = (ImageView) findViewById(R.id.new_pwd_close_iv);
+        mResetNewLayout = (RelativeLayout) findViewById(R.id.reset_new_pwd);
+        mResetNewView = (View) findViewById(R.id.view_five);
+        mComplete = (Button) findViewById(R.id.register_complete);
+        mComplete.setOnClickListener(this);
+        mPasswordClean.setOnClickListener(this);
+        mNewPasswordClean.setOnClickListener(this);
+        mPasswordEt.addTextChangedListener(this);
+        mNewPasswordEt.addTextChangedListener(this);
+
+        if (mFromRegister) {
+            mToolBar.setToolbarTitle(getResources().getString(R.string.login_register_pwd_set));
+            mResetNewLayout.setVisibility(View.GONE);
+            mResetNewView.setVisibility(View.GONE);
+        } else {
+            mToolBar.setToolbarTitle(getResources().getString(R.string.login_find_password));
+            mResetNewLayout.setVisibility(View.VISIBLE);
+            mResetNewView.setVisibility(View.VISIBLE);
+        }
+
+        startAnim();
+
+    }
+
+    private void startAnim() {
+        ObjectAnimator disAppearAnim = ObjectAnimator.ofFloat(mPhoneLayout, "translationX", 0f, -mPhoneLayout.getWidth());
+        ObjectAnimator showAnim = ObjectAnimator.ofFloat(mPwdLayout, "translationX", mPhoneLayout.getWidth(), 0f);
+        showAnim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mPwdLayout.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mPasswordEt.requestFocus();
+                mPasswordEt.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        InputMethodManager imm = (InputMethodManager) RegisterActivity.this
+                                .getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(mPasswordEt, InputMethodManager.SHOW_IMPLICIT);
+                    }
+                }, 200);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(disAppearAnim, showAnim);
+        animatorSet.setDuration(300);
+        animatorSet.start();
     }
 
     private void getFirstCode() {
@@ -233,7 +318,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     });
 
                 } catch (Exception e) {
-                    Log.e("fjfgjfgj",e + "");
                     e.printStackTrace();
                 }
             }

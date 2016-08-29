@@ -177,6 +177,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         }
         //构造HashMap
         HashMap<String, String> params = new HashMap<String, String>();
+        params.put(LoginUser.IS_REGISTER, "1");
         params.put(LoginUser.PHONENUMBER, mUserEt.getText().toString());
         params.put(LoginUser.PASSWORD, mPasswordEt.getText().toString());
         try {

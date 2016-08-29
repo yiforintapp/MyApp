@@ -66,7 +66,7 @@ public class LoginHttpUtil {
         //设置编码
         final String encode = "UTF-8";
         StringBuilder url = new StringBuilder(address);
-        url.append("?");
+        url.append("?proname=applogin&");
         //将map中的key，value构造进入URL中
         for(Map.Entry<String, String> entry:params.entrySet())
         {

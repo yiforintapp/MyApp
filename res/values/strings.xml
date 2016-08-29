@@ -222,5 +222,6 @@
     <string name="login_reset_new_password">再次输入新密码</string>
     <string name="login_find_password">重设密码</string>
     <string name="login_reset_complete">完成</string>
+    <string name="login_register_pwd_set">设置密码</string>
 
 </resources>
