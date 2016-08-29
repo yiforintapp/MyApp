@@ -181,9 +181,9 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         params.put(LoginUser.PHONENUMBER, mUserEt.getText().toString());
         params.put(LoginUser.PASSWORD, mPasswordEt.getText().toString());
         try {
-            //构造完整URL
+            // 构造完整URL
             String compeletedURL = LoginHttpUtil.getURLWithParams(Constants.LoginAddress, params);
-            //发送请求
+            // 发送请求
             LoginHttpUtil.sendHttpRequest(compeletedURL, new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response) {
