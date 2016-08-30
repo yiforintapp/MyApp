@@ -81,31 +81,6 @@
             android:text="@string/main_tab_info"/>
     </com.zlf.appmaster.ui.RippleView>
 
-    <com.zlf.appmaster.ui.RippleView
-        android:id="@+id/find_tab"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:layout_height="match_parent"
-        leo:rippleColor="@color/button_gray_ripple"
-        leo:rippleDuration="250"
-        leo:rippleHover="false"
-        leo:rippleOverlay="false">
-
-
-        <ImageView
-            android:id="@+id/find_iv"
-            style="@style/home_tab_img"
-            android:src="@drawable/icon_service_nor"/>
-
-        <TextView
-            android:id="@+id/find_tv"
-            style="@style/home_tab_text"
-            android:layout_below="@+id/find_iv"
-            android:text="@string/main_tab_service"/>
-
-    </com.zlf.appmaster.ui.RippleView>
-
 
     <com.zlf.appmaster.ui.RippleView
         android:id="@+id/personal_tab"

@@ -45,25 +45,21 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private RelativeLayout mHomeTab;
     private RelativeLayout mUserTab;
     private RelativeLayout mTradeTab;
-    private RelativeLayout mFindTab;
     private RelativeLayout mPersonalTab;
 
     private ImageView mHomeTabIv;
     private ImageView mUserTabIv;
     private ImageView mTradeIv;
-    private ImageView mFindIv;
     private ImageView mPersonalIv;
 
     private TextView mHomeTabTv;
     private TextView mUserTabTv;
     private TextView mTradeTv;
-    private TextView mFindTv;
     private TextView mPersonalTv;
 
     private HomeTabFragment mHomeTabFragment;
     private UserTabFragment mUserTabFragment;
     private StockFavoriteFragment mStockFavoriteFragment;
-    private FindTabFragment mFindTabFragment;
     private PersonalFragment mPersonalFragment;
 
     private DrawerLayout mDrawerLayout;
@@ -72,7 +68,7 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private List<MenuItem> mMenuItems;
     private MenuAdapter mMenuAdapter;
     private TextView mCenterTitle;
-    private HomeFragmentHolder[] mFragmentHolders = new HomeFragmentHolder[5];
+    private HomeFragmentHolder[] mFragmentHolders = new HomeFragmentHolder[4];
 
     private int mIndex = 0;
 
@@ -93,7 +89,6 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mHomeTab = (RelativeLayout) findViewById(R.id.home_tab);
         mUserTab = (RelativeLayout) findViewById(R.id.user_tab);
         mTradeTab = (RelativeLayout) findViewById(R.id.trade_tab);
-        mFindTab = (RelativeLayout) findViewById(R.id.find_tab);
         mPersonalTab = (RelativeLayout) findViewById(R.id.personal_tab);
 
         //test something
@@ -101,13 +96,11 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mHomeTabIv = (ImageView) findViewById(R.id.home_iv);
         mUserTabIv = (ImageView) findViewById(R.id.user_iv);
         mTradeIv = (ImageView) findViewById(R.id.trade_iv);
-        mFindIv = (ImageView) findViewById(R.id.find_iv);
         mPersonalIv = (ImageView) findViewById(R.id.personal_iv);
 
         mHomeTabTv = (TextView) findViewById(R.id.home_tv);
         mUserTabTv = (TextView) findViewById(R.id.user_tv);
         mTradeTv = (TextView) findViewById(R.id.trade_tv);
-        mFindTv = (TextView) findViewById(R.id.find_tv);
         mPersonalTv = (TextView) findViewById(R.id.personal_tv);
         mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
 
@@ -159,7 +152,6 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mHomeTab.setOnClickListener(this);
         mUserTab.setOnClickListener(this);
         mTradeTab.setOnClickListener(this);
-        mFindTab.setOnClickListener(this);
         mPersonalTab.setOnClickListener(this);
     }
 
@@ -202,17 +194,10 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_info));
                 break;
             case 3:
-                mFindTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
-                mFindIv.setImageResource(R.drawable.icon_service_pre);
-                changeUnSelectBg(mIndex);
-                mIndex = 3;
-                mCenterTitle.setText(getResources().getString(R.string.main_tab_service));
-                break;
-            case 4:
                 mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mPersonalIv.setImageResource(R.drawable.icon_personal_pre);
                 changeUnSelectBg(mIndex);
-                mIndex = 4;
+                mIndex = 3;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_personal));
                 break;
         }
@@ -234,10 +219,6 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 mTradeIv.setImageResource(R.drawable.icon_news_nor);
                 break;
             case 3:
-                mFindTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
-                mFindIv.setImageResource(R.drawable.icon_service_nor);
-                break;
-            case 4:
                 mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
                 break;
@@ -268,16 +249,10 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mFragmentHolders[2] = holder;
 
         holder = new HomeFragmentHolder();
-        holder.title = getResources().getString(R.string.main_tab_service);
-        mFindTabFragment = new FindTabFragment();
-        holder.fragment = mFindTabFragment;
-        mFragmentHolders[3] = holder;
-
-        holder = new HomeFragmentHolder();
         holder.title = getResources().getString(R.string.main_tab_personal);
         mPersonalFragment = new PersonalFragment();
         holder.fragment = mPersonalFragment;
-        mFragmentHolders[4] = holder;
+        mFragmentHolders[3] = holder;
 
         // AM-614, remove cached fragments
         FragmentManager fm = getSupportFragmentManager();
@@ -345,19 +320,12 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 mViewPager.setCurrentItem(2);
                 changeTabBg(2);
                 break;
-            case R.id.find_tab:
+            case R.id.personal_tab:
                 if (mIndex == 3) {
                     return;
                 }
                 mViewPager.setCurrentItem(3);
                 changeTabBg(3);
-                break;
-            case R.id.personal_tab:
-                if (mIndex == 4) {
-                    return;
-                }
-                mViewPager.setCurrentItem(4);
-                changeTabBg(4);
         }
     }
 

@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 
+import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
@@ -36,7 +36,7 @@ public class StockQiLuFragment extends BaseFragment {
     private StockQuotationsClient mStockClient;
 
     private XListView mListView;
-    private ProgressBar mProgressBar;
+    private CircularProgressView mProgressBar;
 
     private boolean loadCache(){
         boolean ret = false;
@@ -72,7 +72,7 @@ public class StockQiLuFragment extends BaseFragment {
     private void initViews(View view){
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
-        mProgressBar = (ProgressBar) findViewById(R.id.content_loading);
+        mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
 
         mIndexData = new ArrayList<StockIndex>();
         mForeignIndexData = new ArrayList<StockIndex>();

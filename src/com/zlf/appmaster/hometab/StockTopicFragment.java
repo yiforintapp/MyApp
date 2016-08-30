@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 
+import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.cache.StockJsonCache;
@@ -35,7 +35,7 @@ public class StockTopicFragment extends BaseFragment {
     private StockQuotationsClient mStockClient;
 
     private XListView mListView;
-    private ProgressBar mProgressBar;
+    private CircularProgressView mProgressBar;
     private int mCurEndIndex = 0;
     private static final int LOAD_ITEM_NUM = 10;
     private LiveRecordingUtil mLiveRecordingUtil;
@@ -97,7 +97,7 @@ public class StockTopicFragment extends BaseFragment {
     private void initViews(View view){
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
-        mProgressBar = (ProgressBar) findViewById(R.id.content_loading);
+        mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
 
         mData = new ArrayList<TopicInfo>();
         mTopicInfoListAdapter = new TopicListAdapter(mActivity, mData);

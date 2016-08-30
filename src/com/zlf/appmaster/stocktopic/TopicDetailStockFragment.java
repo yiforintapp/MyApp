@@ -8,9 +8,9 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.chartview.bean.StockKLine;
@@ -51,7 +51,7 @@ public class TopicDetailStockFragment extends BaseFragment {
     private StockTradeInfoListAdapter mListAdapter;
     private XListView mListView;
 
-    private ProgressBar mProgressBar;
+    private CircularProgressView mProgressBar;
     private TopicClient mClient;
 
     private int mCurEndIndex = 0;
@@ -116,7 +116,7 @@ public class TopicDetailStockFragment extends BaseFragment {
         mStockClient = new StockClient(mContext);
         mUIHandler = new UIHandler(this);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.content_loading);
+        mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
 
         //set list
         mListView = (XListView) findViewById(R.id.quotations_content_list);
