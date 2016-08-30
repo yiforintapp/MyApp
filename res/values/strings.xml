@@ -223,5 +223,17 @@
     <string name="login_find_password">重设密码</string>
     <string name="login_reset_complete">完成</string>
     <string name="login_register_pwd_set">设置密码</string>
+    <string name="login_register_success">注册成功</string>
+    <string name="login_register_same">该手机号已经注册</string>
+    <string name="login_reset_success">修改成功</string>
+    <string name="login_reset_nunum">该手机号没有注册</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_error">手机号或密码错误</string>
+
+    <string name="main_tab_home">行情</string>
+    <string name="main_tab_trade">交易</string>
+    <string name="main_tab_info">资讯</string>
+    <string name="main_tab_service">服务</string>
+    <string name="main_tab_personal">我的</string>
 
 </resources>

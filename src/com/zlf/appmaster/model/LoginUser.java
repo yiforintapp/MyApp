@@ -10,7 +10,6 @@ public class LoginUser extends BaseInfo implements Serializable {
     private String phoneNumber;
     private String password;
 
-    public static String IS_REGISTER = "is_register";  // "0" : 注册 "1" : 登录
     public static String PHONENUMBER = "username";
     public static String PASSWORD = "psw";
 

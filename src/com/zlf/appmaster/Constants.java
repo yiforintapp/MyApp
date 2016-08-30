@@ -247,7 +247,11 @@ public class Constants {
 
     public static final String QI_LU_INFO = "http://hqs.91jin.com/market/query/quotation?excode=QILU&ver=3.0.8&src=app&code=";
 
-    public static final String LoginAddress = "http://120.24.14.76:1688/work";
+    public static final String LOGIN_ADDRESS= "http://120.24.14.76:1688/work?proname=";
+    public static final String LOGIN_TAG= "applogin&";
+    public static final String REGISTER_TAG = "register&";
+    public static final String RESET_TAG = "reset&";
+    public static final String KEY_TAG = "zlfmaster";
 
     public static final String NEWS_TYPE_ANALY = "analy";
     public static final String NEWS_TYPE_INTER = "international";

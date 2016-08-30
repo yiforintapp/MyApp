@@ -19,17 +19,18 @@ import android.widget.Toast;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.home.BaseFragmentActivity;
-import com.zlf.appmaster.model.LoginUser;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.utils.StringUtil;
 
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 
 /**
  * Created by Administrator on 2016/7/19.
  */
 public class LoginActivity extends BaseFragmentActivity implements View.OnClickListener, TextWatcher {
+
+    public static final String SUCCESS = "OK"; // 成功
+    public static final String WRONG = "WRONG"; // 手机号或密码错误
 
     private EditText mUserEt;
     private ImageView mUserClean;
@@ -62,10 +63,10 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
             }
             String result = "";
 
-            if ("OK".equals(msg.obj.toString())){
-                result = "success";
-            }else if ("Wrong".equals(msg.obj.toString())){
-                result = "fail";
+            if (SUCCESS.equals(msg.obj.toString())){
+                result = activity.getResources().getString(R.string.login_success);
+            }else if (WRONG.equals(msg.obj.toString())){
+                result = activity.getResources().getString(R.string.login_error);
             }else {
                 result = msg.obj.toString();
             }
@@ -175,16 +176,10 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         if (!isValidate()) {
             return;
         }
-        //构造HashMap
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put(LoginUser.IS_REGISTER, "1");
-        params.put(LoginUser.PHONENUMBER, mUserEt.getText().toString());
-        params.put(LoginUser.PASSWORD, mPasswordEt.getText().toString());
         try {
-            // 构造完整URL
-            String compeletedURL = LoginHttpUtil.getURLWithParams(Constants.LoginAddress, params);
             // 发送请求
-            LoginHttpUtil.sendHttpRequest(compeletedURL, new HttpCallBackListener() {
+            LoginHttpUtil.sendHttpRequest(Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
+                    mUserEt.getText().toString(), mPasswordEt.getText().toString(),  new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response) {
                     Message message = new Message();

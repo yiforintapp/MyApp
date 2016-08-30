@@ -3,7 +3,6 @@ package com.zlf.appmaster.home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,11 +25,11 @@ import android.widget.Toast;
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.userTab.StockFavoriteFragment;
 import com.zlf.appmaster.ui.HomeToolbar;
 import com.zlf.appmaster.ui.MaterialRippleLayout;
 import com.zlf.appmaster.ui.MyViewPager;
+import com.zlf.appmaster.ui.RippleView;
+import com.zlf.appmaster.userTab.StockFavoriteFragment;
 import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
@@ -186,35 +185,35 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 mHomeTabIv.setImageResource(R.drawable.icon_price_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 0;
-                mCenterTitle.setText("行情");
+                mCenterTitle.setText(getResources().getString(R.string.main_tab_home));
                 break;
             case 1:
                 mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mUserTabIv.setImageResource(R.drawable.icon_trade_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 1;
-                mCenterTitle.setText("交易");
+                mCenterTitle.setText(getResources().getString(R.string.main_tab_trade));
                 break;
             case 2:
                 mTradeTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mTradeIv.setImageResource(R.drawable.icon_news_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 2;
-                mCenterTitle.setText("资讯");
+                mCenterTitle.setText(getResources().getString(R.string.main_tab_info));
                 break;
             case 3:
                 mFindTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mFindIv.setImageResource(R.drawable.icon_service_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 3;
-                mCenterTitle.setText("服务");
+                mCenterTitle.setText(getResources().getString(R.string.main_tab_service));
                 break;
             case 4:
                 mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mPersonalIv.setImageResource(R.drawable.icon_personal_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 4;
-                mCenterTitle.setText("我的");
+                mCenterTitle.setText(getResources().getString(R.string.main_tab_personal));
                 break;
         }
     }
@@ -251,31 +250,31 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
      */
     private void initFragment() {
         HomeFragmentHolder holder = new HomeFragmentHolder();
-        holder.title = /*this.getString(R.string.call_filter_black_list_tab)*/"首页内容";
+        holder.title = getResources().getString(R.string.main_tab_home);
         mHomeTabFragment = new HomeTabFragment();
         holder.fragment = mHomeTabFragment;
         mFragmentHolders[0] = holder;
 
         holder = new HomeFragmentHolder();
-        holder.title = "自选";
+        holder.title = getResources().getString(R.string.main_tab_trade);
         mStockFavoriteFragment = new StockFavoriteFragment();
         holder.fragment = mStockFavoriteFragment;
         mFragmentHolders[1] = holder;
 
         holder = new HomeFragmentHolder();
-        holder.title = "交易";
+        holder.title = getResources().getString(R.string.main_tab_info);
         mUserTabFragment = new UserTabFragment();
         holder.fragment = mUserTabFragment;
         mFragmentHolders[2] = holder;
 
         holder = new HomeFragmentHolder();
-        holder.title = "发现";
-        mFindTabFragment = new com.zlf.appmaster.home.FindTabFragment();
+        holder.title = getResources().getString(R.string.main_tab_service);
+        mFindTabFragment = new FindTabFragment();
         holder.fragment = mFindTabFragment;
         mFragmentHolders[3] = holder;
 
         holder = new HomeFragmentHolder();
-        holder.title = "个人";
+        holder.title = getResources().getString(R.string.main_tab_personal);
         mPersonalFragment = new PersonalFragment();
         holder.fragment = mPersonalFragment;
         mFragmentHolders[4] = holder;
