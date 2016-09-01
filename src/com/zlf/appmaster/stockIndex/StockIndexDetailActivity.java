@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.xlistview.XListView;
-import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.cache.StockJsonCache;
 import com.zlf.appmaster.client.OnRequestListener;
@@ -33,6 +32,13 @@ public class StockIndexDetailActivity extends Activity {
 	public static final String INTENT_FLAG_INDEXCODE = "intent_flag_index_code";
     public static final String INTENT_FLAG_INDEXNAME = "intent_flag_index_name";
     public static final String INTENT_FLAG_GUO_XIN = "intent_flag_index_guo_xin";
+    public static final String INTENT_FLAG_OPEN_INDEX = "intent_flag_open_index";
+    public static final String INTENT_FLAG_YESTERDAY_INDEX = "intent_flag_yesterday_index";
+    public static final String INTENT_FLAG_NOW_INDEX = "intent_flag_now_index";
+    public static final String INTENT_FLAG_HIGH_INDEX = "intent_flag_high_index";
+    public static final String INTENT_FLAG_LOW_INDEX = "intent_flag_low_index";
+    public static final String INTENT_FLAG_TAB_MINITE_WHAT = "intent_flag_tab_minute_what"; //  哪一个tab分时tag
+    public static final String INTENT_FLAG_TAB_KLINE_WHAT = "intent_flag_tab_kline_what"; //  哪一个tab
 
 	private static final String TAG = StockIndexDetailActivity.class.getSimpleName();
     private static final int MSG_UPDATE_INDEX = 1;
@@ -58,9 +64,18 @@ public class StockIndexDetailActivity extends Activity {
     private int mCurEndIndex = 0;
     private static final int LOAD_ITEM_NUM = 9;
 
+    private double mOpenIndex;
+    public static double mYesterdayIndex;
+    private double mNowIndex;
+    private double mHighIndex;
+    private double mLowIndex;
+
 
     private StockQuotationsClient mStockQuotationsClient;
     private boolean mFromGuoXin;
+    private String mTabMinuteTag;  // 哪一个tab分时的标识
+    private String mTabKLineTag;
+
 
     public Handler mHandler = new Handler(){
 
@@ -138,6 +153,15 @@ public class StockIndexDetailActivity extends Activity {
 	}
 
     private void initData(){
+        Intent intent = getIntent();
+        mOpenIndex = intent.getDoubleExtra(INTENT_FLAG_OPEN_INDEX, 0);
+        mYesterdayIndex = intent.getDoubleExtra(INTENT_FLAG_YESTERDAY_INDEX, 0);
+        mNowIndex = intent.getDoubleExtra(INTENT_FLAG_NOW_INDEX, 0);
+        mHighIndex = intent.getDoubleExtra(INTENT_FLAG_HIGH_INDEX, 0);
+        mLowIndex = intent.getDoubleExtra(INTENT_FLAG_LOW_INDEX, 0);
+        mTabMinuteTag = intent.getStringExtra(INTENT_FLAG_TAB_MINITE_WHAT);
+        mTabKLineTag = intent.getStringExtra(INTENT_FLAG_TAB_KLINE_WHAT);
+
 
         // 从缓存中加载
         mStockIndex = loadCache(mContext, mStockIndexID, mStockIndexName);
@@ -145,7 +169,7 @@ public class StockIndexDetailActivity extends Activity {
         // 初始化数据
 
         mData = new ArrayList<StockTradeInfo>();
-        mStockIndexDetailAdapter = new StockIndexDetailListAdapter(mContext, mStockClient, mStockIndex, mData, mFromGuoXin);
+        mStockIndexDetailAdapter = new StockIndexDetailListAdapter(mContext, mStockClient, mStockIndex, mData, mFromGuoXin, mTabMinuteTag, mTabKLineTag);
 
         mStockIndexDetailAdapter.setOnTabChange(new StockIndexDetailListAdapter.OnTabChange() {
             @Override
@@ -213,22 +237,46 @@ public class StockIndexDetailActivity extends Activity {
 
     private void requestData(final boolean autoRefresh){
         if (mFromGuoXin) {
-            mStockQuotationsClient.requestNewIndexItem(new OnRequestListener() {
-                @Override
-                public void onDataFinish(Object object) {
-                    Object[] objectArray = (Object[])object;
-                    mStockIndex.copy(((List<StockIndex>)objectArray[0]).get(0));
-                    updateViews(mStockIndex);
-                    mStockIndexDetailAdapter.notifyDataSetChanged();
-                    mStockIndexDetailAdapter.setAdapterNotify(false);
-                    loadMoreList();
-                }
+            mStockIndex.setCode(mStockIndexID);
+            mStockIndex.setName(mStockIndexName);
 
-                @Override
-                public void onError(int errorCode, String errorString) {
+            mStockIndex.setTodayIndex(mOpenIndex);
+            mStockIndex.setYesterdayIndex(mYesterdayIndex);
+            mStockIndex.setNowIndex(mNowIndex);
+            mStockIndex.setHighestIndex(mHighIndex);
+            mStockIndex.setLowestIndex(mLowIndex);
 
-                }
-            }, Constants.JIN_GUI_INFO_ITEM.concat(mStockIndexID));
+            mStockIndex.setTradeCount(99999);
+            mStockIndex.setTradePrice(99999999);
+
+            mStockIndex.setDataTime(/*dataIndexJSON.optLong("quoteTime")*/System.currentTimeMillis());
+
+            mStockIndex.setUpCount(999);
+            mStockIndex.setDeuceCount(999);
+            mStockIndex.setDownCount(999);
+            mStockIndex.setIsOPen("open");
+            mStockIndex.setCurrentTime(System.currentTimeMillis());
+            updateViews(mStockIndex);
+            mStockIndexDetailAdapter.notifyDataSetChanged();
+            mStockIndexDetailAdapter.setAdapterNotify(false);
+            onLoaded();
+//            loadMoreList();
+//            mStockQuotationsClient.requestNewIndexItem(new OnRequestListener() {
+//                @Override
+//                public void onDataFinish(Object object) {
+//                    Object[] objectArray = (Object[])object;
+//                    mStockIndex.copy(((List<StockIndex>)objectArray[0]).get(0));
+//                    updateViews(mStockIndex);
+//                    mStockIndexDetailAdapter.notifyDataSetChanged();
+//                    mStockIndexDetailAdapter.setAdapterNotify(false);
+//                    loadMoreList();
+//                }
+//
+//                @Override
+//                public void onError(int errorCode, String errorString) {
+//
+//                }
+//            }, Constants.JIN_GUI_INFO_ITEM.concat(mStockIndexID));
         } else {
             mStockClient.requestStockIndexDetail(mStockIndexID, new OnRequestListener() {
 

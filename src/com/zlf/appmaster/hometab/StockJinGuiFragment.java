@@ -100,7 +100,14 @@ public class StockJinGuiFragment extends BaseFragment {
 //                    }else{
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, item.getCode());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_OPEN_INDEX, item.getTodayIndex());
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_YESTERDAY_INDEX, item.getYesterdayIndex());
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_NOW_INDEX, item.getNowIndex());
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_HIGH_INDEX, item.getHighestIndex());
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_LOW_INDEX, item.getLowestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.JIN_GUI_INFO_MINUTE_PRONAME);
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.JIN_GUI_INFO_KLINE_PRONAME);
 //                    }
                     mActivity.startActivity(intent);
 
@@ -165,7 +172,7 @@ public class StockJinGuiFragment extends BaseFragment {
                 mProgressBar.setVisibility(View.GONE);
                 onLoaded();
             }
-        }, Constants.JIN_GUI_INFO);
+        }, Constants.MY_DATA_URL.concat(Constants.JIN_GUI_INFO_PRONAME));
 
 
     }

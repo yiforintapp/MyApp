@@ -7,6 +7,7 @@ import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -93,6 +94,8 @@ public class MinuteLine extends FrameLayout
     d = new ChartTextLayout(context);
     d.setVisibility(8);
     addView(d, layoutparams2);
+    c.setVisibility(View.GONE);
+    d.setVisibility(View.GONE);
     n = new t(this, this);
     setPicMode();
   }

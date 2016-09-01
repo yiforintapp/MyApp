@@ -967,7 +967,7 @@ public class StockClient {
 
     public void requestNewMinuteData(final OnRequestListener requestFinished, String url) {
 
-        UniversalRequest.requestUrlMinuteWithTimeOut("Tag", mContext, url,
+        UniversalRequest.requestNewUrlWithTimeOut("Tag", mContext, url,
                 new OnRequestListener() {
 
                     @Override
@@ -992,7 +992,7 @@ public class StockClient {
 
     public void requestNewKLineData(final OnRequestListener requestFinished, String url) {
 
-        UniversalRequest.requestUrlMinuteWithTimeOut("Tag", mContext, url,
+        UniversalRequest.requestNewUrlWithTimeOut("Tag", mContext, url,
                 new OnRequestListener() {
 
                     @Override

@@ -4,12 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.chartview.bean.StockKLine;
 import com.zlf.appmaster.chartview.chart.KLineChart;
@@ -39,7 +41,7 @@ public class StockChartView extends LinearLayout {
     private int d;
     private boolean e;
     private StockChartTool f;
-    private ProgressBar g;
+    private CircularProgressView g;
     private View h;
     private MinuteLine i;
     private KLineChart j;
@@ -152,7 +154,7 @@ public class StockChartView extends LinearLayout {
         i = (MinuteLine) findViewById(R.id.mline);
         i.setOnClickListener(new Four());
         h = findViewById(R.id.handicap_layout);
-        g = (ProgressBar) findViewById(R.id.content_loading);
+        g = (CircularProgressView) findViewById(R.id.content_loading);
         r = new int[4];
         for (int j1 = 0; j1 < 5; j1++) {
             u[j1] = (StockTextView) findViewById(y[j1]);
@@ -348,7 +350,7 @@ public class StockChartView extends LinearLayout {
         stockchartview.b(i1);
     }
 
-    static ProgressBar f(StockChartView stockchartview) {
+    static CircularProgressView f(StockChartView stockchartview) {
         return stockchartview.g;
     }
 

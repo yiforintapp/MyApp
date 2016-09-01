@@ -160,11 +160,15 @@ public class StockQuotationsClient {
 
                                 StockIndex item = new StockIndex();
 
-                                item.setCode(dataIndexJSON.getString("code"));
-                                item.setName(dataIndexJSON.getString("name"));
+                                item.setCode(dataIndexJSON.getString("ZSZSDM"));
+                                item.setName(dataIndexJSON.getString("ZSZSQC"));
 
-                                item.setYesterdayIndex(dataIndexJSON.getDouble("lastclose"));
-                                item.setNowIndex(dataIndexJSON.getDouble("sell"));
+                                item.setYesterdayIndex(dataIndexJSON.getDouble("ZSSSZS"));
+                                item.setNowIndex(dataIndexJSON.getDouble("ZSZJZS"));
+
+                                item.setTodayIndex(dataIndexJSON.getDouble("open"));
+                                item.setHighestIndex(dataIndexJSON.getDouble("high"));
+                                item.setLowestIndex(dataIndexJSON.getDouble("low"));
 
                                 stockIndexes.add(item);
                             }

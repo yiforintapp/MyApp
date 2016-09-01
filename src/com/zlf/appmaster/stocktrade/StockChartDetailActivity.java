@@ -46,13 +46,17 @@ import java.util.Locale;
 public class StockChartDetailActivity extends Activity {
 
 	private static final String TAG = "StockChartDetailActivity";
-	
+
+	public static final String INTENT_FROM_GUOXIN = "from_guoxin";
 	public static final String INTENT_EXTRA_STOCK_ID = "stockId";
 	public static final String INTENT_EXTRA_IS_STOCK = "isStock";
 	public static final String INTENT_EXTRA_LINE_TYPE = "lineType";
 	public static final String INTENT_EXTRA_STOCK_NAME = "stockName";
     public static final String INTENT_EXTRA_STOCK_STATE = "stockState";//股票状态
     public static final String INTENT_EXTRA_STOCK_PRICE = "stockPrice";//当前价
+
+	public static final String INTENT_EXTRA_MINUTE_DATA_LIST = "minute_data_list";// 分时数据集
+	public static final String INTENT_EXTRA_KLINE_DATA_LIST = "kline_data_list";// K线数据集
 	
 	private final int[] KLINE_TAB_ID = {R.id.min_line, R.id.daily_line, R.id.weekly_line, R.id.monthly_line};
 	private View[] mKLineTab = new View[4];
@@ -116,6 +120,10 @@ public class StockChartDetailActivity extends Activity {
     private int mCurAdjustType = 2;//复权类型
     private int mCurExtraType = 2;//指标类型
 
+	private boolean mFromGuoXin;
+	private ArrayList<StockMinutes> mMinuteDataList;
+	private ArrayList<StockKLine> mKLineDataList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -137,6 +145,7 @@ public class StockChartDetailActivity extends Activity {
         mMinPriceView = (TextView)findViewById(R.id.tv_min_price);
         mMinPercentView = (TextView)findViewById(R.id.tv_min_percent);
         mMinVolumeView = (TextView)findViewById(R.id.tv_min_volume);
+		mMinVolumeView.setVisibility(View.GONE);
         mMinMaValueView = (TextView)findViewById(R.id.tv_min_ma);
 		mMinMaLayout = findViewById(R.id.layout_min_ma);
 
@@ -237,6 +246,9 @@ public class StockChartDetailActivity extends Activity {
 		mLineType = intent.getIntExtra(INTENT_EXTRA_LINE_TYPE, KLINE_TYPE_MIN);
         mStockState = intent.getIntExtra(INTENT_EXTRA_STOCK_STATE, 0);
         mCurPrice = intent.getFloatExtra(INTENT_EXTRA_STOCK_PRICE, 0);
+		mFromGuoXin = intent.getBooleanExtra(INTENT_FROM_GUOXIN, false);
+		mMinuteDataList = (ArrayList<StockMinutes>) intent.getSerializableExtra(INTENT_EXTRA_MINUTE_DATA_LIST);
+		mKLineDataList = (ArrayList<StockKLine>) intent.getSerializableExtra(INTENT_EXTRA_KLINE_DATA_LIST);
 
 		mNameTextView.setText(intent.getStringExtra(INTENT_EXTRA_STOCK_NAME));
 		mCodeTextView.setText(mStockCode);
@@ -707,6 +719,58 @@ public class StockChartDetailActivity extends Activity {
             }
         }
 
+		if (mFromGuoXin) {
+//			mStockClient.requestNewMinuteData(new OnRequestListener() {
+//				@Override
+//				public void onDataFinish(Object object) {
+//					if (mLineType == KLINE_TYPE_MIN) {
+//						mMinuteLine.setVisibility(View.VISIBLE);
+//						mProgressBar.setVisibility(View.GONE);
+//
+//						if (mIsStock){
+//							mHandicapView.setVisibility(View.VISIBLE);
+//						}
+//					}
+//
+//					mMinutes = ((ArrayList<StockMinutes>)object);
+//					if (mMinutes == null || mMinutes.size() == 0) {
+//						//没有获取到数据
+//						return;
+//					}
+//
+//					mDataHandler.sendEmptyMessage(1);
+//
+//				}
+//
+//				@Override
+//				public void onError(int errorCode, String errorString) {
+//					if (mLineType == KLINE_TYPE_MIN) {
+//						mMinuteLine.setVisibility(View.VISIBLE);
+//						mProgressBar.setVisibility(View.GONE);
+//
+//						if (mIsStock){
+//							mHandicapView.setVisibility(View.VISIBLE);
+//						}
+//					}
+//				}
+//			}, Constants.JIN_GUI_INFO_MINUTE.concat(mStockCode));
+			if (mLineType == KLINE_TYPE_MIN) {
+				mMinuteLine.setVisibility(View.VISIBLE);
+				mProgressBar.setVisibility(View.GONE);
+
+				if (mIsStock){
+					mHandicapView.setVisibility(View.VISIBLE);
+				}
+			}
+			mMinutes = mMinuteDataList;
+			if (mMinutes == null || mMinutes.size() == 0) {
+				//没有获取到数据
+				return;
+			}
+			mDataHandler.sendEmptyMessage(1);
+			return;
+		}
+
 		long lastTime = 0;//去掉毫秒
 		//先从数据库中读取显示
 		byte[] b = null;
@@ -812,6 +876,21 @@ public class StockChartDetailActivity extends Activity {
 		}
 		
 		getDailyDataStatus = KLINE_GETDATA_LOADING;
+
+		if (mFromGuoXin) {
+/*			if (mDailyKLines == null) {*/
+				mDailyKLines = mKLineDataList;
+	/*		}else {
+				mDailyKLines = StockKLine.addKLine(mDailyKLines, mKLineDataList);
+			}*/
+
+			if (mDailyKLines == null || mDailyKLines.size() == 0) {
+				//没有获取到数据
+				return;
+			}
+			mDataHandler.sendEmptyMessage(0);
+			return;
+		}
 		
 		long startTime = 1;
 		byte[] b = null;

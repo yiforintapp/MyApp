@@ -1,5 +1,6 @@
 package com.zlf.appmaster.chartview.bean;
 
+import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
 import com.zlf.appmaster.utils.QLog;
 
 import org.json.JSONArray;
@@ -163,22 +164,22 @@ public class StockMinutes extends StockVolume
 //      long l6 = paramJSONObject.optLong("HQCJJE");
 //      return new StockMinutes(f3, f1, l1, l6, i, l4);
 //    }
-    float f1 = (float)paramJSONObject.optDouble("open", 0.0D);
-    float f2 = (float)paramJSONObject.optDouble("close", 0.0D);
+    float f1 = (float)paramJSONObject.optDouble("ZSZJZS", 0.0D);
+    float f2 = /*(float)paramJSONObject.optDouble("close", 0.0D)*/(float) StockIndexDetailActivity.mYesterdayIndex;
     long l2 = 370000 * 100L;
-    long l3 = (long)paramJSONObject.optDouble("statisticsTime", 0.0D);
+    long l3 = (long)paramJSONObject.optDouble("time", 0.0D) * 1000L;
     long l5 = 570000000L;
     return new StockMinutes(f2, f1, l2, l5, 0, l3);
   }
 
   public static ArrayList<StockMinutes> resloveNewMinutesData(Object paramObject, boolean paramBoolean)
   {
-    JSONObject localJSONObject = (JSONObject)paramObject;
+//    JSONObject localJSONObject = (JSONObject)paramObject;
     ArrayList localArrayList = new ArrayList();
     float f1 = 0.0F;
     try
     {
-      JSONArray localJSONArray = localJSONObject.optJSONArray("data");
+      JSONArray localJSONArray = /*localJSONObject.optJSONArray("data")*/(JSONArray) paramObject;
       if ((localJSONArray == null) || (localJSONArray.length() == 0))
         return null;
       StockMinutes localStockMinutes1 = resolveNewMinuteJsonObject(localJSONArray.getJSONObject(0), paramBoolean);

@@ -36,6 +36,7 @@ import com.zlf.appmaster.ui.stock.TabButton;
 import com.zlf.appmaster.utils.QLog;
 import com.zlf.appmaster.utils.QToast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +66,9 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
     private boolean mAdapterNotify;  // 涨跌是否正在刷新
 
     private boolean mFromGuoXin;
+    private ArrayList<StockMinutes> mMinuteDataList;
+    private String mTabMinuteTag;
+    private String mTabKLineTag;
 
     private final static int REFRESH_KLINE_DATA = 1;
     public Handler mHandler = new Handler(){
@@ -86,7 +90,8 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
 
     };
 
-    public StockIndexDetailListAdapter(Context context, StockClient stockClient, StockIndex index, List<StockTradeInfo> data, boolean fromGuoXin) {
+    public StockIndexDetailListAdapter(Context context, StockClient stockClient, StockIndex index,
+                                       List<StockTradeInfo> data, boolean fromGuoXin, String tabMinuteTag, String tabKLineTag) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
 
@@ -99,6 +104,9 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
         mStockClient = stockClient;
 
         mFromGuoXin = fromGuoXin;
+
+        mTabMinuteTag = tabMinuteTag;
+        mTabKLineTag = tabKLineTag;
 
         // 初始化K线view
         mStockChartView = new StockChartView(context);
@@ -337,8 +345,11 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
         Intent intent = new Intent(mContext,StockChartDetailActivity.class);
         intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_LINE_TYPE, type);
         intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_IS_STOCK, false);
+        intent.putExtra(StockChartDetailActivity.INTENT_FROM_GUOXIN, mFromGuoXin);
         intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_ID, mStockIndexID);
         intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_NAME, mStockIndexName);
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_MINUTE_DATA_LIST, (Serializable)mMinuteDataList);
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_KLINE_DATA_LIST, (Serializable)mDailyKLines);
         mContext.startActivity(intent);
     }
 
@@ -348,24 +359,26 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
      */
     private void getStockMinuteData(final OnGetMinuteDataListener listener, boolean fromGuoXin) {
         if (fromGuoXin) {
+            StringBuilder s = new StringBuilder(Constants.MY_DATA_URL);
+            s.append(mTabMinuteTag).append("&code=").append(mStockIndexID);
             mStockClient.requestNewMinuteData(new OnRequestListener() {
                 @Override
                 public void onDataFinish(Object object) {
-                    ArrayList<StockMinutes> dataArrayList = new ArrayList<StockMinutes>();
-                    dataArrayList.addAll((ArrayList<StockMinutes>)object);
-                    if (dataArrayList == null || dataArrayList.size() == 0) {
+                    mMinuteDataList = new ArrayList<StockMinutes>();
+                    mMinuteDataList.addAll((ArrayList<StockMinutes>)object);
+                    if (mMinuteDataList == null || mMinuteDataList.size() == 0) {
                         //没有获取到数据
                         listener.onError();
                         return;
                     }
-                    listener.onDataFinish(dataArrayList);
+                    listener.onDataFinish(mMinuteDataList);
                 }
 
                 @Override
                 public void onError(int errorCode, String errorString) {
 
                 }
-            }, Constants.JIN_GUI_INFO_MINUTE.concat(mStockIndexID));
+            }, s.toString());
         } else {
             long lastTime = 0;//去掉毫秒
             //先从数据库中读取显示
@@ -422,6 +435,8 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
      */
     public void getStockDailyKLines(final OnGetDailyKLinesListener listener, boolean fromGuoXin) {
         if (mFromGuoXin) {
+            StringBuilder s = new StringBuilder(Constants.MY_DATA_URL);
+            s.append(mTabKLineTag).append("&code=").append(mStockIndexID);
             mStockClient.requestNewKLineData(new OnRequestListener() {
                 @Override
                 public void onDataFinish(Object object) {
@@ -445,7 +460,7 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
                 public void onError(int errorCode, String errorString) {
 
                 }
-            }, Constants.JIN_GUI_INFO_KLINE.concat(mStockIndexID));
+            }, s.toString());
         } else {
             //获取下起始时间点 大于1则说明有数据，可直接显示
             long startTime = 1;

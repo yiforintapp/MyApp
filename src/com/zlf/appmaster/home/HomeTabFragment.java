@@ -25,7 +25,7 @@ import java.util.List;
 public class HomeTabFragment extends BaseFragment {
 
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[6];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[2];
 //    private HomeTabChildFragment mUserSelectFragment;
     private StockJinGuiFragment mStockJinGuiFragment;
     private StockQiLuFragment mStockQiLuFragment;
@@ -76,7 +76,7 @@ public class HomeTabFragment extends BaseFragment {
         holder.fragment = mStockQiLuFragment;
         mHomeHolders[1] = holder;
 
-        holder = new HomeTabHolder();
+       /* holder = new HomeTabHolder();
         holder.title = "指数";
         mStockIndexFragment = new StockIndexFragment();
         holder.fragment = mStockIndexFragment;
@@ -98,7 +98,7 @@ public class HomeTabFragment extends BaseFragment {
         holder.title = "题材";
         mStockTopicFragment = new StockTopicFragment();
         holder.fragment = mStockTopicFragment;
-        mHomeHolders[5] = holder;
+        mHomeHolders[5] = holder;*/
 
 
         FragmentManager fm = getChildFragmentManager();

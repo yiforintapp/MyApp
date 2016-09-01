@@ -236,16 +236,15 @@ public class Constants {
     public static final String CRYPTO_SUFFIX = ".leotmi";
     public static final String CRYPTO_SUFFIX_OLD = ".leotmp";
 
-    public static final String PAPER_SILVER_INFO = "http://hqs.91jin.com/market/query/quotation?excode=&ver=3.0.8&src=app&code=ZAGUSD";
-    public static final String PAPER_SILVER_INFO_MINUTE = "http://hqs.91jin.com/market/query/timeline?ver=3.0.8&src=app&code=ZAGUSD";
-    public static final String PAPER_SILVER_INFO_KLine = "http://hqs.91jin.com/getmarketinfo/getKlineList.do?im=5&ver=3.0.8&code=ZAGUSD";
 
-    public static final String JIN_GUI_INFO = "http://hqs.91jin.com/market/query/quotation?excode=TJPMEV3&ver=3.0.8&src=app&code=";
-    public static final String JIN_GUI_INFO_ITEM = "http://hqs.91jin.com/getmarketinfo/getQuotationByCode.do?ver=3.0.8&code=";
-    public static final String JIN_GUI_INFO_MINUTE = "http://hqs.91jin.com/market/query/timeline?ver=3.0.8&src=app&code=";
-    public static final String JIN_GUI_INFO_KLINE = "http://hqs.91jin.com/getmarketinfo/getKlineList.do?im=5&ver=3.0.8&code=";
 
-    public static final String QI_LU_INFO = "http://hqs.91jin.com/market/query/quotation?excode=QILU&ver=3.0.8&src=app&code=";
+    public static final String MY_DATA_URL = "http://120.24.14.76:1688/work?proname=";
+    public static final String JIN_GUI_INFO_PRONAME = "changjiang";
+    public static final String QI_LU_INFO_PRONAME = "gold";
+    public static final String JIN_GUI_INFO_MINUTE_PRONAME = "changjiang_detils";
+    public static final String QI_LU_INFO_MINUTE_PRONAME = "gold_detils";
+    public static final String JIN_GUI_INFO_KLINE_PRONAME = "changjiang_detils_k";
+    public static final String QI_LU_INFO_KLINE_PRONAME = "gold_detils_k";
 
     public static final String LOGIN_ADDRESS= "http://120.24.14.76:1688/work?proname=";
     public static final String LOGIN_TAG= "applogin&";

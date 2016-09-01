@@ -165,6 +165,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
                     android:text="成交"
+                    android:visibility="gone"
                     />
 
                 <TextView

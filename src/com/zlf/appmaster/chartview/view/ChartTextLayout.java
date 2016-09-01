@@ -3,6 +3,7 @@ package com.zlf.appmaster.chartview.view;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.zlf.appmaster.R;
@@ -213,7 +214,7 @@ public class ChartTextLayout extends RelativeLayout
     }
     else
     {
-      this.c.setVisibility(0);
+      this.c.setVisibility(8);
       this.c.setText(this.v);
       this.c.setTextColor(this.m.getResources().getColor(R.color.item_white));
       if (this.x == 2)

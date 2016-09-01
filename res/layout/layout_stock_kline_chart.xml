@@ -166,6 +166,7 @@
                         android:id="@+id/tv_select_volume"
                         style="@style/k_line_extra_text_font_style_small"
                         android:text="成交量"
+                        android:visibility="gone"
                         />
                     <TextView
                         android:id="@+id/tv_select_kdj"

@@ -130,7 +130,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/stock_detail_base_info_row_span">
+                android:layout_marginBottom="@dimen/stock_detail_base_info_row_span"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/font_stock_mini_title"
@@ -156,7 +157,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/volume"

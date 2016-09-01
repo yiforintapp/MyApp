@@ -357,6 +357,10 @@ public class StockIndex /*implements Parcelable*/{
 
         return new DecimalFormat("0.00").format(mTodayIndex);
 	}
+
+	public double getTodayIndex() {
+		return mTodayIndex;
+	}
 	
 
 	public String getYestodayPriceFormat() {

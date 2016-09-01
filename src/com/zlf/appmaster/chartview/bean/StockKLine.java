@@ -554,15 +554,19 @@ public class StockKLine extends StockVolume {
 
         try {
             JSONArray jsonArray = (JSONArray) object;
+            StockKLine stockKLine;
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 float open = (float) jsonObject.optDouble("open");
                 float close = (float) jsonObject.optDouble("close");
                 float high = (float) jsonObject.optDouble("high");
                 float low = (float) jsonObject.optDouble("low");
-                long time = jsonObject.optLong("statisticsTime");
-                long volume = jsonObject.optLong("volume");
+                long time = jsonObject.optLong("time") * 1000L;
+                long volume = jsonObject.optLong("preClose");
                 long count = 100000;
+                boolean flag = getKLineIsUp(open, close, volume);
+                stockKLine = new StockKLine(open, close, high, low, volume, time, count, flag);
+                arrayList.add(stockKLine);
             }
         } catch (JSONException e) {
             e.printStackTrace();
