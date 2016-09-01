@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.ui.stock.StockTextView;
+import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.List;
 
@@ -44,35 +45,35 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
     public int getCount() {
         int itemCount = 0;
 
-       if (mIndexItems.size() != 0){
-           itemCount += mIndexItems.size() + 1;
-       }
+//       if (mIndexItems.size() != 0){
+//           itemCount += mIndexItems.size() + 1;
+//       }
 
-       if (mForeignDelayIndexItems.size() != 0) {
-           itemCount += mForeignDelayIndexItems.size() + 1;
-       }
-       return itemCount;
+//       if (mForeignDelayIndexItems.size() != 0) {
+//           itemCount += mForeignDelayIndexItems.size() + 1;
+//       }
+       return mIndexItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        int indexItemLen = mIndexItems.size();
+//        int indexItemLen = mIndexItems.size();
+//
+//        if (indexItemLen > 0){
+//            if (position > 0 && position <= indexItemLen){
+//                return mIndexItems.get(position - 1);
+//            }
+//            else if (position > indexItemLen && position <= mForeignDelayIndexItems.size() + indexItemLen + 1){
+//                return mForeignDelayIndexItems.get(position - indexItemLen - 2);
+//            }
+//        }
+//        else {  // 只有国外指数的情况
+//            if (position > 0 && position <= mForeignDelayIndexItems.size()){
+//                return mForeignDelayIndexItems.get(position - 1);
+//            }
+//        }
 
-        if (indexItemLen > 0){
-            if (position > 0 && position <= indexItemLen){
-                return mIndexItems.get(position - 1);
-            }
-            else if (position > indexItemLen && position <= mForeignDelayIndexItems.size() + indexItemLen + 1){
-                return mForeignDelayIndexItems.get(position - indexItemLen - 2);
-            }
-        }
-        else {  // 只有国外指数的情况
-            if (position > 0 && position <= mForeignDelayIndexItems.size()){
-                return mForeignDelayIndexItems.get(position - 1);
-            }
-        }
-
-        return null;
+        return mIndexItems.get(position);
     }
 
     @Override
@@ -130,6 +131,9 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         int viewType = getItemViewType(position);
+        if(viewType == ViewType.TITLE_INDEX || viewType == ViewType.TITLE_FOREIGN_INDEX){
+            viewType = ViewType.ITEM;
+        }
         switch (viewType) {
             case ViewType.TITLE_INDEX: {
                 if (convertView == null) {
@@ -156,6 +160,7 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
                 else {
                     viewHolder = (ViewHolder) convertView.getTag();
                 }
+
 
                 StockIndex item = (StockIndex)getItem(position);
                 if (null != item){

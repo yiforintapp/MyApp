@@ -65,13 +65,13 @@ public class HomeTabFragment extends BaseFragment {
 //        holder.fragment = mStockFavoriteFragment;
 //        mHomeHolders[0] = holder;
         HomeTabHolder holder = new HomeTabHolder();
-        holder.title = "津贵所";
+        holder.title = "长江联合";
         mStockJinGuiFragment = new StockJinGuiFragment();
         holder.fragment = mStockJinGuiFragment;
         mHomeHolders[0] = holder;
 
         holder = new HomeTabHolder();
-        holder.title = "齐鲁商品";
+        holder.title = "国际黄金";
         mStockQiLuFragment = new StockQiLuFragment();
         holder.fragment = mStockQiLuFragment;
         mHomeHolders[1] = holder;
