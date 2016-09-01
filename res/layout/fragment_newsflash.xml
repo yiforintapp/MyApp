@@ -67,7 +67,7 @@
                 android:layout_height="38dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/mc_empty_tv3_top_margin"
-                android:background="@drawable/blue_radius_btn_shape"
+                android:background="@drawable/blue_real_radius_btn_shape"
                 android:minWidth="120dp"
                 app:rippleColor="@color/button_blue_ripple"
                 app:rippleDuration="250"

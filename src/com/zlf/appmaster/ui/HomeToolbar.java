@@ -55,13 +55,13 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
         mMenuRl = findViewById(R.id.hm_tool_menu_rl);
         mMenuRl.setOnClickListener(this);
 
-        mMsgcenterRl = findViewById(R.id.hm_tool_msgcenter_rl);
-        mMsgcenterRl.setOnClickListener(this);
+//        mMsgcenterRl = findViewById(R.id.hm_tool_msgcenter_rl);
+//        mMsgcenterRl.setOnClickListener(this);
 
 
         mMenuIv = (ImageView) findViewById(R.id.hm_tool_menu_iv);
         mMenuRedTipIv = (ImageView) findViewById(R.id.hm_tool_menu_red_tip_iv);
-        mMsgCenterRedCount = (TextView) findViewById(R.id.hm_tool_mc_unread_tv);
+//        mMsgCenterRedCount = (TextView) findViewById(R.id.hm_tool_mc_unread_tv);
 
     }
 
@@ -102,12 +102,13 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener 
                     mDrawerLayout.openDrawer(Gravity.START);
                 }
                 break;
-            case R.id.hm_tool_msgcenter_rl:
-                // 点击启动消息中心的次数
-                Intent msgCenter = new Intent();
-                msgCenter.setClass(getContext(), MsgCenterActivity.class);
-                getContext().startActivity(msgCenter);
-                break;
+//            case R.id.hm_tool_msgcenter_rl:
+//                // 点击启动消息中心的次数
+//                Intent msgCenter = new Intent();
+//                msgCenter.setClass(getContext(), MsgCenterActivity.class);
+//                getContext().startActivity(msgCenter);
+//                break;
+
 //            case R.id.hm_tool_more_rl:
 //                Activity activity = (Activity) getContext();
 //                if (activity instanceof HomeActivity) {

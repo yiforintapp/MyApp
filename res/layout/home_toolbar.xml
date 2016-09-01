@@ -51,42 +51,42 @@
         android:textColor="@color/white"
         android:textSize="20dp" />
 
-    <com.zlf.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/hm_tool_msgcenter_rl0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        app:rippleColor="@color/menu_ripple"
-        app:rippleDuration="150"
-        app:rippleHover="true"
-        app:rippleOverlay="true">
+    <!--<com.zlf.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/hm_tool_msgcenter_rl0"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--app:rippleColor="@color/menu_ripple"-->
+        <!--app:rippleDuration="150"-->
+        <!--app:rippleHover="true"-->
+        <!--app:rippleOverlay="true">-->
 
-        <RelativeLayout
-            android:id="@+id/hm_tool_msgcenter_rl"
-            style="@style/ToolbarIcon">
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/hm_tool_msgcenter_rl"-->
+            <!--style="@style/ToolbarIcon">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:src="@drawable/ic_toolbar_msgcenter" />
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:adjustViewBounds="true"-->
+                <!--android:src="@drawable/ic_toolbar_msgcenter" />-->
 
-            <TextView
-                android:id="@+id/hm_tool_mc_unread_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="7dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/ic_mc_unread_bg"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:textColor="@color/white"
-                android:textSize="11dp"
-                android:visibility="gone" />
-        </RelativeLayout>
-    </com.zlf.appmaster.ui.MaterialRippleLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/hm_tool_mc_unread_tv"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginRight="7dp"-->
+                <!--android:layout_marginTop="12dp"-->
+                <!--android:background="@drawable/ic_mc_unread_bg"-->
+                <!--android:gravity="center"-->
+                <!--android:includeFontPadding="false"-->
+                <!--android:paddingLeft="2dp"-->
+                <!--android:paddingRight="2dp"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="11dp"-->
+                <!--android:visibility="gone" />-->
+        <!--</RelativeLayout>-->
+    <!--</com.zlf.appmaster.ui.MaterialRippleLayout>-->
 </RelativeLayout>

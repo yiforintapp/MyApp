@@ -263,8 +263,8 @@ public class NewsMarketFragment extends StockBaseFragment {
                 } else {
                     mListView.setPullLoadEnable(true);
                 }
-
                 if (len > 0) {
+
                     mListView.setVisibility(View.VISIBLE);
                     if (mNowPage == 1) {// 刷新
                         mDataList.clear();
