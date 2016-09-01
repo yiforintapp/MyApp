@@ -83,49 +83,50 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        int len = mIndexItems.size();
-
-        if (len > 0){
-            if (position == 0)
-                return ViewType.TITLE_INDEX;
-            else if (position == len + 1){
-                return ViewType.TITLE_FOREIGN_INDEX;
-            }
-            else
-                return ViewType.ITEM;
-        }
-        else{
-            if (position == 0)
-                return ViewType.TITLE_FOREIGN_INDEX;
-            else
-                return ViewType.ITEM;
-        }
-
+//        int len = mIndexItems.size();
+//
+//        if (len > 0){
+//            if (position == 0)
+//                return ViewType.TITLE_INDEX;
+//            else if (position == len + 1){
+//                return ViewType.TITLE_FOREIGN_INDEX;
+//            }
+//            else
+//                return ViewType.ITEM;
+//        }
+//        else{
+//            if (position == 0)
+//                return ViewType.TITLE_FOREIGN_INDEX;
+//            else
+//                return ViewType.ITEM;
+//        }
+ return 1;
     }
 
     @Override
     public int getViewTypeCount() {
-        return ViewType.getCount();
+//        return ViewType.getCount();
+        return 1;
     }
 
     @Override
     public boolean isEnabled(int position) {
-        int indexItemLen = mIndexItems.size();
-        if (indexItemLen > 0){
-            if (position > 0 && position <= indexItemLen){
-                return true;
-            }
-            else if (position > indexItemLen && position <= mForeignDelayIndexItems.size() + indexItemLen + 1){
-                return false;
-            }
-        }
-        else {  // 只有国外指数的情况
-            if (position > 0 && position <= mForeignDelayIndexItems.size()){
-                return false;
-            }
-        }
+//        int indexItemLen = mIndexItems.size();
+//        if (indexItemLen > 0){
+//            if (position > 0 && position <= indexItemLen){
+//                return true;
+//            }
+//            else if (position > indexItemLen && position <= mForeignDelayIndexItems.size() + indexItemLen + 1){
+//                return false;
+//            }
+//        }
+//        else {  // 只有国外指数的情况
+//            if (position > 0 && position <= mForeignDelayIndexItems.size()){
+//                return false;
+//            }
+//        }
 
-        return false;
+        return true;
     }
 
     @Override

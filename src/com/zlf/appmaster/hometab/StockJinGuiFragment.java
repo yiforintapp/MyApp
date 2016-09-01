@@ -16,6 +16,7 @@ import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
+import com.zlf.appmaster.utils.LeoLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,7 +83,10 @@ public class StockJinGuiFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position - 1);
+//                StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position);
+                LeoLog.d("testClick","itemClick : " + position);
                 if (null != item) {
+
                     Class targetClass;
 
 //                    if(mLiveRecordingUtil.isLiveRecording()){
