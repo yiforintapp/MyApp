@@ -884,6 +884,7 @@ public class StockChartDetailActivity extends Activity {
 		if (mFromGuoXin) {
 			if (mKLineDataList != null && mKLineDataList.size() > 0) {
 				mDailyKLines = mKLineDataList;
+				mDataHandler.sendEmptyMessage(0);
 			} else {
 				StringBuilder s = new StringBuilder(Constants.MY_DATA_URL);
 				s.append(mKLineTag).append("&code=").append(mStockCode);
