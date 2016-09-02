@@ -197,6 +197,10 @@
             android:name=".stocknews.NewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+        <activity
+            android:name=".stocknews.testWebViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".stocktrade.StockTradeDetailNewsActivity"
