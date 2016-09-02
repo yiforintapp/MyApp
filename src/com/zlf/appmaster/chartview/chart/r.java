@@ -381,14 +381,14 @@ public class r extends View
       a(paramCanvas, ((Long)this.e.get(i1)).longValue());
     if (this.E)
     {
-      String str = "11:30|13:00";
+      String str = /*"11:30|13:00"*/"4:30";
       float f1 = this.leftMargin + getPicWidth() * 0.5F - this.n.measureText(str) / 2.0F;
       float f2 = getHeight() - localFontMetricsInt.bottom;
       paramCanvas.drawText(str, f1, f2, this.n);
-      str = "9:30";
+      str = /*"9:30"*/"6:00";
       f1 = this.leftMargin;
       paramCanvas.drawText(str, f1, f2, this.n);
-      str = "15:00";
+      str = /*"15:00"*/"";
       f1 = this.leftMargin + getPicWidth() - this.n.measureText(str);
       paramCanvas.drawText(str, f1, f2, this.n);
     }

@@ -304,7 +304,18 @@ public class StockChartView extends LinearLayout {
         }
     }
 
+    private void addTag( ArrayList arraylist) {
+        for (StockKLine stockKLine: (ArrayList<StockKLine>)arraylist) {
+            stockKLine.setClose(stockKLine.getClose() * 100.00f);
+            stockKLine.setOpen(stockKLine.getOpen() * 100.00f);
+            stockKLine.setHigh(stockKLine.getHigh() * 100.00f);
+            stockKLine.setLow(stockKLine.getLow() * 100.00f);
+            stockKLine.setPreClose(stockKLine.getPreClose() * 100.00f);
+        }
+    }
+
     public void changeData() {
+//        addTag(m);
         j.setKLineData(m);
         k.setKLineData(StockKLine.changeDaily2Week(m));
         l.setKLineData(StockKLine.changeDaily2Month(m));

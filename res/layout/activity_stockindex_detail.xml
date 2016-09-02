@@ -52,6 +52,7 @@
                 android:onClick="onSearch"
                 android:paddingLeft="18.3dp"
                 android:paddingRight="18.3dp"
+                android:visibility="invisible"
                 android:src="@drawable/icon_stock_quotations_search" />
         </RelativeLayout>
     </RelativeLayout>

@@ -76,7 +76,7 @@ public class HomeTabFragment extends BaseFragment {
         holder.fragment = mStockQiLuFragment;
         mHomeHolders[1] = holder;
 
-       /* holder = new HomeTabHolder();
+  /*      holder = new HomeTabHolder();
         holder.title = "指数";
         mStockIndexFragment = new StockIndexFragment();
         holder.fragment = mStockIndexFragment;

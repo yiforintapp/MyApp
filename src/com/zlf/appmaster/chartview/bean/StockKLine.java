@@ -88,7 +88,6 @@ public class StockKLine extends StockVolume {
 
     public float getPercent() {
         if (e == 0.0F) {
-            QLog.e("StockKLine", "mPreClose == 0");
             return 0.0F;
         } else {
             return (b - e) / e;
@@ -200,18 +199,9 @@ public class StockKLine extends StockVolume {
     public static byte[] getItemBytes(StockKLine stockkline, KLineHeader klineheader) {
         ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
         if (ll < 10) {
-            Log.e("hfgjfgj", "time:  " + stockkline.l + "");
             Date date = new Date(stockkline.l);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String dateStr = sdf.format(date);
-            Log.e("hfgjfgj", "SimpleDateFormat:  " + dateStr);
-            Log.e("hfgjfgj", "low:  " + stockkline.d + "");
-            Log.e("hfgjfgj", "high:  " + stockkline.c + "");
-            Log.e("hfgjfgj", "open:  " + stockkline.a + "");
-            Log.e("hfgjfgj", "close:  " + stockkline.b + "");
-            Log.e("hfgjfgj", "preClose:  " + stockkline.e + "");
-            Log.e("hfgjfgj", "stockkline.getTradeCount():  " + stockkline.getTradeCount() + "");
-            Log.e("hfgjfgj", "------------------------------------");
             ll ++;
         }
         bytearrayoutputstream.write(ByteUtil.int2byte((int) (stockkline.l / 1000L)), 0, 4);
@@ -290,12 +280,10 @@ public class StockKLine extends StockVolume {
         int j1 = klineheader.h + 1;
 
         for (int k1 = 0; i1 + j1 <= abyte0.length; k1++) {
-            Log.e("dfhdhdfhd", "j1:  "  + j1);
             byte abyte1[] = new byte[j1];
             for (int l1 = 0; l1 < j1; l1++)
                 abyte1[l1] = abyte0[i1 + l1];
             try {
-                Log.e("dfhdhdfhd", "for:  "  + new String(abyte1));
             } catch (Exception e) {
 
             }
@@ -316,7 +304,6 @@ public class StockKLine extends StockVolume {
     public static ArrayList resolveKLineZip(Object obj, Context context) {
         byte abyte0[] = StringUtil.unGZip((byte[]) (byte[]) obj);
 
-        Log.e("dfhdhdfhd", "abyte0[]:  "  + abyte0);
         if (abyte0 == null || abyte0.length == 0) {
             QLog.e("StockKLine", "没有获取到K线数据");
             return null;
@@ -340,7 +327,6 @@ public class StockKLine extends StockVolume {
 
         try {
             String s = new String(abyte1, "utf-8");
-            Log.e("dfhdhdfhd", "title:  "  + s);
             JSONObject jsonobject = new JSONObject(s);
             klineheader = KLineHeader.resloveJsonObject(jsonobject);
         } catch (JSONException jsonexception) {
@@ -515,19 +501,19 @@ public class StockKLine extends StockVolume {
     public static void calcAdjust(ArrayList arraylist) {
         float f1 = 1.0F;
         for (int i1 = arraylist.size() - 1; i1 > 0; i1--) {
-            ((StockKLine) arraylist.get(i1 - 1)).setForwardAdjust(f1);
+            ((StockKLine) arraylist.get(i1 - 1)).setForwardAdjust(1.0F);
             if (((StockKLine) arraylist.get(i1 - 1)).getClose() != ((StockKLine) arraylist.get(i1)).getPreClose()) {
                 f1 *= ((StockKLine) arraylist.get(i1)).getPreClose() / ((StockKLine) arraylist.get(i1 - 1)).getClose();
-                ((StockKLine) arraylist.get(i1 - 1)).setForwardAdjust(f1);
+                ((StockKLine) arraylist.get(i1 - 1)).setForwardAdjust(1.0F);
             }
         }
 
         float f2 = 1.0F;
         for (int j1 = 1; j1 < arraylist.size(); j1++) {
-            ((StockKLine) arraylist.get(j1)).setBackwardAdjust(f2);
+            ((StockKLine) arraylist.get(j1)).setBackwardAdjust(1.0F);
             if (((StockKLine) arraylist.get(j1 - 1)).getClose() != ((StockKLine) arraylist.get(j1)).getPreClose()) {
                 f2 *= ((StockKLine) arraylist.get(j1 - 1)).getClose() / ((StockKLine) arraylist.get(j1)).getPreClose();
-                ((StockKLine) arraylist.get(j1)).setBackwardAdjust(f2);
+                ((StockKLine) arraylist.get(j1)).setBackwardAdjust(1.0F);
             }
         }
 
@@ -563,10 +549,11 @@ public class StockKLine extends StockVolume {
                 float low = (float) jsonObject.optDouble("low");
                 long time = jsonObject.optLong("time") * 1000L;
                 long volume = jsonObject.optLong("preClose");
-                long count = 100000;
+                long count = 0;
                 boolean flag = getKLineIsUp(open, close, volume);
                 stockKLine = new StockKLine(open, close, high, low, volume, time, count, flag);
                 arrayList.add(stockKLine);
+                addMaLine(arrayList);
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.zlf.appmaster.chartview.chart;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 

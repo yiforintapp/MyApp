@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -350,6 +349,7 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
         intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_NAME, mStockIndexName);
         intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_MINUTE_DATA_LIST, (Serializable)mMinuteDataList);
         intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_KLINE_DATA_LIST, (Serializable)mDailyKLines);
+        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_KLINE_DATA_LIST_TAG, mTabKLineTag);
         mContext.startActivity(intent);
     }
 
@@ -443,17 +443,21 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
                     ArrayList<StockKLine> dataArrayList = new ArrayList<StockKLine>();
                     dataArrayList.addAll((ArrayList<StockKLine>)object);
                     if (dataArrayList == null || dataArrayList.size() == 0) {
-                        //没有获取到数据
-                        listener.onDataFinish(mDailyKLines);
+                        //没有获取到K线数据
+                        listener.onError();
                         return;
                     }
-                    listener.onDataFinish(dataArrayList);
                     if (mDailyKLines != null) {
                         mDailyKLines = StockKLine.addKLine(mDailyKLines, dataArrayList);
                     } else {
                         mDailyKLines = dataArrayList;
                     }
                     listener.onDataFinish(mDailyKLines);
+//                    if (mDailyKLines != null) {
+//                        mDailyKLines = StockKLine.addKLine(mDailyKLines, dataArrayList);
+//                    } else {
+//                        mDailyKLines = dataArrayList;
+//                    }
                 }
 
                 @Override
@@ -509,22 +513,22 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
 
                     for (int i = 0; i < mDailyKLines.size(); i++) {
                         StockKLine stockKLine = (StockKLine) mDailyKLines.get(i);
-                        Log.e("rtfgjfgjfg", "getLow:  " + stockKLine.getLow() + "");
-                        Log.e("rtfgjfgjfg", "getDataTime: " + stockKLine.getDataTime() + "");
-                        Log.e("rtfgjfgjfg", "getHigh: " + stockKLine.getHigh() + "");
-                        Log.e("rtfgjfgjfg", "getBackwardAdjust: " + stockKLine.getBackwardAdjust() + "");
-                        Log.e("rtfgjfgjfg", "getClose: " + stockKLine.getClose() + "");
-                        Log.e("rtfgjfgjfg", "getForwardAdjust: " + stockKLine.getForwardAdjust() + "");
-                        Log.e("rtfgjfgjfg", "getMa5: " + stockKLine.getMa5() + "");
-                        Log.e("rtfgjfgjfg", "getMa10: " + stockKLine.getMa10() + "");
-                        Log.e("rtfgjfgjfg", "getMa20: " + stockKLine.getMa20() + "");
-                        Log.e("rtfgjfgjfg", "getMa30: " + stockKLine.getMa30() + "");
-                        Log.e("rtfgjfgjfg", "getPercent: " + stockKLine.getPercent() + "");
-                        Log.e("rtfgjfgjfg", "getPreClose: " + stockKLine.getPreClose() + "");
-                        Log.e("rtfgjfgjfg", "getStockIsUp: " + stockKLine.getStockIsUp() + "");
-                        Log.e("rtfgjfgjfg", "getTradeCount: " + stockKLine.getTradeCount() + "");
-                        Log.e("rtfgjfgjfg", "isUp: " + stockKLine.isUp() + "");
-                        Log.e("rtfgjfgjfg", "------------------------------------");
+                        QLog.e("rtfgjfgjfg", "getLow:  " + stockKLine.getLow() + "");
+                        QLog.e("rtfgjfgjfg", "getDataTime: " + stockKLine.getDataTime() + "");
+                        QLog.e("rtfgjfgjfg", "getHigh: " + stockKLine.getHigh() + "");
+                        QLog.e("rtfgjfgjfg", "getBackwardAdjust: " + stockKLine.getBackwardAdjust() + "");
+                        QLog.e("rtfgjfgjfg", "getClose: " + stockKLine.getClose() + "");
+                        QLog.e("rtfgjfgjfg", "getForwardAdjust: " + stockKLine.getForwardAdjust() + "");
+                        QLog.e("rtfgjfgjfg", "getMa5: " + stockKLine.getMa5() + "");
+                        QLog.e("rtfgjfgjfg", "getMa10: " + stockKLine.getMa10() + "");
+                        QLog.e("rtfgjfgjfg", "getMa20: " + stockKLine.getMa20() + "");
+                        QLog.e("rtfgjfgjfg", "getMa30: " + stockKLine.getMa30() + "");
+                        QLog.e("rtfgjfgjfg", "getPercent: " + stockKLine.getPercent() + "");
+                        QLog.e("rtfgjfgjfg", "getPreClose: " + stockKLine.getPreClose() + "");
+                        QLog.e("rtfgjfgjfg", "getStockIsUp: " + stockKLine.getStockIsUp() + "");
+                        QLog.e("rtfgjfgjfg", "getTradeCount: " + stockKLine.getTradeCount() + "");
+                        QLog.e("rtfgjfgjfg", "isUp: " + stockKLine.isUp() + "");
+                        QLog.e("rtfgjfgjfg", "------------------------------------");
                     }
                     listener.onDataFinish(mDailyKLines);
 

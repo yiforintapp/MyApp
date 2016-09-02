@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.chartview.bean.StockKLine;
 import com.zlf.appmaster.chartview.bean.StockMinutes;
@@ -57,6 +58,7 @@ public class StockChartDetailActivity extends Activity {
 
 	public static final String INTENT_EXTRA_MINUTE_DATA_LIST = "minute_data_list";// 分时数据集
 	public static final String INTENT_EXTRA_KLINE_DATA_LIST = "kline_data_list";// K线数据集
+	public static final String INTENT_EXTRA_KLINE_DATA_LIST_TAG = "kline_data_list_tag";// K线数据集tag
 	
 	private final int[] KLINE_TAB_ID = {R.id.min_line, R.id.daily_line, R.id.weekly_line, R.id.monthly_line};
 	private View[] mKLineTab = new View[4];
@@ -81,7 +83,7 @@ public class StockChartDetailActivity extends Activity {
     private View mHandicapView;
 
 	private StockClient mStockClient;
-	private ProgressBar mProgressBar;
+	private CircularProgressView mProgressBar;
 	private Context mContext;
 	private ArrayList<StockKLine> mDailyKLines;//,mWeeklyKlines,mMonthlyKlines;
     private ArrayList<StockMinutes> mMinutes;
@@ -123,6 +125,7 @@ public class StockChartDetailActivity extends Activity {
 	private boolean mFromGuoXin;
 	private ArrayList<StockMinutes> mMinuteDataList;
 	private ArrayList<StockKLine> mKLineDataList;
+	private String mKLineTag;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +185,7 @@ public class StockChartDetailActivity extends Activity {
         mHandicapView = findViewById(R.id.handicap_layout);
 
 		
-		mProgressBar = (ProgressBar)findViewById(R.id.content_loading);
+		mProgressBar = (CircularProgressView)findViewById(R.id.content_loading);
 		
 		for(int i = 0; i < 4; i++) {
 			mKLineTab[i] = findViewById(KLINE_TAB_ID[i]);
@@ -249,6 +252,7 @@ public class StockChartDetailActivity extends Activity {
 		mFromGuoXin = intent.getBooleanExtra(INTENT_FROM_GUOXIN, false);
 		mMinuteDataList = (ArrayList<StockMinutes>) intent.getSerializableExtra(INTENT_EXTRA_MINUTE_DATA_LIST);
 		mKLineDataList = (ArrayList<StockKLine>) intent.getSerializableExtra(INTENT_EXTRA_KLINE_DATA_LIST);
+		mKLineTag = (String) intent.getStringExtra(INTENT_EXTRA_KLINE_DATA_LIST_TAG);
 
 		mNameTextView.setText(intent.getStringExtra(INTENT_EXTRA_STOCK_NAME));
 		mCodeTextView.setText(mStockCode);
@@ -878,17 +882,40 @@ public class StockChartDetailActivity extends Activity {
 		getDailyDataStatus = KLINE_GETDATA_LOADING;
 
 		if (mFromGuoXin) {
-/*			if (mDailyKLines == null) {*/
+			if (mKLineDataList != null && mKLineDataList.size() > 0) {
 				mDailyKLines = mKLineDataList;
-	/*		}else {
-				mDailyKLines = StockKLine.addKLine(mDailyKLines, mKLineDataList);
-			}*/
+			} else {
+				StringBuilder s = new StringBuilder(Constants.MY_DATA_URL);
+				s.append(mKLineTag).append("&code=").append(mStockCode);
+				mStockClient.requestNewKLineData(new OnRequestListener() {
+					@Override
+					public void onDataFinish(Object object) {
+						ArrayList<StockKLine> dataArrayList = new ArrayList<StockKLine>();
+						dataArrayList.addAll((ArrayList<StockKLine>)object);
+						if (dataArrayList == null || dataArrayList.size() == 0) {
+							//没有获取到K线数据
+							mDataHandler.sendEmptyMessage(0);
+							return;
+						}
+						if (mDailyKLines != null) {
+							mDailyKLines = StockKLine.addKLine(mDailyKLines, dataArrayList);
+						} else {
+							mDailyKLines = dataArrayList;
+						}
+						mDataHandler.sendEmptyMessage(0);
+//                    if (mDailyKLines != null) {
+//                        mDailyKLines = StockKLine.addKLine(mDailyKLines, dataArrayList);
+//                    } else {
+//                        mDailyKLines = dataArrayList;
+//                    }
+					}
 
-			if (mDailyKLines == null || mDailyKLines.size() == 0) {
-				//没有获取到数据
-				return;
+					@Override
+					public void onError(int errorCode, String errorString) {
+						mDataHandler.sendEmptyMessage(0);
+					}
+				}, s.toString());
 			}
-			mDataHandler.sendEmptyMessage(0);
 			return;
 		}
 		

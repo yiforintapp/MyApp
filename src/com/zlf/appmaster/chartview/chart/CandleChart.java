@@ -8,10 +8,12 @@ import android.graphics.Paint.FontMetricsInt;
 import android.graphics.Paint.Style;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.chartview.bean.StockKLine;
 import com.zlf.appmaster.utils.DipPixelUtil;
+import com.zlf.appmaster.utils.QLog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
