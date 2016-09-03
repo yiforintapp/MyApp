@@ -22,6 +22,7 @@ import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.model.stock.StockTradeInfo;
 import com.zlf.appmaster.stocksearch.StockSearchActivity;
 import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
+import com.zlf.appmaster.ui.CommonToolbar;
 
 import org.json.JSONException;
 
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StockIndexDetailActivity extends Activity {
-	public static final String INTENT_FLAG_INDEXCODE = "intent_flag_index_code";
+    public static final String INTENT_FLAG_INDEXCODE = "intent_flag_index_code";
     public static final String INTENT_FLAG_INDEXNAME = "intent_flag_index_name";
     public static final String INTENT_FLAG_GUO_XIN = "intent_flag_index_guo_xin";
     public static final String INTENT_FLAG_OPEN_INDEX = "intent_flag_open_index";
@@ -40,7 +41,7 @@ public class StockIndexDetailActivity extends Activity {
     public static final String INTENT_FLAG_TAB_MINITE_WHAT = "intent_flag_tab_minute_what"; //  哪一个tab分时tag
     public static final String INTENT_FLAG_TAB_KLINE_WHAT = "intent_flag_tab_kline_what"; //  哪一个tab
 
-	private static final String TAG = StockIndexDetailActivity.class.getSimpleName();
+    private static final String TAG = StockIndexDetailActivity.class.getSimpleName();
     private static final int MSG_UPDATE_INDEX = 1;
     private static final int MSG_UPDATE_LED_UP_LIST = 2;
 
@@ -50,12 +51,14 @@ public class StockIndexDetailActivity extends Activity {
     private List<StockTradeInfo> mData;
     private int mDataType = 0;
 
-    private String mStockIndexID,mStockIndexName;
+    private String mStockIndexID, mStockIndexName;
 
     private TextView mActivityTitleTV;
     private TextView mActivityTitleCommentTV;
     private String mTitleComment1;
     private String mTitleComment2;
+
+    private View mTimeView;
 
     private StockIndexDetailListAdapter mStockIndexDetailAdapter;
     private XListView mListView;
@@ -63,6 +66,8 @@ public class StockIndexDetailActivity extends Activity {
     private ProgressBar mProgressBar;
     private int mCurEndIndex = 0;
     private static final int LOAD_ITEM_NUM = 9;
+
+    private CommonToolbar mToolBar;
 
     private double mOpenIndex;
     public static double mYesterdayIndex;
@@ -77,7 +82,7 @@ public class StockIndexDetailActivity extends Activity {
     private String mTabKLineTag;
 
 
-    public Handler mHandler = new Handler(){
+    public Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
@@ -87,7 +92,7 @@ public class StockIndexDetailActivity extends Activity {
                     updateViews(mStockIndex);
                     break;
                 case MSG_UPDATE_LED_UP_LIST:
-                  //  updateLedUpInfoList();
+                    //  updateLedUpInfoList();
                     break;
                 default:
                     break;
@@ -97,19 +102,22 @@ public class StockIndexDetailActivity extends Activity {
 
     };
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_stockindex_detail);
-		
-		initViews();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_stockindex_detail);
+
+        initViews();
 
         initData();
-	}
+    }
 
-	public void initViews(){
+    public void initViews() {
         mContext = this;
+
+        mToolBar = (CommonToolbar) findViewById(R.id.kline_toolbar);
+        mTimeView = findViewById(R.id.title_bar);
 
         mStockClient = new StockClient(this);
         mStockQuotationsClient = StockQuotationsClient.getInstance(this);
@@ -117,12 +125,13 @@ public class StockIndexDetailActivity extends Activity {
         mStockIndexName = getIntent().getStringExtra(INTENT_FLAG_INDEXNAME);
         mFromGuoXin = getIntent().getBooleanExtra(INTENT_FLAG_GUO_XIN, false);
 
-        mActivityTitleTV 		= (TextView)findViewById(R.id.stocktrade_detail_title);
-        mActivityTitleCommentTV = (TextView)findViewById(R.id.stocktrade_detail_title_comment);
-        mActivityTitleTV.setText(mStockIndexName + " " + mStockIndexID);
+        mActivityTitleTV = (TextView) findViewById(R.id.stocktrade_detail_title);
+        mActivityTitleCommentTV = (TextView) findViewById(R.id.stocktrade_detail_title_comment);
+//        mActivityTitleTV.setText(mStockIndexName + " " + mStockIndexID);
 
+        mToolBar.setToolbarTitle(mStockIndexName + " " + mStockIndexID);
 
-        mListView = (XListView)findViewById(R.id.stock_index_detail_list);
+        mListView = (XListView) findViewById(R.id.stock_index_detail_list);
         mListView.setPullRefreshEnable(true);
         mListView.setPullLoadEnable(false);
         mListView.setXListViewListener(new XListView.IXListViewListener() {
@@ -140,9 +149,9 @@ public class StockIndexDetailActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                position = position -1;//   用的是xlistview
-                StockTradeInfo stockTradeInfo = (StockTradeInfo)mStockIndexDetailAdapter.getItem(position);
-                if (null != stockTradeInfo){
+                position = position - 1;//   用的是xlistview
+                StockTradeInfo stockTradeInfo = (StockTradeInfo) mStockIndexDetailAdapter.getItem(position);
+                if (null != stockTradeInfo) {
                     Intent intent = new Intent(mContext, StockTradeDetailActivity.class);
                     intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKNAME, stockTradeInfo.getName());
                     intent.putExtra(StockTradeDetailActivity.INTENT_FLAG_STOCKCODE, stockTradeInfo.getCode());
@@ -150,9 +159,9 @@ public class StockIndexDetailActivity extends Activity {
                 }
             }
         });
-	}
+    }
 
-    private void initData(){
+    private void initData() {
         Intent intent = getIntent();
         mOpenIndex = intent.getDoubleExtra(INTENT_FLAG_OPEN_INDEX, 0);
         mYesterdayIndex = intent.getDoubleExtra(INTENT_FLAG_YESTERDAY_INDEX, 0);
@@ -188,16 +197,16 @@ public class StockIndexDetailActivity extends Activity {
         requestData(false);
     }
 
-    private StockIndex loadCache(Context context, String code, String name){
+    private StockIndex loadCache(Context context, String code, String name) {
         StockIndex stockIndex = null;
 
-        try{
+        try {
             stockIndex = StockIndex.resolveIndexJsonObject(StockJsonCache.loadFromFile(code, context, StockJsonCache.CACHEID_EXTRA_INFO_INDEX_DETAIL));
-        }catch (JSONException e){
+        } catch (JSONException e) {
 
         }
 
-        if (stockIndex == null){
+        if (stockIndex == null) {
             stockIndex = new StockIndex();      // 不能为空
             stockIndex.setCode(code);
             stockIndex.setName(name);
@@ -207,13 +216,12 @@ public class StockIndexDetailActivity extends Activity {
     }
 
 
-    public void updateViews(StockIndex stockIndex){
+    public void updateViews(StockIndex stockIndex) {
 
-        if(null == stockIndex) return;
+        if (null == stockIndex) return;
 
 
-
-        mTitleComment1 = " 交易中" + stockIndex.getDataTimeFormat();
+        mTitleComment1 = stockIndex.getDataTimeFormat();
         if (mFromGuoXin) {
             if (!"open".equals(mStockIndex.getIsOPen())) {
                 mTitleComment1 = " 休市中 " + stockIndex.getDataTimeFormat();
@@ -228,14 +236,23 @@ public class StockIndexDetailActivity extends Activity {
             }
         }
         mActivityTitleCommentTV.setText(mTitleComment1);
-        mTitleComment2 = stockIndex.getCurPriceFormat() + "  " +stockIndex.getCurPriceComment();
+//        mTitleComment2 = stockIndex.getCurPriceFormat() + "  " +stockIndex.getCurPriceComment();
 
-
+        double todayPrice = stockIndex.getTodayIndex();
+        double nowPrice = stockIndex.getNowIndex();
+        if (nowPrice - todayPrice > 0) {
+            //涨了！
+            mToolBar.setToolbarColorResource(R.color.stock_rise);
+            mTimeView.setBackgroundResource(R.color.stock_rise);
+        } else {
+            //跌了！
+            mToolBar.setToolbarColorResource(R.color.stock_slumped);
+            mTimeView.setBackgroundResource(R.color.stock_slumped);
+        }
     }
 
 
-
-    private void requestData(final boolean autoRefresh){
+    private void requestData(final boolean autoRefresh) {
         if (mFromGuoXin) {
             mStockIndex.setCode(mStockIndexID);
             mStockIndex.setName(mStockIndexName);
@@ -311,7 +328,7 @@ public class StockIndexDetailActivity extends Activity {
     }
 
 
-    private void loadMoreList(){
+    private void loadMoreList() {
 
         mStockClient.requestIndexPopularStock(mStockIndexID, mCurEndIndex, mCurEndIndex + LOAD_ITEM_NUM, mDataType, new OnRequestListener() {
             @Override
@@ -347,7 +364,7 @@ public class StockIndexDetailActivity extends Activity {
             @Override
             public void onError(int errorCode, String errorString) {
                 onLoaded();
-         //       mProgressBar.setVisibility(View.GONE);
+                //       mProgressBar.setVisibility(View.GONE);
                 mListView.setPullLoadEnable(false);
                 mStockIndexDetailAdapter.setAdapterNotify(false);
             }
@@ -358,28 +375,28 @@ public class StockIndexDetailActivity extends Activity {
         mListView.stopRefresh();
         mListView.stopLoadMore();
     }
-	
-	public void onBack(View v){
-		finish();
-	}
 
-    public void onSearch(View v){
+    public void onBack(View v) {
+        finish();
+    }
+
+    public void onSearch(View v) {
         Intent intent = new Intent(mContext, StockSearchActivity.class);
         startActivityForResult(intent, 0);
     }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
+    @Override
+    protected void onResume() {
+        super.onResume();
 //		MobclickAgent.onPageStart(TAG);
 //		MobclickAgent.onResume(this);
-	}
+    }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
+    @Override
+    protected void onPause() {
+        super.onPause();
 //        MobclickAgent.onPageEnd(TAG); // 保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息
 //        MobclickAgent.onPause(this);
-	}
+    }
 
 }

@@ -6,6 +6,11 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <com.zlf.appmaster.ui.CommonToolbar
+        android:id="@+id/kline_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
     <!-- action bar -->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,29 +24,32 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/stocktrade_detail_title_comment"
                     style="@style/stock_trade_detail_title_comment"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/stocktrade_detail_title"
                     style="@style/stock_trade_detail_title"
-                    android:textColor="#2B2B2B"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@id/stocktrade_detail_title_comment"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <ImageButton
                 android:id="@+id/btn_back"
                 style="@style/title_bar_back_icon"
-                android:onClick="onBack" />
+                android:onClick="onBack"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/btn_search"
@@ -52,8 +60,8 @@
                 android:onClick="onSearch"
                 android:paddingLeft="18.3dp"
                 android:paddingRight="18.3dp"
-                android:visibility="invisible"
-                android:src="@drawable/icon_stock_quotations_search" />
+                android:src="@drawable/icon_stock_quotations_search"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
     <!--界面区域-->
