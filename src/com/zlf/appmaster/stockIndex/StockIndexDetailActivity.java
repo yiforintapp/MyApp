@@ -11,13 +11,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.xlistview.XListView;
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.cache.StockJsonCache;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockClient;
 import com.zlf.appmaster.client.StockQuotationsClient;
+import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.model.stock.StockTradeInfo;
 import com.zlf.appmaster.stocksearch.StockSearchActivity;
@@ -29,7 +32,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StockIndexDetailActivity extends Activity {
+public class StockIndexDetailActivity extends Activity implements View.OnClickListener {
     public static final String INTENT_FLAG_INDEXCODE = "intent_flag_index_code";
     public static final String INTENT_FLAG_INDEXNAME = "intent_flag_index_name";
     public static final String INTENT_FLAG_GUO_XIN = "intent_flag_index_guo_xin";
@@ -55,6 +58,8 @@ public class StockIndexDetailActivity extends Activity {
 
     private TextView mActivityTitleTV;
     private TextView mActivityTitleCommentTV;
+    private TextView mBuyInView;
+    private TextView mSellOutView;
     private String mTitleComment1;
     private String mTitleComment2;
 
@@ -130,6 +135,10 @@ public class StockIndexDetailActivity extends Activity {
 //        mActivityTitleTV.setText(mStockIndexName + " " + mStockIndexID);
 
         mToolBar.setToolbarTitle(mStockIndexName + " " + mStockIndexID);
+        mBuyInView = (TextView) findViewById(R.id.buttom_tv_buy);
+        mBuyInView.setOnClickListener(this);
+        mSellOutView = (TextView) findViewById(R.id.buttom_tv_sell);
+        mSellOutView.setOnClickListener(this);
 
         mListView = (XListView) findViewById(R.id.stock_index_detail_list);
         mListView.setPullRefreshEnable(true);
@@ -399,4 +408,21 @@ public class StockIndexDetailActivity extends Activity {
 //        MobclickAgent.onPause(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.buttom_tv_buy:
+                jumpToChangJiang();
+                break;
+            case R.id.buttom_tv_sell:
+                jumpToChangJiang();
+                break;
+        }
+    }
+
+    private void jumpToChangJiang() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(Constants.FROM_WHERE,"stock_detail");
+        startActivity(intent);
+    }
 }

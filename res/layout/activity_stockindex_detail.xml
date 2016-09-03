@@ -73,5 +73,52 @@
         android:divider="@null"
         android:scrollbars="none" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white">
+
+        <View
+            android:id="@+id/line_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/buttom_tv_buy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="25dp"
+                android:background="@drawable/textview_selector"
+                android:paddingRight="25dp"
+                android:layout_marginRight="25dp"
+                android:text="@string/buy_in"
+                android:textColor="@color/stock_rise"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/buttom_tv_sell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/buttom_tv_buy"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="25dp"
+                android:background="@drawable/textview_sell_selector"
+                android:paddingRight="25dp"
+                android:text="@string/sell_out"
+                android:textColor="@color/stock_slumped"
+                android:textSize="16dp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
 
 </LinearLayout>

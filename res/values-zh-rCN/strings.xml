@@ -16,4 +16,8 @@
 
     <string name="nothing_show">暂无数据</string>
     <string name="refresh_text">刷新</string>
+
+    <string name="buy_in">买入</string>
+    <string name="sell_out">卖出</string>
+
 </resources>

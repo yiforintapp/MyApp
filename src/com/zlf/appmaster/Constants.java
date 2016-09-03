@@ -255,4 +255,6 @@ public class Constants {
     public static final String NEWS_TYPE_ANALY = "analy";
     public static final String NEWS_TYPE_INTER = "international";
     public static final String NEWS_TYPE_MARKET = "market";
+
+    public static final String FROM_WHERE = "from_where";
 }
