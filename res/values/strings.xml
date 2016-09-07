@@ -236,4 +236,7 @@
     <string name="main_tab_service">服务</string>
     <string name="main_tab_personal">我的</string>
 
+    <string name="code_start_content">您好，您的验证码是：</string>
+    <string name="code_end_content">【兆利丰】</string>
+
 </resources>

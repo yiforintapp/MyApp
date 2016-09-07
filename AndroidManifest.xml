@@ -6,7 +6,7 @@
     android:versionName="@string/version_name">
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="15"
         android:targetSdkVersion="17" />
 
     <!-- Required -->
@@ -197,9 +197,21 @@
             android:name=".stocknews.NewsDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
+
+        <activity android:name="io.vov.vitamio.activity.InitActivity"></activity>
+
+
+        <activity android:name=".stocknews.ZhiBoActivity"
+            android:screenOrientation="landscape"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:theme="@style/activity_theme"/>
+
         <activity
             android:name=".stocknews.testWebViewActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:theme="@style/activity_theme"></activity>
 
         <activity

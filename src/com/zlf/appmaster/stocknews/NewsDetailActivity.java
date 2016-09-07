@@ -5,18 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,15 +29,12 @@ import com.zlf.appmaster.model.sync.SyncRequest;
 import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.QConstants;
-import com.zlf.appmaster.utils.QToast;
 import com.zlf.appmaster.utils.UrlConstants;
 import com.zlf.appmaster.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.ref.WeakReference;
 
 
 public class NewsDetailActivity extends Activity {
@@ -80,6 +72,8 @@ public class NewsDetailActivity extends Activity {
 	private String mShareUrl;
 	private boolean isShareing;
 	private NewsFavoriteTable mTable;
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

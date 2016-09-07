@@ -2,6 +2,7 @@ package com.zlf.appmaster.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.ui.HomeToolbar;
 import com.zlf.appmaster.ui.MaterialRippleLayout;
 import com.zlf.appmaster.ui.MyViewPager;
@@ -334,6 +336,7 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }
+        startActivity(new Intent(HomeTestActivity.this, testWebViewActivity.class));
         Toast.makeText(this, "点击:" + position, Toast.LENGTH_SHORT).show();
     }
 

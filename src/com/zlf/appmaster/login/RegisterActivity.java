@@ -33,6 +33,7 @@ import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -77,6 +78,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private DataHandler mHandler;
     private boolean mHasShow;  // 设置密码已经inflate过
     private boolean mSetPwdPage;  // 是否处于设置密码界面,默认不处于
+    private String mCode; // 验证码
 
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
@@ -403,6 +405,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         animatorSet.start();
     }
 
+    /** 得到随机验证码 */
+    private void getRandomCode() {
+        StringBuffer s = new StringBuffer();
+        for (int i = 0; i < 6; i++) {
+            Random random = new Random();// 定义随机类
+            int result = random.nextInt(10);// 返回[0,10)集合中的整数，注意不包括10
+            s.append(String.valueOf(result));
+        }
+        mCode = s.toString();
+    }
+
     private void getFirstCode() {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
@@ -421,10 +434,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 String mobile = mUserEt.getText().toString();  //手机号,只发一个号码：13800000001。发多个号码：13800000001,13800000002,...N 。使用半角逗号分隔。
 
                 String apikey = "0cdd79dcb62b67efc7a8e6c75942f716";  //apikey秘钥（请登录 http://m.5c.com.cn 短信平台-->账号管理-->我的信息 中复制apikey）
-
-                String content = "您好，您的验证码是：12345【兆利丰】";  //要发送的短信内容，特别注意：签名必须设置，网页验证码应用需要加添加【图形识别码】。
-
-
+                getRandomCode();
+                String content = getResources().getString(R.string.code_start_content)
+                        + mCode +  getResources().getString(R.string.code_end_content);  //要发送的短信内容，特别注意：签名必须设置，网页验证码应用需要加添加【图形识别码】。
 
                 try {
 
