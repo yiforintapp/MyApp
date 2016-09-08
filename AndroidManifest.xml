@@ -188,6 +188,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
+        <!-- add for the app update of leosdk -->
+        <activity
+            android:name=".update.UpdateActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.UpdateDialog.NoFrame" />
+
         <activity
             android:name=".stockindustry.IndustryStockListActivity"
             android:screenOrientation="portrait"

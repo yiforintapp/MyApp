@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
 
 public class BaseFragmentActivity extends FragmentActivity {
-//    protected WifiSecurityManager mWifiManager;
+//    protected UpdateManager mWifiManager;
 //    protected BatteryManager mBatteryManager;
 
     @Override
@@ -21,7 +21,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         } catch (Throwable error) {
             error.printStackTrace();
         }
-//        mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
+//        mWifiManager = (UpdateManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
 //        mBatteryManager = (BatteryManager) MgrContext.getManager(MgrContext.MGR_BATTERY);
 
     }

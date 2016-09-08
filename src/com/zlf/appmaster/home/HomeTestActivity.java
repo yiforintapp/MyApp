@@ -31,6 +31,7 @@ import com.zlf.appmaster.ui.HomeToolbar;
 import com.zlf.appmaster.ui.MaterialRippleLayout;
 import com.zlf.appmaster.ui.MyViewPager;
 import com.zlf.appmaster.ui.RippleView;
+import com.zlf.appmaster.update.UpdateActivity;
 import com.zlf.appmaster.userTab.StockFavoriteFragment;
 import com.zlf.appmaster.utils.LeoLog;
 
@@ -42,6 +43,7 @@ import java.util.List;
  */
 public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
+    public static final int CHECKUPDATE = 2;
 
     private MyViewPager mViewPager;
     private RelativeLayout mHomeTab;
@@ -147,6 +149,10 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         /* 点个赞 */
         listItems.add(new MenuItem(resources.getString(R.string.accelerate),
                 R.drawable.menu_join_icon, false));
+        /* 检查升级 */
+        listItems.add(new MenuItem(resources.getString(R.string.update_date),
+                R.drawable.menu_updates_icon, false));
+
         return listItems;
     }
 
@@ -338,6 +344,21 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         }
         startActivity(new Intent(HomeTestActivity.this, testWebViewActivity.class));
         Toast.makeText(this, "点击:" + position, Toast.LENGTH_SHORT).show();
+        switch (position){
+            case CHECKUPDATE:
+                checkUpdate();
+                break;
+            case 1:
+                Intent intent = new Intent(HomeTestActivity.this,testWebViewActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    private void checkUpdate() {
+        Intent intent = new Intent(HomeTestActivity.this, UpdateActivity.class);
+        intent.putExtra(UpdateActivity.UPDATETYPE,UpdateActivity.CHECK_UPDATE);
+        startActivity(intent);
     }
 
     class MenuAdapter extends BaseAdapter {

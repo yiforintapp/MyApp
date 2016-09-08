@@ -148,11 +148,6 @@ public class NewsDetailActivity extends Activity {
 				UniversalRequest.requestUrl("Tag", mContext, url,
 						new OnRequestListener() {
 
-							@Override
-							public void onError(int errorCode, String errorString) {
-								mProgressBar.setVisibility(View.GONE);
-								UrlConstants.showUrlErrorCode(NewsDetailActivity.this, errorCode);
-							}
 
 							@Override
 							public void onDataFinish(Object object) {
@@ -165,6 +160,12 @@ public class NewsDetailActivity extends Activity {
 //									setActionBarIconVisibility(View.VISIBLE);
 								}
 
+							}
+
+							@Override
+							public void onError(int errorcode, String errorString) {
+								mProgressBar.setVisibility(View.GONE);
+								UrlConstants.showUrlErrorCode(NewsDetailActivity.this, errorcode);
 							}
 						});
 

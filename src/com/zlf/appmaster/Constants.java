@@ -248,6 +248,12 @@ public class Constants {
 
     public static final String ZHI_BO_ADDRESS = "http://sp2.18zhibo.com/d9067d28-41f6-4bad-a4ca-c43a88b617b6/stream.m3u8";
 
+
+    public static final String ADDRESS= "http://120.24.14.76:1688/";
+    public static final String SEVLET= "work?";
+    public static final String DATA= "proname=";
+
+
     public static final String LOGIN_ADDRESS= "http://120.24.14.76:1688/work?proname=";
     public static final String LOGIN_TAG= "applogin&";
     public static final String REGISTER_TAG = "register&";

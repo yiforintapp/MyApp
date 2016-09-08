@@ -17,6 +17,12 @@
     <color name="new_guide_page4_background_color">#00ac7d</color>
     <!-- guide page begin -->
 
+    <color name="dialog_pro_progress">#4285f4</color>
+    <color name="dialog_pro_bg">#dedede</color>
+    <color name="dialog_pro_end">#5285b7</color>
+    <color name="dialog_pro_start">#6ba3d4</color>
+
+
     <drawable name="transparent">#00000000</drawable>
 
     <color name="webview_pro_bg">#e4e4e4</color>

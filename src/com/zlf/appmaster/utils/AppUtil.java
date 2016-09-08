@@ -5,6 +5,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
@@ -15,6 +16,8 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Build;
@@ -412,6 +415,58 @@ public class AppUtil {
         }
 
         return true;
+    }
+
+    public static boolean hasInternet(Context context) {
+        try {
+            ConnectivityManager connectivity = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connectivity == null) {
+                return false;
+            } else {
+                NetworkInfo info = connectivity.getActiveNetworkInfo();
+                if (info != null && info.isConnected() == true) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            /*
+             * Some phone may got exception when getting ConnectivityManager
+             * Treat it as TRUE in this case.
+             */
+            return true;
+        }
+    }
+
+
+    public static String checkApkIsGood(Context mContext, String mFileAbsName2) {
+        PackageManager pm = mContext.getPackageManager();
+        PackageInfo info = pm.getPackageArchiveInfo(mFileAbsName2,
+                PackageManager.GET_ACTIVITIES);
+        String version = null;
+        try {
+            if (info != null) {
+                ApplicationInfo appInfo = info.applicationInfo;
+                // String appName = pm.getApplicationLabel(appInfo).toString();
+                // String packageName = appInfo.packageName; //得到安装包名称
+                version = info.versionName; // 得到版本信息
+                LeoLog.d("checkApkIsGood", " version:" + version);
+            } else {
+                LeoLog.d("checkApkIsGood", "apk is not available");
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return version;
+    }
+
+
+    public static void cleanApk(String absName) {
+        File f = new File(absName);
+        if (f.exists()) {
+            f.delete();
+        }
     }
 
 }

@@ -2,6 +2,8 @@ package com.zlf.appmaster.mgr;
 
 import android.text.TextUtils;
 
+import com.zlf.appmaster.mgr.impl.UpdateManagerImpl;
+
 import java.util.HashMap;
 
 
@@ -53,6 +55,8 @@ public class MgrContext {
 
     public static final String MGR_CALL_FILTER = "mgr_call_filter";
 
+    public static final String MGR_UPDATE = "mgr_update";
+
     /**
      * 电池管理
      * */
@@ -76,6 +80,8 @@ public class MgrContext {
 
         if (MGR_DEVICE.equals(mgr)) {
 //            manager = new DeviceManagerImpl();
+        }else if(MGR_UPDATE.equals(mgr)){
+            manager = new UpdateManagerImpl();
         }
 
         if (manager != null) {

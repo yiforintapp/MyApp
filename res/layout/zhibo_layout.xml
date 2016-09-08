@@ -16,7 +16,6 @@
         android:layout_height="100dp"
         android:background="@color/transparent"
         android:layout_gravity="center"
-        android:contentDescription="@string/mediacontroller_play_pause"
         android:scaleType="centerCrop"
         android:src="@drawable/mediacontroller_pause" />
 
