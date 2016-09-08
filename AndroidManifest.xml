@@ -144,7 +144,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
-            android:name=".home.HomeTestActivity"
+            android:name=".home.HomeMainActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home"

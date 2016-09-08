@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/18.
  */
-public class UserTabFragment  extends BaseFragment {
+public class UserTabFragment extends BaseFragment {
 
     private ViewPager mViewPager;
     private UserTabHolder[] mUserHolders = new UserTabHolder[3];

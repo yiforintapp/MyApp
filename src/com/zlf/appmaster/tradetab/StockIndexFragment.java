@@ -1,4 +1,4 @@
-package com.zlf.appmaster.hometab;
+package com.zlf.appmaster.tradetab;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
-import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.cache.StockJsonCache;
 import com.zlf.appmaster.client.OnRequestListener;
@@ -16,8 +15,7 @@ import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
-import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.LiveRecordingUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/8/15.
+ * Created by Huang on 2015/3/5.
  */
-public class StockQiLuFragment extends BaseFragment {
+public class StockIndexFragment extends BaseFragment {
     private static final String TAG = StockIndexFragment.class.getSimpleName();
     private Context mContext;
     private View mLayout;
@@ -39,8 +37,34 @@ public class StockQiLuFragment extends BaseFragment {
 
     private XListView mListView;
     private CircularProgressView mProgressBar;
-    private View mEmptyView;
-    private RippleView mRefreshView;
+    private LiveRecordingUtil mLiveRecordingUtil;
+
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // TODO Auto-generated method stub
+//        if (mLayout != null){//初始化过了 就不需要再创建
+//            ViewGroup parent = (ViewGroup) mLayout.getParent();//清除自己 再返回 否则会重复设置了父控件
+//            if (parent != null) {
+//                parent.removeView(mLayout);
+//            }
+//            requestData();
+//            return mLayout;
+//        }
+//        mLayout= inflater.inflate(R.layout.fragment_quotations_content, null);
+//        mContext = getActivity();
+//        Bundle bundle = getArguments();
+//        mLiveRecordingUtil = LiveRecordingUtil.getInstance();
+//        mStockClient = StockQuotationsClient.getInstance(mContext);
+//
+//        initViews(mLayout);
+//
+//        loadCache();
+//        initData();
+//
+//        return mLayout;
+//    }
 
     private boolean loadCache(){
         boolean ret = false;
@@ -77,14 +101,6 @@ public class StockQiLuFragment extends BaseFragment {
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
-        mEmptyView = findViewById(R.id.empty_view);
-        mRefreshView = (RippleView) findViewById(R.id.refresh_button);
-        mRefreshView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshLisrByButton();
-            }
-        });
 
         mIndexData = new ArrayList<StockIndex>();
         mForeignIndexData = new ArrayList<StockIndex>();
@@ -94,15 +110,13 @@ public class StockQiLuFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position - 1);
-//                StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position);
-                LeoLog.d("testClick","itemClick : " + position);
                 if (null != item) {
                     Class targetClass;
 
 //                    if(mLiveRecordingUtil.isLiveRecording()){
 //                        targetClass = LiveAnchorLectureActivity.class;
 //                    }else{
-                    targetClass = StockIndexDetailActivity.class;
+                        targetClass = StockIndexDetailActivity.class;
 //                    }
                     Intent intent = new Intent(mActivity, targetClass);
 
@@ -112,16 +126,8 @@ public class StockQiLuFragment extends BaseFragment {
 //                        mLiveRecordingUtil.setStock(false);
 //                        intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    }else{
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, item.getCode());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_OPEN_INDEX, item.getTodayIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_YESTERDAY_INDEX, item.getYesterdayIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_NOW_INDEX, item.getNowIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_HIGH_INDEX, item.getHighestIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_LOW_INDEX, item.getLowestIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.QI_LU_INFO_MINUTE_PRONAME);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.QI_LU_INFO_KLINE_PRONAME);
+                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, item.getCode());
+                        intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
 //                    }
                     mActivity.startActivity(intent);
 
@@ -151,13 +157,6 @@ public class StockQiLuFragment extends BaseFragment {
 
     }
 
-    private void refreshLisrByButton() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mListView.setVisibility(View.GONE);
-        mEmptyView.setVisibility(View.GONE);
-        requestData();
-    }
-
     private void initData(){
         mProgressBar.setVisibility(View.VISIBLE);
 
@@ -173,24 +172,20 @@ public class StockQiLuFragment extends BaseFragment {
      * 请求数据
      */
     private void requestData(){
-
-        mStockClient.requestNewIndexAll(new OnRequestListener() {
+        mStockClient.requestStockIndexAll(new OnRequestListener() {
             @Override
             public void onDataFinish(Object object) {
                 Object[] objectArray = (Object[])object;
+
                 mIndexData.clear();
                 mIndexData.addAll((List<StockIndex>) objectArray[0]);
+
+                mForeignIndexData.clear();
+                mForeignIndexData.addAll((List<StockIndex>) objectArray[1]);
 
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
 
                 mProgressBar.setVisibility(View.GONE);
-                if (mIndexData != null && mIndexData.size() > 0) {
-                    mListView.setVisibility(View.VISIBLE);
-                    mEmptyView.setVisibility(View.GONE);
-                } else {
-                    mListView.setVisibility(View.GONE);
-                    mEmptyView.setVisibility(View.VISIBLE);
-                }
                 onLoaded();
             }
 
@@ -198,13 +193,9 @@ public class StockQiLuFragment extends BaseFragment {
             public void onError(int errorCode, String errorString) {
 
                 mProgressBar.setVisibility(View.GONE);
-                mListView.setVisibility(View.GONE);
-                mEmptyView.setVisibility(View.VISIBLE);
                 onLoaded();
             }
-        }, Constants.MY_DATA_URL.concat(Constants.QI_LU_INFO_PRONAME));
-
-
+        });
     }
 
     @Override
@@ -228,9 +219,10 @@ public class StockQiLuFragment extends BaseFragment {
     protected void onInitUI() {
         mStockClient = StockQuotationsClient.getInstance(mActivity);
         Bundle bundle = getArguments();
+        mLiveRecordingUtil = LiveRecordingUtil.getInstance();
         initViews(mLayout);
 
-//        loadCache();
+//      loadCache();
         initData();
     }
 }

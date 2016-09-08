@@ -18,10 +18,9 @@ import com.zlf.appmaster.PhoneInfo;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.applocker.receiver.DeviceReceiver;
-import com.zlf.appmaster.bootstrap.SplashBootstrap;
 import com.zlf.appmaster.db.LeoPreference;
 import com.zlf.appmaster.db.LeoSettings;
-import com.zlf.appmaster.home.HomeTestActivity;
+import com.zlf.appmaster.home.HomeMainActivity;
 import com.zlf.appmaster.home.SplashActivity;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
@@ -257,7 +256,7 @@ public class InitCoreBootstrap extends com.zlf.appmaster.bootstrap.Bootstrap {
 //        LeoPreference preferenceTable = LeoPreference.getInstance();
 //        preferenceTable.putBoolean(PrefConst.IS_BOOST_CREAT, isInstalllIswipe);
 //        if (!isInstalllIswipe) {
-        Intent shortcutIntent = new Intent(mApp, HomeTestActivity.class);
+        Intent shortcutIntent = new Intent(mApp, HomeMainActivity.class);
         ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
                 R.drawable.ic_launcher);
         Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");

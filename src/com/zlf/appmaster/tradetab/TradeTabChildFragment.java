@@ -1,4 +1,4 @@
-package com.zlf.appmaster.hometab;
+package com.zlf.appmaster.tradetab;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/21.
  */
-public class HomeTabChildFragment extends BaseFragment implements AdapterView.OnItemClickListener, PullToRefreshBase.OnRefreshListener2<ListView> {
+public class TradeTabChildFragment extends BaseFragment implements AdapterView.OnItemClickListener, PullToRefreshBase.OnRefreshListener2<ListView> {
 
     private PullToRefreshListView mListView;
     private List<ListItem> mDatas;

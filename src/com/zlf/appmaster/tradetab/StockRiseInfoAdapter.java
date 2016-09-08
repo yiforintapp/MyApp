@@ -1,4 +1,4 @@
-package com.zlf.appmaster.hometab;
+package com.zlf.appmaster.tradetab;
 
 import android.content.Context;
 import android.graphics.Color;

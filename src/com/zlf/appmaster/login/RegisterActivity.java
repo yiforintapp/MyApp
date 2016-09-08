@@ -80,6 +80,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private boolean mSetPwdPage;  // 是否处于设置密码界面,默认不处于
     private String mCode; // 验证码
 
+    private EditText mUserNameEt;
+    private ImageView mUserNameClean;
+    private RelativeLayout mUserNameLayout;
+    private View mUserNameView;
+
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
         WeakReference<RegisterActivity> mActivityReference;
@@ -204,6 +209,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 mNewPasswordClean.setVisibility(View.VISIBLE);
             }
         }
+
+        if (mUserNameEt != null) {
+            if (TextUtils.isEmpty(mUserNameEt.getText().toString().trim())) {
+                mUserNameClean.setVisibility(View.INVISIBLE);
+            } else {
+                mUserNameClean.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @Override
@@ -238,6 +251,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.register_complete:
                 register();
+                break;
+            case R.id.user_name_close_iv:
+                mUserNameEt.getText().clear();
+                mUserNameClean.setVisibility(View.INVISIBLE);
                 break;
         }
     }
@@ -289,11 +306,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             mResetNewLayout = (RelativeLayout) findViewById(R.id.reset_new_pwd);
             mResetNewView = (View) findViewById(R.id.view_five);
             mComplete = (Button) findViewById(R.id.register_complete);
+            mUserNameLayout = (RelativeLayout) findViewById(R.id.user_name);
+            mUserNameView = (View) findViewById(R.id.view_four);
+            mUserNameClean = (ImageView) findViewById(R.id.user_name_close_iv);
+            mUserNameEt = (EditText) findViewById(R.id.user_name_ev);
+            mUserNameClean.setOnClickListener(this);
             mComplete.setOnClickListener(this);
             mPasswordClean.setOnClickListener(this);
             mNewPasswordClean.setOnClickListener(this);
             mPasswordEt.addTextChangedListener(this);
             mNewPasswordEt.addTextChangedListener(this);
+            mUserNameEt.addTextChangedListener(this);
 
             mHasShow = true;
         }
@@ -357,10 +380,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 mToolBar.setToolbarTitle(getResources().getString(R.string.login_register_pwd_set));
                 mResetNewLayout.setVisibility(View.GONE);
                 mResetNewView.setVisibility(View.GONE);
+                mUserNameLayout.setVisibility(View.VISIBLE);
+                mUserNameView.setVisibility(View.VISIBLE);
             } else {
                 mToolBar.setToolbarTitle(getResources().getString(R.string.login_find_password));
                 mResetNewLayout.setVisibility(View.VISIBLE);
                 mResetNewView.setVisibility(View.VISIBLE);
+                mUserNameLayout.setVisibility(View.GONE);
+                mUserNameView.setVisibility(View.GONE);
             }
         }
     }

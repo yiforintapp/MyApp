@@ -10,9 +10,7 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.db.MsgCenterTable;
 import com.zlf.appmaster.home.BaseActivity;
-import com.zlf.appmaster.home.HomeTestActivity;
-import com.zlf.appmaster.msgcenter.MsgCenterAdapter;
-import com.zlf.appmaster.msgcenter.MsgCenterBrowserActivity;
+import com.zlf.appmaster.home.HomeMainActivity;
 import com.zlf.appmaster.schedule.MsgCenterFetchJob;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
@@ -73,7 +71,7 @@ public class MsgCenterActivity extends BaseActivity implements
                 finish();
                 break;
             case R.id.msg_center_feedback_tv:
-                Intent feedback = new Intent(this, HomeTestActivity.class);
+                Intent feedback = new Intent(this, HomeMainActivity.class);
                 startActivity(feedback);
                 break;
         }

@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.R;
@@ -32,7 +31,6 @@ import com.zlf.appmaster.ui.MaterialRippleLayout;
 import com.zlf.appmaster.ui.MyViewPager;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.update.UpdateActivity;
-import com.zlf.appmaster.userTab.StockFavoriteFragment;
 import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/14.
  */
-public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final int CHECKUPDATE = 2;
 
@@ -61,7 +59,7 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private TextView mTradeTv;
     private TextView mPersonalTv;
 
-    private HomeTabFragment mHomeTabFragment;
+    private TradeTabFragment mTradeTabFragment;
     private UserTabFragment mUserTabFragment;
 //    private StockFavoriteFragment mStockFavoriteFragment;
     private DealFragment mDealFragment;
@@ -82,7 +80,7 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_home_test);
+        setContentView(R.layout.activity_home_main);
 
         init();
         setLister();
@@ -241,8 +239,8 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private void initFragment() {
         HomeFragmentHolder holder = new HomeFragmentHolder();
         holder.title = getResources().getString(R.string.main_tab_home);
-        mHomeTabFragment = new HomeTabFragment();
-        holder.fragment = mHomeTabFragment;
+        mTradeTabFragment = new TradeTabFragment();
+        holder.fragment = mTradeTabFragment;
         mFragmentHolders[0] = holder;
 
         holder = new HomeFragmentHolder();
@@ -348,14 +346,14 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 checkUpdate();
                 break;
             case 1:
-                Intent intent = new Intent(HomeTestActivity.this,testWebViewActivity.class);
+                Intent intent = new Intent(HomeMainActivity.this,testWebViewActivity.class);
                 startActivity(intent);
                 break;
         }
     }
 
     private void checkUpdate() {
-        Intent intent = new Intent(HomeTestActivity.this, UpdateActivity.class);
+        Intent intent = new Intent(HomeMainActivity.this, UpdateActivity.class);
         intent.putExtra(UpdateActivity.UPDATETYPE,UpdateActivity.CHECK_UPDATE);
         startActivity(intent);
     }

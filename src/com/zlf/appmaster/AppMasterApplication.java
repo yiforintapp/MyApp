@@ -12,12 +12,9 @@ import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
-import com.zlf.appmaster.Constants;
-import com.zlf.appmaster.PhoneInfo;
-import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.bootstrap.Bootstrap;
 import com.zlf.appmaster.bootstrap.BootstrapGroup;
-import com.zlf.appmaster.home.HomeTestActivity;
+import com.zlf.appmaster.home.HomeMainActivity;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.imageloader.ImageLoader;
 
@@ -300,7 +297,7 @@ public class AppMasterApplication extends Application {
         if (mActivityList.size() == 1) {
             WeakReference<Activity> reference = mActivityList.get(0);
             Activity activity = reference.get();
-            if (activity != null && (activity instanceof HomeTestActivity)) {
+            if (activity != null && (activity instanceof HomeMainActivity)) {
                 return true;
             }
         } else if (mActivityList.size() > 1) {
@@ -308,7 +305,7 @@ public class AppMasterApplication extends Application {
             WeakReference<Activity> reference1 = mActivityList.get(1);
             Activity activity0 = reference0.get();
             Activity activity1 = reference1.get();
-            if (activity0 != null && (activity0 instanceof HomeTestActivity)) {
+            if (activity0 != null && (activity0 instanceof HomeMainActivity)) {
                 return true;
             }
         }

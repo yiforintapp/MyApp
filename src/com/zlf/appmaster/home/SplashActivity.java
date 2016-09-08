@@ -405,7 +405,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
         LeoLog.d(TAG, "<ls> onEvent, result: " + event.mUnlockResult);
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
             if (getPackageName() != null && getPackageName().equals(event.mUnlockedPkg)) {
-                Intent intent = new Intent(this, HomeTestActivity.class);
+                Intent intent = new Intent(this, HomeMainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 AppMasterApplication.getInstance().startActivity(intent);
                 AppMasterApplication.sIsSplashActioned = true;
@@ -464,7 +464,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             if (/*mLockManager.inRelockTime(getPackageName())*/true) {
-                Intent intent = new Intent(this, HomeTestActivity.class);
+                Intent intent = new Intent(this, HomeMainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
@@ -473,7 +473,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
 //                amp.setLastFilterSelfTime(0);
 //                mLockManager.applyLock(LockManager.LOCK_MODE_FULL, getPackageName(), true, null);
 //                amp.setDoubleCheck(null);
-                Intent intent = new Intent(this, HomeTestActivity.class);
+                Intent intent = new Intent(this, HomeMainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
@@ -483,7 +483,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
 //            intent.putExtra("from_splash", true);
 //            startActivity(intent);
 //            finish();
-            Intent intent = new Intent(this, HomeTestActivity.class);
+            Intent intent = new Intent(this, HomeMainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();

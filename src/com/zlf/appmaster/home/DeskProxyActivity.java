@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.zlf.appmaster.Constants;
-import com.zlf.appmaster.home.HomeTestActivity;
 import com.zlf.appmaster.utils.LeoLog;
 
 
@@ -141,7 +140,7 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoHomeActivity(){
-        Intent intent = new Intent(this, HomeTestActivity.class);
+        Intent intent = new Intent(this, HomeMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
