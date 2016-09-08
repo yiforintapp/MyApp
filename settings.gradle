@@ -1,1 +1,1 @@
-include ':app', ':classes', ':app_classes', ':vitamio'
+include ':vitamio'

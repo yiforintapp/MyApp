@@ -67,6 +67,27 @@ public class testWebViewActivity extends Activity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if (mVideoView != null && mVideoView.isPlaying()) {
+            mVideoView.pause();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (mVideoView != null) {
+                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mVideoView.start();
+                        }
+            }, 1500);
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
     }

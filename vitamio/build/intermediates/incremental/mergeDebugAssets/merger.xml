@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\AndroidStudioProjects\MyApp\vitamio\src\main\assets"/><source path="D:\AndroidStudioProjects\MyApp\vitamio\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\AndroidStudioProjects\MyApp\vitamio\src\debug\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="D:\appmaster\vitamio\src\main\assets"/><source path="D:\appmaster\vitamio\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="D:\appmaster\vitamio\src\debug\assets"/></dataSet></merger>

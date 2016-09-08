@@ -19,7 +19,6 @@ package io.vov.vitamio.widget;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.media.AudioManager;
@@ -344,7 +343,7 @@ public class MediaController extends FrameLayout {
 
         mWindow.setAnimationStyle(mAnimStyle);
         setWindowLayoutType();
-        mWindow.showAtLocation(((Activity)mContext).getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        mWindow.showAtLocation(mAnchor, Gravity.CENTER, 0, 0);
       }
       mShowing = true;
       if (mShownListener != null)
@@ -353,7 +352,7 @@ public class MediaController extends FrameLayout {
     updatePausePlay();
     mHandler.sendEmptyMessage(SHOW_PROGRESS);
 
-    if (timeout != 0) {
+    if (timeout != 0 && mPlayer != null && mPlayer.isPlaying()) {
       mHandler.removeMessages(FADE_OUT);
       mHandler.sendMessageDelayed(mHandler.obtainMessage(FADE_OUT), timeout);
     }
@@ -370,11 +369,10 @@ public class MediaController extends FrameLayout {
     if (mShowing) {
       try {
         mHandler.removeMessages(SHOW_PROGRESS);
-        if (mFromXml) {
+        if (mFromXml)
           setVisibility(View.GONE);
-        } else {
+        else
           mWindow.dismiss();
-        }
       } catch (IllegalArgumentException ex) {
         Log.d("MediaController already removed");
       }
