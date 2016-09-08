@@ -16,6 +16,7 @@ import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
+import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.utils.LeoLog;
 
 import org.json.JSONException;
@@ -38,6 +39,8 @@ public class StockQiLuFragment extends BaseFragment {
 
     private XListView mListView;
     private CircularProgressView mProgressBar;
+    private View mEmptyView;
+    private RippleView mRefreshView;
 
     private boolean loadCache(){
         boolean ret = false;
@@ -74,6 +77,14 @@ public class StockQiLuFragment extends BaseFragment {
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
+        mEmptyView = findViewById(R.id.empty_view);
+        mRefreshView = (RippleView) findViewById(R.id.refresh_button);
+        mRefreshView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshLisrByButton();
+            }
+        });
 
         mIndexData = new ArrayList<StockIndex>();
         mForeignIndexData = new ArrayList<StockIndex>();
@@ -140,6 +151,13 @@ public class StockQiLuFragment extends BaseFragment {
 
     }
 
+    private void refreshLisrByButton() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mListView.setVisibility(View.GONE);
+        mEmptyView.setVisibility(View.GONE);
+        requestData();
+    }
+
     private void initData(){
         mProgressBar.setVisibility(View.VISIBLE);
 
@@ -166,6 +184,13 @@ public class StockQiLuFragment extends BaseFragment {
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
 
                 mProgressBar.setVisibility(View.GONE);
+                if (mIndexData != null && mIndexData.size() > 0) {
+                    mListView.setVisibility(View.VISIBLE);
+                    mEmptyView.setVisibility(View.GONE);
+                } else {
+                    mListView.setVisibility(View.GONE);
+                    mEmptyView.setVisibility(View.VISIBLE);
+                }
                 onLoaded();
             }
 
@@ -173,6 +198,8 @@ public class StockQiLuFragment extends BaseFragment {
             public void onError(int errorCode, String errorString) {
 
                 mProgressBar.setVisibility(View.GONE);
+                mListView.setVisibility(View.GONE);
+                mEmptyView.setVisibility(View.VISIBLE);
                 onLoaded();
             }
         }, Constants.MY_DATA_URL.concat(Constants.QI_LU_INFO_PRONAME));
