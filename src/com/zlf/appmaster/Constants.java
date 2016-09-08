@@ -265,4 +265,6 @@ public class Constants {
     public static final String NEWS_TYPE_MARKET = "market";
 
     public static final String FROM_WHERE = "from_where";
+    public static final String CJLH_PACKAGENAME = "com.zscfappview.cjlh";
+    public static final String CJLH_DOWNLOAD_URL = "http://res.cjmex.cn:8088/uploads/20151211/CJJYB_Android.apk";
 }

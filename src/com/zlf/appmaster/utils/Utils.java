@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.widget.Toast;
 
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 
 import java.util.List;
@@ -89,6 +92,7 @@ public class Utils {
 
         return uin;
     }
+
 
     public static long getGuestUin(Context context) {
         return new Setting(context).getGuestUin();
@@ -211,6 +215,25 @@ public class Utils {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         appContext.startActivity(intent);
         QLog.i(TAG, "restartApplication");
+    }
+
+       /*
+        * 启动一个app
+        */
+    public static void startAPP(String appPackageName,Context mContext){
+        try{
+            Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(appPackageName);
+            mContext.startActivity(intent);
+        }catch(Exception e){
+            Toast.makeText(mContext, mContext.getString(R.string.jump_download), Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.VIEW");
+            Uri content_url = Uri.parse(Constants.CJLH_DOWNLOAD_URL);
+            intent.setData(content_url);
+            mContext.startActivity(intent);
+
+        }
     }
 
     public static int getColorByFloat(Context context, float num) {

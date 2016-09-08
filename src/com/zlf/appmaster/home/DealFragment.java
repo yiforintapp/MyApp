@@ -4,8 +4,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.utils.Utils;
 
 /**
  * Created by Administrator on 2016/7/19.
@@ -34,8 +36,12 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_changjiang:
-                Toast.makeText(mActivity,"asd",Toast.LENGTH_SHORT).show();
+                jumpToCJLH();
                 break;
         }
+    }
+
+    private void jumpToCJLH() {
+        Utils.startAPP(Constants.CJLH_PACKAGENAME,mActivity);
     }
 }
