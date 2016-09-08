@@ -301,8 +301,8 @@ public class UpdateActivity extends Activity implements View.OnClickListener {
             @Override
             public void LoadDone() {
                 if (AppUtil.checkApkIsGood(UpdateActivity.this, filePath).isEmpty()) {
-//                    LeoLog.d(TAG, "mFileAbsName + " + filePath
-//                            + "----下载的apk包不能用，无法获取versionName，删除apk");
+                    LeoLog.d(TAG, "mFileAbsName + " + filePath
+                            + "----下载的apk包不能用，无法获取versionName，删除apk");
                     AppUtil.cleanApk(filePath);
 
                     UpdateActivity.this.mProgress = 0;

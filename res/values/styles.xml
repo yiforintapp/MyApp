@@ -127,10 +127,9 @@
 
     <style name="dlg_right_button_txt">
         <item name="android:textSize">16dp</item>
-        <item name="android:background">@drawable/selector_dialog_blue_button</item>
+        <item name="android:background">@drawable/selector_dialog_blue_button_3</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:layout_height">@dimen/dialog_btn_height</item>
+        <item name="android:layout_height">45dp</item>
     </style>
 
 

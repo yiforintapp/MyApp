@@ -51,6 +51,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.jpush.android.api.JPushInterface;
+
 public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implements OnClickListener {
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
@@ -345,8 +347,15 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        JPushInterface.onResume(this);
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         splashDelayShow();
         long currentTs = SystemClock.elapsedRealtime();

@@ -63,7 +63,8 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 
     private HomeTabFragment mHomeTabFragment;
     private UserTabFragment mUserTabFragment;
-    private StockFavoriteFragment mStockFavoriteFragment;
+//    private StockFavoriteFragment mStockFavoriteFragment;
+    private DealFragment mDealFragment;
     private PersonalFragment mPersonalFragment;
 
     private DrawerLayout mDrawerLayout;
@@ -246,8 +247,8 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 
         holder = new HomeFragmentHolder();
         holder.title = getResources().getString(R.string.main_tab_trade);
-        mStockFavoriteFragment = new StockFavoriteFragment();
-        holder.fragment = mStockFavoriteFragment;
+        mDealFragment = new DealFragment();
+        holder.fragment = mDealFragment;
         mFragmentHolders[1] = holder;
 
         holder = new HomeFragmentHolder();
@@ -342,8 +343,6 @@ public class HomeTestActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }
-        startActivity(new Intent(HomeTestActivity.this, testWebViewActivity.class));
-        Toast.makeText(this, "点击:" + position, Toast.LENGTH_SHORT).show();
         switch (position){
             case CHECKUPDATE:
                 checkUpdate();
