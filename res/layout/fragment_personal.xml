@@ -23,13 +23,17 @@
             android:orientation="vertical">
 
 
-            <RelativeLayout
+            <com.zlf.appmaster.ui.RippleView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/personal_bg_selector">
+                app:rippleColor="@color/button_gray_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
 
                 <View
                     android:id="@+id/line_1"
@@ -43,6 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/line_1"
+                    android:background="@drawable/personal_bg_selector"
                     android:minHeight="58dp"
                     android:paddingBottom="11dp"
                     android:paddingTop="11dp">
@@ -103,7 +108,7 @@
                     android:layout_below="@+id/rv_main"
                     android:background="@drawable/divider_setting" />
 
-            </RelativeLayout>
+            </com.zlf.appmaster.ui.RippleView>
 
 
             <com.zlf.appmaster.ui.CommonSettingItem

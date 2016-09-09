@@ -1,5 +1,6 @@
 package com.zlf.appmaster.login;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.zlf.appmaster.Constants;
@@ -18,9 +19,12 @@ import java.net.URLEncoder;
  */
 public class LoginHttpUtil {
     //封装的发送请求函数
-    public static void sendHttpRequest(final String address, String tag, String phoneNumber, String pwd, final HttpCallBackListener listener) throws UnsupportedEncodingException {
+    public static void sendHttpRequest(final String address, String tag, String phoneNumber, String pwd, String userName, final HttpCallBackListener listener) throws UnsupportedEncodingException {
         if (!isNetworkAvailable()){
             //这里写相应的网络设置处理
+            if (listener != null){
+                listener.onFinish("网络连接错误");
+            }
             return;
         }
 
@@ -45,6 +49,12 @@ public class LoginHttpUtil {
                 .append(LoginUser.PASSWORD)
                 .append("=")
                 .append(URLEncoder.encode(pwd, encode));
+        if (!TextUtils.isEmpty(userName)) {
+            StringUrl.append("&")
+                    .append(LoginUser.USERNAME)
+                    .append("=")
+                    .append(URLEncoder.encode(userName, encode));
+        }
 
         new Thread(new Runnable() {
             @Override
@@ -52,7 +62,7 @@ public class LoginHttpUtil {
                 HttpURLConnection connection = null;
                 try{
                     URL url = new URL(StringUrl.toString());
-                    Log.e("dfhdfhdhd", StringUrl.toString());
+                    Log.e("shsdfhs", StringUrl.toString());
                     //使用HttpURLConnection
                     connection = (HttpURLConnection) url.openConnection();
                     //设置方法和参数

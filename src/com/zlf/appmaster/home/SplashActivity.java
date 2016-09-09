@@ -34,6 +34,7 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.bootstrap.SplashBootstrap;
+import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.eventbus.LeoEventBus;
 import com.zlf.appmaster.eventbus.event.AppUnlockEvent;
 import com.zlf.appmaster.ui.CirclePageIndicator;
@@ -42,6 +43,7 @@ import com.zlf.appmaster.utils.FileOperationUtil;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.NinePatchChunk;
 import com.zlf.appmaster.utils.PreDataTool;
+import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.Utilities;
 
 import java.io.File;
@@ -89,6 +91,8 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
     /*是否从闪屏跳出到facebook，标志*/
     private boolean mIsToFacebk;
 
+    public static final long CLEAR_LOGIN_STATUS_TIME = 5 * 24 * 60 * 60 * 1000;  // 5天没登录清除登录状态
+
     /* Guide page stuff end */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +103,13 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
         mEventHandler = new EventHandler();
         LeoEventBus.getDefaultBus().register(this, 2);
         AppMasterApplication.sIsSplashActioned = false;
+
+        long lastLogin = LeoSettings.getLong(PrefConst.LAST_LOGIN_TIME, 0);
+        long currentTime = System.currentTimeMillis();
+        if (lastLogin != 0 && currentTime - lastLogin >= CLEAR_LOGIN_STATUS_TIME) {
+            LeoSettings.setString(PrefConst.USER_NAME, "");
+        }
+
     }
 
     @SuppressLint("NewApi")

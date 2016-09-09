@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/phone_set_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/phone_set_layout"
     android:background="@color/login_bg">
 
     <View
         android:id="@+id/view_one"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="#DEDEDE"/>
+        android:background="#DEDEDE" />
 
 
     <RelativeLayout
         android:id="@+id/user_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_below="@+id/view_one"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp">
+        android:background="@color/white"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,42 +30,41 @@
                 android:id="@+id/user_iv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/login_user_icon"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="25dp"
                 android:layout_centerVertical="true"
-                android:scaleType="centerCrop"/>
+                android:layout_marginLeft="25dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/login_user_icon" />
 
             <EditText
                 android:id="@+id/user_ev"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/user_iv"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/user_close_iv"
+                android:layout_toRightOf="@+id/user_iv"
                 android:background="@null"
-                android:layout_centerVertical="true"
                 android:hint="@string/login_user_hint"
-                android:textColorHint="@color/login_hint"
                 android:textColor="@color/black"
-                android:textSize="15sp"
-                android:layout_toLeftOf="@+id/user_close_iv"/>
+                android:textColorHint="@color/login_hint"
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/user_close_iv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/input_clean"
-                android:layout_marginRight="5dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
                 android:scaleType="centerCrop"
-                android:visibility="invisible"/>
+                android:src="@drawable/input_clean"
+                android:visibility="invisible" />
 
         </RelativeLayout>
 
     </RelativeLayout>
-
 
 
     <View
@@ -79,53 +78,64 @@
         android:id="@+id/code_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_below="@+id/new_pwd_view"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp">
+        android:background="@color/white"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/code_iv"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/login_pwd_icon"
-                android:layout_marginLeft="25dp"
                 android:layout_gravity="center_vertical"
-                android:scaleType="centerCrop"/>
+                android:layout_marginLeft="25dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/login_pwd_icon" />
 
             <EditText
                 android:id="@+id/code_ev"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="25dp"
                 android:layout_marginRight="5dp"
+                android:layout_weight="1"
                 android:background="@null"
-                android:layout_gravity="center_vertical"
                 android:hint="@string/login_input_code"
-                android:textColorHint="@color/login_hint"
                 android:textColor="@color/black"
+                android:textColorHint="@color/login_hint"
                 android:textSize="15sp" />
+
+            <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/login_code_ripple"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                app:rippleColor="@color/button_gray_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
 
             <Button
                 android:id="@+id/login_code"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/input_clean"
-                android:text="@string/login_get_code"
-                android:layout_marginRight="5dp"
+                android:background="@drawable/blue_radius_btn_shape"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:textColor="@color/white"
-                android:background="@drawable/blue_radius_btn_shape"
-                android:layout_gravity="center_vertical" />
+                android:src="@drawable/input_clean"
+                android:text="@string/login_get_code"
+                android:textColor="@color/white" />
+
+            </com.zlf.appmaster.ui.RippleView>
 
         </LinearLayout>
 
@@ -139,23 +149,32 @@
         android:layout_below="@+id/code_layout"
         android:background="#DEDEDE" />
 
-
-    <Button
-        android:id="@+id/register"
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/register_ripple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_four"
-        android:text="@string/register"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:background="@drawable/blue_radius_btn_shape"/>
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/view_four"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
+        <Button
+            android:id="@+id/register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_radius_btn_shape"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/register"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </com.zlf.appmaster.ui.RippleView>
 
 
 </RelativeLayout>

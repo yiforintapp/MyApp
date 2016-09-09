@@ -758,4 +758,16 @@ public class StringUtil {
 		}
 		return isValid;
 	}
+
+	public static boolean isUserNameValid(String userName) {
+		boolean isValid = false;
+		String expression = "^[\\u4e00-\\u9fa5]{1,10}$|^[\\dA-Za-z_]{1,20}$";
+		CharSequence inputStr = userName;
+		Pattern pattern = Pattern.compile(expression);
+		Matcher matcher = pattern.matcher(inputStr);
+		if (matcher.matches()) {
+			isValid = true;
+		}
+		return isValid;
+	}
 }

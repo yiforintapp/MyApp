@@ -1,6 +1,7 @@
 package com.zlf.appmaster.login;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.home.BaseActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
+import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.stock.LoginProgressDialog;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.tools.animator.Animator;
@@ -36,10 +38,6 @@ import java.net.URLEncoder;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import cn.jpush.sms.SMSSDK;
-import cn.jpush.sms.listener.SmscheckListener;
-import cn.jpush.sms.listener.SmscodeListener;
 
 /**
  * Created by Administrator on 2016/8/25.
@@ -61,7 +59,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private EditText mNewPasswordEt;
     private ImageView mNewPasswordClean;
     private EditText mCodeEt;
+    private RippleView mGetCodeRipple;
     private Button mGetCodeBtn;
+    private RippleView mRegisterRipple;
     private Button mRegisterBtn;
     private CommonToolbar mToolBar;
     private TimerTask mTimerTask;
@@ -74,6 +74,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private Toast mToast;
     private RelativeLayout mPhoneLayout;
     private RelativeLayout mPwdLayout;
+    private RippleView mCompleteRipple;
     private Button mComplete;
     private DataHandler mHandler;
     private boolean mHasShow;  // 设置密码已经inflate过
@@ -84,6 +85,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private ImageView mUserNameClean;
     private RelativeLayout mUserNameLayout;
     private View mUserNameView;
+
+    private boolean mProgressBarShow; // 加载正在进行
+
 
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
@@ -148,11 +152,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mUserEt = (EditText) findViewById(R.id.user_ev);
         mUserClean = (ImageView) findViewById(R.id.user_close_iv);
         mCodeEt = (EditText) findViewById(R.id.code_ev);
+        mGetCodeRipple = (RippleView) findViewById(R.id.login_code_ripple);
         mGetCodeBtn = (Button) findViewById(R.id.login_code);
+        mRegisterRipple = (RippleView) findViewById(R.id.register_ripple);
         mRegisterBtn = (Button) findViewById(R.id.register);
         mUserClean.setOnClickListener(this);
-        mGetCodeBtn.setOnClickListener(this);
-        mRegisterBtn.setOnClickListener(this);
+        mGetCodeRipple.setOnClickListener(this);
+        mRegisterRipple.setOnClickListener(this);
         mUserEt.addTextChangedListener(this);
         mToolBar.setNavigationClickListener(new View.OnClickListener() {
             @Override
@@ -239,18 +245,20 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 mNewPasswordEt.getText().clear();
                 mNewPasswordClean.setVisibility(View.INVISIBLE);
                 break;
-            case R.id.login_code:
-                if(!isPhoneNumberValidate()) {
-                    return ;
+            case R.id.login_code_ripple:
+                if(isPhoneNumberValidate()) {
+                    getCode();
                 }
-//               getCode();
                 break;
-            case R.id.register:
-//                validateCode();
-                showPwdLayout();
+            case R.id.register_ripple:
+                if (isPhoneOrCodeValidate()) {
+                    validateCode();
+                }
                 break;
-            case R.id.register_complete:
-                register();
+            case R.id.register_complete_ripple:
+                if (isValidate()) {
+                    register();
+                }
                 break;
             case R.id.user_name_close_iv:
                 mUserNameEt.getText().clear();
@@ -269,23 +277,50 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 mMessageTag = RESET;
                 tag = Constants.RESET_TAG;
             }
+            if (mDialog == null) {
+                mDialog = new LoginProgressDialog(this);
+            }
+            mDialog.setCanceledOnTouchOutside(false);
+            mDialog.setLoadingContent(getResources().getString(R.string.login_loading));
+            mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    mProgressBarShow = false;
+                }
+            });
+            mDialog.show();
+            mProgressBarShow = true;
             // 发送请求
             LoginHttpUtil.sendHttpRequest(Constants.LOGIN_ADDRESS, tag,
-                    mUserEt.getText().toString(), mPasswordEt.getText().toString(),  new HttpCallBackListener() {
+                    mUserEt.getText().toString(), mPasswordEt.getText().toString(), mUserNameEt.getText().toString(),  new HttpCallBackListener() {
                         @Override
                         public void onFinish(String response) {
-                            Message message = new Message();
-                            message.what = mMessageTag;
-                            message.obj = response;
-                            mHandler.sendMessage(message);
+                            if (mProgressBarShow) {
+                                if (mDialog != null && mDialog.isShowing()) {
+                                    mDialog.dismiss();
+                                }
+                                Message message = new Message();
+                                message.what = mMessageTag;
+                                message.obj = response;
+                                if (mHandler != null) {
+                                    mHandler.sendMessage(message);
+                                }
+                            }
                         }
 
                         @Override
                         public void onError(Exception e) {
-                            Message message = new Message();
-                            message.what = mMessageTag;
-                            message.obj = e.toString();
-                            mHandler.sendMessage(message);
+                            if (mProgressBarShow) {
+                                if (mDialog != null && mDialog.isShowing()) {
+                                    mDialog.dismiss();
+                                }
+                                Message message = new Message();
+                                message.what = mMessageTag;
+                                message.obj = e.toString();
+                                if (mHandler != null) {
+                                    mHandler.sendMessage(message);
+                                }
+                            }
                         }
                     });
         } catch (Exception e) {
@@ -305,13 +340,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             mNewPasswordClean = (ImageView) findViewById(R.id.new_pwd_close_iv);
             mResetNewLayout = (RelativeLayout) findViewById(R.id.reset_new_pwd);
             mResetNewView = (View) findViewById(R.id.view_five);
+            mCompleteRipple = (RippleView) findViewById(R.id.register_complete_ripple);
             mComplete = (Button) findViewById(R.id.register_complete);
             mUserNameLayout = (RelativeLayout) findViewById(R.id.user_name);
             mUserNameView = (View) findViewById(R.id.view_four);
             mUserNameClean = (ImageView) findViewById(R.id.user_name_close_iv);
             mUserNameEt = (EditText) findViewById(R.id.user_name_ev);
             mUserNameClean.setOnClickListener(this);
-            mComplete.setOnClickListener(this);
+            mCompleteRipple.setOnClickListener(this);
             mPasswordClean.setOnClickListener(this);
             mNewPasswordClean.setOnClickListener(this);
             mPasswordEt.addTextChangedListener(this);
@@ -497,7 +533,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         @Override
                         public void run() {
                             //输出result内容，查看返回值，成功为success，错误为error，详见该文档起始注释
-                            showToast(result);
+                            if ("success".equals(result)) {
+                                mUserEt.setEnabled(true);
+                            } else {
+                                stopTimer();
+                            }
                         }
                     });
 
@@ -509,31 +549,28 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void getCode() {
-        String phoneNum = mUserEt.getText().toString();
-        if (!isPhoneNumberValidate()) {
-            return;
-        }
-        mGetCodeBtn.setClickable(false);
+        mGetCodeRipple.setClickable(false);
         //开始倒计时
         startTimer();
-        SMSSDK.getInstance().getSmsCodeAsyn(phoneNum, 1 + "", new SmscodeListener() {
-            @Override
-            public void getCodeSuccess(final String uuid) {
-//                                Toast.makeText(MainActivity.this,uuid,Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void getCodeFail(int errCode, final String errmsg) {
-                //失败后停止计时
-                if (errCode != 2996) {
-                    stopTimer();
-                }
-                if (errCode == 3002) {
-                    mUserEt.setEnabled(true);
-                }
-                showToast(errmsg + "|code=" + errCode);
-            }
-        });
+        getFirstCode();
+//        SMSSDK.getInstance().getSmsCodeAsyn(phoneNum, 1 + "", new SmscodeListener() {
+//            @Override
+//            public void getCodeSuccess(final String uuid) {
+////                                Toast.makeText(MainActivity.this,uuid,Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void getCodeFail(int errCode, final String errmsg) {
+//                //失败后停止计时
+//                if (errCode != 2996) {
+//                    stopTimer();
+//                }
+//                if (errCode == 3002) {
+//                    mUserEt.setEnabled(true);
+//                }
+//                showToast(errmsg + "|code=" + errCode);
+//            }
+//        });
     }
 
     private void startTimer() {
@@ -573,7 +610,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             mTimerTask = null;
         }
         mGetCodeBtn.setText("重新获取");
-        mGetCodeBtn.setClickable(true);
+        mGetCodeRipple.setClickable(true);
     }
 
     private void showToast(String s) {
@@ -586,12 +623,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private boolean isPhoneNumberValidate() {
-        String userName = mUserEt.getText().toString().trim();
-        if (TextUtils.isEmpty(userName)) {
+        String phoneNumber = mUserEt.getText().toString().trim();
+        if (TextUtils.isEmpty(phoneNumber)) {
             showToast(getResources().getString(R.string.login_user_empty));
             return false;
         }
-        if (!StringUtil.isPhoneNumberValid(userName)) {
+        if (!StringUtil.isPhoneNumberValid(phoneNumber)) {
             showToast(getResources().getString(R.string.login_user_unlocal));
             return false;
         }
@@ -599,38 +636,69 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         return true;
     }
 
+    private boolean isUserNameValidate() {
+        String userName = mUserNameEt.getText().toString().trim();
+        if (TextUtils.isEmpty(userName)) {
+            showToast(getResources().getString(R.string.login_user_name_empty));
+            return false;
+        }
+        if (!StringUtil.isUserNameValid(userName)) {
+            showToast(getResources().getString(R.string.login_user_name_unlocal));
+            return false;
+        }
+
+        return true;
+    }
+
     private void validateCode() {
-        String code = mCodeEt.getText().toString();
+        final String code = mCodeEt.getText().toString();
         String phoneNum = mUserEt.getText().toString();
 //        progressDialog.setTitle("正在验证...");
         if (mDialog == null) {
             mDialog = new LoginProgressDialog(this);
         }
         mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setLoadingContent(getResources().getString(R.string.code_loading));
         mDialog.show();
-        SMSSDK.getInstance().checkSmsCodeAsyn(phoneNum, code, new SmscheckListener() {
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override
-            public void checkCodeSuccess(final String code) {
+            public void run() {
                 if (mDialog != null && mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
-                showToast(code);
+                if (!mCode.equals(code)) {
+                    mCodeEt.getText().clear();
+                    showToast("验证码错误");
+                } else {
+                    showPwdLayout();
+                }
             }
+        }, 1000);
+    }
 
-            @Override
-            public void checkCodeFail(int errCode, final String errmsg) {
-                if (mDialog != null && mDialog.isShowing()) {
-                    mDialog.dismiss();
-                }
-                showToast(errmsg + "|code=" + errCode);
-            }
-        });
+
+    private boolean isPhoneOrCodeValidate() {
+        String code = mCodeEt.getText().toString().trim();
+
+        if (!isPhoneNumberValidate()) {
+            return false;
+        }
+
+        if (TextUtils.isEmpty(code)) {
+            showToast(getResources().getString(
+                    R.string.login_code_empty));
+
+            return false;
+        }
+
+        return true;
     }
 
     private boolean isValidate() {
         String password = mPasswordEt.getText().toString().trim();
         String code = mCodeEt.getText().toString().trim();
         String newPassword = mNewPasswordEt.getText().toString().trim();
+        String userName = mUserNameEt.getText().toString().trim();
 
         if (!isPhoneNumberValidate()) {
             return false;
@@ -646,6 +714,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if (!mFromRegister && TextUtils.isEmpty(newPassword)) {
             showToast(getResources().getString(
                     R.string.login_new_pwd_empty));
+
+            return false;
+        } else if (mFromRegister && !isUserNameValidate()) {
 
             return false;
         }
@@ -686,6 +757,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
             mDialog = null;
+        }
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
         }
     }
 }

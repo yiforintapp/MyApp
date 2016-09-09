@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zlf.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_wifi_content"
     android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:rippleColor="@color/button_gray_ripple"
+    app:rippleDuration="250"
+    app:rippleHover="true"
+    app:rippleOverlay="true">
 
     <View
         android:id="@+id/line_1"
@@ -95,6 +98,6 @@
         android:visibility="gone"
         android:background="@drawable/divider_setting" />
 
-</RelativeLayout>
+</com.zlf.appmaster.ui.RippleView>
 
 

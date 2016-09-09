@@ -1,14 +1,18 @@
 package com.zlf.appmaster.home;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
+import com.zlf.appmaster.utils.PrefConst;
 
 /**
  * Created by Administrator on 2016/7/19.
@@ -21,7 +25,8 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
     private CommonSettingItem mClient;
     private CommonSettingItem mMessage;
     private CommonSettingItem mSetting;
-
+    private TextView mClickLogin;
+    private RelativeLayout mLoginIv;
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_personal;
@@ -30,6 +35,8 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
     @Override
     protected void onInitUI() {
         mLogin = (RelativeLayout) findViewById(R.id.login);
+        mClickLogin = (TextView) mLogin.findViewById(R.id.tv_title);
+        mLoginIv = (RelativeLayout) mLogin.findViewById(R.id.rl_content_tip);
         mUser = (CommonSettingItem) findViewById(R.id.user);
         mVip = (CommonSettingItem) findViewById(R.id.vip);
         mClient = (CommonSettingItem) findViewById(R.id.client);
@@ -60,6 +67,23 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         mClient.setOnClickListener(this);
         mMessage.setOnClickListener(this);
         mSetting.setOnClickListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        isLogin();
+    }
+
+    private void isLogin() {
+        String userName = LeoSettings.getString(PrefConst.USER_NAME, "");
+        if (!TextUtils.isEmpty(userName)) {
+            mClickLogin.setText(userName);
+            mLoginIv.setVisibility(View.GONE);
+        } else {
+            mClickLogin.setText(getResources().getString(R.string.click_login));
+            mLoginIv.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

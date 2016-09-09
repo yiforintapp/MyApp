@@ -26,9 +26,10 @@
         app:cpv_thickness="4dp" />
 
     <TextView
+        android:id="@+id/loading_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="正在验证..." />
+        android:text="@string/login_loading" />
 
 
 

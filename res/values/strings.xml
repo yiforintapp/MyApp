@@ -212,6 +212,8 @@
     <string name="login_pwd_hint">密码</string>
     <string name="login_user_empty">手机号不能为空</string>
     <string name="login_user_unlocal">手机号格式有误</string>
+    <string name="login_user_name_empty">昵称不能为空</string>
+    <string name="login_user_name_unlocal">昵称格式有误</string>
     <string name="login_pwd_empty">密码不能为空</string>
     <string name="login_new_pwd_empty">确认密码不能为空</string>
     <string name="login_code_empty">验证码不能为空</string>
@@ -228,7 +230,8 @@
     <string name="login_reset_success">修改成功</string>
     <string name="login_reset_nunum">该手机号没有注册</string>
     <string name="login_success">登录成功</string>
-    <string name="login_error">手机号或密码错误</string>
+    <string name="login_pwd_error">手机号或密码错误</string>
+    <string name="login_error">登录出错</string>
 
     <string name="main_tab_home">行情</string>
     <string name="main_tab_trade">交易</string>
@@ -271,7 +274,8 @@
     <string name="long_river_company">长江联合</string>
     <string name="global_gold">国际黄金</string>
     <string name="click_login">点击登录</string>
-    <string name="login_name">输入昵称</string>
-
+    <string name="login_name">输入昵称，不支持特殊字符</string>
+    <string name="code_loading">正在验证...</string>
+    <string name="login_loading">正在登录...</string>
 
 </resources>

@@ -174,6 +174,8 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
 
                     } else if(riseInfo < 0){
                         viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_drop_text_bg));
+                    } else {
+                        viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_drop_text_bg));
                     }
 
                     viewHolder.price.setText(item.getCurPriceFormat());
