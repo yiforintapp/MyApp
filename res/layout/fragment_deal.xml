@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/tv_changjiang"
-        style="@style/dlg_right_button_txt"
+        style="@style/dlg_right_button_txt_del"
         android:layout_width="match_parent"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
