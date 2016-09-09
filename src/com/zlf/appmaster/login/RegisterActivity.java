@@ -114,6 +114,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     activity.finish();
                 } else if (SAME.equals(msg.obj.toString())) {
                     result = activity.getResources().getString(R.string.login_register_same);
+                    activity.mPasswordEt.getText().clear();
+                    activity.mUserNameEt.getText().clear();
+                    activity.mCodeEt.getText().clear();
+                    activity.mCode = "";
                     activity.startPhoneAnim();
                 } else {
                     result = msg.obj.toString();
@@ -124,6 +128,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     activity.finish();
                 } else if (NONUM.equals(msg.obj.toString())) {
                     result = activity.getResources().getString(R.string.login_reset_nunum);
+                    activity.mCodeEt.getText().clear();
+                    activity.mCode = "";
+                    activity.mPasswordEt.getText().clear();
+                    activity.mNewPasswordEt.getText().clear();
                     activity.startPhoneAnim();
                 } else {
                     result = msg.obj.toString();
@@ -291,7 +299,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             mDialog.show();
             mProgressBarShow = true;
             // 发送请求
-            LoginHttpUtil.sendHttpRequest(Constants.LOGIN_ADDRESS, tag,
+            LoginHttpUtil.sendHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
                     mUserEt.getText().toString(), mPasswordEt.getText().toString(), mUserNameEt.getText().toString(),  new HttpCallBackListener() {
                         @Override
                         public void onFinish(String response) {
@@ -651,6 +659,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void validateCode() {
+//        if (TextUtils.isEmpty(mCode)) {
+//           showToast(getResources().getString(R.string.login_code_error));
+//           return;
+//        }
         final String code = mCodeEt.getText().toString();
         String phoneNum = mUserEt.getText().toString();
 //        progressDialog.setTitle("正在验证...");
@@ -666,12 +678,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 if (mDialog != null && mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
-                if (!mCode.equals(code)) {
-                    mCodeEt.getText().clear();
-                    showToast("验证码错误");
-                } else {
+//                if (!mCode.equals(code)) {
+//                    mCodeEt.getText().clear();
+//                    showToast(getResources().getString(R.string.login_code_error));
+//                } else {
                     showPwdLayout();
-                }
+//                }
             }
         }, 1000);
     }
@@ -696,9 +708,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private boolean isValidate() {
         String password = mPasswordEt.getText().toString().trim();
-        String code = mCodeEt.getText().toString().trim();
         String newPassword = mNewPasswordEt.getText().toString().trim();
-        String userName = mUserNameEt.getText().toString().trim();
 
         if (!isPhoneNumberValidate()) {
             return false;
@@ -711,15 +721,41 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             return false;
         }
 
-        if (!mFromRegister && TextUtils.isEmpty(newPassword)) {
+        if (!StringUtil.isPassWordValidate(password)) {
             showToast(getResources().getString(
-                    R.string.login_new_pwd_empty));
+                    R.string.login_pwd_unlocal));
 
             return false;
+        }
+
+        if (!mFromRegister) {
+            if (TextUtils.isEmpty(newPassword)) {
+                showToast(getResources().getString(
+                        R.string.login_new_pwd_empty));
+
+                return false;
+            }
+            if (!StringUtil.isPassWordValidate(newPassword)) {
+                showToast(getResources().getString(
+                        R.string.login_pwd_unlocal));
+
+                return false;
+            }
         } else if (mFromRegister && !isUserNameValidate()) {
 
             return false;
         }
+
+        if (!isCodeValidate()) {
+            return  false;
+        }
+
+
+        return true;
+    }
+
+    private boolean isCodeValidate() {
+        String code = mCodeEt.getText().toString().trim();
 
         if (TextUtils.isEmpty(code)) {
             showToast(getResources().getString(
@@ -728,8 +764,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             return false;
         }
 
+        if (!StringUtil.isCodeValidate(code)) {
+
+            showToast(getResources().getString(
+                    R.string.login_code_unlocal));
+            return false;
+        }
+
         return true;
     }
+
 
     @Override
     public void onBackPressed() {

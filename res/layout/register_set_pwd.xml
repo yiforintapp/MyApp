@@ -48,6 +48,7 @@
                 android:layout_toRightOf="@+id/pwd_iv"
                 android:background="@null"
                 android:hint="@string/login_pwd_hint"
+                android:maxLength="20"
                 android:textColor="@color/black"
                 android:textColorHint="@color/login_hint"
                 android:textSize="15sp" />
@@ -109,6 +110,7 @@
                 android:layout_toRightOf="@+id/user_name_iv"
                 android:background="@null"
                 android:hint="@string/login_name"
+                android:maxLength="20"
                 android:textColor="@color/black"
                 android:textColorHint="@color/login_hint"
                 android:textSize="15sp" />
@@ -171,6 +173,7 @@
                 android:layout_toRightOf="@+id/new_pwd_iv"
                 android:background="@null"
                 android:hint="@string/login_reset_new_password"
+                android:maxLength="20"
                 android:textColor="@color/black"
                 android:textColorHint="@color/login_hint"
                 android:textSize="15sp" />

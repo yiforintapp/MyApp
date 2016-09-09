@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.ui.stock.StockTextView;
-import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.List;
 
@@ -125,7 +124,7 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
                     } else if (riseInfo < 0) {
                         viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_drop_text_bg));
                     } else {
-                        viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_drop_text_bg));
+                        viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_equal_text_bg));
                     }
 
                     viewHolder.price.setText(item.getCurPriceFormat());

@@ -13,7 +13,7 @@ public class LoginUser extends BaseInfo implements Serializable {
 
     public static String PHONENUMBER = "username";
     public static String PASSWORD = "psw";
-    public static String USERNAME = "nic_name";
+    public static String USERNAME = "nicname";
 
     //构造函数
     public LoginUser(String phoneNumber, String password, String userName) {

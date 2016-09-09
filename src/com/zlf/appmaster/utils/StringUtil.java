@@ -761,7 +761,8 @@ public class StringUtil {
 
 	public static boolean isUserNameValid(String userName) {
 		boolean isValid = false;
-		String expression = "^[\\u4e00-\\u9fa5]{1,10}$|^[\\dA-Za-z_]{1,20}$";
+
+		String expression = "^[a-zA-Z0-9\\u4E00-\\u9FA5]+$";
 		CharSequence inputStr = userName;
 		Pattern pattern = Pattern.compile(expression);
 		Matcher matcher = pattern.matcher(inputStr);
@@ -770,4 +771,31 @@ public class StringUtil {
 		}
 		return isValid;
 	}
+
+	public static boolean isPassWordValidate(String passWord) {
+
+		boolean isValid = false;
+		String expression = "^[0-9a-zA-Z]{6,20}";
+		CharSequence inputStr = passWord;
+		Pattern pattern = Pattern.compile(expression);
+		Matcher matcher = pattern.matcher(inputStr);
+		if (matcher.matches()) {
+			isValid = true;
+		}
+		return isValid;
+	}
+
+	public static boolean isCodeValidate(String code) {
+		boolean isValid = false;
+		String expression = "^[0-9]*$";
+		CharSequence inputStr = code;
+		Pattern pattern = Pattern.compile(expression);
+		Matcher matcher = pattern.matcher(inputStr);
+		if (matcher.matches()) {
+			isValid = true;
+		}
+		return isValid;
+	}
+
+
 }

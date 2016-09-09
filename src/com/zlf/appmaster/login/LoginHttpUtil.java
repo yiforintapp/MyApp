@@ -1,10 +1,12 @@
 package com.zlf.appmaster.login;
 
+import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.model.LoginUser;
+import com.zlf.appmaster.utils.AppUtil;
+import com.zlf.appmaster.utils.QLog;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -19,8 +21,8 @@ import java.net.URLEncoder;
  */
 public class LoginHttpUtil {
     //封装的发送请求函数
-    public static void sendHttpRequest(final String address, String tag, String phoneNumber, String pwd, String userName, final HttpCallBackListener listener) throws UnsupportedEncodingException {
-        if (!isNetworkAvailable()){
+    public static void sendHttpRequest(Context context, final String address, String tag, String phoneNumber, String pwd, String userName, final HttpCallBackListener listener) throws UnsupportedEncodingException {
+        if (!AppUtil.hasInternet(context)){
             //这里写相应的网络设置处理
             if (listener != null){
                 listener.onFinish("网络连接错误");
@@ -53,7 +55,7 @@ public class LoginHttpUtil {
             StringUrl.append("&")
                     .append(LoginUser.USERNAME)
                     .append("=")
-                    .append(URLEncoder.encode(userName, encode));
+                    .append(new String(userName.getBytes(), encode));
         }
 
         new Thread(new Runnable() {
@@ -62,7 +64,7 @@ public class LoginHttpUtil {
                 HttpURLConnection connection = null;
                 try{
                     URL url = new URL(StringUrl.toString());
-                    Log.e("shsdfhs", StringUrl.toString());
+                    QLog.e("adcb", StringUrl.toString());
                     //使用HttpURLConnection
                     connection = (HttpURLConnection) url.openConnection();
                     //设置方法和参数
@@ -96,11 +98,5 @@ public class LoginHttpUtil {
                 }
             }
         }).start();
-    }
-
-    //判断当前网络是否可用
-    public static boolean isNetworkAvailable(){
-        //这里检查网络，后续再添加
-        return true;
     }
 }

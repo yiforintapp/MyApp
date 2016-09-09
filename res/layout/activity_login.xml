@@ -110,6 +110,7 @@
                 android:background="@null"
                 android:hint="@string/login_pwd_hint"
                 android:textColor="@color/black"
+                android:maxLength="20"
                 android:textColorHint="@color/login_hint"
                 android:textSize="15sp" />
 

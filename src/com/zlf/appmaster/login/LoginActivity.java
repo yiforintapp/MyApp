@@ -201,7 +201,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         mProgressBarShow = true;
         try {
             // 发送请求
-            LoginHttpUtil.sendHttpRequest(Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
+            LoginHttpUtil.sendHttpRequest(this, Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
                     mUserEt.getText().toString(), mPasswordEt.getText().toString(), "",  new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response) {
@@ -262,8 +262,15 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         if (TextUtils.isEmpty(password)) {
             showToast(getResources().getString(
                     R.string.login_pwd_empty));
-
             return false;
+        }
+
+        if (!StringUtil.isPassWordValidate(password)) {
+
+            showToast(getResources().getString(
+                    R.string.login_pwd_unlocal));
+
+            return  false;
         }
         return true;
     }
