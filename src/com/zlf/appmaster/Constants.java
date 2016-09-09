@@ -241,6 +241,14 @@ public class Constants {
     public static final String MY_DATA_URL = "http://120.24.14.76:1688/work?proname=";
     public static final String JIN_GUI_INFO_PRONAME = "changjiang";
     public static final String QI_LU_INFO_PRONAME = "gold";
+    public static final String WAI_HUI_INFO_PRONAME = "waihui";
+    public static final String ZHI_GOLD_INFO_PRONAME = "zhigold";
+    public static final String SHANG_HAI_FUTURES_INFO_PRONAME = "shf";
+
+    public static final String LME_INFO_PRONAME = "lme";
+    public static final String NYMEX_INFO_PRONAME = "nymex";
+    public static final String COMEX_INFO_PRONAME = "comex";
+
     public static final String JIN_GUI_INFO_MINUTE_PRONAME = "changjiang_detils";
     public static final String QI_LU_INFO_MINUTE_PRONAME = "gold_detils";
     public static final String JIN_GUI_INFO_KLINE_PRONAME = "changjiang_detils_k";

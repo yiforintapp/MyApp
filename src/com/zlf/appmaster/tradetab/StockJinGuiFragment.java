@@ -42,37 +42,37 @@ public class StockJinGuiFragment extends BaseFragment {
     private View mEmptyView;
     private RippleView mRefreshView;
 
-    private boolean loadCache(){
-        boolean ret = false;
-        JSONObject jsonCache = StockJsonCache.loadFromFile(mActivity, StockJsonCache.CACHEID_QUOTATIONS_INDEX);
-
-        if (jsonCache != null){
-
-            try {
-
-                JSONObject data = jsonCache.getJSONObject("data");
-
-                List<StockIndex> stockIndexes = StockIndex
-                        .resolveAllIndexJsonObject(data.getJSONArray("indexs"));
-                mIndexData.clear();
-                mIndexData.addAll(stockIndexes);
-
-                List<StockIndex> foreignDelayIndexes = StockIndex
-                        .resolveAllIndexJsonObject(data.getJSONArray("slowIndexs"));        // 国外的延迟指数
-                mForeignIndexData.clear();
-                mForeignIndexData.addAll(foreignDelayIndexes);
-
-                ret = true;
-
-                mStockQuotationsIndexAdapter.notifyDataSetChanged();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return ret;
-    }
+//    private boolean loadCache(){
+//        boolean ret = false;
+//        JSONObject jsonCache = StockJsonCache.loadFromFile(mActivity, StockJsonCache.CACHEID_QUOTATIONS_INDEX);
+//
+//        if (jsonCache != null){
+//
+//            try {
+//
+//                JSONObject data = jsonCache.getJSONObject("data");
+//
+//                List<StockIndex> stockIndexes = StockIndex
+//                        .resolveAllIndexJsonObject(data.getJSONArray("indexs"));
+//                mIndexData.clear();
+//                mIndexData.addAll(stockIndexes);
+//
+//                List<StockIndex> foreignDelayIndexes = StockIndex
+//                        .resolveAllIndexJsonObject(data.getJSONArray("slowIndexs"));        // 国外的延迟指数
+//                mForeignIndexData.clear();
+//                mForeignIndexData.addAll(foreignDelayIndexes);
+//
+//                ret = true;
+//
+//                mStockQuotationsIndexAdapter.notifyDataSetChanged();
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        return ret;
+//    }
     private void initViews(View view){
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
@@ -94,25 +94,18 @@ public class StockJinGuiFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position - 1);
-//                StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position);
                 LeoLog.d("testClick","itemClick : " + position);
+                if(position == 1){
+                    return;
+                }
+
                 if (null != item) {
 
                     Class targetClass;
 
-//                    if(mLiveRecordingUtil.isLiveRecording()){
-//                        targetClass = LiveAnchorLectureActivity.class;
-//                    }else{
                     targetClass = StockIndexDetailActivity.class;
-//                    }
                     Intent intent = new Intent(mActivity, targetClass);
 
-//                    if(targetClass == LiveAnchorLectureActivity.class){
-//                        mLiveRecordingUtil.setStockName(item.getName());
-//                        mLiveRecordingUtil.setStockCode(item.getCode());
-//                        mLiveRecordingUtil.setStock(false);
-//                        intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    }else{
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, item.getCode());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_OPEN_INDEX, item.getTodayIndex());
@@ -123,7 +116,6 @@ public class StockJinGuiFragment extends BaseFragment {
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.JIN_GUI_INFO_MINUTE_PRONAME);
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.JIN_GUI_INFO_KLINE_PRONAME);
-//                    }
                     mActivity.startActivity(intent);
 
                 }
@@ -181,7 +173,7 @@ public class StockJinGuiFragment extends BaseFragment {
                 Object[] objectArray = (Object[])object;
                 mIndexData.clear();
                 mIndexData.addAll((List<StockIndex>) objectArray[0]);
-
+                mIndexData.add(0,null);
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
 
                 mProgressBar.setVisibility(View.GONE);

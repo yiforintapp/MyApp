@@ -8,12 +8,18 @@ import android.support.v4.view.ViewPager;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.tradetab.StockCOMEXFragment;
 import com.zlf.appmaster.tradetab.StockIndexFragment;
 import com.zlf.appmaster.tradetab.StockJinGuiFragment;
+import com.zlf.appmaster.tradetab.StockLMEFragment;
+import com.zlf.appmaster.tradetab.StockNYMEXFragment;
 import com.zlf.appmaster.tradetab.StockPlateFragment;
 import com.zlf.appmaster.tradetab.StockQiLuFragment;
 import com.zlf.appmaster.tradetab.StockRiseInfoFragment;
+import com.zlf.appmaster.tradetab.StockSHFFragment;
 import com.zlf.appmaster.tradetab.StockTopicFragment;
+import com.zlf.appmaster.tradetab.StockWaiHuiFragment;
+import com.zlf.appmaster.tradetab.StockZhiGoldFragment;
 import com.zlf.appmaster.ui.PagerSlidingTabStrip;
 import com.zlf.appmaster.userTab.StockFavoriteFragment;
 
@@ -25,13 +31,17 @@ import java.util.List;
 public class TradeTabFragment extends BaseFragment {
 
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[2];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[8];
     private StockJinGuiFragment mStockJinGuiFragment;
     private StockQiLuFragment mStockQiLuFragment;
-    private StockTopicFragment mStockTopicFragment;
-    private StockIndexFragment mStockIndexFragment;
-    private StockRiseInfoFragment mStockRiseInfoFragment;
-    private StockPlateFragment mStockPlateFragment;
+    private StockLMEFragment mStockLMEFragment;
+    private StockWaiHuiFragment mStockWaiHuiFragment;
+    private StockZhiGoldFragment mStockZhiGoldFragment;
+    private StockSHFFragment mStockSHFFragment;
+    private StockNYMEXFragment mStockNYMEXFragment;
+    private StockCOMEXFragment mStockCOMEXFragment;
+
+
     private PagerSlidingTabStrip mPagerSlidingTab;
 
     private StockFavoriteFragment mStockFavoriteFragment;
@@ -63,6 +73,7 @@ public class TradeTabFragment extends BaseFragment {
 //        mStockFavoriteFragment = new StockFavoriteFragment();
 //        holder.fragment = mStockFavoriteFragment;
 //        mHomeHolders[0] = holder;
+
         HomeTabHolder holder = new HomeTabHolder();
         holder.title = mActivity.getResources().getString(R.string.long_river_company);
         mStockJinGuiFragment = new StockJinGuiFragment();
@@ -75,29 +86,42 @@ public class TradeTabFragment extends BaseFragment {
         holder.fragment = mStockQiLuFragment;
         mHomeHolders[1] = holder;
 
-  /*      holder = new HomeTabHolder();
-        holder.title = "指数";
-        mStockIndexFragment = new StockIndexFragment();
-        holder.fragment = mStockIndexFragment;
+        holder = new HomeTabHolder();
+        holder.title = mActivity.getResources().getString(R.string.hangqing_waihui);
+        mStockWaiHuiFragment = new StockWaiHuiFragment();
+        holder.fragment = mStockWaiHuiFragment;
         mHomeHolders[2] = holder;
 
         holder = new HomeTabHolder();
-        holder.title = "涨跌";
-        mStockRiseInfoFragment = new StockRiseInfoFragment();
-        holder.fragment = mStockRiseInfoFragment;
+        holder.title = mActivity.getResources().getString(R.string.hangqing_zhigold);
+        mStockZhiGoldFragment = new StockZhiGoldFragment();
+        holder.fragment = mStockZhiGoldFragment;
         mHomeHolders[3] = holder;
 
         holder = new HomeTabHolder();
-        holder.title = "行业";
-        mStockPlateFragment = new StockPlateFragment();
-        holder.fragment = mStockPlateFragment;
+        holder.title = mActivity.getResources().getString(R.string.hangqing_shf);
+        mStockSHFFragment = new StockSHFFragment();
+        holder.fragment = mStockSHFFragment;
         mHomeHolders[4] = holder;
 
         holder = new HomeTabHolder();
-        holder.title = "题材";
-        mStockTopicFragment = new StockTopicFragment();
-        holder.fragment = mStockTopicFragment;
-        mHomeHolders[5] = holder;*/
+        holder.title = mActivity.getResources().getString(R.string.hangqing_lme);
+        mStockLMEFragment = new StockLMEFragment();
+        holder.fragment = mStockLMEFragment;
+        mHomeHolders[5] = holder;
+
+        holder = new HomeTabHolder();
+        holder.title = mActivity.getResources().getString(R.string.hangqing_nymex);
+        mStockNYMEXFragment = new StockNYMEXFragment();
+        holder.fragment = mStockNYMEXFragment;
+        mHomeHolders[6] = holder;
+
+
+        holder = new HomeTabHolder();
+        holder.title = mActivity.getResources().getString(R.string.hangqing_comex);
+        mStockCOMEXFragment = new StockCOMEXFragment();
+        holder.fragment = mStockCOMEXFragment;
+        mHomeHolders[7] = holder;
 
 
         FragmentManager fm = getChildFragmentManager();

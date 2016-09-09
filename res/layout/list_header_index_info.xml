@@ -14,14 +14,14 @@
         android:orientation="horizontal"
         android:paddingLeft="@dimen/general_margin_left">
 
-       <!-- <TextView
+        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.46"
             android:gravity="center_vertical"
             android:textColor="@color/tv_combination_gray"
             android:textSize="12sp"
-            android:text="@string/index_name"
+            android:text="@string/hangqing_tv_one"
              />
 
         <TextView
@@ -31,7 +31,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/tv_combination_gray"
             android:textSize="12sp"
-            android:text="@string/index_point" />
+            android:text="@string/hangqing_tv_two" />
 
         <TextView
             android:paddingLeft="5dp"
@@ -41,17 +41,17 @@
             android:gravity="center_vertical"
             android:textColor="@color/tv_combination_gray"
             android:textSize="12sp"
-            android:text="@string/stock_title_percent" />-->
+            android:text="@string/hangqing_tv_three" />-->
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.46"
-            android:gravity="center_vertical"
-            android:textColor="@color/tv_combination_gray"
-            android:textSize="12sp"
-            android:text="国内"
-            />
+        <!--<TextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="0.46"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:textColor="@color/tv_combination_gray"-->
+            <!--android:textSize="12sp"-->
+            <!--android:text="国内"-->
+            <!--/>-->
     </LinearLayout>
     <View
         android:layout_width="match_parent"

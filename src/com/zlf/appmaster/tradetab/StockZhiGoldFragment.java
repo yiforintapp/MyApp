@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/8/15.
  */
-public class StockQiLuFragment extends BaseFragment {
+public class StockZhiGoldFragment extends BaseFragment {
     private static final String TAG = StockIndexFragment.class.getSimpleName();
     private Context mContext;
     private View mLayout;
@@ -56,7 +56,7 @@ public class StockQiLuFragment extends BaseFragment {
                         .resolveAllIndexJsonObject(data.getJSONArray("indexs"));
                 mIndexData.clear();
                 mIndexData.addAll(stockIndexes);
-
+                mIndexData.add(0,null);
                 List<StockIndex> foreignDelayIndexes = StockIndex
                         .resolveAllIndexJsonObject(data.getJSONArray("slowIndexs"));        // 国外的延迟指数
                 mForeignIndexData.clear();
@@ -98,7 +98,9 @@ public class StockQiLuFragment extends BaseFragment {
                 if(position == 1){
                     return;
                 }
+
                 if (null != item) {
+
                     Class targetClass;
 
                     targetClass = StockIndexDetailActivity.class;
@@ -112,9 +114,8 @@ public class StockQiLuFragment extends BaseFragment {
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_HIGH_INDEX, item.getHighestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_LOW_INDEX, item.getLowestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.QI_LU_INFO_MINUTE_PRONAME);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.QI_LU_INFO_KLINE_PRONAME);
-//                    }
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.JIN_GUI_INFO_MINUTE_PRONAME);
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.JIN_GUI_INFO_KLINE_PRONAME);
                     mActivity.startActivity(intent);
 
                 }
@@ -172,7 +173,7 @@ public class StockQiLuFragment extends BaseFragment {
                 Object[] objectArray = (Object[])object;
                 mIndexData.clear();
                 mIndexData.addAll((List<StockIndex>) objectArray[0]);
-                mIndexData.add(0,null);
+
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
 
                 mProgressBar.setVisibility(View.GONE);
@@ -183,6 +184,7 @@ public class StockQiLuFragment extends BaseFragment {
                     mListView.setVisibility(View.GONE);
                     mEmptyView.setVisibility(View.VISIBLE);
                 }
+
                 onLoaded();
             }
 
@@ -194,7 +196,7 @@ public class StockQiLuFragment extends BaseFragment {
                 mEmptyView.setVisibility(View.VISIBLE);
                 onLoaded();
             }
-        }, Constants.MY_DATA_URL.concat(Constants.QI_LU_INFO_PRONAME));
+        }, Constants.MY_DATA_URL.concat(Constants.ZHI_GOLD_INFO_PRONAME));
 
 
     }
@@ -226,3 +228,4 @@ public class StockQiLuFragment extends BaseFragment {
         initData();
     }
 }
+

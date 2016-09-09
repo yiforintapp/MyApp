@@ -278,4 +278,18 @@
     <string name="code_loading">正在验证...</string>
     <string name="login_loading">正在登录...</string>
 
+    <string name="jump_download">前往下载长江交易宝</string>
+    <string name="about_zlf">关于兆利丰金服</string>
+
+    <string name="hangqing_tv_one">品种</string>
+    <string name="hangqing_tv_two">最新</string>
+    <string name="hangqing_tv_three">涨跌额</string>
+
+    <string name="hangqing_waihui">外汇</string>
+    <string name="hangqing_zhigold">纸黄金</string>
+    <string name="hangqing_shf">上海期货</string>
+
+    <string name="hangqing_lme">LME</string>
+    <string name="hangqing_nymex">NYMEX</string>
+    <string name="hangqing_comex">COMEX</string>
 </resources>

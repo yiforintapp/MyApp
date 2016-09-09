@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/8/15.
  */
-public class StockQiLuFragment extends BaseFragment {
+public class StockWaiHuiFragment extends BaseFragment {
     private static final String TAG = StockIndexFragment.class.getSimpleName();
     private Context mContext;
     private View mLayout;
@@ -98,7 +98,9 @@ public class StockQiLuFragment extends BaseFragment {
                 if(position == 1){
                     return;
                 }
+
                 if (null != item) {
+
                     Class targetClass;
 
                     targetClass = StockIndexDetailActivity.class;
@@ -112,9 +114,8 @@ public class StockQiLuFragment extends BaseFragment {
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_HIGH_INDEX, item.getHighestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_LOW_INDEX, item.getLowestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.QI_LU_INFO_MINUTE_PRONAME);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.QI_LU_INFO_KLINE_PRONAME);
-//                    }
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.JIN_GUI_INFO_MINUTE_PRONAME);
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.JIN_GUI_INFO_KLINE_PRONAME);
                     mActivity.startActivity(intent);
 
                 }
@@ -183,6 +184,7 @@ public class StockQiLuFragment extends BaseFragment {
                     mListView.setVisibility(View.GONE);
                     mEmptyView.setVisibility(View.VISIBLE);
                 }
+
                 onLoaded();
             }
 
@@ -194,7 +196,7 @@ public class StockQiLuFragment extends BaseFragment {
                 mEmptyView.setVisibility(View.VISIBLE);
                 onLoaded();
             }
-        }, Constants.MY_DATA_URL.concat(Constants.QI_LU_INFO_PRONAME));
+        }, Constants.MY_DATA_URL.concat(Constants.WAI_HUI_INFO_PRONAME));
 
 
     }
@@ -226,3 +228,4 @@ public class StockQiLuFragment extends BaseFragment {
         initData();
     }
 }
+

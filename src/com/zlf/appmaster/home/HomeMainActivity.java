@@ -41,7 +41,7 @@ import java.util.List;
  */
 public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    public static final int CHECKUPDATE = 2;
+    public static final int CHECKUPDATE = 1;
 
     private MyViewPager mViewPager;
     private RelativeLayout mHomeTab;
@@ -142,12 +142,12 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private List<MenuItem> getMenuItems() {
         List<MenuItem> listItems = new ArrayList<MenuItem>();
         Resources resources = AppMasterApplication.getInstance().getResources();
-        /* 亲给个好评 */
-        listItems.add(new MenuItem(resources.getString(R.string.app_name),
+        /* 关于兆利丰 */
+        listItems.add(new MenuItem(resources.getString(R.string.about_zlf),
                 R.drawable.menu_hot_icon, false));
         /* 点个赞 */
-        listItems.add(new MenuItem(resources.getString(R.string.accelerate),
-                R.drawable.menu_join_icon, false));
+//        listItems.add(new MenuItem(resources.getString(R.string.accelerate),
+//                R.drawable.menu_join_icon, false));
         /* 检查升级 */
         listItems.add(new MenuItem(resources.getString(R.string.update_date),
                 R.drawable.menu_updates_icon, false));
@@ -345,7 +345,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
             case CHECKUPDATE:
                 checkUpdate();
                 break;
-            case 1:
+            case 0:
                 Intent intent = new Intent(HomeMainActivity.this,testWebViewActivity.class);
                 startActivity(intent);
                 break;
