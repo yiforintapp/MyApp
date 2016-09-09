@@ -114,8 +114,8 @@ public class StockWaiHuiFragment extends BaseFragment {
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_HIGH_INDEX, item.getHighestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_LOW_INDEX, item.getLowestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.JIN_GUI_INFO_MINUTE_PRONAME);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.JIN_GUI_INFO_KLINE_PRONAME);
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.WAI_HUI_INFO_MINUTE_PRONAME);
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.WAI_HUI_INFO_KLINE_PRONAME);
                     mActivity.startActivity(intent);
 
                 }

@@ -114,7 +114,6 @@ public class StockQiLuFragment extends BaseFragment {
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.QI_LU_INFO_MINUTE_PRONAME);
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.QI_LU_INFO_KLINE_PRONAME);
-//                    }
                     mActivity.startActivity(intent);
 
                 }

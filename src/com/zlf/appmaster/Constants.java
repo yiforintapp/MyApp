@@ -251,8 +251,22 @@ public class Constants {
 
     public static final String JIN_GUI_INFO_MINUTE_PRONAME = "changjiang_detils";
     public static final String QI_LU_INFO_MINUTE_PRONAME = "gold_detils";
+    public static final String WAI_HUI_INFO_MINUTE_PRONAME = "waihui_detils";
+    public static final String ZHI_GOLD_INFO_MINUTE_PRONAME = "zhigold_detils";
+    public static final String SHF_INFO_MINUTE_PRONAME = "shf_detils";
+    public static final String LME_INFO_MINUTE_PRONAME = "lme_detils";
+    public static final String NYMEX_INFO_MINUTE_PRONAME = "nymex_detils";
+    public static final String COMEX_INFO_MINUTE_PRONAME = "comex_detils";
+
     public static final String JIN_GUI_INFO_KLINE_PRONAME = "changjiang_detils_k";
     public static final String QI_LU_INFO_KLINE_PRONAME = "gold_detils_k";
+    public static final String WAI_HUI_INFO_KLINE_PRONAME = "waihui_detils_k";
+    public static final String ZHI_GOLD_INFO_KLINE_PRONAME = "zhigold_detils_k";
+    public static final String SHF_INFO_KLINE_PRONAME = "shf_detils_k";
+    public static final String LME_INFO_KLINE_PRONAME = "lme_detils_k";
+    public static final String NYMEX_INFO_KLINE_PRONAME = "nymex_detils_k";
+    public static final String COMEX_INFO_KLINE_PRONAME = "comex_detils_k";
+
 
     public static final String ZHI_BO_ADDRESS = "http://sp2.18zhibo.com/d9067d28-41f6-4bad-a4ca-c43a88b617b6/stream.m3u8";
 

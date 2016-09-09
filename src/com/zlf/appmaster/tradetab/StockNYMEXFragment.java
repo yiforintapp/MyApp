@@ -114,8 +114,8 @@ public class StockNYMEXFragment extends BaseFragment {
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_HIGH_INDEX, item.getHighestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_LOW_INDEX, item.getLowestIndex());
                     intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.JIN_GUI_INFO_MINUTE_PRONAME);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.JIN_GUI_INFO_KLINE_PRONAME);
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.NYMEX_INFO_MINUTE_PRONAME);
+                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.NYMEX_INFO_KLINE_PRONAME);
                     mActivity.startActivity(intent);
 
                 }
@@ -173,7 +173,7 @@ public class StockNYMEXFragment extends BaseFragment {
                 Object[] objectArray = (Object[])object;
                 mIndexData.clear();
                 mIndexData.addAll((List<StockIndex>) objectArray[0]);
-
+                mIndexData.add(0,null);
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
 
                 mProgressBar.setVisibility(View.GONE);
