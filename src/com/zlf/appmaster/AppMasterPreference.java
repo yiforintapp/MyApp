@@ -97,6 +97,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public static final String PREF_FOREGROUND_SCORE = "foreground_score";
 
+    //跳转长江联合
+    public static final String PREF_CJLH_GET_TIME = "cjlh_get_time";
+    public static final String PREF_CJLH_PCK_NAME = "cjlh_pck_name";
+    public static final String PREF_CJLH_DOWNLOAD_URL = "cjlh_download_url";
 
 
     public static final String PREF_UNLOCK_SUCCESS_TIP_RANDOM = "unlock_success_tip_random";

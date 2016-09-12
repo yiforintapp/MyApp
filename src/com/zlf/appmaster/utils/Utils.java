@@ -220,16 +220,23 @@ public class Utils {
        /*
         * 启动一个app
         */
-    public static void startAPP(String appPackageName,Context mContext){
+    public static void startAPP(String appPackageName,Context mContext,String downloadUrl){
         try{
+            if(Utilities.isEmpty(appPackageName)){
+                appPackageName = Constants.CJLH_PACKAGENAME;
+            }
             Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(appPackageName);
             mContext.startActivity(intent);
         }catch(Exception e){
             Toast.makeText(mContext, mContext.getString(R.string.jump_download), Toast.LENGTH_LONG).show();
 
+            if(Utilities.isEmpty(downloadUrl)){
+                downloadUrl = Constants.CJLH_DOWNLOAD_URL;
+            }
+
             Intent intent = new Intent();
             intent.setAction("android.intent.action.VIEW");
-            Uri content_url = Uri.parse(Constants.CJLH_DOWNLOAD_URL);
+            Uri content_url = Uri.parse(downloadUrl);
             intent.setData(content_url);
             mContext.startActivity(intent);
 
