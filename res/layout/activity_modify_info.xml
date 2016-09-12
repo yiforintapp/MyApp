@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/login_bg"
+    android:layout_height="match_parent">
+
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/modify_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_radius_btn_shape"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/modify_user_name"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </com.zlf.appmaster.ui.RippleView>
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/modify_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_radius_btn_shape"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="@string/modify_pwd"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </com.zlf.appmaster.ui.RippleView>
+
+</LinearLayout>
