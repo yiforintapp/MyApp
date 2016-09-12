@@ -279,6 +279,7 @@ public class Constants {
     public static final String LOGIN_ADDRESS= "http://120.24.14.76:1688/work?proname=";
     public static final String LOGIN_TAG= "applogin&";
     public static final String REGISTER_TAG = "register&";
+    public static final String RESET_NAME_TAG = "reset_nic&";
     public static final String RESET_TAG = "reset&";
     public static final String KEY_TAG = "zlfmaster";
 

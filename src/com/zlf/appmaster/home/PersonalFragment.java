@@ -52,9 +52,15 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
 
     private void setListener() {
         mLogin.setOnClickListener(this);
-        mModify.setOnClickListener(this);
-        mMessage.setOnClickListener(this);
-        mSetting.setOnClickListener(this);
+        mModify.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, InfoModifyActivity.class);
+                mActivity.startActivity(intent);
+            }
+        });
+        mMessage.setRippleViewOnClickLinstener(this);
+        mSetting.setRippleViewOnClickLinstener(this);
     }
 
     @Override
@@ -68,11 +74,13 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         if (!TextUtils.isEmpty(userName)) {
             mClickLogin.setText(userName);
             mLoginIv.setVisibility(View.GONE);
-            mModify.setVisibility(View.GONE);
+            mModify.setVisibility(View.VISIBLE);
+            mLogin.setOnClickListener(null);
         } else {
             mClickLogin.setText(getResources().getString(R.string.click_login));
             mLoginIv.setVisibility(View.VISIBLE);
-            mModify.setVisibility(View.VISIBLE);
+            mModify.setVisibility(View.GONE);
+            mLogin.setOnClickListener(this);
         }
     }
 
@@ -83,14 +91,6 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             case R.id.login:
                 intent = new Intent(mActivity, LoginActivity.class);
                 mActivity.startActivity(intent);
-                break;
-            case R.id.modify:
-                intent = new Intent(mActivity, InfoModifyActivity.class);
-                mActivity.startActivity(intent);
-                break;
-            case R.id.message:
-                break;
-            case R.id.setting:
                 break;
         }
     }

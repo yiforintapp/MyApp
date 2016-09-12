@@ -55,7 +55,7 @@ public class LoginHttpUtil {
             StringUrl.append("&")
                     .append(LoginUser.USERNAME)
                     .append("=")
-                    .append(new String(userName.getBytes(), encode));
+                    .append(URLEncoder.encode(userName, encode));
         }
 
         new Thread(new Runnable() {

@@ -50,6 +50,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public static final String SUCCESS = "OK"; // 成功
     public static final String SAME = "SAME"; // 已注册
     public static final String NONUM = "NONUM"; // 未注册
+    public static final String ERROR = "ERROR"; // 出错
     private int mMessageTag;
 
     private EditText mUserEt;
@@ -134,7 +135,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     activity.mNewPasswordEt.getText().clear();
                     activity.startPhoneAnim();
                 } else {
-                    result = msg.obj.toString();
+                    result = activity.getResources().getString(R.string.login_error);
                 }
             }
             Toast.makeText(activity, result, Toast.LENGTH_SHORT).show();
@@ -300,7 +301,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             mProgressBarShow = true;
             // 发送请求
             LoginHttpUtil.sendHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
-                    mUserEt.getText().toString(), mPasswordEt.getText().toString(), mUserNameEt.getText().toString(),  new HttpCallBackListener() {
+                    mUserEt.getText().toString().trim(), mPasswordEt.getText().toString().trim(), mUserNameEt.getText().toString().trim(),  new HttpCallBackListener() {
                         @Override
                         public void onFinish(String response) {
                             if (mProgressBarShow) {
@@ -541,8 +542,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         @Override
                         public void run() {
                             //输出result内容，查看返回值，成功为success，错误为error，详见该文档起始注释
-                            if ("success".equals(result)) {
-                                mUserEt.setEnabled(true);
+                            if (result.contains("success")) {
+
+                                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mUserEt.setEnabled(true);
+                                        stopTimer();
+                                    }
+                                }, 2000);
                             } else {
                                 stopTimer();
                             }
@@ -550,6 +558,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     });
 
                 } catch (Exception e) {
+                    stopTimer();
                     e.printStackTrace();
                 }
             }
@@ -659,10 +668,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void validateCode() {
-//        if (TextUtils.isEmpty(mCode)) {
-//           showToast(getResources().getString(R.string.login_code_error));
-//           return;
-//        }
+        if (TextUtils.isEmpty(mCode)) {
+           showToast(getResources().getString(R.string.login_code_error));
+           return;
+        }
         final String code = mCodeEt.getText().toString();
         String phoneNum = mUserEt.getText().toString();
 //        progressDialog.setTitle("正在验证...");
@@ -678,12 +687,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 if (mDialog != null && mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
-//                if (!mCode.equals(code)) {
-//                    mCodeEt.getText().clear();
-//                    showToast(getResources().getString(R.string.login_code_error));
-//                } else {
+                if (!mCode.equals(code)) {
+                    mCodeEt.getText().clear();
+                    showToast(getResources().getString(R.string.login_code_error));
+                } else {
                     showPwdLayout();
-//                }
+                }
             }
         }, 1000);
     }
@@ -739,6 +748,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 showToast(getResources().getString(
                         R.string.login_pwd_unlocal));
 
+                return false;
+            }
+
+            if (!password.equals(newPassword)) {
+                showToast(getResources().getString(
+                        R.string.error_same_pwd));
                 return false;
             }
         } else if (mFromRegister && !isUserNameValidate()) {

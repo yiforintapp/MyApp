@@ -21,7 +21,7 @@ public class CommonSettingItem extends RelativeLayout {
     private TextView mTvTitle;
     private TextView mTvSummary;
     private RelativeLayout mRlIconParent;
-    private RelativeLayout mRvMain;
+    private RippleView mRvMain;
     private ImageView mIvIcon;
     private RelativeLayout mRlTextContent;
     private ImageView mIvArrow;
@@ -54,7 +54,7 @@ public class CommonSettingItem extends RelativeLayout {
         mTvSummary = (TextView) findViewById(R.id.tv_summary);
         mIvArrow = (ImageView) findViewById(R.id.iv_arrow);
         mRlIconParent = (RelativeLayout) findViewById(R.id.rl_content_tip);
-        mRvMain = (RelativeLayout) findViewById(R.id.rv_main);
+        mRvMain = (RippleView) findViewById(R.id.rl_wifi_content);
         mIvIcon = (ImageView) findViewById(R.id.iv_icon);
         mRlTextContent = (RelativeLayout) findViewById(R.id.rl_text_content);
     }

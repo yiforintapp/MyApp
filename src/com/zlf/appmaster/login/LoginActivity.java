@@ -78,6 +78,8 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                 Toast.makeText(activity, result, Toast.LENGTH_SHORT).show();
             } else {
                 result = msg.obj.toString();
+                LeoSettings.setString(PrefConst.USER_PHONE, activity.mUserEt.getText().toString().trim());
+                LeoSettings.setString(PrefConst.USER_PWD, activity.mPasswordEt.getText().toString().trim());
                 LeoSettings.setString(PrefConst.USER_NAME, result);
                 LeoSettings.setLong(PrefConst.LAST_LOGIN_TIME, System.currentTimeMillis());
                 activity.finish();
@@ -202,7 +204,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         try {
             // 发送请求
             LoginHttpUtil.sendHttpRequest(this, Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
-                    mUserEt.getText().toString(), mPasswordEt.getText().toString(), "",  new HttpCallBackListener() {
+                    mUserEt.getText().toString().trim(), mPasswordEt.getText().toString().trim(), "",  new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response) {
                     if (mProgressBarShow) {
@@ -224,7 +226,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                             mDialog.dismiss();
                         }
                         Message message = new Message();
-                        message.obj = e.toString();
+                        message.obj = ERROR;
                         if (mHandler != null) {
                             mHandler.sendMessage(message);
                         }

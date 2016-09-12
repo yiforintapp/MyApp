@@ -84,6 +84,8 @@ public class PrefConst {
 
     public static final String KEY_HOME_MORE_TIP ="home_more_tip";
 
+    public static final String USER_PHONE = "user_phone"; // 用户手机号
+    public static final String USER_PWD = "user_pwd"; // 用户密码
     public static final String USER_NAME = "user_name"; // 用户昵称  为空证明未登录
     public static final String LAST_LOGIN_TIME = "last_login_time"; // 上次登录时间
 

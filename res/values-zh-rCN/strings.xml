@@ -2,8 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">兆利丰金服</string>
-    <string name="makesure">确认</string>
-    <string name="cancel">取消</string>
 
     <string name="action_settings">设置</string>
 

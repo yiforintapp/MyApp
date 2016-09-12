@@ -52,6 +52,7 @@
                 android:layout_toRightOf="@+id/user_iv"
                 android:background="@null"
                 android:hint="@string/login_user_hint"
+                android:maxLength="20"
                 android:textColor="@color/black"
                 android:textColorHint="@color/login_hint"
                 android:textSize="15sp" />
