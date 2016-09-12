@@ -87,4 +87,8 @@ public class PrefConst {
     public static final String USER_NAME = "user_name"; // 用户昵称  为空证明未登录
     public static final String LAST_LOGIN_TIME = "last_login_time"; // 上次登录时间
 
+    //跳转长江联合
+    public static final String KEY_CJLH_GET_TIME = "cjlh_get_time";
+    public static final String KEY_CJLH_PCK_NAME = "cjlh_pck_name";
+    public static final String KEY_CJLH_DOWNLOAD_URL = "cjlh_download_url";
 }

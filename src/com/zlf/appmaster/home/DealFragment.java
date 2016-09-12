@@ -12,9 +12,11 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.client.StringPostRequest;
+import com.zlf.appmaster.db.ISettings;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.QLog;
 import com.zlf.appmaster.utils.Utilities;
 import com.zlf.appmaster.utils.Utils;
@@ -47,15 +49,15 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void getSp() {
-        long mm = LeoSettings.getLong(AppMasterPreference.PREF_CJLH_GET_TIME, 0);
+        long mm = LeoSettings.getLong(PrefConst.KEY_CJLH_GET_TIME, 0);
         long now = System.currentTimeMillis();
         LeoLog.d(TAG, "mm : " + mm + " , now : " + now);
         if (now - mm > TWO_DAY) {
             getPckNameAndUrl();
-            LeoSettings.setLong(AppMasterPreference.PREF_CJLH_GET_TIME,now);
+            LeoSettings.setLong(PrefConst.KEY_CJLH_GET_TIME,now);
         } else {
-            mPackageName = LeoSettings.getString(AppMasterPreference.PREF_CJLH_PCK_NAME,Constants.CJLH_PACKAGENAME);
-            mDownloadUrl = LeoSettings.getString(AppMasterPreference.PREF_CJLH_DOWNLOAD_URL,Constants.CJLH_DOWNLOAD_URL);
+            mPackageName = LeoSettings.getString(PrefConst.KEY_CJLH_PCK_NAME,Constants.CJLH_PACKAGENAME);
+            mDownloadUrl = LeoSettings.getString(PrefConst.KEY_CJLH_DOWNLOAD_URL,Constants.CJLH_DOWNLOAD_URL);
             LeoLog.d(TAG, "mPackageName : " + mPackageName + " , mDownloadUrl : " + mDownloadUrl);
         }
     }
@@ -74,11 +76,11 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
                 mPackageName = strings[0];
                 mDownloadUrl = strings[1];
                 if(!Utilities.isEmpty(mPackageName)){
-                    LeoSettings.setString(AppMasterPreference.PREF_CJLH_PCK_NAME,mPackageName);
+                    LeoSettings.setString(PrefConst.KEY_CJLH_PCK_NAME,mPackageName);
                 }
 
                 if(!Utilities.isEmpty(mDownloadUrl)){
-                    LeoSettings.setString(AppMasterPreference.PREF_CJLH_DOWNLOAD_URL,mDownloadUrl);
+                    LeoSettings.setString(PrefConst.KEY_CJLH_DOWNLOAD_URL,mDownloadUrl);
                 }
             }
 

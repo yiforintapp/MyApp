@@ -62,6 +62,9 @@ public abstract class ISettings {
             PrefConst.KEY_VID_COMSUMED,
             PrefConst.KEY_ACTIVITY_TS,
             PrefConst.KEY_ACTIVITY_TIMES,
+            PrefConst.KEY_CJLH_DOWNLOAD_URL,
+            PrefConst.KEY_CJLH_GET_TIME,
+            PrefConst.KEY_CJLH_PCK_NAME
     };
     static Map<String, String> sGroupHigh = null;
 
