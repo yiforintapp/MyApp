@@ -295,4 +295,7 @@
     <string name="hangqing_lme">LME</string>
     <string name="hangqing_nymex">NYMEX</string>
     <string name="hangqing_comex">COMEX</string>
+
+    <string name="modify_user_name">修改昵称</string>
+    <string name="modify_pwd">修改密码</string>
 </resources>

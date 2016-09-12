@@ -140,14 +140,14 @@
             android:exported="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
-            android:taskAffinity="com.leo.appmaster.proxy"
+            android:taskAffinity="com.zlf.appmaster.proxy"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".home.HomeMainActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home"
+            android:taskAffinity="com.zlf.appmaster.home"
             android:theme="@style/activity_theme"></activity>
 
         <activity
@@ -158,6 +158,12 @@
 
         <activity
             android:name=".login.RegisterActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".login.InfoModifyActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
@@ -240,7 +246,7 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home"
+            android:taskAffinity="com.zlf.appmaster.home"
             android:theme="@style/activity_theme" />
         <activity
             android:name=".msgcenter.MsgCenterBrowserActivity"
@@ -253,7 +259,7 @@
             android:exported="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
-            android:taskAffinity="com.leo.appmaster.proxy"
+            android:taskAffinity="com.zlf.appmaster.proxy"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -262,7 +268,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="com.leo.appmaster"
+                    android:host="com.zlf.appmaster"
                     android:scheme="privacyguard" />
             </intent-filter>
             <intent-filter>
@@ -272,7 +278,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data
-                    android:host="leomaster.com"
+                    android:host="zlf.com"
                     android:scheme="http" />
             </intent-filter>
         </activity>

@@ -365,7 +365,9 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
                 @Override
                 public void onDataFinish(Object object) {
                     mMinuteDataList = new ArrayList<StockMinutes>();
-                    mMinuteDataList.addAll((ArrayList<StockMinutes>)object);
+                    if (object != null && ((ArrayList<StockMinutes>)object).size() > 0) {
+                        mMinuteDataList.addAll((ArrayList<StockMinutes>) object);
+                    }
                     if (mMinuteDataList == null || mMinuteDataList.size() == 0) {
                         //没有获取到数据
                         listener.onError();
@@ -441,7 +443,9 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
                 @Override
                 public void onDataFinish(Object object) {
                     ArrayList<StockKLine> dataArrayList = new ArrayList<StockKLine>();
-                    dataArrayList.addAll((ArrayList<StockKLine>)object);
+                    if (object != null && ((ArrayList<StockKLine>)object).size() > 0) {
+                        dataArrayList.addAll((ArrayList<StockKLine>) object);
+                    }
                     if (dataArrayList == null || dataArrayList.size() == 0) {
                         //没有获取到K线数据
                         listener.onError();

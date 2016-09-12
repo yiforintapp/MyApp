@@ -112,22 +112,9 @@
 
 
             <com.zlf.appmaster.ui.CommonSettingItem
-                android:id="@+id/user"
+                android:id="@+id/modify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
-
-            <com.zlf.appmaster.ui.CommonSettingItem
-                android:id="@+id/vip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-
-            <com.zlf.appmaster.ui.CommonSettingItem
-                android:id="@+id/client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:visibility="gone"/>
 
 
