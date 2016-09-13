@@ -237,6 +237,7 @@
     <string name="login_error">登录出错</string>
     <string name="reset_error">修改出错</string>
 
+    <string name="main_tab_home_real">首页</string>
     <string name="main_tab_home">行情</string>
     <string name="main_tab_trade">交易</string>
     <string name="main_tab_info">资讯</string>

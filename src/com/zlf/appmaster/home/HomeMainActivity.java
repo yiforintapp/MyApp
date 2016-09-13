@@ -44,21 +44,25 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     public static final int CHECKUPDATE = 1;
 
     private MyViewPager mViewPager;
+    private RelativeLayout mHomeTabReal;
     private RelativeLayout mHomeTab;
     private RelativeLayout mUserTab;
     private RelativeLayout mTradeTab;
     private RelativeLayout mPersonalTab;
 
+    private ImageView mHomeTabIvReal;
     private ImageView mHomeTabIv;
     private ImageView mUserTabIv;
     private ImageView mTradeIv;
     private ImageView mPersonalIv;
 
+    private TextView mHomeTabTvReal;
     private TextView mHomeTabTv;
     private TextView mUserTabTv;
     private TextView mTradeTv;
     private TextView mPersonalTv;
 
+    private HomeTabFragment mHomeTabFragment;
     private TradeTabFragment mTradeTabFragment;
     private UserTabFragment mUserTabFragment;
 //    private StockFavoriteFragment mStockFavoriteFragment;
@@ -71,7 +75,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 //    private List<MenuItem> mMenuItems;
 //    private MenuAdapter mMenuAdapter;
     private TextView mCenterTitle;
-    private HomeFragmentHolder[] mFragmentHolders = new HomeFragmentHolder[4];
+    private HomeFragmentHolder[] mFragmentHolders = new HomeFragmentHolder[5];
 
     private int mIndex = 0;
 
@@ -89,6 +93,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private void init() {
         mViewPager = (MyViewPager) findViewById(R.id.home_ViewPager);
 
+        mHomeTabReal = (RelativeLayout) findViewById(R.id.home_tab_real);
         mHomeTab = (RelativeLayout) findViewById(R.id.home_tab);
         mUserTab = (RelativeLayout) findViewById(R.id.user_tab);
         mTradeTab = (RelativeLayout) findViewById(R.id.trade_tab);
@@ -96,16 +101,19 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 
         //test something
 
+        mHomeTabIvReal = (ImageView) findViewById(R.id.home_iv_real);
         mHomeTabIv = (ImageView) findViewById(R.id.home_iv);
         mUserTabIv = (ImageView) findViewById(R.id.user_iv);
         mTradeIv = (ImageView) findViewById(R.id.trade_iv);
         mPersonalIv = (ImageView) findViewById(R.id.personal_iv);
 
+        mHomeTabTvReal = (TextView) findViewById(R.id.home_tv_real);
         mHomeTabTv = (TextView) findViewById(R.id.home_tv);
         mUserTabTv = (TextView) findViewById(R.id.user_tv);
         mTradeTv = (TextView) findViewById(R.id.trade_tv);
         mPersonalTv = (TextView) findViewById(R.id.personal_tv);
-        mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
+
+        mHomeTabTvReal.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
 
         mOneRipple = (RippleView) findViewById(R.id.home_tab);
 
@@ -156,6 +164,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 //    }
 
     private void setLister() {
+        mHomeTabReal.setOnClickListener(this);
         mHomeTab.setOnClickListener(this);
         mUserTab.setOnClickListener(this);
         mTradeTab.setOnClickListener(this);
@@ -179,31 +188,38 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private void changeTabBg(int position) {
         switch (position) {
             case 0:
+                mHomeTabTvReal.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
+                mHomeTabIvReal.setImageResource(R.drawable.icon_service_pre);
+                changeUnSelectBg(mIndex);
+                mIndex = 0;
+                mCenterTitle.setText(getResources().getString(R.string.main_tab_home_real));
+                break;
+            case 1:
                 mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mHomeTabIv.setImageResource(R.drawable.icon_price_pre);
                 changeUnSelectBg(mIndex);
-                mIndex = 0;
+                mIndex = 1;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_home));
                 break;
-            case 1:
+            case 2:
                 mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mUserTabIv.setImageResource(R.drawable.icon_trade_pre);
                 changeUnSelectBg(mIndex);
-                mIndex = 1;
+                mIndex = 2;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_trade));
                 break;
-            case 2:
+            case 3:
                 mTradeTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mTradeIv.setImageResource(R.drawable.icon_news_pre);
                 changeUnSelectBg(mIndex);
-                mIndex = 2;
+                mIndex = 3;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_info));
                 break;
-            case 3:
+            case 4:
                 mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mPersonalIv.setImageResource(R.drawable.icon_personal_pre);
                 changeUnSelectBg(mIndex);
-                mIndex = 3;
+                mIndex = 4;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_personal));
                 break;
         }
@@ -213,18 +229,21 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private void changeUnSelectBg(int position) {
         switch (position) {
             case 0:
+                mHomeTabTvReal.setTextColor(getResources().getColor(R.color.indicator_text_color));
+                mHomeTabIvReal.setImageResource(R.drawable.icon_service_nor);
+            case 1:
                 mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
                 break;
-            case 1:
+            case 2:
                 mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mUserTabIv.setImageResource(R.drawable.icon_trade_nor);
                 break;
-            case 2:
+            case 3:
                 mTradeTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mTradeIv.setImageResource(R.drawable.icon_news_nor);
                 break;
-            case 3:
+            case 4:
                 mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mPersonalIv.setImageResource(R.drawable.icon_personal_nor);
                 break;
@@ -237,28 +256,35 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
      */
     private void initFragment() {
         HomeFragmentHolder holder = new HomeFragmentHolder();
+        holder.title = getResources().getString(R.string.main_tab_home_real);
+        mHomeTabFragment = new HomeTabFragment();
+        holder.fragment = mHomeTabFragment;
+        mFragmentHolders[0] = holder;
+
+
+        holder = new HomeFragmentHolder();
         holder.title = getResources().getString(R.string.main_tab_home);
         mTradeTabFragment = new TradeTabFragment();
         holder.fragment = mTradeTabFragment;
-        mFragmentHolders[0] = holder;
+        mFragmentHolders[1] = holder;
 
         holder = new HomeFragmentHolder();
         holder.title = getResources().getString(R.string.main_tab_trade);
         mDealFragment = new DealFragment();
         holder.fragment = mDealFragment;
-        mFragmentHolders[1] = holder;
+        mFragmentHolders[2] = holder;
 
         holder = new HomeFragmentHolder();
         holder.title = getResources().getString(R.string.main_tab_info);
         mUserTabFragment = new UserTabFragment();
         holder.fragment = mUserTabFragment;
-        mFragmentHolders[2] = holder;
+        mFragmentHolders[3] = holder;
 
         holder = new HomeFragmentHolder();
         holder.title = getResources().getString(R.string.main_tab_personal);
         mPersonalFragment = new PersonalFragment();
         holder.fragment = mPersonalFragment;
-        mFragmentHolders[3] = holder;
+        mFragmentHolders[4] = holder;
 
         // AM-614, remove cached fragments
         FragmentManager fm = getSupportFragmentManager();
@@ -305,33 +331,40 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.home_tab:
-                if (mIndex == 0) {
+            case R.id.home_tab_real:
+                if(mIndex == 0){
                     return;
                 }
                 mViewPager.setCurrentItem(0);
                 changeTabBg(0);
                 break;
-            case R.id.user_tab:
+            case R.id.home_tab:
                 if (mIndex == 1) {
                     return;
                 }
                 mViewPager.setCurrentItem(1);
                 changeTabBg(1);
                 break;
-            case R.id.trade_tab:
+            case R.id.user_tab:
                 if (mIndex == 2) {
                     return;
                 }
                 mViewPager.setCurrentItem(2);
                 changeTabBg(2);
                 break;
-            case R.id.personal_tab:
+            case R.id.trade_tab:
                 if (mIndex == 3) {
                     return;
                 }
                 mViewPager.setCurrentItem(3);
                 changeTabBg(3);
+                break;
+            case R.id.personal_tab:
+                if (mIndex == 4) {
+                    return;
+                }
+                mViewPager.setCurrentItem(4);
+                changeTabBg(4);
         }
     }
 
