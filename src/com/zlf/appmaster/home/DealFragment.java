@@ -1,5 +1,6 @@
 package com.zlf.appmaster.home;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import com.zlf.appmaster.client.StringPostRequest;
 import com.zlf.appmaster.db.ISettings;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.login.FeedbackActivity;
+import com.zlf.appmaster.login.RegisterActivity;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.QLog;
@@ -107,7 +110,9 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_changjiang:
-                jumpToCJLH();
+                Intent intent = new Intent(mActivity, FeedbackActivity.class);
+                startActivity(intent);
+//                jumpToCJLH();
                 break;
         }
     }

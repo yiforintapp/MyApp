@@ -9,8 +9,6 @@
     android:gravity="center"
     android:padding="10dp">
 
-
-
     <com.handmark.pulltorefresh.library.xlistview.CircularProgressView
         android:id="@+id/xlistview_footer_progressbar"
         android:layout_width="40dp"
@@ -29,6 +27,7 @@
         android:id="@+id/loading_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/indicator_text_select_color"
         android:text="@string/login_loading" />
 
 

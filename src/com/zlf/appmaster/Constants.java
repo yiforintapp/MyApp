@@ -291,4 +291,7 @@ public class Constants {
     public static final String CJLH_PACKAGENAME = "com.zscfappview.cjlh";
     public static final String CJLH_DOWNLOAD_URL = "http://res.cjmex.cn:8088/uploads/20151211/CJJYB_Android.apk";
 
+    public static final String FEEDBACK_TYPE = "proname";
+    public static final String FEEDBACK_CONTENT = "feedback_content";
+    public static final String FEEDBACK_CONTACT = "feedback_contact";
 }

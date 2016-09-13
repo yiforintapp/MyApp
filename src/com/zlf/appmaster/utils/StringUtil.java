@@ -282,7 +282,6 @@ public class StringUtil {
 	/**
 	 * 功能描述：判断输入的字符串是否符合Email样式.
 	 * 
-	 * @param str
 	 *            传入的字符串
 	 * @return 是Email样式返回true,否则返回false
 	 */
@@ -797,5 +796,17 @@ public class StringUtil {
 		return isValid;
 	}
 
+	public static boolean isNoChinese(String text) {
+
+		boolean isValid = false;
+		String expression = "^[^\\u4e00-\\u9fa5]{0,}$";
+		CharSequence inputStr = text;
+		Pattern pattern = Pattern.compile(expression);
+		Matcher matcher = pattern.matcher(inputStr);
+		if (matcher.matches()) {
+			isValid = true;
+		}
+		return isValid;
+	}
 
 }

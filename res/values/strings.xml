@@ -279,10 +279,10 @@
     <string name="global_gold">国际黄金</string>
     <string name="click_login">点击登录</string>
     <string name="login_name">输入昵称，不支持特殊字符</string>
-    <string name="code_loading">正在验证...</string>
-    <string name="login_loading">正在登录...</string>
-    <string name="register_loading">正在注册...</string>
-    <string name="modify_loading">正在修改...</string>
+    <string name="register_loading">正在注册&#8230;</string>
+    <string name="modify_loading">正在修改&#8230;</string>
+    <string name="code_loading">正在验证&#8230;</string>
+    <string name="login_loading">正在登录&#8230;</string>
 
     <string name="jump_download">前往下载长江交易宝</string>
     <string name="about_zlf">关于兆利丰金服</string>
@@ -301,6 +301,21 @@
 
     <string name="modify_user_name">修改昵称</string>
     <string name="modify_pwd">修改密码</string>
+
+    <string name="fb_toolbar">意见反馈</string>
+    <string name="feedback_ed">请输入您的反馈意见（字数300字内）</string>
+    <string name="feedback_tv">联系方式</string>
+    <string name="feedback_ed_2">请输入QQ，邮箱或者手机</string>
+    <string name="feedback_tv_2">您的联系方式将有利于我们沟通和解决问题</string>
+    <string name="feedback_tv_3">提交</string>
+    <string name="feedback_ed_3">请输入有效的联系方式</string>
+    <string name="feedback_dialog">正在提交&#8230;</string>
+    <string name="feedback_upload_done">提交成功！</string>
+    <string name="feedback_upload_err">网络不太好，请稍后再试</string>
+    <string name="feedback_submit_too_much">您提交的太频繁了&#8230;</string>
+
+    <string name="feedback_toast_1">请输入您的反馈意见</string>
+
     <string name="modify_old_pwd">输入旧密码</string>
     <string name="input_new_name">输入新昵称</string>
     <string name="error_same_pwd">新密码与确认新密码不一致</string>
