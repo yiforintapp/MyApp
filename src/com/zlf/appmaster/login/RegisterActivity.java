@@ -547,7 +547,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mUserEt.setEnabled(true);
                                         stopTimer();
                                     }
                                 }, 2000);

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/login_bg"
     android:orientation="vertical">
 
+    <com.zlf.appmaster.ui.ExpandableLayout
+        android:id="@+id/expandablelayout_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/modify_user_name"
@@ -16,6 +21,7 @@
         app:rippleColor="@color/button_gray_ripple"
         app:rippleDuration="250"
         app:rippleHover="true"
+        android:clickable="false"
         app:rippleOverlay="true">
 
         <Button
@@ -36,8 +42,8 @@
         android:id="@+id/old_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:canExpand="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -81,7 +87,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:layout_marginTop="15dp"
             app:rippleColor="@color/button_gray_ripple"
             app:rippleDuration="250"
@@ -106,6 +111,13 @@
 
     </LinearLayout>
 
+    </com.zlf.appmaster.ui.ExpandableLayout>
+
+    <com.zlf.appmaster.ui.ExpandableLayout
+        android:id="@+id/expandablelayout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/modify_pwd"
         android:layout_width="match_parent"
@@ -116,6 +128,7 @@
         app:rippleColor="@color/button_gray_ripple"
         app:rippleDuration="250"
         app:rippleHover="true"
+        android:clickable="false"
         app:rippleOverlay="true">
 
         <Button
@@ -136,7 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:visibility="invisible"
+        app:canExpand="true"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -253,8 +266,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:layout_marginTop="15dp"
             app:rippleColor="@color/button_gray_ripple"
             app:rippleDuration="250"
@@ -277,5 +288,7 @@
         </com.zlf.appmaster.ui.RippleView>
 
     </LinearLayout>
+
+    </com.zlf.appmaster.ui.ExpandableLayout>
 
 </LinearLayout>

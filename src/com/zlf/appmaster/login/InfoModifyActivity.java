@@ -17,6 +17,7 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.home.BaseActivity;
+import com.zlf.appmaster.ui.ExpandableLayout;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.stock.LoginProgressDialog;
 import com.zlf.appmaster.utils.PrefConst;
@@ -67,6 +68,10 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
     public static final String SUCCESS = "OK"; // 成功
     public static final String NONUM = "NONUM"; // 未注册
     public static final String ERROR = "ERROR"; // 出错
+
+    private ExpandableLayout mExpandableTop;
+    private ExpandableLayout mExpandableBottom;
+
 
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
@@ -140,6 +145,9 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
         mQueryNewPwdCloseBtn = (ImageView) findViewById(R.id.new_query_pwd_close_iv);
         mQueryNewPwdBtn = (RippleView) findViewById(R.id.old_pwd_complete);
 
+        mExpandableTop = (ExpandableLayout) findViewById(R.id.expandablelayout_top);
+        mExpandableBottom = (ExpandableLayout) findViewById(R.id.expandablelayout_bottom);
+
     }
 
     private void setListener() {
@@ -156,17 +164,44 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
         mOldPwdEt.addTextChangedListener(this);
         mNewPwdEt.addTextChangedListener(this);
         mQueryNewPwdEt.addTextChangedListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.modify_user_name:
-                showNameOrPwdView(true);
+                if (mHasShow == SHOW_DEFAULT) {
+                    mExpandableTop.toggleExpansion();
+                    mHasShow = SHOW_NAME;
+                } else if (mHasShow == SHOW_NAME) {
+                    mExpandableTop.setExpanded(false);
+                    mHasShow = SHOW_DEFAULT;
+                } else {
+                    mExpandableTop.setExpanded(true);
+                    mExpandableBottom.setExpanded(false);
+                    mHasShow = SHOW_NAME;
+                }
                 break;
             case R.id.modify_pwd:
-                showNameOrPwdView(false);
+                if (mHasShow == SHOW_DEFAULT) {
+                    mExpandableBottom.toggleExpansion();
+                    mHasShow = SHOW_PWD;
+                } else if (mHasShow == SHOW_NAME) {
+                    mExpandableTop.setExpanded(false);
+                    mExpandableBottom.setExpanded(true);
+                    mHasShow = SHOW_PWD;
+                } else {
+                    mExpandableBottom.setExpanded(false);
+                    mHasShow = SHOW_DEFAULT;
+                }
                 break;
+//            case R.id.modify_user_name:
+//                showNameOrPwdView(true);
+//                break;
+//            case R.id.modify_pwd:
+//                showNameOrPwdView(false);
+//                break;
             case R.id.old_name_close_iv:
                 mOldNameEt.getText().clear();
                 break;
@@ -383,7 +418,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                view.setVisibility(View.INVISIBLE);
+                view.setVisibility(View.GONE);
             }
         });
         objectAnimator.setDuration(500);

@@ -198,4 +198,9 @@
         <attr name="cpv_startAngle" format="float" />
     </declare-styleable>
 
+    <declare-styleable name="ExpandableLayout">
+        <attr name="canExpand" format="boolean" />
+        <attr name="startExpanded" format="boolean" />
+    </declare-styleable>
+
 </resources>
