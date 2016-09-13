@@ -106,6 +106,7 @@ public class FeedbackActivity extends BaseFragmentActivity implements View.OnCli
         mFeedback.postDelayed(new Runnable() {
             @Override
             public void run() {
+                //
                 InputMethodManager imm = (InputMethodManager) FeedbackActivity.this
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(mFeedback, InputMethodManager.SHOW_IMPLICIT);
