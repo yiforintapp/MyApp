@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/webView"
+        />
+
     <io.vov.vitamio.widget.VideoView
         android:id="@+id/vitamio_videoView"
         android:layout_width="fill_parent"
@@ -11,6 +17,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"/>
+
 
 </RelativeLayout>

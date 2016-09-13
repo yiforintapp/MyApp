@@ -3,6 +3,7 @@ package com.zlf.appmaster.stocknews;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.webkit.WebView;
 
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
@@ -22,6 +23,9 @@ public class testWebViewActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     private String path;
     private VideoView mVideoView;
+
+    private WebView mWebView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +54,17 @@ public class testWebViewActivity extends BaseActivity {
             }
         });
         mVideoView.start();
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!mVideoView.isPlaying()) {
-                    mVideoView.start();
-                }
-            }
-        }, 1500);
+//        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (!mVideoView.isPlaying()) {
+//                    mVideoView.start();
+//                }
+//            }
+//        }, 1500);
+
+//        mWebView = (WebView) findViewById(R.id.webView);
+//        mWebView.loadUrl("http://vip.zlf1688.com/");
     }
 
     @Override
