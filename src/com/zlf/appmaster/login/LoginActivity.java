@@ -210,6 +210,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                     if (mProgressBarShow) {
                         if (mDialog != null && mDialog.isShowing()) {
                             mDialog.dismiss();
+                            mDialog = null;
                         }
                         Message message = new Message();
                         message.obj = response;
@@ -224,6 +225,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                     if (mProgressBarShow) {
                         if (mDialog != null && mDialog.isShowing()) {
                             mDialog.dismiss();
+                            mDialog = null;
                         }
                         Message message = new Message();
                         message.obj = ERROR;

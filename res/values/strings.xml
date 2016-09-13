@@ -244,7 +244,7 @@
     <string name="main_tab_personal">我的</string>
 
     <string name="code_start_content">您好，您的验证码是：</string>
-    <string name="code_end_content">【兆利丰】</string>
+    <string name="code_end_content">【兆利丰金服】</string>
 
     <string name="nothing_show">暂无数据</string>
     <string name="refresh_text">刷新</string>
@@ -281,6 +281,8 @@
     <string name="login_name">输入昵称，不支持特殊字符</string>
     <string name="code_loading">正在验证...</string>
     <string name="login_loading">正在登录...</string>
+    <string name="register_loading">正在注册...</string>
+    <string name="modify_loading">正在修改...</string>
 
     <string name="jump_download">前往下载长江交易宝</string>
     <string name="about_zlf">关于兆利丰金服</string>

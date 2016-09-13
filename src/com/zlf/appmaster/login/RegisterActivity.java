@@ -279,18 +279,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void register() {
         try {
             String tag;
-            if (mFromRegister) {
-                mMessageTag = REGISTER;
-                tag = Constants.REGISTER_TAG;
-            } else {
-                mMessageTag = RESET;
-                tag = Constants.RESET_TAG;
-            }
             if (mDialog == null) {
                 mDialog = new LoginProgressDialog(this);
             }
+            if (mFromRegister) {
+                mMessageTag = REGISTER;
+                tag = Constants.REGISTER_TAG;
+                mDialog.setLoadingContent(getResources().getString(R.string.register_loading));
+            } else {
+                mMessageTag = RESET;
+                tag = Constants.RESET_TAG;
+                mDialog.setLoadingContent(getResources().getString(R.string.modify_loading));
+            }
             mDialog.setCanceledOnTouchOutside(false);
-            mDialog.setLoadingContent(getResources().getString(R.string.login_loading));
             mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -307,6 +308,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             if (mProgressBarShow) {
                                 if (mDialog != null && mDialog.isShowing()) {
                                     mDialog.dismiss();
+                                    mDialog = null;
                                 }
                                 Message message = new Message();
                                 message.what = mMessageTag;
@@ -507,7 +509,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                 String apikey = "0cdd79dcb62b67efc7a8e6c75942f716";  //apikey秘钥（请登录 http://m.5c.com.cn 短信平台-->账号管理-->我的信息 中复制apikey）
                 getRandomCode();
-                String content = getResources().getString(R.string.code_start_content)
+                               String content = getResources().getString(R.string.code_start_content)
                         + mCode +  getResources().getString(R.string.code_end_content);  //要发送的短信内容，特别注意：签名必须设置，网页验证码应用需要加添加【图形识别码】。
 
                 try {
@@ -685,6 +687,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             public void run() {
                 if (mDialog != null && mDialog.isShowing()) {
                     mDialog.dismiss();
+                    mDialog = null;
                 }
                 if (!mCode.equals(code)) {
                     mCodeEt.getText().clear();

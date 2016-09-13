@@ -128,7 +128,7 @@
         <activity
             android:name=".home.SplashActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home">
+            android:taskAffinity="com.zlf.appmaster.home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

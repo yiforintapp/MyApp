@@ -1,7 +1,8 @@
 package com.zlf.appmaster.model.sync;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.zlf.appmaster.utils.QLog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,7 +72,7 @@ public class SyncResponse {
         }
         else{
             String msg = jsonObject.getString("msg");// 错误描述
-            Log.e(TAG, "同步出错："+ msg);
+            QLog.e(TAG, "同步出错："+ msg);
 
         }
 	}

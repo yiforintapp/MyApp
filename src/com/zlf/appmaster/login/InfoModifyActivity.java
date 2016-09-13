@@ -239,7 +239,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
                 if (!newPassword.equals(queryPassword)) {
                     showToast(getResources().getString(R.string.error_same_pwd));
                 } else {
-                    reset(false);
+                    reset(resetName);
                 }
             }
 
@@ -261,7 +261,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
                 mDialog = new LoginProgressDialog(this);
             }
             mDialog.setCanceledOnTouchOutside(false);
-            mDialog.setLoadingContent(getResources().getString(R.string.login_loading));
+            mDialog.setLoadingContent(getResources().getString(R.string.modify_loading));
             mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
@@ -287,6 +287,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
                             if (mProgressBarShow) {
                                 if (mDialog != null && mDialog.isShowing()) {
                                     mDialog.dismiss();
+                                    mDialog = null;
                                 }
                                 Message message = new Message();
                                 message.what = mMessageTag;
@@ -302,6 +303,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
                             if (mProgressBarShow) {
                                 if (mDialog != null && mDialog.isShowing()) {
                                     mDialog.dismiss();
+                                    mDialog = null;
                                 }
                                 Message message = new Message();
                                 message.what = mMessageTag;

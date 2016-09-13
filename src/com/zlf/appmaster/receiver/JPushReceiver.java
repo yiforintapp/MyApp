@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.zlf.appmaster.utils.QLog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,7 +90,7 @@ public class JPushReceiver extends BroadcastReceiver {
 								myKey + " - " +json.optString(myKey) + "]");
 					}
 				} catch (JSONException e) {
-					Log.e(TAG, "Get message extra JSON error!");
+					QLog.e(TAG, "Get message extra JSON error!");
 				}
 
 			} else {
