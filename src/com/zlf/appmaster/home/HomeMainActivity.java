@@ -179,7 +179,6 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private void changeTabBg(int position) {
         switch (position) {
             case 0:
-
                 mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
                 mHomeTabIv.setImageResource(R.drawable.icon_price_pre);
                 changeUnSelectBg(mIndex);
