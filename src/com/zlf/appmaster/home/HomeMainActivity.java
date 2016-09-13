@@ -65,11 +65,11 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     private DealFragment mDealFragment;
     private PersonalFragment mPersonalFragment;
 
-    private DrawerLayout mDrawerLayout;
+//    private DrawerLayout mDrawerLayout;
     private HomeToolbar mToolBar;
-    private ListView mMenuList;
-    private List<MenuItem> mMenuItems;
-    private MenuAdapter mMenuAdapter;
+//    private ListView mMenuList;
+//    private List<MenuItem> mMenuItems;
+//    private MenuAdapter mMenuAdapter;
     private TextView mCenterTitle;
     private HomeFragmentHolder[] mFragmentHolders = new HomeFragmentHolder[4];
 
@@ -110,50 +110,50 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mOneRipple = (RippleView) findViewById(R.id.home_tab);
 
         mToolBar = (HomeToolbar) findViewById(R.id.home_toolBar);
-        mMenuList = (ListView) findViewById(R.id.menu_list);
+//        mMenuList = (ListView) findViewById(R.id.menu_list);
         mCenterTitle = (TextView) findViewById(R.id.center_title_tv);
         initFragment();
         mViewPager.setAdapter(new HomeTabAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2); //预加载2个
         mViewPager.setCurrentItem(0);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-
-                if (slideOffset > 0) {
-                    mToolBar.setNavigationLogoResource(R.drawable.ic_toolbar_back);
-                    mToolBar.setBackgroundColor(getResources().getColor(R.color.ctc));
-                } else {
-                    mToolBar.setBackgroundColor(getResources().getColor(R.color.ctc));
-                    mToolBar.setNavigationLogoResource(R.drawable.ic_toolbar_menu);
-                }
-            }
-        });
-        mMenuList = (ListView) findViewById(R.id.menu_list);
-        mMenuItems = getMenuItems();
-        mMenuAdapter = new MenuAdapter(this, mMenuItems);
-        mMenuList.setAdapter(mMenuAdapter);
-        mMenuList.setOnItemClickListener(this);
-        mToolBar.setDrawerLayout(mDrawerLayout);
+//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+//            @Override
+//            public void onDrawerSlide(View drawerView, float slideOffset) {
+//
+//                if (slideOffset > 0) {
+//                    mToolBar.setNavigationLogoResource(R.drawable.ic_toolbar_back);
+//                    mToolBar.setBackgroundColor(getResources().getColor(R.color.ctc));
+//                } else {
+//                    mToolBar.setBackgroundColor(getResources().getColor(R.color.ctc));
+//                    mToolBar.setNavigationLogoResource(R.drawable.ic_toolbar_menu);
+//                }
+//            }
+//        });
+//        mMenuList = (ListView) findViewById(R.id.menu_list);
+//        mMenuItems = getMenuItems();
+//        mMenuAdapter = new MenuAdapter(this, mMenuItems);
+//        mMenuList.setAdapter(mMenuAdapter);
+//        mMenuList.setOnItemClickListener(this);
+//        mToolBar.setDrawerLayout(mDrawerLayout);
     }
 
-    private List<MenuItem> getMenuItems() {
-        List<MenuItem> listItems = new ArrayList<MenuItem>();
-        Resources resources = AppMasterApplication.getInstance().getResources();
-        /* 关于兆利丰 */
-        listItems.add(new MenuItem(resources.getString(R.string.about_zlf),
-                R.drawable.menu_hot_icon, false));
-        /* 点个赞 */
-//        listItems.add(new MenuItem(resources.getString(R.string.accelerate),
-//                R.drawable.menu_join_icon, false));
-        /* 检查升级 */
-        listItems.add(new MenuItem(resources.getString(R.string.update_date),
-                R.drawable.menu_updates_icon, false));
-
-        return listItems;
-    }
+//    private List<MenuItem> getMenuItems() {
+//        List<MenuItem> listItems = new ArrayList<MenuItem>();
+//        Resources resources = AppMasterApplication.getInstance().getResources();
+//        /* 关于兆利丰 */
+//        listItems.add(new MenuItem(resources.getString(R.string.about_zlf),
+//                R.drawable.menu_hot_icon, false));
+//        /* 点个赞 */
+////        listItems.add(new MenuItem(resources.getString(R.string.accelerate),
+////                R.drawable.menu_join_icon, false));
+//        /* 检查升级 */
+//        listItems.add(new MenuItem(resources.getString(R.string.update_date),
+//                R.drawable.menu_updates_icon, false));
+//
+//        return listItems;
+//    }
 
     private void setLister() {
         mHomeTab.setOnClickListener(this);
@@ -165,10 +165,10 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     @Override
     public void onBackPressed() {
         LeoLog.e("mMenuList", "onBackPressed");
-        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-            mDrawerLayout.closeDrawer(Gravity.START);
-            return;
-        }
+//        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+//            mDrawerLayout.closeDrawer(Gravity.START);
+//            return;
+//        }
         super.onBackPressed();
     }
 
@@ -338,101 +338,101 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-            mDrawerLayout.closeDrawer(Gravity.START);
-        }
-        switch (position){
-            case CHECKUPDATE:
-                checkUpdate();
-                break;
-            case 0:
-                Intent intent = new Intent(HomeMainActivity.this,testWebViewActivity.class);
-                startActivity(intent);
-                break;
-        }
+//        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+//            mDrawerLayout.closeDrawer(Gravity.START);
+//        }
+//        switch (position){
+//            case CHECKUPDATE:
+//                checkUpdate();
+//                break;
+//            case 0:
+//                Intent intent = new Intent(HomeMainActivity.this,testWebViewActivity.class);
+//                startActivity(intent);
+//                break;
+//        }
     }
 
-    private void checkUpdate() {
-        Intent intent = new Intent(HomeMainActivity.this, UpdateActivity.class);
-        intent.putExtra(UpdateActivity.UPDATETYPE,UpdateActivity.CHECK_UPDATE);
-        startActivity(intent);
-    }
+//    private void checkUpdate() {
+//        Intent intent = new Intent(HomeMainActivity.this, UpdateActivity.class);
+//        intent.putExtra(UpdateActivity.UPDATETYPE,UpdateActivity.CHECK_UPDATE);
+//        startActivity(intent);
+//    }
 
-    class MenuAdapter extends BaseAdapter {
-
-        List<MenuItem> items;
-        LayoutInflater inflater;
-
-        public MenuAdapter(Context ctx, List<MenuItem> items) {
-            super();
-            this.items = items;
-            inflater = LayoutInflater.from(ctx);
-        }
-
-        public void setItems(List<MenuItem> list) {
-            items = list;
-        }
-
-        @Override
-        public int getCount() {
-            return items.size();
-        }
-
-        @Override
-        public Object getItem(int arg0) {
-            return items.get(arg0);
-        }
-
-        @Override
-        public long getItemId(int arg0) {
-            return arg0;
-        }
-
-        /**
-         * need not ViewHolder here
-         */
-        @SuppressLint("ViewHolder")
-        @Override
-        public View getView(int arg0, View arg1, ViewGroup arg2) {
-//            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
-            MaterialRippleLayout layout = (MaterialRippleLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
-            TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
-            tv.setTextColor(getResources().getColor(R.color.black));
-            ImageView redTip = (ImageView) layout.findViewById(R.id.update_red_tip);
-            /* some item not HTML styled text, such as "check update" item */
-            tv.setText(Html.fromHtml(items.get(arg0).itemName));
-            if (items.get(arg0).isRedTip) {
-                redTip.setVisibility(View.VISIBLE);
-            } else {
-                redTip.setVisibility(View.GONE);
-            }
-            /**
-             * 类似于阿拉伯语等从右往左显示的处理
-             */
-//            if (LanguageUtils.isRightToLeftLanguage(null)) {
-//                // Log.e(Constants.RUN_TAG, "阿拉伯语");
-//                tv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources()
-//                        .getDrawable(items.get(arg0).iconId), null);
+//    class MenuAdapter extends BaseAdapter {
+//
+//        List<MenuItem> items;
+//        LayoutInflater inflater;
+//
+//        public MenuAdapter(Context ctx, List<MenuItem> items) {
+//            super();
+//            this.items = items;
+//            inflater = LayoutInflater.from(ctx);
+//        }
+//
+//        public void setItems(List<MenuItem> list) {
+//            items = list;
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return items.size();
+//        }
+//
+//        @Override
+//        public Object getItem(int arg0) {
+//            return items.get(arg0);
+//        }
+//
+//        @Override
+//        public long getItemId(int arg0) {
+//            return arg0;
+//        }
+//
+//        /**
+//         * need not ViewHolder here
+//         */
+//        @SuppressLint("ViewHolder")
+//        @Override
+//        public View getView(int arg0, View arg1, ViewGroup arg2) {
+////            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
+//            MaterialRippleLayout layout = (MaterialRippleLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
+//            TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
+//            tv.setTextColor(getResources().getColor(R.color.black));
+//            ImageView redTip = (ImageView) layout.findViewById(R.id.update_red_tip);
+//            /* some item not HTML styled text, such as "check update" item */
+//            tv.setText(Html.fromHtml(items.get(arg0).itemName));
+//            if (items.get(arg0).isRedTip) {
+//                redTip.setVisibility(View.VISIBLE);
 //            } else {
-            tv.setCompoundDrawablesWithIntrinsicBounds(
-                    getResources().getDrawable(items.get(arg0).iconId), null, null, null);
+//                redTip.setVisibility(View.GONE);
 //            }
+//            /**
+//             * 类似于阿拉伯语等从右往左显示的处理
+//             */
+////            if (LanguageUtils.isRightToLeftLanguage(null)) {
+////                // Log.e(Constants.RUN_TAG, "阿拉伯语");
+////                tv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources()
+////                        .getDrawable(items.get(arg0).iconId), null);
+////            } else {
+//            tv.setCompoundDrawablesWithIntrinsicBounds(
+//                    getResources().getDrawable(items.get(arg0).iconId), null, null, null);
+////            }
+//
+//            return layout;
+//        }
+//
+//    }
 
-            return layout;
-        }
-
-    }
-
-    class MenuItem {
-        String itemName;
-        int iconId;
-        boolean isRedTip;
-
-        public MenuItem(String itemName, int iconId, boolean isRedTip) {
-            super();
-            this.itemName = itemName;
-            this.iconId = iconId;
-            this.isRedTip = isRedTip;
-        }
-    }
+//    class MenuItem {
+//        String itemName;
+//        int iconId;
+//        boolean isRedTip;
+//
+//        public MenuItem(String itemName, int iconId, boolean isRedTip) {
+//            super();
+//            this.itemName = itemName;
+//            this.iconId = iconId;
+//            this.isRedTip = isRedTip;
+//        }
+//    }
 }

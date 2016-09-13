@@ -2,8 +2,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">兆利丰金服</string>
-    <string name="makesure">Ok</string>
-    <string name="cancel">Cancel</string>
+    <string name="makesure">确认</string>
+    <string name="cancel">取消</string>
 
     <string name="action_settings">settings</string>
 
@@ -320,4 +320,8 @@
     <string name="input_new_name">输入新昵称</string>
     <string name="error_same_pwd">新密码与确认新密码不一致</string>
 
+    <string name="personal_modify">修改资料</string>
+    <string name="personal_about">关于我们</string>
+    <string name="personal_use">使用条款</string>
+    <string name="personal_setting">设置</string>
 </resources>

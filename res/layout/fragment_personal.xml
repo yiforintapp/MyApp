@@ -117,13 +117,24 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>
 
+
             <com.zlf.appmaster.ui.CommonSettingItem
                 android:id="@+id/feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <com.zlf.appmaster.ui.CommonSettingItem
-                android:id="@+id/message"
+                android:id="@+id/rule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.zlf.appmaster.ui.CommonSettingItem
+                android:id="@+id/about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.zlf.appmaster.ui.CommonSettingItem
+                android:id="@+id/update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         app:rippleColor="@color/menu_ripple"
         app:rippleDuration="150"
+        android:visibility="gone"
         app:rippleHover="true"
         app:rippleOverlay="true">
 
