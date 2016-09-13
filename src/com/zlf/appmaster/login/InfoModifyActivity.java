@@ -22,10 +22,6 @@ import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.stock.LoginProgressDialog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
-import com.zlf.tools.animator.Animator;
-import com.zlf.tools.animator.AnimatorListenerAdapter;
-import com.zlf.tools.animator.AnimatorSet;
-import com.zlf.tools.animator.ObjectAnimator;
 
 import java.lang.ref.WeakReference;
 
@@ -196,12 +192,6 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
                     mHasShow = SHOW_DEFAULT;
                 }
                 break;
-//            case R.id.modify_user_name:
-//                showNameOrPwdView(true);
-//                break;
-//            case R.id.modify_pwd:
-//                showNameOrPwdView(false);
-//                break;
             case R.id.old_name_close_iv:
                 mOldNameEt.getText().clear();
                 break;
@@ -360,72 +350,8 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
         mToast.show();
     }
 
-    private void showNameOrPwdView(boolean showName) {
-        if (showName) {
-            if (mHasShow == SHOW_DEFAULT) {
-                ObjectAnimator objectAnimator = showAnim(mOldNameLayout);
-                objectAnimator.start();
-                mHasShow = SHOW_NAME;
-            } else if (mHasShow == SHOW_NAME) {
-                ObjectAnimator objectAnimator = hideAnim(mOldNameLayout);
-                objectAnimator.start();
-                mHasShow = SHOW_DEFAULT;
-            } else if (mHasShow == SHOW_PWD) {
-                AnimatorSet animatorSet = new AnimatorSet();
-                ObjectAnimator nameAnimator = showAnim(mOldNameLayout);
-                ObjectAnimator pwdAnimator = hideAnim(mOldPwdLayout);
-                animatorSet.playTogether(nameAnimator, pwdAnimator);
-                animatorSet.start();
-                mHasShow = SHOW_NAME;
-            }
-        } else {
-            if (mHasShow == SHOW_DEFAULT) {
-                ObjectAnimator objectAnimator = showAnim(mOldPwdLayout);
-                objectAnimator.start();
-                mHasShow = SHOW_PWD;
-            } else if (mHasShow == SHOW_NAME) {
-                AnimatorSet animatorSet = new AnimatorSet();
-                ObjectAnimator nameAnimator = showAnim(mOldPwdLayout);
-                ObjectAnimator pwdAnimator = hideAnim(mOldNameLayout);
-                animatorSet.playTogether(nameAnimator, pwdAnimator);
-                animatorSet.start();
-                mHasShow = SHOW_PWD;
-            } else if (mHasShow == 3) {
-                ObjectAnimator objectAnimator = hideAnim(mOldPwdLayout);
-                objectAnimator.start();
-                mHasShow = SHOW_DEFAULT;
-            }
-        }
-    }
 
 
-    private ObjectAnimator showAnim(final View view) {
-        view.setPivotY(0);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "scaleY", 0f , 1f);
-        objectAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                view.setVisibility(View.VISIBLE);
-            }
-        });
-        objectAnimator.setDuration(500);
-        return objectAnimator;
-    }
-
-    private ObjectAnimator hideAnim(final View view) {
-        view.setPivotY(0);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "scaleY", 1f , 0f);
-        objectAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                view.setVisibility(View.GONE);
-            }
-        });
-        objectAnimator.setDuration(500);
-        return objectAnimator;
-    }
 
 
     @Override

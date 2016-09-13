@@ -3,24 +3,18 @@ package com.zlf.appmaster.home;
 import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.zlf.appmaster.AppMasterPreference;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.QStringRequest;
-import com.zlf.appmaster.client.StringPostRequest;
-import com.zlf.appmaster.db.ISettings;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.login.FeedbackActivity;
-import com.zlf.appmaster.login.RegisterActivity;
+import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
-import com.zlf.appmaster.utils.QLog;
 import com.zlf.appmaster.utils.Utilities;
 import com.zlf.appmaster.utils.Utils;
 import com.zlf.appmaster.utils.VolleyTool;
@@ -111,7 +105,8 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.tv_changjiang:
 
-                jumpToCJLH();
+ /*               jumpToCJLH();*/
+                startActivity(new Intent(mActivity, testWebViewActivity.class));
                 break;
         }
     }

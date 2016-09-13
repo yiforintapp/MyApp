@@ -1,6 +1,5 @@
 package com.zlf.appmaster.stocknews;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.os.Bundle;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
+import com.zlf.appmaster.home.BaseActivity;
 
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.MediaPlayer;
@@ -15,7 +15,7 @@ import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
 
-public class testWebViewActivity extends Activity {
+public class testWebViewActivity extends BaseActivity {
 
     private Context mContext;
 

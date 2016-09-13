@@ -294,4 +294,11 @@ public class Constants {
     public static final String FEEDBACK_TYPE = "proname";
     public static final String FEEDBACK_CONTENT = "feedback_content";
     public static final String FEEDBACK_CONTACT = "feedback_contact";
+
+    public static final String GET_CODE_HOST = "http://api.app2e.com/smsBigSend.api.php";
+    public static final String GET_CODE_PWD_TAG = "pwd";
+    public static final String GET_CODE_USER_TAG = "username";
+    public static final String GET_CODE_PHONE_TAG = "p";
+    public static final String GET_CODE_MSG_TAG = "msg";
+    public static final String GET_CODE_STYLE_TAG = "charSetStr";
 }

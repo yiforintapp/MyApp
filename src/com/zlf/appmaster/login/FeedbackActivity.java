@@ -271,10 +271,19 @@ public class FeedbackActivity extends BaseFragmentActivity implements View.OnCli
             while ((len = inputStream.read(data)) != -1) {
                 byteArrayOutputStream.write(data, 0, len);
             }
+            resultData = new String(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (byteArrayOutputStream != null) {
+                    byteArrayOutputStream.flush();
+                    byteArrayOutputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        resultData = new String(byteArrayOutputStream.toByteArray());
         return resultData;
     }
 

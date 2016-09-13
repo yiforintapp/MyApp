@@ -62,6 +62,9 @@ public class LoginHttpUtil {
             @Override
             public void run() {
                 HttpURLConnection connection = null;
+                InputStream inputStream = null;
+                InputStreamReader inputReader = null;
+                BufferedReader reader = null;
                 try{
                     URL url = new URL(StringUrl.toString());
                     QLog.e("adcb", StringUrl.toString());
@@ -74,8 +77,9 @@ public class LoginHttpUtil {
                     connection.setDoInput(true);
                     connection.setDoOutput(true);
                     //获取返回结果
-                    InputStream inputStream = connection.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                    inputStream = connection.getInputStream();
+                    inputReader = new InputStreamReader(inputStream);
+                    reader = new BufferedReader(inputReader);
                     StringBuilder response = new StringBuilder();
                     String line;
                     while ((line = reader.readLine()) != null){
@@ -92,8 +96,21 @@ public class LoginHttpUtil {
                         listener.onError(e);
                     }
                 }finally {
-                    if (connection != null){
-                        connection.disconnect();
+                    try {
+                        if (connection != null){
+                            connection.disconnect();
+                        }
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                        if (inputReader != null) {
+                            inputReader.close();
+                        }
+                        if (reader != null) {
+                            reader.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
