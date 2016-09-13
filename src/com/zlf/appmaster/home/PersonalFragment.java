@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.login.FeedbackActivity;
 import com.zlf.appmaster.login.InfoModifyActivity;
 import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
@@ -21,6 +22,7 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
 
     private RelativeLayout mLogin;
     private CommonSettingItem mModify;
+    private CommonSettingItem mFeedback;
     private CommonSettingItem mMessage;
     private CommonSettingItem mSetting;
     private TextView mClickLogin;
@@ -38,9 +40,14 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         mModify = (CommonSettingItem) findViewById(R.id.modify);
         mMessage = (CommonSettingItem) findViewById(R.id.message);
         mSetting = (CommonSettingItem) findViewById(R.id.setting);
+        mFeedback = (CommonSettingItem) findViewById(R.id.feedback);
+
+        mFeedback.setIcon(R.drawable.menu_feedbacks_icon);
         mModify.setIcon(R.drawable.ic_mine_wdzh);
         mMessage.setIcon(R.drawable.ic_mine_xx);
         mSetting.setIcon(R.drawable.ic_mine_sz);
+
+        mFeedback.setTitle(mActivity.getString(R.string.fb_toolbar));
         mModify.setTitle("修改资料");
         mMessage.setTitle("消息");
         mSetting.setTitle("设置");
@@ -57,6 +64,13 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             public void onClick(View v) {
                 Intent intent = new Intent(mActivity, InfoModifyActivity.class);
                 mActivity.startActivity(intent);
+            }
+        });
+        mFeedback.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, FeedbackActivity.class);
+                startActivity(intent);
             }
         });
         mMessage.setRippleViewOnClickLinstener(this);

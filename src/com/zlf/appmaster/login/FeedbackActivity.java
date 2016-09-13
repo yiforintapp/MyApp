@@ -1,11 +1,13 @@
 package com.zlf.appmaster.login;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,6 +102,15 @@ public class FeedbackActivity extends BaseFragmentActivity implements View.OnCli
         mFeedback = (EditText) findViewById(R.id.ed_fb);
         mEmail = (EditText) findViewById(R.id.ed_fb_2);
 
+        mFeedback.requestFocus();
+        mFeedback.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) FeedbackActivity.this
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mFeedback, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 200);
     }
 
 

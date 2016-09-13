@@ -319,4 +319,5 @@
     <string name="modify_old_pwd">输入旧密码</string>
     <string name="input_new_name">输入新昵称</string>
     <string name="error_same_pwd">新密码与确认新密码不一致</string>
+
 </resources>
