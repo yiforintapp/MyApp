@@ -29,38 +29,19 @@
 
             <ImageView
                 android:id="@+id/pwd_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:scaleType="centerCrop"
+                style="@style/login_img_style"
                 android:src="@drawable/login_pwd_icon" />
 
             <EditText
                 android:id="@+id/pwd_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="5dp"
+                style="@style/login_et_style"
                 android:layout_toLeftOf="@+id/pwd_close_iv"
                 android:layout_toRightOf="@+id/pwd_iv"
-                android:background="@null"
-                android:hint="@string/login_pwd_hint"
-                android:maxLength="20"
-                android:textColor="@color/black"
-                android:textColorHint="@color/login_hint"
-                android:textSize="15sp" />
+                android:hint="@string/login_pwd_hint" />
 
             <ImageView
                 android:id="@+id/pwd_close_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:scaleType="centerCrop"
+                style="@style/login_close_style"
                 android:src="@drawable/input_clean"
                 android:visibility="invisible" />
 
@@ -91,38 +72,19 @@
 
             <ImageView
                 android:id="@+id/user_name_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:scaleType="centerCrop"
+                style="@style/login_img_style"
                 android:src="@drawable/login_pwd_icon" />
 
             <EditText
                 android:id="@+id/user_name_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="5dp"
+                style="@style/login_et_style"
                 android:layout_toLeftOf="@+id/user_name_close_iv"
                 android:layout_toRightOf="@+id/user_name_iv"
-                android:background="@null"
-                android:hint="@string/login_name"
-                android:maxLength="20"
-                android:textColor="@color/black"
-                android:textColorHint="@color/login_hint"
-                android:textSize="15sp" />
+                android:hint="@string/login_name" />
 
             <ImageView
                 android:id="@+id/user_name_close_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:scaleType="centerCrop"
+                style="@style/login_close_style"
                 android:src="@drawable/input_clean"
                 android:visibility="invisible" />
 
@@ -154,38 +116,19 @@
 
             <ImageView
                 android:id="@+id/new_pwd_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:scaleType="centerCrop"
+                style="@style/login_img_style"
                 android:src="@drawable/login_pwd_icon" />
 
             <EditText
                 android:id="@+id/new_pwd_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="5dp"
+                style="@style/login_et_style"
                 android:layout_toLeftOf="@+id/new_pwd_close_iv"
                 android:layout_toRightOf="@+id/new_pwd_iv"
-                android:background="@null"
-                android:hint="@string/login_reset_new_password"
-                android:maxLength="20"
-                android:textColor="@color/black"
-                android:textColorHint="@color/login_hint"
-                android:textSize="15sp" />
+                android:hint="@string/login_reset_new_password" />
 
             <ImageView
                 android:id="@+id/new_pwd_close_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:scaleType="centerCrop"
+                style="@style/login_close_style"
                 android:src="@drawable/input_clean"
                 android:visibility="invisible" />
 
@@ -215,15 +158,8 @@
 
         <Button
             android:id="@+id/register_complete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_radius_btn_shape"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="@string/login_reset_complete"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            style="@style/login_btn_style"
+            android:text="@string/login_reset_complete" />
 
     </com.zlf.appmaster.ui.RippleView>
 

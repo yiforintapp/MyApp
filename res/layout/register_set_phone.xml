@@ -28,38 +28,19 @@
 
             <ImageView
                 android:id="@+id/user_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:scaleType="centerCrop"
+                style="@style/login_img_style"
                 android:src="@drawable/login_user_icon" />
 
             <EditText
                 android:id="@+id/user_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginRight="5dp"
+                style="@style/login_et_style"
                 android:layout_toLeftOf="@+id/user_close_iv"
                 android:layout_toRightOf="@+id/user_iv"
-                android:background="@null"
-                android:hint="@string/login_user_hint"
-                android:maxLength="20"
-                android:textColor="@color/black"
-                android:textColorHint="@color/login_hint"
-                android:textSize="15sp" />
+                android:hint="@string/login_user_hint" />
 
             <ImageView
                 android:id="@+id/user_close_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:scaleType="centerCrop"
+                style="@style/login_close_style"
                 android:src="@drawable/input_clean"
                 android:visibility="invisible" />
 
@@ -133,6 +114,8 @@
                 android:background="@drawable/blue_radius_btn_shape"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:gravity="center"
+                android:textSize="15sp"
                 android:src="@drawable/input_clean"
                 android:text="@string/login_get_code"
                 android:textColor="@color/white" />
@@ -166,15 +149,8 @@
 
         <Button
             android:id="@+id/register"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_radius_btn_shape"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="@string/register"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            style="@style/login_btn_style"
+            android:text="@string/register" />
 
     </com.zlf.appmaster.ui.RippleView>
 

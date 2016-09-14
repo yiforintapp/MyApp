@@ -25,15 +25,8 @@
             app:rippleOverlay="true">
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/blue_radius_btn_shape"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/modify_user_name"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                style="@style/login_btn_style"
+                android:text="@string/modify_user_name" />
 
         </com.zlf.appmaster.ui.RippleView>
 
@@ -149,15 +142,8 @@
             app:rippleOverlay="true">
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/blue_radius_btn_shape"
-                android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/modify_pwd"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                style="@style/login_btn_style"
+                android:text="@string/modify_pwd" />
 
         </com.zlf.appmaster.ui.RippleView>
 

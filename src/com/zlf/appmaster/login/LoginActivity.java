@@ -9,6 +9,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -174,6 +175,8 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         if (TextUtils.isEmpty(mPasswordEt.getText().toString().trim())) {
             mPasswordClean.setVisibility(View.INVISIBLE);
         } else {
+            mPasswordEt.setTransformationMethod(
+                    PasswordTransformationMethod.getInstance());
             mPasswordClean.setVisibility(View.VISIBLE);
         }
     }
