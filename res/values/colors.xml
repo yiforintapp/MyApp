@@ -130,4 +130,6 @@
     <color name="login_hint">#C0C0C0</color>
 
     <color name="gray_background">#40999999</color>
+
+    <color name="main_color">#5CB85C</color>
 </resources>

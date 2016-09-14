@@ -120,7 +120,6 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
                     viewHolder.price.setRiseInfo(riseInfo);
                     if (riseInfo > 0) {
                         viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_rise_text_bg));
-
                     } else if (riseInfo < 0) {
                         viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_drop_text_bg));
                     } else {
