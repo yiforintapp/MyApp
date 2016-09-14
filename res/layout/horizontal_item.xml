@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="100dp">
+
+
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="#DEDEDE"/>
+
+    <LinearLayout
+        android:id="@+id/parent_one"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/black"/>
+
+        <com.zlf.appmaster.ui.stock.StockTextView
+            android:id="@+id/price_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/stock_rise"/>
+
+        <com.zlf.appmaster.ui.stock.StockTextView
+            android:id="@+id/percent_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/stock_rise"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="#DEDEDE"/>
+
+    <LinearLayout
+        android:id="@+id/parent_two"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/black"/>
+
+        <com.zlf.appmaster.ui.stock.StockTextView
+            android:id="@+id/price_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/stock_rise"/>
+
+        <com.zlf.appmaster.ui.stock.StockTextView
+            android:id="@+id/percent_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/stock_rise"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="#DEDEDE"/>
+
+    <LinearLayout
+        android:id="@+id/parent_three"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:textColor="@color/black"/>
+
+        <com.zlf.appmaster.ui.stock.StockTextView
+            android:id="@+id/price_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/stock_rise"/>
+
+        <com.zlf.appmaster.ui.stock.StockTextView
+            android:id="@+id/percent_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/stock_rise"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
