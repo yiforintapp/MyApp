@@ -11,105 +11,122 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/modify_user_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        app:rippleColor="@color/button_gray_ripple"
-        app:rippleDuration="250"
-        app:rippleHover="true"
-        android:clickable="false"
-        app:rippleOverlay="true">
-
-        <Button
+        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/modify_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/blue_radius_btn_shape"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="@string/modify_user_name"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-    </com.zlf.appmaster.ui.RippleView>
-
-
-    <LinearLayout
-        android:id="@+id/old_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:canExpand="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_marginTop="15dp">
-
-
-            <EditText
-                android:id="@+id/old_name_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/old_name_close_iv"
-                android:hint="@string/input_new_name"
-                android:maxLength="20"
-                android:textColor="@color/black"
-                android:textColorHint="@color/login_hint"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/old_name_close_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/input_clean"
-                android:visibility="invisible" />
-
-        </RelativeLayout>
-
-        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/old_name_complete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingLeft="20dp"
             android:layout_marginTop="15dp"
+            android:clickable="false"
             app:rippleColor="@color/button_gray_ripple"
             app:rippleDuration="250"
             app:rippleHover="true"
             app:rippleOverlay="true">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/blue_radius_btn_shape"
                 android:gravity="center"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="@string/login_reset_complete"
+                android:text="@string/modify_user_name"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
         </com.zlf.appmaster.ui.RippleView>
 
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/old_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:canExpand="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="15dp">
+
+
+                <EditText
+                    android:id="@+id/old_name_ev"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/old_name_close_iv"
+                    android:background="@drawable/bg_edittext"
+                    android:hint="@string/input_new_name"
+                    android:maxLength="20"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/login_hint"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/old_name_close_iv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/input_clean"
+                    />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/old_name_complete"
+                style="@style/fb_right_button_txt_del"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/login_reset_complete"
+                android:textColor="@drawable/deal_text_selector" />
+
+
+            <!--<com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                <!--android:id="@+id/old_name_complete"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_marginTop="15dp"-->
+                <!--android:paddingLeft="20dp"-->
+                <!--app:rippleColor="@color/button_gray_ripple"-->
+                <!--app:rippleDuration="250"-->
+                <!--app:rippleHover="true"-->
+                <!--app:rippleOverlay="true">-->
+
+                <!--<Button-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@drawable/blue_radius_btn_shape"-->
+                    <!--android:gravity="center"-->
+                    <!--android:paddingBottom="10dp"-->
+                    <!--android:paddingLeft="30dp"-->
+                    <!--android:paddingRight="30dp"-->
+                    <!--android:paddingTop="10dp"-->
+                    <!--android:text="@string/login_reset_complete"-->
+                    <!--android:textColor="@color/white"-->
+                    <!--android:textSize="20sp" />-->
+
+            <!--</com.zlf.appmaster.ui.RippleView>-->
+
+
+        </LinearLayout>
 
     </com.zlf.appmaster.ui.ExpandableLayout>
 
@@ -118,176 +135,198 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/modify_pwd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        app:rippleColor="@color/button_gray_ripple"
-        app:rippleDuration="250"
-        app:rippleHover="true"
-        android:clickable="false"
-        app:rippleOverlay="true">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_radius_btn_shape"
-            android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:text="@string/modify_pwd"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-    </com.zlf.appmaster.ui.RippleView>
-
-    <LinearLayout
-        android:id="@+id/old_pwd_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:canExpand="true"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp">
-
-
-            <EditText
-                android:id="@+id/old_pwd_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/old_pwd_close_iv"
-                android:hint="@string/modify_old_pwd"
-                android:maxLength="20"
-                android:textColor="@color/black"
-                android:textColorHint="@color/login_hint"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/old_pwd_close_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/input_clean"
-                android:visibility="invisible" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/new_pwd_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="15dp">
-
-
-            <EditText
-                android:id="@+id/new_pwd_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/new_pwd_close_iv"
-                android:hint="@string/login_reset_password"
-                android:maxLength="20"
-                android:textColor="@color/black"
-                android:textColorHint="@color/login_hint"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/new_pwd_close_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/input_clean"
-                android:visibility="invisible" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/new_query_pwd_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="15dp">
-
-
-            <EditText
-                android:id="@+id/new_query_pwd_ev"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/new_query_pwd_close_iv"
-                android:hint="@string/login_reset_new_password"
-                android:maxLength="20"
-                android:textColor="@color/black"
-                android:textColorHint="@color/login_hint"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/new_query_pwd_close_iv"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/input_clean"
-                android:visibility="invisible" />
-
-        </RelativeLayout>
-
         <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/old_pwd_complete"
-            android:layout_width="wrap_content"
+            android:id="@+id/modify_pwd"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginTop="15dp"
+            android:clickable="false"
             app:rippleColor="@color/button_gray_ripple"
             app:rippleDuration="250"
             app:rippleHover="true"
             app:rippleOverlay="true">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/blue_radius_btn_shape"
                 android:gravity="center"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:text="@string/login_reset_complete"
+                android:text="@string/modify_pwd"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
         </com.zlf.appmaster.ui.RippleView>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/old_pwd_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            app:canExpand="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+
+
+                <EditText
+                    android:id="@+id/old_pwd_ev"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/old_pwd_close_iv"
+                    android:background="@drawable/bg_edittext"
+                    android:hint="@string/modify_old_pwd"
+                    android:maxLength="20"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/login_hint"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/old_pwd_close_iv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/input_clean"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/new_pwd_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="15dp">
+
+
+                <EditText
+                    android:id="@+id/new_pwd_ev"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/new_pwd_close_iv"
+                    android:background="@drawable/bg_edittext"
+                    android:hint="@string/login_reset_password"
+                    android:maxLength="20"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/login_hint"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/new_pwd_close_iv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/input_clean"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/new_query_pwd_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="15dp">
+
+
+                <EditText
+                    android:id="@+id/new_query_pwd_ev"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@+id/new_query_pwd_close_iv"
+                    android:background="@drawable/bg_edittext"
+                    android:hint="@string/login_reset_new_password"
+                    android:maxLength="20"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/login_hint"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/new_query_pwd_close_iv"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/input_clean" />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/old_pwd_complete"
+                style="@style/fb_right_button_txt_del"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:text="@string/login_reset_complete"
+                android:textColor="@drawable/deal_text_selector" />
+
+
+            <!--<com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+            <!--android:id="@+id/old_pwd_complete"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--app:rippleColor="@color/button_gray_ripple"-->
+            <!--app:rippleDuration="250"-->
+            <!--app:rippleHover="true"-->
+            <!--app:rippleOverlay="true">-->
+
+            <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/blue_radius_btn_shape"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingLeft="30dp"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:text="@string/login_reset_complete"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="20sp" />-->
+
+            <!--</com.zlf.appmaster.ui.RippleView>-->
+
+        </LinearLayout>
 
     </com.zlf.appmaster.ui.ExpandableLayout>
 

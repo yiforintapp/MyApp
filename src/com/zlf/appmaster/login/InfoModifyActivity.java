@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zlf.appmaster.Constants;
@@ -36,7 +37,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
     private LinearLayout mOldNameLayout;
     private EditText mOldNameEt;
     private ImageView mOldNameCloseBtn;
-    private RippleView mOldNameBtn;
+    private TextView mOldNameBtn;
 
     private LinearLayout mOldPwdLayout;
     private EditText mOldPwdEt;
@@ -45,7 +46,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
     private ImageView mNewPwdCloseBtn;
     private EditText mQueryNewPwdEt;
     private ImageView mQueryNewPwdCloseBtn;
-    private RippleView mQueryNewPwdBtn;
+    private TextView mQueryNewPwdBtn;
     private Toast mToast;
     private LoginProgressDialog mDialog;
     private boolean mProgressBarShow; // 加载正在进行
@@ -130,7 +131,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
         mOldNameLayout = (LinearLayout) findViewById(R.id.old_layout);
         mOldNameEt = (EditText) findViewById(R.id.old_name_ev);
         mOldNameCloseBtn = (ImageView) findViewById(R.id.old_name_close_iv);
-        mOldNameBtn = (RippleView) findViewById(R.id.old_name_complete);
+        mOldNameBtn = (TextView) findViewById(R.id.old_name_complete);
 
         mOldPwdLayout = (LinearLayout) findViewById(R.id.old_pwd_layout);
         mOldPwdEt = (EditText) findViewById(R.id.old_pwd_ev);
@@ -139,7 +140,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
         mNewPwdCloseBtn = (ImageView) findViewById(R.id.new_pwd_close_iv);
         mQueryNewPwdEt = (EditText) findViewById(R.id.new_query_pwd_ev);
         mQueryNewPwdCloseBtn = (ImageView) findViewById(R.id.new_query_pwd_close_iv);
-        mQueryNewPwdBtn = (RippleView) findViewById(R.id.old_pwd_complete);
+        mQueryNewPwdBtn = (TextView) findViewById(R.id.old_pwd_complete);
 
         mExpandableTop = (ExpandableLayout) findViewById(R.id.expandablelayout_top);
         mExpandableBottom = (ExpandableLayout) findViewById(R.id.expandablelayout_bottom);
@@ -362,27 +363,27 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (mHasShow == 2) {
-            if (TextUtils.isEmpty(mOldNameEt.getText().toString().trim())) {
-                mOldNameCloseBtn.setVisibility(View.INVISIBLE);
-            } else {
-                mOldNameCloseBtn.setVisibility(View.VISIBLE);
-            }
+//            if (TextUtils.isEmpty(mOldNameEt.getText().toString().trim())) {
+//                mOldNameCloseBtn.setVisibility(View.INVISIBLE);
+//            } else {
+//                mOldNameCloseBtn.setVisibility(View.VISIBLE);
+//            }
         } else if (mHasShow == 3) {
-            if (TextUtils.isEmpty(mOldPwdEt.getText().toString().trim())) {
-                mOldPwdCloseBtn.setVisibility(View.INVISIBLE);
-            } else {
-                mOldPwdCloseBtn.setVisibility(View.VISIBLE);
-            }
-            if (TextUtils.isEmpty(mNewPwdEt.getText().toString().trim())) {
-                mNewPwdCloseBtn.setVisibility(View.INVISIBLE);
-            } else {
-                mNewPwdCloseBtn.setVisibility(View.VISIBLE);
-            }
-            if (TextUtils.isEmpty(mQueryNewPwdEt.getText().toString().trim())) {
-                mQueryNewPwdCloseBtn.setVisibility(View.INVISIBLE);
-            } else {
-                mQueryNewPwdCloseBtn.setVisibility(View.VISIBLE);
-            }
+//            if (TextUtils.isEmpty(mOldPwdEt.getText().toString().trim())) {
+//                mOldPwdCloseBtn.setVisibility(View.INVISIBLE);
+//            } else {
+//                mOldPwdCloseBtn.setVisibility(View.VISIBLE);
+//            }
+//            if (TextUtils.isEmpty(mNewPwdEt.getText().toString().trim())) {
+//                mNewPwdCloseBtn.setVisibility(View.INVISIBLE);
+//            } else {
+//                mNewPwdCloseBtn.setVisibility(View.VISIBLE);
+//            }
+//            if (TextUtils.isEmpty(mQueryNewPwdEt.getText().toString().trim())) {
+//                mQueryNewPwdCloseBtn.setVisibility(View.INVISIBLE);
+//            } else {
+//                mQueryNewPwdCloseBtn.setVisibility(View.VISIBLE);
+//            }
         }
 
     }
