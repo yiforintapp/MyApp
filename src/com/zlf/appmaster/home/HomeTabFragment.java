@@ -11,11 +11,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.OnRequestListener;
+import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.client.StockQuotationsClient;
+import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
@@ -23,6 +29,10 @@ import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
 import com.zlf.appmaster.ui.stock.StockTextView;
+import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.PrefConst;
+import com.zlf.appmaster.utils.Utilities;
+import com.zlf.appmaster.utils.VolleyTool;
 import com.zlf.banner.Banner;
 import com.zlf.banner.BannerConfig;
 import com.zlf.banner.listener.OnBannerClickListener;
@@ -35,6 +45,9 @@ import java.util.Random;
  * Created by Administrator on 2016/9/8.
  */
 public class HomeTabFragment extends BaseFragment {
+    private final static String TAG = "HomeTabFragment";
+    public final static String WINTOP = "APP_WIN";
+
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth = BannerConfig.INDICATOR_SIZE;
     private int mIndicatorHeight = BannerConfig.INDICATOR_SIZE;
@@ -58,7 +71,7 @@ public class HomeTabFragment extends BaseFragment {
 
     private int mLastPosition = 0;
 
-    public static final String [][] ITEM_SHOW = new String[][] {
+    public static final String[][] ITEM_SHOW = new String[][]{
             {Constants.JIN_GUI_INFO_PRONAME, Constants.JIN_GUI_INFO_MINUTE_PRONAME, Constants.JIN_GUI_INFO_KLINE_PRONAME},
             {Constants.QI_LU_INFO_PRONAME, Constants.QI_LU_INFO_MINUTE_PRONAME, Constants.QI_LU_INFO_KLINE_PRONAME},
             {Constants.WAI_HUI_INFO_PRONAME, Constants.WAI_HUI_INFO_MINUTE_PRONAME, Constants.WAI_HUI_INFO_KLINE_PRONAME},
@@ -100,24 +113,72 @@ public class HomeTabFragment extends BaseFragment {
         mHlistview = (HorizontalListView) findViewById(R.id.h_listview);
         mWinAdapter = new WinTopAdapter(mActivity);
         mHlistview.setAdapter(mWinAdapter);
-        loadData();
+        setWinTopData();
+        loadWinTopData();
+
 
     }
 
-    private void loadData() {
+    private void loadWinTopData() {
+        String url = Constants.ADDRESS + Constants.APPSERVLET + Constants.DATA + WINTOP;
+        LeoLog.d(TAG, "check update url is : " + url);
+
+        QStringRequest stringRequest = new QStringRequest(
+                Request.Method.GET, url, null, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String s) {
+                LeoLog.d(TAG, "check update requestFinished version is : " + s);
+
+                if (!Utilities.isEmpty(s) && !s.equals("-1")) {
+                    saveWinTop(s);
+                    setWinTopData();
+                }
+            }
+
+
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                LeoLog.d(TAG, "check update err");
+            }
+
+        });
+
+        // callAll的时候使用
+        VolleyTool.getInstance(mActivity).getRequestQueue()
+                .add(stringRequest);
+    }
+
+    private void setWinTopData() {
+
+        String s = LeoSettings.getString(PrefConst.WIN_TOP_STRING, Constants.DEFAULT_WIN_TOP);
         List<WinTopItem> list = new ArrayList<WinTopItem>();
-        for (int i = 0; i < 10; i++) {
-            WinTopItem item = new WinTopItem();
-            String name = "winName" + i;
-            long price = (long) 54321.21;
-            item.setWinName(name);
-            item.setWinPrice(price);
-            list.add(item);
+
+        String[] groups = s.split(";");
+        for (int i = 0; i < groups.length; i++) {
+            String group = groups[i];
+            if (!Utilities.isEmpty(group)) {
+                WinTopItem item = new WinTopItem();
+                String name = group.split("_")[0];
+                String price = group.split("_")[1];
+
+                item.setWinName(name);
+                item.setWinPrice(Double.valueOf(price));
+                list.add(item);
+            }
         }
+
         if (list.size() > 0) {
             mWinAdapter.setList(list);
             mWinAdapter.notifyDataSetChanged();
         }
+
+    }
+
+    private void saveWinTop(String s) {
+        LeoSettings.setString(PrefConst.WIN_TOP_STRING, s);
     }
 
     @Override
@@ -129,15 +190,15 @@ public class HomeTabFragment extends BaseFragment {
     /**
      * 请求数据
      */
-    private void requestData(){
+    private void requestData() {
         mProgressBar.setVisibility(View.VISIBLE);
         mStockClient.requestNewIndexAll(new OnRequestListener() {
             @Override
             public void onDataFinish(Object object) {
-                Object[] objectArray = (Object[])object;
+                Object[] objectArray = (Object[]) object;
                 mData.clear();
                 mData.addAll((List<StockIndex>) objectArray[0]);
-                mData.add(0,null);
+                mData.add(0, null);
 
                 mProgressBar.setVisibility(View.GONE);
                 if (mData != null && mData.size() > 1) {
@@ -308,7 +369,6 @@ public class HomeTabFragment extends BaseFragment {
         }
 
     }
-
 
 
     private void setItemData(StockIndex index, TextView name, StockTextView price, StockTextView percent) {

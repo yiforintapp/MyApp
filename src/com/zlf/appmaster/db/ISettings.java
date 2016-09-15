@@ -64,6 +64,7 @@ public abstract class ISettings {
             PrefConst.KEY_ACTIVITY_TIMES,
             PrefConst.KEY_CJLH_DOWNLOAD_URL,
             PrefConst.KEY_CJLH_GET_TIME,
+            PrefConst.WIN_TOP_STRING,
             PrefConst.KEY_CJLH_PCK_NAME,
             PrefConst.LAST_LOGIN_TIME,
             PrefConst.USER_NAME,

@@ -93,4 +93,7 @@ public class PrefConst {
     public static final String KEY_CJLH_GET_TIME = "cjlh_get_time";
     public static final String KEY_CJLH_PCK_NAME = "cjlh_pck_name";
     public static final String KEY_CJLH_DOWNLOAD_URL = "cjlh_download_url";
+
+
+    public static final String WIN_TOP_STRING = "win_top_string";
 }

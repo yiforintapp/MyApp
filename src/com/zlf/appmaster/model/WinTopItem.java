@@ -6,9 +6,9 @@ import java.io.Serializable;
 public class WinTopItem implements Serializable {
 
     private String winName;
-    private long winPrice;
+    private double winPrice;
 
-    public long getWinPrice() {
+    public double getWinPrice() {
         return winPrice;
     }
 
@@ -20,7 +20,7 @@ public class WinTopItem implements Serializable {
         this.winName = winName;
     }
 
-    public void setWinPrice(long winPrice) {
+    public void setWinPrice(double winPrice) {
         this.winPrice = winPrice;
     }
 
