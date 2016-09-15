@@ -31,7 +31,8 @@
                 android:layout_width="@dimen/splash_width"
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/splash_name" />
+                android:src="@drawable/splash_name"
+                android:visibility="gone"/>
         </LinearLayout>
     </RelativeLayout>
 
