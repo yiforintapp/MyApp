@@ -25,7 +25,7 @@
             android:layout_below="@+id/banner">
 
 
-            <android.support.v4.view.ViewPager
+            <com.zlf.appmaster.ui.BounceBackViewPager
                 android:id="@+id/my_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
