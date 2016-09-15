@@ -21,14 +21,14 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="110dp"
             android:layout_below="@+id/banner">
 
 
             <com.zlf.appmaster.ui.BounceBackViewPager
                 android:id="@+id/my_viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="110dp"
                 android:overScrollMode="never"
                 android:visibility="gone"/>
 

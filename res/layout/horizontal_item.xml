@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:background="@color/white"
-    android:layout_height="100dp">
+    android:layout_height="110dp">
 
 
 
     <View
         android:layout_width="1px"
-        android:layout_height="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center_vertical"
         android:background="#DEDEDE"/>
 
     <RelativeLayout
@@ -26,39 +27,24 @@
 
         <TextView
             android:id="@+id/name_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:textColor="@color/black"/>
+            style="@style/home_stock_name"/>
 
         <com.zlf.appmaster.ui.stock.StockTextView
             android:id="@+id/price_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/name_one"
-            android:textColor="@color/stock_rise"/>
+            style="@style/home_stock_price"
+            android:layout_below="@+id/name_one"/>
 
         <com.zlf.appmaster.ui.stock.StockTextView
             android:id="@+id/percent_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="8sp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/price_one"
-            android:textColor="@color/stock_rise"/>
+            style="@style/home_stock_percent"
+            android:layout_below="@+id/price_one"/>
 
         </RelativeLayout>
 
 
         <TextView
             android:id="@+id/change_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="更换"
-            android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            style="@style/home_stock_change"/>
 
 
 
@@ -67,7 +53,8 @@
     <View
         android:id="@+id/view_two"
         android:layout_width="1px"
-        android:layout_height="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center_vertical"
         android:background="#DEDEDE"/>
 
     <RelativeLayout
@@ -85,45 +72,31 @@
 
         <TextView
             android:id="@+id/name_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:textColor="@color/black"/>
+            style="@style/home_stock_name"/>
 
         <com.zlf.appmaster.ui.stock.StockTextView
             android:id="@+id/price_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/name_two"
-            android:textColor="@color/stock_rise"/>
+            style="@style/home_stock_price"
+            android:layout_below="@+id/name_two" />
 
         <com.zlf.appmaster.ui.stock.StockTextView
             android:id="@+id/percent_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="8sp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/price_two"
-            android:textColor="@color/stock_rise"/>
+            style="@style/home_stock_percent"
+            android:layout_below="@+id/price_two" />
 
         </RelativeLayout>
 
         <TextView
             android:id="@+id/change_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="更换"
-            android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            style="@style/home_stock_change"/>
 
     </RelativeLayout>
 
     <View
         android:id="@+id/view_three"
         android:layout_width="1px"
-        android:layout_height="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="center_vertical"
         android:background="#DEDEDE"/>
 
     <RelativeLayout
@@ -141,38 +114,23 @@
 
         <TextView
             android:id="@+id/name_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:textColor="@color/black"/>
+            style="@style/home_stock_name"/>
 
         <com.zlf.appmaster.ui.stock.StockTextView
             android:id="@+id/price_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/name_three"
-            android:textColor="@color/stock_rise"/>
+            style="@style/home_stock_price"
+            android:layout_below="@+id/name_three"/>
 
         <com.zlf.appmaster.ui.stock.StockTextView
             android:id="@+id/percent_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="8sp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/price_three"
-            android:textColor="@color/stock_rise"/>
+            style="@style/home_stock_percent"
+            android:layout_below="@+id/price_three" />
 
         </RelativeLayout>
 
         <TextView
             android:id="@+id/change_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="更换"
-            android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            style="@style/home_stock_change"/>
 
     </RelativeLayout>
 
