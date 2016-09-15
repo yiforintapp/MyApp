@@ -132,4 +132,7 @@
     <color name="gray_background">#40999999</color>
 
     <color name="main_color">#5CB85C</color>
+
+    <color name="small_text">#9696A1</color>
+
 </resources>

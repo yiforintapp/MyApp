@@ -327,4 +327,6 @@
     <string name="personal_setting">设置</string>
 
     <string name="code_send_success">验证码发送中，请稍等</string>
+
+    <string name="win_top_tv">昨日盈利榜</string>
 </resources>

@@ -12,7 +12,6 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.Utilities;
@@ -106,7 +105,8 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
             case R.id.tv_changjiang:
 
  /*               jumpToCJLH();*/
-                startActivity(new Intent(mActivity, testWebViewActivity.class));
+//                startActivity(new Intent(mActivity, testWebViewActivity.class));
+                startActivity(new Intent(mActivity, WinTestActivity.class));
                 break;
         }
     }

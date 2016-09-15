@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/set_width"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="#DEDEDE" />
+
+        <RelativeLayout
+            android:id="@+id/crown"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rank_icon_top">
+
+            <TextView
+                android:id="@+id/tv_crown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/crown"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/user_avatar_icon" />
+
+        <TextView
+            android:id="@+id/tv_win_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="asdasd"
+            android:textColor="@color/small_text"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_win_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_win_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="16584.26"
+            android:textColor="@color/stock_rise"
+            android:textSize="14dp" />
+    </RelativeLayout>
+</RelativeLayout>

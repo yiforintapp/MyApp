@@ -163,6 +163,13 @@
             android:theme="@style/activity_theme"></activity>
 
         <activity
+            android:name=".home.WinTestActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+
+        <activity
             android:name=".login.RegisterActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
