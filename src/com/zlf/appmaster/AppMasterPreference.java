@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 
-import com.zlf.appmaster.Constants;
-import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.db.LockRecommentTable;
 import com.zlf.appmaster.utils.LeoLog;
@@ -376,6 +374,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
 
+    public boolean getGuidePageFirstUse() {
+        return LeoSettings.getBoolean(PREF_FIRST_USE_APP, true);
+    }
+
     public void setGuidePageFirstUse(boolean flag) {
         commitAsync(PREF_FIRST_USE_APP, flag);
     }
@@ -659,6 +661,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return obj;
     }
 
+
     public void commitAsync(final Editor editor) {
         if (editor == null)
             return;
@@ -685,5 +688,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setUpdateRecoveryDefaultData(boolean flag) {
 
     }
+
 
 }

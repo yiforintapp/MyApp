@@ -180,7 +180,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
             LeoLog.i(TAG, "splash_end&start_time：No time!");
             LeoLog.i(TAG, "使用默认闪屏!");
         }
-
+        mShowSplashFlag = true;
         if (mSplashIcon.getVisibility() == View.INVISIBLE) {
             mSplashIcon.setVisibility(View.VISIBLE);
         }
@@ -438,7 +438,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LAUNCH_HOME_ACTIVITY:
-                    if (/*AppMasterPreference.getInstance(SplashActivity.this).getGuidePageFirstUse()*/true) {
+                    if (AppMasterPreference.getInstance(SplashActivity.this).getGuidePageFirstUse()) {
                         boolean guidNotShown = mNewGuideMain == null
                                 || mNewGuideMain.getVisibility() != View.VISIBLE;
                         if (guidNotShown) {

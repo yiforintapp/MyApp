@@ -68,7 +68,8 @@ public abstract class ISettings {
             PrefConst.LAST_LOGIN_TIME,
             PrefConst.USER_NAME,
             PrefConst.USER_PHONE,
-            PrefConst.USER_PWD
+            PrefConst.USER_PWD,
+            AppMasterPreference.PREF_FIRST_USE_APP
     };
     static Map<String, String> sGroupHigh = null;
 
