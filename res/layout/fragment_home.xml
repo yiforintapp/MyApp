@@ -52,8 +52,13 @@
             layout="@layout/home_shortcut"/>
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/include_win_top"
             layout="@layout/win_top_layout"/>
+
+        <include
+            android:id="@+id/include_day_news"
+            layout="@layout/zlf_day_news"/>
+
 
 
     </LinearLayout>

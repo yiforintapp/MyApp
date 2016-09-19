@@ -134,5 +134,7 @@
     <color name="main_color">#5CB85C</color>
 
     <color name="small_text">#9696A1</color>
+    <color name="bg_gray">#B0B0B0</color>
+
 
 </resources>
