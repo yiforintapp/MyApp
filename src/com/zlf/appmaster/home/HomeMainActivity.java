@@ -1,39 +1,23 @@
 package com.zlf.appmaster.home;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.text.Html;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.ui.HomeToolbar;
-import com.zlf.appmaster.ui.MaterialRippleLayout;
 import com.zlf.appmaster.ui.MyViewPager;
 import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.update.UpdateActivity;
 import com.zlf.appmaster.utils.LeoLog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -231,6 +215,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
             case 0:
                 mHomeTabTvReal.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mHomeTabIvReal.setImageResource(R.drawable.icon_service_nor);
+                break;
             case 1:
                 mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_color));
                 mHomeTabIv.setImageResource(R.drawable.icon_price_nor);
@@ -365,7 +350,12 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 }
                 mViewPager.setCurrentItem(4);
                 changeTabBg(4);
+                break;
         }
+    }
+
+    public HomeTabFragment getHomeTabFragment() {
+        return mHomeTabFragment;
     }
 
     @Override

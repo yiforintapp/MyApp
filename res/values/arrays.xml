@@ -6,4 +6,15 @@
         <item>http://img.zcool.cn/community/01996b57a7f6020000018c1bedef97.jpg</item>
         <item>http://img.zcool.cn/community/01700557a7f42f0000018c1bd6eb23.jpg</item>
     </array>
+
+    <array name="stock_dialog_String">
+        <item>@string/long_river_company</item>
+        <item>@string/global_gold</item>
+        <item>@string/hangqing_waihui</item>
+        <item>@string/hangqing_zhigold</item>
+        <item>@string/hangqing_shf</item>
+        <item>@string/hangqing_lme</item>
+        <item>@string/hangqing_nymex</item>
+        <item>@string/hangqing_comex</item>
+    </array>
 </resources>

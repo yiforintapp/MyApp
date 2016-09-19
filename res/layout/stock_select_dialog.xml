@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/common_dialog_bg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="选择行情"/>
+
+    <com.zlf.appmaster.ui.WheelView
+        android:id="@+id/wheel_view_wv"
+        android:layout_width="@dimen/dlg_horizental_margin"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        />
+
+    <LinearLayout
+        android:id="@+id/dlg_bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.zlf.appmaster.ui.RippleView
+            android:id="@+id/rv_blue"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_weight="1"
+            app:rippleColor="@color/button_blue_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/dlg_bottom_btn"
+                style="@style/dlg_right_button_txt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/makesure" />
+        </com.zlf.appmaster.ui.RippleView>
+    </LinearLayout>
+
+</LinearLayout>

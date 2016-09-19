@@ -23,7 +23,7 @@ import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.home.BaseActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.ui.stock.LoginProgressDialog;
+import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.tools.animator.Animator;
 import com.zlf.tools.animator.AnimatorSet;
@@ -312,7 +312,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             mDialog.show();
             mProgressBarShow = true;
             // 发送请求
-            LoginHttpUtil.sendHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
+            LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
                     mUserEt.getText().toString().trim(), mPasswordEt.getText().toString().trim(), mUserNameEt.getText().toString().trim(), new HttpCallBackListener() {
                         @Override
                         public void onFinish(String response) {

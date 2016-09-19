@@ -1,10 +1,12 @@
 package com.zlf.appmaster.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -14,8 +16,6 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.OnRequestListener;
@@ -23,11 +23,13 @@ import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
+import com.zlf.appmaster.ui.dialog.StockSelectDialog;
 import com.zlf.appmaster.ui.stock.StockTextView;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
@@ -39,7 +41,6 @@ import com.zlf.banner.listener.OnBannerClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2016/9/8.
@@ -60,7 +61,6 @@ public class HomeTabFragment extends BaseFragment {
     private Banner mBanner;
     private List<StockIndex> mData;
     private StockQuotationsClient mStockClient;
-    private CircularProgressView mProgressBar;
     private BounceBackViewPager mViewPager;
     private ScrollPageAdapter mPageAdapter;
     private ScrollPageChangeListener mPageChangeLister;
@@ -81,8 +81,12 @@ public class HomeTabFragment extends BaseFragment {
             {Constants.NYMEX_INFO_PRONAME, Constants.NYMEX_INFO_MINUTE_PRONAME, Constants.NYMEX_INFO_KLINE_PRONAME},
             {Constants.COMEX_INFO_PRONAME, Constants.COMEX_INFO_MINUTE_PRONAME, Constants.COMEX_INFO_KLINE_PRONAME}};
 
-    private int mCurrentItem = 0;
+    private String[] mDialogString;
+    private StockSelectDialog mDialog;
+
+    private int mCurrentItem;
     private int mTotalCount = ITEM_SHOW.length;
+    private FrameLayout mStockLayout;
 
 
     @Override
@@ -96,26 +100,34 @@ public class HomeTabFragment extends BaseFragment {
         mViewPager = (BounceBackViewPager) findViewById(R.id.my_viewpager);
         mViews = new ArrayList<View>();
         mIndicator = (LinearLayout) findViewById(R.id.my_indicator);
-        mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
+        mStockLayout = (FrameLayout) findViewById(R.id.stock_layout);
         mBanner = (Banner) findViewById(R.id.banner);
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         String[] images = getResources().getStringArray(R.array.banner_url);
         mIndicatorImages = new ArrayList<ImageView>();
         mData = new ArrayList<StockIndex>();
+        mCurrentItem = LeoSettings.getInteger(PrefConst.CURRENT_SELECT_STOCK, 0);
+        mDialogString = getResources().getStringArray(R.array.stock_dialog_String);
         mBanner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
         mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
             @Override
             public void OnBannerClick(int position) {
                 Toast.makeText(mActivity, "你点击了：" + position, Toast.LENGTH_LONG).show();
+                startActivity(new Intent(mActivity, HomeTabTopWebActivity.class));
             }
         });
 
         mHlistview = (HorizontalListView) findViewById(R.id.h_listview);
         mWinAdapter = new WinTopAdapter(mActivity);
         mHlistview.setAdapter(mWinAdapter);
+        requestBannerData();
+        requestData();
         setWinTopData();
         loadWinTopData();
 
+    }
+
+    private void requestBannerData() {
 
     }
 
@@ -181,17 +193,11 @@ public class HomeTabFragment extends BaseFragment {
         LeoSettings.setString(PrefConst.WIN_TOP_STRING, s);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        requestData();
-    }
 
     /**
      * 请求数据
      */
     private void requestData() {
-        mProgressBar.setVisibility(View.VISIBLE);
         mStockClient.requestNewIndexAll(new OnRequestListener() {
             @Override
             public void onDataFinish(Object object) {
@@ -200,7 +206,6 @@ public class HomeTabFragment extends BaseFragment {
                 mData.addAll((List<StockIndex>) objectArray[0]);
                 mData.add(0, null);
 
-                mProgressBar.setVisibility(View.GONE);
                 if (mData != null && mData.size() > 1) {
                     mData.remove(0);
                     mCount = mData.size() / 3 + 1;
@@ -214,21 +219,16 @@ public class HomeTabFragment extends BaseFragment {
                     mPageChangeLister = new ScrollPageChangeListener();
                     mViewPager.setOnPageChangeListener(mPageChangeLister);
                     mPageAdapter.notifyDataSetChanged();
-                    mIndicator.setVisibility(View.VISIBLE);
-                    mViewPager.setVisibility(View.VISIBLE);
+                    mStockLayout.setVisibility(View.VISIBLE);
                 } else {
-                    mViewPager.setVisibility(View.GONE);
-                    mIndicator.setVisibility(View.GONE);
+                    mStockLayout.setVisibility(View.GONE);
                 }
 
             }
 
             @Override
             public void onError(int errorCode, String errorString) {
-
-                mProgressBar.setVisibility(View.GONE);
-                mViewPager.setVisibility(View.GONE);
-//                mEmptyView.setVisibility(View.VISIBLE);
+                mStockLayout.setVisibility(View.GONE);
             }
         }, Constants.MY_DATA_URL.concat(ITEM_SHOW[mCurrentItem][0]));
 
@@ -358,16 +358,31 @@ public class HomeTabFragment extends BaseFragment {
                 intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, ITEM_SHOW[mCurrentItem][2]);
                 mActivity.startActivity(intent);
             } else {
-                int newItem = 0;
-                while (mCurrentItem == newItem) {
-                    Random random = new Random();
-                    newItem = random.nextInt(mTotalCount);
-                }
-                mCurrentItem = newItem;
-                requestData();
+//                int newItem = 0;
+//                while (mCurrentItem == newItem) {
+//                    Random random = new Random();
+//                    newItem = random.nextInt(mTotalCount);
+//                }
+//                mCurrentItem = newItem;
+//                requestData();
+                mDialog = new StockSelectDialog(mActivity);
+                mDialog.setData(mDialogString, mCurrentItem);
+                mDialog.setBottomBtnListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LeoSettings.setInteger(PrefConst.CURRENT_SELECT_STOCK, mCurrentItem);
+                        requestData();
+                    }
+                });
+                mDialog.setCanceledOnTouchOutside(true);
+                mDialog.show();
             }
         }
 
+    }
+
+    public void setSelectStock(int index) {
+        mCurrentItem = index;
     }
 
 

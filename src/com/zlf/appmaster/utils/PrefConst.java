@@ -96,4 +96,6 @@ public class PrefConst {
 
 
     public static final String WIN_TOP_STRING = "win_top_string";
+
+    public static final String CURRENT_SELECT_STOCK = "current_select_stock";  // 首页当前选中展示行情
 }

@@ -236,6 +236,11 @@
             android:theme="@style/activity_theme"></activity>
 
         <activity
+            android:name=".hometab.HomeTabTopWebActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
             android:name=".stocktrade.StockTradeDetailNewsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>

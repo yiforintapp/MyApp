@@ -23,7 +23,7 @@ import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.home.BaseFragmentActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.ui.stock.LoginProgressDialog;
+import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 
@@ -206,7 +206,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         mProgressBarShow = true;
         try {
             // 发送请求
-            LoginHttpUtil.sendHttpRequest(this, Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
+            LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
                     mUserEt.getText().toString().trim(), mPasswordEt.getText().toString().trim(), "",  new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response) {

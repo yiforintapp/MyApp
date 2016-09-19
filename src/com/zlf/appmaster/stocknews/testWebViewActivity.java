@@ -3,6 +3,7 @@ package com.zlf.appmaster.stocknews;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 
 import com.zlf.appmaster.Constants;
@@ -44,6 +45,7 @@ public class testWebViewActivity extends BaseActivity {
 
         mVideoView = (VideoView) findViewById(R.id.vitamio_videoView);
         mVideoView.setMediaController(new MediaController(this));
+        mVideoView.setVisibility(View.VISIBLE);
         path = Constants.ZHI_BO_ADDRESS;
         mVideoView.setVideoURI(Uri.parse(path));
         mVideoView.requestFocus();

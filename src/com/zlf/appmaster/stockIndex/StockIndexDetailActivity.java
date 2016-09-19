@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.Constants;
@@ -247,16 +246,18 @@ public class StockIndexDetailActivity extends Activity implements View.OnClickLi
         mActivityTitleCommentTV.setText(mTitleComment1);
 //        mTitleComment2 = stockIndex.getCurPriceFormat() + "  " +stockIndex.getCurPriceComment();
 
-        double todayPrice = stockIndex.getTodayIndex();
-        double nowPrice = stockIndex.getNowIndex();
-        if (nowPrice - todayPrice > 0) {
+        int riseInfo = stockIndex.getRiseInfo();
+        if (riseInfo > 0) {
             //涨了！
             mToolBar.setToolbarColorResource(R.color.stock_rise);
             mTimeView.setBackgroundResource(R.color.stock_rise);
-        } else {
+        } else if (riseInfo < 0) {
             //跌了！
             mToolBar.setToolbarColorResource(R.color.stock_slumped);
             mTimeView.setBackgroundResource(R.color.stock_slumped);
+        } else {
+            mToolBar.setToolbarColorResource(R.color.defeat_split_line);
+            mTimeView.setBackgroundResource(R.color.defeat_split_line);
         }
     }
 

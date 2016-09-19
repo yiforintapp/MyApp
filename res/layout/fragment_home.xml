@@ -20,8 +20,10 @@
 
 
         <FrameLayout
+            android:id="@+id/stock_layout"
             android:layout_width="match_parent"
             android:layout_height="110dp"
+            android:visibility="gone"
             android:layout_below="@+id/banner">
 
 
@@ -29,8 +31,7 @@
                 android:id="@+id/my_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:overScrollMode="never"
-                android:visibility="gone"/>
+                android:overScrollMode="never"/>
 
             <LinearLayout
                 android:id="@+id/my_indicator"
@@ -39,22 +40,8 @@
                 android:layout_gravity="bottom"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                android:visibility="visible" />
+                android:padding="10dp"/>
 
-
-            <com.handmark.pulltorefresh.library.xlistview.CircularProgressView
-                android:id="@+id/content_loading"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:padding="0dp"
-                app:cpv_animAutostart="true"
-                app:cpv_color="@color/indicator_text_select_color"
-                app:cpv_indeterminate="true"
-                app:cpv_thickness="4dp" />
 
         </FrameLayout>
 

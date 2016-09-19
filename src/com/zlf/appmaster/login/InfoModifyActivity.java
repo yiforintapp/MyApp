@@ -20,7 +20,7 @@ import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.home.BaseActivity;
 import com.zlf.appmaster.ui.ExpandableLayout;
 import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.ui.stock.LoginProgressDialog;
+import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 
@@ -271,7 +271,7 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
                 pwd = mQueryNewPwdEt.getText().toString().trim();
             }
             // 发送请求
-            LoginHttpUtil.sendHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
+            LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
                     phone, pwd, userName,  new HttpCallBackListener() {
                         @Override
                         public void onFinish(String response) {

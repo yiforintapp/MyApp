@@ -1,4 +1,4 @@
-package com.zlf.appmaster.ui.stock;
+package com.zlf.appmaster.ui.dialog;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.zlf.appmaster.R;
-import com.zlf.appmaster.ui.dialog.LEOBaseDialog;
 
 /**
  * Created by Administrator on 2016/8/26.

@@ -17,7 +17,7 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.home.BaseFragmentActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
-import com.zlf.appmaster.ui.stock.LoginProgressDialog;
+import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.StringUtil;
 
