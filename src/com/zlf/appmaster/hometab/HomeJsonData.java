@@ -1,9 +1,14 @@
 package com.zlf.appmaster.hometab;
 
 import com.zlf.appmaster.Constants;
+import com.zlf.appmaster.model.DayNewsItem;
 import com.zlf.appmaster.model.HomeBannerInfo;
+import com.zlf.appmaster.model.WinTopItem;
+import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -52,6 +57,72 @@ public class HomeJsonData {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<WinTopItem> getHomeWinTop(){
+        List<WinTopItem> list = new ArrayList<WinTopItem>();
+        try {
+            JSONObject object = new JSONObject(mJsonString);
+            if (!object.isNull(Constants.HOME_PAGE_DATA_WINTOP)) {
+                String wintopString = object.get(Constants.HOME_PAGE_DATA_WINTOP).toString();
+
+                String[] groups = wintopString.split(";");
+                for (int i = 0; i < groups.length; i++) {
+                    String group = groups[i];
+                    if (!Utilities.isEmpty(group)) {
+                        WinTopItem item = new WinTopItem();
+                        String name = group.split("_")[0];
+                        String price = group.split("_")[1];
+
+                        item.setWinName(name);
+                        item.setWinPrice(Double.valueOf(price));
+                        list.add(item);
+                    }
+                }
+
+            }
+            LeoLog.d("testHome","getHomeWinTop size is : " + list.size());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<DayNewsItem> getDayNews(){
+        List<DayNewsItem> list = new ArrayList<DayNewsItem>();
+
+        try {
+            JSONObject object = new JSONObject(mJsonString);
+            if (!object.isNull(Constants.HOME_PAGE_DATA_DAYNEWS)) {
+
+                JSONArray jsonArray = object.getJSONArray(Constants.HOME_PAGE_DATA_DAYNEWS);
+                DayNewsItem info;
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    info = new DayNewsItem();
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    if (!jsonObject.isNull(Constants.HOME_PAGE_DATA_DAYNEWS_ID)) {
+                        info.setId(jsonObject.getInt(Constants.HOME_PAGE_DATA_DAYNEWS_ID));
+                    }
+                    if (!jsonObject.isNull(Constants.HOME_PAGE_DATA_DAYNEWS_TIME)) {
+                        info.setTime(jsonObject.getString(Constants.HOME_PAGE_DATA_DAYNEWS_TIME));
+                    }
+                    if (!jsonObject.isNull(Constants.HOME_PAGE_DATA_DAYNEWS_TITLE)) {
+                        info.setTitle(jsonObject.getString(Constants.HOME_PAGE_DATA_DAYNEWS_TITLE));
+                    }
+                    if (!jsonObject.isNull(Constants.HOME_PAGE_DATA_DAYNEWS_DESC)) {
+                        info.setDesc(jsonObject.getString(Constants.HOME_PAGE_DATA_DAYNEWS_DESC));
+                    }
+                    list.add(info);
+                }
+
+            }
+            LeoLog.d("testHome","getDayNews size is : " + list.size());
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 

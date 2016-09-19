@@ -14,6 +14,7 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.utils.Utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WinTopAdapter extends BaseAdapter {
@@ -26,6 +27,7 @@ public class WinTopAdapter extends BaseAdapter {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mWidth = Utilities.getScreenSize(context)[0];
+        mList = new ArrayList<WinTopItem>();
     }
 
     public void setList(List<WinTopItem> list) {

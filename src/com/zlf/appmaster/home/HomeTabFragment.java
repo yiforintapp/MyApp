@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.hp.hpl.sparta.Text;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
@@ -28,6 +29,7 @@ import com.zlf.appmaster.hometab.HomeJsonData;
 import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
 import com.zlf.appmaster.login.HttpCallBackListener;
 import com.zlf.appmaster.login.LoginHttpUtil;
+import com.zlf.appmaster.model.DayNewsItem;
 import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
@@ -37,6 +39,7 @@ import com.zlf.appmaster.ui.HorizontalListView;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.StockSelectDialog;
 import com.zlf.appmaster.ui.stock.StockTextView;
+import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.Utilities;
@@ -57,6 +60,8 @@ public class HomeTabFragment extends BaseFragment {
     public final static String WINTOP = "APP_WIN";
 
     public final static int BANNER_WHAT = 0;
+    public final static int WINTOP_WHAT = 1;
+    public final static int DAYNWES_WHAT = 2;
 
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth = BannerConfig.INDICATOR_SIZE;
@@ -101,8 +106,17 @@ public class HomeTabFragment extends BaseFragment {
 
     private List<String> mIvUrls;
     private List<String> mOpenUrls;
+    private List<WinTopItem> mWinTopList;
+    private List<DayNewsItem> mDayNewsList;
 
     private static DataHandler mHandler;
+
+    private View mWinTopLayout;
+    private View mDayNewsLayout;
+    private TextView mYearOne,mYearTwo,mYearThr,mYearFor;
+    private TextView mDateOne,mDateTwo,mDateThr,mDateFor;
+    private TextView mTitleOne,mTitleTwo,mTitleThr,mTitleFor;
+    private TextView mDescOne,mDescTwo,mDescThr,mDescFor;
 
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
@@ -134,6 +148,53 @@ public class HomeTabFragment extends BaseFragment {
                 });
             }
 
+            if(fragment.WINTOP_WHAT == msg.what){
+                if (fragment.mWinTopList != null && fragment.mWinTopList.size() > 0) {
+                    fragment.mWinAdapter.setList(fragment.mWinTopList);
+                    fragment.mWinAdapter.notifyDataSetChanged();
+                    fragment.mWinTopLayout.setVisibility(View.VISIBLE);
+                }
+            }
+
+            if(fragment.DAYNWES_WHAT == msg.what){
+                if (fragment.mDayNewsList != null && fragment.mDayNewsList.size() > 0) {
+
+                    for(int i = 0;i< fragment.mDayNewsList.size();i++){
+                        DayNewsItem info;
+                        switch (i){
+                            case 0:
+                                info = fragment.mDayNewsList.get(i);
+                                fragment.mYearOne.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),1));
+                                fragment.mDateOne.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),2));
+                                fragment.mTitleOne.setText(info.getTitle());
+                                fragment.mDescOne.setText(info.getDesc());
+                                break;
+                            case 1:
+                                info = fragment.mDayNewsList.get(i);
+                                fragment.mYearTwo.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),1));
+                                fragment.mDateTwo.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),2));
+                                fragment.mTitleTwo.setText(info.getTitle());
+                                fragment.mDescTwo.setText(info.getDesc());
+                                break;
+                            case 2:
+                                info = fragment.mDayNewsList.get(i);
+                                fragment.mYearThr.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),1));
+                                fragment.mDateThr.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),2));
+                                fragment.mTitleThr.setText(info.getTitle());
+                                fragment.mDescThr.setText(info.getDesc());
+                                break;
+                            case 3:
+                                info = fragment.mDayNewsList.get(i);
+                                fragment.mYearFor.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),1));
+                                fragment.mDateFor.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),2));
+                                fragment.mTitleFor.setText(info.getTitle());
+                                fragment.mDescFor.setText(info.getDesc());
+                                break;
+                        }
+                    }
+                    fragment.mDayNewsLayout.setVisibility(View.VISIBLE);
+                }
+            }
 
         }
     }
@@ -171,13 +232,37 @@ public class HomeTabFragment extends BaseFragment {
 //            }
 //        });
 
+        mWinTopLayout = findViewById(R.id.include_win_top);
+        mDayNewsLayout = findViewById(R.id.include_day_news);
+        setDayNewsFind();
+
         mHlistview = (HorizontalListView) findViewById(R.id.h_listview);
         mWinAdapter = new WinTopAdapter(mActivity);
-        mHlistview.setAdapter(mWinAdapter);
         requestHomeData();
-        setWinTopData();
-        loadWinTopData();
 
+        mHlistview.setAdapter(mWinAdapter);
+    }
+
+    private void setDayNewsFind() {
+        mYearOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_one);
+        mDateOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_date_one);
+        mTitleOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_title_one);
+        mDescOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_desc_one);
+
+        mYearTwo = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_two);
+        mDateTwo = (TextView) mDayNewsLayout.findViewById(R.id.tv_date_two);
+        mTitleTwo = (TextView) mDayNewsLayout.findViewById(R.id.tv_title_two);
+        mDescTwo = (TextView) mDayNewsLayout.findViewById(R.id.tv_desc_two);
+
+        mYearThr = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_thr);
+        mDateThr = (TextView) mDayNewsLayout.findViewById(R.id.tv_date_thr);
+        mTitleThr = (TextView) mDayNewsLayout.findViewById(R.id.tv_title_thr);
+        mDescThr = (TextView) mDayNewsLayout.findViewById(R.id.tv_desc_thr);
+
+        mYearFor = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_for);
+        mDateFor = (TextView) mDayNewsLayout.findViewById(R.id.tv_date_for);
+        mTitleFor = (TextView) mDayNewsLayout.findViewById(R.id.tv_title_for);
+        mDescFor = (TextView) mDayNewsLayout.findViewById(R.id.tv_desc_for);
     }
 
     private void requestHomeData() {
@@ -190,18 +275,9 @@ public class HomeTabFragment extends BaseFragment {
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
-                            List<HomeBannerInfo> list = mHomeJsonData.getHomeBannerData();
-                            if (list != null && list.size() > 0) {
-                                for (HomeBannerInfo info : list) {
-                                    mIvUrls.add(info.mIvUrl);
-                                    mOpenUrls.add(info.mOpenUrl);
-                                }
-                                if (mHandler != null) {
-                                    Message message = mHandler.obtainMessage();
-                                    message.what = BANNER_WHAT;
-                                    mHandler.sendMessage(message);
-                                }
-                            }
+                            setBanner();
+                            setWinTop();
+                            setDayNews();
                         }
                     });
                 }
@@ -214,6 +290,41 @@ public class HomeTabFragment extends BaseFragment {
         });
     }
 
+    private void setDayNews() {
+        mDayNewsList = mHomeJsonData.getDayNews();
+        if (mHandler != null) {
+            Message message = mHandler.obtainMessage();
+            message.what = DAYNWES_WHAT;
+            mHandler.sendMessage(message);
+        }
+    }
+
+    private void setWinTop() {
+
+        mWinTopList = mHomeJsonData.getHomeWinTop();
+        if (mHandler != null) {
+            Message message = mHandler.obtainMessage();
+            message.what = WINTOP_WHAT;
+            mHandler.sendMessage(message);
+        }
+
+    }
+
+    private void setBanner() {
+        List<HomeBannerInfo> list = mHomeJsonData.getHomeBannerData();
+        if (list != null && list.size() > 0) {
+            for (HomeBannerInfo info : list) {
+                mIvUrls.add(info.mIvUrl);
+                mOpenUrls.add(info.mOpenUrl);
+            }
+            if (mHandler != null) {
+                Message message = mHandler.obtainMessage();
+                message.what = BANNER_WHAT;
+                mHandler.sendMessage(message);
+            }
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -221,67 +332,67 @@ public class HomeTabFragment extends BaseFragment {
         requestData();
     }
 
-    private void loadWinTopData() {
-        String url = Constants.ADDRESS + Constants.APPSERVLET + Constants.DATA + WINTOP;
-        LeoLog.d(TAG, "check update url is : " + url);
+//    private void loadWinTopData() {
+//        String url = Constants.ADDRESS + Constants.APPSERVLET + Constants.DATA + WINTOP;
+//        LeoLog.d(TAG, "check update url is : " + url);
+//
+//        QStringRequest stringRequest = new QStringRequest(
+//                Request.Method.GET, url, null, new Response.Listener<String>() {
+//
+//            @Override
+//            public void onResponse(String s) {
+//                LeoLog.d(TAG, "check update requestFinished version is : " + s);
+//
+//                if (!Utilities.isEmpty(s) && !s.equals("-1")) {
+//                    saveWinTop(s);
+//                    setWinTopData();
+//                }
+//            }
+//
+//
+//        }, new Response.ErrorListener() {
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                LeoLog.d(TAG, "check update err");
+//            }
+//
+//        });
+//
+//        // callAll的时候使用
+//        VolleyTool.getInstance(mActivity).getRequestQueue()
+//                .add(stringRequest);
+//    }
 
-        QStringRequest stringRequest = new QStringRequest(
-                Request.Method.GET, url, null, new Response.Listener<String>() {
+//    private void setWinTopData() {
+//
+//        String s = LeoSettings.getString(PrefConst.WIN_TOP_STRING, Constants.DEFAULT_WIN_TOP);
+//        List<WinTopItem> list = new ArrayList<WinTopItem>();
+//
+//        String[] groups = s.split(";");
+//        for (int i = 0; i < groups.length; i++) {
+//            String group = groups[i];
+//            if (!Utilities.isEmpty(group)) {
+//                WinTopItem item = new WinTopItem();
+//                String name = group.split("_")[0];
+//                String price = group.split("_")[1];
+//
+//                item.setWinName(name);
+//                item.setWinPrice(Double.valueOf(price));
+//                list.add(item);
+//            }
+//        }
+//
+//        if (list.size() > 0) {
+//            mWinAdapter.setList(list);
+//            mWinAdapter.notifyDataSetChanged();
+//        }
+//
+//    }
 
-            @Override
-            public void onResponse(String s) {
-                LeoLog.d(TAG, "check update requestFinished version is : " + s);
-
-                if (!Utilities.isEmpty(s) && !s.equals("-1")) {
-                    saveWinTop(s);
-                    setWinTopData();
-                }
-            }
-
-
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                LeoLog.d(TAG, "check update err");
-            }
-
-        });
-
-        // callAll的时候使用
-        VolleyTool.getInstance(mActivity).getRequestQueue()
-                .add(stringRequest);
-    }
-
-    private void setWinTopData() {
-
-        String s = LeoSettings.getString(PrefConst.WIN_TOP_STRING, Constants.DEFAULT_WIN_TOP);
-        List<WinTopItem> list = new ArrayList<WinTopItem>();
-
-        String[] groups = s.split(";");
-        for (int i = 0; i < groups.length; i++) {
-            String group = groups[i];
-            if (!Utilities.isEmpty(group)) {
-                WinTopItem item = new WinTopItem();
-                String name = group.split("_")[0];
-                String price = group.split("_")[1];
-
-                item.setWinName(name);
-                item.setWinPrice(Double.valueOf(price));
-                list.add(item);
-            }
-        }
-
-        if (list.size() > 0) {
-            mWinAdapter.setList(list);
-            mWinAdapter.notifyDataSetChanged();
-        }
-
-    }
-
-    private void saveWinTop(String s) {
-        LeoSettings.setString(PrefConst.WIN_TOP_STRING, s);
-    }
+//    private void saveWinTop(String s) {
+//        LeoSettings.setString(PrefConst.WIN_TOP_STRING, s);
+//    }
 
 
     /**

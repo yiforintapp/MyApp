@@ -4,12 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
+    android:visibility="gone"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="8dp"
         android:background="@color/white">
 
         <TextView
@@ -87,6 +87,7 @@
             android:layout_width="match_parent"
             android:layout_toRightOf="@id/view_left_content"
             android:gravity="center_vertical"
+            android:layout_marginRight="5dp"
             android:layout_height="match_parent">
 
             <TextView
@@ -106,7 +107,7 @@
                 android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:textColor="@color/title_bar_txt"
+                android:textColor="@color/small_text"
                 android:layout_marginTop="5dp"
                 android:textSize="12dp"
                 android:layout_height="wrap_content" />
@@ -165,6 +166,7 @@
             android:layout_width="match_parent"
             android:layout_toRightOf="@id/view_left_content_two"
             android:gravity="center_vertical"
+            android:layout_marginRight="5dp"
             android:layout_height="match_parent">
 
             <TextView
@@ -184,7 +186,7 @@
                 android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:textColor="@color/title_bar_txt"
+                android:textColor="@color/small_text"
                 android:layout_marginTop="5dp"
                 android:textSize="12dp"
                 android:layout_height="wrap_content" />
@@ -242,6 +244,7 @@
         android:layout_width="match_parent"
         android:layout_toRightOf="@id/view_left_content_thr"
         android:gravity="center_vertical"
+        android:layout_marginRight="5dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -261,7 +264,7 @@
             android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
             android:maxLines="2"
             android:ellipsize="end"
-            android:textColor="@color/title_bar_txt"
+            android:textColor="@color/small_text"
             android:layout_marginTop="5dp"
             android:textSize="12dp"
             android:layout_height="wrap_content" />
@@ -319,6 +322,7 @@
             android:layout_width="match_parent"
             android:layout_toRightOf="@id/view_left_content_for"
             android:gravity="center_vertical"
+            android:layout_marginRight="5dp"
             android:layout_height="match_parent">
 
             <TextView
@@ -338,7 +342,7 @@
                 android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:textColor="@color/title_bar_txt"
+                android:textColor="@color/small_text"
                 android:layout_marginTop="5dp"
                 android:textSize="12dp"
                 android:layout_height="wrap_content" />

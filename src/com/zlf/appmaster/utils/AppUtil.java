@@ -33,6 +33,8 @@ import com.zlf.appmaster.utils.LeoLog;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AppUtil {
@@ -469,4 +471,20 @@ public class AppUtil {
         }
     }
 
+
+    public static String getDateTime(long time,int type){
+        String timeString;
+        				Date date=new Date();
+						date.setTime(time);
+						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String allTime = formatter.format(date);
+        String[] timePart = allTime.split("-");
+        if(type == 1){
+            //year
+            timeString = timePart[0] + "年";
+        }else{
+            timeString = timePart[1] + "月" + timePart[2] + "日";
+        }
+        return timeString;
+    }
 }

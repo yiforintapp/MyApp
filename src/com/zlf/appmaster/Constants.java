@@ -307,6 +307,13 @@ public class Constants {
     public static final String HOME_PAGE_DATA_BANNER = "toppic";
     public static final String HOME_PAGE_DATA_BANNER_IVURL = "imgurl";
     public static final String HOME_PAGE_DATA_BANNER_ONURL = "openurl";
+    public static final String HOME_PAGE_DATA_WINTOP = "wintop";
+    public static final String HOME_PAGE_DATA_DAYNEWS = "daynews";
+    public static final String HOME_PAGE_DATA_DAYNEWS_ID = "id";
+    public static final String HOME_PAGE_DATA_DAYNEWS_TIME = "newstime";
+    public static final String HOME_PAGE_DATA_DAYNEWS_TITLE = "title";
+    public static final String HOME_PAGE_DATA_DAYNEWS_DESC = "desc";
+
 
     public static final String DEFAULT_WIN_TOP = "ki****aax_32541.55;yi****js_30012.21;ka****bb_27654.25;ac****21_18154.01;mn****mn_11546.65;mn****oi_9654.23;ij****na_4865.88;qq****aa_3332.33;ip****pz_1596.84;wa****mn_985.99;";
 
