@@ -63,7 +63,7 @@ public class LoginHttpUtil {
     }
 
     //封装的发送请求函数
-    public static void sendBannerHttpRequest(Context context, final String address, String tag, String phoneNumber, String pwd, String userName, final HttpCallBackListener listener) throws UnsupportedEncodingException {
+    public static void sendBannerHttpRequest(Context context, final String address, final HttpCallBackListener listener) {
         if (!AppUtil.hasInternet(context)){
             //这里写相应的网络设置处理
             if (listener != null){
@@ -72,34 +72,7 @@ public class LoginHttpUtil {
             return;
         }
 
-        //设置编码
-        final String encode = "UTF-8";
-        final StringBuilder StringUrl = new StringBuilder(address);
-        StringUrl.append(tag);
-
-        String phone = "";
-        try {
-            DesUtils des = new DesUtils(Constants.KEY_TAG);//自定义密钥
-            phone = des.encrypt(phoneNumber);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        StringUrl.append(LoginUser.PHONENUMBER)
-                .append("=")
-                .append(URLEncoder.encode(phone, encode))
-                .append("&")
-                .append(LoginUser.PASSWORD)
-                .append("=")
-                .append(URLEncoder.encode(pwd, encode));
-        if (!TextUtils.isEmpty(userName)) {
-            StringUrl.append("&")
-                    .append(LoginUser.USERNAME)
-                    .append("=")
-                    .append(URLEncoder.encode(userName, encode));
-        }
-
+        StringBuilder StringUrl = new StringBuilder(address);
         runnableStart(StringUrl.toString(), listener);
 
     }

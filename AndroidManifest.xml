@@ -238,6 +238,7 @@
         <activity
             android:name=".hometab.HomeTabTopWebActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/activity_theme"></activity>
 
         <activity

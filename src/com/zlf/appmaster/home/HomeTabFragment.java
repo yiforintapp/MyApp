@@ -2,6 +2,8 @@ package com.zlf.appmaster.home;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -10,19 +12,23 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.hometab.HomeJsonData;
 import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
+import com.zlf.appmaster.login.HttpCallBackListener;
+import com.zlf.appmaster.login.LoginHttpUtil;
+import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
@@ -39,6 +45,7 @@ import com.zlf.banner.Banner;
 import com.zlf.banner.BannerConfig;
 import com.zlf.banner.listener.OnBannerClickListener;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +55,8 @@ import java.util.List;
 public class HomeTabFragment extends BaseFragment {
     private final static String TAG = "HomeTabFragment";
     public final static String WINTOP = "APP_WIN";
+
+    public final static int BANNER_WHAT = 0;
 
     private int mIndicatorMargin = BannerConfig.PADDING_SIZE;
     private int mIndicatorWidth = BannerConfig.INDICATOR_SIZE;
@@ -68,6 +77,8 @@ public class HomeTabFragment extends BaseFragment {
 
     private HorizontalListView mHlistview;
     private WinTopAdapter mWinAdapter;
+    private HomeJsonData mHomeJsonData;
+
 
     private int mLastPosition = 0;
 
@@ -88,6 +99,44 @@ public class HomeTabFragment extends BaseFragment {
     private int mTotalCount = ITEM_SHOW.length;
     private FrameLayout mStockLayout;
 
+    private List<String> mIvUrls;
+    private List<String> mOpenUrls;
+
+    private static DataHandler mHandler;
+
+    //用于处理消息的Handler
+    private static class DataHandler extends Handler {
+        WeakReference<HomeTabFragment> mActivityReference;
+
+        public DataHandler(HomeTabFragment fragment) {
+            super();
+            mActivityReference = new WeakReference<HomeTabFragment>(fragment);
+        }
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            final HomeTabFragment fragment = mActivityReference.get();
+            if (fragment == null) {
+                return;
+            }
+            if (fragment.BANNER_WHAT == msg.what) {
+                fragment.mBanner.setImages(fragment.mIvUrls);//可以选择设置图片网址，或者资源文件，默认用Glide加载
+                fragment.mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
+                    @Override
+                    public void OnBannerClick(int position) {
+                        Intent intent = new Intent(fragment.mActivity, HomeTabTopWebActivity.class);
+                        intent.putExtra(HomeTabTopWebActivity.WEB_URL, fragment.mOpenUrls.get(position - 1));
+                        fragment.mActivity.startActivity(intent);
+                    }
+                });
+            }
+
+
+        }
+    }
+
 
     @Override
     protected int layoutResourceId() {
@@ -96,6 +145,7 @@ public class HomeTabFragment extends BaseFragment {
 
     @Override
     protected void onInitUI() {
+        mHandler =new DataHandler(this);
         mStockClient = StockQuotationsClient.getInstance(mActivity);
         mViewPager = (BounceBackViewPager) findViewById(R.id.my_viewpager);
         mViews = new ArrayList<View>();
@@ -103,32 +153,64 @@ public class HomeTabFragment extends BaseFragment {
         mStockLayout = (FrameLayout) findViewById(R.id.stock_layout);
         mBanner = (Banner) findViewById(R.id.banner);
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-        String[] images = getResources().getStringArray(R.array.banner_url);
+//        String[] images = getResources().getStringArray(R.array.banner_url);
+        mHomeJsonData = HomeJsonData.getInstance();
         mIndicatorImages = new ArrayList<ImageView>();
         mData = new ArrayList<StockIndex>();
+        mIvUrls = new ArrayList<String>();
+        mOpenUrls = new ArrayList<String>();
         mCurrentItem = LeoSettings.getInteger(PrefConst.CURRENT_SELECT_STOCK, 0);
         mDialogString = getResources().getStringArray(R.array.stock_dialog_String);
-        mBanner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
-        mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
-            @Override
-            public void OnBannerClick(int position) {
-                Toast.makeText(mActivity, "你点击了：" + position, Toast.LENGTH_LONG).show();
-                startActivity(new Intent(mActivity, HomeTabTopWebActivity.class));
-            }
-        });
+//        mBanner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
+//        mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
+//            @Override
+//            public void OnBannerClick(int position) {
+//                Toast.makeText(mActivity, "你点击了：" + position, Toast.LENGTH_LONG).show();
+//                startActivity(new Intent(mActivity, HomeTabTopWebActivity.class));
+//            }
+//        });
 
         mHlistview = (HorizontalListView) findViewById(R.id.h_listview);
         mWinAdapter = new WinTopAdapter(mActivity);
         mHlistview.setAdapter(mWinAdapter);
-        requestBannerData();
+        requestHomeData();
         setWinTopData();
         loadWinTopData();
 
     }
 
-    private void requestBannerData() {
+    private void requestHomeData() {
+        // 发送请求
+        LoginHttpUtil.sendBannerHttpRequest(mActivity, Constants.HOME_PAGE_DATA, new HttpCallBackListener() {
+            @Override
+            public void onFinish(String response) {
+                if (response != null) {
+                    mHomeJsonData.setData(response.toString());
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<HomeBannerInfo> list = mHomeJsonData.getHomeBannerData();
+                            for (HomeBannerInfo info: list) {
+                                mIvUrls.add(info.mIvUrl);
+                                mOpenUrls.add(info.mOpenUrl);
+                            }
+                            if (mHandler != null) {
+                                Message message = mHandler.obtainMessage();
+                                message.what = BANNER_WHAT;
+                                mHandler.sendMessage(message);
+                            }
+                        }
+                    });
+                }
+            }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
     }
+
 
     @Override
     public void onResume() {

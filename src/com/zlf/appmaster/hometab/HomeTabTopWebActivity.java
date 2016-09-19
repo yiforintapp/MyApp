@@ -14,7 +14,11 @@ import com.zlf.appmaster.home.BaseActivity;
  */
 public class HomeTabTopWebActivity extends BaseActivity {
 
+    public static final String WEB_URL = "web_url";
+
     private WebView mWebView;
+
+    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,9 @@ public class HomeTabTopWebActivity extends BaseActivity {
     private void init() {
         mWebView = (WebView) findViewById(R.id.webView);
         mWebView.setVisibility(View.VISIBLE);
+
+        mUrl = getIntent().getStringExtra(WEB_URL);
+
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setBuiltInZoomControls(false);
@@ -61,6 +68,6 @@ public class HomeTabTopWebActivity extends BaseActivity {
         mWebView.setWebChromeClient(new WebChromeClient());
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
-        mWebView.loadUrl("http://www.zlf1688.com/weixin/01/index.html");
+        mWebView.loadUrl(mUrl);
     }
 }

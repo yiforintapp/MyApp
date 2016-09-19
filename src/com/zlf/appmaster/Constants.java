@@ -303,5 +303,11 @@ public class Constants {
     public static final String GET_CODE_MSG_TAG = "msg";
     public static final String GET_CODE_STYLE_TAG = "charSetStr";
 
+    public static final String HOME_PAGE_DATA = "http://120.24.14.76:1688/appwork?proname=mainpage";
+    public static final String HOME_PAGE_DATA_BANNER = "toppic";
+    public static final String HOME_PAGE_DATA_BANNER_IVURL = "imgurl";
+    public static final String HOME_PAGE_DATA_BANNER_ONURL = "openurl";
+
     public static final String DEFAULT_WIN_TOP = "ki****aax_32541.55;yi****js_30012.21;ka****bb_27654.25;ac****21_18154.01;mn****mn_11546.65;mn****oi_9654.23;ij****na_4865.88;qq****aa_3332.33;ip****pz_1596.84;wa****mn_985.99;";
+
 }
