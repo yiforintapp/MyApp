@@ -720,5 +720,21 @@
         <item name="android:text">"更换"</item>
         <item name="android:visibility">gone</item>
     </style>
+    
+    <style name="home_shortcut_iv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="home_shortcut_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 
 </resources>

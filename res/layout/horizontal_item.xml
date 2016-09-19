@@ -1,138 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
     android:background="@color/white"
-    android:layout_height="110dp">
-
+    android:orientation="horizontal">
 
 
     <View
         android:layout_width="1px"
         android:layout_height="55dp"
         android:layout_gravity="center_vertical"
-        android:background="#DEDEDE"/>
+        android:background="#DEDEDE" />
 
-    <RelativeLayout
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/parent_one"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
 
-        <TextView
-            android:id="@+id/name_one"
-            style="@style/home_stock_name"/>
+            <TextView
+                android:id="@+id/name_one"
+                style="@style/home_stock_name" />
 
-        <com.zlf.appmaster.ui.stock.StockTextView
-            android:id="@+id/price_one"
-            style="@style/home_stock_price"
-            android:layout_below="@+id/name_one"/>
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/price_one"
+                style="@style/home_stock_price"
+                android:layout_below="@+id/name_one" />
 
-        <com.zlf.appmaster.ui.stock.StockTextView
-            android:id="@+id/percent_one"
-            style="@style/home_stock_percent"
-            android:layout_below="@+id/price_one"/>
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/percent_one"
+                style="@style/home_stock_percent"
+                android:layout_below="@+id/price_one" />
 
         </RelativeLayout>
 
 
         <TextView
             android:id="@+id/change_one"
-            style="@style/home_stock_change"/>
+            style="@style/home_stock_change" />
 
 
-
-    </RelativeLayout>
+    </com.zlf.appmaster.ui.RippleView>
 
     <View
         android:id="@+id/view_two"
         android:layout_width="1px"
         android:layout_height="55dp"
         android:layout_gravity="center_vertical"
-        android:background="#DEDEDE"/>
+        android:background="#DEDEDE" />
 
-    <RelativeLayout
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/parent_two"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
-        <TextView
-            android:id="@+id/name_two"
-            style="@style/home_stock_name"/>
+            <TextView
+                android:id="@+id/name_two"
+                style="@style/home_stock_name" />
 
-        <com.zlf.appmaster.ui.stock.StockTextView
-            android:id="@+id/price_two"
-            style="@style/home_stock_price"
-            android:layout_below="@+id/name_two" />
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/price_two"
+                style="@style/home_stock_price"
+                android:layout_below="@+id/name_two" />
 
-        <com.zlf.appmaster.ui.stock.StockTextView
-            android:id="@+id/percent_two"
-            style="@style/home_stock_percent"
-            android:layout_below="@+id/price_two" />
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/percent_two"
+                style="@style/home_stock_percent"
+                android:layout_below="@+id/price_two" />
 
         </RelativeLayout>
 
         <TextView
             android:id="@+id/change_two"
-            style="@style/home_stock_change"/>
+            style="@style/home_stock_change" />
 
-    </RelativeLayout>
+    </com.zlf.appmaster.ui.RippleView>
 
     <View
         android:id="@+id/view_three"
         android:layout_width="1px"
         android:layout_height="55dp"
         android:layout_gravity="center_vertical"
-        android:background="#DEDEDE"/>
+        android:background="#DEDEDE" />
 
-    <RelativeLayout
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/parent_three"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
 
-        <TextView
-            android:id="@+id/name_three"
-            style="@style/home_stock_name"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
-        <com.zlf.appmaster.ui.stock.StockTextView
-            android:id="@+id/price_three"
-            style="@style/home_stock_price"
-            android:layout_below="@+id/name_three"/>
+            <TextView
+                android:id="@+id/name_three"
+                style="@style/home_stock_name" />
 
-        <com.zlf.appmaster.ui.stock.StockTextView
-            android:id="@+id/percent_three"
-            style="@style/home_stock_percent"
-            android:layout_below="@+id/price_three" />
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/price_three"
+                style="@style/home_stock_price"
+                android:layout_below="@+id/name_three" />
+
+            <com.zlf.appmaster.ui.stock.StockTextView
+                android:id="@+id/percent_three"
+                style="@style/home_stock_percent"
+                android:layout_below="@+id/price_three" />
 
         </RelativeLayout>
 
         <TextView
             android:id="@+id/change_three"
-            style="@style/home_stock_change"/>
+            style="@style/home_stock_change" />
 
-    </RelativeLayout>
+    </com.zlf.appmaster.ui.RippleView>
 
 
 </LinearLayout>

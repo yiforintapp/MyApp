@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@color/white">
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/school"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
+        <ImageView
+            android:id="@+id/school_iv"
+            style="@style/home_shortcut_iv"
+            android:src="@drawable/icon_discover_school"/>
+
+
+        <TextView
+            style="@style/home_shortcut_tv"
+            android:layout_below="@+id/school_iv"
+            android:text="新手学堂"/>
+
+    </com.zlf.appmaster.ui.RippleView>
+
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/stock"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
+        <ImageView
+            android:id="@+id/stock_iv"
+            style="@style/home_shortcut_iv"
+            android:src="@drawable/icon_discover_news"/>
+
+
+        <TextView
+            style="@style/home_shortcut_tv"
+            android:layout_below="@+id/stock_iv"
+            android:text="交易行情"/>
+
+
+    </com.zlf.appmaster.ui.RippleView>
+
+
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/client"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
+        <ImageView
+            android:id="@+id/client_iv"
+            style="@style/home_shortcut_iv"
+            android:src="@drawable/icon_discover_circle"/>
+
+
+        <TextView
+            style="@style/home_shortcut_tv"
+            android:layout_below="@+id/client_iv"
+            android:text="咨询客服"/>
+
+    </com.zlf.appmaster.ui.RippleView>
+
+
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/live"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
+        <ImageView
+            android:id="@+id/live_iv"
+            style="@style/home_shortcut_iv"
+            android:src="@drawable/icon_discover_live_room"/>
+
+
+        <TextView
+            style="@style/home_shortcut_tv"
+            android:textColor="@color/black"
+            android:layout_below="@+id/live_iv"
+            android:text="直播间"/>
+
+    </com.zlf.appmaster.ui.RippleView>
+
+</LinearLayout>

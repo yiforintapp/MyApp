@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +28,7 @@ import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
+import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.StockSelectDialog;
 import com.zlf.appmaster.ui.stock.StockTextView;
 import com.zlf.appmaster.utils.LeoLog;
@@ -121,7 +121,6 @@ public class HomeTabFragment extends BaseFragment {
         mWinAdapter = new WinTopAdapter(mActivity);
         mHlistview.setAdapter(mWinAdapter);
         requestBannerData();
-        requestData();
         setWinTopData();
         loadWinTopData();
 
@@ -129,6 +128,12 @@ public class HomeTabFragment extends BaseFragment {
 
     private void requestBannerData() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestData();
     }
 
     private void loadWinTopData() {
@@ -281,15 +286,15 @@ public class HomeTabFragment extends BaseFragment {
 
             return;
         }
-        RelativeLayout parentOne;
+        RippleView parentOne;
         TextView name_one;
         StockTextView price_one;
         StockTextView percent_one;
-        RelativeLayout parentTwo;
+        RippleView parentTwo;
         TextView name_two;
         StockTextView price_two;
         StockTextView percent_two;
-        RelativeLayout parentThree;
+        RippleView parentThree;
         TextView name_three;
         StockTextView price_three;
         StockTextView percent_three;
@@ -300,21 +305,21 @@ public class HomeTabFragment extends BaseFragment {
                 price_one = (StockTextView) page.findViewById(R.id.price_one);
                 percent_one = (StockTextView) page.findViewById(R.id.percent_one);
                 setItemData(index, name_one, price_one, percent_one);
-                parentOne = (RelativeLayout) page.findViewById(R.id.parent_one);
+                parentOne = (RippleView) page.findViewById(R.id.parent_one);
                 parentOne.setOnClickListener(new ItemClickListener(index));
             } else if (i == 1) {
                 name_two = (TextView) page.findViewById(R.id.name_two);
                 price_two = (StockTextView) page.findViewById(R.id.price_two);
                 percent_two = (StockTextView) page.findViewById(R.id.percent_two);
                 setItemData(index, name_two, price_two, percent_two);
-                parentTwo = (RelativeLayout) page.findViewById(R.id.parent_two);
+                parentTwo = (RippleView) page.findViewById(R.id.parent_two);
                 parentTwo.setOnClickListener(new ItemClickListener(index));
             } else {
                 name_three = (TextView) page.findViewById(R.id.name_three);
                 price_three = (StockTextView) page.findViewById(R.id.price_three);
                 percent_three = (StockTextView) page.findViewById(R.id.percent_three);
                 setItemData(index, name_three, price_three, percent_three);
-                parentThree = (RelativeLayout) page.findViewById(R.id.parent_three);
+                parentThree = (RippleView) page.findViewById(R.id.parent_three);
                 parentThree.setOnClickListener(new ItemClickListener(index));
             }
         }

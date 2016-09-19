@@ -47,6 +47,9 @@
 
         </FrameLayout>
 
+        <include
+            android:id="@+id/shortcut_layout"
+            layout="@layout/home_shortcut"/>
 
         <include
             android:id="@+id/include"
