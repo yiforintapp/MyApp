@@ -123,6 +123,7 @@ public class HomeTabFragment extends BaseFragment {
             }
             if (fragment.BANNER_WHAT == msg.what) {
                 fragment.mBanner.setImages(fragment.mIvUrls);//可以选择设置图片网址，或者资源文件，默认用Glide加载
+                fragment.mBanner.setVisibility(View.VISIBLE);
                 fragment.mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
                     @Override
                     public void OnBannerClick(int position) {
@@ -190,14 +191,16 @@ public class HomeTabFragment extends BaseFragment {
                         @Override
                         public void run() {
                             List<HomeBannerInfo> list = mHomeJsonData.getHomeBannerData();
-                            for (HomeBannerInfo info: list) {
-                                mIvUrls.add(info.mIvUrl);
-                                mOpenUrls.add(info.mOpenUrl);
-                            }
-                            if (mHandler != null) {
-                                Message message = mHandler.obtainMessage();
-                                message.what = BANNER_WHAT;
-                                mHandler.sendMessage(message);
+                            if (list != null && list.size() > 0) {
+                                for (HomeBannerInfo info : list) {
+                                    mIvUrls.add(info.mIvUrl);
+                                    mOpenUrls.add(info.mOpenUrl);
+                                }
+                                if (mHandler != null) {
+                                    Message message = mHandler.obtainMessage();
+                                    message.what = BANNER_WHAT;
+                                    mHandler.sendMessage(message);
+                                }
                             }
                         }
                     });
@@ -206,7 +209,7 @@ public class HomeTabFragment extends BaseFragment {
 
             @Override
             public void onError(Exception e) {
-
+                mBanner.setVisibility(View.GONE);
             }
         });
     }
