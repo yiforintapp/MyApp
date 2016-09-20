@@ -108,6 +108,8 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         mForgetPwdTv = (TextView) findViewById(R.id.forget_pwd);
         mToolBar = (CommonToolbar) findViewById(R.id.login_toolbar);
         mToolBar.setToolbarTitle(getResources().getString(R.string.login_logining));
+        mPasswordEt.setTransformationMethod(
+                PasswordTransformationMethod.getInstance());
 
         mUserEt.requestFocus();
         mUserEt.postDelayed(new Runnable() {
@@ -175,8 +177,6 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         if (TextUtils.isEmpty(mPasswordEt.getText().toString().trim())) {
             mPasswordClean.setVisibility(View.INVISIBLE);
         } else {
-            mPasswordEt.setTransformationMethod(
-                    PasswordTransformationMethod.getInstance());
             mPasswordClean.setVisibility(View.VISIBLE);
         }
     }
