@@ -19,12 +19,16 @@ import com.zlf.appmaster.cache.StockJsonCache;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockClient;
 import com.zlf.appmaster.client.StockQuotationsClient;
+import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.model.stock.StockTradeInfo;
 import com.zlf.appmaster.stocksearch.StockSearchActivity;
 import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
+import com.zlf.appmaster.utils.AppUtil;
+import com.zlf.appmaster.utils.PrefConst;
+import com.zlf.appmaster.utils.Utils;
 
 import org.json.JSONException;
 
@@ -413,10 +417,16 @@ public class StockIndexDetailActivity extends Activity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.buttom_tv_buy:
-                jumpToChangJiang();
-                break;
             case R.id.buttom_tv_sell:
-                jumpToChangJiang();
+                if (AppUtil.isLogin()) {
+                    String packageName = LeoSettings.getString(
+                            PrefConst.KEY_CJLH_PCK_NAME,Constants.CJLH_PACKAGENAME);
+                    String downloadUrl = LeoSettings.getString(
+                            PrefConst.KEY_CJLH_DOWNLOAD_URL,Constants.CJLH_DOWNLOAD_URL);
+                    Utils.startAPP(packageName, this, downloadUrl);
+                } else {
+                    jumpToChangJiang();
+                }
                 break;
         }
     }

@@ -66,6 +66,8 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 
     private RippleView mOneRipple;
 
+    private boolean mClickHangQin;  // 点击行情按钮
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,6 +160,9 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
     }
 
     public MyViewPager getViewPager() {
+        if (mViewPager != null) {
+            mClickHangQin = true;
+        }
         return mViewPager;
     }
 
@@ -304,7 +309,10 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
             if (mIndex == 1) {
                 return;
             }
-            changeTabBg(1);
+            if (mClickHangQin) {
+                changeTabBg(1);
+                mClickHangQin = false;
+            }
         }
     }
 
@@ -354,7 +362,9 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                     return;
                 }
                 mViewPager.setCurrentItem(1);
-                changeTabBg(1);
+                if (!mClickHangQin) {
+                    changeTabBg(1);
+                }
                 break;
             case R.id.user_tab:
                 if (mIndex == 2) {
