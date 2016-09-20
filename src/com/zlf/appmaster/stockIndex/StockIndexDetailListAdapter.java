@@ -515,25 +515,6 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
                         mDailyKLines = dataLines;
                     }
 
-                    for (int i = 0; i < mDailyKLines.size(); i++) {
-                        StockKLine stockKLine = (StockKLine) mDailyKLines.get(i);
-                        QLog.e("rtfgjfgjfg", "getLow:  " + stockKLine.getLow() + "");
-                        QLog.e("rtfgjfgjfg", "getDataTime: " + stockKLine.getDataTime() + "");
-                        QLog.e("rtfgjfgjfg", "getHigh: " + stockKLine.getHigh() + "");
-                        QLog.e("rtfgjfgjfg", "getBackwardAdjust: " + stockKLine.getBackwardAdjust() + "");
-                        QLog.e("rtfgjfgjfg", "getClose: " + stockKLine.getClose() + "");
-                        QLog.e("rtfgjfgjfg", "getForwardAdjust: " + stockKLine.getForwardAdjust() + "");
-                        QLog.e("rtfgjfgjfg", "getMa5: " + stockKLine.getMa5() + "");
-                        QLog.e("rtfgjfgjfg", "getMa10: " + stockKLine.getMa10() + "");
-                        QLog.e("rtfgjfgjfg", "getMa20: " + stockKLine.getMa20() + "");
-                        QLog.e("rtfgjfgjfg", "getMa30: " + stockKLine.getMa30() + "");
-                        QLog.e("rtfgjfgjfg", "getPercent: " + stockKLine.getPercent() + "");
-                        QLog.e("rtfgjfgjfg", "getPreClose: " + stockKLine.getPreClose() + "");
-                        QLog.e("rtfgjfgjfg", "getStockIsUp: " + stockKLine.getStockIsUp() + "");
-                        QLog.e("rtfgjfgjfg", "getTradeCount: " + stockKLine.getTradeCount() + "");
-                        QLog.e("rtfgjfgjfg", "isUp: " + stockKLine.isUp() + "");
-                        QLog.e("rtfgjfgjfg", "------------------------------------");
-                    }
                     listener.onDataFinish(mDailyKLines);
 
                     //要把之前的加进去
