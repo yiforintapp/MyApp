@@ -34,6 +34,7 @@ import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
 import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
+import com.zlf.appmaster.ui.MyViewPager;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.StockSelectDialog;
 import com.zlf.appmaster.ui.stock.StockTextView;
@@ -106,6 +107,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
     private RippleView mLiveRipple;
     private RelativeLayout mLoginContent;
+    private RippleView mStockRipple;
 
     private static DataHandler mHandler;
 
@@ -215,6 +217,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         mLiveRipple = (RippleView) findViewById(R.id.live);
         mLiveRipple.setOnClickListener(this);
+        mStockRipple = (RippleView) findViewById(R.id.stock);
+        mStockRipple.setOnClickListener(this);
         mLoginContent = (RelativeLayout) findViewById(R.id.login_content);
 //        String[] images = getResources().getStringArray(R.array.banner_url);
         mHomeJsonData = HomeJsonData.getInstance();
@@ -693,6 +697,12 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 } else {
                     intent = new Intent(mActivity, LoginActivity.class);
                     startActivity(intent);
+                }
+                break;
+            case R.id.stock:
+                MyViewPager viewPager = ((HomeMainActivity)mActivity).getViewPager();
+                if (viewPager != null) {
+                    viewPager.setCurrentItem(1);
                 }
                 break;
             default:

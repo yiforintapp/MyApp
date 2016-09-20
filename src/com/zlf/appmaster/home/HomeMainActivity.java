@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/14.
  */
-public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener {
 
     public static final int CHECKUPDATE = 1;
 
@@ -108,6 +109,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mViewPager.setAdapter(new HomeTabAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2); //预加载2个
         mViewPager.setCurrentItem(0);
+        mViewPager.setOnPageChangeListener(this);
 
 //        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        mDrawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -153,6 +155,10 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mUserTab.setOnClickListener(this);
         mTradeTab.setOnClickListener(this);
         mPersonalTab.setOnClickListener(this);
+    }
+
+    public MyViewPager getViewPager() {
+        return mViewPager;
     }
 
     @Override
@@ -285,6 +291,26 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         } catch (Exception e) {
 
         }
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+
+    }
+
+    @Override
+    public void onPageSelected(int i) {
+        if (i == 1) {
+            if (mIndex == 1) {
+                return;
+            }
+            changeTabBg(1);
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+
     }
 
     class HomeTabAdapter extends FragmentPagerAdapter {
