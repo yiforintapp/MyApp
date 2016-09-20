@@ -21,13 +21,16 @@ import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.zlf.appmaster.AppMasterApplication;
 import com.zlf.appmaster.AppMasterPreference;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.utils.LeoLog;
 
 import java.io.File;
@@ -486,5 +489,13 @@ public class AppUtil {
             timeString = timePart[1] + "月" + timePart[2] + "日";
         }
         return timeString;
+    }
+
+    public static  boolean isLogin() {
+        String userName = LeoSettings.getString(PrefConst.USER_NAME, "");
+        if (!TextUtils.isEmpty(userName)) {
+           return true;
+        }
+        return false;
     }
 }

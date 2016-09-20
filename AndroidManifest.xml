@@ -233,6 +233,7 @@
             android:name=".stocknews.testWebViewActivity"
             android:screenOrientation="landscape"
             android:hardwareAccelerated="true"
+            android:launchMode="singleTask"
             android:theme="@style/activity_theme"></activity>
 
         <activity

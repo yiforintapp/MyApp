@@ -11,39 +11,34 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.hp.hpl.sparta.Text;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.client.OnRequestListener;
-import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.hometab.HomeJsonData;
 import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
 import com.zlf.appmaster.login.HttpCallBackListener;
+import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.login.LoginHttpUtil;
 import com.zlf.appmaster.model.DayNewsItem;
 import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
+import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.StockSelectDialog;
 import com.zlf.appmaster.ui.stock.StockTextView;
 import com.zlf.appmaster.utils.AppUtil;
-import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
-import com.zlf.appmaster.utils.Utilities;
-import com.zlf.appmaster.utils.VolleyTool;
 import com.zlf.banner.Banner;
 import com.zlf.banner.BannerConfig;
 import com.zlf.banner.listener.OnBannerClickListener;
@@ -55,7 +50,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/9/8.
  */
-public class HomeTabFragment extends BaseFragment {
+public class HomeTabFragment extends BaseFragment implements View.OnClickListener {
     private final static String TAG = "HomeTabFragment";
     public final static String WINTOP = "APP_WIN";
 
@@ -108,6 +103,9 @@ public class HomeTabFragment extends BaseFragment {
     private List<String> mOpenUrls;
     private List<WinTopItem> mWinTopList;
     private List<DayNewsItem> mDayNewsList;
+
+    private RippleView mLiveRipple;
+    private RelativeLayout mLoginContent;
 
     private static DataHandler mHandler;
 
@@ -215,6 +213,9 @@ public class HomeTabFragment extends BaseFragment {
         mStockLayout = (FrameLayout) findViewById(R.id.stock_layout);
         mBanner = (Banner) findViewById(R.id.banner);
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+        mLiveRipple = (RippleView) findViewById(R.id.live);
+        mLiveRipple.setOnClickListener(this);
+        mLoginContent = (RelativeLayout) findViewById(R.id.login_content);
 //        String[] images = getResources().getStringArray(R.array.banner_url);
         mHomeJsonData = HomeJsonData.getInstance();
         mIndicatorImages = new ArrayList<ImageView>();
@@ -330,6 +331,16 @@ public class HomeTabFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         requestData();
+        initLoginContent();
+    }
+
+
+    private void initLoginContent() {
+        if (AppUtil.isLogin()) {
+            mLoginContent.setVisibility(View.GONE);
+        } else {
+            mLoginContent.setVisibility(View.VISIBLE);
+        }
     }
 
 //    private void loadWinTopData() {
@@ -666,6 +677,24 @@ public class HomeTabFragment extends BaseFragment {
             mIndicatorImages.add(imageView);
             mIndicator.addView(imageView, params);
 
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.live:
+                Intent intent = null;
+                if(AppUtil.isLogin()) {
+                    intent = new Intent(mActivity, testWebViewActivity.class);
+                    startActivity(intent);
+                } else {
+                    intent = new Intent(mActivity, LoginActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            default:
+                break;
         }
     }
 
