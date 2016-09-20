@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
@@ -32,7 +32,6 @@ import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
-import com.zlf.appmaster.stocknews.NewsDetailActivity;
 import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
@@ -446,7 +445,13 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             viewThree.setVisibility(View.INVISIBLE);
             TextView textView = (TextView) page.findViewById(R.id.change_one);
             textView.setVisibility(View.VISIBLE);
-            textView.setOnClickListener(new ItemClickListener(index));
+            RippleView rippleView = (RippleView) page.findViewById(R.id.parent_one);
+            rippleView.setOnClickListener(new ItemClickListener(index));
+            rippleView.setVisibility(View.VISIBLE);
+            RippleView rippleViewTwo = (RippleView) page.findViewById(R.id.parent_two);
+            rippleViewTwo.setEnabled(false);
+            RippleView rippleViewThree = (RippleView) page.findViewById(R.id.parent_three);
+            rippleViewThree.setEnabled(false);
 
             mViews.add(page);
 
@@ -473,6 +478,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 setItemData(index, name_one, price_one, percent_one);
                 parentOne = (RippleView) page.findViewById(R.id.parent_one);
                 parentOne.setOnClickListener(new ItemClickListener(index));
+                parentOne.setVisibility(View.VISIBLE);
             } else if (i == 1) {
                 name_two = (TextView) page.findViewById(R.id.name_two);
                 price_two = (StockTextView) page.findViewById(R.id.price_two);
@@ -480,6 +486,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 setItemData(index, name_two, price_two, percent_two);
                 parentTwo = (RippleView) page.findViewById(R.id.parent_two);
                 parentTwo.setOnClickListener(new ItemClickListener(index));
+                parentTwo.setVisibility(View.VISIBLE);
             } else {
                 name_three = (TextView) page.findViewById(R.id.name_three);
                 price_three = (StockTextView) page.findViewById(R.id.price_three);
@@ -487,6 +494,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 setItemData(index, name_three, price_three, percent_three);
                 parentThree = (RippleView) page.findViewById(R.id.parent_three);
                 parentThree.setOnClickListener(new ItemClickListener(index));
+                parentThree.setVisibility(View.VISIBLE);
             }
         }
         TextView textView;
@@ -494,14 +502,19 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             StockIndex index = null;
             textView = (TextView) page.findViewById(R.id.change_two);
             textView.setVisibility(View.VISIBLE);
-            textView.setOnClickListener(new ItemClickListener(index));
+            RippleView rippleView = (RippleView) page.findViewById(R.id.parent_two);
+            rippleView.setOnClickListener(new ItemClickListener(index));
             View view = (View) page.findViewById(R.id.view_three);
             view.setVisibility(View.INVISIBLE);
+            RippleView rippleViewThree = (RippleView) page.findViewById(R.id.parent_three);
+            rippleViewThree.setEnabled(false);
+
         } else if (extra == 2) {
             StockIndex index = null;
             textView = (TextView) page.findViewById(R.id.change_three);
             textView.setVisibility(View.VISIBLE);
-            textView.setOnClickListener(new ItemClickListener(index));
+            RippleView rippleView = (RippleView) page.findViewById(R.id.parent_three);
+            rippleView.setOnClickListener(new ItemClickListener(index));
         }
         mViews.add(page);
     }
@@ -547,6 +560,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 });
                 mDialog.setCanceledOnTouchOutside(true);
                 mDialog.show();
+                Log.e("fgjfgj", "fjhgf");
             }
         }
 
