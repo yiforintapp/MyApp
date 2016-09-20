@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/news_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.zlf.appmaster.ui.CommonToolbar
+        android:id="@+id/fb_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1">
+
+        <WebView
+            android:id="@+id/news_detail_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.handmark.pulltorefresh.library.xlistview.CircularProgressView
+            android:id="@+id/content_loading"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:padding="0dp"
+            android:visibility="gone"
+            app:cpv_animAutostart="true"
+            app:cpv_color="@color/indicator_text_select_color"
+            app:cpv_indeterminate="true"
+            app:cpv_thickness="4dp" />
+    </FrameLayout>
+
+</LinearLayout>

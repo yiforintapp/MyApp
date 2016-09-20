@@ -314,6 +314,10 @@ public class Constants {
     public static final String HOME_PAGE_DATA_DAYNEWS_TITLE = "title";
     public static final String HOME_PAGE_DATA_DAYNEWS_DESC = "desc";
 
+    public static final String HOME_PAGE_DATA_MAIN = "http://120.24.14.76:1688/appwork?proname=daynews";
+    public static final String DAYNEWS_DETAILS_ID = "daynews_id";
+    public static final String DAYNEWS_DETAILS_TITLE = "daynews_title";
+    public static final String DAYNEWS_DETAILS_TIME = "daynews_time";
 
     public static final String DEFAULT_WIN_TOP = "ki****aax_32541.55;yi****js_30012.21;ka****bb_27654.25;ac****21_18154.01;mn****mn_11546.65;mn****oi_9654.23;ij****na_4865.88;qq****aa_3332.33;ip****pz_1596.84;wa****mn_985.99;";
 

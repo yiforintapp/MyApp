@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:visibility="gone"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:visibility="gone">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -75,8 +75,8 @@
                 android:id="@+id/tv_date_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/tv_year_one"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:text="09月15日"
                 android:textColor="@color/white"
@@ -85,32 +85,32 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_toRightOf="@id/view_left_content"
-            android:gravity="center_vertical"
+            android:layout_height="match_parent"
             android:layout_marginRight="5dp"
-            android:layout_height="match_parent">
+            android:layout_toRightOf="@id/view_left_content"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tv_title_one"
                 android:layout_width="wrap_content"
-                android:text="美联储议息会议缄默期，市场交投谨慎"
-                android:singleLine="true"
+                android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:singleLine="true"
+                android:text="美联储议息会议缄默期，市场交投谨慎"
                 android:textColor="@color/black"
-                android:textSize="14dp"
-                android:layout_height="wrap_content" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_desc_one"
-                android:layout_below="@id/tv_title_one"
                 android:layout_width="wrap_content"
-                android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/small_text"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_one"
                 android:layout_marginTop="5dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content" />
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
         </RelativeLayout>
     </com.zlf.appmaster.ui.RippleView>
@@ -154,8 +154,8 @@
                 android:id="@+id/tv_date_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/tv_year_two"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:text="09月15日"
                 android:textColor="@color/white"
@@ -164,32 +164,32 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_toRightOf="@id/view_left_content_two"
-            android:gravity="center_vertical"
+            android:layout_height="match_parent"
             android:layout_marginRight="5dp"
-            android:layout_height="match_parent">
+            android:layout_toRightOf="@id/view_left_content_two"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tv_title_two"
                 android:layout_width="wrap_content"
-                android:text="美联储议息会议缄默期，市场交投谨慎"
-                android:singleLine="true"
+                android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:singleLine="true"
+                android:text="美联储议息会议缄默期，市场交投谨慎"
                 android:textColor="@color/black"
-                android:textSize="14dp"
-                android:layout_height="wrap_content" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_desc_two"
-                android:layout_below="@id/tv_title_two"
                 android:layout_width="wrap_content"
-                android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/small_text"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_two"
                 android:layout_marginTop="5dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content" />
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
         </RelativeLayout>
     </com.zlf.appmaster.ui.RippleView>
@@ -202,75 +202,75 @@
         android:background="#DEDEDE" />
 
     <com.zlf.appmaster.ui.RippleView
-    android:id="@+id/item_thr"
-    android:layout_width="match_parent"
-        android:layout_height="70dp"
-    android:background="@color/white"
-    app:rippleColor="@color/button_gray_ripple"
-    app:rippleDuration="250"
-    app:rippleHover="true"
-    app:rippleOverlay="true">
-
-    <RelativeLayout
-        android:id="@+id/view_left_content_thr"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:background="@drawable/selector_dialog_gray_button">
-
-        <TextView
-            android:id="@+id/tv_year_thr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="2016年"
-            android:textColor="@color/white"
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/tv_date_thr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/tv_year_thr"
-            android:layout_marginTop="5dp"
-            android:text="09月15日"
-            android:textColor="@color/white"
-            android:textSize="12dp" />
-    </RelativeLayout>
-
-    <RelativeLayout
+        android:id="@+id/item_thr"
         android:layout_width="match_parent"
-        android:layout_toRightOf="@id/view_left_content_thr"
-        android:gravity="center_vertical"
-        android:layout_marginRight="5dp"
-        android:layout_height="match_parent">
+        android:layout_height="70dp"
+        android:background="@color/white"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
-        <TextView
-            android:id="@+id/tv_title_thr"
-            android:layout_width="wrap_content"
-            android:text="美联储议息会议缄默期，市场交投谨慎"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textColor="@color/black"
-            android:textSize="14dp"
-            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:id="@+id/view_left_content_thr"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@drawable/selector_dialog_gray_button">
 
-        <TextView
-            android:id="@+id/tv_desc_thr"
-            android:layout_below="@id/tv_title_thr"
-            android:layout_width="wrap_content"
-            android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:textColor="@color/small_text"
-            android:layout_marginTop="5dp"
-            android:textSize="12dp"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_year_thr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="2016年"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
 
-    </RelativeLayout>
-</com.zlf.appmaster.ui.RippleView>
+            <TextView
+                android:id="@+id/tv_date_thr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_year_thr"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="09月15日"
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/view_left_content_thr"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_title_thr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="美联储议息会议缄默期，市场交投谨慎"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_desc_thr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_thr"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
+
+        </RelativeLayout>
+    </com.zlf.appmaster.ui.RippleView>
 
     <View
         android:layout_width="match_parent"
@@ -310,8 +310,8 @@
                 android:id="@+id/tv_date_for"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_below="@id/tv_year_for"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:text="09月15日"
                 android:textColor="@color/white"
@@ -320,32 +320,32 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_toRightOf="@id/view_left_content_for"
-            android:gravity="center_vertical"
+            android:layout_height="match_parent"
             android:layout_marginRight="5dp"
-            android:layout_height="match_parent">
+            android:layout_toRightOf="@id/view_left_content_for"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tv_title_for"
                 android:layout_width="wrap_content"
-                android:text="美联储议息会议缄默期，市场交投谨慎"
-                android:singleLine="true"
+                android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:singleLine="true"
+                android:text="美联储议息会议缄默期，市场交投谨慎"
                 android:textColor="@color/black"
-                android:textSize="14dp"
-                android:layout_height="wrap_content" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_desc_for"
-                android:layout_below="@id/tv_title_for"
                 android:layout_width="wrap_content"
-                android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/small_text"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_for"
                 android:layout_marginTop="5dp"
-                android:textSize="12dp"
-                android:layout_height="wrap_content" />
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="近期，原油市场行情波动较大，上周非农数据爆冷令油价缩减跌幅，本周各大央行将集体发声，金融市场又将迎来大波动，而关于冻产有消息称，伊朗能源部长表示，若恢复制裁前水平，"
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
         </RelativeLayout>
     </com.zlf.appmaster.ui.RippleView>

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
@@ -31,6 +32,7 @@ import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
+import com.zlf.appmaster.stocknews.NewsDetailActivity;
 import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
@@ -54,6 +56,11 @@ import java.util.List;
 public class HomeTabFragment extends BaseFragment implements View.OnClickListener {
     private final static String TAG = "HomeTabFragment";
     public final static String WINTOP = "APP_WIN";
+
+    public final static int DETAILS_TYPE_ONE = 0;
+    public final static int DETAILS_TYPE_TWO = 1;
+    public final static int DETAILS_TYPE_THR = 2;
+    public final static int DETAILS_TYPE_FOR = 3;
 
     public final static int BANNER_WHAT = 0;
     public final static int WINTOP_WHAT = 1;
@@ -113,10 +120,11 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
     private View mWinTopLayout;
     private View mDayNewsLayout;
-    private TextView mYearOne,mYearTwo,mYearThr,mYearFor;
-    private TextView mDateOne,mDateTwo,mDateThr,mDateFor;
-    private TextView mTitleOne,mTitleTwo,mTitleThr,mTitleFor;
-    private TextView mDescOne,mDescTwo,mDescThr,mDescFor;
+    private TextView mYearOne, mYearTwo, mYearThr, mYearFor;
+    private TextView mDateOne, mDateTwo, mDateThr, mDateFor;
+    private TextView mTitleOne, mTitleTwo, mTitleThr, mTitleFor;
+    private TextView mDescOne, mDescTwo, mDescThr, mDescFor;
+    private RippleView mItemOne, mItemTwo, mItemThr, mItemFor;
 
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
@@ -148,7 +156,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 });
             }
 
-            if(fragment.WINTOP_WHAT == msg.what){
+            if (fragment.WINTOP_WHAT == msg.what) {
                 if (fragment.mWinTopList != null && fragment.mWinTopList.size() > 0) {
                     fragment.mWinAdapter.setList(fragment.mWinTopList);
                     fragment.mWinAdapter.notifyDataSetChanged();
@@ -156,37 +164,37 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 }
             }
 
-            if(fragment.DAYNWES_WHAT == msg.what){
+            if (fragment.DAYNWES_WHAT == msg.what) {
                 if (fragment.mDayNewsList != null && fragment.mDayNewsList.size() > 0) {
 
-                    for(int i = 0;i< fragment.mDayNewsList.size();i++){
+                    for (int i = 0; i < fragment.mDayNewsList.size(); i++) {
                         DayNewsItem info;
-                        switch (i){
+                        switch (i) {
                             case 0:
                                 info = fragment.mDayNewsList.get(i);
-                                fragment.mYearOne.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),1));
-                                fragment.mDateOne.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),2));
+                                fragment.mYearOne.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()), 1));
+                                fragment.mDateOne.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()), 2));
                                 fragment.mTitleOne.setText(info.getTitle());
                                 fragment.mDescOne.setText(info.getDesc());
                                 break;
                             case 1:
                                 info = fragment.mDayNewsList.get(i);
-                                fragment.mYearTwo.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),1));
-                                fragment.mDateTwo.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),2));
+                                fragment.mYearTwo.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()), 1));
+                                fragment.mDateTwo.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()), 2));
                                 fragment.mTitleTwo.setText(info.getTitle());
                                 fragment.mDescTwo.setText(info.getDesc());
                                 break;
                             case 2:
                                 info = fragment.mDayNewsList.get(i);
-                                fragment.mYearThr.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),1));
-                                fragment.mDateThr.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),2));
+                                fragment.mYearThr.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()), 1));
+                                fragment.mDateThr.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()), 2));
                                 fragment.mTitleThr.setText(info.getTitle());
                                 fragment.mDescThr.setText(info.getDesc());
                                 break;
                             case 3:
                                 info = fragment.mDayNewsList.get(i);
-                                fragment.mYearFor.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),1));
-                                fragment.mDateFor.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()),2));
+                                fragment.mYearFor.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()), 1));
+                                fragment.mDateFor.setText(AppUtil.getDateTime(Long.parseLong(info.getTime()), 2));
                                 fragment.mTitleFor.setText(info.getTitle());
                                 fragment.mDescFor.setText(info.getDesc());
                                 break;
@@ -207,7 +215,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     protected void onInitUI() {
-        mHandler =new DataHandler(this);
+        mHandler = new DataHandler(this);
         mStockClient = StockQuotationsClient.getInstance(mActivity);
         mViewPager = (BounceBackViewPager) findViewById(R.id.my_viewpager);
         mViews = new ArrayList<View>();
@@ -249,21 +257,29 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void setDayNewsFind() {
+        mItemOne = (RippleView) mDayNewsLayout.findViewById(R.id.item_one);
+        mItemOne.setOnClickListener(this);
         mYearOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_one);
         mDateOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_date_one);
         mTitleOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_title_one);
         mDescOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_desc_one);
 
+        mItemTwo = (RippleView) mDayNewsLayout.findViewById(R.id.item_two);
+        mItemTwo.setOnClickListener(this);
         mYearTwo = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_two);
         mDateTwo = (TextView) mDayNewsLayout.findViewById(R.id.tv_date_two);
         mTitleTwo = (TextView) mDayNewsLayout.findViewById(R.id.tv_title_two);
         mDescTwo = (TextView) mDayNewsLayout.findViewById(R.id.tv_desc_two);
 
+        mItemThr = (RippleView) mDayNewsLayout.findViewById(R.id.item_thr);
+        mItemThr.setOnClickListener(this);
         mYearThr = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_thr);
         mDateThr = (TextView) mDayNewsLayout.findViewById(R.id.tv_date_thr);
         mTitleThr = (TextView) mDayNewsLayout.findViewById(R.id.tv_title_thr);
         mDescThr = (TextView) mDayNewsLayout.findViewById(R.id.tv_desc_thr);
 
+        mItemFor = (RippleView) mDayNewsLayout.findViewById(R.id.item_for);
+        mItemFor.setOnClickListener(this);
         mYearFor = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_for);
         mDateFor = (TextView) mDayNewsLayout.findViewById(R.id.tv_date_for);
         mTitleFor = (TextView) mDayNewsLayout.findViewById(R.id.tv_title_for);
@@ -348,69 +364,6 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             }
         }
     }
-
-//    private void loadWinTopData() {
-//        String url = Constants.ADDRESS + Constants.APPSERVLET + Constants.DATA + WINTOP;
-//        LeoLog.d(TAG, "check update url is : " + url);
-//
-//        QStringRequest stringRequest = new QStringRequest(
-//                Request.Method.GET, url, null, new Response.Listener<String>() {
-//
-//            @Override
-//            public void onResponse(String s) {
-//                LeoLog.d(TAG, "check update requestFinished version is : " + s);
-//
-//                if (!Utilities.isEmpty(s) && !s.equals("-1")) {
-//                    saveWinTop(s);
-//                    setWinTopData();
-//                }
-//            }
-//
-//
-//        }, new Response.ErrorListener() {
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                LeoLog.d(TAG, "check update err");
-//            }
-//
-//        });
-//
-//        // callAll的时候使用
-//        VolleyTool.getInstance(mActivity).getRequestQueue()
-//                .add(stringRequest);
-//    }
-
-//    private void setWinTopData() {
-//
-//        String s = LeoSettings.getString(PrefConst.WIN_TOP_STRING, Constants.DEFAULT_WIN_TOP);
-//        List<WinTopItem> list = new ArrayList<WinTopItem>();
-//
-//        String[] groups = s.split(";");
-//        for (int i = 0; i < groups.length; i++) {
-//            String group = groups[i];
-//            if (!Utilities.isEmpty(group)) {
-//                WinTopItem item = new WinTopItem();
-//                String name = group.split("_")[0];
-//                String price = group.split("_")[1];
-//
-//                item.setWinName(name);
-//                item.setWinPrice(Double.valueOf(price));
-//                list.add(item);
-//            }
-//        }
-//
-//        if (list.size() > 0) {
-//            mWinAdapter.setList(list);
-//            mWinAdapter.notifyDataSetChanged();
-//        }
-//
-//    }
-
-//    private void saveWinTop(String s) {
-//        LeoSettings.setString(PrefConst.WIN_TOP_STRING, s);
-//    }
-
 
     /**
      * 请求数据
@@ -691,7 +644,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.live:
                 Intent intent = null;
-                if(AppUtil.isLogin()) {
+                if (AppUtil.isLogin()) {
                     intent = new Intent(mActivity, testWebViewActivity.class);
                     startActivity(intent);
                 } else {
@@ -700,14 +653,38 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 }
                 break;
             case R.id.stock:
-                MyViewPager viewPager = ((HomeMainActivity)mActivity).getViewPager();
+                MyViewPager viewPager = ((HomeMainActivity) mActivity).getViewPager();
                 if (viewPager != null) {
                     viewPager.setCurrentItem(1);
                 }
                 break;
+            case R.id.item_one:
+                gotoDetails(DETAILS_TYPE_ONE);
+                break;
+            case R.id.item_two:
+                gotoDetails(DETAILS_TYPE_TWO);
+                break;
+            case R.id.item_thr:
+                gotoDetails(DETAILS_TYPE_THR);
+                break;
+            case R.id.item_for:
+                gotoDetails(DETAILS_TYPE_FOR);
+                break;
             default:
                 break;
         }
+    }
+
+    private void gotoDetails(int detailsType) {
+
+        String title,id,time;
+        DayNewsItem info = mDayNewsList.get(detailsType);
+
+        Intent intent = new Intent(mActivity, DayNewsDetailActivity.class);
+        intent.putExtra(Constants.DAYNEWS_DETAILS_TITLE, info.getTitle());
+        intent.putExtra(Constants.DAYNEWS_DETAILS_ID, info.getId() + "");
+        intent.putExtra(Constants.DAYNEWS_DETAILS_TIME, info.getTime());
+        mActivity.startActivity(intent);
     }
 
 }

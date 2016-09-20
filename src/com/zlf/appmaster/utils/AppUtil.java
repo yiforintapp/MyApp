@@ -485,8 +485,10 @@ public class AppUtil {
         if(type == 1){
             //year
             timeString = timePart[0] + "年";
-        }else{
+        }else if(type == 2){
             timeString = timePart[1] + "月" + timePart[2] + "日";
+        }else{
+            timeString = allTime;
         }
         return timeString;
     }

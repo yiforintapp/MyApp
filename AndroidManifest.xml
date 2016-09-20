@@ -225,6 +225,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
+        <activity
+            android:name=".home.DayNewsDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
         <activity android:name="io.vov.vitamio.activity.InitActivity"></activity>
 
 
