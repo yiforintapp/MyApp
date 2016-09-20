@@ -22,7 +22,7 @@
             android:textSize="14dp" />
 
         <com.zlf.appmaster.ui.RippleView
-            android:id="@+id/rv_dialog_whitle_button"
+            android:id="@+id/rv_click_day"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

@@ -113,6 +113,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private RippleView mLiveRipple;
     private RelativeLayout mLoginContent;
     private RippleView mStockRipple;
+    private RippleView mDayNewClick;
 
     private static DataHandler mHandler;
 
@@ -255,6 +256,9 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void setDayNewsFind() {
+        mDayNewClick = (RippleView) mDayNewsLayout.findViewById(R.id.rv_click_day);
+        mDayNewClick.setOnClickListener(this);
+
         mItemOne = (RippleView) mDayNewsLayout.findViewById(R.id.item_one);
         mItemOne.setOnClickListener(this);
         mYearOne = (TextView) mDayNewsLayout.findViewById(R.id.tv_year_one);
@@ -682,14 +686,20 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             case R.id.item_for:
                 gotoDetails(DETAILS_TYPE_FOR);
                 break;
+            case R.id.rv_click_day:
+                gotoNewsList();
+                break;
             default:
                 break;
         }
     }
 
-    private void gotoDetails(int detailsType) {
+    private void gotoNewsList() {
+        Intent intent = new Intent(mActivity, DayNewsListActivty.class);
+        mActivity.startActivity(intent);
+    }
 
-        String title,id,time;
+    private void gotoDetails(int detailsType) {
         DayNewsItem info = mDayNewsList.get(detailsType);
 
         Intent intent = new Intent(mActivity, DayNewsDetailActivity.class);

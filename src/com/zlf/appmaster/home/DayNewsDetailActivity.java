@@ -36,8 +36,6 @@ public class DayNewsDetailActivity extends Activity {
 	private String mNewsTime;
 
 
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,27 +56,6 @@ public class DayNewsDetailActivity extends Activity {
 				@Override
 				public void onResponse(String string) {
 					LeoLog.d("testnewsJson" , "return string : " + string);
-					string = "<p><strong>　　一、基本面</strong></p>\n" +
-							"<p>　　1、法国巴黎银行：预计美联储本周将加息25个基点至0.75%</p>\n" +
-							"<p>　　料美联储22日将加息25个基点至0.75%;料耶伦将通过偏向鸽派立场的妥协措施，获得对加息的支持，措施包括&ldquo;安抚性措辞&rdquo;、下调终端联邦基金利率并暗示年内不会再加息;此举或使金融市场动荡，但若美联储暗示明年3月前不会再加息，且长期利率下调，那么金融市场将很快恢复稳定。</p>\n" +
-							"<p>　　2、 9月19日北京时间晚上22点公布的美国9月NAHB房产市场指数，实际值：65，前值：59 ，预期值：60。实际值大于预期值，利空金银。</p>\n" +
-							"<p>　　3、美银美林：预计美联储将在12月份加息，以及明年加息两次;欧洲央行将量化宽松计划延长6个月。</p>\n" +
-							"<p align=\\\"center\\\"><img src='http://www.zlf1688.com/d/file/zxpl/fyrp/87f40b35fb6df7a09ba703e7529bc5af.png' title='金银多头后市未必一片坦途.jpg' alt='金银多头后市未必一片坦途.jpg'   border='0' vspace='0' width='100%'/></p>\n" +
-							"<p align=\\\"center\\\">(长江银60分钟图)</p>\n" +
-							"<p><strong>　　二、市场聚焦</strong></p>\n" +
-							"<p>　　【今日重点关注的财经数据与事件】2016年9月20日 周二</p>\n" +
-							"<p>　　① 09:30 澳洲联储公布9月货币政策会议纪要</p>\n" +
-							"<p>　　② 14:00 德国8月PPI月率、瑞士8月贸易帐</p>\n" +
-							"<p>　　③ 20:30 美国8月新屋开工总数年化、美国8月营建许可总数</p>\n" +
-							"<p>　　④ 次日04:30 美国至9月16日当周API原油库存</p>\n" +
-							"<p align=\\\"center\\\"><img alt=\\\"白银踌躇不前等加息\\\" width=\\\"550\\\" height=\\\"276\\\" src=\\\"http://www.zlf1688.com/d/file/zxpl/fyrp/3a6c379f26e183e48de09afd6ad0940f.png\\\" /></p>\n" +
-							"<p align=\\\"center\\\">白银价格支撑阻力位</p>\n" +
-							"<p><strong>　　三、今日建议</strong></p>\n" +
-							"<p>　　兆利丰金服分析师观点：尽管美国经济数据有所好转，但是市场依然并未对周内美联储加息给予足够预期，美指因此承压，银价因此反弹。预计在本周的美联储决议前，银价缺乏明确走势。本周的美联储决议才是银市的重头戏。</p>\n" +
-							"<p align=\\\"center\\\"><img alt=\\\"白银踌躇不前等加息\\\" width=\\\"545\\\" height=\\\"307\\\" src=\\\"http://www.zlf1688.com/d/file/zxpl/fyrp/87f40b35fb6df7a09ba703e7529bc5af.png\\\" /></p>\n" +
-							"<p align=\\\"center\\\">(长江银60分钟图)</p>\n" +
-							"<p>　　技术面：小时图上看，均线呈多头排列，5日均线上穿10日均线形成金叉，同事MACD绿柱放量，若指数受布林带中轨压制有向下趋势，可考虑高空。</p>\n" +
-							"<p>　　操作策略：高空为主，若长江银价格在4120附近受阻，考虑摘牌空单，止盈4080附近，止损4140附近。建议仅供参考!</p>\n";
 					setContent(string);
 				}
 			}, new Response.ErrorListener() {
