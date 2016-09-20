@@ -336,10 +336,12 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
 
     private void initLoginContent() {
-        if (AppUtil.isLogin()) {
-            mLoginContent.setVisibility(View.GONE);
-        } else {
-            mLoginContent.setVisibility(View.VISIBLE);
+        if (mLoginContent != null) {
+            if (AppUtil.isLogin()) {
+                mLoginContent.setVisibility(View.GONE);
+            } else {
+                mLoginContent.setVisibility(View.VISIBLE);
+            }
         }
     }
 
