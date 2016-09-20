@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="true"
     android:clipToPadding="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
 
     <!--<android.support.v4.widget.DrawerLayout-->
-        <!--android:id="@+id/drawer_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <!--android:id="@+id/drawer_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
-        <!--<com.zlf.appmaster.ui.MyViewPager-->
-            <!--android:id="@+id/home_ViewPager"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginBottom="55dp"/>-->
+    <!--<com.zlf.appmaster.ui.MyViewPager-->
+    <!--android:id="@+id/home_ViewPager"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginBottom="55dp"/>-->
 
-        <!--<ListView-->
-            <!--android:id="@+id/menu_list"-->
-            <!--android:layout_width="250dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginBottom="55dp"-->
-            <!--android:layout_gravity="start"-->
-            <!--android:layout_marginTop="@dimen/toolbar_height"-->
-            <!--android:background="@color/white"-->
-            <!--android:divider="@drawable/home_menu_list_divider"-->
-            <!--android:dividerHeight="1px"-->
-            <!--android:listSelector="@null"-->
-            <!--android:overScrollMode="never"-->
-            <!--android:scrollbars="none"/>-->
+    <!--<ListView-->
+    <!--android:id="@+id/menu_list"-->
+    <!--android:layout_width="250dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginBottom="55dp"-->
+    <!--android:layout_gravity="start"-->
+    <!--android:layout_marginTop="@dimen/toolbar_height"-->
+    <!--android:background="@color/white"-->
+    <!--android:divider="@drawable/home_menu_list_divider"-->
+    <!--android:dividerHeight="1px"-->
+    <!--android:listSelector="@null"-->
+    <!--android:overScrollMode="never"-->
+    <!--android:scrollbars="none"/>-->
 
     <!--</android.support.v4.widget.DrawerLayout>-->
-
-    <com.zlf.appmaster.ui.MyViewPager
-    android:id="@+id/home_ViewPager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="55dp"/>
 
     <com.zlf.appmaster.ui.HomeToolbar
         android:id="@+id/home_toolBar"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_gravity="top"/>
+        android:layout_height="55dp" />
+
+    <com.zlf.appmaster.ui.MyViewPager
+        android:id="@+id/home_ViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="55dp"
-        android:background="@color/indicator_text_color"/>
+        android:background="@color/indicator_text_color" />
 
-    <include layout="@layout/home_tab_button"
+    <include
+        layout="@layout/home_tab_button"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom" />
 
-</FrameLayout>
+</LinearLayout>

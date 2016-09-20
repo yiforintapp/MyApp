@@ -486,7 +486,6 @@
 <!--        <item name="pstsIndicatorPadding">10dp</item>-->
         <item name="pstsUnderlineColor">@color/split_line</item>
         <item name="pstsUnderlineHeight">1px</item>
-        <item name="android:layout_marginTop">55dp</item>
         <item name="pstsTabBackground">@android:color/transparent</item>
     </style>
 
