@@ -134,7 +134,7 @@ public class DayNewsListActivty extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
-                    DayNewsItem info = mDataList.get(position);
+                    DayNewsItem info = mDataList.get(position - 1);
                     Intent intent = new Intent(DayNewsListActivty.this, DayNewsDetailActivity.class);
                     intent.putExtra(Constants.DAYNEWS_DETAILS_TITLE, info.getTitle());
                     intent.putExtra(Constants.DAYNEWS_DETAILS_ID, info.getId() + "");
@@ -227,7 +227,7 @@ public class DayNewsListActivty extends Activity {
 
             if (null != items) {
                 int len = items.size();
-                if (len < SHOW_NUM_PER_TIME) {
+                if (len < SHOW_NUM_PER_TIME || mNowPage >=3) {
                     //没有数据了
                     mListView.setPullLoadEnable(false);
                 } else {

@@ -46,7 +46,9 @@ public class JPushReceiver extends BroadcastReceiver {
         	
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[JPushReceiver] 用户点击打开了通知");
-            
+
+
+
 //        	//打开自定义的Activity
 //        	Intent i = new Intent(context, TestActivity.class);
 //        	i.putExtras(bundle);

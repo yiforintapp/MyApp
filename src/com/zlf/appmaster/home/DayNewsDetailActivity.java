@@ -127,7 +127,6 @@ public class DayNewsDetailActivity extends Activity {
 				//+ "<HR align=center width="+splitLineWidth+" color=#000000 noShade size=1>";
                 + "<HR align=center paddingLeft=15 color=#ececec noShade size=1>";
 
-
 		String content = newstitle + resourcetime + string;
 		Utils.setWebViewLayout(mWebView, content);
 		mProgressBar.setVisibility(View.GONE);
