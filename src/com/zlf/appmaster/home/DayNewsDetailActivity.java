@@ -55,7 +55,6 @@ public class DayNewsDetailActivity extends Activity {
 					Request.Method.GET, url, null, new Response.Listener<String>() {
 				@Override
 				public void onResponse(String string) {
-					LeoLog.d("testnewsJson" , "return string : " + string);
 					setContent(string);
 				}
 			}, new Response.ErrorListener() {

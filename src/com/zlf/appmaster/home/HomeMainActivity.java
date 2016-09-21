@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -60,6 +63,8 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 //    private List<MenuItem> mMenuItems;
 //    private MenuAdapter mMenuAdapter;
     private TextView mCenterTitle;
+    private RippleView mRefreshRipple;
+    private ImageView mRefreshIv;
     private HomeFragmentHolder[] mFragmentHolders = new HomeFragmentHolder[5];
 
     private int mIndex = 0;
@@ -107,6 +112,9 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         mToolBar = (HomeToolbar) findViewById(R.id.home_toolBar);
 //        mMenuList = (ListView) findViewById(R.id.menu_list);
         mCenterTitle = (TextView) findViewById(R.id.center_title_tv);
+        mRefreshRipple = (RippleView) findViewById(R.id.refresh);
+        mRefreshRipple.setOnClickListener(this);
+        mRefreshIv = (ImageView) findViewById(R.id.refresh_iv);
         initFragment();
         mViewPager.setAdapter(new HomeTabAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2); //预加载2个
@@ -188,6 +196,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 changeUnSelectBg(mIndex);
                 mIndex = 0;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_home_real));
+                mRefreshRipple.setVisibility(View.VISIBLE);
                 break;
             case 1:
                 mHomeTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
@@ -195,6 +204,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 changeUnSelectBg(mIndex);
                 mIndex = 1;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_home));
+                mRefreshRipple.setVisibility(View.GONE);
                 break;
             case 2:
                 mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
@@ -202,6 +212,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 changeUnSelectBg(mIndex);
                 mIndex = 2;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_trade));
+                mRefreshRipple.setVisibility(View.GONE);
                 break;
             case 3:
                 mTradeTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
@@ -209,6 +220,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 changeUnSelectBg(mIndex);
                 mIndex = 3;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_info));
+                mRefreshRipple.setVisibility(View.GONE);
                 break;
             case 4:
                 mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
@@ -216,6 +228,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 changeUnSelectBg(mIndex);
                 mIndex = 4;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_personal));
+                mRefreshRipple.setVisibility(View.GONE);
                 break;
         }
     }
@@ -387,8 +400,29 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 mViewPager.setCurrentItem(4);
                 changeTabBg(4);
                 break;
+            case R.id.refresh:
+                Animation refreshAnim = AnimationUtils.loadAnimation(this, R.anim.refresh_anim);
+                LinearInterpolator lir = new LinearInterpolator();
+                refreshAnim.setInterpolator(lir);
+                if (mRefreshIv != null) {
+                    mRefreshIv.startAnimation(refreshAnim);
+                }
+                mRefreshRipple.setEnabled(false);
+                if (mHomeTabFragment != null) {
+                    mHomeTabFragment.requestData();
+                    mHomeTabFragment.requestHomeData();
+                }
+                break;
         }
     }
+
+    public void stopRefreshAnim() {
+        mRefreshRipple.setEnabled(true);
+        if (mRefreshIv != null && mRefreshRipple.getVisibility() == View.VISIBLE) {
+            mRefreshIv.clearAnimation();
+        }
+    }
+
 
     public HomeTabFragment getHomeTabFragment() {
         return mHomeTabFragment;

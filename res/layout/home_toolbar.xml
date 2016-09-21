@@ -90,4 +90,27 @@
                 <!--android:visibility="gone" />-->
         <!--</RelativeLayout>-->
     <!--</com.zlf.appmaster.ui.MaterialRippleLayout>-->
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/refresh"
+        android:layout_height="@dimen/toolbar_height"
+       android:layout_width="@dimen/toolbar_height"
+        android:layout_alignParentRight="true"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="150"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
+        <ImageView
+            android:id="@+id/refresh_iv"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true"
+            android:src="@drawable/home_refresh"/>
+
+
+    </com.zlf.appmaster.ui.RippleView>
+
+
 </RelativeLayout>

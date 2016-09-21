@@ -23,6 +23,7 @@
         android:layout_width="@dimen/dlg_horizental_margin"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         />
 
     <LinearLayout

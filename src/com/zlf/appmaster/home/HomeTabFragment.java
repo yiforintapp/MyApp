@@ -60,6 +60,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     public final static int DETAILS_TYPE_THR = 2;
     public final static int DETAILS_TYPE_FOR = 3;
 
+    public final static int ERROR_WHAT = -1;
     public final static int BANNER_WHAT = 0;
     public final static int WINTOP_WHAT = 1;
     public final static int DAYNWES_WHAT = 2;
@@ -125,6 +126,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private TextView mDescOne, mDescTwo, mDescThr, mDescFor;
     private RippleView mItemOne, mItemTwo, mItemThr, mItemFor;
 
+
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
         WeakReference<HomeTabFragment> mActivityReference;
@@ -142,28 +144,36 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             if (fragment == null) {
                 return;
             }
-            if (fragment.BANNER_WHAT == msg.what) {
-                fragment.mBanner.setImages(fragment.mIvUrls);//可以选择设置图片网址，或者资源文件，默认用Glide加载
-                fragment.mBanner.setVisibility(View.VISIBLE);
-                fragment.mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
-                    @Override
-                    public void OnBannerClick(int position) {
-                        Intent intent = new Intent(fragment.mActivity, HomeTabTopWebActivity.class);
-                        intent.putExtra(HomeTabTopWebActivity.WEB_URL, fragment.mOpenUrls.get(position - 1));
-                        fragment.mActivity.startActivity(intent);
-                    }
-                });
-            }
-
-            if (fragment.WINTOP_WHAT == msg.what) {
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((HomeMainActivity)fragment.mActivity).stopRefreshAnim();
+                }
+            }, 2000);
+            if (fragment.ERROR_WHAT == msg.what) {
+                fragment.mBanner.setVisibility(View.GONE);
+            } else if (fragment.BANNER_WHAT == msg.what) {
+                if (fragment.mIvUrls != null && fragment.mIvUrls.size() > 0) {
+                    fragment.mBanner.setImages(fragment.mIvUrls);//可以选择设置图片网址，或者资源文件，默认用Glide加载
+                    fragment.mBanner.setVisibility(View.VISIBLE);
+                    fragment.mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
+                        @Override
+                        public void OnBannerClick(int position) {
+                            Intent intent = new Intent(fragment.mActivity, HomeTabTopWebActivity.class);
+                            if (fragment.mOpenUrls != null && position - 1 < fragment.mOpenUrls.size()) {
+                                intent.putExtra(HomeTabTopWebActivity.WEB_URL, fragment.mOpenUrls.get(position - 1));
+                                fragment.mActivity.startActivity(intent);
+                            }
+                        }
+                    });
+                }
+            } else if (fragment.WINTOP_WHAT == msg.what) {
                 if (fragment.mWinTopList != null && fragment.mWinTopList.size() > 0) {
                     fragment.mWinAdapter.setList(fragment.mWinTopList);
                     fragment.mWinAdapter.notifyDataSetChanged();
                     fragment.mWinTopLayout.setVisibility(View.VISIBLE);
                 }
-            }
-
-            if (fragment.DAYNWES_WHAT == msg.what) {
+            } else if (fragment.DAYNWES_WHAT == msg.what) {
                 if (fragment.mDayNewsList != null && fragment.mDayNewsList.size() > 0) {
 
                     for (int i = 0; i < fragment.mDayNewsList.size(); i++) {
@@ -253,6 +263,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         requestHomeData();
 
         mHlistview.setAdapter(mWinAdapter);
+
     }
 
     private void setDayNewsFind() {
@@ -288,7 +299,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mDescFor = (TextView) mDayNewsLayout.findViewById(R.id.tv_desc_for);
     }
 
-    private void requestHomeData() {
+    public void requestHomeData() {
         // 发送请求
         LoginHttpUtil.sendBannerHttpRequest(mActivity, Constants.HOME_PAGE_DATA, new HttpCallBackListener() {
             @Override
@@ -308,7 +319,11 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
             @Override
             public void onError(Exception e) {
-                mBanner.setVisibility(View.GONE);
+                if (mHandler != null) {
+                    Message message = mHandler.obtainMessage();
+                    message.what = ERROR_WHAT;
+                    mHandler.sendMessage(message);
+                }
             }
         });
     }
@@ -336,6 +351,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private void setBanner() {
         List<HomeBannerInfo> list = mHomeJsonData.getHomeBannerData();
         if (list != null && list.size() > 0) {
+            mIvUrls.clear();
+            mOpenUrls.clear();
             for (HomeBannerInfo info : list) {
                 mIvUrls.add(info.mIvUrl);
                 mOpenUrls.add(info.mOpenUrl);
@@ -370,7 +387,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     /**
      * 请求数据
      */
-    private void requestData() {
+    public void requestData() {
         mStockClient.requestNewIndexAll(new OnRequestListener() {
             @Override
             public void onDataFinish(Object object) {
