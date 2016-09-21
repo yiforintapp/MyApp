@@ -321,4 +321,11 @@ public class Constants {
 
     public static final String DEFAULT_WIN_TOP = "ki****aax_32541.55;yi****js_30012.21;ka****bb_27654.25;ac****21_18154.01;mn****mn_11546.65;mn****oi_9654.23;ij****na_4865.88;qq****aa_3332.33;ip****pz_1596.84;wa****mn_985.99;";
 
+    public static final String PUSH_KEY = "push_key";
+    public static final String PUSH_KEY_NORMAL = "normal";
+    public static final String PUSH_KEY_DAYNEWS = "daynews";
+    public static final String PUSH_KEY_HANGQING = "hangqing";
+    public static final String PUSH_KEY_DEAL = "deal";
+    public static final String PUSH_KEY_CONSULT = "consult";
+    public static final String PUSH_KEY_UPDATE = "update";
 }

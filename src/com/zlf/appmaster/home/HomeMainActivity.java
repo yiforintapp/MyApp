@@ -1,5 +1,6 @@
 package com.zlf.appmaster.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.ui.HomeToolbar;
@@ -80,6 +82,18 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 
         init();
         setLister();
+        handleIntent();
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        String value = intent.getStringExtra(Constants.PUSH_KEY);
+        int page;
+        if(value != null && !value.isEmpty()){
+            page = Integer.parseInt(value);
+            mViewPager.setCurrentItem(page);
+            changeTabBg(page);
+        }
     }
 
     private void init() {
