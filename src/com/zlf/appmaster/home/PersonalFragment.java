@@ -107,12 +107,12 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             mClickLogin.setText(userName);
             mLoginIv.setVisibility(View.GONE);
             mModify.setVisibility(View.VISIBLE);
-            mLogin.setOnClickListener(null);
+            mLogin.setEnabled(false);
         } else {
             mClickLogin.setText(getResources().getString(R.string.click_login));
             mLoginIv.setVisibility(View.VISIBLE);
             mModify.setVisibility(View.GONE);
-            mLogin.setOnClickListener(this);
+            mLogin.setEnabled(true);
         }
     }
 

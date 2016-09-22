@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -416,8 +415,6 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
                 break;
             case R.id.refresh:
                 Animation refreshAnim = AnimationUtils.loadAnimation(this, R.anim.refresh_anim);
-                LinearInterpolator lir = new LinearInterpolator();
-                refreshAnim.setInterpolator(lir);
                 if (mRefreshIv != null) {
                     mRefreshIv.startAnimation(refreshAnim);
                 }
