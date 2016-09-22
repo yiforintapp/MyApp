@@ -125,6 +125,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private TextView mTitleOne, mTitleTwo, mTitleThr, mTitleFor;
     private TextView mDescOne, mDescTwo, mDescThr, mDescFor;
     private RippleView mItemOne, mItemTwo, mItemThr, mItemFor;
+    private RippleView mLoginView;
 
 
     //用于处理消息的Handler
@@ -147,7 +148,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ((HomeMainActivity)fragment.mActivity).stopRefreshAnim();
+                    ((HomeMainActivity) fragment.mActivity).stopRefreshAnim();
                 }
             }, 2000);
             if (fragment.ERROR_WHAT == msg.what) {
@@ -245,6 +246,9 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mOpenUrls = new ArrayList<String>();
         mCurrentItem = LeoSettings.getInteger(PrefConst.CURRENT_SELECT_STOCK, 0);
         mDialogString = getResources().getStringArray(R.array.stock_dialog_String);
+
+        mLoginView = (RippleView) findViewById(R.id.login);
+        mLoginView.setOnClickListener(this);
 //        mBanner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
 //        mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
 //            @Override
@@ -706,9 +710,17 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             case R.id.rv_click_day:
                 gotoNewsList();
                 break;
+            case R.id.login:
+                gotoLogin();
+                break;
             default:
                 break;
         }
+    }
+
+    private void gotoLogin() {
+        Intent intent = new Intent(mActivity,LoginActivity.class);
+        mActivity.startActivity(intent);
     }
 
     private void gotoNewsList() {

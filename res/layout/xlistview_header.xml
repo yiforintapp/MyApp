@@ -70,7 +70,7 @@
             android:visibility="invisible"
             android:layout_alignLeft="@id/xlistview_header_text"
             app:cpv_color="@color/indicator_text_select_color"
-            app:cpv_animAutostart="false"
+            app:cpv_animAutostart="true"
             app:cpv_indeterminate="true"
             app:cpv_thickness="2dp" />
 

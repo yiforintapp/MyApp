@@ -63,22 +63,32 @@
                 android:textColor="@color/white"
                 android:textSize="14dp" />
 
-            <Button
+
+            <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/blue_radius_btn_shape"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="5dp"
-                android:text="@string/zlf_talk_login"
-                android:textColor="@color/white"
-                android:textSize="14dp" />
+                app:rippleColor="@color/button_gray_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
 
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/blue_radius_btn_shape"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/zlf_talk_login"
+                    android:textColor="@color/white"
+                    android:textSize="14dp" />
+            </com.zlf.appmaster.ui.RippleView>
         </RelativeLayout>
 
         <include
