@@ -261,7 +261,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 mPasswordEt.getText().clear();
                 mPasswordClean.setVisibility(View.INVISIBLE);
                 break;
-            case R.id.new_pwd_ev:
+            case R.id.new_pwd_close_iv:
                 mNewPasswordEt.getText().clear();
                 mNewPasswordClean.setVisibility(View.INVISIBLE);
                 break;
@@ -436,8 +436,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         } else {
             if (mFromRegister) {
                 mToolBar.setToolbarTitle(getResources().getString(R.string.login_register_pwd_set));
-                mResetNewLayout.setVisibility(View.GONE);
-                mResetNewView.setVisibility(View.GONE);
+                mResetNewLayout.setVisibility(View.VISIBLE);
+                mResetNewView.setVisibility(View.VISIBLE);
                 mUserNameLayout.setVisibility(View.VISIBLE);
                 mUserNameView.setVisibility(View.VISIBLE);
             } else {
@@ -883,6 +883,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             return false;
         }
 
+        if (TextUtils.isEmpty(newPassword)) {
+            showToast(getResources().getString(
+                    R.string.login_new_pwd_empty));
+
+            return false;
+        }
+
         if (!StringUtil.isPassWordValidate(password)) {
             showToast(getResources().getString(
                     R.string.login_pwd_unlocal));
@@ -890,26 +897,20 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             return false;
         }
 
-        if (!mFromRegister) {
-            if (TextUtils.isEmpty(newPassword)) {
-                showToast(getResources().getString(
-                        R.string.login_new_pwd_empty));
+        if (!StringUtil.isPassWordValidate(newPassword)) {
+            showToast(getResources().getString(
+                    R.string.login_pwd_unlocal));
 
-                return false;
-            }
-            if (!StringUtil.isPassWordValidate(newPassword)) {
-                showToast(getResources().getString(
-                        R.string.login_pwd_unlocal));
+            return false;
+        }
 
-                return false;
-            }
+        if (!password.equals(newPassword)) {
+            showToast(getResources().getString(
+                    R.string.error_same_pwd));
+            return false;
+        }
 
-            if (!password.equals(newPassword)) {
-                showToast(getResources().getString(
-                        R.string.error_same_pwd));
-                return false;
-            }
-        } else if (mFromRegister && !isUserNameValidate()) {
+        if (mFromRegister && !isUserNameValidate()) {
 
             return false;
         }

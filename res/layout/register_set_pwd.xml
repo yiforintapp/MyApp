@@ -49,55 +49,12 @@
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/view_four"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@+id/pwd_layout"
-        android:background="#DEDEDE" />
-
-    <RelativeLayout
-        android:id="@+id/user_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/view_four"
-        android:background="@color/white"
-        android:paddingBottom="15dp"
-        android:paddingTop="15dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <ImageView
-                android:id="@+id/user_name_iv"
-                style="@style/login_img_style"
-                android:src="@drawable/login_pwd_icon" />
-
-            <EditText
-                android:id="@+id/user_name_ev"
-                style="@style/login_et_style"
-                android:layout_toLeftOf="@+id/user_name_close_iv"
-                android:layout_toRightOf="@+id/user_name_iv"
-                android:hint="@string/login_name" />
-
-            <ImageView
-                android:id="@+id/user_name_close_iv"
-                style="@style/login_close_style"
-                android:src="@drawable/input_clean"
-                android:visibility="invisible" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
 
     <View
         android:id="@+id/view_three"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_below="@+id/user_name"
+        android:layout_below="@+id/pwd_layout"
         android:background="#DEDEDE" />
 
     <RelativeLayout
@@ -137,10 +94,53 @@
     </RelativeLayout>
 
     <View
-        android:id="@+id/view_five"
+        android:id="@+id/view_four"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/reset_new_pwd"
+        android:background="#DEDEDE" />
+
+    <RelativeLayout
+        android:id="@+id/user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_four"
+        android:background="@color/white"
+        android:paddingBottom="15dp"
+        android:paddingTop="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/user_name_iv"
+                style="@style/login_img_style"
+                android:src="@drawable/login_pwd_icon" />
+
+            <EditText
+                android:id="@+id/user_name_ev"
+                style="@style/login_et_style"
+                android:layout_toLeftOf="@+id/user_name_close_iv"
+                android:layout_toRightOf="@+id/user_name_iv"
+                android:hint="@string/login_name" />
+
+            <ImageView
+                android:id="@+id/user_name_close_iv"
+                style="@style/login_close_style"
+                android:src="@drawable/input_clean"
+                android:visibility="invisible" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_five"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/user_name"
         android:background="#DEDEDE" />
 
     <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
