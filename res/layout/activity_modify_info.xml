@@ -6,6 +6,11 @@
     android:background="@color/login_bg"
     android:orientation="vertical">
 
+    <com.zlf.appmaster.ui.CommonToolbar
+        android:id="@+id/fb_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
     <com.zlf.appmaster.ui.ExpandableLayout
         android:id="@+id/expandablelayout_top"
         android:layout_width="match_parent"

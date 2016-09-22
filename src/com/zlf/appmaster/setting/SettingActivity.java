@@ -3,6 +3,7 @@ package com.zlf.appmaster.setting;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.ui.CommonSettingItem;
+import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.PrefConst;
@@ -25,6 +27,7 @@ public class SettingActivity extends Activity implements View.OnClickListener {
     private CommonSettingItem mHelp;
 
     private ImageView mCleanIcon;
+    private CommonToolbar mToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class SettingActivity extends Activity implements View.OnClickListener {
     }
 
     private void init() {
+        mToolBar = (CommonToolbar) findViewById(R.id.fb_toolbar);
+        mToolBar.setToolbarTitle(getResources().getString(R.string.personal_setting));
         mExitLogin = (RippleView) findViewById(R.id.exit_login);
         mHelp = (CommonSettingItem) findViewById(R.id.help);
         mClearCache = (CommonSettingItem) findViewById(R.id.clear_cache);
@@ -42,8 +47,8 @@ public class SettingActivity extends Activity implements View.OnClickListener {
         mClearCache.setArrowVisable(false);
         mCleanIcon = mClearCache.getIcon();
 
-        mClearCache.setTitle("清除缓存");
-        mHelp.setTitle("帮助");
+        mClearCache.setTitle(getResources().getString(R.string.clean_cache));
+        mHelp.setTitle(getResources().getString(R.string.help));
         View line_two = mHelp.findViewById(R.id.line_2);
         line_two.setVisibility(View.VISIBLE);
 
@@ -78,8 +83,9 @@ public class SettingActivity extends Activity implements View.OnClickListener {
     private void startAnim() {
         mClearCache.setEnable(false);
         mCleanIcon.setImageResource(R.drawable.clean_in);
-        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(mCleanIcon, "rotation", 0f, 1080f);
-        rotateAnim.setDuration(1500);
+        ObjectAnimator rotateAnim = ObjectAnimator.ofFloat(mCleanIcon, "rotation", 0f, 3600f);
+        rotateAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+        rotateAnim.setDuration(3000);
 
         AnimatorSet endCleanHide = getHideAnim(mCleanIcon);
         AnimatorSet endCleanShow = getShowAnim(mCleanIcon);
@@ -88,7 +94,8 @@ public class SettingActivity extends Activity implements View.OnClickListener {
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 mCleanIcon.setImageResource(R.drawable.clean_done);
-                Toast.makeText(SettingActivity.this, "清理完成", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, getResources().getString(
+                        R.string.clean_cache_complete), Toast.LENGTH_SHORT).show();
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

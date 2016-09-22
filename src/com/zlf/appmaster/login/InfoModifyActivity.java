@@ -18,6 +18,7 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.home.BaseActivity;
+import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.ExpandableLayout;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
@@ -52,6 +53,8 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
     private boolean mProgressBarShow; // 加载正在进行
     private int mMessageTag;
     private DataHandler mHandle;
+
+    private CommonToolbar mToolBar;
 
 
     private static final int SHOW_DEFAULT = -1;
@@ -125,6 +128,8 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
 
     private void init() {
         mHandle = new DataHandler(this);
+        mToolBar = (CommonToolbar) findViewById(R.id.fb_toolbar);
+        mToolBar.setToolbarTitle(getResources().getString(R.string.personal_modify));
         mModifyUserName = (RippleView) findViewById(R.id.modify_user_name);
         mModifyPwd = (RippleView) findViewById(R.id.modify_pwd);
 

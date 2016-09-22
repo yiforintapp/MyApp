@@ -342,5 +342,10 @@
     <string name="zlf_about_us_phone">24小时免费热线：0755-3691-4014</string>
     <string name="zlf_about_us_copyright">Copyright © 2015 深圳兆利丰投资管理有限公司</string>
 
+    <string name="clean_cache">清理缓存</string>
+    <string name="clean_cache_complete">清理完成</string>
+    <string name="help">帮助</string>
+
+
 
 </resources>
