@@ -156,6 +156,11 @@
             android:theme="@style/activity_theme"></activity>
 
         <activity
+            android:name=".setting.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
         android:name=".login.LoginActivity"
         android:hardwareAccelerated="true"
         android:screenOrientation="portrait"

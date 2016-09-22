@@ -279,6 +279,7 @@
     <string name="long_river_company">长江联合</string>
     <string name="global_gold">国际黄金</string>
     <string name="click_login">点击登录</string>
+    <string name="click_exit_login">退出登录</string>
     <string name="login_name">输入昵称，不支持特殊字符</string>
     <string name="register_loading">正在注册&#8230;</string>
     <string name="modify_loading">正在修改&#8230;</string>

@@ -1,6 +1,5 @@
 package com.zlf.appmaster.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,6 +12,7 @@ import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.login.FeedbackActivity;
 import com.zlf.appmaster.login.InfoModifyActivity;
 import com.zlf.appmaster.login.LoginActivity;
+import com.zlf.appmaster.setting.SettingActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
 import com.zlf.appmaster.update.UpdateActivity;
 import com.zlf.appmaster.utils.PrefConst;
@@ -92,6 +92,13 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 checkUpdate();
+            }
+        });
+
+        mSetting.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, SettingActivity.class));
             }
         });
     }

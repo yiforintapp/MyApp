@@ -157,6 +157,14 @@ public class CommonSettingItem extends RelativeLayout {
 //        }
     }
 
+    public void setArrowVisable(boolean isVisable) {
+        mIvArrow.setVisibility(isVisable == true ? View.VISIBLE : View.GONE);
+    }
+
+    public void setEnable(boolean enable) {
+        mRvMain.setEnabled(enable);
+    }
+
     public void setIcon(int id) {
         mIvIcon.setImageResource(id);
     }
@@ -171,5 +179,9 @@ public class CommonSettingItem extends RelativeLayout {
 
     public void setTitle(int id) {
         mTvTitle.setText(id);
+    }
+
+    public ImageView getIcon() {
+        return mIvIcon;
     }
 }
