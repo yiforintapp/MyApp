@@ -228,16 +228,21 @@ public class InfoModifyActivity extends BaseActivity implements View.OnClickList
             String password = mOldPwdEt.getText().toString().trim();
             String newPassword = mNewPwdEt.getText().toString().trim();
             String queryPassword = mQueryNewPwdEt.getText().toString().trim();
+            String savePassword = LeoSettings.getString(PrefConst.USER_PWD, "");
 
-            if (isPwdValidate(password) && isPwdValidate(newPassword)
-                    && isPwdValidate(queryPassword)) {
-
-                if (!newPassword.equals(queryPassword)) {
-                    showToast(getResources().getString(R.string.error_same_pwd));
-                } else {
-                    reset(resetName);
-                }
+            if (!isPwdValidate(password) || !isPwdValidate(newPassword)
+                    || !isPwdValidate(queryPassword)) {
+                return;
             }
+            if (!savePassword.equals(password)) {
+                showToast(getResources().getString(R.string.error_old_pwd));
+                return;
+            }
+            if (!newPassword.equals(queryPassword)) {
+                showToast(getResources().getString(R.string.error_same_pwd));
+                return;
+            }
+            reset(resetName);
 
         }
     }

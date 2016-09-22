@@ -321,6 +321,7 @@
     <string name="modify_old_pwd">输入旧密码</string>
     <string name="input_new_name">输入新昵称</string>
     <string name="error_same_pwd">两次输入密码不一致</string>
+    <string name="error_old_pwd">旧密码不正确</string>
 
     <string name="personal_modify">修改资料</string>
     <string name="personal_about">关于我们</string>
