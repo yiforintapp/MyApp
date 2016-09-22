@@ -13,6 +13,7 @@ import com.zlf.appmaster.login.AboutusActivity;
 import com.zlf.appmaster.login.FeedbackActivity;
 import com.zlf.appmaster.login.InfoModifyActivity;
 import com.zlf.appmaster.login.LoginActivity;
+import com.zlf.appmaster.login.ProtocolActivity;
 import com.zlf.appmaster.setting.SettingActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
 import com.zlf.appmaster.update.UpdateActivity;
@@ -102,7 +103,13 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
                 checkUpdate();
             }
         });
-
+        mRule.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, ProtocolActivity.class);
+                startActivity(intent);
+            }
+        });
         mSetting.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
