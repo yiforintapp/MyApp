@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.login.AboutusActivity;
 import com.zlf.appmaster.login.FeedbackActivity;
 import com.zlf.appmaster.login.InfoModifyActivity;
 import com.zlf.appmaster.login.LoginActivity;
@@ -85,6 +86,13 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mActivity, FeedbackActivity.class);
+                startActivity(intent);
+            }
+        });
+        mAbout.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, AboutusActivity.class);
                 startActivity(intent);
             }
         });

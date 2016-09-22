@@ -17,7 +17,7 @@
         <com.zlf.banner.Banner
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:visibility="gone"
             app:indicator_drawable_selected="@drawable/selected_radius" />
 

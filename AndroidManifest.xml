@@ -167,6 +167,12 @@
         android:theme="@style/activity_theme"></activity>
 
         <activity
+            android:name=".login.AboutusActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
             android:name=".login.FeedbackActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
