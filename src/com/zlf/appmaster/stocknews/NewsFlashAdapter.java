@@ -1,6 +1,7 @@
 package com.zlf.appmaster.stocknews;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class NewsFlashAdapter extends ArrayAdapter<NewsFlashItem> {
             //            viewHolder.timeView.setText(TimeUtil.getChatTime(item.getTime()));
             viewHolder.timeView.setText(item.getTimeStringShow()+"");
 
-            viewHolder.contentView.setText(item.getTitle());
+            viewHolder.contentView.setText(Html.fromHtml(item.getTitle()));
 
         }
         return convertView;
