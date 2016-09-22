@@ -328,4 +328,6 @@ public class Constants {
     public static final String PUSH_KEY_DEAL = "deal";
     public static final String PUSH_KEY_CONSULT = "consult";
     public static final String PUSH_KEY_UPDATE = "update";
+
+    public static final String PUSH_TAG = "zlf";
 }

@@ -120,11 +120,11 @@ public class JPushReceiver extends BroadcastReceiver {
             } else if (myKey.equals(Constants.PUSH_KEY_CONSULT)) {
                 intent = new Intent(context, HomeMainActivity.class);
                 intent.putExtra(Constants.PUSH_KEY, "3");
-            }
-//            else if (myKey.equals(Constants.PUSH_KEY_UPDATE)) {
-//                intent = new Intent(context, UpdateActivity.class);
-//            }
-            else {
+            } else if (myKey.equals(Constants.PUSH_KEY_UPDATE)) {
+
+                intent = new Intent(context, UpdateActivity.class);
+                intent.putExtra(UpdateActivity.UPDATETYPE,UpdateActivity.CHECK_UPDATE);
+            } else {
                 intent = new Intent(context, HomeMainActivity.class);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -90,6 +90,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
         int page;
         if(value != null && !value.isEmpty()){
             page = Integer.parseInt(value);
+            LeoLog.d("JPush","handle page = " + page);
             mViewPager.setCurrentItem(page);
             changeTabBg(page);
         }
