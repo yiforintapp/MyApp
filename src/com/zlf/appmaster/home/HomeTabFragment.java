@@ -26,6 +26,7 @@ import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
 import com.zlf.appmaster.login.HttpCallBackListener;
 import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.login.LoginHttpUtil;
+import com.zlf.appmaster.login.ProductActivity;
 import com.zlf.appmaster.model.DayNewsItem;
 import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
@@ -112,6 +113,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private List<DayNewsItem> mDayNewsList;
 
     private RippleView mLiveRipple;
+    private RippleView mProduct;
     private RelativeLayout mLoginContent;
     private RippleView mStockRipple;
     private RippleView mDayNewClick;
@@ -233,6 +235,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mStockLayout = (FrameLayout) findViewById(R.id.stock_layout);
         mBanner = (Banner) findViewById(R.id.banner);
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+        mProduct = (RippleView) findViewById(R.id.product);
+        mProduct.setOnClickListener(this);
         mLiveRipple = (RippleView) findViewById(R.id.live);
         mLiveRipple.setOnClickListener(this);
         mStockRipple = (RippleView) findViewById(R.id.stock);
@@ -713,9 +717,17 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             case R.id.login:
                 gotoLogin();
                 break;
+            case R.id.product:
+                gotoProduct();
+                break;
             default:
                 break;
         }
+    }
+
+    private void gotoProduct() {
+        Intent intent = new Intent(mActivity, ProductActivity.class);
+        mActivity.startActivity(intent);
     }
 
     private void gotoLogin() {

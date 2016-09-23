@@ -167,6 +167,12 @@
         android:theme="@style/activity_theme"></activity>
 
         <activity
+            android:name=".login.ProductActivity"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
             android:name=".login.ProtocolActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"

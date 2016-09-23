@@ -60,7 +60,7 @@
 
 
     <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/client"
+        android:id="@+id/product"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
         <TextView
             style="@style/home_shortcut_tv"
             android:layout_below="@+id/client_iv"
-            android:text="咨询客服"/>
+            android:text="@string/deal_product"/>
 
     </com.zlf.appmaster.ui.RippleView>
 
