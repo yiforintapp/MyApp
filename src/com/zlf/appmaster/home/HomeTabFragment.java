@@ -145,6 +145,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             super.handleMessage(msg);
             final HomeTabFragment fragment = mActivityReference.get();
             if (fragment == null) {
+                ((HomeMainActivity) fragment.mActivity).stopRefreshAnim();
                 return;
             }
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -750,4 +751,11 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mActivity.startActivity(intent);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mActivity != null) {
+            ((HomeMainActivity) mActivity).stopRefreshAnim();
+        }
+    }
 }

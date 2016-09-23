@@ -430,7 +430,7 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 
     public void stopRefreshAnim() {
         mRefreshRipple.setEnabled(true);
-        if (mRefreshIv != null && mRefreshRipple.getVisibility() == View.VISIBLE) {
+        if (mRefreshIv != null) {
             mRefreshIv.clearAnimation();
         }
     }
