@@ -45,6 +45,7 @@ import com.zlf.appmaster.utils.NinePatchChunk;
 import com.zlf.appmaster.utils.PreDataTool;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.Utilities;
+import com.zlf.banner.transformer.DepthPageTransformer;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -622,10 +623,10 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
         Button enterAppButton;
         ImageView bigImage = null;
         int initColor = 0;
-        mPageColors[3] = getResources().getColor(R.color.new_guide_page2_background_color);
-        mPageColors[4] = getResources().getColor(R.color.new_guide_page4_background_color);
+        mPageColors[3] = getResources().getColor(R.color.new_guide_page1_background_color);
+        mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
 //        /*骚扰拦截引导*/
-        mPageColors[5] = getResources().getColor(R.color.new_guide_page1_background_color);
+        mPageColors[5] = getResources().getColor(R.color.new_guide_page3_background_color);
 
 //        mPageColors[6] = getResources().getColor(R.color.new_guide_page2_background_color);
 
@@ -635,7 +636,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
             /* page1 */
         ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page1.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_one));
         tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
         tvTitle.setText(getResources().getString(R.string.guide_page_title_one));
         tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
@@ -647,7 +648,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
         /* page2 */
         ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page2.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_two));
         tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
         tvTitle.setText(getResources().getString(R.string.privacy_scan));
         tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
@@ -656,7 +657,7 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_4));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_three));
         tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
         tvTitle.setText(getResources().getString(R.string.guide_page_title_two));
         tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
@@ -684,12 +685,13 @@ public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implemen
         mNewFuncViewPager.setAdapter(new GuidePageAdapter(mNewFuncPageViews));
         mIndicator = (CirclePageIndicator) mNewGuideMain.findViewById(R.id.new_splash_indicator);
         mIndicator.setViewPager(mNewFuncViewPager);
+        mNewFuncViewPager.setPageTransformer(true, new DepthPageTransformer());
         mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, initColor));
 
         enterAppButton = (Button) page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
         enterAppButton.setTextColor(getResources().getColor(
-                R.color.new_guide_page4_background_color));
+                R.color.new_guide_page3_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             @Override

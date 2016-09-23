@@ -20,7 +20,7 @@ import android.view.View;
 
 public class DepthPageTransformer extends ABaseTransformer {
 
-	private static final float MIN_SCALE = 0.75f;
+	private static final float MIN_SCALE = 0.70f;
 
 	@Override
 	protected void onTransform(View view, float position) {

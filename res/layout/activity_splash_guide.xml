@@ -87,11 +87,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="@dimen/guide_page_indicator_margin_buttom"
-            leoindicator:fillColor="@color/black"
+            android:layout_marginBottom="15dp"
+            leoindicator:fillColor="@color/white"
             leoindicator:pageColor="#00000000"
             leoindicator:radiu="4dp"
-            leoindicator:strokeColor="@color/gray" />
+            leoindicator:strokeColor="@color/white" />
     </FrameLayout>
     <!-- 跳过进入主页按钮 -->
 

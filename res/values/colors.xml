@@ -12,9 +12,9 @@
     <!-- guide page begin -->
     <color name="guide_page2_background_color">#ffc000</color>
     <color name="guide_page4_background_color">#ffc000</color>
-    <color name="new_guide_page1_background_color">#06c4a7</color>
-    <color name="new_guide_page2_background_color">#1879e7</color>
-    <color name="new_guide_page4_background_color">#00ac7d</color>
+    <color name="new_guide_page3_background_color">#01AFBA</color>
+    <color name="new_guide_page1_background_color">#4190E2</color>
+    <color name="new_guide_page2_background_color">#FF6857</color>
     <!-- guide page begin -->
 
     <color name="dialog_pro_progress">#4285f4</color>

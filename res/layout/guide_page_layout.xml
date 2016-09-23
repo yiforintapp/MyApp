@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/guide_image"
         android:layout_width="match_parent"
         android:layout_height="@dimen/guide_page_image_height"
@@ -25,6 +25,28 @@
         android:text="@string/guide_button_text"
         android:textColor="@color/guide_page4_background_color"
         android:textSize="@dimen/guide_go_button_text_size"
+        android:visibility="invisible" />-->
+
+    <ImageView
+        android:id="@+id/guide_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop" />
+
+    <Button
+        android:id="@+id/button_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/guide_go_button_height"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/letgo_bg"
+        android:minWidth="@dimen/guide_go_button_width"
+        android:paddingRight="6dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/guide_button_text"
+        android:textColor="@color/guide_page4_background_color"
+        android:textSize="@dimen/guide_go_button_text_size"
         android:visibility="invisible" />
 
     <RelativeLayout
@@ -32,7 +54,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/button_guide"
         android:background="@color/white"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/guide_tv_title"
