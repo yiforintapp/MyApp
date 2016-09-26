@@ -66,10 +66,8 @@ public class InitAsyncBootstrap extends com.zlf.appmaster.bootstrap.Bootstrap {
     private void initJPush() {
         JPushInterface.setDebugMode(false);
         JPushInterface.init(mApp);
-        Set<String> tags = new HashSet<String>();
-        String tag = Constants.PUSH_TAG + mApp.getString(R.string.version_name);
-        LeoLog.d("JPush","tag is : " + tag);
-        tags.add(tag);
+
+        Set<String> tags = AppUtil.setPushTag(mApp);
         JPushInterface.setTags(mApp, tags, new TagAliasCallback() {
             @Override
             public void gotResult(int i, String s, Set<String> set) {

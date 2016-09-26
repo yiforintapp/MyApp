@@ -44,6 +44,18 @@ import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.banner.Banner;
 import com.zlf.banner.BannerConfig;
 import com.zlf.banner.listener.OnBannerClickListener;
+import com.zlf.banner.transformer.ABaseTransformer;
+import com.zlf.banner.transformer.AccordionTransformer;
+import com.zlf.banner.transformer.BackgroundToForegroundTransformer;
+import com.zlf.banner.transformer.CubeInTransformer;
+import com.zlf.banner.transformer.CubeOutTransformer;
+import com.zlf.banner.transformer.DepthPageTransformer;
+import com.zlf.banner.transformer.FlipHorizontalTransformer;
+import com.zlf.banner.transformer.FlipVerticalTransformer;
+import com.zlf.banner.transformer.ForegroundToBackgroundTransformer;
+import com.zlf.banner.transformer.RotateDownTransformer;
+import com.zlf.banner.transformer.ZoomInTransformer;
+import com.zlf.banner.transformer.ZoomOutSlideTransformer;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -236,6 +248,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mStockLayout = (FrameLayout) findViewById(R.id.stock_layout);
         mBanner = (Banner) findViewById(R.id.banner);
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+        mBanner.setPageTransformer(true, new CubeOutTransformer());
         mProduct = (RippleView) findViewById(R.id.product);
         mProduct.setOnClickListener(this);
         mLiveRipple = (RippleView) findViewById(R.id.live);

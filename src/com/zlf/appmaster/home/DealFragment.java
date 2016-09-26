@@ -104,9 +104,9 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.tv_changjiang:
 
- /*               jumpToCJLH();*/
+               jumpToCJLH();
 //                startActivity(new Intent(mActivity, testWebViewActivity.class));
-                startActivity(new Intent(mActivity, WinTestActivity.class));
+//                startActivity(new Intent(mActivity, WinTestActivity.class));
                 break;
         }
     }

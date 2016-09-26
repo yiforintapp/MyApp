@@ -38,7 +38,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AppUtil {
     public static final float SPL_SHARE_SCALE_X = 1.0f;
@@ -87,7 +89,6 @@ public class AppUtil {
     }
 
 
-
     public static String getAppLabel(String pkg, Context ctx) {
         try {
             return ctx
@@ -118,8 +119,6 @@ public class AppUtil {
                 + TrafficStats.getTotalTxBytes();
         return totalTraffic - getMobileTraffic();
     }
-
-
 
 
     /**
@@ -365,6 +364,7 @@ public class AppUtil {
 
     /***
      * 是否设置了系统密码锁，无论当前锁是否已经显示
+     *
      * @param context
      * @param defValue 对于4.0以及以下系统的默认值
      * @return
@@ -386,13 +386,13 @@ public class AppUtil {
     public static String getDefaultBrowser(Context context) {
         Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
         browserIntent.addCategory(Intent.CATEGORY_BROWSABLE);
-        ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(browserIntent,PackageManager.MATCH_DEFAULT_ONLY);
+        ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
 
         String packagetName = "";
         if (resolveInfo != null) {
             packagetName = resolveInfo.activityInfo.packageName;
         }
-        LeoLog.d("stone_test_browser", "packagetName="+packagetName);
+        LeoLog.d("stone_test_browser", "packagetName=" + packagetName);
         return packagetName;
     }
 
@@ -475,29 +475,51 @@ public class AppUtil {
     }
 
 
-    public static String getDateTime(long time,int type){
+    public static String getDateTime(long time, int type) {
         String timeString;
-        				Date date=new Date();
-						date.setTime(time);
-						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        date.setTime(time);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String allTime = formatter.format(date);
         String[] timePart = allTime.split("-");
-        if(type == 1){
+        if (type == 1) {
             //year
             timeString = timePart[0] + "年";
-        }else if(type == 2){
+        } else if (type == 2) {
             timeString = timePart[1] + "月" + timePart[2] + "日";
-        }else{
+        } else {
             timeString = allTime;
         }
         return timeString;
     }
 
-    public static  boolean isLogin() {
+    public static boolean isLogin() {
         String userName = LeoSettings.getString(PrefConst.USER_NAME, "");
         if (!TextUtils.isEmpty(userName)) {
-           return true;
+            return true;
         }
         return false;
+    }
+
+    public static Set<String> setPushTag(Context mContext,Set<String> strings) {
+        String tag = Constants.PUSH_TAG + mContext.getString(R.string.version_name);
+        if(strings == null){
+            Set<String> tags = new HashSet<String>();
+            tags.add(tag);
+            return tags;
+        }else{
+            strings.add(tag);
+            return strings;
+        }
+
+    }
+
+    public static Set<String> setPushTag(Context mContext) {
+
+        Set<String> tags = new HashSet<String>();
+        String tag = Constants.PUSH_TAG + mContext.getString(R.string.version_name);
+        tags.add(tag);
+
+        return tags;
     }
 }
