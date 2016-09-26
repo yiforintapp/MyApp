@@ -272,7 +272,7 @@
 
     <string name="apk_fail">应用包损坏，请重新下载</string>
 
-    <string name="deal_click">长江联合交易中心</string>
+    <string name="deal_click">长江联合交易所</string>
     <string name="deal_v_1">1.点击按钮打开长江交易宝App</string>
     <string name="deal_v_2">2.如果手机未安装，则跳转浏览器下载</string>
     
