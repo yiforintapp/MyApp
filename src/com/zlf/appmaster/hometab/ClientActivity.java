@@ -1,6 +1,7 @@
 package com.zlf.appmaster.hometab;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -26,23 +27,38 @@ public class ClientActivity extends BaseActivity {
 
     private void initViews() {
 
-
         mWebView = (WebView) findViewById(R.id.webView);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setBuiltInZoomControls(false);
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
 
-        // 回调本地代码
-        webSettings.setJavaScriptEnabled(true);
+        // 设置可以支持缩放
+        webSettings.setSupportZoom(true);
+        // 设置出现缩放工具
+        webSettings.setBuiltInZoomControls(true);
 
         webSettings.setAllowContentAccess(true);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        webSettings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
         webSettings.setAllowFileAccess(true);
         webSettings.setLoadsImagesAutomatically(true);
 
-        webSettings.setLoadWithOverviewMode(true);
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int mDensity = metrics.densityDpi;
+        if (mDensity == 240) {
+            webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        } else if (mDensity == 160) {
+            webSettings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
+        } else if(mDensity == 120) {
+            webSettings.setDefaultZoom(WebSettings.ZoomDensity.CLOSE);
+        }else if(mDensity == DisplayMetrics.DENSITY_XHIGH){
+            webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        }else if (mDensity == DisplayMetrics.DENSITY_TV){
+            webSettings.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+        }else{
+            webSettings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
+        }
 
 
 
