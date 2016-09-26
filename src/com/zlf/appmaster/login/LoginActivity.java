@@ -21,6 +21,7 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.home.BaseFragmentActivity;
+import com.zlf.appmaster.stocknews.testWebViewActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
@@ -37,6 +38,8 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     public static final String ERROR = "ERROR"; // 出错
     public static final String WRONG = "WRONG"; // 手机号或密码错误
 
+    public static final String FROM_LIVE_BTN = "from_live_btn"; // 从直播间按钮跳转登录
+
     private EditText mUserEt;
     private ImageView mUserClean;
     private EditText mPasswordEt;
@@ -50,6 +53,8 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 
     private LoginProgressDialog mDialog;
     private boolean mProgressBarShow; // 加载正在进行
+
+    private boolean mFormLiveBtn;
 
 
     //用于处理消息的Handler
@@ -83,6 +88,9 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                 LeoSettings.setString(PrefConst.USER_PWD, activity.mPasswordEt.getText().toString().trim());
                 LeoSettings.setString(PrefConst.USER_NAME, result);
                 LeoSettings.setLong(PrefConst.LAST_LOGIN_TIME, System.currentTimeMillis());
+                if (activity.mFormLiveBtn) {
+                    activity.startActivity(new Intent(activity, testWebViewActivity.class));
+                }
                 activity.finish();
             }
         }
@@ -94,6 +102,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         setContentView(R.layout.activity_login);
         init();
         setListener();
+        handIntent();
     }
 
     private void init() {
@@ -131,6 +140,11 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         mForgetPwdTv.setOnClickListener(this);
         mUserEt.addTextChangedListener(this);
         mPasswordEt.addTextChangedListener(this);
+    }
+
+    private void handIntent() {
+        Intent intent = getIntent();
+        mFormLiveBtn = intent.getBooleanExtra(FROM_LIVE_BTN, false);
     }
 
     @Override
