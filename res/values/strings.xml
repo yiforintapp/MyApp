@@ -347,8 +347,13 @@
     <string name="clean_cache_complete">清理完成</string>
     <string name="help">帮助</string>
 
-    <string name="deal_product">交易产品</string>
 
+    <string name="deal_product">交易产品</string>
+    <string name="deal_stock">交易行情</string>
+    <string name="deal_info">交易所</string>
+    <string name="deal_live">直播间</string>
+    <string name="long_river_stock">长江联合交易所</string>
+    <string name="xin_hua_stock">新华产权交易所</string>
 
 
 </resources>

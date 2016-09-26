@@ -26,7 +26,7 @@
         <TextView
             style="@style/home_shortcut_tv"
             android:layout_below="@+id/school_iv"
-            android:text="新手学堂"/>
+            android:text="@string/deal_info"/>
 
     </com.zlf.appmaster.ui.RippleView>
 
@@ -52,7 +52,7 @@
         <TextView
             style="@style/home_shortcut_tv"
             android:layout_below="@+id/stock_iv"
-            android:text="交易行情"/>
+            android:text="@string/deal_stock"/>
 
 
     </com.zlf.appmaster.ui.RippleView>
@@ -108,7 +108,7 @@
             style="@style/home_shortcut_tv"
             android:textColor="@color/black"
             android:layout_below="@+id/live_iv"
-            android:text="直播间"/>
+            android:text="@string/deal_live"/>
 
     </com.zlf.appmaster.ui.RippleView>
 

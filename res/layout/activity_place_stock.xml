@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/home_tab_pressed">
+
+    <com.zlf.appmaster.ui.CommonToolbar
+        android:id="@+id/stock_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.zlf.appmaster.ui.PagerSlidingTabStrip
+        android:id="@+id/stock_tab_tabs"
+        android:layout_below="@+id/stock_toolbar"
+        style="@style/sliding_tab_style" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/stock_tab_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/home_tab_pressed"
+        android:layout_below="@+id/stock_tab_tabs"
+        android:overScrollMode="never" />
+
+</RelativeLayout>

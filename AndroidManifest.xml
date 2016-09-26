@@ -162,51 +162,43 @@
 
         <activity
         android:name=".login.LoginActivity"
-        android:hardwareAccelerated="true"
         android:screenOrientation="portrait"
         android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".login.ProductActivity"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".login.ProtocolActivity"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
 
         <activity
             android:name=".login.AboutusActivity"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".login.FeedbackActivity"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".home.WinTestActivity"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
 
         <activity
             android:name=".login.RegisterActivity"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".login.InfoModifyActivity"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
@@ -275,14 +267,16 @@
             android:theme="@style/activity_theme"></activity>
 
         <activity
-            android:name=".hometab.ClientActivity"
+            android:name=".hometab.StockPlaceActivity"
             android:launchMode="singleTask"
             android:theme="@style/activity_theme"></activity>
+
 
         <activity
             android:name=".hometab.HomeTabTopWebActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:taskAffinity="com.zlf.appmaster.home"
             android:theme="@style/activity_theme"></activity>
 
         <activity

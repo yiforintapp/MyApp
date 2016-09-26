@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/7/14.
  */
-public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener {
+public class HomeMainActivity extends BaseFragmentActivity implements View.OnClickListener, AdapterView.OnItemClickListener, ViewPager.OnPageChangeListener {
 
     public static final int CHECKUPDATE = 1;
 

@@ -21,9 +21,10 @@ import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.hometab.ClientActivity;
 import com.zlf.appmaster.hometab.HomeJsonData;
 import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
+import com.zlf.appmaster.hometab.LiveViewActivity;
+import com.zlf.appmaster.hometab.StockPlaceActivity;
 import com.zlf.appmaster.login.HttpCallBackListener;
 import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.login.LoginHttpUtil;
@@ -33,7 +34,6 @@ import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
-import com.zlf.appmaster.hometab.LiveViewActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
 import com.zlf.appmaster.ui.MyViewPager;
@@ -147,7 +147,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             final HomeTabFragment fragment = mActivityReference.get();
-            if (fragment == null) {
+            if (fragment == null && fragment.mActivity == null) {
                 ((HomeMainActivity) fragment.mActivity).stopRefreshAnim();
                 return;
             }
@@ -168,8 +168,12 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                         public void OnBannerClick(int position) {
                             Intent intent = new Intent(fragment.mActivity, HomeTabTopWebActivity.class);
                             if (fragment.mOpenUrls != null && position - 1 < fragment.mOpenUrls.size()) {
-                                intent.putExtra(HomeTabTopWebActivity.WEB_URL, fragment.mOpenUrls.get(position - 1));
-                                fragment.mActivity.startActivity(intent);
+                                try {
+                                    intent.putExtra(HomeTabTopWebActivity.WEB_URL, fragment.mOpenUrls.get(position - 1));
+                                    fragment.mActivity.startActivity(intent);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     });
@@ -697,7 +701,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 //                } catch (Exception e) {
 //                    e.printStackTrace();
 //                }
-                startActivity(new Intent(mActivity, ClientActivity.class));
+                startActivity(new Intent(mActivity, StockPlaceActivity.class));
                 break;
             case R.id.live:
                 Intent intent = null;

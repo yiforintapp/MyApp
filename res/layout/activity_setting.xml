@@ -19,7 +19,8 @@
     <com.zlf.appmaster.ui.CommonSettingItem
         android:id="@+id/help"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/exit_login"
