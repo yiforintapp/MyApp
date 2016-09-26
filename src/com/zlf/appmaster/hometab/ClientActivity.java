@@ -10,29 +10,24 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.home.BaseActivity;
 
 /**
- * Created by Administrator on 2016/9/19.
+ * Created by Administrator on 2016/9/26.
  */
-public class HomeTabTopWebActivity extends BaseActivity {
-
-    public static final String WEB_URL = "web_url";
+public class ClientActivity extends BaseActivity {
 
     private WebView mWebView;
-
-    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_live);
-        init();
+        setContentView(R.layout.activity_client);
+        initViews();
+
     }
 
-    private void init() {
+    private void initViews() {
+
+
         mWebView = (WebView) findViewById(R.id.webView);
-        mWebView.setVisibility(View.VISIBLE);
-
-        mUrl = getIntent().getStringExtra(WEB_URL);
-
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setDefaultTextEncodingName("UTF-8");
         webSettings.setBuiltInZoomControls(false);
@@ -68,6 +63,28 @@ public class HomeTabTopWebActivity extends BaseActivity {
         mWebView.setWebChromeClient(new WebChromeClient());
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
-        mWebView.loadUrl(mUrl);
+        mWebView.loadUrl("http://wpd.b.qq.com/page/webchat.html?nameAccount=800158636");
+
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+
+    /**
+     * 主要是把webview所持用的资源销毁，
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

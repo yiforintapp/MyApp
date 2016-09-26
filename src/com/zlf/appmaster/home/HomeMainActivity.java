@@ -450,7 +450,6 @@ public class HomeMainActivity extends com.zlf.appmaster.home.BaseFragmentActivit
 //                checkUpdate();
 //                break;
 //            case 0:
-//                Intent intent = new Intent(HomeMainActivity.this,testWebViewActivity.class);
 //                startActivity(intent);
 //                break;
 //        }

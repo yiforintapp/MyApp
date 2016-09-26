@@ -1,4 +1,4 @@
-package com.zlf.appmaster.stocknews;
+package com.zlf.appmaster.hometab;
 
 import android.content.Context;
 import android.net.Uri;
@@ -17,7 +17,7 @@ import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
 
-public class testWebViewActivity extends BaseActivity {
+public class LiveViewActivity extends BaseActivity {
 
     private Context mContext;
 
@@ -35,7 +35,7 @@ public class testWebViewActivity extends BaseActivity {
         if (!LibsChecker.checkVitamioLibs(this)) {
             return;
         }
-        setContentView(R.layout.test_activity_news_detail);
+        setContentView(R.layout.activity_view_live);
         initViews();
 
         mContext = this;
@@ -101,6 +101,7 @@ public class testWebViewActivity extends BaseActivity {
 //        mWebView.setWebChromeClient(new WebChromeClient());
 //        webSettings.setLoadWithOverviewMode(true);
 //        webSettings.setUseWideViewPort(true);
+//        mWebView.setVisibility(View.VISIBLE);
 //        mWebView.loadUrl("http://vip.zlf1688.com");
 
     }

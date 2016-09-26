@@ -21,6 +21,7 @@ import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.hometab.ClientActivity;
 import com.zlf.appmaster.hometab.HomeJsonData;
 import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
 import com.zlf.appmaster.login.HttpCallBackListener;
@@ -32,7 +33,7 @@ import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
-import com.zlf.appmaster.stocknews.testWebViewActivity;
+import com.zlf.appmaster.hometab.LiveViewActivity;
 import com.zlf.appmaster.ui.BounceBackViewPager;
 import com.zlf.appmaster.ui.HorizontalListView;
 import com.zlf.appmaster.ui.MyViewPager;
@@ -113,6 +114,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private List<WinTopItem> mWinTopList;
     private List<DayNewsItem> mDayNewsList;
 
+    private RippleView mSchool;
     private RippleView mLiveRipple;
     private RippleView mProduct;
     private RelativeLayout mLoginContent;
@@ -238,6 +240,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mBanner = (Banner) findViewById(R.id.banner);
         mBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         mBanner.setPageTransformer(true, new CubeOutTransformer());
+        mSchool = (RippleView) findViewById(R.id.school);
+        mSchool.setOnClickListener(this);
         mProduct = (RippleView) findViewById(R.id.product);
         mProduct.setOnClickListener(this);
         mLiveRipple = (RippleView) findViewById(R.id.live);
@@ -686,10 +690,19 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.school:
+//                try {
+//                    String url="mqqwpa://im/chat?chat_type=wpa&uin=535666786";
+//                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); //指定的QQ号只需要修改uin后的值即可
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+                startActivity(new Intent(mActivity, ClientActivity.class));
+                break;
             case R.id.live:
                 Intent intent = null;
                 if (AppUtil.isLogin()) {
-                    intent = new Intent(mActivity, testWebViewActivity.class);
+                    intent = new Intent(mActivity, LiveViewActivity.class);
                     startActivity(intent);
                 } else {
                     intent = new Intent(mActivity, LoginActivity.class);

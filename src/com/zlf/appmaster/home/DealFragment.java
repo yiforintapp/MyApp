@@ -1,6 +1,5 @@
 package com.zlf.appmaster.home;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -105,8 +104,6 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
             case R.id.tv_changjiang:
 
                jumpToCJLH();
-//                startActivity(new Intent(mActivity, testWebViewActivity.class));
-//                startActivity(new Intent(mActivity, WinTestActivity.class));
                 break;
         }
     }
