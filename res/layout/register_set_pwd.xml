@@ -117,7 +117,7 @@
             <ImageView
                 android:id="@+id/user_name_iv"
                 style="@style/login_img_style"
-                android:src="@drawable/login_pwd_icon" />
+                android:src="@drawable/login_nic_icon" />
 
             <EditText
                 android:id="@+id/user_name_ev"

@@ -78,7 +78,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="25dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/login_pwd_icon" />
+                android:src="@drawable/login_yanzheng_icon" />
 
             <EditText
                 android:id="@+id/code_ev"

@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/school_iv"
             style="@style/home_shortcut_iv"
-            android:src="@drawable/icon_discover_school"/>
+            android:src="@drawable/home_jiaoyi"/>
 
 
         <TextView
@@ -46,7 +46,7 @@
         <ImageView
             android:id="@+id/stock_iv"
             style="@style/home_shortcut_iv"
-            android:src="@drawable/icon_discover_news"/>
+            android:src="@drawable/home_hangqing"/>
 
 
         <TextView
@@ -74,7 +74,7 @@
         <ImageView
             android:id="@+id/client_iv"
             style="@style/home_shortcut_iv"
-            android:src="@drawable/icon_discover_circle"/>
+            android:src="@drawable/home_chanpin"/>
 
 
         <TextView
