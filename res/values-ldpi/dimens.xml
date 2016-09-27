@@ -5,8 +5,6 @@
     <dimen name="splash_icon_height">120dp</dimen>
 
     <!-- guide pages begin -->
-    <dimen name="guide_page_image_margin_top">0dp</dimen>
-    <dimen name="guide_page_image_height">228dp</dimen>
     <dimen name="guide_page_title_font_size">22dp</dimen>
     <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">15dp</dimen>
@@ -14,7 +12,6 @@
     <dimen name="guide_go_button_height">38dp</dimen>
     <dimen name="guide_go_button_width">138dp</dimen>
     <dimen name="guide_go_button_text_size">16dp</dimen>
-    <dimen name="guide_go_button_bottom">12dp</dimen>
     <!-- guide pages end -->
 
 </resources>

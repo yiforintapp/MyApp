@@ -4,11 +4,7 @@
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
     <color name="white">#ffffffff</color>
-    <color name="option_text_color">#505050</color>
     <color name="gray">#c0c0c0</color>
-    <color name="vpi__background_holo_light">#fff3f3f3</color>
-    <color name="vpi__bright_foreground_holo_dark">@color/vpi__background_holo_light</color>
-    <color name="vpi__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
     <!-- guide page begin -->
     <color name="guide_page2_background_color">#ffc000</color>
     <color name="guide_page4_background_color">#ffc000</color>
@@ -26,7 +22,6 @@
     <drawable name="transparent">#00000000</drawable>
 
     <color name="webview_pro_bg">#e4e4e4</color>
-    <color name="translucent_background">#b2000000</color>
 
     <!-- msg center -->
     <color name="mc_title">#414141</color>
@@ -56,8 +51,6 @@
     <color name="ctc">#0E2946</color>
     <!--白色字-->
     <color name="c1">#ffffff</color>
-    <!--50%白色字-->
-    <color name="c150">#e0ffffff</color>
     <!--深色字-->
     <color name="c2">#333333</color>
     <!--浅色字，深分割线-->
@@ -68,7 +61,6 @@
     <!--强调色-->
     <color name="cb2">#00a8ff</color>
 
-    <color name="cb_trans">#db004eff</color>
 
     <color name="uninstall_guide_bg">#99000000</color>
 
@@ -106,12 +98,9 @@
     <color name="combination_edit_bg">#f4f4f4</color>
     <color name="item_header_background">#f4f4f4</color>
     <color name="title_more_color">@color/main_red</color>
-    <color name="tab_background">@color/white</color>
 
 
 
-    <color name="bar">#C0202020</color>
-    <color name="blue">#3399ff</color>
     <color name="item_white">#ffffffff</color>
     <color name="main_tab_unselected">#929292</color>
 
@@ -134,7 +123,6 @@
     <color name="main_color">#5CB85C</color>
 
     <color name="small_text">#9696A1</color>
-    <color name="bg_gray">#B0B0B0</color>
 
     <color name="text_gold">#CFAE86</color>
 

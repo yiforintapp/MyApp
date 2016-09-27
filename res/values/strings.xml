@@ -5,7 +5,6 @@
     <string name="makesure">确认</string>
     <string name="cancel">取消</string>
 
-    <string name="action_settings">settings</string>
 
     <string name="msg_center_empty">No New Messages</string>
     <string name="msg_center_empty_say">Any questions and suggestions?</string>
@@ -13,12 +12,6 @@
     <string name="msg_center_feedback">Feedback</string>
 
     <string name="tips">Prompts</string>
-    <string name="lockerTheme">Themes</string>
-    <string name="auto_lock">Auto-Lock after screen locked</string>
-    <string name="summary_autolock_after_lockscreen">Auto lock after screen locked</string>
-    <string name="summary_newapp_lock">One tap to lock new apps</string>
-    <string name="new_app_lock_tip">Reminder of new apps</string>
-    <string name="setting_locker_clean">Unlock to boost</string>
 
     <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
     <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
@@ -39,7 +32,6 @@
     <string name="one_key_confirm_privacy">A click to finish privacy protection</string>
     <string name="msg_center_title">Notification</string>
 
-    <string name="grant_permission_guide">Authorize LEO Privacy to lock app.</string>
     <string name="uninstall_guide_tips">Advanced Protection was enabled, please click here to uninstall LEO Privacy</string>
     <string name="pic_video_guide_txt">Click the edit button and tick the images, then unhide images available.</string>
     <string name="hd_more_guide_tip">Click here to find more features</string>
@@ -48,10 +40,8 @@
     <string name="guide_skip_text">Skip</string>
     <string name="guide_page_title_one">New Interface</string>
     <string name="guide_page_title_two">App Lock</string>
-    <string name="guide_page_title_three">Safe Box</string>
     <string name="guide_page_content_one">Simple tips &amp; one-click operation</string>
     <string name="guide_page_content_two">Lock apps at any time !</string>
-    <string name="guide_page_content_three">Hide images/videos,avoid privacy leaking !</string>
 
 
     <!--股票-->
@@ -232,7 +222,6 @@
     <string name="login_register_same">该手机号已经注册</string>
     <string name="login_reset_success">修改成功</string>
     <string name="login_reset_nunum">该手机号没有注册</string>
-    <string name="login_success">登录成功</string>
     <string name="login_pwd_error">手机号或密码错误</string>
     <string name="login_error">登录出错</string>
     <string name="reset_error">修改出错</string>
@@ -241,7 +230,6 @@
     <string name="main_tab_home">行情</string>
     <string name="main_tab_trade">交易</string>
     <string name="main_tab_info">资讯</string>
-    <string name="main_tab_service">服务</string>
     <string name="main_tab_personal">我的</string>
 
     <string name="code_start_content">您好，您的验证码是：</string>

@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.utils.LeoLog;
 
@@ -48,8 +46,6 @@ public class DeskProxyActivity extends Activity {
 
     public static final String CALL_FILTER_PUSH = "from"; //是否从骚扰拦截push通知进入key
 
-  
-    private GoogleApiClient mGooleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +83,6 @@ public class DeskProxyActivity extends Activity {
         }
 
         handleAction(type, fromWhere);
-        mGooleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void handleAction(int type, String fromWhere) {
@@ -235,14 +230,11 @@ public class DeskProxyActivity extends Activity {
         super.onStart();
         // APP Indexing API 为了让Google 搜索发现和了解应用，以便在搜索结果中呈现深层链接
         // 也可以让应用允许 Googlebot 访问而不使用APP Indexing API
-        mGooleApiClient.connect();
 
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        mGooleApiClient.disconnect();
     }
 }
