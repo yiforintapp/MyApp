@@ -65,45 +65,6 @@ public class LiveViewActivity extends BaseActivity {
             }
         }, 1500);
 
-//        mWebView = (WebView) findViewById(R.id.webView);
-//        WebSettings webSettings = mWebView.getSettings();
-//        webSettings.setDefaultTextEncodingName("UTF-8");
-//        webSettings.setBuiltInZoomControls(false);
-//        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-//
-//        // 回调本地代码
-//        webSettings.setJavaScriptEnabled(true);
-//
-//        webSettings.setAllowContentAccess(true);
-//        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-//        webSettings.setDefaultZoom(WebSettings.ZoomDensity.MEDIUM);
-//        webSettings.setAllowFileAccess(true);
-//        webSettings.setLoadsImagesAutomatically(true);
-//
-//        webSettings.setLoadWithOverviewMode(true);
-//
-//
-//
-//        mWebView.requestFocus();
-//        mWebView.requestFocusFromTouch();
-//        mWebView.setFocusable(true);
-//        mWebView.setFocusableInTouchMode(true);
-//
-//        mWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
-//        mWebView.setVerticalScrollBarEnabled(false);
-//        mWebView.setHorizontalScrollBarEnabled(false);
-//        mWebView.setDrawingCacheEnabled(true);
-//        // 屏蔽长按事件
-//        mWebView.setOnCreateContextMenuListener(null);
-//        webSettings.setJavaScriptEnabled(true);
-//        webSettings.setPluginsEnabled(true);
-//        webSettings.setPluginState(WebSettings.PluginState.ON);
-//        mWebView.setWebChromeClient(new WebChromeClient());
-//        webSettings.setLoadWithOverviewMode(true);
-//        webSettings.setUseWideViewPort(true);
-//        mWebView.setVisibility(View.VISIBLE);
-//        mWebView.loadUrl("http://vip.zlf1688.com");
-
     }
 
     @Override
