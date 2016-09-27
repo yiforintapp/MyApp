@@ -27,6 +27,7 @@ import com.zlf.appmaster.model.sync.SyncBaseBean;
 import com.zlf.appmaster.model.sync.SyncOperator;
 import com.zlf.appmaster.model.sync.SyncRequest;
 import com.zlf.appmaster.stocktrade.StockTradeDetailActivity;
+import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.QConstants;
 import com.zlf.appmaster.utils.UrlConstants;
@@ -73,6 +74,8 @@ public class NewsDetailActivity extends Activity {
 	private boolean isShareing;
 	private NewsFavoriteTable mTable;
 
+	private CommonToolbar mToolBar;
+
 
 
 	@Override
@@ -91,8 +94,9 @@ public class NewsDetailActivity extends Activity {
 		mNewsID = intent.getStringExtra(KEY_INTENT_NEWS_ID);
 		mNewsType = intent.getIntExtra(KEY_INTENT_NEWS_TYPE, NEWS_TYPE_NORMAL);
 
-		mNewsCagalogue.setText(intent.getStringExtra(KEY_INTENT_NEWS_CATALOGUE));
+//		mNewsCagalogue.setText(intent.getStringExtra(KEY_INTENT_NEWS_CATALOGUE));
 //		mLiveRecordingUtil = LiveRecordingUtil.getInstance();
+		mToolBar.setToolbarTitle(intent.getStringExtra(KEY_INTENT_NEWS_CATALOGUE));
 
 		if (Utils.GetNetWorkStatus(NewsDetailActivity.this)) {
 
@@ -198,10 +202,11 @@ public class NewsDetailActivity extends Activity {
 
 	@SuppressLint("SetJavaScriptEnabled")
 	private void initViews(){
-		mNewsCagalogue = (TextView)findViewById(R.id.title);
+//		mNewsCagalogue = (TextView)findViewById(R.id.title);
+
 		mProgressBar = (CircularProgressView)findViewById(R.id.content_loading);
 
-
+ 		mToolBar = (CommonToolbar) findViewById(R.id.news_toolbar);
 		mFavoriteIconView = (ImageView)findViewById(R.id.iv_icon);
 
 
@@ -395,10 +400,10 @@ public class NewsDetailActivity extends Activity {
 				setResult(QConstants.RESULTCODE_UPDATE_MYFAVORITES);
 		}	
 	}
-	public void onBack(View view){
-		goBackResult();
-		finish();
-	}
+//	public void onBack(View view){
+//		goBackResult();
+//		finish();
+//	}
 	
 	
 	@Override
