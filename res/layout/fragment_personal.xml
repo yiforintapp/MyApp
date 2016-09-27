@@ -67,7 +67,6 @@
                         android:text="@string/click_login"
                         android:textColor="@color/c2"
                         android:textSize="@dimen/f3" />
-
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -111,15 +110,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.zlf.appmaster.ui.CommonSettingItem
-            android:id="@+id/rule"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <!--<com.zlf.appmaster.ui.CommonSettingItem-->
+            <!--android:id="@+id/rule"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
 
-        <com.zlf.appmaster.ui.CommonSettingItem
-            android:id="@+id/about"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <!--<com.zlf.appmaster.ui.CommonSettingItem-->
+            <!--android:id="@+id/about"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
 
         <com.zlf.appmaster.ui.CommonSettingItem
             android:id="@+id/update"

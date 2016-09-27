@@ -1,6 +1,7 @@
 package com.zlf.appmaster.setting;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.db.LeoSettings;
+import com.zlf.appmaster.login.AboutusActivity;
+import com.zlf.appmaster.login.ProtocolActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
@@ -25,6 +28,9 @@ public class SettingActivity extends Activity implements View.OnClickListener {
     private RippleView mExitLogin;
     private CommonSettingItem mClearCache;
     private CommonSettingItem mHelp;
+
+    private CommonSettingItem mAbout;
+    private CommonSettingItem mRule;
 
     private ImageView mCleanIcon;
     private CommonToolbar mToolBar;
@@ -46,6 +52,12 @@ public class SettingActivity extends Activity implements View.OnClickListener {
         mClearCache.setIcon(getResources().getDrawable(R.drawable.clean_prepare));
         mClearCache.setArrowVisable(false);
         mCleanIcon = mClearCache.getIcon();
+        mAbout = (CommonSettingItem) findViewById(R.id.about);
+        mAbout.setIcon(R.drawable.menu_about_icon);
+        mRule = (CommonSettingItem) findViewById(R.id.rule);
+        mRule.setIcon(R.drawable.ic_mine_xx);
+        mAbout.setTitle(this.getString(R.string.personal_about));
+        mRule.setTitle(this.getString(R.string.personal_use));
 
         mClearCache.setTitle(getResources().getString(R.string.clean_cache));
         mHelp.setTitle(getResources().getString(R.string.help));
@@ -76,6 +88,20 @@ public class SettingActivity extends Activity implements View.OnClickListener {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+        mAbout.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, AboutusActivity.class);
+                startActivity(intent);
+            }
+        });
+        mRule.setRippleViewOnClickLinstener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, ProtocolActivity.class);
+                startActivity(intent);
             }
         });
     }

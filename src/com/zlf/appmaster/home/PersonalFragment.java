@@ -27,9 +27,9 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
     private RelativeLayout mLogin;
 
     private CommonSettingItem mModify;
-    private CommonSettingItem mAbout;
     private CommonSettingItem mFeedback;
-    private CommonSettingItem mRule;
+//    private CommonSettingItem mAbout;
+//    private CommonSettingItem mRule;
     private CommonSettingItem mSetting;
     private CommonSettingItem mUpdate;
 
@@ -46,24 +46,24 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         mClickLogin = (TextView) mLogin.findViewById(R.id.tv_title);
         mLoginIv = (RelativeLayout) mLogin.findViewById(R.id.rl_content_tip);
         mModify = (CommonSettingItem) findViewById(R.id.modify);
-        mAbout = (CommonSettingItem) findViewById(R.id.about);
-        mRule = (CommonSettingItem) findViewById(R.id.rule);
+//        mAbout = (CommonSettingItem) findViewById(R.id.about);
+//        mRule = (CommonSettingItem) findViewById(R.id.rule);
         mSetting = (CommonSettingItem) findViewById(R.id.setting);
         mFeedback = (CommonSettingItem) findViewById(R.id.feedback);
         mUpdate = (CommonSettingItem) findViewById(R.id.update);
 
         mFeedback.setIcon(R.drawable.menu_feedbacks_icon);
-        mAbout.setIcon(R.drawable.menu_about_icon);
+//        mAbout.setIcon(R.drawable.menu_about_icon);
         mModify.setIcon(R.drawable.ic_mine_wdzh);
-        mRule.setIcon(R.drawable.ic_mine_xx);
+//        mRule.setIcon(R.drawable.ic_mine_xx);
         mSetting.setIcon(R.drawable.ic_mine_sz);
         mUpdate.setIcon(R.drawable.icon_update);
 
 
         mModify.setTitle(mActivity.getString(R.string.personal_modify));
         mFeedback.setTitle(mActivity.getString(R.string.fb_toolbar));
-        mAbout.setTitle(mActivity.getString(R.string.personal_about));
-        mRule.setTitle(mActivity.getString(R.string.personal_use));
+//        mAbout.setTitle(mActivity.getString(R.string.personal_about));
+//        mRule.setTitle(mActivity.getString(R.string.personal_use));
         mSetting.setTitle(mActivity.getString(R.string.personal_setting));
         mUpdate.setTitle(mActivity.getString(R.string.check_update));
 
@@ -90,26 +90,26 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         });
-        mAbout.setRippleViewOnClickLinstener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, AboutusActivity.class);
-                startActivity(intent);
-            }
-        });
+//        mAbout.setRippleViewOnClickLinstener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mActivity, AboutusActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         mUpdate.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkUpdate();
             }
         });
-        mRule.setRippleViewOnClickLinstener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, ProtocolActivity.class);
-                startActivity(intent);
-            }
-        });
+//        mRule.setRippleViewOnClickLinstener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mActivity, ProtocolActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         mSetting.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

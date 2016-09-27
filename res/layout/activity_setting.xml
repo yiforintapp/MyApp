@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/login_bg">
+    android:background="@color/login_bg"
+    android:orientation="vertical">
 
     <com.zlf.appmaster.ui.CommonToolbar
         android:id="@+id/fb_toolbar"
@@ -11,16 +11,31 @@
         android:layout_height="55dp" />
 
     <com.zlf.appmaster.ui.CommonSettingItem
-        android:id="@+id/clear_cache"
+        android:id="@+id/rule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
+
+    <com.zlf.appmaster.ui.CommonSettingItem
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.zlf.appmaster.ui.CommonSettingItem
+        android:id="@+id/clear_cache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@drawable/divider_setting" />
 
     <com.zlf.appmaster.ui.CommonSettingItem
         android:id="@+id/help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/exit_login"
@@ -55,8 +70,8 @@
                 android:id="@+id/rl_text_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/rl_content_tip"
                 android:layout_toRightOf="@+id/iv_icon"
                 android:gravity="left">
