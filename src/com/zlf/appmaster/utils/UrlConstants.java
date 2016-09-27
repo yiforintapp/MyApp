@@ -230,7 +230,7 @@ public class UrlConstants {
 			IMSocketHost = "long2.fengniuzhibo.com";
 			IMSocketPort = 58081;
 			//关闭打印信息
-			QLog.setLogFlag(true);
+			QLog.setLogFlag(false);
 			break;
 		case 2:		// 外网预测试环境
 			RequestLiveURLString ="rtmp://qiniu.ddns.net:51935/live/";
