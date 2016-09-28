@@ -341,16 +341,19 @@ public class StockIndexDetailListAdapter extends BaseAdapter {
      */
     private void enterChartDetail(int type) {
         //
-        Intent intent = new Intent(mContext,StockChartDetailActivity.class);
-        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_LINE_TYPE, type);
-        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_IS_STOCK, false);
-        intent.putExtra(StockChartDetailActivity.INTENT_FROM_GUOXIN, mFromGuoXin);
-        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_ID, mStockIndexID);
-        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_NAME, mStockIndexName);
-        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_MINUTE_DATA_LIST, (Serializable)mMinuteDataList);
-        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_KLINE_DATA_LIST, (Serializable)mDailyKLines);
-        intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_KLINE_DATA_LIST_TAG, mTabKLineTag);
-        mContext.startActivity(intent);
+        if ((type == 0 && mMinuteDataList != null && mMinuteDataList.size() > 0)||
+                (type != 0 && mDailyKLines != null && mDailyKLines.size() > 0)) {
+            Intent intent = new Intent(mContext, StockChartDetailActivity.class);
+            intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_LINE_TYPE, type);
+            intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_IS_STOCK, false);
+            intent.putExtra(StockChartDetailActivity.INTENT_FROM_GUOXIN, mFromGuoXin);
+            intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_ID, mStockIndexID);
+            intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_STOCK_NAME, mStockIndexName);
+            intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_MINUTE_DATA_LIST, (Serializable) mMinuteDataList);
+            intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_KLINE_DATA_LIST, (Serializable) mDailyKLines);
+            intent.putExtra(StockChartDetailActivity.INTENT_EXTRA_KLINE_DATA_LIST_TAG, mTabKLineTag);
+            mContext.startActivity(intent);
+        }
     }
 
     /**
