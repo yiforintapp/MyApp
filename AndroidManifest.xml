@@ -264,6 +264,7 @@
             android:screenOrientation="landscape"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
+            android:taskAffinity="com.zlf.appmaster.home"
             android:theme="@style/activity_theme"></activity>
 
         <activity
