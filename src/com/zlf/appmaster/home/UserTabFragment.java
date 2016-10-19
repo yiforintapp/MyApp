@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.stocknews.NewsAnalyFragment;
 import com.zlf.appmaster.stocknews.NewsInterFragment;
@@ -28,6 +29,8 @@ public class UserTabFragment extends BaseFragment {
     private NewsMarketFragment mNewsMarketFragment;
     private PagerSlidingTabStrip mPagerSlidingTab;
 
+    private LoginAdapter mAdapter;
+
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_user;
@@ -37,9 +40,6 @@ public class UserTabFragment extends BaseFragment {
     protected void onInitUI() {
         mViewPager = (ViewPager) findViewById(R.id.user_tab_viewpager);
         initFragment();
-        mViewPager.setAdapter(new LoginAdapter(getChildFragmentManager()));
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setCurrentItem(0);
         mPagerSlidingTab = (PagerSlidingTabStrip) findViewById(R.id.user_tab_tabs);
 //        DisplayMetrics dm = getResources().getDisplayMetrics();
 //        // 设置Tab是自动填充满屏幕的
@@ -68,21 +68,22 @@ public class UserTabFragment extends BaseFragment {
         mPagerSlidingTab.setViewPager(mViewPager);
     }
 
-    private void initFragment() {
+    public void initFragment() {
+
         UserTabHolder holder = new UserTabHolder();
-        holder.title = "分析研究";
+        holder.title = getResources().getString(R.string.user_fenxiyanjiu);
         mNewsAnalyFragment = new NewsAnalyFragment();
         holder.fragment = mNewsAnalyFragment;
         mUserHolders[0] = holder;
 
         holder = new UserTabHolder();
-        holder.title = "国际财经";
+        holder.title = getResources().getString(R.string.user_guojicaijing);
         mNewsInterFragment = new NewsInterFragment();
         holder.fragment = mNewsInterFragment;
         mUserHolders[1] = holder;
 
         holder = new UserTabHolder();
-        holder.title = "市场动态";
+        holder.title = getResources().getString(R.string.user_shichangdongtai);
         mNewsMarketFragment = new NewsMarketFragment();
         holder.fragment = mNewsMarketFragment;
         mUserHolders[2] = holder;
@@ -101,6 +102,21 @@ public class UserTabFragment extends BaseFragment {
         } catch (Exception e) {
 
         }
+
+        mAdapter = new LoginAdapter(getChildFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setCurrentItem(0);
+
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mActivity != null) {
+                    ((HomeMainActivity) mActivity).stopRefreshAnim();
+                }
+            }
+        }, 1000);
+
     }
 
     class LoginAdapter extends FragmentPagerAdapter {
@@ -127,5 +143,13 @@ public class UserTabFragment extends BaseFragment {
     class UserTabHolder {
         String title;
         StockBaseFragment fragment;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (mActivity != null) {
+            ((HomeMainActivity) mActivity).stopRefreshAnim();
+        }
     }
 }

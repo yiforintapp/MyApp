@@ -8,7 +8,7 @@ import android.util.Log;
 public class AppMasterConfig {
 
     /*-----    Debug configurations   ------ */
-    public static final boolean LOGGABLE = false;
+    public static final boolean LOGGABLE = true;
     public static final int SDK_LOG_LEVEL = Log.DEBUG;
     /*
     * RECOMMEND URL

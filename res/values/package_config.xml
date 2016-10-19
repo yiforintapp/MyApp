@@ -2,6 +2,6 @@
 <resources>
 
     <string name="channel_code">0000a</string>
-    <string name="version_name">1.0</string>
+    <string name="version_name">2.0</string>
     <integer name="guide_page_version">4</integer>
 </resources>

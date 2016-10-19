@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
  * @author Deping Huang
  *
  */
-public class StockIndex /*implements Parcelable*/{
+public class StockIndex implements Serializable {
 
 	public static final String INDEX_CODE_SZ = "000001";	// 上证指数
 	public static final String INDEX_CODE_SC = "399001"; 	// 深成指数
@@ -54,7 +55,7 @@ public class StockIndex /*implements Parcelable*/{
         copy(stockIndex);
     }
 
-    public void copy(StockIndex stockIndex){
+	public void copy(StockIndex stockIndex){
         mCode = stockIndex.mCode;
         mName = stockIndex.mName;
         mYesterdayIndex = stockIndex.mYesterdayIndex;

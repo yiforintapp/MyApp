@@ -330,4 +330,5 @@ public class Constants {
     public static final String PUSH_KEY_UPDATE = "update";
 
     public static final String PUSH_TAG = "zlf";
+    public static final String DEFAULT_SELECT_STOCK = "CJAG1_CJOIL3";
 }

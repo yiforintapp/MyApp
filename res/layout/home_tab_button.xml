@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:leo="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="55dp"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="horizontal">
 
     <com.zlf.appmaster.ui.RippleView
         android:id="@+id/home_tab_real"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:layout_height="match_parent"
         leo:rippleColor="@color/button_gray_ripple"
         leo:rippleDuration="250"
         leo:rippleHover="false"
@@ -20,47 +22,47 @@
         <ImageView
             android:id="@+id/home_iv_real"
             style="@style/home_tab_img"
-            android:src="@drawable/icon_service_pre"/>
+            android:src="@drawable/icon_service_pre" />
 
         <TextView
             android:id="@+id/home_tv_real"
             style="@style/home_tab_text"
             android:layout_below="@+id/home_iv_real"
-            android:text="@string/main_tab_home_real"/>
+            android:text="@string/main_tab_home_real" />
 
     </com.zlf.appmaster.ui.RippleView>
 
 
-        <com.zlf.appmaster.ui.RippleView
-            android:id="@+id/home_tab"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:layout_height="match_parent"
-            leo:rippleColor="@color/button_gray_ripple"
-            leo:rippleDuration="250"
-            leo:rippleHover="false"
-            leo:rippleOverlay="false">
+    <com.zlf.appmaster.ui.RippleView
+        android:id="@+id/home_tab"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        leo:rippleColor="@color/button_gray_ripple"
+        leo:rippleDuration="250"
+        leo:rippleHover="false"
+        leo:rippleOverlay="false">
 
-                <ImageView
-                    android:id="@+id/home_iv"
-                    style="@style/home_tab_img"
-                    android:src="@drawable/icon_price_nor"/>
+        <ImageView
+            android:id="@+id/home_iv"
+            style="@style/home_tab_img"
+            android:src="@drawable/icon_price_nor" />
 
-                <TextView
-                    android:id="@+id/home_tv"
-                    style="@style/home_tab_text"
-                    android:layout_below="@+id/home_iv"
-                    android:text="@string/main_tab_home"/>
+        <TextView
+            android:id="@+id/home_tv"
+            style="@style/home_tab_text"
+            android:layout_below="@+id/home_iv"
+            android:text="@string/main_tab_home" />
 
-        </com.zlf.appmaster.ui.RippleView>
+    </com.zlf.appmaster.ui.RippleView>
 
     <com.zlf.appmaster.ui.RippleView
         android:id="@+id/user_tab"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:layout_height="match_parent"
         leo:rippleColor="@color/button_gray_ripple"
         leo:rippleDuration="250"
         leo:rippleHover="false"
@@ -70,22 +72,23 @@
         <ImageView
             android:id="@+id/user_iv"
             style="@style/home_tab_img"
-            android:src="@drawable/icon_trade_nor"/>
+            android:src="@drawable/icon_trade_nor"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/user_tv"
             style="@style/home_tab_text"
             android:layout_below="@+id/user_iv"
-            android:text="@string/main_tab_trade"/>
+            android:text="@string/main_tab_trade" />
 
     </com.zlf.appmaster.ui.RippleView>
 
     <com.zlf.appmaster.ui.RippleView
         android:id="@+id/trade_tab"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:layout_height="match_parent"
         leo:rippleColor="@color/button_gray_ripple"
         leo:rippleDuration="250"
         leo:rippleHover="false"
@@ -94,22 +97,22 @@
         <ImageView
             android:id="@+id/trade_iv"
             style="@style/home_tab_img"
-            android:src="@drawable/icon_news_nor"/>
+            android:src="@drawable/icon_news_nor" />
 
         <TextView
             android:id="@+id/trade_tv"
             style="@style/home_tab_text"
             android:layout_below="@+id/trade_iv"
-            android:text="@string/main_tab_info"/>
+            android:text="@string/main_tab_info" />
     </com.zlf.appmaster.ui.RippleView>
 
 
     <com.zlf.appmaster.ui.RippleView
         android:id="@+id/personal_tab"
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:layout_height="match_parent"
         leo:rippleColor="@color/button_gray_ripple"
         leo:rippleDuration="250"
         leo:rippleHover="false"
@@ -119,13 +122,13 @@
         <ImageView
             android:id="@+id/personal_iv"
             style="@style/home_tab_img"
-            android:src="@drawable/icon_personal_nor"/>
+            android:src="@drawable/icon_personal_nor" />
 
         <TextView
             android:id="@+id/personal_tv"
             style="@style/home_tab_text"
             android:layout_below="@+id/personal_iv"
-            android:text="@string/main_tab_personal"/>
+            android:text="@string/main_tab_personal" />
 
     </com.zlf.appmaster.ui.RippleView>
 

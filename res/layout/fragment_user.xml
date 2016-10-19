@@ -6,7 +6,10 @@
 
     <com.zlf.appmaster.ui.PagerSlidingTabStrip
         android:id="@+id/user_tab_tabs"
-        style="@style/sliding_tab_style" />
+        android:layout_width="match_parent"
+        style="@style/sliding_tab_style"/>
+
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/user_tab_viewpager"

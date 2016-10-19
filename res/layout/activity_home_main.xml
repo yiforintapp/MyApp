@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,19 +44,28 @@
     <com.zlf.appmaster.ui.MyViewPager
         android:id="@+id/home_ViewPager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="55dp"/>
 
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_marginBottom="55dp"
+        android:layout_gravity="bottom"
         android:background="@color/indicator_text_color" />
 
     <include
         layout="@layout/home_tab_button"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"/>
 
-</LinearLayout>
+    <include
+        layout="@layout/zhibo_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_gravity="bottom"/>
+
+</FrameLayout>

@@ -1,6 +1,5 @@
 package com.zlf.appmaster.home;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +23,7 @@ import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.hometab.HomeJsonData;
 import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
 import com.zlf.appmaster.hometab.LiveViewActivity;
+import com.zlf.appmaster.hometab.SelectStockActivity;
 import com.zlf.appmaster.hometab.StockPlaceActivity;
 import com.zlf.appmaster.login.HttpCallBackListener;
 import com.zlf.appmaster.login.LoginActivity;
@@ -41,15 +41,19 @@ import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.StockSelectDialog;
 import com.zlf.appmaster.ui.stock.StockTextView;
 import com.zlf.appmaster.utils.AppUtil;
+import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.banner.Banner;
 import com.zlf.banner.BannerConfig;
 import com.zlf.banner.listener.OnBannerClickListener;
 import com.zlf.banner.transformer.CubeOutTransformer;
 
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2016/9/8.
@@ -88,6 +92,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private HorizontalListView mHlistview;
     private WinTopAdapter mWinAdapter;
     private HomeJsonData mHomeJsonData;
+
+    private Timer mTimer;
 
 
     private int mLastPosition = 0;
@@ -132,6 +138,10 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private RippleView mItemOne, mItemTwo, mItemThr, mItemFor;
     private RippleView mLoginView;
 
+    private String mSelectString;
+    private String[] mSelectItems;
+    private ArrayList<StockIndex> mAllItems;
+
 
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
@@ -154,7 +164,9 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ((HomeMainActivity) fragment.mActivity).stopRefreshAnim();
+                    if (fragment.mActivity != null) {
+                        ((HomeMainActivity) fragment.mActivity).stopRefreshAnim();
+                    }
                 }
             }, 2000);
             if (fragment.ERROR_WHAT == msg.what) {
@@ -239,6 +251,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mStockClient = StockQuotationsClient.getInstance(mActivity);
         mViewPager = (BounceBackViewPager) findViewById(R.id.my_viewpager);
         mViews = new ArrayList<View>();
+        mAllItems = new ArrayList<StockIndex>();
         mIndicator = (LinearLayout) findViewById(R.id.my_indicator);
         mStockLayout = (FrameLayout) findViewById(R.id.stock_layout);
         mBanner = (Banner) findViewById(R.id.banner);
@@ -253,25 +266,19 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         mStockRipple = (RippleView) findViewById(R.id.stock);
         mStockRipple.setOnClickListener(this);
         mLoginContent = (RelativeLayout) findViewById(R.id.login_content);
-//        String[] images = getResources().getStringArray(R.array.banner_url);
         mHomeJsonData = HomeJsonData.getInstance();
         mIndicatorImages = new ArrayList<ImageView>();
         mData = new ArrayList<StockIndex>();
         mIvUrls = new ArrayList<String>();
         mOpenUrls = new ArrayList<String>();
-        mCurrentItem = LeoSettings.getInteger(PrefConst.CURRENT_SELECT_STOCK, 0);
+//        mCurrentItem = LeoSettings.getInteger(PrefConst.CURRENT_SELECT_STOCK, 0);
+        mCurrentItem = 0;
+//        mSelectString = LeoSettings.getString(PrefConst.SELECT_STOCK, Constants.DEFAULT_SELECT_STOCK);
+//        mSelectItems = mSelectString.split("_");
         mDialogString = getResources().getStringArray(R.array.stock_dialog_String);
 
         mLoginView = (RippleView) findViewById(R.id.login);
         mLoginView.setOnClickListener(this);
-//        mBanner.setImages(images);//可以选择设置图片网址，或者资源文件，默认用Glide加载
-//        mBanner.setOnBannerClickListener(new OnBannerClickListener() {//设置点击事件
-//            @Override
-//            public void OnBannerClick(int position) {
-//                Toast.makeText(mActivity, "你点击了：" + position, Toast.LENGTH_LONG).show();
-//                startActivity(new Intent(mActivity, HomeTabTopWebActivity.class));
-//            }
-//        });
 
         mWinTopLayout = findViewById(R.id.include_win_top);
         mDayNewsLayout = findViewById(R.id.include_day_news);
@@ -279,8 +286,14 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
         mHlistview = (HorizontalListView) findViewById(R.id.h_listview);
         mWinAdapter = new WinTopAdapter(mActivity);
+        mTimer = ThreadManager.getTimer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                LeoLog.e("mytimer", "ddddd");
+            }
+        }, 0, 10000);
         requestHomeData();
-
         mHlistview.setAdapter(mWinAdapter);
 
     }
@@ -388,6 +401,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
+        mSelectString = LeoSettings.getString(PrefConst.SELECT_STOCK, Constants.DEFAULT_SELECT_STOCK);
+        mSelectItems = mSelectString.split("_");
         requestData();
         initLoginContent();
     }
@@ -412,7 +427,18 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             public void onDataFinish(Object object) {
                 Object[] objectArray = (Object[]) object;
                 mData.clear();
-                mData.addAll((List<StockIndex>) objectArray[0]);
+                mAllItems.clear();
+                mAllItems.addAll((List<StockIndex>) objectArray[0]);
+                if (mSelectItems != null && mAllItems != null) {
+                    for (int i = 0; i < mSelectItems.length; i++) {
+                        for (int j = 0; j < mAllItems.size(); j++) {
+                            if (mAllItems.get(j).getCode().equals(mSelectItems[i])) {
+                                mData.add(mAllItems.get(j));
+                                mAllItems.remove(mAllItems.get(j));
+                            }
+                        }
+                    }
+                }
                 mData.add(0, null);
 
                 if (mData != null && mData.size() > 1) {
@@ -482,8 +508,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             viewTwo.setVisibility(View.INVISIBLE);
             View viewThree = (View) page.findViewById(R.id.view_three);
             viewThree.setVisibility(View.INVISIBLE);
-            TextView textView = (TextView) page.findViewById(R.id.change_one);
-            textView.setVisibility(View.VISIBLE);
+            ImageView imageView = (ImageView) page.findViewById(R.id.change_one);
+            imageView.setVisibility(View.VISIBLE);
             RippleView rippleView = (RippleView) page.findViewById(R.id.parent_one);
             rippleView.setOnClickListener(new ItemClickListener(index));
             rippleView.setVisibility(View.VISIBLE);
@@ -536,11 +562,11 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 parentThree.setVisibility(View.VISIBLE);
             }
         }
-        TextView textView;
+        ImageView imageView;
         if (extra == 1) {
             StockIndex index = null;
-            textView = (TextView) page.findViewById(R.id.change_two);
-            textView.setVisibility(View.VISIBLE);
+            imageView = (ImageView) page.findViewById(R.id.change_two);
+            imageView.setVisibility(View.VISIBLE);
             RippleView rippleView = (RippleView) page.findViewById(R.id.parent_two);
             rippleView.setOnClickListener(new ItemClickListener(index));
             View view = (View) page.findViewById(R.id.view_three);
@@ -550,8 +576,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
         } else if (extra == 2) {
             StockIndex index = null;
-            textView = (TextView) page.findViewById(R.id.change_three);
-            textView.setVisibility(View.VISIBLE);
+            imageView = (ImageView) page.findViewById(R.id.change_three);
+            imageView.setVisibility(View.VISIBLE);
             RippleView rippleView = (RippleView) page.findViewById(R.id.parent_three);
             rippleView.setOnClickListener(new ItemClickListener(index));
         }
@@ -588,17 +614,22 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 //                }
 //                mCurrentItem = newItem;
 //                requestData();
-                mDialog = new StockSelectDialog(mActivity);
-                mDialog.setData(mDialogString, mCurrentItem);
-                mDialog.setBottomBtnListener(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        LeoSettings.setInteger(PrefConst.CURRENT_SELECT_STOCK, mCurrentItem);
-                        requestData();
-                    }
-                });
-                mDialog.setCanceledOnTouchOutside(true);
-                mDialog.show();
+//                mDialog = new StockSelectDialog(mActivity);
+//                mDialog.setData(mDialogString, mCurrentItem);
+//                mDialog.setBottomBtnListener(new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        LeoSettings.setInteger(PrefConst.CURRENT_SELECT_STOCK, mCurrentItem);
+//                        requestData();
+//                    }
+//                });
+//                mDialog.setCanceledOnTouchOutside(true);
+//                mDialog.show();
+
+                Intent intent = new Intent(mActivity, SelectStockActivity.class);
+                intent.putExtra(SelectStockActivity.SELECT_TAG, (Serializable) mData);
+                intent.putExtra(SelectStockActivity.ALL_TAG, (Serializable) mAllItems);
+                mActivity.startActivity(intent);
             }
         }
 
@@ -776,6 +807,10 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         super.onDetach();
         if (mActivity != null) {
             ((HomeMainActivity) mActivity).stopRefreshAnim();
+        }
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
         }
     }
 }

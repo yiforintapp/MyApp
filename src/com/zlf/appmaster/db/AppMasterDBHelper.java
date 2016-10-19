@@ -12,7 +12,7 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "appmaster.db";
     // 3.2 -> 9
     // 3.3 -> 10
-    public static final int DB_VERSION = 10;
+    public static final int DB_VERSION = 11;
 
     private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
             + Constants.TABLE_DOWNLOAD

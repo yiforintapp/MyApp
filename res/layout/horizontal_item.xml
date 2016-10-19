@@ -45,9 +45,14 @@
         </RelativeLayout>
 
 
-        <TextView
+        <ImageView
             android:id="@+id/change_one"
-            style="@style/home_stock_change" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:src="@drawable/add_icon"/>
 
 
     </com.zlf.appmaster.ui.RippleView>
@@ -92,9 +97,14 @@
 
         </RelativeLayout>
 
-        <TextView
+        <ImageView
             android:id="@+id/change_two"
-            style="@style/home_stock_change" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:src="@drawable/add_icon"/>
 
     </com.zlf.appmaster.ui.RippleView>
 
@@ -139,9 +149,14 @@
 
         </RelativeLayout>
 
-        <TextView
+        <ImageView
             android:id="@+id/change_three"
-            style="@style/home_stock_change" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:src="@drawable/add_icon"/>
 
     </com.zlf.appmaster.ui.RippleView>
 

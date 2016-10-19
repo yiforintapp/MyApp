@@ -71,7 +71,8 @@ public abstract class ISettings {
             PrefConst.USER_PHONE,
             PrefConst.USER_PWD,
             AppMasterPreference.PREF_FIRST_USE_APP,
-            PrefConst.CURRENT_SELECT_STOCK
+            PrefConst.CURRENT_SELECT_STOCK,
+            PrefConst.SELECT_STOCK
     };
     static Map<String, String> sGroupHigh = null;
 

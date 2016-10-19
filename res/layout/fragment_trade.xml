@@ -4,16 +4,43 @@
     android:layout_height="match_parent"
     android:background="@color/home_tab_pressed">
 
+    <LinearLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
    <com.zlf.appmaster.ui.PagerSlidingTabStrip
        android:id="@+id/home_tab_tabs"
-       style="@style/sliding_tab_style" />
+       style="@style/sliding_tab_style"
+       android:layout_width="0dp"
+       android:layout_weight="1"
+       android:layout_toLeftOf="@+id/trade_more_tab"/>
+
+    <RelativeLayout
+        android:id="@+id/trade_more_tab"
+        android:layout_width="38dip"
+        android:layout_height="38dip"
+        android:background="@color/ctc">
+
+        <ImageView
+            android:id="@+id/user_more_tab_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dip"
+            android:scaleType="centerCrop"
+            android:src="@drawable/xiala"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/home_tab_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/home_tab_pressed"
-        android:layout_below="@+id/home_tab_tabs"
+        android:layout_below="@+id/top_layout"
         android:overScrollMode="never" />
 
 </RelativeLayout>

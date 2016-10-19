@@ -218,7 +218,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 changeUnSelectBg(mIndex);
                 mIndex = 1;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_home));
-                mRefreshRipple.setVisibility(View.GONE);
+                mRefreshRipple.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
@@ -234,7 +234,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 changeUnSelectBg(mIndex);
                 mIndex = 3;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_info));
-                mRefreshRipple.setVisibility(View.GONE);
+                mRefreshRipple.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
@@ -417,12 +417,23 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
             case R.id.refresh:
                 Animation refreshAnim = AnimationUtils.loadAnimation(this, R.anim.refresh_anim);
                 if (mRefreshIv != null) {
+                    mRefreshIv.setImageResource(R.drawable.loading_refresh);
                     mRefreshIv.startAnimation(refreshAnim);
                 }
                 mRefreshRipple.setEnabled(false);
-                if (mHomeTabFragment != null) {
-                    mHomeTabFragment.requestData();
-                    mHomeTabFragment.requestHomeData();
+                if (mIndex == 0) {
+                    if (mHomeTabFragment != null) {
+                        mHomeTabFragment.requestData();
+                        mHomeTabFragment.requestHomeData();
+                    }
+                } else if (mIndex == 1) {
+                    if (mTradeTabFragment != null) {
+                        mTradeTabFragment.initFragment();
+                    }
+                } else if (mIndex == 3) {
+                    if (mUserTabFragment != null) {
+                        mUserTabFragment.initFragment();
+                    }
                 }
                 break;
         }
@@ -431,6 +442,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
     public void stopRefreshAnim() {
         mRefreshRipple.setEnabled(true);
         if (mRefreshIv != null) {
+            mRefreshIv.setImageResource(R.drawable.home_refresh);
             mRefreshIv.clearAnimation();
         }
     }
