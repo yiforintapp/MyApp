@@ -126,6 +126,12 @@
             android:layout_height="wrap_content" />
 
         <com.zlf.appmaster.ui.CommonSettingItem
+            android:id="@+id/client"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <com.zlf.appmaster.ui.CommonSettingItem
             android:id="@+id/setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

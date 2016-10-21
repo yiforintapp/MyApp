@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" id="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/main.css">
+	<script src="jquery-1.8.3.min.js"></script>
+	<script charset="utf-8" src="http://wpa.b.qq.com/cgi/wpa.php"></script>
+	
+	<script>
+        BizQQWPA.addCustom({
+            aty: '0',
+            a: '0',
+            nameAccount: 800158636,
+            selector: 'BizQQWPA'
+        });
+    </script>
+
+	<script>
+		function btnClick(){
+		    document.bgColor = 0xFF0000;
+			<!--$("#BizQQWPA").click();-->
+			document.getElementById('BizQQWPA').click();
+		}
+	</script>
+
+</head>
+
+<body>
+    <div class="bot-btn" id="BizQQWPA"></div>
+
+	<input type="button" value="点击" onclick="btnClick()" id="button">
+
+</body>
+
+</html>

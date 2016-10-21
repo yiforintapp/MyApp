@@ -10,6 +10,7 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.login.AboutusActivity;
+import com.zlf.appmaster.login.ClientOnlineActivity;
 import com.zlf.appmaster.login.FeedbackActivity;
 import com.zlf.appmaster.login.InfoModifyActivity;
 import com.zlf.appmaster.login.LoginActivity;
@@ -28,6 +29,7 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
 
     private CommonSettingItem mModify;
     private CommonSettingItem mFeedback;
+    private CommonSettingItem mClient;
 //    private CommonSettingItem mAbout;
 //    private CommonSettingItem mRule;
     private CommonSettingItem mSetting;
@@ -51,7 +53,9 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         mSetting = (CommonSettingItem) findViewById(R.id.setting);
         mFeedback = (CommonSettingItem) findViewById(R.id.feedback);
         mUpdate = (CommonSettingItem) findViewById(R.id.update);
+        mClient = (CommonSettingItem) findViewById(R.id.client);
 
+        mClient.setIcon(R.drawable.mxxxx_icon_about);
         mFeedback.setIcon(R.drawable.menu_feedbacks_icon);
 //        mAbout.setIcon(R.drawable.menu_about_icon);
         mModify.setIcon(R.drawable.ic_mine_wdzh);
@@ -60,6 +64,7 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         mUpdate.setIcon(R.drawable.icon_update);
 
 
+        mClient.setTitle(mActivity.getString(R.string.client_online));
         mModify.setTitle(mActivity.getString(R.string.personal_modify));
         mFeedback.setTitle(mActivity.getString(R.string.fb_toolbar));
 //        mAbout.setTitle(mActivity.getString(R.string.personal_about));
@@ -114,6 +119,13 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mActivity, SettingActivity.class));
+            }
+        });
+        mClient.setRippleViewOnClickLinstener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(mActivity, ClientOnlineActivity.class));
             }
         });
     }

@@ -30,8 +30,6 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
-
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
@@ -165,8 +163,14 @@
         android:screenOrientation="portrait"
         android:theme="@style/activity_theme"></activity>
 
+
         <activity
             android:name=".login.ProductActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".login.ClientOnlineActivity"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 

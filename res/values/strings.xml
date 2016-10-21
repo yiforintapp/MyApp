@@ -315,6 +315,7 @@
     <string name="personal_about">关于我们</string>
     <string name="personal_use">使用条款</string>
     <string name="personal_setting">设置</string>
+    <string name="client_online">在线客服</string>
 
     <string name="code_send_success">验证码发送中，请稍等</string>
 
