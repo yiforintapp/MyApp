@@ -6,14 +6,19 @@
     <com.zlf.appmaster.ui.CommonToolbar
         android:id="@+id/appwallTB"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 
-        <WebView
-            android:id="@+id/webView"
-            android:layout_below="@id/appwallTB"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/appwallTB" />
 
-
+    <!--<Button-->
+        <!--android:id="@+id/click"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="70dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:text="click" />-->
 </RelativeLayout>

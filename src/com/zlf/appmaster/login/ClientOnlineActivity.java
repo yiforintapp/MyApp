@@ -4,12 +4,10 @@ package com.zlf.appmaster.login;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.zlf.appmaster.R;
@@ -21,6 +19,7 @@ public class ClientOnlineActivity extends Activity {
     private CommonToolbar mToolBar;
     private WebView webView;
     private WebSettings mWebSettings;
+//    private Button mButton;
 
     @SuppressLint("JavascriptInterface")
     @Override
@@ -30,12 +29,32 @@ public class ClientOnlineActivity extends Activity {
         mToolBar = (CommonToolbar) findViewById(R.id.appwallTB);
         mToolBar.setToolbarTitle(R.string.deal_product);
 
+//        mButton = (Button) findViewById(R.id.click);
+//        mButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @TargetApi(Build.VERSION_CODES.KITKAT)
+//            @Override
+//            public void onClick(View v) {
+//                webView.loadUrl("javascript:btnClick()");
+//            }
+//        });
 
         webView = (WebView) findViewById(R.id.webView);
         mWebSettings = webView.getSettings();
 
         mWebSettings.setDefaultTextEncodingName("utf-8");
         mWebSettings.setJavaScriptEnabled(true);
+
+        webView.setWebChromeClient(new WebChromeClient() {});
+//        webView.setWebViewClient(new WebViewClient() {
+//
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+//                super.onPageFinished(view, url);
+//                webView.loadUrl("javascript:btnClick()");
+//            }
+//        });
+
 //        mWebSettings.setSupportZoom(true);
 //        mWebSettings.setBuiltInZoomControls(true);
 //        mWebSettings.setUseWideViewPort(true);
@@ -43,36 +62,28 @@ public class ClientOnlineActivity extends Activity {
 //        mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 //        mWebSettings.setLoadWithOverviewMode(true);
 
-//        webView.addJavascriptInterface(getHtmlObject(), "jsObj");
+        webView.addJavascriptInterface(getHtmlObject(), "jsObj");
         webView.loadUrl("file:///android_asset/iinndd.html");
+
     }
 
 
-//    private Object getHtmlObject() {
-//        Object insertObj = new Object() {
-//            @JavascriptInterface
-//            public void changeHtml(final int i) {
-//                LeoLog.d("testwebview","js get webview : " + i);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        String url;
-//                        if(i == 1){
-//                            url = "file:///android_asset/cj_oil_2.html";
-//                        }else if(i ==2 ){
-//                            url = "file:///android_asset/cj_ag.html";
-//                        }else if(i == 3){
-//                            url = "file:///android_asset/cj_cu_2.html";
-//                        }else{
-//                            url = "file:///android_asset/dragon_oil_2.html";
-//                        }
-//                        webView.loadUrl(url);
-//                    }
-//                });
-//            }
-//
-//        };
-//
-//        return insertObj;
-//    }
+
+    private Object getHtmlObject() {
+        Object insertObj = new Object() {
+            @JavascriptInterface
+            public void call() {
+                LeoLog.d("testwebview","call");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ClientOnlineActivity.this,"打电话",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        };
+
+        return insertObj;
+    }
 }
