@@ -291,8 +291,9 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
             @Override
             public void run() {
                 LeoLog.e("mytimer", "ddddd");
+
             }
-        }, 0, 10000);
+        }, 0, 1000);
         requestHomeData();
         mHlistview.setAdapter(mWinAdapter);
 

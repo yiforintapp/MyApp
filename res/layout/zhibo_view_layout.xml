@@ -28,7 +28,7 @@
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/clean_done" />
+            android:src="@drawable/zhibo_home" />
 
         <TextView
             style="@style/home_tab_text"

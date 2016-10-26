@@ -3,13 +3,15 @@ package com.zlf.appmaster.login;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Toast;
 
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.utils.LeoLog;
@@ -27,7 +29,7 @@ public class ClientOnlineActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clientonline);
         mToolBar = (CommonToolbar) findViewById(R.id.appwallTB);
-        mToolBar.setToolbarTitle(R.string.deal_product);
+        mToolBar.setToolbarTitle(R.string.client_online);
 
 //        mButton = (Button) findViewById(R.id.click);
 //        mButton.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +79,15 @@ public class ClientOnlineActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(ClientOnlineActivity.this,"打电话",Toast.LENGTH_SHORT).show();
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_CALL);
+                            Uri data = Uri.parse("tel:" + Constants.CLIENT_PHONE);
+                            intent.setData(data);
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
             }

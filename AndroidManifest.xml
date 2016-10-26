@@ -36,7 +36,7 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:name=".AppMasterApplication"
@@ -265,7 +265,8 @@
 
         <activity
             android:name=".hometab.LiveViewActivity"
-            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:taskAffinity="com.zlf.appmaster.home"
@@ -393,8 +394,6 @@
         <meta-data android:value="V1427791484118" android:name="QINIU_DATA_VERSION_2"></meta-data>
         <!-- 题材数据-->
         <meta-data android:value="V1435219796970" android:name="QINIU_DATA_VERSION_3"></meta-data>
-
-
 
     </application>
 

@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <script src="jquery-1.8.3.min.js"></script>
     <!--<script charset="utf-8" src="http://wpa.b.qq.com/cgi/wpa.php"></script>-->
-    <script charset="utf-8" src="qqjs.js"></script>
+<!--    <script charset="utf-8" src="qqjs.js"></script>-->
+    <script type="text/javascript">
+     document.write("<scr"+"ipt src=\"qqjs.js\" language=\"JavaScript\" charset=\"utf-8\"></sc"+"ript>")
+    </script>
+
 
     <script>
         BizQQWPA.addCustom({
@@ -20,7 +24,6 @@
     <script type="text/javascript" language="javascript">
 		function btnClick(){
 
-		    document.bgColor = 0xFF0000;
 			<!--$("#BizQQWPA").click();-->
 			document.getElementById('BizQQWPA').click();
 		}
@@ -30,13 +33,79 @@
 		}
     </script>
 
+    <style type="text/css">
+
+        * {
+        -webkit-touch-callout:none;
+        -webkit-user-select:none;
+        -khtml-user-select:none;
+        -moz-user-select:none;
+        -ms-user-select:none;
+        user-select:none;
+        padding: 1px 5px 0px 5px
+        }
+
+        .button {
+        display: inline-block;
+        zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+        *display: inline;
+        vertical-align: baseline;
+        margin: 0 2px;
+        outline: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        font: 14px/100% Arial, Helvetica, sans-serif;
+        padding: .5em 2em .55em;
+        text-shadow: 0 1px 1px rgba(0,0,0,.3);
+        -webkit-border-radius: .5em;
+        -moz-border-radius: .5em;
+        border-radius: .5em;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        box-shadow: 0 1px 2px rgba(0,0,0,.2);
+        }
+
+
+        .white {
+        color: #606060;
+        border: solid 1px #b7b7b7;
+        background: #fff;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ededed));
+        background: -moz-linear-gradient(top, #fff, #ededed);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ededed');
+        }
+        .white:hover {
+        background: #ededed;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dcdcdc));
+        background: -moz-linear-gradient(top, #fff, #dcdcdc);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
+        }
+        .white:active {
+        color: #999;
+        background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
+        background: -moz-linear-gradient(top, #ededed, #fff);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');
+        }
+
+
+        .line {
+        width:100%
+        size:1
+        color:#A7A7A7
+        }
+
+
+    </style>
+
 
 </head>
 
 <body>
 <div class="bot-btn" id="BizQQWPA"></div>
-<input type="button" value="打电话" onclick="btnCall()" id="call">
-<input type="button" value="点击" onclick="btnClick()" id="button">
+<p><font size="3" color="#A7A7A7">&nbsp;&nbsp;&nbsp;&nbsp;兆利丰金服主要提供原油贵金属的交易、行情、市场动态等功能，功能多样并且人性化，是投资人理想的投资平台。如果您在使用过程中，有什么问题不清楚需要资讯、对我们有什么意见或者建议，您可以联系我们的专业客服！</font></p>
+<div style="width:50%;padding:0;margin:0;float:left;box-sizing:border-box;text-align:center"><input class="button white"  type="button"  value="电话客服" onclick="btnCall()" id="call"></div>
+<div style="width:50%;padding:0;margin:0;float:left;box-sizing:border-box;text-align:center"><input class="button white"  type="button"   value="QQ客服" onclick="btnClick()" id="button"></div>
 
 </body>
 <!--<script>-->
