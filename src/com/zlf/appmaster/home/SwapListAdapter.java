@@ -125,7 +125,8 @@ public class SwapListAdapter extends BaseAdapter {
                     } else {
                         mCheckBox.setImageResource(R.drawable.stock_unselect);
                     }
-                    deletePattern(mParent, position);
+//                    deletePattern(mParent, position);
+                    ((SelectStockActivity) mContext).deleteList(position, mList.get(position).mType);
                     break;
                 case R.id.swap_btn:
                     ((SelectStockActivity) mContext).sortList(position);

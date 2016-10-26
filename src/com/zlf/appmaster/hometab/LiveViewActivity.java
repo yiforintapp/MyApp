@@ -114,7 +114,7 @@ public class LiveViewActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fullScreen:
-                if(!mIsFullScreen){//设置RelativeLayout的全屏模式
+                if (!mIsFullScreen) {//设置RelativeLayout的全屏模式
                     RelativeLayout.LayoutParams layoutParams= new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
                     mVideoView.setLayoutParams(layoutParams);
@@ -122,20 +122,32 @@ public class LiveViewActivity extends BaseActivity implements View.OnClickListen
                     mContactLayout.setVisibility(View.GONE);
                     mVideoView.setIsFullScreen(true);
                     mIsFullScreen = true;//改变全屏/窗口的标记
-                }else{//设置RelativeLayout的窗口模式
+                } else {
                     RelativeLayout.LayoutParams lp=new  RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.FILL_PARENT, 300);
                     mVideoView.setLayoutParams(lp);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     mContactLayout.setVisibility(View.VISIBLE);
                     mVideoView.setIsFullScreen(false);
-                    mIsFullScreen = false;//改变全屏/窗口的标记
+                    mIsFullScreen = false;
                 }
                 break;
             case R.id.contact_layout:
                 Toast.makeText(LiveViewActivity.this, "click", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("fullscreen", mIsFullScreen);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mIsFullScreen = savedInstanceState.getBoolean("fullscreen");
     }
 
     @Override
@@ -150,13 +162,13 @@ public class LiveViewActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onBackPressed() {
-        if(mIsFullScreen) {//设置RelativeLayout的窗口模式
+        if(mIsFullScreen) {
             RelativeLayout.LayoutParams lp=new  RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.FILL_PARENT, 300);
             mVideoView.setLayoutParams(lp);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             mContactLayout.setVisibility(View.VISIBLE);
-            mIsFullScreen = false;//改变全屏/窗口的标记
+            mIsFullScreen = false;
             mVideoView.setIsFullScreen(false);
             return;
         }

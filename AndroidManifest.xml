@@ -265,7 +265,6 @@
 
         <activity
             android:name=".hometab.LiveViewActivity"
-            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
