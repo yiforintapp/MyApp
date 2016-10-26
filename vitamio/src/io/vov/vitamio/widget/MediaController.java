@@ -97,6 +97,9 @@ public class MediaController extends FrameLayout {
   private AudioManager mAM;
   private OnShownListener mShownListener;
   private OnHiddenListener mHiddenListener;
+
+  private boolean mIsFullScreen;
+
   @SuppressLint("HandlerLeak")
   private Handler mHandler = new Handler() {
     @Override
@@ -343,7 +346,11 @@ public class MediaController extends FrameLayout {
 
         mWindow.setAnimationStyle(mAnimStyle);
         setWindowLayoutType();
-        mWindow.showAtLocation(mAnchor, Gravity.CENTER, 0, 0);
+        if (mIsFullScreen) {
+          mWindow.showAtLocation(mAnchor, Gravity.CENTER, 0, 0);
+        } else {
+          mWindow.showAtLocation(mAnchor, Gravity.TOP, 0, 300);
+        }
       }
       mShowing = true;
       if (mShownListener != null)
@@ -500,6 +507,10 @@ public class MediaController extends FrameLayout {
     boolean isPlaying();
 
     int getBufferPercentage();
+  }
+
+  public void setIsFullScreen(boolean b) {
+    this.mIsFullScreen = b;
   }
 
 }
