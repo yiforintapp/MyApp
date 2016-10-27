@@ -1,5 +1,7 @@
 package com.zlf.appmaster.home;
 
+import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,7 +12,6 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.db.LeoSettings;
-import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.Utilities;
@@ -20,7 +21,7 @@ import com.zlf.appmaster.utils.VolleyTool;
 /**
  * Created by Administrator on 2016/7/19.
  */
-public class DealFragment extends BaseFragment implements View.OnClickListener {
+public class DealActivity extends Activity implements View.OnClickListener {
 
     public final static String TAG = "DealFragment";
     public final static String CHECK_CJLH = "check_cjlh";
@@ -29,14 +30,15 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
     private String mPackageName;
     private String mDownloadUrl;
 
-
     @Override
-    protected int layoutResourceId() {
-        return R.layout.fragment_deal;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_deal);
+        onInitUI();
     }
 
-    @Override
-    protected void onInitUI() {
+
+    private  void onInitUI() {
         mTvJump = (TextView) findViewById(R.id.tv_changjiang);
         setListener();
 
@@ -90,7 +92,7 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
         });
 
         // callAll的时候使用
-        VolleyTool.getInstance(mActivity).getRequestQueue()
+        VolleyTool.getInstance(this).getRequestQueue()
                 .add(stringRequest);
     }
 
@@ -109,7 +111,7 @@ public class DealFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void jumpToCJLH() {
-        Utils.startAPP(mPackageName, mActivity, mDownloadUrl);
+        Utils.startAPP(mPackageName, this, mDownloadUrl);
     }
 
 

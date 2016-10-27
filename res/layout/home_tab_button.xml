@@ -79,7 +79,7 @@
             android:id="@+id/user_tv"
             style="@style/home_tab_text"
             android:layout_below="@+id/user_iv"
-            android:text="@string/main_tab_trade" />
+            android:text="@string/deal_live" />
 
     </com.zlf.appmaster.ui.RippleView>
 

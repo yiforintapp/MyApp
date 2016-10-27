@@ -1,5 +1,6 @@
 package com.zlf.appmaster.login;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
-import com.zlf.appmaster.home.BaseActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.ExpandableLayout;
 import com.zlf.appmaster.ui.RippleView;
@@ -30,7 +30,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by Administrator on 2016/9/12.
  */
-public class InfoModifyActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class InfoModifyActivity extends Activity implements View.OnClickListener, TextWatcher {
 
     private RippleView mModifyUserName;
     private RippleView mModifyPwd;

@@ -22,7 +22,6 @@ import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.hometab.HomeJsonData;
 import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
-import com.zlf.appmaster.hometab.LiveViewActivity;
 import com.zlf.appmaster.hometab.SelectStockActivity;
 import com.zlf.appmaster.hometab.StockPlaceActivity;
 import com.zlf.appmaster.login.HttpCallBackListener;
@@ -293,10 +292,89 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 LeoLog.e("mytimer", "ddddd");
 
             }
-        }, 0, 1000);
+        }, 0, 10000);
+
+        LeoLog.e("sdgdsfhg", test());
+
         requestHomeData();
         mHlistview.setAdapter(mWinAdapter);
 
+    }
+
+    private String test() {
+        String s = "<span style=\"font-family: 微软雅黑, 宋体, Arial, sans-serif; font-size: 12px; color:rgb(0, 0, 0);font-weight: 400; font-style: normal; text-decoration: none\"><img\">fdghdfh</span>\n";
+        String resultString = "";
+        if (s.startsWith("<span")) {
+            int start = s.indexOf("\">");
+            int end = s.indexOf("</span>");
+            String startString = s.substring(start + 2, end);
+            LeoLog.e("sdgdsfhg", "a|| " +  startString);
+            if (startString.contains("<img")) {
+                boolean imgCount = false;
+                boolean divCount = false;
+                if (startString.startsWith("<img")) {
+                    int startIndex = startString.indexOf("<img");
+                    imgCount = startString.substring(startIndex + 4, startString.length()).contains("<img");
+                }
+                if (startString.startsWith("<div>")) {
+                    int startIndex = startString.indexOf("<div>");
+                    divCount = startString.substring(startIndex + 5, startString.length()).contains("<div>");
+                }
+                if (!imgCount && !divCount) {
+                    if (startString.startsWith("<img")) {
+                        int startIndex = startString.indexOf("\">");
+                        String s1 = startString.substring(startIndex + 2, startString.length());
+                        if (s1.contains("<div>")) {
+                            int endIndex = s1.indexOf("<div>");
+                            resultString = s1.substring(0, endIndex);
+                        } else {
+                            resultString = s1;
+                        }
+                        LeoLog.e("sdgdsfhg", "c|| " + resultString);
+
+                        return resultString;
+                    } else if (startString.startsWith("<div>")) {
+                        if (startString.contains("<img")) {
+                            int startIndex = startString.indexOf("<div>");
+                            int endIndex = startString.indexOf("<img");
+                            int endTwoIndex = startString.indexOf("</div>");
+                            if (endIndex < endTwoIndex) {
+                                resultString = startString.substring(startIndex + 5, endIndex);
+                                LeoLog.e("sdgdsfhg", "d|| " + resultString);
+
+                                return resultString;
+                            } else if (endTwoIndex < endIndex) {
+                                resultString = startString.substring(startIndex + 5, endTwoIndex);
+                                return resultString;
+                                //  格式<div>fgjhfj</div><img> <div></div>
+
+                            }
+
+                        }
+                    } else {
+                        int endIndex = startString.indexOf("<img");
+                        int endTwoIndex = startString.indexOf("<div>");
+                        if (endIndex < endTwoIndex) {
+                            resultString = startString.substring(0, endIndex);
+                        } else if (endTwoIndex < endIndex) {
+                            resultString = startString.substring(0, endTwoIndex);
+                        }
+                        LeoLog.e("sdgdsfhg", "e|| " + resultString);
+
+                        return resultString;
+                    }
+                }
+            } else {
+                resultString = startString.substring(0, startString.length());
+                LeoLog.e("sdgdsfhg", "f|| " + resultString);
+                return resultString;
+            }
+        } else {
+            LeoLog.e("sdgdsfhg", "g");
+            return s;
+        }
+
+        return s;
     }
 
     private void setDayNewsFind() {
@@ -736,15 +814,8 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 startActivity(new Intent(mActivity, StockPlaceActivity.class));
                 break;
             case R.id.live:
-                Intent intent = null;
-                if (AppUtil.isLogin()) {
-                    intent = new Intent(mActivity, LiveViewActivity.class);
-                    startActivity(intent);
-                } else {
-                    intent = new Intent(mActivity, LoginActivity.class);
-                    intent.putExtra(LoginActivity.FROM_LIVE_BTN, true);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(mActivity, DealActivity.class);
+                startActivity(intent);
                 break;
             case R.id.stock:
                 MyViewPager viewPager = ((HomeMainActivity) mActivity).getViewPager();

@@ -108,7 +108,7 @@
             style="@style/home_shortcut_tv"
             android:textColor="@color/black"
             android:layout_below="@+id/live_iv"
-            android:text="@string/deal_live"/>
+            android:text="@string/main_tab_trade"/>
 
     </com.zlf.appmaster.ui.RippleView>
 

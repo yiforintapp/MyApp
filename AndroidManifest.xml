@@ -278,6 +278,11 @@
 
 
         <activity
+            android:name=".home.DealActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/activity_theme"></activity>
+
+        <activity
             android:name=".hometab.HomeTabTopWebActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTask"

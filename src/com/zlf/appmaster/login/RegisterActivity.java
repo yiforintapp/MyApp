@@ -1,5 +1,6 @@
 package com.zlf.appmaster.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import android.widget.Toast;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
-import com.zlf.appmaster.home.BaseActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
@@ -50,7 +50,7 @@ import java.util.TimerTask;
 /**
  * Created by Administrator on 2016/8/25.
  */
-public class RegisterActivity extends BaseActivity implements View.OnClickListener, TextWatcher {
+public class RegisterActivity extends Activity implements View.OnClickListener, TextWatcher {
 
     public static final String FROM_REGISTER = "from_register";
     public static final int REGISTER = 0;  // 注册

@@ -1,11 +1,11 @@
 package com.zlf.appmaster.hometab;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ListView;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
-import com.zlf.appmaster.home.BaseActivity;
 import com.zlf.appmaster.home.SwapListAdapter;
 import com.zlf.appmaster.model.SelectStockInfo;
 import com.zlf.appmaster.model.stock.StockIndex;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2016/10/17.
  */
-public class SelectStockActivity extends BaseActivity {
+public class SelectStockActivity extends Activity {
 
     public static final String SELECT_TAG = "select_tag";
     public static final String ALL_TAG = "all_tag";

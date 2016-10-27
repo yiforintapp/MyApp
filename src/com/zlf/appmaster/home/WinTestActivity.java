@@ -1,12 +1,13 @@
 
 package com.zlf.appmaster.home;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.zlf.appmaster.R;
 
 
-public class WinTestActivity extends BaseActivity {
+public class WinTestActivity extends Activity {
 
 
     @Override

@@ -55,7 +55,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
     private TradeTabFragment mTradeTabFragment;
     private UserTabFragment mUserTabFragment;
 //    private StockFavoriteFragment mStockFavoriteFragment;
-    private DealFragment mDealFragment;
+    private ZhiBoFragment mZhiboFragment;
     private PersonalFragment mPersonalFragment;
 
 //    private DrawerLayout mDrawerLayout;
@@ -292,9 +292,9 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
         mFragmentHolders[1] = holder;
 
         holder = new HomeFragmentHolder();
-        holder.title = getResources().getString(R.string.main_tab_trade);
-        mDealFragment = new DealFragment();
-        holder.fragment = mDealFragment;
+        holder.title = getResources().getString(R.string.deal_live);
+        mZhiboFragment = new ZhiBoFragment();
+        holder.fragment = mZhiboFragment;
         mFragmentHolders[2] = holder;
 
         holder = new HomeFragmentHolder();

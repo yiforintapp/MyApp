@@ -33,7 +33,7 @@
         <TextView
             style="@style/home_tab_text"
             android:layout_below="@+id/img"
-            android:text="@string/main_tab_home"
+            android:text="@string/deal_live"
             android:visibility="invisible" />
 
     </RelativeLayout>

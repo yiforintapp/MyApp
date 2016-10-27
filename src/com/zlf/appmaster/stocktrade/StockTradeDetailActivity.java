@@ -1,5 +1,6 @@
 package com.zlf.appmaster.stocktrade;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import com.zlf.appmaster.client.StockClient;
 import com.zlf.appmaster.client.SyncClient;
 import com.zlf.appmaster.db.stock.StockFavoriteTable;
 import com.zlf.appmaster.db.stock.StockTradeTable;
-import com.zlf.appmaster.home.BaseActivity;
 import com.zlf.appmaster.model.stock.StockTradeInfo;
 import com.zlf.appmaster.model.sync.SyncBaseBean;
 import com.zlf.appmaster.model.sync.SyncOperator;
@@ -36,7 +36,7 @@ import com.zlf.appmaster.utils.UserUtils;
 import com.zlf.appmaster.utils.Utils;
 
 
-public class StockTradeDetailActivity extends BaseActivity {
+public class StockTradeDetailActivity extends Activity {
     public static final String INTENT_FLAG_STOCKNAME = "intent_flag_stockname";
     public static final String INTENT_FLAG_STOCKCODE = "intent_flag_stockcode";
     public static final String INTENT_FLAG_SEARCH_INDEX = "intent_flag_search_index";   // 从搜索列表进来的索引

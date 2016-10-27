@@ -1,5 +1,6 @@
 package com.zlf.appmaster.hometab;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -7,12 +8,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.zlf.appmaster.R;
-import com.zlf.appmaster.home.BaseActivity;
 
 /**
  * Created by Administrator on 2016/9/19.
  */
-public class HomeTabTopWebActivity extends BaseActivity {
+public class HomeTabTopWebActivity extends Activity {
 
     public static final String WEB_URL = "web_url";
 

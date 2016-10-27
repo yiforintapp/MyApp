@@ -2,6 +2,7 @@
 package com.zlf.appmaster.home;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -56,7 +57,7 @@ import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 
-public class SplashActivity extends com.zlf.appmaster.home.BaseActivity implements OnClickListener {
+public class SplashActivity extends Activity implements OnClickListener {
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
     private static final boolean DBG = false;

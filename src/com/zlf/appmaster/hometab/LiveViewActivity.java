@@ -1,5 +1,6 @@
 package com.zlf.appmaster.hometab;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -14,7 +15,6 @@ import android.widget.Toast;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
-import com.zlf.appmaster.home.BaseActivity;
 
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.MediaPlayer;
@@ -22,7 +22,7 @@ import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
 
-public class LiveViewActivity extends BaseActivity implements View.OnClickListener {
+public class LiveViewActivity extends Activity implements View.OnClickListener {
 
     private Context mContext;
 
