@@ -7,6 +7,7 @@
 package com.handmark.pulltorefresh.library.xlistview;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.zlf.appmaster.R;
@@ -35,6 +35,10 @@ public class XListViewHeader extends LinearLayout {
 	public final static int STATE_NORMAL = 0;
 	public final static int STATE_READY = 1;
 	public final static int STATE_REFRESHING = 2;
+
+	private String mNormal;
+	private String mReady;
+	private String mLoading;
 
 	public XListViewHeader(Context context) {
 		super(context);
@@ -59,6 +63,10 @@ public class XListViewHeader extends LinearLayout {
 		addView(mContainer, lp);
 		setGravity(Gravity.BOTTOM);
 
+		mNormal = context.getResources().getString(R.string.xlistview_header_hint_normal);
+		mReady = context.getResources().getString(R.string.xlistview_header_hint_ready);
+		mLoading = context.getResources().getString(R.string.xlistview_header_hint_loading);
+
 		mArrowImageView = (ImageView)findViewById(R.id.xlistview_header_arrow);
 		mHintTextView = (TextView)findViewById(R.id.xlistview_header_hint_textview);
 		mProgressBar = (CircularProgressView)findViewById(R.id.xlistview_header_progressbar);
@@ -73,6 +81,28 @@ public class XListViewHeader extends LinearLayout {
 				0.5f);
 		mRotateDownAnim.setDuration(ROTATE_ANIM_DURATION);
 		mRotateDownAnim.setFillAfter(true);
+
+	}
+
+	public void setNormalString(String s) {
+		if (!TextUtils.isEmpty(s)) {
+			this.mNormal = s;
+			if (mHintTextView != null) {
+				mHintTextView.setText(mNormal);
+			}
+		}
+	}
+
+	public void setReadyString(String s) {
+		if (!TextUtils.isEmpty(s)) {
+			this.mReady = s;
+		}
+	}
+
+	public void setLoadingString(String s) {
+		if (!TextUtils.isEmpty(s)) {
+			this.mLoading = s;
+		}
 	}
 
 	public void setState(int state) {
@@ -95,17 +125,17 @@ public class XListViewHeader extends LinearLayout {
 			if (mState == STATE_REFRESHING) {
 				mArrowImageView.clearAnimation();
 			}
-			mHintTextView.setText(R.string.xlistview_header_hint_normal);
+			mHintTextView.setText(mNormal);
 			break;
 		case STATE_READY:
 			if (mState != STATE_READY) {
 				mArrowImageView.clearAnimation();
 				mArrowImageView.startAnimation(mRotateUpAnim);
-				mHintTextView.setText(R.string.xlistview_header_hint_ready);
+				mHintTextView.setText(mReady);
 			}
 			break;
 		case STATE_REFRESHING:
-			mHintTextView.setText(R.string.xlistview_header_hint_loading);
+			mHintTextView.setText(mLoading);
 			break;
 			default:
 		}

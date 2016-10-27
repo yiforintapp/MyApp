@@ -7,6 +7,7 @@
 package com.handmark.pulltorefresh.library.xlistview;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,9 @@ public class XListViewFooter extends LinearLayout {
 	private View mContentView;
 	private CircularProgressView mProgressBar;
 	private TextView mHintView;
+
+	private String mNormal;
+	private String mReady;
 	
 	public XListViewFooter(Context context) {
 		super(context);
@@ -36,6 +40,21 @@ public class XListViewFooter extends LinearLayout {
 		initView(context);
 	}
 
+	public void setNormalString(String s) {
+		if (!TextUtils.isEmpty(s)) {
+			this.mNormal = s;
+			if (mHintView != null) {
+				mHintView.setText(mNormal);
+			}
+		}
+	}
+
+	public void setReadyString(String s) {
+		if (!TextUtils.isEmpty(s)) {
+			this.mReady = s;
+		}
+	}
+
 	
 	public void setState(int state) {
 		mHintView.setVisibility(View.INVISIBLE);
@@ -43,12 +62,12 @@ public class XListViewFooter extends LinearLayout {
 		mHintView.setVisibility(View.INVISIBLE);
 		if (state == STATE_READY) {
 			mHintView.setVisibility(View.VISIBLE);
-			mHintView.setText(R.string.xlistview_footer_hint_ready);
+			mHintView.setText(mReady);
 		} else if (state == STATE_LOADING) {
 			mProgressBar.setVisibility(View.VISIBLE);
 		} else {
 			mHintView.setVisibility(View.VISIBLE);
-			mHintView.setText(R.string.xlistview_footer_hint_normal);
+			mHintView.setText(mNormal);
 		}
 	}
 	
@@ -105,6 +124,9 @@ public class XListViewFooter extends LinearLayout {
 		LinearLayout moreView = (LinearLayout)LayoutInflater.from(mContext).inflate(R.layout.xlistview_footer, null);
 		addView(moreView);
 		moreView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+
+		mNormal = context.getResources().getString(R.string.xlistview_footer_hint_normal);
+		mReady = context.getResources().getString(R.string.xlistview_footer_hint_ready);
 		
 		mContentView = moreView.findViewById(R.id.xlistview_footer_content);
 		mProgressBar = (CircularProgressView)moreView.findViewById(R.id.xlistview_footer_progressbar);

@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -302,7 +303,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     }
 
     private String test() {
-        String s = "<span style=\"font-family: 微软雅黑, 宋体, Arial, sans-serif; font-size: 12px; color:rgb(0, 0, 0);font-weight: 400; font-style: normal; text-decoration: none\"><img\">fdghdfh</span>\n";
+        String s = "<span style=\"font-family: 'Microsoft YaHei'; font-size: 12px; color:rgb(0, 0, 0);font-weight: 400; font-style: normal; text-decoration: none\">吃了</span>";
         String resultString = "";
         if (s.startsWith("<span")) {
             int start = s.indexOf("\">");
@@ -332,7 +333,9 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                         }
                         LeoLog.e("sdgdsfhg", "c|| " + resultString);
 
-                        return resultString;
+                        if (!TextUtils.isEmpty(resultString)) {
+                            return resultString;
+                        }
                     } else if (startString.startsWith("<div>")) {
                         if (startString.contains("<img")) {
                             int startIndex = startString.indexOf("<div>");
@@ -341,33 +344,40 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                             if (endIndex < endTwoIndex) {
                                 resultString = startString.substring(startIndex + 5, endIndex);
                                 LeoLog.e("sdgdsfhg", "d|| " + resultString);
-
-                                return resultString;
                             } else if (endTwoIndex < endIndex) {
                                 resultString = startString.substring(startIndex + 5, endTwoIndex);
-                                return resultString;
                                 //  格式<div>fgjhfj</div><img> <div></div>
-
                             }
-
+                            if (!TextUtils.isEmpty(resultString)) {
+                                return resultString;
+                            }
                         }
                     } else {
                         int endIndex = startString.indexOf("<img");
                         int endTwoIndex = startString.indexOf("<div>");
-                        if (endIndex < endTwoIndex) {
+                        if (endIndex != -1 && endTwoIndex != -1) {
+                            if (endIndex < endTwoIndex) {
+                                resultString = startString.substring(0, endIndex);
+                            } else if (endTwoIndex < endIndex) {
+                                resultString = startString.substring(0, endTwoIndex);
+                            }
+                        } else if (endIndex != -1 && endTwoIndex == -1) {
                             resultString = startString.substring(0, endIndex);
-                        } else if (endTwoIndex < endIndex) {
+                        } else if (endIndex == -1 && endTwoIndex != -1) {
                             resultString = startString.substring(0, endTwoIndex);
                         }
                         LeoLog.e("sdgdsfhg", "e|| " + resultString);
-
-                        return resultString;
+                        if (!TextUtils.isEmpty(resultString)) {
+                            return resultString;
+                        }
                     }
                 }
             } else {
                 resultString = startString.substring(0, startString.length());
                 LeoLog.e("sdgdsfhg", "f|| " + resultString);
-                return resultString;
+                if (!TextUtils.isEmpty(resultString)) {
+                    return resultString;
+                }
             }
         } else {
             LeoLog.e("sdgdsfhg", "g");
