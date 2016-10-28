@@ -320,4 +320,36 @@ public class TimeUtil {
 		}
 		return delta < INTERVAL_IN_MILLISECONDS;
 	}
+
+	/** 聊天室记录发言时间格式化 */
+	public static String getFormatChatTime(String time) {
+		String defaultResult = time;
+		int index = time.lastIndexOf(":");
+		if (index > 0) {
+			String newTime = time.substring(0, index);
+			String[] pies = newTime.split(" ");
+			if (pies != null && pies.length == 2) {
+				String s1 = pies[0];
+				String s2 = pies[1];
+				String[] s11 = s1.split("-");
+				if (s11 != null && s11.length == 3) {
+					Calendar now = Calendar.getInstance();
+					int year = now.get(Calendar.YEAR);
+					int month = now.get(Calendar.MONTH) + 1;
+					int day = now.get(Calendar.DAY_OF_MONTH);
+					boolean isYearEqual = (year == Integer.parseInt(s11[0]));
+					boolean isMonthEqual = (month == Integer.parseInt(s11[1]));
+					boolean isDayEqual = (day == Integer.parseInt(s11[2]));
+					if (isYearEqual && isMonthEqual && isDayEqual) {
+						return s2;
+					} else {
+						return newTime;
+					}
+				}
+
+			}
+		}
+
+		return defaultResult;
+	}
 }

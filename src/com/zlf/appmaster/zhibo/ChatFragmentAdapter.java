@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.ChatItem;
-import com.zlf.appmaster.ui.stock.StockTextView;
+import com.zlf.appmaster.utils.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,7 @@ public class ChatFragmentAdapter extends BaseAdapter {
         String two = "</body></html>";
         holder.text.setText(Html.fromHtml(one + text + two));
         holder.name.setText(item.getName());
-        holder.time.setText(item.getDate());
+        holder.time.setText(TimeUtil.getFormatChatTime(item.getDate()));
         return convertView;
     }
 
