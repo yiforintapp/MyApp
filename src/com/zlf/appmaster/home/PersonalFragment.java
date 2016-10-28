@@ -9,17 +9,14 @@ import android.widget.TextView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.login.AboutusActivity;
 import com.zlf.appmaster.login.ClientOnlineActivity;
 import com.zlf.appmaster.login.FeedbackActivity;
 import com.zlf.appmaster.login.InfoModifyActivity;
 import com.zlf.appmaster.login.LoginActivity;
-import com.zlf.appmaster.login.ProtocolActivity;
 import com.zlf.appmaster.setting.SettingActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
 import com.zlf.appmaster.update.UpdateActivity;
 import com.zlf.appmaster.utils.PrefConst;
-import com.zlf.appmaster.zhibo.VideoZhiBoActivity;
 
 /**
  * Created by Administrator on 2016/7/19.
@@ -119,8 +116,7 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         mSetting.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(mActivity, SettingActivity.class));
-                startActivity(new Intent(mActivity, VideoZhiBoActivity.class));
+                startActivity(new Intent(mActivity, SettingActivity.class));
             }
         });
         mClient.setRippleViewOnClickLinstener(new View.OnClickListener(){

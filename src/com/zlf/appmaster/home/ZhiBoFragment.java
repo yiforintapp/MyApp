@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.hometab.LiveViewActivity;
+import com.zlf.appmaster.zhibo.LiveViewActivity;
 import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.utils.AppUtil;

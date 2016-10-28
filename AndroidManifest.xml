@@ -264,7 +264,7 @@
 
 
         <activity
-            android:name=".hometab.LiveViewActivity"
+            android:name=".zhibo.LiveViewActivity"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
@@ -275,12 +275,6 @@
             android:name=".hometab.StockPlaceActivity"
             android:launchMode="singleTask"
             android:theme="@style/activity_theme"></activity>
-
-        <activity
-            android:name=".zhibo.VideoZhiBoActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/activity_theme"></activity>
-
 
         <activity
             android:name=".home.DealActivity"

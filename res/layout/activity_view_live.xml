@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/news_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
 
     <io.vov.vitamio.widget.VideoView
@@ -19,15 +20,20 @@
         android:id="@+id/contact_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/button_blue"
         android:layout_below="@+id/vitamio_videoView"
         android:visibility="gone">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="测试用"
-            android:layout_centerInParent="true"/>
+        <com.zlf.appmaster.ui.PagerSlidingTabStrip
+            android:id="@+id/zhibo_tab_tabs"
+            style="@style/sliding_tab_style" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vedio_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/zhibo_tab_tabs"
+            android:background="@color/home_tab_pressed"
+            android:overScrollMode="never" />
 
     </RelativeLayout>
 

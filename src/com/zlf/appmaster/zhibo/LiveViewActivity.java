@@ -1,20 +1,29 @@
-package com.zlf.appmaster.hometab;
+package com.zlf.appmaster.zhibo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
+import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.home.BaseFragmentActivity;
+import com.zlf.appmaster.ui.PagerSlidingTabStrip;
+import com.zlf.appmaster.utils.Utilities;
+
+import java.util.List;
 
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.MediaPlayer;
@@ -22,7 +31,7 @@ import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
 
-public class LiveViewActivity extends Activity implements View.OnClickListener {
+public class LiveViewActivity extends BaseFragmentActivity implements View.OnClickListener {
 
     private Context mContext;
 
@@ -32,8 +41,15 @@ public class LiveViewActivity extends Activity implements View.OnClickListener {
     private ImageView mFullScreenBtn;
     private RelativeLayout mContactLayout;
     private boolean mIsFullScreen;
+    private ViewPager mViewPager;
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[2];
+    private PagerSlidingTabStrip mPagerSlidingTab;
+    private ZhiBoChatFragment chatFragment;
+    private ZhiBoDataFragment dataFragment;
 
     private WebView mWebView;
+
+    private int mScreenHeight;
 
 
     @Override
@@ -51,11 +67,20 @@ public class LiveViewActivity extends Activity implements View.OnClickListener {
 
     private void initViews() {
 
+        mScreenHeight = Utilities.getScreenSize(this)[1];
+        mViewPager = (ViewPager) findViewById(R.id.vedio_viewpager);
+        initFragment();
+        initViewPager();
+        mPagerSlidingTab = (PagerSlidingTabStrip) findViewById(R.id.zhibo_tab_tabs);
+        mPagerSlidingTab.setBackgroundResource(R.color.ctc);
+        mPagerSlidingTab.setShouldExpand(true);
+        mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.indicator_select_color));
+        mPagerSlidingTab.setDividerColor(getResources().getColor(R.color.ctc));
+        mPagerSlidingTab.setViewPager(mViewPager);
         mVideoView = (VideoView) findViewById(R.id.vitamio_videoView);
         mFullScreenBtn = (ImageView) findViewById(R.id.fullScreen);
         mContactLayout = (RelativeLayout) findViewById(R.id.contact_layout);
         mContactLayout.setVisibility(View.VISIBLE);
-        mContactLayout.setOnClickListener(this);
         mFullScreenBtn.setEnabled(false);
         mFullScreenBtn.setOnClickListener(this);
         mVideoView.setMediaController(new MediaController(this));
@@ -110,6 +135,69 @@ public class LiveViewActivity extends Activity implements View.OnClickListener {
 
     }
 
+    private void initViewPager() {
+        mViewPager.setAdapter(new ZhiBoAdapter(getSupportFragmentManager()));
+        mViewPager.setOffscreenPageLimit(1); //预加载2个
+        mViewPager.setCurrentItem(0);
+    }
+
+    private void initFragment() {
+        HomeTabHolder holder = new HomeTabHolder();
+        holder.title = this.getResources().getString(R.string.zhibo_chat);
+        chatFragment = new ZhiBoChatFragment();
+        holder.fragment = chatFragment;
+        mHomeHolders[0] = holder;
+
+        holder = new HomeTabHolder();
+        holder.title = this.getResources().getString(R.string.zhibo_data);
+        dataFragment = new ZhiBoDataFragment();
+        holder.fragment = dataFragment;
+        mHomeHolders[1] = holder;
+
+        FragmentManager fm = getSupportFragmentManager();
+        try {
+            FragmentTransaction ft = fm.beginTransaction();
+            List<Fragment> list = fm.getFragments();
+            if (list != null) {
+                for (Fragment f : fm.getFragments()) {
+                    ft.remove(f);
+                }
+            }
+            ft.commit();
+        } catch (Exception e) {
+
+        }
+
+    }
+
+
+    class ZhiBoAdapter extends FragmentPagerAdapter {
+        public ZhiBoAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mHomeHolders[position].fragment;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mHomeHolders[position].title;
+        }
+
+        @Override
+        public int getCount() {
+            return mHomeHolders.length;
+        }
+    }
+
+    class HomeTabHolder {
+        String title;
+        BaseFragment fragment;
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -124,16 +212,13 @@ public class LiveViewActivity extends Activity implements View.OnClickListener {
                     mIsFullScreen = true;//改变全屏/窗口的标记
                 } else {
                     RelativeLayout.LayoutParams lp=new  RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.FILL_PARENT, 300);
+                            RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 4 / 10);
                     mVideoView.setLayoutParams(lp);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     mContactLayout.setVisibility(View.VISIBLE);
                     mVideoView.setIsFullScreen(false);
                     mIsFullScreen = false;
                 }
-                break;
-            case R.id.contact_layout:
-                Toast.makeText(LiveViewActivity.this, "click", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -164,7 +249,7 @@ public class LiveViewActivity extends Activity implements View.OnClickListener {
     public void onBackPressed() {
         if(mIsFullScreen) {
             RelativeLayout.LayoutParams lp=new  RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.FILL_PARENT, 300);
+                    RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 4 / 10);
             mVideoView.setLayoutParams(lp);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             mContactLayout.setVisibility(View.VISIBLE);

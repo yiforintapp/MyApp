@@ -17,7 +17,6 @@ public class HomeTabTopWebActivity extends Activity {
     public static final String WEB_URL = "web_url";
 
     private WebView mWebView;
-    private View mEmptyView;
 
     private String mUrl;
 
@@ -31,8 +30,6 @@ public class HomeTabTopWebActivity extends Activity {
     private void init() {
         mWebView = (WebView) findViewById(R.id.webView);
         mWebView.setVisibility(View.VISIBLE);
-        mEmptyView = (View) findViewById(R.id.empty_view);
-        mEmptyView.setVisibility(View.GONE);
 
         mUrl = getIntent().getStringExtra(WEB_URL);
 

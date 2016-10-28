@@ -21,7 +21,7 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.home.BaseFragmentActivity;
-import com.zlf.appmaster.hometab.LiveViewActivity;
+import com.zlf.appmaster.zhibo.LiveViewActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
