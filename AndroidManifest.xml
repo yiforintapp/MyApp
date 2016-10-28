@@ -276,6 +276,11 @@
             android:launchMode="singleTask"
             android:theme="@style/activity_theme"></activity>
 
+        <activity
+            android:name=".zhibo.VideoZhiBoActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/activity_theme"></activity>
+
 
         <activity
             android:name=".home.DealActivity"

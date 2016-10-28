@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+
+    <TextView
+        android:id="@+id/chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/gray"
+        android:textSize="12dp" />
+
+    <RelativeLayout
+        android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/chat_time">
+
+        <ImageView
+            android:id="@+id/img_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/user_avatar_icon" />
+
+        <TextView
+            android:id="@+id/chat_name"
+            style="@style/zhibo_chat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/img_icon"
+            android:ellipsize="end"
+            android:maxWidth="120dp"
+            android:singleLine="true"
+            android:text="名字是什么呢"
+            android:textColor="@color/gray" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/tv_pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_content"
+        android:layout_marginLeft="55dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:id="@+id/chat_text"
+            style="@style/zhibo_chat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢"
+            android:textColor="@color/black" />
+
+        <!--<ProgressBar-->
+        <!--android:id="@+id/pb_video"-->
+        <!--style="@style/theme_loading"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_toRightOf="@id/chat_text" />-->
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+

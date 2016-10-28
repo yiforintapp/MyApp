@@ -350,4 +350,9 @@
 
     <string name="select_stock_back">添加自选</string>
 
+    <string name="zhibo_chat">聊天</string>
+    <string name="zhibo_data">操作建议</string>
+    <string name="zhibo_send">发送</string>
+    <string name="zhibo_net_err">网络异常</string>
+    <string name="send_text">字数限制在100字以内…</string>
 </resources>

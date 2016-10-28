@@ -125,5 +125,8 @@
     <color name="small_text">#9696A1</color>
 
     <color name="text_gold">#CFAE86</color>
+    <color name="chat_bg">#F5F5F7</color>
+    <color name="chat_listview_bg">#EBEBEB</color>
+
 
 </resources>

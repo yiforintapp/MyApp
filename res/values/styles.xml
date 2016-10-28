@@ -147,6 +147,26 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="zhibo_chat_name">
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:background">@drawable/selector_dialog_blue_button_3</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="zhibo_chat_text">
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:background">@drawable/selector_dialog_white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 
     <style name="theme_loading">
         <item name="android:indeterminateOnly">true</item>
