@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zlf.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:rippleColor="@color/button_gray_ripple"
+    app:rippleDuration="250"
+    app:rippleHover="true"
+    app:rippleInAdapter="true"
+    app:rippleOverlay="false">
+
+
+    <TextView
+        android:id="@+id/code_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="单号:"/>
+
+    <TextView
+        android:id="@+id/code_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/code_title"
+        android:layout_alignBottom="@+id/code_title"
+        android:text="213"/>
+
+    <TextView
+        android:id="@+id/time_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_below="@+id/code_title"
+        android:text="开仓时间:"/>
+
+    <TextView
+        android:id="@+id/time_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/time_title"
+        android:layout_alignBottom="@+id/time_title"
+        android:text="2016-10-28 10:15:30"/>
+
+    <TextView
+        android:id="@+id/style_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_below="@+id/time_title"
+        android:text="类别:"/>
+
+    <TextView
+        android:id="@+id/style_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/style_title"
+        android:layout_alignBottom="@+id/style_title"
+        android:text="到价买入"/>
+
+    <TextView
+        android:id="@+id/cangwei_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/style_content"
+        android:layout_alignBottom="@+id/style_content"
+        android:layout_marginLeft="8dp"
+        android:text="仓位:"/>
+
+    <TextView
+        android:id="@+id/cangwei_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/cangwei_title"
+        android:layout_alignBottom="@+id/cangwei_title"
+        android:text="20%"/>
+
+
+    <TextView
+        android:id="@+id/shangpin_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/cangwei_content"
+        android:layout_alignBottom="@+id/cangwei_content"
+        android:layout_marginLeft="8dp"
+        android:text="商品:"/>
+
+    <TextView
+        android:id="@+id/shangpin_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/shangpin_title"
+        android:layout_alignBottom="@+id/shangpin_title"
+        android:text="长江油"/>
+
+    <TextView
+        android:id="@+id/kaicangjia_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_below="@+id/style_title"
+        android:text="开仓价:"/>
+
+    <TextView
+        android:id="@+id/kaicangjia_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/kaicangjia_title"
+        android:layout_alignBottom="@+id/kaicangjia_title"
+        android:text="334.5"/>
+
+    <TextView
+        android:id="@+id/zhisunjia_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/kaicangjia_content"
+        android:layout_alignBottom="@+id/kaicangjia_content"
+        android:layout_marginLeft="8dp"
+        android:text="止损价:"/>
+
+    <TextView
+        android:id="@+id/zhisunjia_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/zhisunjia_title"
+        android:layout_alignBottom="@+id/zhisunjia_title"
+        android:text="332.5"/>
+
+
+    <TextView
+        android:id="@+id/zhiyingjia_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/zhisunjia_content"
+        android:layout_alignBottom="@+id/zhisunjia_content"
+        android:layout_marginLeft="8dp"
+        android:text="止盈价:"/>
+
+    <TextView
+        android:id="@+id/zhiyingjia_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/zhiyingjia_title"
+        android:layout_alignBottom="@+id/zhiyingjia_title"
+        android:text="338"/>
+
+    <TextView
+        android:id="@+id/fenxishi_title"
+        style="@style/data_adapter_item_tv"
+        android:layout_below="@+id/kaicangjia_title"
+        android:text="分析师:"/>
+
+    <TextView
+        android:id="@+id/fenxishi_content"
+        style="@style/data_adapter_item_tv"
+        android:layout_toRightOf="@+id/fenxishi_title"
+        android:layout_alignBottom="@+id/fenxishi_title"
+        android:text="奕趣缠禅刘老师"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/fenxishi_title"
+        android:background="@color/defeat_split_line" />
+
+</com.zlf.appmaster.ui.RippleView>
