@@ -3,9 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp">
-
+    android:paddingBottom="5dp">
 
     <TextView
         android:id="@+id/chat_time"
@@ -13,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textColor="@color/gray"
-        android:textSize="12dp" />
+        android:textSize="10dp" />
 
     <RelativeLayout
         android:id="@+id/text_content"
@@ -23,8 +21,8 @@
 
         <ImageView
             android:id="@+id/img_icon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:background="@drawable/user_avatar_icon" />
@@ -50,7 +48,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/text_content"
-        android:layout_marginLeft="55dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="45dp"
         android:layout_marginRight="10dp">
 
         <TextView
@@ -61,15 +60,6 @@
             android:gravity="left"
             android:text="名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢名字是什么呢"
             android:textColor="@color/black" />
-
-        <!--<ProgressBar-->
-        <!--android:id="@+id/pb_video"-->
-        <!--style="@style/theme_loading"-->
-        <!--android:layout_width="30dp"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_marginRight="10dp"-->
-        <!--android:layout_toRightOf="@id/chat_text" />-->
 
     </RelativeLayout>
 
