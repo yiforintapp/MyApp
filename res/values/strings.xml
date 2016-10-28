@@ -355,4 +355,11 @@
     <string name="zhibo_send">发送</string>
     <string name="zhibo_net_err">网络异常</string>
     <string name="send_text">字数限制在100字以内…</string>
+
+    <string name="loading_text">加载更多消息</string>
+    <string name="loading_text_release">释放加载更多</string>
+    <string name="can_not_send">网络异常，无法发送</string>
+    <string name="pls_enter_text">请输入文本</string>
+
+    <string name="pls_enter_get_new">获取最新</string>
 </resources>

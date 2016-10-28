@@ -1,33 +1,54 @@
 package com.zlf.appmaster.zhibo;
 
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.client.UniversalRequest;
+import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.ChatItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.NetWorkUtil;
+import com.zlf.appmaster.utils.PostStringRequestUtil;
+import com.zlf.appmaster.utils.PrefConst;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/8/15.
  */
 public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListener {
+    public static final String SEVLET_TYPE = "proname";
+    public static final String SEND = "sendmsg";
+    public static final String PARAMS_TEXT = "sendtext";
+    public static final String PARAMS_NAME = "sendname";
+    public static final String PARAMS_TIME = "sendtime";
+
     private static final int SHOW_NUM_PER_TIME = 20;
     public static final int ERROR_TYPE = -1;
     public static final int NORMAL_TYPE = 1;
@@ -43,12 +64,63 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
     private List<StockIndex> mForeignIndexData;
     private StockQuotationsClient mStockClient;
 
+    private DataHandler mHandler;
+
     private XListView mListView;
     private CircularProgressView mProgressBar;
     private View mEmptyView;
     private RippleView mRefreshView;
     private TextView mSendButton;
     private List<ChatItem> mDataList;
+    private EditText mEdText;
+
+    private String name, text, time;
+
+
+    //用于处理消息的Handler
+    private static class DataHandler extends Handler {
+        WeakReference<ZhiBoChatFragment> mActivityReference;
+
+        public DataHandler(ZhiBoChatFragment activity) {
+            super();
+            mActivityReference = new WeakReference<ZhiBoChatFragment>(activity);
+        }
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            ZhiBoChatFragment fragment = mActivityReference.get();
+            if (fragment == null) {
+                return;
+            }
+
+
+            int code = Integer.parseInt(msg.obj.toString());
+            LeoLog.d("CHAT", "msg code is : " + code);
+            fragment.makeDeal(code);
+        }
+
+    }
+
+    private void makeDeal(int code) {
+        if (code == 1) {
+            mEdText.setText("");
+            ChatItem item = new ChatItem();
+            item.setDate(time);
+            item.setText(text);
+            item.setName("APP_" + name);
+            mDataList.add(item);
+            Collections.sort(mDataList, COMPARATOR);
+            chatAdapter.setList(mDataList);
+            chatAdapter.notifyDataSetChanged();
+            mListView.setSelection(mDataList.size() - 1);
+
+        } else {
+            showToast(mActivity.getString(R.string.can_not_send));
+        }
+    }
+
 
     @Override
     protected int layoutResourceId() {
@@ -63,7 +135,7 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void initViews() {
-
+        mHandler = new DataHandler(this);
         mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
         mEmptyView = findViewById(R.id.empty_view);
@@ -77,7 +149,7 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
 
         mSendButton = (TextView) findViewById(R.id.tv_submit);
         mSendButton.setOnClickListener(this);
-
+        mEdText = (EditText) findViewById(R.id.ed_fb);
 
         mIndexData = new ArrayList<StockIndex>();
         mForeignIndexData = new ArrayList<StockIndex>();
@@ -86,7 +158,7 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
 
         mDataList = new ArrayList<ChatItem>();
 
-        mListView.setPullLoadEnable(false);
+        mListView.setPullLoadEnable(true);
         mListView.setPullRefreshEnable(true);
         mListView.setXListViewListener(new XListView.IXListViewListener() {
             @Override
@@ -100,6 +172,9 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
             }
         });
 
+        mListView.setHeaderViewReady(mActivity.getString(R.string.loading_text_release));
+        mListView.setHeaderViewNormal(mActivity.getString(R.string.loading_text));
+        mListView.setFooterViewNormal(mActivity.getString(R.string.pls_enter_get_new));
     }
 
     private void refreshLisrByButton() {
@@ -113,12 +188,6 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
         mProgressBar.setVisibility(View.VISIBLE);
         requestData(LOAD_DATA_TYPE);
     }
-
-//    private void onLoaded() {
-//        mListView.setSelection(chatAdapter.getCount()-1);
-//        mListView.stopRefresh();
-//        mListView.stopLoadMore();
-//    }
 
     private void onLoaded(int type) {
         mListView.stopRefresh();
@@ -234,7 +303,70 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_submit:
+                readySendMessage();
+                break;
+        }
+    }
 
+    private void readySendMessage() {
+
+        if (NetWorkUtil.isNetworkAvailable(mActivity)) {
+            if (TextUtils.isEmpty(mEdText.getText().toString().trim())) {
+                showToast(mActivity.getString(R.string.pls_enter_text));
+            } else {
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendMessage();
+                    }
+                });
+            }
+        } else {
+            showToast(mActivity.getString(R.string.can_not_send));
+        }
+
+    }
+
+    private void sendMessage() {
+//        String url = Constants.ADDRESS + "work";
+//        LeoLog.d("FeedbackActivity", "url : " + url);
+//
+//        Map<String, String> params = new HashMap<String, String>();
+//        params.put(Constants.FEEDBACK_TYPE, "feedback");
+//        params.put(Constants.FEEDBACK_CONTENT, "我去 测试用的");
+//        params.put(Constants.FEEDBACK_CONTACT, "535666786@qq.com");
+        String url = Constants.CHAT_DOMAIN + "appwork";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(SEVLET_TYPE, SEND);
+
+        text = mEdText.getText().toString().trim();
+        name = LeoSettings.getString(PrefConst.USER_NAME, "");
+        time = getNowDate();
+
+        params.put(PARAMS_TEXT, text);
+        params.put(PARAMS_NAME, name);
+        params.put(PARAMS_TIME, time);
+
+        LeoLog.d("CHAT", "url is : " + url);
+        LeoLog.d("CHAT", "text is : " + mEdText.getText().toString().trim());
+        LeoLog.d("CHAT", "name is : " + LeoSettings.getString(PrefConst.USER_NAME, ""));
+        LeoLog.d("CHAT", "time is : " + getNowDate());
+        int requestCode = PostStringRequestUtil.request(mActivity, url, params);
+        Message message = new Message();
+        message.obj = requestCode;
+        if (mHandler != null) {
+            mHandler.sendMessage(message);
+        }
+    }
+
+
+    private String getNowDate() {
+        SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date currentDate = new Date(System.currentTimeMillis());
+        String failDate = dateFormate.format(currentDate);
+        return failDate;
     }
 
     private static final Comparator<ChatItem> COMPARATOR = new Comparator<ChatItem>() {
@@ -243,5 +375,9 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
             return lhs.getDate().compareTo(rhs.getDate());
         }
     };
+
+    public void showToast(String text) {
+        Toast.makeText(mActivity, text, Toast.LENGTH_SHORT).show();
+    }
 }
 
