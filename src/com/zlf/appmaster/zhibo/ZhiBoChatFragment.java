@@ -25,6 +25,7 @@ import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.NetWorkUtil;
 import com.zlf.appmaster.utils.PostStringRequestUtil;
 import com.zlf.appmaster.utils.PrefConst;
+import com.zlf.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -235,9 +236,12 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
 
                                 JSONObject itemObject = array.getJSONObject(i);
                                 item.setDate(itemObject.getString("date"));
-                                item.setText(itemObject.getString("content"));
+                                String content = itemObject.getString("content");
+                                item.setText(content);
                                 item.setName(itemObject.getString("name"));
-                                items.add(item);
+                                if (!Utilities.isEmpty(content)) {
+                                    items.add(item);
+                                }
                             }
 
 
@@ -271,7 +275,8 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
                                         chatAdapter.setList(mDataList);
                                         chatAdapter.notifyDataSetChanged();
                                         mListView.setSelection(len);
-                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+//                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+                                        if (mNowPage >= 5) {
                                             mListView.setPullRefreshEnable(false);
                                         } else {
                                             mListView.setPullRefreshEnable(true);
