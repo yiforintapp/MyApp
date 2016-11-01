@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.zlf.appmaster.R;
-import com.zlf.appmaster.model.ChatItem;
+import com.zlf.appmaster.model.AdviceItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +20,13 @@ public class DataFragmentAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private Context mContext;
-    private List<ChatItem> mList;
+    private List<AdviceItem> mList;
 
 
     public DataFragmentAdapter(Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
-        mList = new ArrayList<ChatItem>();
+        mList = new ArrayList<AdviceItem>();
     }
 
     @Override
@@ -69,9 +69,17 @@ public class DataFragmentAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.mCode.setText("sdgsdgsdgsdgsgsgd");
+        AdviceItem item = mList.get(position);
 
-
+        holder.mCode.setText(item.getId());
+        holder.mTime.setText(item.getTime());
+        holder.mStyle.setText(item.getType());
+        holder.mCangwei.setText(item.getPosition());
+        holder.mShangPin.setText(item.getKind());
+        holder.mKaiCangJia.setText(item.getOpen());
+        holder.mZhiSunJia.setText(item.getStop());
+        holder.mZhiYingJia.setText(item.getOnly());
+        holder.mFenXiShi.setText(item.getName());
 
         return convertView;
     }
