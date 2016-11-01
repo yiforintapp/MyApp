@@ -203,7 +203,7 @@ public class LiveViewActivity extends BaseFragmentActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.fullScreen:
                 if (!mIsFullScreen) {//设置RelativeLayout的全屏模式
-                    RelativeLayout.LayoutParams layoutParams= new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
                     mVideoView.setLayoutParams(layoutParams);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -211,7 +211,7 @@ public class LiveViewActivity extends BaseFragmentActivity implements View.OnCli
                     mVideoView.setIsFullScreen(true);
                     mIsFullScreen = true;//改变全屏/窗口的标记
                 } else {
-                    RelativeLayout.LayoutParams lp=new  RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams lp = new  RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 4 / 10);
                     mVideoView.setLayoutParams(lp);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

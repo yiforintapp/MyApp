@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -41,7 +40,6 @@ import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.StockSelectDialog;
 import com.zlf.appmaster.ui.stock.StockTextView;
 import com.zlf.appmaster.utils.AppUtil;
-import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.banner.Banner;
 import com.zlf.banner.BannerConfig;
@@ -52,8 +50,6 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2016/9/8.
@@ -93,7 +89,6 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private WinTopAdapter mWinAdapter;
     private HomeJsonData mHomeJsonData;
 
-    private Timer mTimer;
 
 
     private int mLastPosition = 0;
@@ -286,105 +281,10 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
         mHlistview = (HorizontalListView) findViewById(R.id.h_listview);
         mWinAdapter = new WinTopAdapter(mActivity);
-        mTimer = ThreadManager.getTimer();
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                LeoLog.e("mytimer", "ddddd");
-
-            }
-        }, 0, 10000);
-
-        LeoLog.e("sdgdsfhg", test());
 
         requestHomeData();
         mHlistview.setAdapter(mWinAdapter);
 
-    }
-
-    private String test() {
-        String s = "<span style=\"font-family: 'Microsoft YaHei'; font-size: 12px; color:rgb(0, 0, 0);font-weight: 400; font-style: normal; text-decoration: none\">吃了</span>";
-        String resultString = "";
-        if (s.startsWith("<span")) {
-            int start = s.indexOf("\">");
-            int end = s.indexOf("</span>");
-            String startString = s.substring(start + 2, end);
-            LeoLog.e("sdgdsfhg", "a|| " +  startString);
-            if (startString.contains("<img")) {
-                boolean imgCount = false;
-                boolean divCount = false;
-                if (startString.startsWith("<img")) {
-                    int startIndex = startString.indexOf("<img");
-                    imgCount = startString.substring(startIndex + 4, startString.length()).contains("<img");
-                }
-                if (startString.startsWith("<div>")) {
-                    int startIndex = startString.indexOf("<div>");
-                    divCount = startString.substring(startIndex + 5, startString.length()).contains("<div>");
-                }
-                if (!imgCount && !divCount) {
-                    if (startString.startsWith("<img")) {
-                        int startIndex = startString.indexOf("\">");
-                        String s1 = startString.substring(startIndex + 2, startString.length());
-                        if (s1.contains("<div>")) {
-                            int endIndex = s1.indexOf("<div>");
-                            resultString = s1.substring(0, endIndex);
-                        } else {
-                            resultString = s1;
-                        }
-                        LeoLog.e("sdgdsfhg", "c|| " + resultString);
-
-                        if (!TextUtils.isEmpty(resultString)) {
-                            return resultString;
-                        }
-                    } else if (startString.startsWith("<div>")) {
-                        if (startString.contains("<img")) {
-                            int startIndex = startString.indexOf("<div>");
-                            int endIndex = startString.indexOf("<img");
-                            int endTwoIndex = startString.indexOf("</div>");
-                            if (endIndex < endTwoIndex) {
-                                resultString = startString.substring(startIndex + 5, endIndex);
-                                LeoLog.e("sdgdsfhg", "d|| " + resultString);
-                            } else if (endTwoIndex < endIndex) {
-                                resultString = startString.substring(startIndex + 5, endTwoIndex);
-                                //  格式<div>fgjhfj</div><img> <div></div>
-                            }
-                            if (!TextUtils.isEmpty(resultString)) {
-                                return resultString;
-                            }
-                        }
-                    } else {
-                        int endIndex = startString.indexOf("<img");
-                        int endTwoIndex = startString.indexOf("<div>");
-                        if (endIndex != -1 && endTwoIndex != -1) {
-                            if (endIndex < endTwoIndex) {
-                                resultString = startString.substring(0, endIndex);
-                            } else if (endTwoIndex < endIndex) {
-                                resultString = startString.substring(0, endTwoIndex);
-                            }
-                        } else if (endIndex != -1 && endTwoIndex == -1) {
-                            resultString = startString.substring(0, endIndex);
-                        } else if (endIndex == -1 && endTwoIndex != -1) {
-                            resultString = startString.substring(0, endTwoIndex);
-                        }
-                        LeoLog.e("sdgdsfhg", "e|| " + resultString);
-                        if (!TextUtils.isEmpty(resultString)) {
-                            return resultString;
-                        }
-                    }
-                }
-            } else {
-                resultString = startString.substring(0, startString.length());
-                LeoLog.e("sdgdsfhg", "f|| " + resultString);
-                if (!TextUtils.isEmpty(resultString)) {
-                    return resultString;
-                }
-            }
-        } else {
-            LeoLog.e("sdgdsfhg", "g");
-            return s;
-        }
-
-        return s;
     }
 
     private void setDayNewsFind() {
@@ -530,7 +430,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
                 }
                 mData.add(0, null);
 
-                if (mData != null && mData.size() > 1) {
+                if (mData != null && mData.size() >= 1) {
                     mData.remove(0);
                     mCount = mData.size() / 3 + 1;
                     mLastPosition = 0;
@@ -889,10 +789,6 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
         super.onDetach();
         if (mActivity != null) {
             ((HomeMainActivity) mActivity).stopRefreshAnim();
-        }
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer = null;
         }
     }
 }
