@@ -2,7 +2,6 @@ package com.zlf.appmaster.hometab;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -23,7 +22,7 @@ public class HomeTabTopWebActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_live);
+        setContentView(R.layout.activity_live_video);
         init();
     }
 

@@ -9,7 +9,7 @@
     <io.vov.vitamio.widget.VideoView
         android:id="@+id/vitamio_videoView"
         android:layout_width="fill_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -43,7 +43,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/fullscreen"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/vitamio_videoView"/>
 

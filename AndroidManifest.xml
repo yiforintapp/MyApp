@@ -264,11 +264,17 @@
 
 
         <activity
-            android:name=".zhibo.LiveViewActivity"
+        android:name=".zhibo.VideoLiveActivity"
+        android:screenOrientation="portrait"
+        android:hardwareAccelerated="true"
+        android:launchMode="singleTask"
+        android:taskAffinity="com.zlf.appmaster.home"
+        android:theme="@style/activity_theme"></activity>
+
+        <activity
+            android:name=".zhibo.WordLiveActivity"
             android:screenOrientation="portrait"
-            android:hardwareAccelerated="true"
             android:launchMode="singleTask"
-            android:taskAffinity="com.zlf.appmaster.home"
             android:theme="@style/activity_theme"></activity>
 
         <activity

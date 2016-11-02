@@ -153,9 +153,11 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
         }
 
         mAdapter = new LoginAdapter(getChildFragmentManager());
-        mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setCurrentItem(0);
+        if (mViewPager != null && mAdapter != null) {
+            mViewPager.setAdapter(mAdapter);
+            mViewPager.setOffscreenPageLimit(2);
+            mViewPager.setCurrentItem(0);
+        }
 
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
             @Override

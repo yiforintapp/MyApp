@@ -31,7 +31,7 @@ import io.vov.vitamio.widget.MediaController;
 import io.vov.vitamio.widget.VideoView;
 
 
-public class LiveViewActivity extends BaseFragmentActivity implements View.OnClickListener {
+public class VideoLiveActivity extends BaseFragmentActivity implements View.OnClickListener {
 
     private Context mContext;
 
@@ -59,7 +59,7 @@ public class LiveViewActivity extends BaseFragmentActivity implements View.OnCli
         if (!LibsChecker.checkVitamioLibs(this)) {
             return;
         }
-        setContentView(R.layout.activity_view_live);
+        setContentView(R.layout.activity_live_video);
         initViews();
 
         mContext = this;
@@ -212,7 +212,7 @@ public class LiveViewActivity extends BaseFragmentActivity implements View.OnCli
                     mIsFullScreen = true;//改变全屏/窗口的标记
                 } else {
                     RelativeLayout.LayoutParams lp = new  RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 4 / 10);
+                            RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 1 / 3);
                     mVideoView.setLayoutParams(lp);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     mContactLayout.setVisibility(View.VISIBLE);
@@ -249,12 +249,19 @@ public class LiveViewActivity extends BaseFragmentActivity implements View.OnCli
     public void onBackPressed() {
         if(mIsFullScreen) {
             RelativeLayout.LayoutParams lp=new  RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 4 / 10);
+                    RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 1 / 3);
             mVideoView.setLayoutParams(lp);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             mContactLayout.setVisibility(View.VISIBLE);
             mIsFullScreen = false;
             mVideoView.setIsFullScreen(false);
+            mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+
+                    return false;
+                }
+            });
             return;
         }
         if (mVideoView != null) {

@@ -4,16 +4,21 @@
     android:layout_height="match_parent"
     android:background="@color/home_tab_pressed">
 
+    <com.zlf.appmaster.ui.CommonToolbar
+        android:id="@+id/word_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
 
     <com.zlf.appmaster.ui.PagerSlidingTabStrip
-        android:id="@+id/zhibo_tab_tabs"
+        android:id="@+id/word_tab_tabs"
+        android:layout_below="@+id/word_toolbar"
         style="@style/sliding_tab_style" />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/vedio_viewpager"
+        android:id="@+id/word_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/zhibo_tab_tabs"
+        android:layout_below="@id/word_tab_tabs"
         android:background="@color/home_tab_pressed"
         android:overScrollMode="never" />
 

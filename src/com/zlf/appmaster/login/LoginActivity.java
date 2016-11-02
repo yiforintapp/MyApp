@@ -21,7 +21,7 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.home.BaseFragmentActivity;
-import com.zlf.appmaster.zhibo.LiveViewActivity;
+import com.zlf.appmaster.zhibo.VideoLiveActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
@@ -89,7 +89,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                 LeoSettings.setString(PrefConst.USER_NAME, result);
                 LeoSettings.setLong(PrefConst.LAST_LOGIN_TIME, System.currentTimeMillis());
                 if (activity.mFormLiveBtn) {
-                    activity.startActivity(new Intent(activity, LiveViewActivity.class));
+                    activity.startActivity(new Intent(activity, VideoLiveActivity.class));
                 }
                 activity.finish();
             }
