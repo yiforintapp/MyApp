@@ -72,10 +72,15 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
         initFragment();
         initViewPager();
         mPagerSlidingTab = (PagerSlidingTabStrip) findViewById(R.id.zhibo_tab_tabs);
-        mPagerSlidingTab.setBackgroundResource(R.color.ctc);
+        mPagerSlidingTab.setBackgroundResource(R.color.white);
         mPagerSlidingTab.setShouldExpand(true);
         mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.indicator_select_color));
-        mPagerSlidingTab.setDividerColor(getResources().getColor(R.color.ctc));
+        mPagerSlidingTab.setTextColor(R.color.black);
+        mPagerSlidingTab.setTextSize(30);
+        mPagerSlidingTab.setIndicatorHeight(6);
+        mPagerSlidingTab.setDividerColor(getResources().getColor(R.color.white));
+
+
         mPagerSlidingTab.setViewPager(mViewPager);
         mVideoView = (VideoView) findViewById(R.id.vitamio_videoView);
         mFullScreenBtn = (ImageView) findViewById(R.id.fullScreen);
