@@ -207,6 +207,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 	public void setSelectedTabTextColor(int color) {
 		selectedTabTextColor = color;
+		updateTabStyles();
 	}
 
 	public void setViewPager(ViewPager pager) {
