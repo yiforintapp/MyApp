@@ -21,10 +21,13 @@ import java.util.List;
 public class WordLiveActivity extends BaseFragmentActivity {
 
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[2];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[5];
     private PagerSlidingTabStrip mPagerSlidingTab;
     private WordZhiBoFragment mLiveFragment;
-    private WordZhiBoFragment mQuestionFragment;
+    private WordChatFragment mChatFragment;
+    private WordCreamFragment mCreamFragment;
+    private WordAdviceFragment mAdviceFragment;
+    private WordNoticeFragment mNoticeFragment;
     private CommonToolbar mToolBar;
 
 
@@ -41,10 +44,13 @@ public class WordLiveActivity extends BaseFragmentActivity {
         initViewPager();
         mToolBar = (CommonToolbar) findViewById(R.id.word_toolbar);
         mPagerSlidingTab = (PagerSlidingTabStrip) findViewById(R.id.word_tab_tabs);
-        mPagerSlidingTab.setBackgroundResource(R.color.ctc);
+        mPagerSlidingTab.setBackgroundResource(R.color.white);
         mPagerSlidingTab.setShouldExpand(true);
         mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.indicator_select_color));
-        mPagerSlidingTab.setDividerColor(getResources().getColor(R.color.ctc));
+        mPagerSlidingTab.setTextColor(R.color.black);
+        mPagerSlidingTab.setTextSize(30);
+        mPagerSlidingTab.setIndicatorHeight(6);
+        mPagerSlidingTab.setDividerColor(getResources().getColor(R.color.white));
         mPagerSlidingTab.setViewPager(mViewPager);
     }
 
@@ -57,16 +63,34 @@ public class WordLiveActivity extends BaseFragmentActivity {
 
     private void initFragment() {
         HomeTabHolder holder = new HomeTabHolder();
-        holder.title = this.getResources().getString(R.string.zhibo_chat);
+        holder.title = this.getResources().getString(R.string.word_zhibo_title);
         mLiveFragment = new WordZhiBoFragment();
         holder.fragment = mLiveFragment;
         mHomeHolders[0] = holder;
 
         holder = new HomeTabHolder();
-        holder.title = this.getResources().getString(R.string.zhibo_data);
-        mQuestionFragment = new WordZhiBoFragment();
-        holder.fragment = mQuestionFragment;
+        holder.title = this.getResources().getString(R.string.word_chat_title);
+        mChatFragment = new WordChatFragment();
+        holder.fragment = mChatFragment;
         mHomeHolders[1] = holder;
+
+        holder = new HomeTabHolder();
+        holder.title = this.getResources().getString(R.string.word_cream_title);
+        mCreamFragment = new WordCreamFragment();
+        holder.fragment = mCreamFragment;
+        mHomeHolders[2] = holder;
+
+        holder = new HomeTabHolder();
+        holder.title = this.getResources().getString(R.string.word_advice_title);
+        mAdviceFragment = new WordAdviceFragment();
+        holder.fragment = mAdviceFragment;
+        mHomeHolders[3] = holder;
+
+        holder = new HomeTabHolder();
+        holder.title = this.getResources().getString(R.string.word_notice_title);
+        mNoticeFragment = new WordNoticeFragment();
+        holder.fragment = mNoticeFragment;
+        mHomeHolders[4] = holder;
 
         FragmentManager fm = getSupportFragmentManager();
         try {

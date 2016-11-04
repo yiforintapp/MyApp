@@ -362,4 +362,10 @@
     <string name="pls_enter_text">请输入文本</string>
 
     <string name="pls_enter_get_new">获取最新</string>
+
+    <string name="word_zhibo_title">直播问答</string>
+    <string name="word_chat_title">丰友动态</string>
+    <string name="word_cream_title">直播精华</string>
+    <string name="word_advice_title">操作建议</string>
+    <string name="word_notice_title">公告</string>
 </resources>
