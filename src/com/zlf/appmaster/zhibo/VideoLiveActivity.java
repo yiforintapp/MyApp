@@ -260,13 +260,6 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
             mContactLayout.setVisibility(View.VISIBLE);
             mIsFullScreen = false;
             mVideoView.setIsFullScreen(false);
-            mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-
-                    return false;
-                }
-            });
             return;
         }
         if (mVideoView != null) {
