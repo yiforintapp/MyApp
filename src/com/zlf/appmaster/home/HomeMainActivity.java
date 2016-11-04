@@ -218,7 +218,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 changeUnSelectBg(mIndex);
                 mIndex = 1;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_home));
-                mRefreshRipple.setVisibility(View.VISIBLE);
+                mRefreshRipple.setVisibility(View.GONE);
                 break;
             case 2:
                 mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
@@ -234,7 +234,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 changeUnSelectBg(mIndex);
                 mIndex = 3;
                 mCenterTitle.setText(getResources().getString(R.string.main_tab_info));
-                mRefreshRipple.setVisibility(View.VISIBLE);
+                mRefreshRipple.setVisibility(View.GONE);
                 break;
             case 4:
                 mPersonalTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
@@ -417,7 +417,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
             case R.id.refresh:
                 Animation refreshAnim = AnimationUtils.loadAnimation(this, R.anim.refresh_anim);
                 if (mRefreshIv != null) {
-                    mRefreshIv.setImageResource(R.drawable.loading_refresh);
+                    mRefreshIv.setImageResource(R.drawable.juhua_loading);
                     mRefreshIv.startAnimation(refreshAnim);
                 }
                 mRefreshRipple.setEnabled(false);
@@ -442,7 +442,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
     public void stopRefreshAnim() {
         mRefreshRipple.setEnabled(true);
         if (mRefreshIv != null) {
-            mRefreshIv.setImageResource(R.drawable.home_refresh);
+            mRefreshIv.setImageResource(R.drawable.ic_msg_center_refresh);
             mRefreshIv.clearAnimation();
         }
     }

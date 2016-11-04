@@ -103,11 +103,11 @@
 
         <ImageView
             android:id="@+id/refresh_iv"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:scaleType="centerCrop"
             android:layout_centerInParent="true"
-            android:src="@drawable/home_refresh"/>
+            android:src="@drawable/ic_msg_center_refresh"/>
 
 
     </com.zlf.appmaster.ui.RippleView>
