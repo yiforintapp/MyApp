@@ -14,6 +14,7 @@ import com.zlf.appmaster.R;
  */
 public class AdviceDialog extends LEOBaseDialog {
 
+    private TextView mTitle;
     private TextView mContent;
     private ImageView mClose;
 
@@ -22,6 +23,7 @@ public class AdviceDialog extends LEOBaseDialog {
         View dlgView = LayoutInflater.from(context.getApplicationContext()).inflate(
                 R.layout.dialog_word_advice, null);
         setContentView(dlgView);
+        mTitle = (TextView) findViewById(R.id.advice_title);
         mContent = (TextView) findViewById(R.id.advice_content);
         mClose = (ImageView) findViewById(R.id.advice_close);
         mClose.setOnClickListener(new View.OnClickListener() {
@@ -30,6 +32,12 @@ public class AdviceDialog extends LEOBaseDialog {
                 dismiss();
             }
         });
+    }
+
+    public void setTitle(String s) {
+        if (!TextUtils.isEmpty(s)) {
+            mTitle.setText(s);
+        }
     }
 
     public void setContent(String s) {
