@@ -166,7 +166,7 @@ public class WordAdviceFragment extends BaseFragment {
                                         mAdapter.notifyDataSetChanged();
                                         mListView.setSelection(0);
                                         onLoaded(NORMAL_TYPE);
-                                        mListView.setPullRefreshEnable(true);
+                                        mListView.setPullLoadEnable(true);
                                     } else {
                                         onLoaded(ERROR_TYPE);
                                     }
