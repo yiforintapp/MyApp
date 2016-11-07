@@ -272,12 +272,12 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
                                         chatAdapter.setList(mDataList);
                                         chatAdapter.notifyDataSetChanged();
                                         mListView.setSelection(len);
-//                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
-                                        if (mNowPage >= 5) {
+                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
                                             mListView.setPullRefreshEnable(false);
                                         } else {
                                             mListView.setPullRefreshEnable(true);
                                         }
+
                                     } else {
                                         mListView.setPullRefreshEnable(false);
                                     }
