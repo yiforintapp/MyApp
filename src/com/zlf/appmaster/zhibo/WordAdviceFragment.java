@@ -148,7 +148,9 @@ public class WordAdviceFragment extends BaseFragment {
 
                                 JSONObject itemObject = array.getJSONObject(i);
                                 item.setContent(itemObject.getString("content"));
-                                item.setDate(itemObject.getString("date"));
+                                String time = itemObject.getString("date");
+                                long a = Long.valueOf(time) * 1000;
+                                item.setDate(String.valueOf(a));
                                 items.add(item);
                             }
 
@@ -166,7 +168,11 @@ public class WordAdviceFragment extends BaseFragment {
                                         mAdapter.notifyDataSetChanged();
                                         mListView.setSelection(0);
                                         onLoaded(NORMAL_TYPE);
-                                        mListView.setPullLoadEnable(true);
+                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+                                            mListView.setPullLoadEnable(false);
+                                        } else {
+                                            mListView.setPullLoadEnable(true);
+                                        }
                                     } else {
                                         onLoaded(ERROR_TYPE);
                                     }

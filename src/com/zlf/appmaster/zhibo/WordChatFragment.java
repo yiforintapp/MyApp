@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
-import com.zlf.appmaster.AppMasterPreference;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
@@ -32,11 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -269,7 +266,11 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
                                         chatAdapter.notifyDataSetChanged();
                                         mListView.setSelection(mDataList.size() - 1);
                                         onLoaded(NORMAL_TYPE);
-                                        mListView.setPullRefreshEnable(true);
+                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+                                            mListView.setPullRefreshEnable(false);
+                                        } else {
+                                            mListView.setPullRefreshEnable(true);
+                                        }
                                     } else {
                                         onLoaded(ERROR_TYPE);
                                     }

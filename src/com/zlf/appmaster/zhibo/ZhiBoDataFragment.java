@@ -163,7 +163,11 @@ public class ZhiBoDataFragment extends BaseFragment {
                                         mAdapter.notifyDataSetChanged();
                                         mListView.setSelection(0);
                                         onLoaded(NORMAL_TYPE);
-                                        mListView.setPullRefreshEnable(true);
+                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+                                            mListView.setPullLoadEnable(false);
+                                        } else {
+                                            mListView.setPullLoadEnable(true);
+                                        }
                                     } else {
                                         onLoaded(ERROR_TYPE);
                                     }

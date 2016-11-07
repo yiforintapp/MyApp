@@ -258,7 +258,11 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
                                         chatAdapter.notifyDataSetChanged();
                                         mListView.setSelection(mDataList.size() - 1);
                                         onLoaded(NORMAL_TYPE);
-                                        mListView.setPullRefreshEnable(true);
+                                        if (mNowPage >= 5) {
+                                            mListView.setPullRefreshEnable(false);
+                                        } else {
+                                            mListView.setPullRefreshEnable(true);
+                                        }
                                     } else {
                                         onLoaded(ERROR_TYPE);
                                     }
