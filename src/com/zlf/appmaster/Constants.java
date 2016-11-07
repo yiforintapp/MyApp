@@ -336,5 +336,12 @@ public class Constants {
     public static final String CHAT_SERVLET = "appwork?";
     public static final String CHAT_MARK = "proname=";
 
+    public static final String WORD_DOMAIN = "http://120.24.14.76:1688/";
+    public static final String WORD_SERVLET = "appwork?";
+    public static final String WORD_TYPE = "&type=";
+    public static final String WORD_ADVICE_MARK = "proname=text_advice&pp=";
+    public static final String WORD_CHAT_MARK = "proname=text_chat&pp=";
+
+
     public static final String CLIENT_PHONE = "075536914014";
 }

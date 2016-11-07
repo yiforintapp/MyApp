@@ -20,7 +20,7 @@ import java.util.List;
 public class WordZhiBoFragment extends BaseFragment {
 
 
-    private WordFragmentAdapter mAdapter;
+    private WordZhiboFragmentAdapter mAdapter;
     private List<AdviceItem> mDataList;
 
     private XListView mListView;
@@ -52,7 +52,7 @@ public class WordZhiBoFragment extends BaseFragment {
         });
 
         mDataList = new ArrayList<AdviceItem>();
-        mAdapter = new WordFragmentAdapter(mActivity);
+        mAdapter = new WordZhiboFragmentAdapter(mActivity);
         mListView.setAdapter(mAdapter);
 
 

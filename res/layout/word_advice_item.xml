@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zlf.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_centerVertical="true"
+    android:layout_marginRight="10dp"
+    app:rippleColor="@color/button_gray_ripple"
+    app:rippleDuration="250"
+    app:rippleHover="true"
+    app:rippleOverlay="true">
+
+    <TextView
+        android:id="@+id/advice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/black"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/advice"
+        android:textColor="@color/c4"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:textSize="11sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/time"
+        android:background="@color/split_line"/>
+
+
+</com.zlf.appmaster.ui.RippleView>

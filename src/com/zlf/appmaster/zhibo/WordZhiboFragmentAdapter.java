@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/3.
  */
-public class WordFragmentAdapter extends BaseAdapter {
+public class WordZhiboFragmentAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
     private List<AdviceItem> mList;
 
 
-    public WordFragmentAdapter(Context context) {
+    public WordZhiboFragmentAdapter(Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mList = new ArrayList<AdviceItem>();
