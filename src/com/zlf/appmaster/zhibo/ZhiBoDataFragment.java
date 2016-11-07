@@ -213,7 +213,7 @@ public class ZhiBoDataFragment extends BaseFragment {
 
     @Override
     protected int layoutResourceId() {
-        return R.layout.fragment_quotations_content;
+        return R.layout.zhibo_chat_fragment;
     }
 
     @Override

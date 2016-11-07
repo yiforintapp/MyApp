@@ -274,17 +274,16 @@
         <activity
             android:name=".zhibo.WordLiveActivity"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"
             android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".hometab.StockPlaceActivity"
-            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
         <activity
             android:name=".home.DealActivity"
-            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme"></activity>
 
         <activity
@@ -297,7 +296,6 @@
         <activity
             android:name=".hometab.SelectStockActivity"
             android:screenOrientation="portrait"
-            android:launchMode="singleTask"
             android:theme="@style/activity_theme"></activity>
 
         <activity
