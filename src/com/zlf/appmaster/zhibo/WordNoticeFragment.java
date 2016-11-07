@@ -154,7 +154,6 @@ public class WordNoticeFragment extends BaseFragment {
                                 items.add(item);
                             }
 
-
                             if (null != items) {
                                 int len = items.size();
 
