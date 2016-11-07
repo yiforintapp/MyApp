@@ -11,9 +11,12 @@ import android.widget.TextView;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.ChatItem;
+import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.TimeUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,7 +77,16 @@ public class WordChatFragmentAdapter extends BaseAdapter {
         String two = "</body></html>";
         holder.text.setText(Html.fromHtml(one + text + two));
         holder.name.setText(item.getName());
-        holder.time.setText(TimeUtil.getFormatChatTime(item.getDate()));
+
+        String time = item.getDate();
+        long a = Long.valueOf(time);
+
+        SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date currentDate = new Date(a);
+        String failDate = dateFormate.format(currentDate);
+
+
+        holder.time.setText(TimeUtil.getFormatChatTime(failDate));
         return convertView;
     }
 

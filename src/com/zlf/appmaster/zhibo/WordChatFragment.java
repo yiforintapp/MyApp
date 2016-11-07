@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
+import com.zlf.appmaster.AppMasterPreference;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
@@ -46,10 +47,10 @@ import java.util.Map;
 public class WordChatFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String SEVLET_TYPE = "proname";
-    public static final String SEND = "sendmsg";
+    public static final String SEND = "sendtextmsg";
     public static final String PARAMS_TEXT = "sendtext";
     public static final String PARAMS_NAME = "sendname";
-    public static final String PARAMS_TIME = "sendtime";
+    public static final String PARAMS_TYPE = "type";
 
     private static final int SHOW_NUM_PER_TIME = 20;
     public static final int ERROR_TYPE = -1;
@@ -75,7 +76,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
     private List<ChatItem> mDataList;
     private EditText mEdText;
 
-    private String name, text, time;
+    private String name, text, type;
 
 
     //用于处理消息的Handler
@@ -108,7 +109,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
         if (code == 1) {
             mEdText.setText("");
             ChatItem item = new ChatItem();
-            item.setDate(time);
+            item.setDate(System.currentTimeMillis() + "");
             item.setText(text);
             item.setName("APP_" + name);
             mDataList.add(item);
@@ -236,6 +237,19 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
                                 String content = itemObject.getString("content");
                                 item.setText(content);
                                 item.setName(itemObject.getString("name"));
+
+                                LeoLog.d("testTime","time is : " + itemObject.getString("seconds"));
+                                String time = itemObject.getString("seconds");
+                                long a;
+                                if(!Utilities.isEmpty(time)){
+                                    a = Long.valueOf(time) * 1000;
+                                }else{
+                                    time = "1478502755";
+                                    a = Long.valueOf(time) * 1000;
+                                }
+                                item.setDate(a+"");
+
+
                                 if (!Utilities.isEmpty(content)) {
                                     items.add(item);
                                 }
@@ -332,29 +346,22 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void sendMessage() {
-//        String url = Constants.ADDRESS + "work";
-//        LeoLog.d("FeedbackActivity", "url : " + url);
-//
-//        Map<String, String> params = new HashMap<String, String>();
-//        params.put(Constants.FEEDBACK_TYPE, "feedback");
-//        params.put(Constants.FEEDBACK_CONTENT, "我去 测试用的");
-//        params.put(Constants.FEEDBACK_CONTACT, "535666786@qq.com");
-        String url = Constants.CHAT_DOMAIN + "appwork";
+        String url = Constants.WORD_DOMAIN + "appwork";
         Map<String, String> params = new HashMap<String, String>();
         params.put(SEVLET_TYPE, SEND);
 
         text = mEdText.getText().toString().trim();
         name = LeoSettings.getString(PrefConst.USER_NAME, "");
-        time = getNowDate();
+        type = "1";
 
         params.put(PARAMS_TEXT, text);
         params.put(PARAMS_NAME, name);
-        params.put(PARAMS_TIME, time);
+        params.put(PARAMS_TYPE, type);
 
         LeoLog.d("CHAT", "url is : " + url);
         LeoLog.d("CHAT", "text is : " + mEdText.getText().toString().trim());
         LeoLog.d("CHAT", "name is : " + LeoSettings.getString(PrefConst.USER_NAME, ""));
-        LeoLog.d("CHAT", "time is : " + getNowDate());
+        LeoLog.d("CHAT", "type is : " + type);
         int requestCode = PostStringRequestUtil.request(mActivity, url, params);
         Message message = new Message();
         message.obj = requestCode;
@@ -364,12 +371,12 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
     }
 
 
-    private String getNowDate() {
-        SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date currentDate = new Date(System.currentTimeMillis());
-        String failDate = dateFormate.format(currentDate);
-        return failDate;
-    }
+//    private String getNowDate() {
+//        SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date currentDate = new Date(System.currentTimeMillis());
+//        String failDate = dateFormate.format(currentDate);
+//        return failDate;
+//    }
 
     private static final Comparator<ChatItem> COMPARATOR = new Comparator<ChatItem>() {
         @Override
