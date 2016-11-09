@@ -57,6 +57,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/ask_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/defeat_split_line"

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_dialog_white"
+    android:padding="10dp">
+
+    <RelativeLayout
+        android:id="@+id/chat_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/chat_name"
+            style="@style/zhibo_chat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:maxWidth="120dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/chat_time"
+            style="@style/zhibo_chat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/chat_name"
+            android:gravity="left"
+            android:textColor="@color/gray"
+            android:textSize="10dp" />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/chat_text"
+        style="@style/zhibo_chat_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_layout"
+        android:gravity="left"
+        android:textColor="@color/black" />
+
+
+</RelativeLayout>
+

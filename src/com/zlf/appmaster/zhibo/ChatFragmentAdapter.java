@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zlf.appmaster.R;
@@ -56,9 +55,8 @@ public class ChatFragmentAdapter extends BaseAdapter {
 
         ViewHolder holder;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.zhibo_vedio_item, null);
+            convertView = mInflater.inflate(R.layout.word_chat_item, null);
             holder = new ViewHolder();
-            holder.img = (ImageView) convertView.findViewById(R.id.img_icon);
             holder.name = (TextView) convertView.findViewById(R.id.chat_name);
             holder.text = (TextView) convertView.findViewById(R.id.chat_text);
             holder.time = (TextView) convertView.findViewById(R.id.chat_time);
@@ -79,7 +77,6 @@ public class ChatFragmentAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        ImageView img;
         TextView name, text, time;
     }
 }

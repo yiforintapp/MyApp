@@ -10,7 +10,7 @@
         android:color="@color/c4" /><!--矩形的边线  -->
 
     <gradient
-        android:endColor="#fff"
-        android:startColor="#fff" /><!-- 矩形的内部颜色，这里设置成白色，即空心 -->
+        android:endColor="#ffffff"
+        android:startColor="#ffffff" /><!-- 矩形的内部颜色，这里设置成白色，即空心 -->
 
 </shape>
