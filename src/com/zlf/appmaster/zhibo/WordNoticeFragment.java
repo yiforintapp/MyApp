@@ -86,6 +86,7 @@ public class WordNoticeFragment extends BaseFragment {
                     mDialog = new AdviceDialog(mActivity);
                 }
                 mDialog.setContent(mDataList.get(position).getContent());
+                mDialog.setTitle(getResources().getString(R.string.word_notice_title));
                 mDialog.show();
             }
         });
