@@ -254,10 +254,10 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
 
 
                             if (null != items) {
-                                int len = items.size();
+                                int len = array.length();
 
                                 if (type == LOAD_DATA_TYPE) {
-                                    if (len > 0) {
+                                    if (items.size() > 0) {
                                         mDataList.clear();
                                         mListView.setVisibility(View.VISIBLE);
                                         mDataList.addAll(items);
@@ -276,7 +276,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
                                     }
 
                                 } else {
-                                    if (len > 0) {
+                                    if (items.size() > 0) {
 
                                         int addBefore = mDataList.size();
                                         LeoLog.d("CHAT", "addBefore : " + addBefore);
@@ -286,7 +286,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
                                         Collections.sort(mDataList, COMPARATOR);
                                         chatAdapter.setList(mDataList);
                                         chatAdapter.notifyDataSetChanged();
-                                        mListView.setSelection(len);
+                                        mListView.setSelection(items.size());
                                         if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
                                             mListView.setPullRefreshEnable(false);
                                         } else {

@@ -246,10 +246,10 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
 
 
                             if (null != items) {
-                                int len = items.size();
+                                int len = array.length();
 
                                 if (type == LOAD_DATA_TYPE) {
-                                    if (len > 0) {
+                                    if (items.size() > 0) {
                                         mDataList.clear();
                                         mListView.setVisibility(View.VISIBLE);
                                         mDataList.addAll(items);
@@ -258,7 +258,7 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
                                         chatAdapter.notifyDataSetChanged();
                                         mListView.setSelection(mDataList.size() - 1);
                                         onLoaded(NORMAL_TYPE);
-                                        if (mNowPage >= 5) {
+                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
                                             mListView.setPullRefreshEnable(false);
                                         } else {
                                             mListView.setPullRefreshEnable(true);
@@ -268,7 +268,7 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
                                     }
 
                                 } else {
-                                    if (len > 0) {
+                                    if (items.size() > 0) {
 
                                         int addBefore = mDataList.size();
                                         LeoLog.d("CHAT", "addBefore : " + addBefore);
@@ -278,9 +278,9 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
                                         Collections.sort(mDataList, COMPARATOR);
                                         chatAdapter.setList(mDataList);
                                         chatAdapter.notifyDataSetChanged();
-                                        mListView.setSelection(len);
+                                        mListView.setSelection(items.size());
 //                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
-                                        if (mNowPage >= 5) {
+                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
                                             mListView.setPullRefreshEnable(false);
                                         } else {
                                             mListView.setPullRefreshEnable(true);

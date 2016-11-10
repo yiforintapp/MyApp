@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -136,29 +137,39 @@ public class WordZhiBoFragment extends BaseFragment {
                                 WordChatItem item = new WordChatItem();
 
                                 JSONObject itemObject = array.getJSONObject(i);
-                                item.setCName(itemObject.getString("c_name"));
-                                item.setTName(itemObject.getString("t_name"));
-                                item.setMsg(itemObject.getString("msg"));
-                                item.setAnswer(itemObject.getString("answer"));
-                                String askTime = itemObject.getString("ask_time");
-                                long a = Long.valueOf(askTime) * 1000;
-                                item.setAskTime(String.valueOf(a));
-                                String answerTime = itemObject.getString("answer_time");
-                                long b = Long.valueOf(answerTime) * 1000;
-                                item.setAnswerTime(String.valueOf(b));
-                                items.add(item);
+                                String status = itemObject.getString("status");
+                                String cName = itemObject.getString("c_name");
+                                if ("1".equals(status) && !TextUtils.isEmpty(cName)) {
+                                    item.setCName(itemObject.getString("c_name"));
+                                    item.setTName(itemObject.getString("t_name"));
+                                    item.setMsg(itemObject.getString("msg"));
+                                    item.setAnswer(itemObject.getString("answer"));
+                                    String askTime = itemObject.getString("ask_time");
+                                    item.setAskTime(String.valueOf(askTime));
+                                    if (!TextUtils.isEmpty(askTime)) {
+                                        long a = Long.valueOf(askTime) * 1000;
+                                        item.setAskTime(String.valueOf(a));
+                                    }
+                                    String answerTime = itemObject.getString("answer_time");
+                                    item.setAnswerTime(answerTime);
+                                    if (!TextUtils.isEmpty(answerTime)) {
+                                        long b = Long.valueOf(answerTime) * 1000;
+                                        item.setAnswerTime(String.valueOf(b));
+                                    }
+                                    items.add(item);
+                                }
                             }
 
 
                             if (null != items) {
-                                int len = items.size();
+                                int len = array.length();
 
                                 if (type == LOAD_DATA_TYPE) {
-                                    if (len > 0) {
+                                    if (items.size() > 0) {
                                         mDataList.clear();
                                         mListView.setVisibility(View.VISIBLE);
                                         mDataList.addAll(items);
-//                                        Collections.sort(mDataList, COMPARATOR);
+                                        Collections.sort(mDataList, COMPARATOR);
                                         mAdapter.setList(mDataList);
                                         mAdapter.notifyDataSetChanged();
                                         mListView.setSelection(0);
@@ -173,17 +184,17 @@ public class WordZhiBoFragment extends BaseFragment {
                                     }
 
                                 } else {
-                                    if (len > 0) {
+                                    if (items.size() > 0) {
 
                                         int addBefore = mDataList.size();
                                         LeoLog.d("CHAT", "addBefore : " + addBefore);
 
                                         mListView.setVisibility(View.VISIBLE);
                                         mDataList.addAll(items);
-//                                        Collections.sort(mDataList, COMPARATOR);
+                                        Collections.sort(mDataList, COMPARATOR);
                                         mAdapter.setList(mDataList);
                                         mAdapter.notifyDataSetChanged();
-                                        mListView.setSelection(mDataList.size() - len);
+                                        mListView.setSelection(mDataList.size() - items.size());
                                         if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
                                             mListView.setPullLoadEnable(false);
                                         } else {
@@ -219,10 +230,6 @@ public class WordZhiBoFragment extends BaseFragment {
     private static final Comparator<WordChatItem> COMPARATOR = new Comparator<WordChatItem>() {
         @Override
         public int compare(WordChatItem lhs, WordChatItem rhs) {
-            boolean isLhsAskEmpty = TextUtils.isEmpty(lhs.getAskTime());
-            boolean isLhsAnswerEmpty = TextUtils.isEmpty(lhs.getAnswerTime());
-            boolean isRhsAskEmpty = TextUtils.isEmpty(rhs.getAskTime());
-            boolean isRhsAnswerEmpty = TextUtils.isEmpty(rhs.getAnswerTime());
 
             return rhs.getAnswerTime().compareTo(lhs.getAnswerTime());
         }
