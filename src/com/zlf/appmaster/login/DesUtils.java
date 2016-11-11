@@ -80,7 +80,7 @@ public class DesUtils {
      * @throws Exception
      */
     public DesUtils() throws Exception {
-        this(strDefaultKey);
+        this(strDefaultKey); //
     }
 
     /**
