@@ -22,6 +22,7 @@ import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.ExpandableLayout;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
+import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 
@@ -276,9 +277,9 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
             String phone = LeoSettings.getString(PrefConst.USER_PHONE, "");
             if (name) {
                 userName = mOldNameEt.getText().toString();
-                pwd = LeoSettings.getString(PrefConst.USER_PWD, "");
+                pwd = StringUtil.retMd5Pwd(LeoSettings.getString(PrefConst.USER_PWD, ""));
             } else {
-                pwd = mQueryNewPwdEt.getText().toString().trim();
+                pwd =  StringUtil.retMd5Pwd(mQueryNewPwdEt.getText().toString().trim());
             }
             // 发送请求
             LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, tag,

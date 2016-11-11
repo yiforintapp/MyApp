@@ -218,10 +218,11 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         });
         mDialog.show();
         mProgressBarShow = true;
+        String password = StringUtil.retMd5Pwd( mPasswordEt.getText().toString().trim());
         try {
             // 发送请求
             LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
-                    mUserEt.getText().toString().trim(), mPasswordEt.getText().toString().trim(), "",  new HttpCallBackListener() {
+                    mUserEt.getText().toString().trim(), password, "",  new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response) {
                     if (mProgressBarShow) {

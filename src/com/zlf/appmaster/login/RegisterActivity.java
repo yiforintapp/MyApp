@@ -311,9 +311,10 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
             });
             mDialog.show();
             mProgressBarShow = true;
+            String password = mPasswordEt.getText().toString().trim();
             // 发送请求
             LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
-                    mUserEt.getText().toString().trim(), mPasswordEt.getText().toString().trim(), mUserNameEt.getText().toString().trim(), new HttpCallBackListener() {
+                    mUserEt.getText().toString().trim(), password, mUserNameEt.getText().toString().trim(), new HttpCallBackListener() {
                         @Override
                         public void onFinish(String response) {
                             if (mProgressBarShow) {
