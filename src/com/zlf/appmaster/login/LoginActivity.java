@@ -21,12 +21,12 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.home.BaseFragmentActivity;
-import com.zlf.appmaster.zhibo.VideoLiveActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
+import com.zlf.appmaster.zhibo.VideoLiveActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -218,7 +218,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         });
         mDialog.show();
         mProgressBarShow = true;
-        String password = StringUtil.retMd5Pwd( mPasswordEt.getText().toString().trim());
+        String password = StringUtil.retMd5Pwd( mPasswordEt.getText().toString().trim()).toLowerCase();
         try {
             // 发送请求
             LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,

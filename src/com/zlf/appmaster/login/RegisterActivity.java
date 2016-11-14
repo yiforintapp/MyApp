@@ -311,7 +311,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
             });
             mDialog.show();
             mProgressBarShow = true;
-            String password = StringUtil.retMd5Pwd(mPasswordEt.getText().toString().trim());
+            String password = StringUtil.retMd5Pwd(mPasswordEt.getText().toString().trim()).toLowerCase();
             // 发送请求
             LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
                     mUserEt.getText().toString().trim(), password, mUserNameEt.getText().toString().trim(), new HttpCallBackListener() {

@@ -276,9 +276,9 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
             String phone = LeoSettings.getString(PrefConst.USER_PHONE, "");
             if (name) {
                 userName = mOldNameEt.getText().toString();
-                pwd = StringUtil.retMd5Pwd(LeoSettings.getString(PrefConst.USER_PWD, ""));
+                pwd = StringUtil.retMd5Pwd(LeoSettings.getString(PrefConst.USER_PWD, "")).toLowerCase();
             } else {
-                pwd =  StringUtil.retMd5Pwd(mQueryNewPwdEt.getText().toString().trim());
+                pwd =  StringUtil.retMd5Pwd(mQueryNewPwdEt.getText().toString().trim()).toLowerCase();
             }
             // 发送请求
             LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
