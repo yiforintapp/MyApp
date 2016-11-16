@@ -14,6 +14,7 @@ import com.zlf.appmaster.model.WordAdviceItem;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.AdviceDialog;
 import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -151,7 +152,13 @@ public class WordAdviceFragment extends BaseFragment {
                                     JSONObject itemObject = array.getJSONObject(i);
                                     item.setContent(itemObject.getString("content"));
                                     String time = itemObject.getString("date");
-                                    long a = Long.valueOf(time) * 1000;
+                                    long a;
+                                    if (!Utilities.isEmpty(time)) {
+                                        a = Long.valueOf(time) * 1000;
+                                    } else {
+                                        time = "1478502755";
+                                        a = Long.valueOf(time) * 1000;
+                                    }
                                     item.setDate(String.valueOf(a));
                                     items.add(item);
                                 }

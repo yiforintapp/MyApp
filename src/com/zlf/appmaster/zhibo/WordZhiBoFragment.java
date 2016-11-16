@@ -26,6 +26,7 @@ import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.NetWorkUtil;
 import com.zlf.appmaster.utils.PostStringRequestUtil;
 import com.zlf.appmaster.utils.PrefConst;
+import com.zlf.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -125,7 +126,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
         }
     }
 
-    private void initViews(){
+    private void initViews() {
 
         mHandler = new DataHandler(this);
         mAllLayout = (LinearLayout) findViewById(R.id.word_all_layout);
@@ -183,7 +184,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
         requestData(LOAD_DATA_TYPE);
     }
 
-    private void initData(){
+    private void initData() {
         mProgressBar.setVisibility(View.VISIBLE);
         requestData(LOAD_DATA_TYPE);
     }
@@ -233,34 +234,33 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
                                     WordChatItem item = new WordChatItem();
 
                                     JSONObject itemObject = array.getJSONObject(i);
-                                    String status = itemObject.getString("status");
-                                    String cName = itemObject.getString("c_name");
-                                    if ("1".equals(status) && !TextUtils.isEmpty(cName)) {
-                                        item.setCName(itemObject.getString("c_name"));
-                                        item.setTName(itemObject.getString("t_name"));
-                                        item.setMsg(itemObject.getString("msg"));
-                                        item.setAnswer(itemObject.getString("answer"));
-                                        String askTime = itemObject.getString("ask_time");
-                                        item.setAskTime(String.valueOf(askTime));
-                                        if (!TextUtils.isEmpty(askTime)) {
-                                            long a = Long.valueOf(askTime) * 1000;
-                                            item.setAskTime(String.valueOf(a));
-                                        }
-                                        String answerTime = itemObject.getString("answer_time");
-                                        item.setAnswerTime(answerTime);
-                                        if (!TextUtils.isEmpty(answerTime)) {
-                                            long b = Long.valueOf(answerTime) * 1000;
-                                            item.setAnswerTime(String.valueOf(b));
-                                        }
-                                        items.add(item);
+                                    item.setCName(itemObject.getString("c_name"));
+                                    item.setTName(itemObject.getString("t_name"));
+                                    item.setMsg(itemObject.getString("msg"));
+                                    item.setAnswer(itemObject.getString("answer"));
+                                    String askTime = itemObject.getString("ask_time");
+                                    item.setAskTime(String.valueOf(askTime));
+                                    if (!TextUtils.isEmpty(askTime)) {
+                                        long a = Long.valueOf(askTime) * 1000;
+                                        item.setAskTime(String.valueOf(a));
                                     }
+                                    String answerTime = itemObject.getString("answer_time");
+                                    long a;
+                                    if (!Utilities.isEmpty(answerTime)) {
+                                        a = Long.valueOf(answerTime) * 1000;
+                                    } else {
+                                        answerTime = "1478502755";
+                                        a = Long.valueOf(answerTime) * 1000;
+                                    }
+                                    item.setAnswerTime(String.valueOf(a));
+                                    items.add(item);
                                 }
 
                                 if (null != items) {
-                                    int len = array.length();
+                                    int len = items.size();
 
                                     if (type == LOAD_DATA_TYPE) {
-                                        if (items.size() > 0) {
+                                        if (len > 0) {
                                             mDataList.clear();
                                             mListView.setVisibility(View.VISIBLE);
                                             mDataList.addAll(items);
@@ -279,7 +279,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
                                         }
 
                                     } else {
-                                        if (items.size() > 0) {
+                                        if (len > 0) {
 
                                             int addBefore = mDataList.size();
                                             LeoLog.d("CHAT", "addBefore : " + addBefore);
@@ -318,25 +318,25 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.word_all_layout:
-                if(mIndex == 0){
+                if (mIndex == 0) {
                     return;
                 }
                 changeTabBg(0);
                 break;
             case R.id.word_oil_layout:
-                if(mIndex == 1){
+                if (mIndex == 1) {
                     return;
                 }
                 changeTabBg(1);
                 break;
-            case  R.id.word_silver_layout:
-                if(mIndex == 2){
+            case R.id.word_silver_layout:
+                if (mIndex == 2) {
                     return;
                 }
                 changeTabBg(2);
                 break;
             case R.id.word_copper_layout:
-                if(mIndex == 3){
+                if (mIndex == 3) {
                     return;
                 }
                 changeTabBg(3);

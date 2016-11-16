@@ -13,6 +13,7 @@ import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.WordChatItem;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,11 +42,11 @@ public class WordPointFragment extends BaseFragment {
     public static final int LOAD_DATA_TYPE = 1;
     public static final int LOAD_MORE_TYPE = 2;
     public static final String BASE_URL = Constants.WORD_DOMAIN +
-            Constants.WORD_SERVLET + Constants.WORD_ZHIBO_MARK;
+            Constants.WORD_SERVLET + Constants.WORD_POINT_MARK;
     public static final String LOAD_DATA = BASE_URL;
     private int mNowPage = 1;
 
-    private void initViews(){
+    private void initViews() {
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
@@ -87,7 +88,7 @@ public class WordPointFragment extends BaseFragment {
         requestData(LOAD_DATA_TYPE);
     }
 
-    private void initData(){
+    private void initData() {
         mProgressBar.setVisibility(View.VISIBLE);
         requestData(LOAD_DATA_TYPE);
     }
@@ -137,26 +138,28 @@ public class WordPointFragment extends BaseFragment {
                                     WordChatItem item = new WordChatItem();
 
                                     JSONObject itemObject = array.getJSONObject(i);
-                                    String status = itemObject.getString("status");
-                                    String tName = itemObject.getString("t_name");
-                                    String cName = itemObject.getString("c_name");
-                                    if ("1".equals(status) && !TextUtils.isEmpty(tName) && TextUtils.isEmpty(cName)) {
-                                        item.setTName(itemObject.getString("t_name"));
-                                        item.setAnswer(itemObject.getString("answer"));
-                                        String answerTime = itemObject.getString("answer_time");
-                                        item.setAnswerTime(answerTime);
-                                        if (!TextUtils.isEmpty(answerTime)) {
-                                            long b = Long.valueOf(answerTime) * 1000;
-                                            item.setAnswerTime(String.valueOf(b));
-                                        }
-                                        items.add(item);
+                                    item.setTName(itemObject.getString("t_name"));
+                                    item.setAnswer(itemObject.getString("answer"));
+                                    if (!TextUtils.isEmpty(itemObject.getString("image_url"))) {
+                                        item.setAnswerImg(itemObject.getString("image_url"));
                                     }
+                                    String answerTime = itemObject.getString("answer_time");
+                                    long a;
+                                    if (!Utilities.isEmpty(answerTime)) {
+                                        a = Long.valueOf(answerTime) * 1000;
+                                    } else {
+                                        answerTime = "1478502755";
+                                        a = Long.valueOf(answerTime) * 1000;
+                                    }
+                                    item.setAnswerTime(String.valueOf(a));
+
+                                    items.add(item);
                                 }
                                 if (null != items) {
-                                    int len = array.length();
+                                    int len = items.size();
 
                                     if (type == LOAD_DATA_TYPE) {
-                                        if (items.size() > 0) {
+                                        if (len > 0) {
                                             mDataList.clear();
                                             mListView.setVisibility(View.VISIBLE);
                                             mDataList.addAll(items);
@@ -175,7 +178,7 @@ public class WordPointFragment extends BaseFragment {
                                         }
 
                                     } else {
-                                        if (items.size() > 0) {
+                                        if (len > 0) {
 
                                             int addBefore = mDataList.size();
                                             LeoLog.d("CHAT", "addBefore : " + addBefore);
@@ -211,7 +214,6 @@ public class WordPointFragment extends BaseFragment {
     }
 
 
-
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_quotations_content;
@@ -230,4 +232,6 @@ public class WordPointFragment extends BaseFragment {
             return rhs.getAnswerTime().compareTo(lhs.getAnswerTime());
         }
     };
+
+
 }

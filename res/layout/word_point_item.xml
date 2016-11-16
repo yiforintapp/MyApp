@@ -14,39 +14,60 @@
             android:id="@+id/time_iv"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:src="@drawable/icon_trade_pre"
-            android:scaleType="centerCrop"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_trade_pre" />
 
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/time_iv"
             android:layout_alignTop="@+id/time_iv"
             android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/time_iv"
             android:gravity="top"
             android:textColor="@color/c4"
-            android:textSize="11sp"/>
+            android:textSize="11sp" />
 
 
         <TextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/time"
             android:layout_alignTop="@+id/time_iv"
             android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/time"
             android:gravity="top"
             android:textColor="@color/main_red"
-            android:textSize="11sp"/>
+            android:textSize="11sp" />
+
+        <RelativeLayout
+            android:id="@+id/img_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/content"
+            android:layout_below="@+id/content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:background="@drawable/word_point_image_bg">
+
+
+            <uk.co.senab.photoview.PhotoView
+                android:id="@+id/img"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="3px"
-        android:background="@color/split_line"/>
+        android:background="@color/split_line" />
 
 </LinearLayout>

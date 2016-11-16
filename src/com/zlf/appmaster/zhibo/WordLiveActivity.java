@@ -12,6 +12,7 @@ import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.home.BaseFragmentActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.PagerSlidingTabStrip;
+import com.zlf.appmaster.ui.dialog.ScaleImageDialog;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class WordLiveActivity extends BaseFragmentActivity {
     private WordPointFragment mPointFragment;
     private CommonToolbar mToolBar;
 
-
+    private ScaleImageDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,5 +143,19 @@ public class WordLiveActivity extends BaseFragmentActivity {
     class HomeTabHolder {
         String title;
         BaseFragment fragment;
+    }
+
+    public void showImageScaleDialog(String url) {
+        mDialog = new ScaleImageDialog(this);
+        mDialog.setImgUrl(url);
+        mDialog.show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
     }
 }

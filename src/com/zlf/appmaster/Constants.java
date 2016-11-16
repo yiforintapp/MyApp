@@ -340,9 +340,12 @@ public class Constants {
     public static final String WORD_SERVLET = "appwork?";
     public static final String WORD_TYPE = "&type=";
     public static final String WORD_ZHIBO_MARK = "proname=text_zhibo&pp=";
+    public static final String WORD_POINT_MARK = "proname=text_point&pp=";
     public static final String WORD_ADVICE_MARK = "proname=text_advice&pp=";
     public static final String WORD_CHAT_MARK = "proname=text_chat&pp=";
 
 
     public static final String CLIENT_PHONE = "075536914014";
+
+    public static final String ZHIBO_IMG_DOMAIN = "http://own.zlf1688.com/";
 }
