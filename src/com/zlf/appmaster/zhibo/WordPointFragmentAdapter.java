@@ -1,7 +1,7 @@
 package com.zlf.appmaster.zhibo;
 
 import android.content.Context;
-import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,26 +9,26 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.zlf.appmaster.R;
-import com.zlf.appmaster.model.ChatItem;
+import com.zlf.appmaster.model.WordChatItem;
 import com.zlf.appmaster.utils.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Huang on 2015/3/6.
+ * Created by Administrator on 2016/11/15.
  */
-public class ChatFragmentAdapter extends BaseAdapter {
+public class WordPointFragmentAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private Context mContext;
-    private List<ChatItem> mList;
+    private List<WordChatItem> mList;
 
 
-    public ChatFragmentAdapter(Context context) {
+    public WordPointFragmentAdapter(Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
-        mList = new ArrayList<ChatItem>();
+        mList = new ArrayList<WordChatItem>();
     }
 
     @Override
@@ -54,29 +54,32 @@ public class ChatFragmentAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup viewGroup) {
 
         ViewHolder holder;
+        WordChatItem wordChatItem;
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.zhibo_chat_item, null);
+            convertView = mInflater.inflate(R.layout.word_point_item, null);
             holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.chat_name);
-            holder.text = (TextView) convertView.findViewById(R.id.chat_text);
-            holder.time = (TextView) convertView.findViewById(R.id.chat_time);
+            holder.mMsg = (TextView) convertView.findViewById(R.id.content);
+            holder.mTime = (TextView) convertView.findViewById(R.id.time);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ChatItem item = mList.get(position);
-        String text = item.getText();
+        wordChatItem = mList.get(position);
 
-        String one = "<html><body>";
-        String two = "</body></html>";
-        holder.text.setText(Html.fromHtml(one + text + two));
-        holder.name.setText(item.getName());
-        holder.time.setText(TimeUtil.getFormatChatTime(item.getDate()));
+        holder.mMsg.setText(wordChatItem.getAnswer());
+        if (!TextUtils.isEmpty(wordChatItem.getAnswerTime())) {
+            holder.mTime.setText(TimeUtil.getSimpleTime(Long.parseLong(wordChatItem.getAnswerTime())));
+        }
+
         return convertView;
     }
 
     class ViewHolder {
-        TextView name, text, time;
+        TextView mName;
+        TextView mMsg;
+        TextView mTime;
     }
+
 }

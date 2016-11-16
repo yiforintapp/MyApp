@@ -128,5 +128,10 @@
     <color name="chat_bg">#F5F5F7</color>
     <color name="chat_listview_bg">#EBEBEB</color>
 
+    <color name="word_ask_bg">#F9F7EE</color>
+    <color name="word_chat_title">#A1D7FF</color>
+    <color name="word_chat_content">#FF827F</color>
+
+
 
 </resources>

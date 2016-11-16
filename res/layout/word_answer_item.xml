@@ -2,20 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_dialog_white">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="5dp">
 
         <com.zlf.appmaster.ui.CircleImageView
             android:id="@+id/admin_iv"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:src="@drawable/ic_launcher" />
@@ -24,23 +24,12 @@
             android:id="@+id/admin_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_alignParentTop="true"
+            android:textColor="@color/text_gold"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/admin_iv"
             android:layout_marginLeft="15dp"
-            android:textSize="15sp"
+            android:textSize="12dp"
             android:text="朱川"/>
-
-        <TextView
-            android:id="@+id/admin_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/c4"
-            android:text="11.03 16:39"
-            android:textSize="13sp"
-            android:layout_marginTop="3dp"
-            android:layout_alignLeft="@+id/admin_name"
-            android:layout_below="@+id/admin_name"/>
 
     </RelativeLayout>
 
@@ -49,32 +38,71 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textSize="12dp"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="你好据法国减肥减肥减肥减肥减肥减肥减肥减肥给甲方法减肥减肥给甲方将房价附加费给解放军房管局高房价房管局"/>
+
+    <TextView
+        android:id="@+id/admin_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/c4"
+        android:text="11.03 16:39"
+        android:textSize="12dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/split_line"/>
 
 
     <RelativeLayout
         android:id="@+id/ask_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/defeat_split_line"
+        android:background="@color/word_ask_bg"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="15dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="35dp"
         android:layout_marginRight="10dp"
-        android:padding="10dp">
+        android:padding="5dp">
+        
+        <View
+            android:id="@+id/flag"
+            android:layout_width="5dp"
+            android:layout_height="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/text_gold"/>
 
         <TextView
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:textColor="@color/button_blue"
-            android:text="/@小林伢"/>
+            android:textSize="12dp"
+            android:layout_toRightOf="@+id/flag"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black"
+            android:text="小林伢"/>
+
+        <TextView
+            android:id="@+id/user_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/c4"
+            android:layout_below="@+id/user_name"
+            android:layout_marginTop="8dp"
+            android:text="法规尽快发给将减肥减肥让房间风格就仿佛反击房价房管局给甲方给军阀割据军阀割据房管局"/>
+
 
         <TextView
             android:id="@+id/user_time"
@@ -82,20 +110,11 @@
             android:layout_height="wrap_content"
             android:textColor="@color/c4"
             android:text="11.03 16:39"
-            android:textSize="13sp"
-            android:layout_marginLeft="15dp"
-            android:layout_alignBottom="@+id/user_name"
-            android:layout_toRightOf="@+id/user_name"/>
-
-        <TextView
-            android:id="@+id/user_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/c4"
-            android:layout_below="@+id/user_name"
-            android:layout_marginTop="8dp"
-            android:text="法规尽快发给将减肥减肥让房间风格就仿佛反击房价房管局给甲方给军阀割据军阀割据房管局"/>
+            android:textSize="10sp"
+            android:layout_below="@+id/user_content"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp" />
 
     </RelativeLayout>
 

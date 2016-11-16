@@ -1,7 +1,7 @@
 package com.zlf.appmaster.zhibo;
 
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
@@ -10,9 +10,8 @@ import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.UniversalRequest;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.model.WordAdviceItem;
+import com.zlf.appmaster.model.WordChatItem;
 import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.ui.dialog.AdviceDialog;
 import com.zlf.appmaster.utils.LeoLog;
 
 import org.json.JSONArray;
@@ -24,12 +23,12 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by Administrator on 2016/11/4.
+ * Created by Administrator on 2016/11/15.
  */
-public class WordNoticeFragment extends BaseFragment {
+public class WordPointFragment extends BaseFragment {
 
-    private WordNoticeFragmentAdapter mAdapter;
-    private List<WordAdviceItem> mDataList;
+    private WordPointFragmentAdapter mAdapter;
+    private List<WordChatItem> mDataList;
 
     private XListView mListView;
     private CircularProgressView mProgressBar;
@@ -42,11 +41,9 @@ public class WordNoticeFragment extends BaseFragment {
     public static final int LOAD_DATA_TYPE = 1;
     public static final int LOAD_MORE_TYPE = 2;
     public static final String BASE_URL = Constants.WORD_DOMAIN +
-            Constants.WORD_SERVLET + Constants.WORD_ADVICE_MARK;
+            Constants.WORD_SERVLET + Constants.WORD_ZHIBO_MARK;
     public static final String LOAD_DATA = BASE_URL;
     private int mNowPage = 1;
-
-    private AdviceDialog mDialog;
 
     private void initViews(){
 
@@ -61,8 +58,8 @@ public class WordNoticeFragment extends BaseFragment {
             }
         });
 
-        mDataList = new ArrayList<WordAdviceItem>();
-        mAdapter = new WordNoticeFragmentAdapter(mActivity);
+        mDataList = new ArrayList<WordChatItem>();
+        mAdapter = new WordPointFragmentAdapter(mActivity);
         mListView.setAdapter(mAdapter);
 
 
@@ -77,17 +74,6 @@ public class WordNoticeFragment extends BaseFragment {
             @Override
             public void onLoadMore() {
                 requestData(LOAD_MORE_TYPE);
-            }
-        });
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mDialog == null) {
-                    mDialog = new AdviceDialog(mActivity);
-                }
-                mDialog.setContent(mDataList.get(position).getContent());
-                mDialog.setTitle(getResources().getString(R.string.word_notice_title));
-                mDialog.show();
             }
         });
 
@@ -128,6 +114,8 @@ public class WordNoticeFragment extends BaseFragment {
             mNowPage += 1;
         }
         url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + "1";
+        LeoLog.d("CHAT", "request page : " + mNowPage);
+        LeoLog.d("CHAT", "url : " + url);
 
         UniversalRequest.requestNewUrlWithTimeOut("Tag", mActivity, url,
                 new OnRequestListener() {
@@ -140,27 +128,35 @@ public class WordNoticeFragment extends BaseFragment {
                     @Override
                     public void onDataFinish(Object object) {
 
-                        List<WordAdviceItem> items = new ArrayList<WordAdviceItem>();
+                        List<WordChatItem> items = new ArrayList<WordChatItem>();
                         JSONArray array = (JSONArray) object;
 
                         try {
                             if (array != null && array.length() > 0) {
                                 for (int i = 0; i < array.length(); i++) {
-                                    WordAdviceItem item = new WordAdviceItem();
+                                    WordChatItem item = new WordChatItem();
 
                                     JSONObject itemObject = array.getJSONObject(i);
-                                    item.setContent(itemObject.getString("content"));
-                                    String time = itemObject.getString("date");
-                                    long a = Long.valueOf(time) * 1000;
-                                    item.setDate(String.valueOf(a));
-                                    items.add(item);
+                                    String status = itemObject.getString("status");
+                                    String tName = itemObject.getString("t_name");
+                                    String cName = itemObject.getString("c_name");
+                                    if ("1".equals(status) && !TextUtils.isEmpty(tName) && TextUtils.isEmpty(cName)) {
+                                        item.setTName(itemObject.getString("t_name"));
+                                        item.setAnswer(itemObject.getString("answer"));
+                                        String answerTime = itemObject.getString("answer_time");
+                                        item.setAnswerTime(answerTime);
+                                        if (!TextUtils.isEmpty(answerTime)) {
+                                            long b = Long.valueOf(answerTime) * 1000;
+                                            item.setAnswerTime(String.valueOf(b));
+                                        }
+                                        items.add(item);
+                                    }
                                 }
-
                                 if (null != items) {
-                                    int len = items.size();
+                                    int len = array.length();
 
                                     if (type == LOAD_DATA_TYPE) {
-                                        if (len > 0) {
+                                        if (items.size() > 0) {
                                             mDataList.clear();
                                             mListView.setVisibility(View.VISIBLE);
                                             mDataList.addAll(items);
@@ -179,14 +175,17 @@ public class WordNoticeFragment extends BaseFragment {
                                         }
 
                                     } else {
-                                        if (len > 0) {
+                                        if (items.size() > 0) {
+
+                                            int addBefore = mDataList.size();
+                                            LeoLog.d("CHAT", "addBefore : " + addBefore);
 
                                             mListView.setVisibility(View.VISIBLE);
                                             mDataList.addAll(items);
                                             Collections.sort(mDataList, COMPARATOR);
                                             mAdapter.setList(mDataList);
                                             mAdapter.notifyDataSetChanged();
-                                            mListView.setSelection(mDataList.size() - len);
+                                            mListView.setSelection(mDataList.size() - items.size());
                                             if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
                                                 mListView.setPullLoadEnable(false);
                                             } else {
@@ -206,9 +205,9 @@ public class WordNoticeFragment extends BaseFragment {
                             e.printStackTrace();
                             onLoaded(ERROR_TYPE);
                         }
+
                     }
                 }, false, 0, false);
-
     }
 
 
@@ -224,19 +223,11 @@ public class WordNoticeFragment extends BaseFragment {
         initData();
     }
 
-    private static final Comparator<WordAdviceItem> COMPARATOR = new Comparator<WordAdviceItem>() {
+    private static final Comparator<WordChatItem> COMPARATOR = new Comparator<WordChatItem>() {
         @Override
-        public int compare(WordAdviceItem lhs, WordAdviceItem rhs) {
-            return rhs.getDate().compareTo(lhs.getDate());
+        public int compare(WordChatItem lhs, WordChatItem rhs) {
+
+            return rhs.getAnswerTime().compareTo(lhs.getAnswerTime());
         }
     };
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mDialog != null && mDialog.isShowing()) {
-            mDialog.dismiss();
-            mDialog = null;
-        }
-    }
 }

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/top_layout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:padding="10dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/word_all_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/fragment_word_bt_tv_style"
+            android:text="@string/word_fragment_tab_all" />
+
+        <View
+            android:id="@+id/word_all_view"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/indicator_select_color" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="@color/transparent" />
+
+    <LinearLayout
+        android:id="@+id/word_oil_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/fragment_word_bt_tv_style"
+            android:text="@string/word_fragment_tab_oil" />
+
+        <View
+            android:id="@+id/word_oil_view"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:visibility="invisible"
+            android:background="@color/indicator_select_color" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="@color/transparent" />
+
+    <LinearLayout
+        android:id="@+id/word_silver_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/fragment_word_bt_tv_style"
+            android:text="@string/word_fragment_tab_silver" />
+
+        <View
+            android:id="@+id/word_silver_view"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:visibility="invisible"
+            android:background="@color/indicator_select_color" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="@color/transparent" />
+
+    <LinearLayout
+        android:id="@+id/word_copper_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/fragment_word_bt_tv_style"
+            android:text="@string/word_fragment_tab_copper" />
+
+        <View
+            android:id="@+id/word_copper_view"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:visibility="invisible"
+            android:background="@color/indicator_select_color" />
+
+    </LinearLayout>
+
+</LinearLayout>

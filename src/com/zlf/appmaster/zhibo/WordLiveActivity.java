@@ -21,13 +21,14 @@ import java.util.List;
 public class WordLiveActivity extends BaseFragmentActivity {
 
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[5];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[6];
     private PagerSlidingTabStrip mPagerSlidingTab;
     private WordZhiBoFragment mLiveFragment;
     private WordChatFragment mChatFragment;
     private WordCreamFragment mCreamFragment;
     private WordAdviceFragment mAdviceFragment;
     private WordNoticeFragment mNoticeFragment;
+    private WordPointFragment mPointFragment;
     private CommonToolbar mToolBar;
 
 
@@ -69,28 +70,34 @@ public class WordLiveActivity extends BaseFragmentActivity {
         mHomeHolders[0] = holder;
 
         holder = new HomeTabHolder();
+        holder.title = this.getResources().getString(R.string.word_point_title);
+        mPointFragment = new WordPointFragment();
+        holder.fragment = mPointFragment;
+        mHomeHolders[1] = holder;
+
+        holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_zhibo_title);
         mLiveFragment = new WordZhiBoFragment();
         holder.fragment = mLiveFragment;
-        mHomeHolders[1] = holder;
+        mHomeHolders[2] = holder;
 
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_chat_title);
         mChatFragment = new WordChatFragment();
         holder.fragment = mChatFragment;
-        mHomeHolders[2] = holder;
+        mHomeHolders[3] = holder;
 
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_cream_title);
         mCreamFragment = new WordCreamFragment();
         holder.fragment = mCreamFragment;
-        mHomeHolders[3] = holder;
+        mHomeHolders[4] = holder;
 
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_advice_title);
         mAdviceFragment = new WordAdviceFragment();
         holder.fragment = mAdviceFragment;
-        mHomeHolders[4] = holder;
+        mHomeHolders[5] = holder;
 
 
 

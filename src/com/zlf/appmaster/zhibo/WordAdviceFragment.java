@@ -144,58 +144,63 @@ public class WordAdviceFragment extends BaseFragment {
                         JSONArray array = (JSONArray) object;
 
                         try {
-                            for (int i = 0; i < array.length(); i++) {
-                                WordAdviceItem item = new WordAdviceItem();
+                            if (array != null && array.length() > 0) {
+                                for (int i = 0; i < array.length(); i++) {
+                                    WordAdviceItem item = new WordAdviceItem();
 
-                                JSONObject itemObject = array.getJSONObject(i);
-                                item.setContent(itemObject.getString("content"));
-                                String time = itemObject.getString("date");
-                                long a = Long.valueOf(time) * 1000;
-                                item.setDate(String.valueOf(a));
-                                items.add(item);
-                            }
-
-
-                            if (null != items) {
-                                int len = items.size();
-
-                                if (type == LOAD_DATA_TYPE) {
-                                    if (len > 0) {
-                                        mDataList.clear();
-                                        mListView.setVisibility(View.VISIBLE);
-                                        mDataList.addAll(items);
-                                        Collections.sort(mDataList, COMPARATOR);
-                                        mAdapter.setList(mDataList);
-                                        mAdapter.notifyDataSetChanged();
-                                        mListView.setSelection(0);
-                                        onLoaded(NORMAL_TYPE);
-                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
-                                            mListView.setPullLoadEnable(false);
-                                        } else {
-                                            mListView.setPullLoadEnable(true);
-                                        }
-                                    } else {
-                                        onLoaded(ERROR_TYPE);
-                                    }
-
-                                } else {
-                                    if (len > 0) {
-
-                                        mListView.setVisibility(View.VISIBLE);
-                                        mDataList.addAll(items);
-                                        Collections.sort(mDataList, COMPARATOR);
-                                        mAdapter.setList(mDataList);
-                                        mAdapter.notifyDataSetChanged();
-                                        mListView.setSelection(mDataList.size() - len);
-                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
-                                            mListView.setPullLoadEnable(false);
-                                        } else {
-                                            mListView.setPullLoadEnable(true);
-                                        }
-                                    } else {
-                                        mListView.setPullLoadEnable(false);
-                                    }
+                                    JSONObject itemObject = array.getJSONObject(i);
+                                    item.setContent(itemObject.getString("content"));
+                                    String time = itemObject.getString("date");
+                                    long a = Long.valueOf(time) * 1000;
+                                    item.setDate(String.valueOf(a));
+                                    items.add(item);
                                 }
+
+
+                                if (null != items) {
+                                    int len = items.size();
+
+                                    if (type == LOAD_DATA_TYPE) {
+                                        if (len > 0) {
+                                            mDataList.clear();
+                                            mListView.setVisibility(View.VISIBLE);
+                                            mDataList.addAll(items);
+                                            Collections.sort(mDataList, COMPARATOR);
+                                            mAdapter.setList(mDataList);
+                                            mAdapter.notifyDataSetChanged();
+                                            mListView.setSelection(0);
+                                            onLoaded(NORMAL_TYPE);
+                                            if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+                                                mListView.setPullLoadEnable(false);
+                                            } else {
+                                                mListView.setPullLoadEnable(true);
+                                            }
+                                        } else {
+                                            onLoaded(ERROR_TYPE);
+                                        }
+
+                                    } else {
+                                        if (len > 0) {
+
+                                            mListView.setVisibility(View.VISIBLE);
+                                            mDataList.addAll(items);
+                                            Collections.sort(mDataList, COMPARATOR);
+                                            mAdapter.setList(mDataList);
+                                            mAdapter.notifyDataSetChanged();
+                                            mListView.setSelection(mDataList.size() - len);
+                                            if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+                                                mListView.setPullLoadEnable(false);
+                                            } else {
+                                                mListView.setPullLoadEnable(true);
+                                            }
+                                        } else {
+                                            mListView.setPullLoadEnable(false);
+                                        }
+                                    }
+                                    onLoaded(NORMAL_TYPE);
+                                }
+                            } else {
+                                mListView.setPullLoadEnable(false);
                                 onLoaded(NORMAL_TYPE);
                             }
                         } catch (Exception e) {

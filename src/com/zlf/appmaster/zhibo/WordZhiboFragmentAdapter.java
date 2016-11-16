@@ -78,10 +78,12 @@ public class WordZhiboFragmentAdapter extends BaseAdapter {
         holder.mMsg.setText(wordChatItem.getMsg());
         holder.mAnswer.setText(wordChatItem.getAnswer());
         if (!TextUtils.isEmpty(wordChatItem.getAskTime())) {
-            holder.mAskTime.setText(TimeUtil.getSimpleTime(Long.parseLong(wordChatItem.getAskTime())));
+            holder.mAskTime.setText(mContext.getResources().getString(
+                    R.string.word_ask_time, TimeUtil.getSimpleTime(Long.parseLong(wordChatItem.getAskTime()))));
         }
         if (!TextUtils.isEmpty(wordChatItem.getAnswerTime())) {
-            holder.mAnswerTime.setText(TimeUtil.getSimpleTime(Long.parseLong(wordChatItem.getAnswerTime())));
+            holder.mAnswerTime.setText(mContext.getResources().getString(
+                    R.string.word_answer_time, TimeUtil.getSimpleTime(Long.parseLong(wordChatItem.getAnswerTime()))));
         }
 
         if (TextUtils.isEmpty(holder.mCName.getText())) {

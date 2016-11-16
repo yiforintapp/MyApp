@@ -368,4 +368,12 @@
     <string name="word_cream_title">直播精华</string>
     <string name="word_advice_title">操作建议</string>
     <string name="word_notice_title">公告</string>
+    <string name="word_point_title">丰油观点</string>
+    <string name="word_answer_time">回复时间：%1$s</string>
+    <string name="word_ask_time">提问时间：%1$s</string>
+
+    <string name="word_fragment_tab_all">全部</string>
+    <string name="word_fragment_tab_oil">原油</string>
+    <string name="word_fragment_tab_silver">白银</string>
+    <string name="word_fragment_tab_copper">铜</string>
 </resources>

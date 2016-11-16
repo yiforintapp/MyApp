@@ -722,4 +722,13 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="fragment_word_bt_tv_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:textColor">@color/indicator_select_color</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

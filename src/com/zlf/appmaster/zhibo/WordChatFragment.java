@@ -123,7 +123,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     protected int layoutResourceId() {
-        return R.layout.zhibo_chat_fragment;
+        return R.layout.word_chat_fragment;
     }
 
     @Override
@@ -226,77 +226,82 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
                         JSONArray array = (JSONArray) object;
 
                         try {
-                            for (int i = 0; i < array.length(); i++) {
-                                ChatItem item = new ChatItem();
+                            if (array != null && array.length() > 0) {
+                                for (int i = 0; i < array.length(); i++) {
+                                    ChatItem item = new ChatItem();
 
-                                JSONObject itemObject = array.getJSONObject(i);
-                                item.setDate(itemObject.getString("date"));
-                                String content = itemObject.getString("content");
-                                item.setText(content);
-                                item.setName(itemObject.getString("name"));
+                                    JSONObject itemObject = array.getJSONObject(i);
+                                    item.setDate(itemObject.getString("date"));
+                                    String content = itemObject.getString("content");
+                                    item.setText(content);
+                                    item.setName(itemObject.getString("name"));
 
-                                LeoLog.d("testTime","time is : " + itemObject.getString("seconds"));
-                                String time = itemObject.getString("seconds");
-                                long a;
-                                if(!Utilities.isEmpty(time)){
-                                    a = Long.valueOf(time) * 1000;
-                                }else{
-                                    time = "1478502755";
-                                    a = Long.valueOf(time) * 1000;
-                                }
-                                item.setDate(a+"");
-
-
-                                if (!Utilities.isEmpty(content)) {
-                                    items.add(item);
-                                }
-                            }
-
-
-                            if (null != items) {
-                                int len = array.length();
-
-                                if (type == LOAD_DATA_TYPE) {
-                                    if (items.size() > 0) {
-                                        mDataList.clear();
-                                        mListView.setVisibility(View.VISIBLE);
-                                        mDataList.addAll(items);
-                                        Collections.sort(mDataList, COMPARATOR);
-                                        chatAdapter.setList(mDataList);
-                                        chatAdapter.notifyDataSetChanged();
-                                        mListView.setSelection(mDataList.size() - 1);
-                                        onLoaded(NORMAL_TYPE);
-                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
-                                            mListView.setPullRefreshEnable(false);
-                                        } else {
-                                            mListView.setPullRefreshEnable(true);
-                                        }
+                                    LeoLog.d("testTime", "time is : " + itemObject.getString("seconds"));
+                                    String time = itemObject.getString("seconds");
+                                    long a;
+                                    if (!Utilities.isEmpty(time)) {
+                                        a = Long.valueOf(time) * 1000;
                                     } else {
-                                        onLoaded(ERROR_TYPE);
+                                        time = "1478502755";
+                                        a = Long.valueOf(time) * 1000;
                                     }
+                                    item.setDate(a + "");
 
-                                } else {
-                                    if (items.size() > 0) {
 
-                                        int addBefore = mDataList.size();
-                                        LeoLog.d("CHAT", "addBefore : " + addBefore);
+                                    if (!Utilities.isEmpty(content)) {
+                                        items.add(item);
+                                    }
+                                }
 
-                                        mListView.setVisibility(View.VISIBLE);
-                                        mDataList.addAll(items);
-                                        Collections.sort(mDataList, COMPARATOR);
-                                        chatAdapter.setList(mDataList);
-                                        chatAdapter.notifyDataSetChanged();
-                                        mListView.setSelection(items.size());
-                                        if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
-                                            mListView.setPullRefreshEnable(false);
+
+                                if (null != items) {
+                                    int len = array.length();
+
+                                    if (type == LOAD_DATA_TYPE) {
+                                        if (items.size() > 0) {
+                                            mDataList.clear();
+                                            mListView.setVisibility(View.VISIBLE);
+                                            mDataList.addAll(items);
+                                            Collections.sort(mDataList, COMPARATOR);
+                                            chatAdapter.setList(mDataList);
+                                            chatAdapter.notifyDataSetChanged();
+                                            mListView.setSelection(mDataList.size() - 1);
+                                            onLoaded(NORMAL_TYPE);
+                                            if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+                                                mListView.setPullRefreshEnable(false);
+                                            } else {
+                                                mListView.setPullRefreshEnable(true);
+                                            }
                                         } else {
-                                            mListView.setPullRefreshEnable(true);
+                                            onLoaded(ERROR_TYPE);
                                         }
 
                                     } else {
-                                        mListView.setPullRefreshEnable(false);
+                                        if (items.size() > 0) {
+
+                                            int addBefore = mDataList.size();
+                                            LeoLog.d("CHAT", "addBefore : " + addBefore);
+
+                                            mListView.setVisibility(View.VISIBLE);
+                                            mDataList.addAll(items);
+                                            Collections.sort(mDataList, COMPARATOR);
+                                            chatAdapter.setList(mDataList);
+                                            chatAdapter.notifyDataSetChanged();
+                                            mListView.setSelection(items.size());
+                                            if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
+                                                mListView.setPullRefreshEnable(false);
+                                            } else {
+                                                mListView.setPullRefreshEnable(true);
+                                            }
+
+                                        } else {
+                                            mListView.setPullRefreshEnable(false);
+                                        }
                                     }
+                                    onLoaded(NORMAL_TYPE);
                                 }
+                            } else {
+                                mListView.setPullRefreshEnable(false);
                                 onLoaded(NORMAL_TYPE);
                             }
                         } catch (Exception e) {

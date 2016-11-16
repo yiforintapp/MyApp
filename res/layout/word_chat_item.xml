@@ -2,49 +2,55 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_dialog_white"
-    android:padding="10dp">
+    android:background="@drawable/selector_dialog_white">
 
-    <RelativeLayout
-        android:id="@+id/chat_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/chat_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:ellipsize="end"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:singleLine="true"
+        android:text="name"
+        android:textColor="@color/word_chat_title"
+        android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/chat_name"
-            style="@style/zhibo_chat_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:ellipsize="end"
-            android:maxWidth="120dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/chat_time"
-            style="@style/zhibo_chat_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/chat_name"
-            android:gravity="left"
-            android:textColor="@color/gray"
-            android:textSize="10dp" />
-
-    </RelativeLayout>
-
+    <TextView
+        android:id="@+id/chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/chat_name"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:gravity="left"
+        android:text="time"
+        android:textColor="@color/gray"
+        android:textSize="12dp" />
 
     <TextView
         android:id="@+id/chat_text"
-        style="@style/zhibo_chat_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chat_layout"
+        android:layout_below="@+id/chat_name"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="25dp"
         android:gravity="left"
+        android:text="chat_text"
+        android:textSize="12dp"
         android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/split_line"
+        android:layout_below="@+id/chat_text"/>
 
 
 </RelativeLayout>
