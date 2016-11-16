@@ -122,7 +122,7 @@
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/ed_fb"
-            android:text="@string/zhibo_send"
+            android:text="@string/word_fragment_submit_sb"
             android:textColor="@drawable/deal_text_selector" />
     </RelativeLayout>
 

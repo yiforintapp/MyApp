@@ -376,4 +376,7 @@
     <string name="word_fragment_tab_oil">原油</string>
     <string name="word_fragment_tab_silver">白银</string>
     <string name="word_fragment_tab_copper">铜</string>
+
+    <string name="word_fragment_submit_text">已提交，可在“我的提问”中查看</string>
+    <string name="word_fragment_submit_sb">提问</string>
 </resources>

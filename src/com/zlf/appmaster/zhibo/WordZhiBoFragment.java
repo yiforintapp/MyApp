@@ -1,9 +1,11 @@
 package com.zlf.appmaster.zhibo;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,10 +44,13 @@ import java.util.Map;
 public class WordZhiBoFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String SEVLET_TYPE = "proname";
-    public static final String SEND = "sendzhibomsg";
-    public static final String PARAMS_TEXT = "sendtext";
-    public static final String PARAMS_NAME = "sendname";
+    public static final String SEND = "text_zhibo_sendask";
+    public static final String PARAMS_TEXT = "text";
+    public static final String PARAMS_NAME = "username";
     public static final String PARAMS_TYPE = "type";
+    public static final String PARAMS_PHONE = "phone";
+    public static final String PARAMS_C_TYPE = "c_type";
+
 
 
     private WordZhiboFragmentAdapter mAdapter;
@@ -78,7 +83,6 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
     private int mIndex;
     private TextView mSendButton;
     private EditText mEdText;
-    private String name, text, type;
     private DataHandler mHandler;
 
 
@@ -109,7 +113,13 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
 
     private void makeDeal(int code) {
         if (code == 1) {
-            showToast(mActivity.getString(R.string.can_not_send));
+            mEdText.setText("");
+            InputMethodManager imm =  (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if(imm != null) {
+                imm.hideSoftInputFromWindow(mActivity.getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
+            showToast(mActivity.getString(R.string.word_fragment_submit_text));
         } else {
             showToast(mActivity.getString(R.string.can_not_send));
         }
@@ -403,18 +413,23 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
         Map<String, String> params = new HashMap<String, String>();
         params.put(SEVLET_TYPE, SEND);
 
-        text = mEdText.getText().toString().trim();
-        name = LeoSettings.getString(PrefConst.USER_NAME, "");
-        type = "1";
+        String text = mEdText.getText().toString().trim();
+        String name = LeoSettings.getString(PrefConst.USER_NAME, "");
+        String phone = LeoSettings.getString(PrefConst.USER_PHONE, "");
+        String type = "1";
+        String c_type = "1";
 
         params.put(PARAMS_TEXT, text);
         params.put(PARAMS_NAME, name);
         params.put(PARAMS_TYPE, type);
+        params.put(PARAMS_PHONE, phone);
+        params.put(PARAMS_C_TYPE, c_type);
 
         LeoLog.d("CHAT", "url is : " + url);
-        LeoLog.d("CHAT", "text is : " + mEdText.getText().toString().trim());
-        LeoLog.d("CHAT", "name is : " + LeoSettings.getString(PrefConst.USER_NAME, ""));
-        LeoLog.d("CHAT", "type is : " + type);
+        LeoLog.d("CHAT", "text is : " + text);
+        LeoLog.d("CHAT", "name is : " + name);
+        LeoLog.d("CHAT", "phone is : " + phone);
+
         int requestCode = PostStringRequestUtil.request(mActivity, url, params);
         Message message = new Message();
         message.obj = requestCode;
