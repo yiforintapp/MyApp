@@ -47,8 +47,14 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                 }
                 break;
             case R.id.word_zhibo_layout:
-                intent = new Intent(mActivity, WordLiveActivity.class);
-                startActivity(intent);
+                if (AppUtil.isLogin()) {
+                    intent = new Intent(mActivity, WordLiveActivity.class);
+                    startActivity(intent);
+                } else {
+                    intent = new Intent(mActivity, LoginActivity.class);
+                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
+                    startActivity(intent);
+                }
                 break;
         }
     }

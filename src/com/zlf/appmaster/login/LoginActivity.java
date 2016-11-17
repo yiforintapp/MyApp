@@ -27,6 +27,7 @@ import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.appmaster.zhibo.VideoLiveActivity;
+import com.zlf.appmaster.zhibo.WordLiveActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -38,7 +39,8 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     public static final String ERROR = "ERROR"; // 出错
     public static final String WRONG = "WRONG"; // 手机号或密码错误
 
-    public static final String FROM_LIVE_BTN = "from_live_btn"; // 从直播间按钮跳转登录
+    public static final String FROM_LIVE_BTN = "from_live_btn"; // 从视频直播间按钮跳转登录
+    public static final String FROM_WORD_LIVE_BTN = "from_word_live_btn"; // 从文字直播间按钮跳转登录
 
     private EditText mUserEt;
     private ImageView mUserClean;
@@ -55,6 +57,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     private boolean mProgressBarShow; // 加载正在进行
 
     private boolean mFormLiveBtn;
+    private boolean mFromWordLiveBtn;
 
 
     //用于处理消息的Handler
@@ -90,6 +93,9 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                 LeoSettings.setLong(PrefConst.LAST_LOGIN_TIME, System.currentTimeMillis());
                 if (activity.mFormLiveBtn) {
                     activity.startActivity(new Intent(activity, VideoLiveActivity.class));
+                }
+                if (activity.mFromWordLiveBtn) {
+                    activity.startActivity(new Intent(activity, WordLiveActivity.class));
                 }
                 activity.finish();
             }
@@ -145,6 +151,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     private void handIntent() {
         Intent intent = getIntent();
         mFormLiveBtn = intent.getBooleanExtra(FROM_LIVE_BTN, false);
+        mFromWordLiveBtn = intent.getBooleanExtra(FROM_WORD_LIVE_BTN, false);
     }
 
     @Override

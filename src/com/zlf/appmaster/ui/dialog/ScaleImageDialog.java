@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.zlf.appmaster.R;
-import com.zlf.appmaster.ui.ClipZoomImageView;
+import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.imageloader.DisplayImageOptions;
 import com.zlf.imageloader.ImageLoader;
 import com.zlf.imageloader.core.FadeInBitmapDisplayer;
 import com.zlf.imageloader.core.ImageScaleType;
+
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Created by Administrator on 2016/11/16.
@@ -30,7 +32,8 @@ public class ScaleImageDialog extends LEOBaseDialog {
         View dlgView = LayoutInflater.from(context.getApplicationContext()).inflate(
                 R.layout.dialog_image_scale, null);
         setContentView(dlgView);
-        mImage = (ClipZoomImageView) findViewById(R.id.image);
+        mImage = (PhotoView) findViewById(R.id.image);
+        mImage.setImageDrawable(context.getResources().getDrawable(R.drawable.new_page_one));
         options = new BitmapFactory.Options();
         // 主题使用565配置
         options.inPreferredConfig = Bitmap.Config.RGB_565;
@@ -54,6 +57,12 @@ public class ScaleImageDialog extends LEOBaseDialog {
     public void setImgUrl(String url) {
         this.mImgUrl = url;
         ImageLoader.getInstance().displayImage(mImgUrl, mImage, commonOption);
+        mImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LeoLog.e("dhdfhdfhdf", "onclick");
+            }
+        });
     }
 
 }
