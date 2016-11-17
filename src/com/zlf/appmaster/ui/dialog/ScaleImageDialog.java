@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.zlf.appmaster.R;
-import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.imageloader.DisplayImageOptions;
 import com.zlf.imageloader.ImageLoader;
 import com.zlf.imageloader.core.FadeInBitmapDisplayer;
@@ -60,7 +59,7 @@ public class ScaleImageDialog extends LEOBaseDialog {
         mImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LeoLog.e("dhdfhdfhdf", "onclick");
+
             }
         });
     }
