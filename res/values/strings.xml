@@ -385,4 +385,6 @@
     <string name="text_zhibo_mysak_type_ask_status">状态：</string>
     <string name="text_zhibo_mysak_type_ask_status_rep">已回复</string>
     <string name="text_zhibo_mysak_type_ask_status_stay">待回复</string>
+
+    <string name="network_no_data_toast">暂无数据</string>
 </resources>

@@ -4,9 +4,11 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.android.volley.NetworkError;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.loopj.android.http.AsyncHttpClient;
@@ -258,20 +260,22 @@ public class UniversalRequest {
      */
     public static void handleErrorResponse(Context mContext, VolleyError error, OnRequestListener requestFinished, boolean isBackground) {
         error.printStackTrace();
+
+        if (!isBackground) {
+            if (error instanceof TimeoutError) {
+                QToast.show(mContext, R.string.network_timeout, Toast.LENGTH_SHORT);
+            } else if (error instanceof ServerError || error instanceof NetworkError) {
+                QToast.show(mContext, R.string.network_server_busy, Toast.LENGTH_SHORT);
+            } else {
+                QToast.show(mContext, R.string.network_no_data_toast, Toast.LENGTH_SHORT);
+            }
+        }
+
         if (requestFinished != null) {//网络错误
             requestFinished
                     .onError(UrlConstants.CODE_CONNECT_ERROR, error.toString());
         }
 
-        if (isBackground) {
-            return;
-        }
-
-        if (error instanceof TimeoutError) {
-            QToast.show(mContext, R.string.network_timeout, Toast.LENGTH_SHORT);
-        } else {
-            QToast.show(mContext, R.string.network_server_busy, Toast.LENGTH_SHORT);
-        }
     }
 
     /**

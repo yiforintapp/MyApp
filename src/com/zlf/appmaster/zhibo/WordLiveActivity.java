@@ -22,7 +22,7 @@ import java.util.List;
 public class WordLiveActivity extends BaseFragmentActivity {
 
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[6];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[5];
     private PagerSlidingTabStrip mPagerSlidingTab;
     private WordZhiBoFragment mLiveFragment;
     private WordChatFragment mChatFragment;
@@ -89,10 +89,16 @@ public class WordLiveActivity extends BaseFragmentActivity {
         holder.fragment = mChatFragment;
         mHomeHolders[2] = holder;
 
+//        holder = new HomeTabHolder();
+//        holder.title = this.getResources().getString(R.string.word_cream_title);
+//        mCreamFragment = new WordCreamFragment();
+//        holder.fragment = mCreamFragment;
+//        mHomeHolders[3] = holder;
+
         holder = new HomeTabHolder();
-        holder.title = this.getResources().getString(R.string.word_cream_title);
-        mCreamFragment = new WordCreamFragment();
-        holder.fragment = mCreamFragment;
+        holder.title = this.getResources().getString(R.string.text_zhibo_mysak);
+        mMyAskFragment = new WordMyAskFragment();
+        holder.fragment = mMyAskFragment;
         mHomeHolders[3] = holder;
 
         holder = new HomeTabHolder();
@@ -100,13 +106,6 @@ public class WordLiveActivity extends BaseFragmentActivity {
         mAdviceFragment = new WordAdviceFragment();
         holder.fragment = mAdviceFragment;
         mHomeHolders[4] = holder;
-
-        holder = new HomeTabHolder();
-        holder.title = this.getResources().getString(R.string.text_zhibo_mysak);
-        mMyAskFragment = new WordMyAskFragment();
-        holder.fragment = mMyAskFragment;
-        mHomeHolders[5] = holder;
-
 
         FragmentManager fm = getSupportFragmentManager();
         try {

@@ -1,7 +1,6 @@
 package com.zlf.appmaster.zhibo;
 
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
@@ -22,8 +21,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
