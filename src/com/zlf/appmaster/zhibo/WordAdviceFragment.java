@@ -88,6 +88,7 @@ public class WordAdviceFragment extends BaseFragment {
                 }
                 mDialog.setContent(mDataList.get(position).getContent());
                 mDialog.setTitle(getResources().getString(R.string.word_advice_title));
+                mDialog.setTime(mDataList.get(position).getDate());
                 mDialog.show();
             }
         });
