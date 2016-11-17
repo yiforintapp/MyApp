@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_dialog_white">
+
+    <RelativeLayout
+        android:id="@+id/type_cate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/string_cate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/text_zhibo_mysak_type"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/string_type_cate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/string_cate"
+            android:text="@string/text_zhibo_mysak_type"
+            android:textColor="@color/main_red" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/type_status"
+        android:layout_below="@id/type_cate"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/type_cate"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/string_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textSize="12dp"
+            android:text="@string/text_zhibo_mysak_type_ask_status"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/string_status_cate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/string_status"
+            android:text="@string/text_zhibo_mysak_type_ask_status"
+            android:textColor="@color/main_red" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/type_status">
+
+
+        <TextView
+            android:id="@+id/chat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="name"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/chat_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/chat_name"
+            android:layout_marginRight="10dp"
+            android:gravity="left"
+            android:text="time"
+            android:textColor="@color/gray"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/chat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chat_name"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:gravity="left"
+            android:text="chat_text"
+            android:textColor="@color/c4"
+            android:textSize="12dp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@+id/chat_text"
+            android:background="@color/xlistview_header_bg" />
+
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1px"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:background="@color/split_line"-->
+        <!--android:layout_below="@+id/chat_text"/>-->
+    </RelativeLayout>
+
+</RelativeLayout>
+

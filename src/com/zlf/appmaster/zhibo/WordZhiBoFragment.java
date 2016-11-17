@@ -51,7 +51,10 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
     public static final String PARAMS_TYPE = "type";
     public static final String PARAMS_PHONE = "phone";
     public static final String PARAMS_C_TYPE = "c_type";
-
+    public static final String C_TYPE_ALL = "0";
+    public static final String C_TYPE_O = "1";
+    public static final String C_TYPE_S = "2";
+    public static final String C_TYPE_C = "3";
 
 
     private WordZhiboFragmentAdapter mAdapter;
@@ -85,6 +88,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
     private TextView mSendButton;
     private EditText mEdText;
     private DataHandler mHandler;
+    private String mC_Type = "0";
 
 
     //用于处理消息的Handler
@@ -353,21 +357,25 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
                 mAllView.setVisibility(View.VISIBLE);
                 changeUnSelectBg(mIndex);
                 mIndex = 0;
+                mC_Type = C_TYPE_ALL;
                 break;
             case 1:
                 mOilView.setVisibility(View.VISIBLE);
                 changeUnSelectBg(mIndex);
                 mIndex = 1;
+                mC_Type = C_TYPE_O;
                 break;
             case 2:
                 mSilverView.setVisibility(View.VISIBLE);
                 changeUnSelectBg(mIndex);
                 mIndex = 2;
+                mC_Type = C_TYPE_S;
                 break;
             case 3:
                 mCopperView.setVisibility(View.VISIBLE);
                 changeUnSelectBg(mIndex);
                 mIndex = 3;
+                mC_Type = C_TYPE_C;
                 break;
         }
     }
@@ -417,7 +425,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
         String name = LeoSettings.getString(PrefConst.USER_NAME, "");
         String phone = LeoSettings.getString(PrefConst.USER_PHONE, "");
         String type = "1";
-        String c_type = "1";
+        String c_type = mC_Type;
 
         params.put(PARAMS_TEXT, text);
         params.put(PARAMS_NAME, name);

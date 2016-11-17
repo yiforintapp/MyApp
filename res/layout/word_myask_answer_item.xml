@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_dialog_white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/type_cate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/string_cate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/text_zhibo_mysak_type"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/string_type_cate"
+            android:layout_width="wrap_content"
+            android:textSize="12dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/string_cate"
+            android:text="@string/text_zhibo_mysak_type"
+            android:textColor="@color/main_red" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/type_status"
+        android:layout_below="@id/type_cate"
+        android:layout_width="wrap_content"
+        android:layout_alignLeft="@id/type_cate"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/string_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/text_zhibo_mysak_type_ask_status"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/string_status_cate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/string_status"
+            android:text="@string/text_zhibo_mysak_type_ask_status"
+            android:textColor="@color/main_red" />
+
+    </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        >
+
+        <com.zlf.appmaster.ui.CircleImageView
+            android:id="@+id/admin_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/admin_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/admin_iv"
+            android:text="朱川"
+            android:textColor="@color/text_gold"
+            android:textSize="12dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/admin_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:text="你好据法国减肥减肥减肥减肥减肥减肥减肥减肥给甲方法减肥减肥给甲方将房价附加费给解放军房管局高房价房管局"
+        android:textColor="@color/black"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/admin_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:text="11.03 16:39"
+        android:textColor="@color/c4"
+        android:textSize="12dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/split_line" />
+
+
+    <RelativeLayout
+        android:id="@+id/ask_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/word_ask_bg"
+        android:padding="5dp">
+
+        <View
+            android:id="@+id/flag"
+            android:layout_width="5dp"
+            android:layout_height="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/text_gold" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/flag"
+            android:text="小林伢"
+            android:textColor="@color/black"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/user_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_name"
+            android:layout_marginTop="8dp"
+            android:text="法规尽快发给将减肥减肥让房间风格就仿佛反击房价房管局给甲方给军阀割据军阀割据房管局"
+            android:textColor="@color/c4"
+            android:textSize="12dp" />
+
+
+        <TextView
+            android:id="@+id/user_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/user_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="15dp"
+            android:text="11.03 16:39"
+            android:textColor="@color/c4"
+            android:textSize="10sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/xlistview_header_bg" />
+
+
+</LinearLayout>

@@ -363,7 +363,7 @@
 
     <string name="pls_enter_get_new">获取最新</string>
 
-    <string name="word_zhibo_title">直播问答</string>
+    <string name="word_zhibo_title">专家问答</string>
     <string name="word_chat_title">丰友动态</string>
     <string name="word_cream_title">直播精华</string>
     <string name="word_advice_title">操作建议</string>
@@ -379,4 +379,10 @@
 
     <string name="word_fragment_submit_text">已提交，可在“我的提问”中查看</string>
     <string name="word_fragment_submit_sb">提问</string>
+    <string name="text_zhibo_mysak">我的提问</string>
+    <string name="text_zhibo_mysak_type">问题类别：</string>
+    <string name="text_zhibo_mysak_type_all">全部</string>
+    <string name="text_zhibo_mysak_type_ask_status">状态：</string>
+    <string name="text_zhibo_mysak_type_ask_status_rep">已回复</string>
+    <string name="text_zhibo_mysak_type_ask_status_stay">待回复</string>
 </resources>

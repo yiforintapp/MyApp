@@ -74,6 +74,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
     private EditText mEdText;
 
     private String name, text, type;
+    private long mClickTime;
 
 
     //用于处理消息的Handler
@@ -184,6 +185,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initData() {
+        mClickTime = System.currentTimeMillis();
         mProgressBar.setVisibility(View.VISIBLE);
         requestData(LOAD_DATA_TYPE);
     }
@@ -327,7 +329,11 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_submit:
-                readySendMessage();
+                long now = System.currentTimeMillis();
+                if(now - mClickTime > 1000){
+                    readySendMessage();
+                    mClickTime = now;
+                }
                 break;
         }
     }
