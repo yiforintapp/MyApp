@@ -21,6 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -171,7 +173,7 @@ public class WordMyAskFragment extends BaseFragment {
                                             mDataList.clear();
                                             mListView.setVisibility(View.VISIBLE);
                                             mDataList.addAll(items);
-//                                            Collections.sort(mDataList, COMPARATOR);
+                                            Collections.sort(mDataList, COMPARATOR);
                                             mAdapter.setList(mDataList);
                                             mAdapter.notifyDataSetChanged();
                                             mListView.setSelection(0);
@@ -188,7 +190,7 @@ public class WordMyAskFragment extends BaseFragment {
                                         if (len > 0) {
                                             mListView.setVisibility(View.VISIBLE);
                                             mDataList.addAll(items);
-//                                            Collections.sort(mDataList, COMPARATOR);
+                                            Collections.sort(mDataList, COMPARATOR);
                                             mAdapter.setList(mDataList);
                                             mAdapter.notifyDataSetChanged();
                                             mListView.setSelection(mDataList.size() - len);
@@ -229,12 +231,12 @@ public class WordMyAskFragment extends BaseFragment {
         initData();
     }
 
-//    private static final Comparator<WordMyAskItem> COMPARATOR = new Comparator<WordMyAskItem>() {
-//        @Override
-//        public int compare(WordMyAskItem lhs, WordMyAskItem rhs) {
-//            return rhs.getDate().compareTo(lhs.getDate());
-//        }
-//    };
+    private static final Comparator<WordMyAskItem> COMPARATOR = new Comparator<WordMyAskItem>() {
+        @Override
+        public int compare(WordMyAskItem lhs, WordMyAskItem rhs) {
+            return rhs.getAskTime().compareTo(lhs.getAskTime());
+        }
+    };
 
     @Override
     public void onDestroy() {
