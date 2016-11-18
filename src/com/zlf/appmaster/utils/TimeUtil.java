@@ -25,7 +25,7 @@ public class TimeUtil {
 		return format.format(new Date(time));
 	}
 
-    public static String getTimeWithoutSec(long time) {
+	public static String getTimeWithoutSec(long time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return format.format(new Date(time));
     }
@@ -319,6 +319,18 @@ public class TimeUtil {
 			delta = -delta;
 		}
 		return delta < INTERVAL_IN_MILLISECONDS;
+	}
+
+	/** 格式化时间 */
+	public static String getWordChatFormatTime(long l) {
+		String time;
+		if (isToday(l)) {
+			time = "今日 " + getHourAndMin(l);
+		} else {
+			time = getSimpleTime(l);
+		}
+
+		return time;
 	}
 
 	/** 聊天室记录发言时间格式化 */

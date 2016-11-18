@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_trade_pre" />
+            android:src="@drawable/word_point_time" />
 
         <TextView
             android:id="@+id/time"
