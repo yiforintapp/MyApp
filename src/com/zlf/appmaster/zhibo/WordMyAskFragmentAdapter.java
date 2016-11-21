@@ -163,8 +163,10 @@ public class WordMyAskFragmentAdapter extends BaseAdapter {
                 string = mContext.getString(R.string.word_fragment_tab_oil);
             }else if(string.equals(C_TYPE_S)){
                 string = mContext.getString(R.string.word_fragment_tab_silver);
-            }else{
+            }else if(string.equals(C_TYPE_C)){
                 string = mContext.getString(R.string.word_fragment_tab_copper);
+            }else{
+                string = mContext.getString(R.string.text_zhibo_mysak_type_all);
             }
         }
         return string;

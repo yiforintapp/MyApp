@@ -30,7 +30,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/video_zhibo" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:text="视频播间"
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="10dp" />
 
             </RelativeLayout>
 
@@ -61,9 +61,9 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="鑫鑫向荣"
+                android:text="兆利丰财经"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -72,8 +72,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/title"
                 android:text="直播中"
-                android:textColor="@color/button_blue"
-                android:textSize="15sp" />
+                android:textColor="@color/cb2"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/content"
@@ -82,8 +82,8 @@
                 android:layout_below="@+id/title"
                 android:layout_marginTop="10dp"
                 android:text="一起并肩作战，稳扎稳打步步为赢！轻松交易，开心生活！"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/person"
@@ -91,18 +91,19 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/content"
                 android:layout_marginTop="5dp"
-                android:text="分析师：王王【离线】 "
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:text="嘉宾：易福林 "
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/person"
                 android:layout_toRightOf="@+id/person"
+                android:visibility="gone"
                 android:text="任俊杰【在线】"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
 
             <TextView
@@ -110,9 +111,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/person"
                 android:layout_marginTop="5dp"
+                android:visibility="gone"
                 android:text="人气：1814"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
         </RelativeLayout>
     </com.zlf.appmaster.ui.RippleView>
@@ -142,7 +144,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/text_zhibo" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -155,9 +157,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="视频播间"
+                    android:text="普通播间"
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="10dp" />
 
             </RelativeLayout>
 
@@ -175,7 +177,7 @@
                 android:layout_height="wrap_content"
                 android:text="鑫鑫向荣"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -184,8 +186,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/word_title"
                 android:text="直播中"
-                android:textColor="@color/button_blue"
-                android:textSize="15sp" />
+                android:textColor="@color/cb2"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/word_content"
@@ -194,8 +196,8 @@
                 android:layout_below="@+id/word_title"
                 android:layout_marginTop="10dp"
                 android:text="一起并肩作战，稳扎稳打步步为赢！轻松交易，开心生活！"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/word_person"
@@ -204,8 +206,8 @@
                 android:layout_below="@+id/word_content"
                 android:layout_marginTop="5dp"
                 android:text="分析师：王王【离线】 "
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -214,7 +216,7 @@
                 android:layout_toRightOf="@+id/word_person"
                 android:text="任俊杰【在线】"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
 
             <TextView
@@ -223,8 +225,8 @@
                 android:layout_below="@+id/word_person"
                 android:layout_marginTop="5dp"
                 android:text="人气：1814"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
 
         </RelativeLayout>
     </com.zlf.appmaster.ui.RippleView>
