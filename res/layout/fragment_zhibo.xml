@@ -120,7 +120,7 @@
     </com.zlf.appmaster.ui.RippleView>
 
     <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/word_zhibo_layout"
+        android:id="@+id/word_zhibo_layout_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -227,6 +227,118 @@
                 android:text="人气：1814"
                 android:textColor="@color/small_text"
                 android:textSize="12dp" />
+
+        </RelativeLayout>
+    </com.zlf.appmaster.ui.RippleView>
+
+    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/word_zhibo_layout_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:padding="10dp"
+        app:rippleColor="@color/button_gray_ripple"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
+
+        <LinearLayout
+            android:id="@+id/word_zhibo_iv_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical">
+
+            <com.zlf.appmaster.ui.CircleImageView
+                android:id="@+id/word_contactIV_two"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_launcher" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/zhibo_strok_bg"
+                android:padding="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="视频播间"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/word_zhibo_iv_two">
+
+            <TextView
+                android:id="@+id/word_title_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="鑫鑫向荣"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/word_title_two"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/word_title_two"
+                android:text="直播中"
+                android:textColor="@color/button_blue"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/word_content_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/word_title_two"
+                android:layout_marginTop="10dp"
+                android:text="一起并肩作战，稳扎稳打步步为赢！轻松交易，开心生活！"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/word_person_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/word_content_two"
+                android:layout_marginTop="5dp"
+                android:text="分析师：王王【离线】 "
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/word_person_two"
+                android:layout_toRightOf="@+id/word_person_two"
+                android:text="任俊杰【在线】"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/word_person_two"
+                android:layout_marginTop="5dp"
+                android:text="人气：1814"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
         </RelativeLayout>
     </com.zlf.appmaster.ui.RippleView>

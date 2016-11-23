@@ -49,6 +49,8 @@ public class WordAdviceFragment extends BaseFragment {
 
     private AdviceDialog mDialog;
 
+    private String mType;
+
     private void initViews(){
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
@@ -118,6 +120,10 @@ public class WordAdviceFragment extends BaseFragment {
         }
     }
 
+    public void setType (String type) {
+        this.mType = type;
+    }
+
     /**
      * 请求数据
      */
@@ -129,7 +135,7 @@ public class WordAdviceFragment extends BaseFragment {
         } else {
             mNowPage += 1;
         }
-        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + "1";
+        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + mType;
 
         UniversalRequest.requestNewUrlWithTimeOut("Tag", mActivity, url,
                 new OnRequestListener() {

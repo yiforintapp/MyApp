@@ -21,6 +21,10 @@ import java.util.List;
  */
 public class WordLiveActivity extends BaseFragmentActivity {
 
+    public static final String ZHIBO_TYPE = "zhibo_type";
+    public static final String TYPE_ONE = "1";
+    public static final String TYPE_TWO = "2";
+
     private ViewPager mViewPager;
     private HomeTabHolder[] mHomeHolders = new HomeTabHolder[5];
     private PagerSlidingTabStrip mPagerSlidingTab;
@@ -34,6 +38,7 @@ public class WordLiveActivity extends BaseFragmentActivity {
     private CommonToolbar mToolBar;
 
     private ScaleImageDialog mDialog;
+    private String mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class WordLiveActivity extends BaseFragmentActivity {
     }
 
     private void init() {
+        mType = getIntent().getStringExtra(ZHIBO_TYPE);
         initFragment();
         initViewPager();
         mToolBar = (CommonToolbar) findViewById(R.id.word_toolbar);
@@ -74,18 +80,21 @@ public class WordLiveActivity extends BaseFragmentActivity {
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_point_title);
         mPointFragment = new WordPointFragment();
+        mPointFragment.setType(mType);
         holder.fragment = mPointFragment;
         mHomeHolders[0] = holder;
 
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_zhibo_title);
         mLiveFragment = new WordZhiBoFragment();
+        mLiveFragment.setType(mType);
         holder.fragment = mLiveFragment;
         mHomeHolders[1] = holder;
 
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_chat_title);
         mChatFragment = new WordChatFragment();
+        mChatFragment.setType(mType);
         holder.fragment = mChatFragment;
         mHomeHolders[2] = holder;
 
@@ -104,6 +113,7 @@ public class WordLiveActivity extends BaseFragmentActivity {
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_advice_title);
         mAdviceFragment = new WordAdviceFragment();
+        mAdviceFragment.setType(mType);
         holder.fragment = mAdviceFragment;
         mHomeHolders[4] = holder;
 

@@ -76,6 +76,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
     private String name, text, type;
     private long mClickTime;
 
+    private String mType;
 
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
@@ -200,6 +201,10 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
+    public void setType (String type) {
+        this.mType = type;
+    }
+
     /**
      * 请求数据
      */
@@ -211,7 +216,7 @@ public class WordChatFragment extends BaseFragment implements View.OnClickListen
         } else {
             mNowPage += 1;
         }
-        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + "1";
+        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + mType;
 
         UniversalRequest.requestNewUrlWithTimeOut("Tag", mActivity, url,
                 new OnRequestListener() {

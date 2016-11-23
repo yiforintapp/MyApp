@@ -17,7 +17,8 @@ import com.zlf.appmaster.zhibo.WordLiveActivity;
 public class ZhiBoFragment extends BaseFragment implements View.OnClickListener {
 
     private RippleView mRippleLayout;
-    private RippleView mWordRippleLayout;
+    private RippleView mWordRippleLayoutOne;
+    private RippleView mWordRippleLayoutTwo;
 
     @Override
     protected int layoutResourceId() {
@@ -28,8 +29,10 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
     protected void onInitUI() {
         mRippleLayout = (RippleView) findViewById(R.id.zhibo_layout);
         mRippleLayout.setOnClickListener(this);
-        mWordRippleLayout = (RippleView) findViewById(R.id.word_zhibo_layout);
-        mWordRippleLayout.setOnClickListener(this);
+        mWordRippleLayoutOne = (RippleView) findViewById(R.id.word_zhibo_layout_one);
+        mWordRippleLayoutOne.setOnClickListener(this);
+        mWordRippleLayoutTwo = (RippleView) findViewById(R.id.word_zhibo_layout_two);
+        mWordRippleLayoutTwo.setOnClickListener(this);
     }
 
     @Override
@@ -46,13 +49,27 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                     startActivity(intent);
                 }
                 break;
-            case R.id.word_zhibo_layout:
+            case R.id.word_zhibo_layout_one:
                 if (AppUtil.isLogin()) {
                     intent = new Intent(mActivity, WordLiveActivity.class);
+                    intent.putExtra(WordLiveActivity.ZHIBO_TYPE, WordLiveActivity.TYPE_ONE);
                     startActivity(intent);
                 } else {
                     intent = new Intent(mActivity, LoginActivity.class);
                     intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
+                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TYPE, WordLiveActivity.TYPE_ONE);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.word_zhibo_layout_two:
+                if (AppUtil.isLogin()) {
+                    intent = new Intent(mActivity, WordLiveActivity.class);
+                    intent.putExtra(WordLiveActivity.ZHIBO_TYPE, WordLiveActivity.TYPE_TWO);
+                    startActivity(intent);
+                } else {
+                    intent = new Intent(mActivity, LoginActivity.class);
+                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
+                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TYPE, WordLiveActivity.TYPE_TWO);
                     startActivity(intent);
                 }
                 break;

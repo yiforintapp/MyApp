@@ -45,6 +45,7 @@ public class WordPointFragment extends BaseFragment {
             Constants.WORD_SERVLET + Constants.WORD_POINT_MARK;
     public static final String LOAD_DATA = BASE_URL;
     private int mNowPage = 1;
+    private String mType;
 
     private void initViews() {
 
@@ -81,6 +82,10 @@ public class WordPointFragment extends BaseFragment {
 
     }
 
+    public void setType (String type) {
+        this.mType = type;
+    }
+
     private void refreshLisrByButton() {
         mProgressBar.setVisibility(View.VISIBLE);
         mListView.setVisibility(View.GONE);
@@ -114,7 +119,7 @@ public class WordPointFragment extends BaseFragment {
         } else {
             mNowPage += 1;
         }
-        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + "1";
+        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + mType;
         LeoLog.d("CHAT", "request page : " + mNowPage);
         LeoLog.d("CHAT", "url : " + url);
 

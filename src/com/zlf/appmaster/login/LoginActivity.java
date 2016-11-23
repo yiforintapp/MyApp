@@ -41,6 +41,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 
     public static final String FROM_LIVE_BTN = "from_live_btn"; // 从视频直播间按钮跳转登录
     public static final String FROM_WORD_LIVE_BTN = "from_word_live_btn"; // 从文字直播间按钮跳转登录
+    public static final String FROM_WORD_LIVE_BTN_TYPE = "from_word_live_btn_type"; // 从文字直播间按钮跳转登录type
 
     private EditText mUserEt;
     private ImageView mUserClean;
@@ -58,6 +59,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 
     private boolean mFormLiveBtn;
     private boolean mFromWordLiveBtn;
+    private String mWordLiveType;
 
 
     //用于处理消息的Handler
@@ -95,7 +97,9 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                     activity.startActivity(new Intent(activity, VideoLiveActivity.class));
                 }
                 if (activity.mFromWordLiveBtn) {
-                    activity.startActivity(new Intent(activity, WordLiveActivity.class));
+                    Intent intent = new Intent(activity, WordLiveActivity.class);
+                    intent.putExtra(WordLiveActivity.ZHIBO_TYPE, activity.mWordLiveType);
+                    activity.startActivity(intent);
                 }
                 activity.finish();
             }
@@ -152,6 +156,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         Intent intent = getIntent();
         mFormLiveBtn = intent.getBooleanExtra(FROM_LIVE_BTN, false);
         mFromWordLiveBtn = intent.getBooleanExtra(FROM_WORD_LIVE_BTN, false);
+        mWordLiveType = intent.getStringExtra(FROM_WORD_LIVE_BTN_TYPE);
     }
 
     @Override
