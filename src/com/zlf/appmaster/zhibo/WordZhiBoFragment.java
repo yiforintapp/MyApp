@@ -247,12 +247,18 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
                                     item.setTName(itemObject.getString("t_name"));
                                     item.setMsg(itemObject.getString("msg"));
                                     item.setAnswer(itemObject.getString("answer"));
+                                    item.setAnswerHeadImg(itemObject.getString("portrait"));
+
                                     String askTime = itemObject.getString("ask_time");
-                                    item.setAskTime(String.valueOf(askTime));
-                                    if (!TextUtils.isEmpty(askTime)) {
-                                        long a = Long.valueOf(askTime) * 1000;
-                                        item.setAskTime(String.valueOf(a));
+                                    long ask;
+                                    if (!Utilities.isEmpty(askTime)) {
+                                        ask = Long.valueOf(askTime) * 1000;
+                                    } else {
+                                        askTime = "1478502755";
+                                        ask = Long.valueOf(askTime) * 1000;
                                     }
+                                    item.setAskTime(String.valueOf(ask));
+
                                     String answerTime = itemObject.getString("answer_time");
                                     long a;
                                     if (!Utilities.isEmpty(answerTime)) {

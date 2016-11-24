@@ -1,17 +1,25 @@
 package com.zlf.appmaster.zhibo;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.WordChatItem;
 import com.zlf.appmaster.utils.TimeUtil;
+import com.zlf.imageloader.DisplayImageOptions;
+import com.zlf.imageloader.ImageLoader;
+import com.zlf.imageloader.core.FadeInBitmapDisplayer;
+import com.zlf.imageloader.core.ImageScaleType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +31,30 @@ public class WordZhiboFragmentAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
     private List<WordChatItem> mList;
+    private DisplayImageOptions commonOption;
+    private BitmapFactory.Options options;
 
 
     public WordZhiboFragmentAdapter(Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mList = new ArrayList<WordChatItem>();
+
+        options = new BitmapFactory.Options();
+        // 主题使用565配置
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        if (commonOption == null) {
+            commonOption = new DisplayImageOptions.Builder()
+                    .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                    .showImageOnLoading(R.drawable.online_theme_loading)
+                    .showImageOnFail(R.drawable.online_theme_loading_failed)
+                    .displayer(new FadeInBitmapDisplayer(500))
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .considerExifParams(true)
+                    .decodingOptions(options)
+                    .build();
+        }
     }
 
     @Override
@@ -65,6 +91,7 @@ public class WordZhiboFragmentAdapter extends BaseAdapter {
             holder.mAnswer = (TextView) convertView.findViewById(R.id.admin_content);
             holder.mAskTime = (TextView) convertView.findViewById(R.id.user_time);
             holder.mAnswerTime = (TextView) convertView.findViewById(R.id.admin_time);
+            holder.mAdminIv = (ImageView) convertView.findViewById(R.id.admin_iv);
 
             convertView.setTag(holder);
         } else {
@@ -86,6 +113,11 @@ public class WordZhiboFragmentAdapter extends BaseAdapter {
                     R.string.word_answer_time, TimeUtil.getSimpleTime(Long.parseLong(wordChatItem.getAnswerTime()))));
         }
 
+        if (!TextUtils.isEmpty(wordChatItem.getAnswerHeadImg())) {
+            ImageLoader.getInstance().displayImage(Constants.ZHIBO_ADMIN_IMG_DOMAIN.concat(wordChatItem.getAnswerHeadImg()),
+                    holder.mAdminIv, commonOption);
+        }
+
         if (TextUtils.isEmpty(holder.mCName.getText())) {
             holder.mAskLayout.setVisibility(View.GONE);
         } else {
@@ -104,5 +136,6 @@ public class WordZhiboFragmentAdapter extends BaseAdapter {
         TextView mAnswer;
         TextView mAskTime;
         TextView mAnswerTime;
+        ImageView mAdminIv;
     }
 }

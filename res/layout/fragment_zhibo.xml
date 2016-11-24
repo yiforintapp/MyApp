@@ -95,27 +95,6 @@
                 android:textColor="@color/small_text"
                 android:textSize="12dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/person"
-                android:layout_toRightOf="@+id/person"
-                android:visibility="gone"
-                android:text="任俊杰【在线】"
-                android:textColor="@color/black"
-                android:textSize="12dp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/person"
-                android:layout_marginTop="5dp"
-                android:visibility="gone"
-                android:text="人气：1814"
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
-
         </RelativeLayout>
     </com.zlf.appmaster.ui.RippleView>
 
@@ -175,7 +154,7 @@
                 android:id="@+id/word_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="鑫鑫向荣"
+                android:text="@string/zhibo_room_one_topic"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -195,7 +174,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/word_title"
                 android:layout_marginTop="10dp"
-                android:text="一起并肩作战，稳扎稳打步步为赢！轻松交易，开心生活！"
+                android:text="长线是金短线也是金，精准把握，财运一路顺然!"
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/word_fenxishi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/word_content"
+                android:layout_marginTop="5dp"
+                android:text="当前在线分析师："
                 android:textColor="@color/small_text"
                 android:textSize="12dp" />
 
@@ -204,28 +193,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/word_content"
+                android:layout_toRightOf="@+id/word_fenxishi"
                 android:layout_marginTop="5dp"
-                android:text="分析师：王王【离线】 "
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/word_person"
-                android:layout_toRightOf="@+id/word_person"
-                android:text="任俊杰【在线】"
+                android:text="@string/zhibo_room_one_teacher"
                 android:textColor="@color/black"
-                android:textSize="12dp" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/word_person"
-                android:layout_marginTop="5dp"
-                android:text="人气：1814"
-                android:textColor="@color/small_text"
                 android:textSize="12dp" />
 
         </RelativeLayout>
@@ -287,7 +258,7 @@
                 android:id="@+id/word_title_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="鑫鑫向荣"
+                android:text="@string/zhibo_room_two_topic"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -307,7 +278,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/word_title_two"
                 android:layout_marginTop="10dp"
-                android:text="一起并肩作战，稳扎稳打步步为赢！轻松交易，开心生活！"
+                android:text="长线是金短线也是金，精准把握，财运一路顺然!"
+                android:textColor="@color/small_text"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/word_fenxishi_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/word_content_two"
+                android:layout_marginTop="5dp"
+                android:text="当前在线分析师："
                 android:textColor="@color/small_text"
                 android:textSize="12dp" />
 
@@ -316,29 +297,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/word_content_two"
+                android:layout_toRightOf="@+id/word_fenxishi_two"
                 android:layout_marginTop="5dp"
-                android:text="分析师：王王【离线】 "
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/word_person_two"
-                android:layout_toRightOf="@+id/word_person_two"
-                android:text="任俊杰【在线】"
+                android:text="@string/zhibo_room_two_teacher"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/word_person_two"
-                android:layout_marginTop="5dp"
-                android:text="人气：1814"
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
 
         </RelativeLayout>
     </com.zlf.appmaster.ui.RippleView>

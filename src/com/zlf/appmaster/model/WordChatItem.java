@@ -14,6 +14,7 @@ public class WordChatItem implements Serializable {
     private String mAskTime;
     private String mAnswerTime;
     private String mAnswerImg;
+    private String mAnswerHeadImg;
 
     public String getCName() {
         return mCName;
@@ -69,5 +70,13 @@ public class WordChatItem implements Serializable {
 
     public void setAnswerImg(String mAnswerImg) {
         this.mAnswerImg = mAnswerImg;
+    }
+
+    public String getAnswerHeadImg() {
+        return mAnswerHeadImg;
+    }
+
+    public void setAnswerHeadImg(String mAnswerHeadImg) {
+        this.mAnswerHeadImg = mAnswerHeadImg;
     }
 }

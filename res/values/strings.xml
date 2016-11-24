@@ -387,4 +387,9 @@
     <string name="text_zhibo_mysak_type_ask_status_stay">待回复</string>
 
     <string name="network_no_data_toast">暂无数据</string>
+
+    <string name="zhibo_room_one_topic">财路顺然</string>
+    <string name="zhibo_room_two_topic">弈趣缠禅</string>
+    <string name="zhibo_room_one_teacher">陈老师</string>
+    <string name="zhibo_room_two_teacher">廖老师</string>
 </resources>
