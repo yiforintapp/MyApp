@@ -84,9 +84,9 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                                     online = jsonObject.getString("online");
                                     room = jsonObject.getString("room");
                                     if ("1".equals(room) && "1".equals(online)) {
-                                        roomOneTeacherBuilder.append(name).append(" ");
+                                        roomOneTeacherBuilder.append(name).append("、");
                                     } else if ("2".equals(room) && "1".equals(online)) {
-                                        roomTwoTeacherBuilder.append(name).append(" ");
+                                        roomTwoTeacherBuilder.append(name).append(" 、");
                                     }
                                 }
                                 String roomOneTeacher = roomOneTeacherBuilder.toString();
