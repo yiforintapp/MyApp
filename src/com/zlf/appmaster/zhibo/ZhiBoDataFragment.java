@@ -34,6 +34,7 @@ public class ZhiBoDataFragment extends BaseFragment {
     private CircularProgressView mProgressBar;
     private View mEmptyView;
     private RippleView mRefreshView;
+    private View mSendView;
 
     private static final int SHOW_NUM_PER_TIME = 20;
     public static final int ERROR_TYPE = -1;
@@ -47,6 +48,8 @@ public class ZhiBoDataFragment extends BaseFragment {
 
     private void initViews(){
 
+        mSendView = findViewById(R.id.chat_send);
+        mSendView.setVisibility(View.GONE);
         mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
         mEmptyView = findViewById(R.id.empty_view);

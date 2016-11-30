@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zlf.appmaster.R;
@@ -16,12 +17,16 @@ import com.zlf.appmaster.login.ProtocolActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
+import com.zlf.appmaster.ui.TestItem;
+import com.zlf.appmaster.ui.TestView;
 import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.tools.animator.Animator;
 import com.zlf.tools.animator.AnimatorListenerAdapter;
 import com.zlf.tools.animator.AnimatorSet;
 import com.zlf.tools.animator.ObjectAnimator;
+
+import java.util.ArrayList;
 
 public class SettingActivity extends Activity implements View.OnClickListener {
 
@@ -41,6 +46,22 @@ public class SettingActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_setting);
         init();
         setListener();
+
+//        TestView view = new TestView(this);
+//        setContentView(view);
+
+//        ArrayList<TestItem> datas = new ArrayList<TestItem>();
+//        TestItem pieData = new TestItem("sloop", 60);
+//        TestItem pieData2 = new TestItem("sloop", 30);
+//        TestItem pieData3 = new TestItem("sloop", 40);
+//        TestItem pieData4 = new TestItem("sloop", 20);
+//        TestItem pieData5 = new TestItem("sloop", 20);
+//        datas.add(pieData);
+//        datas.add(pieData2);
+//        datas.add(pieData3);
+//        datas.add(pieData4);
+//        datas.add(pieData5);
+//        view.setData(datas);
     }
 
     private void init() {

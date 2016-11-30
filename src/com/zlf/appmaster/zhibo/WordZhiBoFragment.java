@@ -20,7 +20,7 @@ import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.UniversalRequest;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
-import com.zlf.appmaster.model.WordChatItem;
+import com.zlf.appmaster.model.WordMyAskItem;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.NetWorkUtil;
@@ -58,11 +58,12 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
 
 
     private WordZhiboFragmentAdapter mAdapter;
-    private List<WordChatItem> mDataList;
+    private List<WordMyAskItem> mDataList;
 
     private XListView mListView;
     private CircularProgressView mProgressBar;
     private View mEmptyView;
+    private View mEmptyViewNoClick;
     private RippleView mRefreshView;
 
     private static final int SHOW_NUM_PER_TIME = 20;
@@ -120,8 +121,8 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
     private void makeDeal(int code) {
         if (code == 1) {
             mEdText.setText("");
-            InputMethodManager imm =  (InputMethodManager)mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if(imm != null) {
+            InputMethodManager imm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
                 imm.hideSoftInputFromWindow(mActivity.getWindow().getDecorView().getWindowToken(),
                         0);
             }
@@ -152,6 +153,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
         mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
         mEmptyView = findViewById(R.id.empty_view);
+        mEmptyViewNoClick = findViewById(R.id.empty_view_no_click);
         mRefreshView = (RippleView) findViewById(R.id.refresh_button);
         mRefreshView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +162,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
             }
         });
 
-        mDataList = new ArrayList<WordChatItem>();
+        mDataList = new ArrayList<WordMyAskItem>();
         mAdapter = new WordZhiboFragmentAdapter(mActivity);
         mListView.setAdapter(mAdapter);
 
@@ -182,7 +184,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
 
     }
 
-    public void setType (String type) {
+    public void setType(String type) {
         this.mType = type;
     }
 
@@ -234,13 +236,13 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
                     @Override
                     public void onDataFinish(Object object) {
 
-                        List<WordChatItem> items = new ArrayList<WordChatItem>();
+                        List<WordMyAskItem> items = new ArrayList<WordMyAskItem>();
                         JSONArray array = (JSONArray) object;
 
                         try {
                             if (array != null && array.length() > 0) {
                                 for (int i = 0; i < array.length(); i++) {
-                                    WordChatItem item = new WordChatItem();
+                                    WordMyAskItem item = new WordMyAskItem();
 
                                     JSONObject itemObject = array.getJSONObject(i);
                                     item.setCName(itemObject.getString("c_name"));
@@ -248,6 +250,7 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
                                     item.setMsg(itemObject.getString("msg"));
                                     item.setAnswer(itemObject.getString("answer"));
                                     item.setAnswerHeadImg(itemObject.getString("portrait"));
+                                    item.setmCate(itemObject.getString("cate"));
 
                                     String askTime = itemObject.getString("ask_time");
                                     long ask;
@@ -369,27 +372,79 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
                 changeUnSelectBg(mIndex);
                 mIndex = 0;
                 mC_Type = C_TYPE_ALL;
+                changeList(0);
                 break;
             case 1:
                 mOilView.setVisibility(View.VISIBLE);
                 changeUnSelectBg(mIndex);
                 mIndex = 1;
                 mC_Type = C_TYPE_O;
+                changeList(1);
                 break;
             case 2:
                 mSilverView.setVisibility(View.VISIBLE);
                 changeUnSelectBg(mIndex);
                 mIndex = 2;
                 mC_Type = C_TYPE_S;
+                changeList(2);
                 break;
             case 3:
                 mCopperView.setVisibility(View.VISIBLE);
                 changeUnSelectBg(mIndex);
                 mIndex = 3;
                 mC_Type = C_TYPE_C;
+                changeList(3);
                 break;
         }
     }
+
+    private void changeList(int num) {
+        List<WordMyAskItem> list = new ArrayList<WordMyAskItem>();
+        String flag;
+
+        if (num == 1) {
+            flag = "oil";
+            mListView.setPullLoadEnable(false);
+            mListView.setPullRefreshEnable(false);
+        } else if (num == 2) {
+            flag = "silver";
+            mListView.setPullLoadEnable(false);
+            mListView.setPullRefreshEnable(false);
+        } else if (num == 3) {
+            flag = "copper";
+            mListView.setPullLoadEnable(false);
+            mListView.setPullRefreshEnable(false);
+        }else{
+            flag = "all";
+            mListView.setPullLoadEnable(true);
+            mListView.setPullRefreshEnable(true);
+        }
+
+        for(int i = 0;i<mDataList.size();i++){
+            WordMyAskItem item = mDataList.get(i);
+            if(!Utilities.isEmpty(item.getmCate())){
+                String cate = item.getmCate();
+                if(flag.equals(cate)){
+                    list.add(item);
+                }
+            }
+        }
+
+        if(list.size() > 0){
+            mEmptyViewNoClick.setVisibility(View.GONE);
+            mListView.setVisibility(View.VISIBLE);
+
+            Collections.sort(list, COMPARATOR);
+            mAdapter.setList(list);
+            mAdapter.notifyDataSetChanged();
+            mListView.setSelection(0);
+        }else{
+            mEmptyViewNoClick.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.GONE);
+        }
+
+    }
+
 
     private void changeUnSelectBg(int position) {
         switch (position) {
@@ -472,9 +527,9 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
         initData();
     }
 
-    private static final Comparator<WordChatItem> COMPARATOR = new Comparator<WordChatItem>() {
+    private static final Comparator<WordMyAskItem> COMPARATOR = new Comparator<WordMyAskItem>() {
         @Override
-        public int compare(WordChatItem lhs, WordChatItem rhs) {
+        public int compare(WordMyAskItem lhs, WordMyAskItem rhs) {
 
             return rhs.getAnswerTime().compareTo(lhs.getAnswerTime());
         }

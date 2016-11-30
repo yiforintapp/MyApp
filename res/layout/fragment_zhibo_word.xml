@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/home_tab_pressed">
+    android:background="@color/home_tab_pressed"
+    android:orientation="vertical">
 
     <include layout="@layout/fragment_word_button" />
 
@@ -13,6 +13,32 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/empty_view_no_click"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/app_nothing_show" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:includeFontPadding="false"
+                android:text="@string/nothing_show"
+                android:textColor="@color/mc_empty_tips"
+                android:textSize="16sp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/empty_view"
@@ -70,9 +96,9 @@
             android:cacheColorHint="#00000000"
             android:divider="#00000000"
             android:listSelector="@android:color/transparent"
-            android:visibility="gone"
             android:overScrollMode="never"
-            android:scrollbars="none" />
+            android:scrollbars="none"
+            android:visibility="gone" />
 
         <com.handmark.pulltorefresh.library.xlistview.CircularProgressView
             android:id="@+id/content_loading"
@@ -95,8 +121,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/chat_bg"
-        android:minHeight="50dp"
         android:gravity="center"
+        android:minHeight="50dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp">
 
@@ -108,10 +134,10 @@
             android:background="@drawable/bg_edittext"
             android:gravity="center_vertical|left"
             android:hint="@string/send_text"
-            android:textColorHint="@color/login_hint"
             android:minHeight="20dp"
             android:padding="5dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/login_hint"
             android:textSize="12dp" />
 
 

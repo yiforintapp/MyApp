@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
-import com.zlf.appmaster.model.WordChatItem;
+import com.zlf.appmaster.model.WordMyAskItem;
 import com.zlf.appmaster.utils.TimeUtil;
 import com.zlf.imageloader.DisplayImageOptions;
 import com.zlf.imageloader.ImageLoader;
@@ -30,7 +30,7 @@ import java.util.List;
 public class WordZhiboFragmentAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
-    private List<WordChatItem> mList;
+    private List<WordMyAskItem> mList;
     private DisplayImageOptions commonOption;
     private BitmapFactory.Options options;
 
@@ -38,7 +38,7 @@ public class WordZhiboFragmentAdapter extends BaseAdapter {
     public WordZhiboFragmentAdapter(Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
-        mList = new ArrayList<WordChatItem>();
+        mList = new ArrayList<WordMyAskItem>();
 
         options = new BitmapFactory.Options();
         // 主题使用565配置
@@ -80,7 +80,7 @@ public class WordZhiboFragmentAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup viewGroup) {
 
         ViewHolder holder;
-        WordChatItem wordChatItem;
+        WordMyAskItem wordChatItem;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.word_answer_item, null);
             holder = new ViewHolder();

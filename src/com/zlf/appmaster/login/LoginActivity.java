@@ -24,6 +24,7 @@ import com.zlf.appmaster.home.BaseFragmentActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
+import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.appmaster.zhibo.VideoLiveActivity;
@@ -231,6 +232,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         mDialog.show();
         mProgressBarShow = true;
         String password = StringUtil.retMd5Pwd( mPasswordEt.getText().toString().trim()).toLowerCase();
+//        LeoLog.d("check","password is 111111qqq , setMD5 later : " + StringUtil.retMd5Pwd("111111qqq").toLowerCase());
         try {
             // 发送请求
             LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
