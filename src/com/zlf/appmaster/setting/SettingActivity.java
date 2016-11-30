@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zlf.appmaster.R;
@@ -17,16 +16,12 @@ import com.zlf.appmaster.login.ProtocolActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.ui.TestItem;
-import com.zlf.appmaster.ui.TestView;
 import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.tools.animator.Animator;
 import com.zlf.tools.animator.AnimatorListenerAdapter;
 import com.zlf.tools.animator.AnimatorSet;
 import com.zlf.tools.animator.ObjectAnimator;
-
-import java.util.ArrayList;
 
 public class SettingActivity extends Activity implements View.OnClickListener {
 

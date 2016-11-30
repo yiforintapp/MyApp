@@ -54,7 +54,7 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     private String mType;
 
 
-    private PinnedHeaderExpandableListView explistview;
+    private PinnedHeaderExpandableListView mXListView;
     private String[][] childrenData = new String[3][3];
     private String[] groupData = new String[3];
     private int expandFlag = -1;//控制列表的展开
@@ -73,11 +73,29 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
 
     private void initViews() {
 
-        explistview = (PinnedHeaderExpandableListView)findViewById(R.id.explistview);
+        mXListView = (PinnedHeaderExpandableListView)findViewById(R.id.explistview);
         mCurrentBtn = (TextView) findViewById(R.id.current_btn);
         mWaitingBtn = (TextView) findViewById(R.id.waiting_btn);
         mCurrentBtn.setOnClickListener(this);
         mWaitingBtn.setOnClickListener(this);
+        mXListView.setGroupIndicator(null);
+        mXListView.setPullLoadEnable(false);// 禁止下拉加载更多
+        mXListView.setXListViewListener(new PinnedHeaderExpandableListView.IXListViewListener() {
+
+            @Override
+            public void onRefresh() {
+                //设置显示刷新的提示
+//                requestData(LOAD_DATA_TYPE);     //测试下拉刷新的数据
+//                mXListView.setAdapter(mAdapter);
+//                mXListView.stopRefresh();
+//                mXListView.setRefreshTime(System.currentTimeMillis());
+                onLoaded(NORMAL_TYPE);
+            }
+
+            @Override
+            public void onLoadMore() {
+            }
+        });
 //        mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
         mProgressBar.setVisibility(View.GONE);
@@ -131,11 +149,8 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
                 childrenData[i][j] = "好友"+i+"-"+j;
             }
         }
-        //设置悬浮头部VIEW
-        explistview.setHeaderView(mActivity.getLayoutInflater().inflate(R.layout.group_head,
-                explistview, false));
-        adapter = new PinnedHeaderExpandableAdapter(childrenData, groupData, mActivity.getApplicationContext(),explistview);
-        explistview.setAdapter(adapter);
+        adapter = new PinnedHeaderExpandableAdapter(childrenData, groupData, mActivity.getApplicationContext(),mXListView);
+        mXListView.setAdapter(adapter);
 
         //设置单个分组展开
 //        explistview.setOnGroupClickListener(new GroupClickListener());
@@ -147,19 +162,19 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
                                     int groupPosition, long id) {
             if (expandFlag == -1) {
                 // 展开被选的group
-                explistview.expandGroup(groupPosition);
+                mXListView.expandGroup(groupPosition);
                 // 设置被选中的group置于顶端
-                explistview.setSelectedGroup(groupPosition);
+                mXListView.setSelectedGroup(groupPosition);
                 expandFlag = groupPosition;
             } else if (expandFlag == groupPosition) {
-                explistview.collapseGroup(expandFlag);
+                mXListView.collapseGroup(expandFlag);
                 expandFlag = -1;
             } else {
-                explistview.collapseGroup(expandFlag);
+                mXListView.collapseGroup(expandFlag);
                 // 展开被选的group
-                explistview.expandGroup(groupPosition);
+                mXListView.expandGroup(groupPosition);
                 // 设置被选中的group置于顶端
-                explistview.setSelectedGroup(groupPosition);
+                mXListView.setSelectedGroup(groupPosition);
                 expandFlag = groupPosition;
             }
             return true;
@@ -167,12 +182,15 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     }
 
     private void onLoaded(int type) {
-        mListView.stopRefresh();
-        mListView.stopLoadMore();
+        mXListView.stopRefresh();
+        mXListView.stopLoadMore();
         mProgressBar.setVisibility(View.GONE);
         if (type == ERROR_TYPE) {
             mListView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
+        }
+        for (int i = 0; i < groupData.length; i++) {
+            mXListView.collapseGroup(i);
         }
     }
 

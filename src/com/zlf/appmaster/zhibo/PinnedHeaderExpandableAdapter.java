@@ -1,7 +1,6 @@
 package com.zlf.appmaster.zhibo;
 
 import android.content.Context;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,8 @@ import android.widget.TextView;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ui.PinnedHeaderExpandableListView;
-import com.zlf.appmaster.ui.PinnedHeaderExpandableListView.HeaderAdapter;
 
-public class PinnedHeaderExpandableAdapter extends  BaseExpandableListAdapter implements HeaderAdapter{
+public class PinnedHeaderExpandableAdapter extends  BaseExpandableListAdapter {
 	private String[][] childrenData;
 	private String[] groupData;
 	private Context context;
@@ -139,40 +137,5 @@ public class PinnedHeaderExpandableAdapter extends  BaseExpandableListAdapter im
 		return inflater.inflate(R.layout.group, null);
 	}
 
-	@Override
-	public int getHeaderState(int groupPosition, int childPosition) {
-		final int childCount = getChildrenCount(groupPosition);
-		if (childPosition == childCount - 1) {
-			return PINNED_HEADER_PUSHED_UP;
-		} else if (childPosition == -1
-				&& !listView.isGroupExpanded(groupPosition)) {
-			return PINNED_HEADER_GONE;
-		} else {
-			return PINNED_HEADER_VISIBLE;
-		}
-	}
 
-	@Override
-	public void configureHeader(View header, int groupPosition,
-			int childPosition, int alpha) {
-		String groupData =  this.groupData[groupPosition];
-		((TextView) header.findViewById(R.id.groupto)).setText(groupData);
-		
-	}
-	
-	private SparseIntArray groupStatusMap = new SparseIntArray(); 
-	
-	@Override
-	public void setGroupClickStatus(int groupPosition, int status) {
-		groupStatusMap.put(groupPosition, status);
-	}
-
-	@Override
-	public int getGroupClickStatus(int groupPosition) {
-		if (groupStatusMap.keyAt(groupPosition)>=0) {
-			return groupStatusMap.get(groupPosition);
-		} else {
-			return 0;
-		}
-	}
 }
