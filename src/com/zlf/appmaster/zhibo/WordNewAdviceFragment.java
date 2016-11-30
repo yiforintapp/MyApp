@@ -318,12 +318,12 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     private void changeTabBg(int position) {
         switch (position) {
             case 0:
-                mCurrentBtn.setBackgroundColor(getResources().getColor(R.color.advice_current_click));
+                mCurrentBtn.setBackgroundColor(getResources().getColor(R.color.advice_current));
                 changeUnSelectBg(mIndex);
                 mIndex = 0;
                 break;
             case 1:
-                mWaitingBtn.setBackgroundColor(getResources().getColor(R.color.advice_waiting_click));
+                mWaitingBtn.setBackgroundColor(getResources().getColor(R.color.advice_waiting));
                 changeUnSelectBg(mIndex);
                 mIndex = 1;
                 break;
@@ -333,10 +333,10 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     private void changeUnSelectBg(int position) {
         switch (position) {
             case 0:
-                mCurrentBtn.setBackgroundColor(getResources().getColor(R.color.advice_current));
+                mCurrentBtn.setBackgroundColor(getResources().getColor(R.color.advice_current_click));
                 break;
             case 1:
-                mWaitingBtn.setBackgroundColor(getResources().getColor(R.color.advice_waiting));
+                mWaitingBtn.setBackgroundColor(getResources().getColor(R.color.advice_waiting_click));
                 break;
         }
     }
