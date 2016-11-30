@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="石化一号"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:background="@drawable/child_item_bg"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:text="入场"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:padding="5dp"
+            android:background="@drawable/child_item_bg_default"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/ruchang"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:padding="5dp"
+            android:background="@drawable/child_item_bg_default"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:text="3456"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/buy_sale"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="买入"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@color/main_red"
+            android:textSize="10sp"
+            android:background="@drawable/child_item_bg_default"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:text="止盈"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:padding="5dp"
+            android:background="@drawable/child_item_bg_default"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/zhiying"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:padding="5dp"
+            android:background="@drawable/child_item_bg_default"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:text="4332"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="11-25 14:22"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:background="@drawable/child_item_bg"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:text="止损"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:padding="5dp"
+            android:background="@drawable/child_item_bg_default"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/zhisun"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:padding="5dp"
+            android:background="@drawable/child_item_bg_default"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:text="3455"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

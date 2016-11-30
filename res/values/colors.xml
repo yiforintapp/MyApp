@@ -132,6 +132,9 @@
     <color name="word_chat_title">#A1D7FF</color>
     <color name="word_chat_content">#FF827F</color>
 
-
+    <color name="advice_current">#ff2AA6ED</color>
+    <color name="advice_current_click">#7f2AA6ED</color>
+    <color name="advice_waiting">#ffEDBD2A</color>
+    <color name="advice_waiting_click">#7fEDBD2A</color>
 
 </resources>

@@ -366,7 +366,7 @@
     <string name="word_zhibo_title">专家问答</string>
     <string name="word_chat_title">丰友动态</string>
     <string name="word_cream_title">直播精华</string>
-    <string name="word_advice_title">操作建议</string>
+    <string name="word_history_advice_title">历史计划</string>
     <string name="word_notice_title">公告</string>
     <string name="word_point_title">丰油观点</string>
     <string name="word_answer_time">回复时间：%1$s</string>
@@ -392,4 +392,8 @@
     <string name="zhibo_room_two_topic">弈趣缠禅</string>
     <string name="zhibo_room_one_teacher">陈老师</string>
     <string name="zhibo_room_two_teacher">廖老师</string>
+
+    <string name="word_advice_title">最新计划</string>
+    <string name="word_advice_current">持仓中计划</string>
+    <string name="word_advice_waiting">待入场计划</string>
 </resources>

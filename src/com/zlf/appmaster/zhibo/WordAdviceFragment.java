@@ -89,7 +89,7 @@ public class WordAdviceFragment extends BaseFragment {
                     mDialog = new AdviceDialog(mActivity);
                 }
                 mDialog.setContent(mDataList.get(position - 1).getContent());
-                mDialog.setTitle(getResources().getString(R.string.word_advice_title));
+                mDialog.setTitle(getResources().getString(R.string.word_history_advice_title));
                 mDialog.setTime(mDataList.get(position - 1).getDate());
                 mDialog.show();
             }
