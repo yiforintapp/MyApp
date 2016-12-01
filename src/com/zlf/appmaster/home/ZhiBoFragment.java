@@ -52,9 +52,6 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
         mNameOne = (TextView) findViewById(R.id.word_person);
         mTitleTwo = (TextView) findViewById(R.id.word_title_two);
         mNameTwo = (TextView) findViewById(R.id.word_person_two);
-
-        loadUI();
-        requestData();
     }
 
     private void requestData() {
@@ -114,6 +111,13 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
 
                     }
                 }, false, 0, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUI();
+        requestData();
     }
 
     private void loadUI() {

@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:background="@drawable/circle_shape"
+        android:background="@drawable/circle_shape_one"
         android:layout_centerVertical="true"
         android:textColor="@color/white"
         android:textSize="15sp"/>

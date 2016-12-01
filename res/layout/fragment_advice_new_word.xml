@@ -117,6 +117,9 @@
             android:fastScrollEnabled="false"
             android:footerDividersEnabled="true"
             android:groupIndicator="@null"
+            android:divider="@color/split_line"
+            android:dividerHeight="1px"
+            android:childDivider="@color/split_line"
             android:scrollbars="vertical"
             android:scrollingCache="true" />
 

@@ -13,16 +13,15 @@ import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.UniversalRequest;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.WordChatItem;
+import com.zlf.appmaster.model.WordNewAdviceItemInfo;
+import com.zlf.appmaster.model.WordNewAdviceInfo;
 import com.zlf.appmaster.ui.PinnedHeaderExpandableListView;
 import com.zlf.appmaster.ui.RippleView;
-import com.zlf.appmaster.utils.LeoLog;
-import com.zlf.appmaster.utils.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -40,25 +39,22 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     private TextView mWaitingBtn;
     private int mIndex;
 
-    private WordZhiboFragmentAdapter mAdapter;
-    private List<WordChatItem> mDataList;
-    private static final int SHOW_NUM_PER_TIME = 20;
     public static final int ERROR_TYPE = -1;
     public static final int NORMAL_TYPE = 1;
-    public static final int LOAD_DATA_TYPE = 1;
-    public static final int LOAD_MORE_TYPE = 2;
     public static final String BASE_URL = Constants.WORD_DOMAIN +
-            Constants.WORD_SERVLET + Constants.WORD_ZHIBO_MARK;
+            Constants.WORD_SERVLET + Constants.WORD_ZHIBO_NEW_ADVICE_MARK;
     public static final String LOAD_DATA = BASE_URL;
-    private int mNowPage = 1;
     private String mType;
+    private int mCurrentIndex; //当前计划
 
 
     private PinnedHeaderExpandableListView mXListView;
-    private String[][] childrenData = new String[3][3];
-    private String[] groupData = new String[3];
+    private List<WordNewAdviceInfo> mInGroupData;
+    private List<WordNewAdviceInfo> mOutGroupData;
+    private List<List<WordNewAdviceItemInfo>> mInChildrenData;
+    private List<List<WordNewAdviceItemInfo>> mOutChildrenData;
     private int expandFlag = -1;//控制列表的展开
-    private PinnedHeaderExpandableAdapter adapter;
+    private PinnedHeaderExpandableAdapter mAdapter;
 
     @Override
     protected int layoutResourceId() {
@@ -76,6 +72,10 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
         mXListView = (PinnedHeaderExpandableListView)findViewById(R.id.explistview);
         mCurrentBtn = (TextView) findViewById(R.id.current_btn);
         mWaitingBtn = (TextView) findViewById(R.id.waiting_btn);
+        mInGroupData = new ArrayList<WordNewAdviceInfo>();
+        mOutGroupData = new ArrayList<WordNewAdviceInfo>();
+        mInChildrenData = new ArrayList<List<WordNewAdviceItemInfo>>();
+        mOutChildrenData = new ArrayList<List<WordNewAdviceItemInfo>>();
         mCurrentBtn.setOnClickListener(this);
         mWaitingBtn.setOnClickListener(this);
         mXListView.setGroupIndicator(null);
@@ -85,48 +85,25 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
             @Override
             public void onRefresh() {
                 //设置显示刷新的提示
-//                requestData(LOAD_DATA_TYPE);     //测试下拉刷新的数据
-//                mXListView.setAdapter(mAdapter);
-//                mXListView.stopRefresh();
-//                mXListView.setRefreshTime(System.currentTimeMillis());
-                onLoaded(NORMAL_TYPE);
+                requestData();     //测试下拉刷新的数据
             }
 
             @Override
             public void onLoadMore() {
             }
         });
-//        mListView = (XListView) findViewById(R.id.quotations_content_list);
+        mAdapter = new PinnedHeaderExpandableAdapter(mInChildrenData, mInGroupData, mActivity.getApplicationContext(), mCurrentIndex);
+        mXListView.setAdapter(mAdapter);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
         mProgressBar.setVisibility(View.GONE);
-//        mEmptyView = findViewById(R.id.empty_view);
-//        mRefreshView = (RippleView) findViewById(R.id.refresh_button);
-//        mRefreshView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                refreshLisrByButton();
-//            }
-//        });
-//
-//        mDataList = new ArrayList<WordChatItem>();
-//        mAdapter = new WordZhiboFragmentAdapter(mActivity);
-//        mListView.setAdapter(mAdapter);
-//
-//
-//        mListView.setPullLoadEnable(true);
-//        mListView.setPullRefreshEnable(true);
-//        mListView.setXListViewListener(new XListView.IXListViewListener() {
-//            @Override
-//            public void onRefresh() {
-//                requestData(LOAD_DATA_TYPE);
-//            }
-//
-//            @Override
-//            public void onLoadMore() {
-//                requestData(LOAD_MORE_TYPE);
-//            }
-//        });
-
+        mEmptyView = findViewById(R.id.empty_view);
+        mRefreshView = (RippleView) findViewById(R.id.refresh_button);
+        mRefreshView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshLisrByButton();
+            }
+        });
 
     }
 
@@ -134,26 +111,27 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
         mProgressBar.setVisibility(View.VISIBLE);
         mListView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.GONE);
-        requestData(LOAD_DATA_TYPE);
+        requestData();
+    }
+
+    public void setType (String type) {
+        this.mType = type;
     }
 
     private void initData() {
-//        mProgressBar.setVisibility(View.VISIBLE);
-//        requestData(LOAD_DATA_TYPE);
-        for(int i=0;i<3;i++){
-            groupData[i] = "" + i;
-        }
-
-        for(int i=0;i<3;i++){
-            for(int j=0;j<3;j++){
-                childrenData[i][j] = "好友"+i+"-"+j;
-            }
-        }
-        adapter = new PinnedHeaderExpandableAdapter(childrenData, groupData, mActivity.getApplicationContext(),mXListView);
-        mXListView.setAdapter(adapter);
-
+        mProgressBar.setVisibility(View.VISIBLE);
+        requestData();
+//        for(int i=0;i<3;i++){
+//            groupData[i] = "" + i;
+//        }
+//
+//        for(int i=0;i<3;i++){
+//            for(int j=0;j<3;j++){
+//                childrenData[i][j] = "好友"+i+"-"+j;
+//            }
+//        }
         //设置单个分组展开
-//        explistview.setOnGroupClickListener(new GroupClickListener());
+//        mXListView.setOnGroupClickListener(new GroupClickListener());
     }
 
     class GroupClickListener implements OnGroupClickListener{
@@ -189,27 +167,26 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
             mListView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
-        for (int i = 0; i < groupData.length; i++) {
-            mXListView.collapseGroup(i);
+        if (mCurrentIndex == 0) {
+            for (int i = 0; i < mInGroupData.size(); i++) {
+                mXListView.collapseGroup(i);
+            }
+        } else {
+            for (int i = 0; i < mOutGroupData.size(); i++) {
+                mXListView.collapseGroup(i);
+            }
         }
+
     }
 
     /**
      * 请求数据
      */
-    private void requestData(final int type) {
-        LeoLog.d("CHAT", "now page : " + mNowPage);
+    private void requestData() {
         String url;
-        if (type == LOAD_DATA_TYPE) {
-            mNowPage = 1;
-        } else {
-            mNowPage += 1;
-        }
-        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + mType;
-        LeoLog.d("CHAT", "request page : " + mNowPage);
-        LeoLog.d("CHAT", "url : " + url);
+        url = LOAD_DATA + Constants.WORD_TYPE + mType;
 
-        UniversalRequest.requestNewUrlWithTimeOut("Tag", mActivity, url,
+        UniversalRequest.requestUrlWithTimeOut("Tag", mActivity, url,
                 new OnRequestListener() {
 
                     @Override
@@ -220,92 +197,28 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
                     @Override
                     public void onDataFinish(Object object) {
 
-                        List<WordChatItem> items = new ArrayList<WordChatItem>();
-                        JSONArray array = (JSONArray) object;
-
+                        JSONObject jsonObject = (JSONObject) object;
                         try {
-                            if (array != null && array.length() > 0) {
-                                for (int i = 0; i < array.length(); i++) {
-                                    WordChatItem item = new WordChatItem();
-
-                                    JSONObject itemObject = array.getJSONObject(i);
-                                    item.setCName(itemObject.getString("c_name"));
-                                    item.setTName(itemObject.getString("t_name"));
-                                    item.setMsg(itemObject.getString("msg"));
-                                    item.setAnswer(itemObject.getString("answer"));
-                                    item.setAnswerHeadImg(itemObject.getString("portrait"));
-
-                                    String askTime = itemObject.getString("ask_time");
-                                    long ask;
-                                    if (!Utilities.isEmpty(askTime)) {
-                                        ask = Long.valueOf(askTime) * 1000;
-                                    } else {
-                                        askTime = "1478502755";
-                                        ask = Long.valueOf(askTime) * 1000;
-                                    }
-                                    item.setAskTime(String.valueOf(ask));
-
-                                    String answerTime = itemObject.getString("answer_time");
-                                    long a;
-                                    if (!Utilities.isEmpty(answerTime)) {
-                                        a = Long.valueOf(answerTime) * 1000;
-                                    } else {
-                                        answerTime = "1478502755";
-                                        a = Long.valueOf(answerTime) * 1000;
-                                    }
-                                    item.setAnswerTime(String.valueOf(a));
-                                    items.add(item);
+                            if (jsonObject != null) {
+                                mInGroupData.clear();
+                                mInChildrenData.clear();
+                                mOutGroupData.clear();
+                                mOutChildrenData.clear();
+                                if (!jsonObject.isNull("in")) {
+                                    JSONArray jsonArray = jsonObject.getJSONArray("in");
+                                    parseJson(jsonArray, "in");
                                 }
-
-                                if (null != items) {
-                                    int len = items.size();
-
-                                    if (type == LOAD_DATA_TYPE) {
-                                        if (len > 0) {
-                                            mDataList.clear();
-                                            mListView.setVisibility(View.VISIBLE);
-                                            mDataList.addAll(items);
-                                            Collections.sort(mDataList, COMPARATOR);
-                                            mAdapter.setList(mDataList);
-                                            mAdapter.notifyDataSetChanged();
-                                            mListView.setSelection(0);
-                                            onLoaded(NORMAL_TYPE);
-                                            if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
-                                                mListView.setPullLoadEnable(false);
-                                            } else {
-                                                mListView.setPullLoadEnable(true);
-                                            }
-                                        } else {
-                                            onLoaded(ERROR_TYPE);
-                                        }
-
-                                    } else {
-                                        if (len > 0) {
-
-                                            int addBefore = mDataList.size();
-                                            LeoLog.d("CHAT", "addBefore : " + addBefore);
-
-                                            mListView.setVisibility(View.VISIBLE);
-                                            mDataList.addAll(items);
-                                            Collections.sort(mDataList, COMPARATOR);
-                                            mAdapter.setList(mDataList);
-                                            mAdapter.notifyDataSetChanged();
-                                            mListView.setSelection(mDataList.size() - items.size());
-                                            if (len < SHOW_NUM_PER_TIME || mNowPage >= 5) {
-                                                mListView.setPullLoadEnable(false);
-                                            } else {
-                                                mListView.setPullLoadEnable(true);
-                                            }
-                                        } else {
-                                            mListView.setPullLoadEnable(false);
-                                        }
-                                    }
-                                    onLoaded(NORMAL_TYPE);
+                                if (!jsonObject.isNull("out")) {
+                                    JSONArray jsonArray = jsonObject.getJSONArray("out");
+                                    parseJson(jsonArray, "out");
                                 }
-                            } else {
-                                mListView.setPullLoadEnable(false);
+                                if (mAdapter != null) {
+                                    mAdapter.notifyDataSetChanged();
+                                }
                                 onLoaded(NORMAL_TYPE);
                             }
+
+
                         } catch (Exception e) {
                             e.printStackTrace();
                             onLoaded(ERROR_TYPE);
@@ -315,6 +228,71 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
                 }, false, 0, false);
     }
 
+    private void parseJson(JSONArray jsonArray, String type) {
+        try {
+            WordNewAdviceInfo wordNewAdviceInfo;
+            WordNewAdviceItemInfo wordNewAdviceItemInfo;
+            List<WordNewAdviceItemInfo> childList;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject1 = (JSONObject) jsonArray.get(i);
+                wordNewAdviceInfo = new WordNewAdviceInfo();
+                if (!jsonObject1.isNull("name")) {
+                    wordNewAdviceInfo.setName(jsonObject1.getString("name"));
+                }
+                if (!jsonObject1.isNull("desc")) {
+                    wordNewAdviceInfo.setDesc(jsonObject1.getString("desc"));
+                }
+                if (!jsonObject1.isNull("icon")) {
+                    wordNewAdviceInfo.setIcon(jsonObject1.getString("icon"));
+                }
+                if (!jsonObject1.isNull("item")) {
+                    JSONArray jsonArray1 = (JSONArray) jsonObject1.getJSONArray("item");
+                    childList = new ArrayList<WordNewAdviceItemInfo>();
+                    for (int j = 0; j < jsonArray1.length(); j++) {
+                        JSONObject jsonObject2 = (JSONObject) jsonArray1.get(j);
+                        wordNewAdviceItemInfo = new WordNewAdviceItemInfo();
+                        if (!jsonObject2.isNull("deal")) {
+                            wordNewAdviceItemInfo.setDeal(jsonObject2.getString("deal"));
+                        }
+                        if (!jsonObject2.isNull("realname")) {
+                            wordNewAdviceItemInfo.setRealName(jsonObject2.getString("realname"));
+                        }
+                        if (!jsonObject2.isNull("time")) {
+                            long time = Long.parseLong(jsonObject2.getString("time")) * 1000;
+                            wordNewAdviceItemInfo.setTime(String.valueOf(time));
+                        }
+                        if (!jsonObject2.isNull("enterpoint")) {
+                            wordNewAdviceItemInfo.setEnterPoint(jsonObject2.getString("enterpoint"));
+                        }
+                        if (!jsonObject2.isNull("profit")) {
+                            wordNewAdviceItemInfo.setProfit(jsonObject2.getString("profit"));
+                        }
+                        if (!jsonObject2.isNull("lose")) {
+                            wordNewAdviceItemInfo.setLose(jsonObject2.getString("lose"));
+                        }
+                        if (!jsonObject2.isNull("remark")) {
+                            wordNewAdviceItemInfo.setRemark(jsonObject2.getString("remark"));
+                        }
+                        childList.add(wordNewAdviceItemInfo);
+                    }
+                    if ("in".equals(type)) {
+                        mInChildrenData.add(childList);
+                    } else if ("out".equals(type)) {
+                        mOutChildrenData.add(childList);
+                    }
+                }
+                if ("in".equals(type)) {
+                    mInGroupData.add(wordNewAdviceInfo);
+                } else if ("out".equals(type)) {
+                    mOutGroupData.add(wordNewAdviceInfo);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            onLoaded(ERROR_TYPE);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -322,15 +300,32 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
                 if (mIndex == 0) {
                     return;
                 }
+                mCurrentIndex = 0;
                 changeTabBg(0);
+                changeList();
                 break;
             case R.id.waiting_btn:
                 if (mIndex == 1) {
                     return;
                 }
+                mCurrentIndex = 1;
                 changeTabBg(1);
+                changeList();
                 break;
         }
+    }
+
+    private void changeList() {
+        if (mCurrentIndex == 0) {
+            mAdapter = new PinnedHeaderExpandableAdapter(mInChildrenData,
+                    mInGroupData, mActivity.getApplicationContext(), mCurrentIndex);
+
+        } else if (mCurrentIndex == 1) {
+            mAdapter = new PinnedHeaderExpandableAdapter(mOutChildrenData,
+                    mOutGroupData, mActivity.getApplicationContext(), mCurrentIndex);
+        }
+        mXListView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void changeTabBg(int position) {

@@ -17,14 +17,6 @@
         android:src="@drawable/ic_launcher" />
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/admin_iv"
-        android:text="财路顺然" />
-
-    <TextView
         android:id="@+id/admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,15 +24,20 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/title"
+        android:textColor="@color/advice_current"
         android:layout_toRightOf="@+id/admin_iv"/>
 
     <TextView
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="陈老师hahahahahg"
         android:layout_marginLeft="5dp"
+        android:textColor="@color/indicator_text_color"
         android:layout_below="@+id/admin"
         android:layout_marginTop="5dp"
+        android:layout_toLeftOf="@+id/groupto"
+        android:layout_marginRight="5dp"
         android:layout_toRightOf="@+id/admin_iv"/>
 
     <TextView
@@ -49,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:background="@drawable/circle_shape"
+        android:background="@drawable/circle_shape_one"
         android:layout_centerVertical="true"
         android:textColor="@color/white"
         android:textSize="15sp"/>

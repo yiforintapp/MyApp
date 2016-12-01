@@ -81,6 +81,7 @@ public class WordLiveActivity extends BaseFragmentActivity {
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_advice_title);
         mNewAdviceFragment = new WordNewAdviceFragment();
+        mNewAdviceFragment.setType(mType);
         holder.fragment = mNewAdviceFragment;
         mHomeHolders[0] = holder;
 
