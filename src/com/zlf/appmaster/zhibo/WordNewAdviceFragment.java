@@ -6,15 +6,14 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
-import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.UniversalRequest;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.WordChatItem;
-import com.zlf.appmaster.model.WordNewAdviceItemInfo;
 import com.zlf.appmaster.model.WordNewAdviceInfo;
+import com.zlf.appmaster.model.WordNewAdviceItemInfo;
 import com.zlf.appmaster.ui.PinnedHeaderExpandableListView;
 import com.zlf.appmaster.ui.RippleView;
 
@@ -30,7 +29,6 @@ import java.util.List;
  */
 public class WordNewAdviceFragment extends BaseFragment implements View.OnClickListener {
 
-    private XListView mListView;
     private CircularProgressView mProgressBar;
     private View mEmptyView;
     private RippleView mRefreshView;
@@ -109,7 +107,7 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
 
     private void refreshLisrByButton() {
         mProgressBar.setVisibility(View.VISIBLE);
-        mListView.setVisibility(View.GONE);
+        mXListView.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.GONE);
         requestData();
     }
@@ -164,7 +162,7 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
         mXListView.stopLoadMore();
         mProgressBar.setVisibility(View.GONE);
         if (type == ERROR_TYPE) {
-            mListView.setVisibility(View.GONE);
+            mXListView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
         if (mCurrentIndex == 0) {
@@ -185,7 +183,6 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     private void requestData() {
         String url;
         url = LOAD_DATA + Constants.WORD_TYPE + mType;
-
         UniversalRequest.requestUrlWithTimeOut("Tag", mActivity, url,
                 new OnRequestListener() {
 

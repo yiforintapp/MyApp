@@ -22,6 +22,7 @@ import java.util.List;
 public class WordLiveActivity extends BaseFragmentActivity {
 
     public static final String ZHIBO_TYPE = "zhibo_type";
+    public static final String ZHIBO_TITLE = "zhibo_title";
     public static final String TYPE_ONE = "1";
     public static final String TYPE_TWO = "2";
 
@@ -40,6 +41,7 @@ public class WordLiveActivity extends BaseFragmentActivity {
 
     private ScaleImageDialog mDialog;
     private String mType;
+    private String mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +52,11 @@ public class WordLiveActivity extends BaseFragmentActivity {
 
     private void init() {
         mType = getIntent().getStringExtra(ZHIBO_TYPE);
+        mTitle = getIntent().getStringExtra(ZHIBO_TITLE);
         initFragment();
         initViewPager();
         mToolBar = (CommonToolbar) findViewById(R.id.word_toolbar);
+        mToolBar.setToolbarTitle(mTitle);
         mPagerSlidingTab = (PagerSlidingTabStrip) findViewById(R.id.word_tab_tabs);
         mPagerSlidingTab.setBackgroundResource(R.color.white);
         mPagerSlidingTab.setShouldExpand(true);

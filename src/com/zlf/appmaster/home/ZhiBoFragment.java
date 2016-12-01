@@ -146,26 +146,34 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                 }
                 break;
             case R.id.word_zhibo_layout_one:
+                String titleOne = LeoSettings.getString(Constants.ZHIBO_ROOM_ONE_TOPIC,
+                        getResources().getString(R.string.zhibo_room_one_topic));
                 if (AppUtil.isLogin()) {
                     intent = new Intent(mActivity, WordLiveActivity.class);
                     intent.putExtra(WordLiveActivity.ZHIBO_TYPE, WordLiveActivity.TYPE_ONE);
+                    intent.putExtra(WordLiveActivity.ZHIBO_TITLE, titleOne);
                     startActivity(intent);
                 } else {
                     intent = new Intent(mActivity, LoginActivity.class);
                     intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
                     intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TYPE, WordLiveActivity.TYPE_ONE);
+                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TITLE, titleOne);
                     startActivity(intent);
                 }
                 break;
             case R.id.word_zhibo_layout_two:
+                String titleTwo = LeoSettings.getString(Constants.ZHIBO_ROOM_TWO_TOPIC,
+                        getResources().getString(R.string.zhibo_room_two_topic));
                 if (AppUtil.isLogin()) {
                     intent = new Intent(mActivity, WordLiveActivity.class);
                     intent.putExtra(WordLiveActivity.ZHIBO_TYPE, WordLiveActivity.TYPE_TWO);
+                    intent.putExtra(WordLiveActivity.ZHIBO_TITLE, titleTwo);
                     startActivity(intent);
                 } else {
                     intent = new Intent(mActivity, LoginActivity.class);
                     intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
                     intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TYPE, WordLiveActivity.TYPE_TWO);
+                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TITLE, titleTwo);
                     startActivity(intent);
                 }
                 break;

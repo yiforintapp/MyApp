@@ -24,7 +24,6 @@ import com.zlf.appmaster.home.BaseFragmentActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
-import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.appmaster.zhibo.VideoLiveActivity;
@@ -43,6 +42,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     public static final String FROM_LIVE_BTN = "from_live_btn"; // 从视频直播间按钮跳转登录
     public static final String FROM_WORD_LIVE_BTN = "from_word_live_btn"; // 从文字直播间按钮跳转登录
     public static final String FROM_WORD_LIVE_BTN_TYPE = "from_word_live_btn_type"; // 从文字直播间按钮跳转登录type
+    public static final String FROM_WORD_LIVE_BTN_TITLE = "from_word_live_btn_title"; // 从文字直播间按钮跳转登录标题
 
     private EditText mUserEt;
     private ImageView mUserClean;
@@ -61,6 +61,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     private boolean mFormLiveBtn;
     private boolean mFromWordLiveBtn;
     private String mWordLiveType;
+    private String mWordLiveTitle;
 
 
     //用于处理消息的Handler
@@ -100,6 +101,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                 if (activity.mFromWordLiveBtn) {
                     Intent intent = new Intent(activity, WordLiveActivity.class);
                     intent.putExtra(WordLiveActivity.ZHIBO_TYPE, activity.mWordLiveType);
+                    intent.putExtra(WordLiveActivity.ZHIBO_TITLE, activity.mWordLiveTitle);
                     activity.startActivity(intent);
                 }
                 activity.finish();
@@ -158,6 +160,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         mFormLiveBtn = intent.getBooleanExtra(FROM_LIVE_BTN, false);
         mFromWordLiveBtn = intent.getBooleanExtra(FROM_WORD_LIVE_BTN, false);
         mWordLiveType = intent.getStringExtra(FROM_WORD_LIVE_BTN_TYPE);
+        mWordLiveTitle = intent.getStringExtra(FROM_WORD_LIVE_BTN_TITLE);
     }
 
     @Override
