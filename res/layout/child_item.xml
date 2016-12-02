@@ -19,7 +19,7 @@
             <TextView
                 android:id="@+id/name"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/child_item_bg_one"
                 android:gravity="center"
@@ -30,7 +30,7 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/child_item_bg_default"
                 android:gravity="center"
@@ -60,7 +60,7 @@
             <TextView
                 android:id="@+id/buy_sale"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/child_item_bg_default"
                 android:gravity="center"
@@ -71,7 +71,7 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/child_item_bg_default"
                 android:gravity="center"
@@ -101,7 +101,7 @@
             <TextView
                 android:id="@+id/time"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/child_item_bg_one"
                 android:gravity="center"
@@ -112,7 +112,7 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/child_item_bg_default"
                 android:gravity="center"
