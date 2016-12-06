@@ -422,10 +422,14 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
 
         for(int i = 0;i<mDataList.size();i++){
             WordMyAskItem item = mDataList.get(i);
-            if(!Utilities.isEmpty(item.getmCate())){
-                String cate = item.getmCate();
-                if(flag.equals(cate)){
-                    list.add(item);
+            if ("all".equals(flag)) {
+                list.add(item);
+            } else {
+                if (!Utilities.isEmpty(item.getmCate())) {
+                    String cate = item.getmCate();
+                    if (flag.equals(cate)) {
+                        list.add(item);
+                    }
                 }
             }
         }
