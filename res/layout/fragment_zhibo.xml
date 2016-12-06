@@ -66,16 +66,6 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/title"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/title"
-                android:text="直播中"
-                android:textColor="@color/cb2"
-                android:textSize="12dp" />
-
-            <TextView
                 android:id="@+id/content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/content"
                 android:layout_marginTop="5dp"
-                android:text="嘉宾：易福林 "
+                android:text="嘉宾：廖老师 "
                 android:textColor="@color/small_text"
                 android:textSize="12dp" />
 
@@ -158,15 +148,6 @@
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/word_title"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/word_title"
-                android:text="直播中"
-                android:textColor="@color/cb2"
-                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/word_content"
@@ -261,16 +242,6 @@
                 android:text="@string/zhibo_room_two_topic"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/word_title_two"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/word_title_two"
-                android:text="直播中"
-                android:textColor="@color/cb2"
-                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/word_content_two"
