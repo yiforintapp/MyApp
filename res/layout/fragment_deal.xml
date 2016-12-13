@@ -5,6 +5,10 @@
     android:background="@color/login_bg"
     android:orientation="vertical">
 
+    <com.zlf.appmaster.ui.CommonToolbar
+        android:id="@+id/stock_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/tv_changjiang"

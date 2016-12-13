@@ -1,8 +1,12 @@
 package com.zlf.appmaster.zhibo;
 
+import android.content.Intent;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
@@ -10,12 +14,14 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.UniversalRequest;
+import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.WordChatItem;
 import com.zlf.appmaster.model.WordNewAdviceInfo;
 import com.zlf.appmaster.model.WordNewAdviceItemInfo;
 import com.zlf.appmaster.ui.PinnedHeaderExpandableListView;
 import com.zlf.appmaster.ui.RippleView;
+import com.zlf.appmaster.utils.PrefConst;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,6 +50,7 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     public static final String LOAD_DATA = BASE_URL;
     private String mType;
     private int mCurrentIndex; //当前计划
+    public static final String ADMIN = "admin";
 
 
     private PinnedHeaderExpandableListView mXListView;
@@ -54,6 +61,9 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     private int expandFlag = -1;//控制列表的展开
     private PinnedHeaderExpandableAdapter mAdapter;
 
+    private RelativeLayout mRemindLayout;
+    private TextView mRemindCall;
+
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_advice_new_word;
@@ -62,7 +72,11 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
     @Override
     protected void onInitUI() {
         initViews();
-        initData();
+        if (mType.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
+                || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
+            mRemindLayout.setVisibility(View.GONE);
+            initData();
+        }
     }
 
     private void initViews() {
@@ -70,12 +84,17 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
         mXListView = (PinnedHeaderExpandableListView)findViewById(R.id.explistview);
         mCurrentBtn = (TextView) findViewById(R.id.current_btn);
         mWaitingBtn = (TextView) findViewById(R.id.waiting_btn);
+        mRemindLayout = (RelativeLayout) findViewById(R.id.no_permission_layout);
+        mRemindCall = (TextView) findViewById(R.id.remind_call);
+        mRemindCall.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
+        mRemindCall.getPaint().setAntiAlias(true);//抗锯齿
         mInGroupData = new ArrayList<WordNewAdviceInfo>();
         mOutGroupData = new ArrayList<WordNewAdviceInfo>();
         mInChildrenData = new ArrayList<List<WordNewAdviceItemInfo>>();
         mOutChildrenData = new ArrayList<List<WordNewAdviceItemInfo>>();
         mCurrentBtn.setOnClickListener(this);
         mWaitingBtn.setOnClickListener(this);
+        mRemindCall.setOnClickListener(this);
         mXListView.setGroupIndicator(null);
         mXListView.setPullLoadEnable(false);// 禁止下拉加载更多
         mXListView.setXListViewListener(new PinnedHeaderExpandableListView.IXListViewListener() {
@@ -308,6 +327,16 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
                 mCurrentIndex = 1;
                 changeTabBg(1);
                 changeList();
+                break;
+            case R.id.remind_call:
+                try {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    Uri data = Uri.parse("tel:" + Constants.CLIENT_PHONE);
+                    intent.setData(data);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }

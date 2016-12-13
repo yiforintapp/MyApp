@@ -396,4 +396,10 @@
     <string name="word_advice_title">最新计划</string>
     <string name="word_advice_current">持仓中计划</string>
     <string name="word_advice_waiting">待入场计划</string>
+
+    <string name="zhibo_remind_info">联系客服开通实盘后，重新登录账号，即可观看更多内容！</string>
+    <string name="zhibo_remind_info_call_title">客服热线：</string>
+    <string name="zhibo_remind_info_call_content">0755-3691-4014</string>
+
+    <string name="zhibo_bangding_one_toast">您绑定的是另外一个直播间！</string>
 </resources>

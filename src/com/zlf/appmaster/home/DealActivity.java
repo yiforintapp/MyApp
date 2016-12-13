@@ -12,6 +12,7 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.db.LeoSettings;
+import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.Utilities;
@@ -29,6 +30,7 @@ public class DealActivity extends Activity implements View.OnClickListener {
     private TextView mTvJump;
     private String mPackageName;
     private String mDownloadUrl;
+    private CommonToolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class DealActivity extends Activity implements View.OnClickListener {
 
     private  void onInitUI() {
         mTvJump = (TextView) findViewById(R.id.tv_changjiang);
+        mToolbar = (CommonToolbar) findViewById(R.id.stock_toolbar);
+        mToolbar.setToolbarTitle(getResources().getString(R.string.main_tab_trade));
         setListener();
 
         getSp();

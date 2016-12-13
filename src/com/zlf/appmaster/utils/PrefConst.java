@@ -100,4 +100,10 @@ public class PrefConst {
     public static final String CURRENT_SELECT_STOCK = "current_select_stock";  // 首页当前选中展示行情
 
     public static final String SELECT_STOCK = "select_stock";  // 首页选中行情
+
+    public static final String USER_ROOM = "user_room"; // 用户直播间  为空证明未绑定直播间
+    public static final String ZHIBO_ROOM_ONE_TOPIC = "zhibo_room_one_topic";
+    public static final String ZHIBO_ROOM_TWO_TOPIC = "zhibo_room_two_topic";
+    public static final String ZHIBO_ROOM_ONE_TEACHER = "zhibo_room_one_teacher";
+    public static final String ZHIBO_ROOM_TWO_TEACHER = "zhibo_room_two_teacher";
 }

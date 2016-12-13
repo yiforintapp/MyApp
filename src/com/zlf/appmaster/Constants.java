@@ -352,10 +352,5 @@ public class Constants {
     public static final String ZHIBO_IMG_DOMAIN = "http://own.zlf1688.com/";
     public static final String ZHIBO_ADMIN_IMG_DOMAIN = "http://zlf1688.com:2000/";
 
-    public static final String ZHIBO_ROOM_ONE_TOPIC = "zhibo_room_one_topic";
-    public static final String ZHIBO_ROOM_TWO_TOPIC = "zhibo_room_two_topic";
-    public static final String ZHIBO_ROOM_ONE_TEACHER = "zhibo_room_one_teacher";
-    public static final String ZHIBO_ROOM_TWO_TEACHER = "zhibo_room_two_teacher";
-
 
 }

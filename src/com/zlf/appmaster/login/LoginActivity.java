@@ -24,6 +24,7 @@ import com.zlf.appmaster.home.BaseFragmentActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
+import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.appmaster.zhibo.VideoLiveActivity;
@@ -63,6 +64,8 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
     private String mWordLiveType;
     private String mWordLiveTitle;
 
+    public final static String ADMIN = "admin"; // 客户经理账号
+
 
     //用于处理消息的Handler
     private static class DataHandler extends Handler {
@@ -91,18 +94,28 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                 Toast.makeText(activity, result, Toast.LENGTH_SHORT).show();
             } else {
                 result = msg.obj.toString();
+                String[] sResult = result.split("_");
                 LeoSettings.setString(PrefConst.USER_PHONE, activity.mUserEt.getText().toString().trim());
                 LeoSettings.setString(PrefConst.USER_PWD, activity.mPasswordEt.getText().toString().trim());
-                LeoSettings.setString(PrefConst.USER_NAME, result);
+//                LeoSettings.setString(PrefConst.USER_NAME, result);
+                LeoSettings.setString(PrefConst.USER_NAME, sResult[0]);
+                LeoSettings.setString(PrefConst.USER_ROOM, sResult[1].trim());
+                LeoLog.e("fgjfgjfgjfj", sResult[1].trim());
                 LeoSettings.setLong(PrefConst.LAST_LOGIN_TIME, System.currentTimeMillis());
                 if (activity.mFormLiveBtn) {
                     activity.startActivity(new Intent(activity, VideoLiveActivity.class));
                 }
                 if (activity.mFromWordLiveBtn) {
-                    Intent intent = new Intent(activity, WordLiveActivity.class);
-                    intent.putExtra(WordLiveActivity.ZHIBO_TYPE, activity.mWordLiveType);
-                    intent.putExtra(WordLiveActivity.ZHIBO_TITLE, activity.mWordLiveTitle);
-                    activity.startActivity(intent);
+                    if ((activity.mWordLiveType.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
+                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, "")))
+                            || "".equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
+                        Intent intent = new Intent(activity, WordLiveActivity.class);
+                        intent.putExtra(WordLiveActivity.ZHIBO_TYPE, activity.mWordLiveType);
+                        intent.putExtra(WordLiveActivity.ZHIBO_TITLE, activity.mWordLiveTitle);
+                        activity.startActivity(intent);
+                    } else {
+                        activity.showToast(activity.getResources().getString(R.string.zhibo_bangding_one_toast));
+                    }
                 }
                 activity.finish();
             }
