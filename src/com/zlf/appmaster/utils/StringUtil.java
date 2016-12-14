@@ -770,10 +770,15 @@ public class StringUtil {
 		return isValid;
 	}
 
-	public static boolean isPassWordValidate(String passWord) {
+	public static boolean isPassWordValidate(String passWord,int type) {
 
 		boolean isValid = false;
-		String expression = "^[0-9a-zA-Z]{6,20}";
+		String expression = null;
+		if (type == 0) {  // 登录不用限制长度
+			expression = "^[0-9a-zA-Z]{1,20}";
+		} else if (type == 1) {
+			expression = "^[0-9a-zA-Z]{6,20}";
+		}
 		CharSequence inputStr = passWord;
 		Pattern pattern = Pattern.compile(expression);
 		Matcher matcher = pattern.matcher(inputStr);

@@ -328,7 +328,7 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
 
             return false;
         }
-        if (!StringUtil.isPassWordValidate(s)) {
+        if (!StringUtil.isPassWordValidate(s, 1)) {
             showToast(getResources().getString(
                     R.string.login_pwd_unlocal));
 

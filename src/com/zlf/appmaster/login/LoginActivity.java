@@ -24,7 +24,6 @@ import com.zlf.appmaster.home.BaseFragmentActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
-import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.appmaster.zhibo.VideoLiveActivity;
@@ -100,7 +99,6 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 //                LeoSettings.setString(PrefConst.USER_NAME, result);
                 LeoSettings.setString(PrefConst.USER_NAME, sResult[0]);
                 LeoSettings.setString(PrefConst.USER_ROOM, sResult[1].trim());
-                LeoLog.e("fgjfgjfgjfj", sResult[1].trim());
                 LeoSettings.setLong(PrefConst.LAST_LOGIN_TIME, System.currentTimeMillis());
                 if (activity.mFormLiveBtn) {
                     activity.startActivity(new Intent(activity, VideoLiveActivity.class));
@@ -317,7 +315,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
             return false;
         }
 
-        if (!StringUtil.isPassWordValidate(password)) {
+        if (!StringUtil.isPassWordValidate(password, 0)) {
 
             showToast(getResources().getString(
                     R.string.login_pwd_unlocal));

@@ -820,14 +820,14 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
             return false;
         }
 
-        if (!StringUtil.isPassWordValidate(password)) {
+        if (!StringUtil.isPassWordValidate(password, 1)) {
             showToast(getResources().getString(
                     R.string.login_pwd_unlocal));
 
             return false;
         }
 
-        if (!StringUtil.isPassWordValidate(newPassword)) {
+        if (!StringUtil.isPassWordValidate(newPassword, 1)) {
             showToast(getResources().getString(
                     R.string.login_pwd_unlocal));
 
