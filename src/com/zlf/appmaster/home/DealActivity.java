@@ -41,6 +41,7 @@ public class DealActivity extends Activity implements View.OnClickListener {
 
 
     private  void onInitUI() {
+
         mTvJump = (TextView) findViewById(R.id.tv_changjiang);
         mToolbar = (CommonToolbar) findViewById(R.id.stock_toolbar);
         mToolbar.setToolbarTitle(getResources().getString(R.string.main_tab_trade));

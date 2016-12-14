@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <com.zlf.appmaster.ui.CommonToolbar
+<<<<<<< Updated upstream
         android:id="@+id/stock_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -13,32 +14,49 @@
     <TextView
         android:id="@+id/tv_changjiang"
         style="@style/dlg_right_button_txt_del"
+=======
+        android:id="@+id/appwallTB"
+>>>>>>> Stashed changes
         android:layout_width="match_parent"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/deal_click"
-        android:textColor="@drawable/deal_text_selector" />
+        android:layout_height="wrap_content"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:textSize="14dp"
-        android:text="@string/deal_v_1"
-        android:textColor="@color/gray" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/tv_changjiang"
+            style="@style/dlg_right_button_txt_del"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/deal_click"
+            android:textColor="@drawable/deal_text_selector" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:textSize="14dp"
-        android:layout_marginTop="5dp"
-        android:text="@string/deal_v_2"
-        android:textColor="@color/gray" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:textSize="14dp"
+            android:text="@string/deal_v_1"
+            android:textColor="@color/gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:textSize="14dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/deal_v_2"
+            android:textColor="@color/gray" />
+    </LinearLayout>
+
+
 
 
 </LinearLayout>
