@@ -72,7 +72,12 @@ public abstract class ISettings {
             PrefConst.USER_PWD,
             AppMasterPreference.PREF_FIRST_USE_APP,
             PrefConst.CURRENT_SELECT_STOCK,
-            PrefConst.SELECT_STOCK
+            PrefConst.SELECT_STOCK,
+            PrefConst.USER_ROOM,
+            PrefConst.ZHIBO_ROOM_ONE_TOPIC,
+            PrefConst.ZHIBO_ROOM_TWO_TOPIC,
+            PrefConst.ZHIBO_ROOM_ONE_TEACHER,
+            PrefConst.ZHIBO_ROOM_TWO_TEACHER
     };
     static Map<String, String> sGroupHigh = null;
 

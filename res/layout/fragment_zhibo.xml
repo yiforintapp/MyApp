@@ -25,7 +25,7 @@
             android:layout_alignParentLeft="true"
             android:orientation="vertical">
 
-            <com.zlf.appmaster.ui.CircleImageView
+            <ImageView
                 android:id="@+id/contactIV"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -108,12 +108,12 @@
             android:layout_alignParentLeft="true"
             android:orientation="vertical">
 
-            <com.zlf.appmaster.ui.CircleImageView
+            <ImageView
                 android:id="@+id/word_contactIV"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/text_zhibo" />
+                android:src="@drawable/room_one" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -203,12 +203,12 @@
             android:layout_alignParentLeft="true"
             android:orientation="vertical">
 
-            <com.zlf.appmaster.ui.CircleImageView
+            <ImageView
                 android:id="@+id/word_contactIV_two"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/text_zhibo" />
+                android:src="@drawable/room_two" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
