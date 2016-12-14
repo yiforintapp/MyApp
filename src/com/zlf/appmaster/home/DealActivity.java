@@ -23,7 +23,7 @@ import com.zlf.appmaster.utils.VolleyTool;
  * Created by Administrator on 2016/7/19.
  */
 public class DealActivity extends Activity implements View.OnClickListener {
-
+//
     public final static String TAG = "DealFragment";
     public final static String CHECK_CJLH = "check_cjlh";
     public final static long TWO_DAY = 86400000 * 2;
