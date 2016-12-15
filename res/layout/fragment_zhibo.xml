@@ -145,6 +145,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/zhibo_room_one_topic"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -240,6 +242,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/zhibo_room_two_topic"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 

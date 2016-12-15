@@ -1,5 +1,12 @@
 package com.zlf.appmaster.home;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.service.TimeService;
 import com.zlf.appmaster.tradetab.StockCOMEXFragment;
 import com.zlf.appmaster.tradetab.StockJinGuiFragment;
 import com.zlf.appmaster.tradetab.StockLMEFragment;
@@ -23,6 +31,7 @@ import com.zlf.appmaster.tradetab.StockZhiGoldFragment;
 import com.zlf.appmaster.ui.PagerSlidingTabStrip;
 import com.zlf.appmaster.ui.SelectPopupWindow;
 import com.zlf.appmaster.userTab.StockFavoriteFragment;
+import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +64,11 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
     private ArrayList<String> mTabs = new ArrayList<String>(3);
     private SelectPopupWindow mPoPupWindow;
 
+    private TimeService mService = null;
+    public final static String TIME_CHANGED_ACTION = "TIME_CHANGED_ACTION";
+    private boolean mIsBound = false;
+    private TimerReceiver mReceiver;
+
 
     @Override
     protected int layoutResourceId() {
@@ -74,7 +88,67 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
         mPagerSlidingTab.setIndicatorColor(getResources().getColor(R.color.indicator_select_color));
         mPagerSlidingTab.setDividerColor(getResources().getColor(R.color.ctc));
         mPagerSlidingTab.setViewPager(mViewPager);
+
+        if (mReceiver == null) {
+            mReceiver = new TimerReceiver();
+        }
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(TIME_CHANGED_ACTION);
+        mActivity.registerReceiver(mReceiver, filter);
+        Intent intent = new Intent(mActivity, TimeService.class);
+        intent.putExtra("from", "TradeTabFragment");
+        mActivity.bindService(intent, conn, Context.BIND_AUTO_CREATE);
+
     }
+
+    public void startTimer() {
+        if (mService != null) {
+            mService.startTimer();
+            LeoLog.e("TimeService", "startTimer");
+        }
+    }
+
+    public void stopTimer() {
+//        //停止服务
+//        if (mIsBound) {
+            if (mService != null) {
+                mService.stopTimer();
+                LeoLog.e("TimeService", "stopTimer");
+            }
+//        }
+    }
+
+    public static class TimerReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(TIME_CHANGED_ACTION)) {
+                LeoLog.e("TimeService", "TimerReceiver:" + intent.getStringExtra("time"));
+            }
+        }
+
+    }
+
+    private ServiceConnection conn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            mIsBound = true;
+            TimeService.MyBinder myBinder = (TimeService.MyBinder) binder;
+            mService = myBinder.getService();
+            LeoLog.e("TimeService", "ActivityA onServiceConnected");
+            int num = mService.getRandomNumber();
+            mService.startTimer();
+            LeoLog.e("TimeService", "ActivityA 中调用 TestService的getRandomNumber方法, 结果: " + num);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mIsBound = false;
+            LeoLog.e("TimeService", "ActivityA onServiceDisconnected");
+        }
+    };
+
+
 
     public void initFragment() {
         if (mTabs != null && mTabs.size() != 0) {
@@ -217,6 +291,21 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        LeoLog.e("TimeService", "onStop");
+        stopTimer();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startTimer();
+        LeoLog.e("TimeService", "onResume");
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         if (mActivity != null) {
@@ -225,6 +314,17 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
         if (mPoPupWindow != null && mPoPupWindow.isShowing()) {
             mPoPupWindow.dismiss();
             mPoPupWindow = null;
+        }
+
+        stopTimer();
+        if (mIsBound) {
+            mActivity.unbindService(conn);
+            mIsBound = false;
+            LeoLog.e("TimeService", "stopService");
+        }
+        if (mReceiver != null) {
+            mActivity.unregisterReceiver(mReceiver);
+            LeoLog.e("TimeService", "unregisterReceiver");
         }
     }
 }

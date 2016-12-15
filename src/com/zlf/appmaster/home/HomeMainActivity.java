@@ -339,6 +339,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
             if (mClickHangQin) {
                 changeTabBg(1);
                 mClickHangQin = false;
+                mTradeTabFragment.startTimer();
             }
         }
     }
@@ -383,6 +384,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 }
                 mViewPager.setCurrentItem(0);
                 changeTabBg(0);
+                mTradeTabFragment.stopTimer();
                 break;
             case R.id.home_tab:
                 if (mIndex == 1) {
@@ -392,6 +394,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 if (!mClickHangQin) {
                     changeTabBg(1);
                 }
+                mTradeTabFragment.startTimer();
                 break;
             case R.id.user_tab:
                 if (mIndex == 2) {
@@ -399,6 +402,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 }
                 mViewPager.setCurrentItem(2);
                 changeTabBg(2);
+                mTradeTabFragment.stopTimer();
                 break;
             case R.id.trade_tab:
                 if (mIndex == 3) {
@@ -406,6 +410,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 }
                 mViewPager.setCurrentItem(3);
                 changeTabBg(3);
+                mTradeTabFragment.stopTimer();
                 break;
             case R.id.personal_tab:
                 if (mIndex == 4) {
@@ -413,6 +418,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 }
                 mViewPager.setCurrentItem(4);
                 changeTabBg(4);
+                mTradeTabFragment.stopTimer();
                 break;
             case R.id.refresh:
                 Animation refreshAnim = AnimationUtils.loadAnimation(this, R.anim.refresh_anim);

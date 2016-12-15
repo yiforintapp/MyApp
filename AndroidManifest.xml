@@ -402,6 +402,7 @@
         <!-- 题材数据-->
         <meta-data android:value="V1435219796970" android:name="QINIU_DATA_VERSION_3"></meta-data>
 
+        <service android:name="com.zlf.appmaster.service.TimeService"></service>
     </application>
 
 </manifest>
