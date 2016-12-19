@@ -32,6 +32,7 @@ import com.zlf.appmaster.ui.PagerSlidingTabStrip;
 import com.zlf.appmaster.ui.SelectPopupWindow;
 import com.zlf.appmaster.userTab.StockFavoriteFragment;
 import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
 
     private boolean isHide = false;
     private ViewPager mViewPager;
-    private static HomeTabHolder[] mHomeHolders = new HomeTabHolder[8];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[8];
     private StockJinGuiFragment mStockJinGuiFragment;
     private StockQiLuFragment mStockQiLuFragment;
     private StockLMEFragment mStockLMEFragment;
@@ -119,7 +120,7 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
 //        }
     }
 
-    public static class TimerReceiver extends BroadcastReceiver {
+    public  class TimerReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -132,10 +133,10 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
 
     }
 
-    private static void requestDateFromSons() {
-        for(int i = 0;i<mHomeHolders.length;i++){
+    private  void requestDateFromSons() {
+        for(int i = 0; i < mHomeHolders.length;i ++){
             BaseFragment fragment = mHomeHolders[i].fragment;
-            if(fragment != null){
+            if(fragment != null && Utils.GetNetWorkStatus(mActivity)){
                 fragment.toRequestDate();
             }
         }
