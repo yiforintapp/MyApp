@@ -1,6 +1,7 @@
 package com.zlf.appmaster.tradetab;
 
 import android.content.Context;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +11,26 @@ import android.widget.TextView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.ui.stock.StockTextView;
+import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * Created by Huang on 2015/3/6.
  */
 public class StockQuotationsIndexAdapter extends BaseAdapter {
-
+    private static final int RED = 1;
+    private static final int GREEN = 2;
     private LayoutInflater mInflater;
     private Context mContext;
     private List<StockIndex> mIndexItems;           // A股的指数
+    private boolean isFlash = false;
+
+    public void setIsFlash(boolean isFlash) {
+        this.isFlash = isFlash;
+    }
 
     // 布局类型数量
     private static class ViewType {
@@ -109,7 +119,7 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
             }
         }
 
-        switch (viewType){
+        switch (viewType) {
             case ViewType.TYPE_2:
 
                 StockIndex item = (StockIndex) getItem(position);
@@ -117,17 +127,32 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
                     viewHolder.name.setText(item.getName());
 
                     int riseInfo = item.getRiseInfo();
-                    viewHolder.price.setRiseInfo(riseInfo);
-                    if (riseInfo > 0) {
-                        viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_rise_text_bg));
-                    } else if (riseInfo < 0) {
-                        viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_drop_text_bg));
-                    } else {
-                        viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_equal_text_bg));
-                    }
+                    double nowP = item.getNowIndex();
 
+                    viewHolder.price.setRiseInfo(riseInfo);
                     viewHolder.price.setText(item.getCurPriceFormat());
                     viewHolder.percentPrompt.setText(item.getCurPercentFormat());
+                    viewHolder.percentPrompt.saveRiseInfo(riseInfo);
+
+                    if (isFlash) {
+                        if (riseInfo > 0) {
+                            viewHolder.percentPrompt.setFlashText(item.getCurPercentFormat(), RED,nowP);
+                        } else if (riseInfo < 0) {
+                            viewHolder.percentPrompt.setFlashText(item.getCurPercentFormat(), GREEN,nowP);
+                        }
+
+                    } else {
+                        viewHolder.percentPrompt.setTextColor(mContext.getResources().getColor(R.color.white));
+                        if (riseInfo > 0) {
+                            viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_rise_text_bg));
+                        } else if (riseInfo < 0) {
+                            viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_drop_text_bg));
+                        } else {
+                            viewHolder.percentPrompt.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.stock_equal_text_bg));
+                        }
+                    }
+
+                    viewHolder.percentPrompt.saveNowPrice(nowP);
                 }
                 break;
         }

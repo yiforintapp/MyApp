@@ -29,6 +29,7 @@ import java.util.List;
  * Created by Administrator on 2016/8/15.
  */
 public class StockQiLuFragment extends BaseFragment {
+    private boolean isInUrFace = false;
     private static final String TAG = StockIndexFragment.class.getSimpleName();
     private Context mContext;
     private View mLayout;

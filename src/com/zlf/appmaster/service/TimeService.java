@@ -21,6 +21,8 @@ import java.util.Timer;
  * Created by Administrator on 2016/12/14.
  */
 public class TimeService extends Service {
+    private boolean isStart = false;
+    private static final long CHECKTIME = 10000;
     private String TAG = "TimeService";
     private Timer mTimer = null;
     private SimpleDateFormat mSdf = null;
@@ -58,17 +60,7 @@ public class TimeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeoLog.e(TAG, "TimeService->onCreate");
-        //初始化
-//        this.init();
-//        //定时器发送广播
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                //发送广播
-//                sendTimeChangedBroadcast();
-//            }
-//        }, 1000, 1000);
+        LeoLog.d(TAG, "TimeService->onCreate");
     }
 
     /**
@@ -96,15 +88,11 @@ public class TimeService extends Service {
      * 发送广播，通知UI层时间已改变
      */
     private void sendTimeChangedBroadcast() {
-        mBundle.putString("time", getTime());
-        LeoLog.e(TAG, "aa");
-        mTimeIntent.putExtras(mBundle);
-        LeoLog.e(TAG, "bb");
+
         mTimeIntent.setAction(TradeTabFragment.TIME_CHANGED_ACTION);
-        LeoLog.e(TAG, "cc");
         //发送广播，通知UI层时间改变了
         sendBroadcast(mTimeIntent);
-        LeoLog.e(TAG, "send");
+        LeoLog.d(TAG, "send");
     }
 
     /**
@@ -118,7 +106,7 @@ public class TimeService extends Service {
 
     @Override
     public ComponentName startService(Intent service) {
-        LeoLog.i(TAG, "TimeService->startService");
+        LeoLog.d(TAG, "TimeService->startService");
         return super.startService(service);
     }
 
@@ -135,36 +123,38 @@ public class TimeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LeoLog.e(TAG, "TestService -> onStartCommand, startId: " + startId + ", Thread: " + Thread.currentThread().getName());
+        LeoLog.d(TAG, "TestService -> onStartCommand, startId: " + startId + ", Thread: " + Thread.currentThread().getName());
         return START_NOT_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        LeoLog.e(TAG, "TestService -> onBind, Thread: " + Thread.currentThread().getName());
+        LeoLog.d(TAG, "TestService -> onBind, Thread: " + Thread.currentThread().getName());
         return binder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        LeoLog.e(TAG, "TestService -> onUnbind, from:" + intent.getStringExtra("from"));
+        LeoLog.d(TAG, "TestService -> onUnbind, from:" + intent.getStringExtra("from"));
         return false;
     }
 
     @Override
     public void onDestroy() {
-        LeoLog.e(TAG, "TestService -> onDestroy, Thread: " + Thread.currentThread().getName());
+        LeoLog.d(TAG, "TestService -> onDestroy, Thread: " + Thread.currentThread().getName());
         stopTimer();
         super.onDestroy();
     }
 
     public void stopTimer() {
+        isStart = false;
         if (mTimer != null) {
             mTimer.purge();
             mTimer.cancel();
             mTimer = null;
         }
         if (mHandle != null) {
+            mHandle.removeMessages(REFRESH_TIME);
             mHandle = null;
         }
     }
@@ -175,23 +165,19 @@ public class TimeService extends Service {
     }
 
     public void startTimer() {
-        LeoLog.e(TAG, "startTimer init");
+        LeoLog.d(TAG, "startTimer init");
         this.init();
-        //定时器发送广播
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                //发送广播
-//            }
-//        }, 1000, 1000);
-        sendMessage();
+        if(!isStart){
+            sendMessage();
+            isStart = true;
+        }
     }
 
     private void sendMessage() {
         if (mHandle != null) {
             Message message = mHandle.obtainMessage();
             message.what = REFRESH_TIME;
-            mHandle.sendMessageDelayed(message, 2000);
+            mHandle.sendMessageDelayed(message, CHECKTIME);
         }
     }
 }

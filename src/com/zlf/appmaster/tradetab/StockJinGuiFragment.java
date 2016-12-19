@@ -3,6 +3,7 @@ package com.zlf.appmaster.tradetab;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -20,11 +21,14 @@ import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 /**
  * Created by Administrator on 2016/8/15.
  */
-public class StockJinGuiFragment extends BaseFragment {
+public class StockJinGuiFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+    private boolean isInUrFace = false;
+    private boolean isFlash = false;
     private static final String TAG = StockIndexFragment.class.getSimpleName();
     private Context mContext;
     private View mLayout;
@@ -38,38 +42,22 @@ public class StockJinGuiFragment extends BaseFragment {
     private View mEmptyView;
     private RippleView mRefreshView;
 
-//    private boolean loadCache(){
-//        boolean ret = false;
-//        JSONObject jsonCache = StockJsonCache.loadFromFile(mActivity, StockJsonCache.CACHEID_QUOTATIONS_INDEX);
-//
-//        if (jsonCache != null){
-//
-//            try {
-//
-//                JSONObject data = jsonCache.getJSONObject("data");
-//
-//                List<StockIndex> stockIndexes = StockIndex
-//                        .resolveAllIndexJsonObject(data.getJSONArray("indexs"));
-//                mIndexData.clear();
-//                mIndexData.addAll(stockIndexes);
-//
-//                List<StockIndex> foreignDelayIndexes = StockIndex
-//                        .resolveAllIndexJsonObject(data.getJSONArray("slowIndexs"));        // 国外的延迟指数
-//                mForeignIndexData.clear();
-//                mForeignIndexData.addAll(foreignDelayIndexes);
-//
-//                ret = true;
-//
-//                mStockQuotationsIndexAdapter.notifyDataSetChanged();
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        return ret;
-//    }
-    private void initViews(View view){
+    public android.os.Handler mHandler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    mStockQuotationsIndexAdapter.setIsFlash(isFlash);
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+
+    private void initViews(View view) {
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
@@ -86,47 +74,16 @@ public class StockJinGuiFragment extends BaseFragment {
         mForeignIndexData = new ArrayList<StockIndex>();
         mStockQuotationsIndexAdapter = new StockQuotationsIndexAdapter(mActivity, mIndexData, mForeignIndexData);
         mListView.setAdapter(mStockQuotationsIndexAdapter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position - 1);
-                LeoLog.d("testClick","itemClick : " + position);
-                if(position == 1){
-                    return;
-                }
-
-                if (null != item) {
-
-                    Class targetClass;
-
-                    targetClass = StockIndexDetailActivity.class;
-                    Intent intent = new Intent(mActivity, targetClass);
-
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, item.getCode());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_OPEN_INDEX, item.getTodayIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_YESTERDAY_INDEX, item.getYesterdayIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_NOW_INDEX, item.getNowIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_HIGH_INDEX, item.getHighestIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_LOW_INDEX, item.getLowestIndex());
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.JIN_GUI_INFO_MINUTE_PRONAME);
-                    intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.JIN_GUI_INFO_KLINE_PRONAME);
-                    mActivity.startActivity(intent);
-
-                }
-            }
-        });
+        mListView.setOnItemClickListener(this);
 
         mListView.setPullLoadEnable(false);
         mListView.setPullRefreshEnable(true);
         mListView.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
-                if (mProgressBar.getVisibility() == View.VISIBLE){  // 主进程正在更新
+                if (mProgressBar.getVisibility() == View.VISIBLE) {  // 主进程正在更新
                     onLoaded();
-                }
-                else{
+                } else {
                     requestData();
                 }
             }
@@ -147,30 +104,34 @@ public class StockJinGuiFragment extends BaseFragment {
         requestData();
     }
 
-    private void initData(){
+    private void initData() {
         mProgressBar.setVisibility(View.VISIBLE);
-
         requestData();
     }
 
     private void onLoaded() {
         mListView.stopRefresh();
         mListView.stopLoadMore();
+        isFlash = false;
     }
 
     /**
      * 请求数据
      */
-    private void requestData(){
+    private void requestData() {
 
         mStockClient.requestNewIndexAll(new OnRequestListener() {
             @Override
             public void onDataFinish(Object object) {
-                Object[] objectArray = (Object[])object;
+                Object[] objectArray = (Object[]) object;
                 mIndexData.clear();
                 mIndexData.addAll((List<StockIndex>) objectArray[0]);
-                mIndexData.add(0,null);
+                mIndexData.add(0, null);
+                mStockQuotationsIndexAdapter.setIsFlash(isFlash);
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
+                mHandler.sendEmptyMessageDelayed(1,300);
+
+
 
                 mProgressBar.setVisibility(View.GONE);
                 if (mIndexData != null && mIndexData.size() > 0) {
@@ -200,13 +161,18 @@ public class StockJinGuiFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-//        MobclickAgent.onPageStart(TAG);
+        isInUrFace = true;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        MobclickAgent.onPageEnd( TAG );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isInUrFace = false;
     }
 
     @Override
@@ -222,6 +188,44 @@ public class StockJinGuiFragment extends BaseFragment {
 
 //        loadCache();
         initData();
+    }
+
+    public void toRequestDate() {
+        if (isInUrFace) {
+            LeoLog.d("TimeService", "长江联合Fragment request");
+            isFlash = true;
+            requestData();
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        StockIndex item = (StockIndex) mStockQuotationsIndexAdapter.getItem(position - 1);
+        LeoLog.d("testClick", "itemClick : " + position);
+        if (position == 1) {
+            return;
+        }
+
+        if (null != item) {
+
+            Class targetClass;
+
+            targetClass = StockIndexDetailActivity.class;
+            Intent intent = new Intent(mActivity, targetClass);
+
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXCODE, item.getCode());
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_INDEXNAME, item.getName());
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_OPEN_INDEX, item.getTodayIndex());
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_YESTERDAY_INDEX, item.getYesterdayIndex());
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_NOW_INDEX, item.getNowIndex());
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_HIGH_INDEX, item.getHighestIndex());
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_LOW_INDEX, item.getLowestIndex());
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_GUO_XIN, true);
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_MINITE_WHAT, Constants.JIN_GUI_INFO_MINUTE_PRONAME);
+            intent.putExtra(StockIndexDetailActivity.INTENT_FLAG_TAB_KLINE_WHAT, Constants.JIN_GUI_INFO_KLINE_PRONAME);
+            mActivity.startActivity(intent);
+
+        }
     }
 }
 

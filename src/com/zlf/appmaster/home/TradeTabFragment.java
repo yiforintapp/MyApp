@@ -41,8 +41,9 @@ import java.util.List;
  */
 public class TradeTabFragment extends BaseFragment implements View.OnClickListener {
 
+    private boolean isHide = false;
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[8];
+    private static HomeTabHolder[] mHomeHolders = new HomeTabHolder[8];
     private StockJinGuiFragment mStockJinGuiFragment;
     private StockQiLuFragment mStockQiLuFragment;
     private StockLMEFragment mStockLMEFragment;
@@ -113,7 +114,7 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
 //        if (mIsBound) {
             if (mService != null) {
                 mService.stopTimer();
-                LeoLog.e("TimeService", "stopTimer");
+                LeoLog.d("TimeService", "stopTimer");
             }
 //        }
     }
@@ -123,7 +124,19 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(TIME_CHANGED_ACTION)) {
-                LeoLog.e("TimeService", "TimerReceiver:" + intent.getStringExtra("time"));
+                LeoLog.d("TimeService", "copy that , do it now");
+                requestDateFromSons();
+            }
+        }
+
+
+    }
+
+    private static void requestDateFromSons() {
+        for(int i = 0;i<mHomeHolders.length;i++){
+            BaseFragment fragment = mHomeHolders[i].fragment;
+            if(fragment != null){
+                fragment.toRequestDate();
             }
         }
 
@@ -293,7 +306,8 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onStop() {
         super.onStop();
-        LeoLog.e("TimeService", "onStop");
+        isHide = true;
+        LeoLog.d("TimeService", "onStop");
         stopTimer();
     }
 
@@ -301,8 +315,9 @@ public class TradeTabFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
+        isHide = false;
         startTimer();
-        LeoLog.e("TimeService", "onResume");
+        LeoLog.d("TimeService", "onResume");
     }
 
     @Override

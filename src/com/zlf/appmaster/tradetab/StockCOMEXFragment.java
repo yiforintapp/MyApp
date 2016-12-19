@@ -29,6 +29,7 @@ import java.util.List;
  * Created by Administrator on 2016/8/15.
  */
 public class StockCOMEXFragment extends BaseFragment {
+    private boolean isInUrFace = false;
     private static final String TAG = StockIndexFragment.class.getSimpleName();
     private Context mContext;
     private View mLayout;
@@ -42,11 +43,11 @@ public class StockCOMEXFragment extends BaseFragment {
     private View mEmptyView;
     private RippleView mRefreshView;
 
-    private boolean loadCache(){
+    private boolean loadCache() {
         boolean ret = false;
         JSONObject jsonCache = StockJsonCache.loadFromFile(mActivity, StockJsonCache.CACHEID_QUOTATIONS_INDEX);
 
-        if (jsonCache != null){
+        if (jsonCache != null) {
 
             try {
 
@@ -56,7 +57,7 @@ public class StockCOMEXFragment extends BaseFragment {
                         .resolveAllIndexJsonObject(data.getJSONArray("indexs"));
                 mIndexData.clear();
                 mIndexData.addAll(stockIndexes);
-                mIndexData.add(0,null);
+                mIndexData.add(0, null);
                 List<StockIndex> foreignDelayIndexes = StockIndex
                         .resolveAllIndexJsonObject(data.getJSONArray("slowIndexs"));        // 国外的延迟指数
                 mForeignIndexData.clear();
@@ -73,7 +74,8 @@ public class StockCOMEXFragment extends BaseFragment {
 
         return ret;
     }
-    private void initViews(View view){
+
+    private void initViews(View view) {
 
         mListView = (XListView) findViewById(R.id.quotations_content_list);
         mProgressBar = (CircularProgressView) findViewById(R.id.content_loading);
@@ -93,9 +95,9 @@ public class StockCOMEXFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                StockIndex item = (StockIndex)mStockQuotationsIndexAdapter.getItem(position - 1);
-                LeoLog.d("testClick","itemClick : " + position);
-                if(position == 1){
+                StockIndex item = (StockIndex) mStockQuotationsIndexAdapter.getItem(position - 1);
+                LeoLog.d("testClick", "itemClick : " + position);
+                if (position == 1) {
                     return;
                 }
 
@@ -127,10 +129,9 @@ public class StockCOMEXFragment extends BaseFragment {
         mListView.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
-                if (mProgressBar.getVisibility() == View.VISIBLE){  // 主进程正在更新
+                if (mProgressBar.getVisibility() == View.VISIBLE) {  // 主进程正在更新
                     onLoaded();
-                }
-                else{
+                } else {
                     requestData();
                 }
             }
@@ -151,7 +152,7 @@ public class StockCOMEXFragment extends BaseFragment {
         requestData();
     }
 
-    private void initData(){
+    private void initData() {
         mProgressBar.setVisibility(View.VISIBLE);
 
         requestData();
@@ -165,15 +166,15 @@ public class StockCOMEXFragment extends BaseFragment {
     /**
      * 请求数据
      */
-    private void requestData(){
+    private void requestData() {
 
         mStockClient.requestNewIndexAll(new OnRequestListener() {
             @Override
             public void onDataFinish(Object object) {
-                Object[] objectArray = (Object[])object;
+                Object[] objectArray = (Object[]) object;
                 mIndexData.clear();
                 mIndexData.addAll((List<StockIndex>) objectArray[0]);
-                mIndexData.add(0,null);
+                mIndexData.add(0, null);
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
 
                 mProgressBar.setVisibility(View.GONE);
@@ -204,6 +205,7 @@ public class StockCOMEXFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        isInUrFace = true;
 //        MobclickAgent.onPageStart(TAG);
     }
 
@@ -211,6 +213,12 @@ public class StockCOMEXFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
 //        MobclickAgent.onPageEnd( TAG );
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        isInUrFace = false;
     }
 
     @Override
@@ -226,6 +234,12 @@ public class StockCOMEXFragment extends BaseFragment {
 
 //        loadCache();
         initData();
+    }
+
+    public void toRequestDate() {
+        if (isInUrFace) {
+            LeoLog.d("TimeService", "COMEX Fragment get");
+        }
     }
 }
 
