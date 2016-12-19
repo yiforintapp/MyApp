@@ -80,7 +80,7 @@ public class StockTextView extends TextView {
 
     public void setFlashText(String text, int type, double nowP) {
 
-        LeoLog.e("TimeService", "text: " + text +  "----------" + "now : " + nowP + "----- save : " + mNowPrice);
+        LeoLog.d("TimeService", "text: " + text +  "----------" + "now : " + nowP + "----- save : " + mNowPrice);
 
         if (mRiseInfo == 0) {
             setTextColor(mContext.getResources().getColor(R.color.white));
