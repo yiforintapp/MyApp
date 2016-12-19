@@ -21,7 +21,6 @@ import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 /**
  * Created by Administrator on 2016/8/15.
@@ -129,9 +128,9 @@ public class StockJinGuiFragment extends BaseFragment implements AdapterView.OnI
                 mIndexData.add(0, null);
                 mStockQuotationsIndexAdapter.setIsFlash(isFlash);
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
-                mHandler.sendEmptyMessageDelayed(1,300);
-
-
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessageDelayed(1, 300);
+                }
 
                 mProgressBar.setVisibility(View.GONE);
                 if (mIndexData != null && mIndexData.size() > 0) {

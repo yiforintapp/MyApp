@@ -3,6 +3,7 @@ package com.zlf.appmaster.tradetab;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -10,7 +11,6 @@ import com.handmark.pulltorefresh.library.xlistview.CircularProgressView;
 import com.handmark.pulltorefresh.library.xlistview.XListView;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
-import com.zlf.appmaster.cache.StockJsonCache;
 import com.zlf.appmaster.client.OnRequestListener;
 import com.zlf.appmaster.client.StockQuotationsClient;
 import com.zlf.appmaster.fragment.BaseFragment;
@@ -18,9 +18,6 @@ import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.utils.LeoLog;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +27,7 @@ import java.util.List;
  */
 public class StockCOMEXFragment extends BaseFragment {
     private boolean isInUrFace = false;
+    private boolean isFlash = false;
     private static final String TAG = StockIndexFragment.class.getSimpleName();
     private Context mContext;
     private View mLayout;
@@ -43,37 +41,19 @@ public class StockCOMEXFragment extends BaseFragment {
     private View mEmptyView;
     private RippleView mRefreshView;
 
-    private boolean loadCache() {
-        boolean ret = false;
-        JSONObject jsonCache = StockJsonCache.loadFromFile(mActivity, StockJsonCache.CACHEID_QUOTATIONS_INDEX);
-
-        if (jsonCache != null) {
-
-            try {
-
-                JSONObject data = jsonCache.getJSONObject("data");
-
-                List<StockIndex> stockIndexes = StockIndex
-                        .resolveAllIndexJsonObject(data.getJSONArray("indexs"));
-                mIndexData.clear();
-                mIndexData.addAll(stockIndexes);
-                mIndexData.add(0, null);
-                List<StockIndex> foreignDelayIndexes = StockIndex
-                        .resolveAllIndexJsonObject(data.getJSONArray("slowIndexs"));        // 国外的延迟指数
-                mForeignIndexData.clear();
-                mForeignIndexData.addAll(foreignDelayIndexes);
-
-                ret = true;
-
-                mStockQuotationsIndexAdapter.notifyDataSetChanged();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+    public android.os.Handler mHandler = new android.os.Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    mStockQuotationsIndexAdapter.setIsFlash(isFlash);
+                    break;
+                default:
+                    break;
             }
+            super.handleMessage(msg);
         }
-
-        return ret;
-    }
+    };
 
     private void initViews(View view) {
 
@@ -161,6 +141,7 @@ public class StockCOMEXFragment extends BaseFragment {
     private void onLoaded() {
         mListView.stopRefresh();
         mListView.stopLoadMore();
+        isFlash = false;
     }
 
     /**
@@ -175,7 +156,11 @@ public class StockCOMEXFragment extends BaseFragment {
                 mIndexData.clear();
                 mIndexData.addAll((List<StockIndex>) objectArray[0]);
                 mIndexData.add(0, null);
+                mStockQuotationsIndexAdapter.setIsFlash(isFlash);
                 mStockQuotationsIndexAdapter.notifyDataSetChanged();
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessageDelayed(1, 300);
+                }
 
                 mProgressBar.setVisibility(View.GONE);
                 if (mIndexData != null && mIndexData.size() > 0) {
@@ -206,7 +191,6 @@ public class StockCOMEXFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         isInUrFace = true;
-//        MobclickAgent.onPageStart(TAG);
     }
 
     @Override
@@ -219,6 +203,14 @@ public class StockCOMEXFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         isInUrFace = false;
+    }
+
+    public void toRequestDate() {
+        if (isInUrFace) {
+            LeoLog.d("TimeService", "COMEX Fragment request");
+            isFlash = true;
+            requestData();
+        }
     }
 
     @Override
@@ -236,10 +228,5 @@ public class StockCOMEXFragment extends BaseFragment {
         initData();
     }
 
-    public void toRequestDate() {
-        if (isInUrFace) {
-            LeoLog.d("TimeService", "COMEX Fragment get");
-        }
-    }
 }
 

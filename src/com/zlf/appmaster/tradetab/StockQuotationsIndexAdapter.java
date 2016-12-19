@@ -1,7 +1,6 @@
 package com.zlf.appmaster.tradetab;
 
 import android.content.Context;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,8 @@ import android.widget.TextView;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.ui.stock.StockTextView;
-import com.zlf.appmaster.utils.LeoLog;
 
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 /**
  * Created by Huang on 2015/3/6.
@@ -127,7 +123,7 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
                     viewHolder.name.setText(item.getName());
 
                     int riseInfo = item.getRiseInfo();
-                    double nowP = item.getNowIndex();
+                    double nowP = Double.parseDouble(item.getCurPriceFormat());
 
                     viewHolder.price.setRiseInfo(riseInfo);
                     viewHolder.price.setText(item.getCurPriceFormat());
@@ -135,12 +131,12 @@ public class StockQuotationsIndexAdapter extends BaseAdapter {
                     viewHolder.percentPrompt.saveRiseInfo(riseInfo);
 
                     if (isFlash) {
-                        if (riseInfo > 0) {
-                            viewHolder.percentPrompt.setFlashText(item.getCurPercentFormat(), RED,nowP);
-                        } else if (riseInfo < 0) {
-                            viewHolder.percentPrompt.setFlashText(item.getCurPercentFormat(), GREEN,nowP);
-                        }
 
+                        if (riseInfo > 0) {
+                            viewHolder.percentPrompt.setFlashText(item.getCurPercentFormat(), RED, nowP);
+                        } else if (riseInfo < 0) {
+                            viewHolder.percentPrompt.setFlashText(item.getCurPercentFormat(), GREEN, nowP);
+                        }
                     } else {
                         viewHolder.percentPrompt.setTextColor(mContext.getResources().getColor(R.color.white));
                         if (riseInfo > 0) {
