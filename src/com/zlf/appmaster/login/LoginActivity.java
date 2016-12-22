@@ -24,6 +24,7 @@ import com.zlf.appmaster.home.BaseFragmentActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
+import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.appmaster.zhibo.VideoLiveActivity;
@@ -187,7 +188,11 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                 mPasswordClean.setVisibility(View.INVISIBLE);
                 break;
             case R.id.login:
-                login();
+                if (AppUtil.hasInternet(this)) {
+                    login();
+                } else {
+                    showToast(getResources().getString(R.string.feedback_upload_err));
+                }
                 break;
             case R.id.register:
                 intent = new Intent(this, RegisterActivity.class);

@@ -24,6 +24,7 @@ import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
+import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.StringUtil;
 import com.zlf.tools.animator.Animator;
 import com.zlf.tools.animator.AnimatorSet;
@@ -277,7 +278,11 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
                 break;
             case R.id.register_complete_ripple:
                 if (isValidate()) {
-                    register();
+                    if (AppUtil.hasInternet(this)) {
+                        register();
+                    } else {
+                        showToast(getResources().getString(R.string.feedback_upload_err));
+                    }
                 }
                 break;
             case R.id.user_name_close_iv:

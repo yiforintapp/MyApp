@@ -24,9 +24,6 @@ public class LoginHttpUtil {
     public static void sendLoginHttpRequest(Context context, final String address, String tag, String phoneNumber, String pwd, String userName, final HttpCallBackListener listener) throws UnsupportedEncodingException {
         if (!AppUtil.hasInternet(context)){
             //这里写相应的网络设置处理
-            if (listener != null){
-                listener.onFinish("网络连接错误");
-            }
             return;
         }
 

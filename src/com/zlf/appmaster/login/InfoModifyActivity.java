@@ -22,6 +22,7 @@ import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.ui.ExpandableLayout;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.ui.dialog.LoginProgressDialog;
+import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.StringUtil;
 
@@ -242,7 +243,11 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
                 showToast(getResources().getString(R.string.error_same_pwd));
                 return;
             }
-            reset(resetName);
+            if (AppUtil.hasInternet(this)) {
+                reset(resetName);
+            } else {
+                showToast(getResources().getString(R.string.feedback_upload_err));
+            }
 
         }
     }
