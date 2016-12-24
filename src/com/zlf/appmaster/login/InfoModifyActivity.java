@@ -223,7 +223,11 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
     private void resetInfo(boolean resetName) {
         if (resetName) {
             if (isNameValidate()) {
-                reset(resetName);
+                if (AppUtil.hasInternet(this)) {
+                    reset(resetName);
+                } else {
+                    showToast(getResources().getString(R.string.feedback_upload_err));
+                }
             }
         } else {
             String password = mOldPwdEt.getText().toString().trim();

@@ -101,7 +101,7 @@
         <ImageView
             android:id="@+id/live_iv"
             style="@style/home_shortcut_iv"
-            android:src="@drawable/icon_discover_live_room"/>
+            android:src="@drawable/home_zhibo"/>
 
 
         <TextView
