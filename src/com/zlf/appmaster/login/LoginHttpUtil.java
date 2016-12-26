@@ -63,9 +63,6 @@ public class LoginHttpUtil {
     public static void sendBannerHttpRequest(Context context, final String address, final HttpCallBackListener listener) {
         if (!AppUtil.hasInternet(context)){
             //这里写相应的网络设置处理
-            if (listener != null){
-                listener.onFinish("网络连接错误");
-            }
             return;
         }
 
