@@ -33,7 +33,7 @@ import com.zlf.appmaster.model.HomeBannerInfo;
 import com.zlf.appmaster.model.WinTopItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.stockIndex.StockIndexDetailActivity;
-import com.zlf.appmaster.ui.BounceBackViewPager;
+import com.zlf.appmaster.ui.BounceBackViewPagerTwo;
 import com.zlf.appmaster.ui.HorizontalListView;
 import com.zlf.appmaster.ui.MyViewPager;
 import com.zlf.appmaster.ui.RippleView;
@@ -80,7 +80,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     private Banner mBanner;
     private List<StockIndex> mData;
     private StockQuotationsClient mStockClient;
-    private BounceBackViewPager mViewPager;
+    private BounceBackViewPagerTwo mViewPager;
     private ScrollPageAdapter mPageAdapter;
     private ScrollPageChangeListener mPageChangeLister;
     private List<View> mViews;
@@ -244,7 +244,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
     protected void onInitUI() {
         mHandler = new DataHandler(this);
         mStockClient = StockQuotationsClient.getInstance(mActivity);
-        mViewPager = (BounceBackViewPager) findViewById(R.id.my_viewpager);
+        mViewPager = (BounceBackViewPagerTwo) findViewById(R.id.my_viewpager);
         mViews = new ArrayList<View>();
         mAllItems = new ArrayList<StockIndex>();
         mIndicator = (LinearLayout) findViewById(R.id.my_indicator);

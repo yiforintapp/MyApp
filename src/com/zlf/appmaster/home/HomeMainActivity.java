@@ -225,7 +225,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
                 mUserTabIv.setImageResource(R.drawable.icon_trade_pre);
                 changeUnSelectBg(mIndex);
                 mIndex = 2;
-                mCenterTitle.setText(getResources().getString(R.string.main_tab_trade));
+                mCenterTitle.setText(getResources().getString(R.string.main_tab_zhibo));
                 mRefreshRipple.setVisibility(View.GONE);
                 break;
             case 3:

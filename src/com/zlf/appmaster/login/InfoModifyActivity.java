@@ -175,7 +175,7 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.modify_user_name:
                 if (mHasShow == SHOW_DEFAULT) {
-                    mExpandableTop.toggleExpansion();
+                    mExpandableTop.setExpanded(true);
                     mHasShow = SHOW_NAME;
                 } else if (mHasShow == SHOW_NAME) {
                     mExpandableTop.setExpanded(false);
@@ -188,7 +188,7 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
                 break;
             case R.id.modify_pwd:
                 if (mHasShow == SHOW_DEFAULT) {
-                    mExpandableBottom.toggleExpansion();
+                    mExpandableBottom.setExpanded(true);
                     mHasShow = SHOW_PWD;
                 } else if (mHasShow == SHOW_NAME) {
                     mExpandableTop.setExpanded(false);

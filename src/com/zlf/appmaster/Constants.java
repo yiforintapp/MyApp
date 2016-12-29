@@ -358,5 +358,7 @@ public class Constants {
     public static final String ZHIBO_IMG_DOMAIN = "http://own.zlf1688.com/";
     public static final String ZHIBO_ADMIN_IMG_DOMAIN = "http://zlf1688.com:2000/";
 
+    //长江微盘官网
+    public static final String CHANGJIANG_WEIPAN_URL = "http://w748.cjmex.cn/vexchange/home";
 
 }

@@ -1,6 +1,7 @@
 package com.zlf.appmaster.home;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.client.QStringRequest;
 import com.zlf.appmaster.db.LeoSettings;
+import com.zlf.appmaster.hometab.HomeTabTopWebActivity;
 import com.zlf.appmaster.ui.CommonToolbar;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
@@ -32,6 +34,8 @@ public class DealActivity extends Activity implements View.OnClickListener {
     private String mDownloadUrl;
     private CommonToolbar mToolbar;
 
+    private TextView mWeiPan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,7 @@ public class DealActivity extends Activity implements View.OnClickListener {
     private  void onInitUI() {
 
         mTvJump = (TextView) findViewById(R.id.tv_changjiang);
+        mWeiPan = (TextView) findViewById(R.id.tv_weipan);
         mToolbar = (CommonToolbar) findViewById(R.id.stock_toolbar);
         mToolbar.setToolbarTitle(getResources().getString(R.string.main_tab_trade));
         setListener();
@@ -103,6 +108,7 @@ public class DealActivity extends Activity implements View.OnClickListener {
 
     private void setListener() {
         mTvJump.setOnClickListener(this);
+        mWeiPan.setOnClickListener(this);
     }
 
     @Override
@@ -111,6 +117,15 @@ public class DealActivity extends Activity implements View.OnClickListener {
             case R.id.tv_changjiang:
 
                jumpToCJLH();
+                break;
+            case R.id.tv_weipan:
+                Intent intent = new Intent(this, HomeTabTopWebActivity.class);
+                try {
+                    intent.putExtra(HomeTabTopWebActivity.WEB_URL, Constants.CHANGJIANG_WEIPAN_URL);
+                    this.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }

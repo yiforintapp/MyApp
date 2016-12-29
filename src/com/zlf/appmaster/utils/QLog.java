@@ -9,7 +9,7 @@ import android.util.Log;
  */
 public final class QLog {
 	public final static String TAG = "charles";
-	private static boolean logFlag = true;
+	private static boolean logFlag = false;
 	private final static int logLevel = Log.VERBOSE;
 	
 	//UrlConstants 会处理

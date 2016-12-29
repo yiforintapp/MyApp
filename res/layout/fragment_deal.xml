@@ -39,6 +39,27 @@
         android:text="@string/deal_v_2"
         android:textColor="@color/gray"
         android:textSize="14dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/deal_v_3"
+        android:textColor="@color/gray"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/tv_weipan"
+        style="@style/dlg_right_button_txt_del"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/deal_click_weipan"
+        android:textColor="@drawable/deal_text_selector" />
+
 </LinearLayout>
 
 

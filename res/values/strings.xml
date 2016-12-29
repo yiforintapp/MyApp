@@ -231,6 +231,7 @@
     <string name="main_tab_trade">交易</string>
     <string name="main_tab_info">资讯</string>
     <string name="main_tab_personal">我的</string>
+    <string name="main_tab_zhibo">直播</string>
 
     <string name="code_start_content">您好，您的验证码是：</string>
     <string name="code_end_content">【兆利丰金服】</string>
@@ -263,6 +264,8 @@
     <string name="deal_click">长江联合交易所</string>
     <string name="deal_v_1">1.点击按钮打开长江交易宝App</string>
     <string name="deal_v_2">2.如果手机未安装，则跳转浏览器下载</string>
+    <string name="deal_v_3">点击下面“长江微盘”按钮可以进入长江微盘官网进行注册和交易</string>
+    <string name="deal_click_weipan">长江微盘</string>
     
     <string name="long_river_company">长江联合</string>
     <string name="global_gold">国际黄金</string>
