@@ -254,7 +254,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 //        LeoLog.d("check","password is 111111qqq , setMD5 later : " + StringUtil.retMd5Pwd("111111qqq").toLowerCase());
         try {
             // 发送请求
-            LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, Constants.LOGIN_TAG,
+            LoginHttpUtil.sendLoginHttpRequest(this, Constants.ADDRESS + "work", Constants.LOGIN_TAG_NEW,
                     mUserEt.getText().toString().trim(), password, "",  new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response) {

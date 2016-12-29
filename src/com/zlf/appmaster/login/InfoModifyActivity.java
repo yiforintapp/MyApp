@@ -262,10 +262,10 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
             String tag;
             if (name) {
                 mMessageTag = RESET_NAME;
-                tag = Constants.RESET_NAME_TAG;
+                tag = Constants.RESET_NAME_TAG_NEW;
             } else {
                 mMessageTag = RESET_PWD;
-                tag = Constants.RESET_TAG;
+                tag = Constants.RESET_TAG_NEW;
             }
             if (mDialog == null) {
                 mDialog = new LoginProgressDialog(this);
@@ -290,7 +290,7 @@ public class InfoModifyActivity extends Activity implements View.OnClickListener
                 pwd =  StringUtil.retMd5Pwd(mQueryNewPwdEt.getText().toString().trim()).toLowerCase();
             }
             // 发送请求
-            LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
+            LoginHttpUtil.sendLoginHttpRequest(this, Constants.ADDRESS + "work", tag,
                     phone, pwd, userName,  new HttpCallBackListener() {
                         @Override
                         public void onFinish(String response) {

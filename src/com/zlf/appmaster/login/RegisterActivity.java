@@ -300,11 +300,11 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
             }
             if (mFromRegister) {
                 mMessageTag = REGISTER;
-                tag = Constants.REGISTER_TAG;
+                tag = Constants.REGISTER_TAG_NEW;
                 mDialog.setLoadingContent(getResources().getString(R.string.register_loading));
             } else {
                 mMessageTag = RESET;
-                tag = Constants.RESET_TAG;
+                tag = Constants.RESET_TAG_NEW;
                 mDialog.setLoadingContent(getResources().getString(R.string.modify_loading));
             }
             mDialog.setCanceledOnTouchOutside(false);
@@ -317,8 +317,9 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
             mDialog.show();
             mProgressBarShow = true;
             String password = StringUtil.retMd5Pwd(mPasswordEt.getText().toString().trim()).toLowerCase();
+            
             // 发送请求
-            LoginHttpUtil.sendLoginHttpRequest(this, Constants.LOGIN_ADDRESS, tag,
+            LoginHttpUtil.sendLoginHttpRequest(this, Constants.ADDRESS + "work", tag,
                     mUserEt.getText().toString().trim(), password, mUserNameEt.getText().toString().trim(), new HttpCallBackListener() {
                         @Override
                         public void onFinish(String response) {

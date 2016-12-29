@@ -284,6 +284,12 @@ public class Constants {
     public static final String RESET_TAG = "reset&";
     public static final String KEY_TAG = "zlfmaster";
 
+    public static final String LOGIN_TAG_NEW= "applogin";
+    public static final String REGISTER_TAG_NEW = "register";
+    public static final String RESET_NAME_TAG_NEW = "reset_nic";
+    public static final String RESET_TAG_NEW = "reset";
+
+
     public static final String NEWS_TYPE_ANALY = "analy";
     public static final String NEWS_TYPE_INTER = "international";
     public static final String NEWS_TYPE_MARKET = "market";

@@ -7,8 +7,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zlf.appmaster.R;
+import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
+import com.zlf.appmaster.https.HttpsUtils;
 import com.zlf.appmaster.login.ClientOnlineActivity;
 import com.zlf.appmaster.login.FeedbackActivity;
 import com.zlf.appmaster.login.InfoModifyActivity;
@@ -16,7 +18,28 @@ import com.zlf.appmaster.login.LoginActivity;
 import com.zlf.appmaster.setting.SettingActivity;
 import com.zlf.appmaster.ui.CommonSettingItem;
 import com.zlf.appmaster.update.UpdateActivity;
+import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.PrefConst;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/7/19.
@@ -93,30 +116,22 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
             }
         });
-//        mAbout.setRippleViewOnClickLinstener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(mActivity, AboutusActivity.class);
-//                startActivity(intent);
-//            }
-//        });
         mUpdate.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkUpdate();
             }
         });
-//        mRule.setRippleViewOnClickLinstener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(mActivity, ProtocolActivity.class);
-//                startActivity(intent);
-//            }
-//        });
         mSetting.setRippleViewOnClickLinstener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(mActivity, SettingActivity.class));
+//                ThreadManager.executeOnAsyncThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        doHttps();
+//                    }
+//                });
             }
         });
         mClient.setRippleViewOnClickLinstener(new View.OnClickListener(){
@@ -165,4 +180,53 @@ public class PersonalFragment extends BaseFragment implements View.OnClickListen
         intent.putExtra(UpdateActivity.UPDATETYPE,UpdateActivity.CHECK_UPDATE);
         startActivity(intent);
     }
+
+    private String doHttps(){
+        LeoLog.d("testHttps","doHttps");
+
+
+        String result = "";
+        InputStream caInput = null;
+        try{
+//            caInput = mActivity.getResources().getAssets().open("tomcat.cer");
+//            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+//            Certificate ca;
+//            try{
+//                ca = cf.generateCertificate(caInput);
+//            }finally {
+//                caInput.close();
+//            }
+//            String keyStoreType = KeyStore.getDefaultType();
+//            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+//            keyStore.load(null, null);
+//            keyStore.setCertificateEntry("ca",ca);
+//
+//            SSLSocketFactory socketFactory = new SSLSocketFactory(keyStore);
+
+            HttpClient httpClient = HttpsUtils.getNewHttpClient();
+//            Scheme schema = new Scheme("https", socketFactory, 443);
+//            httpClient.getConnectionManager().getSchemeRegistry().register(schema);
+
+            HttpPost httpPost = new HttpPost("https://test.com:8443/Webase_GD/appwork?proname=SSL");
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("type","1"));
+            httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                HttpEntity entity = httpResponse.getEntity();
+                if(entity != null){
+                    LeoLog.d("testHttps","ALL GOOD");
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            LeoLog.d("testHttps","catch fuck");
+        }
+
+        return "";
+
+
+
+    }
+
 }
