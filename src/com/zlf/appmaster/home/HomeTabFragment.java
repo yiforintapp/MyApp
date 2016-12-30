@@ -144,6 +144,7 @@ public class HomeTabFragment extends BaseFragment implements View.OnClickListene
 
         public DataHandler(HomeTabFragment fragment) {
             super();
+
             mActivityReference = new WeakReference<HomeTabFragment>(fragment);
         }
 
