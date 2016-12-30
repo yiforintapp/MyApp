@@ -41,7 +41,8 @@
             android:layout_height="40dp"
             android:layout_below="@id/crown"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/user_avatar_icon" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/user_avatar_icon" />
 
         <TextView
             android:id="@+id/tv_win_name"
