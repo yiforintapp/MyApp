@@ -511,7 +511,6 @@ public class AppUtil {
             strings.add(tag);
             return strings;
         }
-
     }
 
     public static Set<String> setPushTag(Context mContext) {

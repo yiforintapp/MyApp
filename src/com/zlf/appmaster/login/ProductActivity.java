@@ -50,16 +50,17 @@ public class ProductActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String url;
+                        String url = "file:///android_asset/cj_oil_2.html";
                         if(i == 1){
                             url = "file:///android_asset/cj_oil_2.html";
                         }else if(i ==2 ){
                             url = "file:///android_asset/cj_ag.html";
                         }else if(i == 3){
                             url = "file:///android_asset/cj_cu_2.html";
-                        }else{
-                            url = "file:///android_asset/dragon_oil_2.html";
                         }
+//                        else{
+//                            url = "file:///android_asset/dragon_oil_2.html";
+//                        }
                         webView.loadUrl(url);
                     }
                 });
