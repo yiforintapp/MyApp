@@ -54,10 +54,19 @@
         android:background="@color/white"
         android:visibility="gone"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:progressDrawable="@drawable/web_progress"
+        android:visibility="gone" />
+
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/progressBar"
         android:layout_above="@+id/empty_view"
         android:visibility="gone"/>
 

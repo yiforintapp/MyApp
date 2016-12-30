@@ -3,8 +3,10 @@ package com.zlf.appmaster.hometab;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 import com.zlf.appmaster.R;
 
@@ -19,6 +21,8 @@ public class HomeTabTopWebActivity extends Activity {
 
     private String mUrl;
 
+    private ProgressBar mBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,8 @@ public class HomeTabTopWebActivity extends Activity {
     private void init() {
         mWebView = (WebView) findViewById(R.id.webView);
         mWebView.setVisibility(View.VISIBLE);
+
+        mBar =(ProgressBar) findViewById(R.id.progressBar);
 
         mUrl = getIntent().getStringExtra(WEB_URL);
 
@@ -48,6 +54,25 @@ public class HomeTabTopWebActivity extends Activity {
         mWebView.setFocusable(true);
         mWebView.setFocusableInTouchMode(true);
         mWebView.setScrollBarStyle(0);
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress == 100) {
+                    mBar.setVisibility(View.GONE);
+                } else {
+                    if (View.GONE == mBar.getVisibility()) {
+                        mBar.setVisibility(View.VISIBLE);
+                    }
+                    mBar.setProgress(newProgress);
+                }
+                super.onProgressChanged(view, newProgress);
+            }
+
+        });
+
+
 
         mWebView.loadUrl(mUrl);
     }
