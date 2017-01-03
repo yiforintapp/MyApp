@@ -150,16 +150,16 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                 String titleOne = LeoSettings.getString(PrefConst.ZHIBO_ROOM_ONE_TOPIC,
                         getResources().getString(R.string.zhibo_room_one_topic));
                 if (AppUtil.isLogin()) {
-                    if (WordLiveActivity.TYPE_ONE.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
-                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
-                            || "".equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
+//                    if (WordLiveActivity.TYPE_ONE.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
+//                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
+//                            || "".equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
                         intent = new Intent(mActivity, WordLiveActivity.class);
                         intent.putExtra(WordLiveActivity.ZHIBO_TYPE, WordLiveActivity.TYPE_ONE);
                         intent.putExtra(WordLiveActivity.ZHIBO_TITLE, titleOne);
                         startActivity(intent);
-                    } else if (WordLiveActivity.TYPE_TWO.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
-                        showToast(mActivity.getResources().getString(R.string.zhibo_bangding_one_toast));
-                    }
+//                    } else if (WordLiveActivity.TYPE_TWO.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
+//                        showToast(mActivity.getResources().getString(R.string.zhibo_bangding_one_toast));
+//                    }
                 } else if (!AppUtil.isLogin()) {
                     intent = new Intent(mActivity, LoginActivity.class);
                     intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
@@ -172,16 +172,16 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                 String titleTwo = LeoSettings.getString(PrefConst.ZHIBO_ROOM_TWO_TOPIC,
                         getResources().getString(R.string.zhibo_room_two_topic));
                 if (AppUtil.isLogin()) {
-                    if (WordLiveActivity.TYPE_TWO.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
-                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
-                            || "".equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
+//                    if (WordLiveActivity.TYPE_TWO.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
+//                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
+//                            || "".equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
                         intent = new Intent(mActivity, WordLiveActivity.class);
                         intent.putExtra(WordLiveActivity.ZHIBO_TYPE, WordLiveActivity.TYPE_TWO);
                         intent.putExtra(WordLiveActivity.ZHIBO_TITLE, titleTwo);
                         startActivity(intent);
-                    } else if (WordLiveActivity.TYPE_ONE.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
-                        showToast(mActivity.getResources().getString(R.string.zhibo_bangding_one_toast));
-                    }
+//                    } else if (WordLiveActivity.TYPE_ONE.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
+//                        showToast(mActivity.getResources().getString(R.string.zhibo_bangding_one_toast));
+//                    }
                 } else if (!AppUtil.isLogin()) {
                     intent = new Intent(mActivity, LoginActivity.class);
                     intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
