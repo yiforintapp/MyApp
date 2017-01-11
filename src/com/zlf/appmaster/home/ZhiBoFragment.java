@@ -122,10 +122,8 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
     }
 
     private void loadUI() {
-        mTitleOne.setText(LeoSettings.getString(PrefConst.ZHIBO_ROOM_ONE_TOPIC,
-                getResources().getString(R.string.zhibo_room_one_topic)));
-        mTitleTwo.setText(LeoSettings.getString(PrefConst.ZHIBO_ROOM_TWO_TOPIC,
-                getResources().getString(R.string.zhibo_room_two_topic)));
+        mTitleOne.setText(getResources().getString(R.string.zhibo_room_one_topic));
+        mTitleTwo.setText(getResources().getString(R.string.zhibo_room_two_topic));
         mNameOne.setText(LeoSettings.getString(PrefConst.ZHIBO_ROOM_ONE_TEACHER,
                 getResources().getString(R.string.zhibo_room_one_teacher)));
         mNameTwo.setText(LeoSettings.getString(PrefConst.ZHIBO_ROOM_TWO_TEACHER,
@@ -147,8 +145,7 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                 }
                 break;
             case R.id.word_zhibo_layout_one:
-                String titleOne = LeoSettings.getString(PrefConst.ZHIBO_ROOM_ONE_TOPIC,
-                        getResources().getString(R.string.zhibo_room_one_topic));
+                String titleOne = getResources().getString(R.string.zhibo_room_one_topic);
                 if (AppUtil.isLogin()) {
 //                    if (WordLiveActivity.TYPE_ONE.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
 //                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
@@ -169,8 +166,7 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                 }
                 break;
             case R.id.word_zhibo_layout_two:
-                String titleTwo = LeoSettings.getString(PrefConst.ZHIBO_ROOM_TWO_TOPIC,
-                        getResources().getString(R.string.zhibo_room_two_topic));
+                String titleTwo = getResources().getString(R.string.zhibo_room_two_topic);
                 if (AppUtil.isLogin()) {
 //                    if (WordLiveActivity.TYPE_TWO.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
 //                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))

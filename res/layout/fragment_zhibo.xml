@@ -243,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/word_title_two"
                 android:layout_marginTop="10dp"
-                android:text="长线是金短线也是金，精准把握，财运一路顺然!"
+                android:text="趋势注定命运，克服贪嗔，决胜市场!"
                 android:textColor="@color/small_text"
                 android:textSize="12dp" />
 

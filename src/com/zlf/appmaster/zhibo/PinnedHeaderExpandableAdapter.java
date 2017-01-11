@@ -93,11 +93,11 @@ public class PinnedHeaderExpandableAdapter extends  BaseExpandableListAdapter {
 
 		WordNewAdviceItemInfo info = mChildrenData.get(groupPosition).get(childPosition);
 		if ("sell".equals(info.getDeal())) {
-			childHolder.mDeal.setText(mContext.getResources().getString(R.string.stock_buy));
-			childHolder.mDeal.setTextColor(mContext.getResources().getColor(R.color.stock_rise));
-		} else if ("buy".equals(info.getDeal())) {
 			childHolder.mDeal.setText(mContext.getResources().getString(R.string.stock_sell));
 			childHolder.mDeal.setTextColor(mContext.getResources().getColor(R.color.stock_slumped));
+		} else if ("buy".equals(info.getDeal())) {
+			childHolder.mDeal.setText(mContext.getResources().getString(R.string.stock_buy));
+			childHolder.mDeal.setTextColor(mContext.getResources().getColor(R.color.stock_rise));
 		}
 		childHolder.mRealName.setText(info.getRealName());
 		if (mType == 0) {
