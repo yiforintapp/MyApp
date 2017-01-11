@@ -4,7 +4,6 @@ package com.zlf.appmaster.bootstrap;
 import com.zlf.appmaster.AppMasterPreference;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.PhoneInfo;
-import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.utils.AppUtil;
 import com.zlf.appmaster.utils.LeoLog;
@@ -12,7 +11,6 @@ import com.zlf.imageloader.DisplayImageOptions;
 import com.zlf.imageloader.ImageLoader;
 import com.zlf.imageloader.ImageLoaderConfiguration;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -66,6 +64,7 @@ public class InitAsyncBootstrap extends com.zlf.appmaster.bootstrap.Bootstrap {
     private void initJPush() {
         JPushInterface.setDebugMode(false);
         JPushInterface.init(mApp);
+
 
         Set<String> tags = AppUtil.setPushTag(mApp);
         JPushInterface.setTags(mApp, tags, new TagAliasCallback() {

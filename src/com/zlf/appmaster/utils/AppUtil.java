@@ -515,9 +515,12 @@ public class AppUtil {
 
     public static Set<String> setPushTag(Context mContext) {
 
+        String room = LeoSettings.getString(PrefConst.USER_ROOM, "");
         Set<String> tags = new HashSet<String>();
-        String tag = Constants.PUSH_TAG + mContext.getString(R.string.version_name);
-        tags.add(tag);
+        if (TextUtils.isEmpty(room)) {
+            room = " ";
+        }
+        tags.add(room);
 
         return tags;
     }

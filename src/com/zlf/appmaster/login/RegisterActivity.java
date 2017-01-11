@@ -519,7 +519,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener, 
 
                 String encode = "utf-8";
                 String username = "szzlftxgxyxgshy";  //用户名
-                String password_md5 = "8d3571f58020db2246b20706e3c4dee1";  //密码
+                String password_md5 = "2a1337651cd5c3e37b0998b7a4360c7c";  //密码
                 String mobile = mUserEt.getText().toString();  //手机号,只发一个号码：13800000001。发多个号码：13800000001,13800000002,...N 。使用半角逗号分隔。
                 getRandomCode();
                 String content = getResources().getString(R.string.code_end_content)
