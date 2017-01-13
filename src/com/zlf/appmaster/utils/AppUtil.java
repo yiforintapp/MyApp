@@ -514,16 +514,19 @@ public class AppUtil {
     }
 
     public static Set<String> setPushTag(Context mContext) {
-
+        String tag = Constants.PUSH_TAG + mContext.getString(R.string.version_name);
         String room = LeoSettings.getString(PrefConst.USER_ROOM, "");
         Set<String> tags = new HashSet<String>();
         if (TextUtils.isEmpty(room)) {
             tags.add(" ");
+            tags.add(tag);
         } else if ("admin".equals(room)) {
-            tags.add("1");
-            tags.add("2");
+            tags.add("bojian_1");
+            tags.add("bojian_2");
+            tags.add(tag);
         } else {
-            tags.add(room);
+            tags.add("bojian_".concat(room));
+            tags.add(tag);
         }
         return tags;
     }
