@@ -518,7 +518,6 @@ public class AppUtil {
         String room = LeoSettings.getString(PrefConst.USER_ROOM, "");
         Set<String> tags = new HashSet<String>();
         if (TextUtils.isEmpty(room)) {
-            tags.add(" ");
             tags.add(tag);
         } else if ("admin".equals(room)) {
             tags.add("bojian_1");
