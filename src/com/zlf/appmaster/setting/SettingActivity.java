@@ -187,6 +187,7 @@ public class SettingActivity extends Activity implements View.OnClickListener {
                 LeoSettings.setString(PrefConst.USER_PWD, "");
                 LeoSettings.setString(PrefConst.USER_ROOM, "");
                 LeoSettings.setLong(PrefConst.LAST_LOGIN_TIME, 0);
+                AppUtil.setPushTag(this);
                 finish();
                 break;
         }

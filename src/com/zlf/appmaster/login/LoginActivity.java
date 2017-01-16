@@ -100,6 +100,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
 //                LeoSettings.setString(PrefConst.USER_NAME, result);
                 LeoSettings.setString(PrefConst.USER_NAME, sResult[0]);
                 LeoSettings.setString(PrefConst.USER_ROOM, sResult[1].trim());
+                AppUtil.setPushTag(activity);
                 LeoSettings.setLong(PrefConst.LAST_LOGIN_TIME, System.currentTimeMillis());
                 if (activity.mFormLiveBtn) {
                     activity.startActivity(new Intent(activity, VideoLiveActivity.class));

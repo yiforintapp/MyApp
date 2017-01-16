@@ -42,6 +42,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
+
 public class AppUtil {
     public static final float SPL_SHARE_SCALE_X = 1.0f;
     public static final float SPL_SHARE_SCALE_Y = 1.0f;
@@ -502,7 +505,7 @@ public class AppUtil {
     }
 
     public static Set<String> setPushTag(Context mContext,Set<String> strings) {
-        String tag = Constants.PUSH_TAG + mContext.getString(R.string.version_name);
+        String tag = Constants.PUSH_TAG.concat("_").concat(mContext.getString(R.string.version_name));
         if(strings == null){
             Set<String> tags = new HashSet<String>();
             tags.add(tag);
@@ -513,8 +516,10 @@ public class AppUtil {
         }
     }
 
-    public static Set<String> setPushTag(Context mContext) {
-        String tag = Constants.PUSH_TAG + mContext.getString(R.string.version_name);
+    public static void setPushTag(Context mContext) {
+        JPushInterface.setDebugMode(false);
+        JPushInterface.init(mContext);
+        String tag = Constants.PUSH_TAG.concat("_").concat(mContext.getString(R.string.version_name));
         String room = LeoSettings.getString(PrefConst.USER_ROOM, "");
         Set<String> tags = new HashSet<String>();
         if (TextUtils.isEmpty(room)) {
@@ -527,6 +532,13 @@ public class AppUtil {
             tags.add("bojian_".concat(room));
             tags.add(tag);
         }
-        return tags;
+        JPushInterface.setTags(mContext, tags, new TagAliasCallback() {
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+                if(i == 0){
+                    LeoLog.d("JPush","setTag : " + set.toString());
+                }
+            }
+        });
     }
 }

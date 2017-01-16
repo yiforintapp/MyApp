@@ -6,15 +6,9 @@ import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.PhoneInfo;
 import com.zlf.appmaster.ThreadManager;
 import com.zlf.appmaster.utils.AppUtil;
-import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.imageloader.DisplayImageOptions;
 import com.zlf.imageloader.ImageLoader;
 import com.zlf.imageloader.ImageLoaderConfiguration;
-
-import java.util.Set;
-
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 
 /**
  * 异步初始化，旧版本的startInitTask
@@ -62,19 +56,9 @@ public class InitAsyncBootstrap extends com.zlf.appmaster.bootstrap.Bootstrap {
     }
 
     private void initJPush() {
-        JPushInterface.setDebugMode(false);
-        JPushInterface.init(mApp);
-
-
-        Set<String> tags = AppUtil.setPushTag(mApp);
-        JPushInterface.setTags(mApp, tags, new TagAliasCallback() {
-            @Override
-            public void gotResult(int i, String s, Set<String> set) {
-                if(i == 0){
-                    LeoLog.d("JPush","setTag : " + set.toString());
-                }
-            }
-        });
+//        JPushInterface.setDebugMode(false);
+//        JPushInterface.init(mApp);
+        AppUtil.setPushTag(mApp);
     }
 
 
