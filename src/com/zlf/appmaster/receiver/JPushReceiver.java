@@ -114,7 +114,7 @@ public class JPushReceiver extends BroadcastReceiver {
             } else if (myKey.equals(Constants.PUSH_KEY_HANGQING)) {
                 intent = new Intent(context, HomeMainActivity.class);
                 intent.putExtra(Constants.PUSH_KEY, "1");
-            } else if (myKey.equals(Constants.PUSH_KEY_DEAL)) {
+            } else if (myKey.equals(Constants.PUSH_KEY_ZHIBO)) {
                 intent = new Intent(context, HomeMainActivity.class);
                 intent.putExtra(Constants.PUSH_KEY, "2");
             } else if (myKey.equals(Constants.PUSH_KEY_CONSULT)) {

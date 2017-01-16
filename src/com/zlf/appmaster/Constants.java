@@ -331,7 +331,7 @@ public class Constants {
     public static final String PUSH_KEY_NORMAL = "normal";
     public static final String PUSH_KEY_DAYNEWS = "daynews";
     public static final String PUSH_KEY_HANGQING = "hangqing";
-    public static final String PUSH_KEY_DEAL = "deal";
+    public static final String PUSH_KEY_ZHIBO = "zhibo";
     public static final String PUSH_KEY_CONSULT = "consult";
     public static final String PUSH_KEY_UPDATE = "update";
 
