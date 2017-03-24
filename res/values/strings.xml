@@ -393,6 +393,7 @@
 
     <string name="zhibo_room_one_topic">财路顺然</string>
     <string name="zhibo_room_two_topic">弈趣缠禅</string>
+    <string name="zhibo_room_thr_topic">顺势唯盈</string>
     <string name="zhibo_room_one_teacher">陈老师</string>
     <string name="zhibo_room_two_teacher">廖老师</string>
 
@@ -406,4 +407,7 @@
 
     <string name="zhibo_bangding_one_toast">您绑定的是另外一个直播间！</string>
     <string name="first_page_deal">交易</string>
+
+    <string name="video_title">视频直播间</string>
+    <string name="text_title">文字直播间</string>
 </resources>

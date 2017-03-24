@@ -1,276 +1,675 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/login_bg"
-    android:orientation="vertical">
+    android:overScrollMode="never"
+    android:scrollbars="none">
 
-    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/zhibo_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:padding="10dp"
-        app:rippleColor="@color/button_gray_ripple"
-        app:rippleDuration="250"
-        app:rippleHover="true"
-        app:rippleOverlay="true">
+        android:layout_height="match_parent"
+        android:background="@color/login_bg"
+        android:orientation="vertical">
 
-
-        <LinearLayout
-            android:id="@+id/zhibo_iv"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/contactIV"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/video_zhibo" />
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/zhibo_strok_bg"
-                android:padding="4dp">
+                android:id="@+id/video_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/red_line"
+                    android:layout_width="4dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/main_red" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="视频播间"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@id/red_line"
+                    android:text="@string/video_title"
                     android:textColor="@color/black"
-                    android:textSize="10dp" />
-
+                    android:textSize="18dp" />
             </RelativeLayout>
 
-        </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/video_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/video_title"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/video_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/vedio_bg_big" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/video_iv"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/icon_video"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/video_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/icon_video"
+                        android:text="当前课程：决战非农（陈老师）"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/zhibo_iv">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="兆利丰财经"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/title"
-                android:layout_marginTop="10dp"
-                android:text="一起并肩作战，稳扎稳打步步为赢！轻松交易，开心生活！"
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
-
-        </RelativeLayout>
-    </com.zlf.appmaster.ui.RippleView>
-
-    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/word_zhibo_layout_one"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:padding="10dp"
-        app:rippleColor="@color/button_gray_ripple"
-        app:rippleDuration="250"
-        app:rippleHover="true"
-        app:rippleOverlay="true">
-
-
-        <LinearLayout
-            android:id="@+id/word_zhibo_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/word_contactIV"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/room_one" />
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:paddingBottom="20dp"
+            android:paddingTop="10dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/zhibo_strok_bg"
-                android:padding="4dp">
+                android:id="@+id/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/text_line"
+                    android:layout_width="4dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:background="@color/main_red" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="普通播间"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@id/text_line"
+                    android:text="@string/text_title"
                     android:textColor="@color/black"
-                    android:textSize="10dp" />
-
+                    android:textSize="18dp" />
             </RelativeLayout>
 
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/word_zhibo_iv">
-
-            <TextView
-                android:id="@+id/word_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/zhibo_room_one_topic"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-
-
-            <TextView
-                android:id="@+id/word_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/word_title"
-                android:layout_marginTop="10dp"
-                android:text="长线是金短线也是金，精准把握，财运一路顺然!"
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/word_fenxishi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/word_content"
-                android:layout_marginTop="5dp"
-                android:text="当前在线分析师："
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/word_person"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/word_content"
-                android:layout_toRightOf="@+id/word_fenxishi"
-                android:layout_marginTop="5dp"
-                android:text="@string/zhibo_room_one_teacher"
-                android:textColor="@color/black"
-                android:textSize="12dp" />
-
-        </RelativeLayout>
-    </com.zlf.appmaster.ui.RippleView>
-
-    <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/word_zhibo_layout_two"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@color/white"
-        android:padding="10dp"
-        app:rippleColor="@color/button_gray_ripple"
-        app:rippleDuration="250"
-        app:rippleHover="true"
-        app:rippleOverlay="true">
-
-
-        <LinearLayout
-            android:id="@+id/word_zhibo_iv_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/word_contactIV_two"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/room_two" />
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/group_one"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/zhibo_strok_bg"
-                android:padding="4dp">
+                android:layout_below="@id/text_title"
+                android:layout_marginTop="5dp">
 
                 <TextView
+                    android:id="@+id/room_one_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="普通播间"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/zhibo_room_one_topic"
                     android:textColor="@color/black"
-                    android:textSize="10dp" />
+                    android:textSize="18dp" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/room_one_title"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext_normal"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/text_bg_1" />
+
+                        <ImageView
+                            android:id="@+id/tec_chen"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/tec_1_1" />
+
+                        <TextView
+                            android:id="@+id/tec_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tec_chen"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="分析师：陈老师【在线】"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <View
+                            android:id="@+id/line_black1"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/tec_name"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tec_desc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/line_black1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="点位为王道，均线控仓位，指标来帮助，趋势定方向何愁投资不成？"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/bg_edittext_normal"
+                            android:padding="8dp"
+                            app:rippleColor="@color/button_gray_ripple"
+                            app:rippleDuration="250"
+                            app:rippleHover="true"
+                            app:rippleOverlay="true">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="进入播间"
+                                android:textColor="@color/small_text"
+                                android:textSize="10dp" />
+
+                        </com.zlf.appmaster.ui.RippleView>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="wrap_content"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext_normal"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/text_bg_1" />
+
+                        <ImageView
+                            android:id="@+id/tec_hu"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/tec_1_2" />
+
+                        <TextView
+                            android:id="@+id/tec_name2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tec_hu"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="分析师：胡老师【在线】"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <View
+                            android:id="@+id/line_black2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/tec_name2"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tec_desc2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/line_black2"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="了解市场架构，分类当前走势，大道至简，顺势而为。"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/bg_edittext_normal"
+                            android:padding="8dp"
+                            app:rippleColor="@color/button_gray_ripple"
+                            app:rippleDuration="250"
+                            app:rippleHover="true"
+                            app:rippleOverlay="true">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="进入播间"
+                                android:textColor="@color/small_text"
+                                android:textSize="10dp" />
+
+                        </com.zlf.appmaster.ui.RippleView>
+
+                    </RelativeLayout>
+                </LinearLayout>
             </RelativeLayout>
 
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@+id/word_zhibo_iv_two">
-
-            <TextView
-                android:id="@+id/word_title_two"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/group_two"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/zhibo_room_two_topic"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
+                android:layout_below="@id/group_one"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/word_content_two"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/room_two_title"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/zhibo_room_two_topic"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/room_two_title"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext_normal"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/text_bg_2" />
+
+                        <ImageView
+                            android:id="@+id/tec_liao"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/tec_2_1" />
+
+                        <TextView
+                            android:id="@+id/tec_name3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tec_liao"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="分析师：廖老师【在线】"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <View
+                            android:id="@+id/line_black3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/tec_name3"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tec_desc3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/line_black3"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="市场投资，短线为王。趋势交易，长线为尊。"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/bg_edittext_normal"
+                            android:padding="8dp"
+                            app:rippleColor="@color/button_gray_ripple"
+                            app:rippleDuration="250"
+                            app:rippleHover="true"
+                            app:rippleOverlay="true">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="进入播间"
+                                android:textColor="@color/small_text"
+                                android:textSize="10dp" />
+
+                        </com.zlf.appmaster.ui.RippleView>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="wrap_content"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext_normal"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/text_bg_2" />
+
+                        <ImageView
+                            android:id="@+id/tec_liu"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/tec_2_2" />
+
+                        <TextView
+                            android:id="@+id/tec_name4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tec_liu"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="分析师：刘老师【在线】"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <View
+                            android:id="@+id/line_black4"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/tec_name4"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tec_desc4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/line_black4"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="趋势中把握市场脉搏，蝴蝶中寻找价格定位。"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/bg_edittext_normal"
+                            android:padding="8dp"
+                            app:rippleColor="@color/button_gray_ripple"
+                            app:rippleDuration="250"
+                            app:rippleHover="true"
+                            app:rippleOverlay="true">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="进入播间"
+                                android:textColor="@color/small_text"
+                                android:textSize="10dp" />
+
+                        </com.zlf.appmaster.ui.RippleView>
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/group_thr"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/word_title_two"
-                android:layout_marginTop="10dp"
-                android:text="趋势注定命运，克服贪嗔，决胜市场!"
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
+                android:layout_below="@id/group_two"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/word_fenxishi_two"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/word_content_two"
-                android:layout_marginTop="5dp"
-                android:text="当前在线分析师："
-                android:textColor="@color/small_text"
-                android:textSize="12dp" />
+                <TextView
+                    android:id="@+id/room_thr_title"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/zhibo_room_thr_topic"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
 
-            <TextView
-                android:id="@+id/word_person_two"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/word_content_two"
-                android:layout_toRightOf="@+id/word_fenxishi_two"
-                android:layout_marginTop="5dp"
-                android:text="@string/zhibo_room_two_teacher"
-                android:textColor="@color/black"
-                android:textSize="12dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/room_thr_title"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext_normal"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/text_bg_3" />
+
+                        <ImageView
+                            android:id="@+id/tec_luo"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/tec_3_1" />
+
+                        <TextView
+                            android:id="@+id/tec_name5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tec_luo"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="分析师：骆老师【在线】"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <View
+                            android:id="@+id/line_black5"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/tec_name5"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tec_desc5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/line_black5"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="把握大势，因势而谋，应势而动，顺势唯盈！"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/bg_edittext_normal"
+                            android:padding="8dp"
+                            app:rippleColor="@color/button_gray_ripple"
+                            app:rippleDuration="250"
+                            app:rippleHover="true"
+                            app:rippleOverlay="true">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="进入播间"
+                                android:textColor="@color/small_text"
+                                android:textSize="10dp" />
+
+                        </com.zlf.appmaster.ui.RippleView>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="3dp"
+                        android:layout_height="wrap_content"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_edittext_normal"
+                        android:paddingBottom="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/text_bg_3" />
+
+                        <ImageView
+                            android:id="@+id/tec_xie"
+                            android:layout_width="65dp"
+                            android:layout_height="65dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/tec_3_2" />
+
+                        <TextView
+                            android:id="@+id/tec_name6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tec_xie"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="分析师：谢老师【在线】"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <View
+                            android:id="@+id/line_black6"
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_below="@id/tec_name6"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tec_desc6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/line_black6"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:text="势在必盈，认清趋势，把握市场脉搏，盈利顺其自然。"
+                            android:textColor="@color/small_text"
+                            android:textSize="12dp" />
+
+                        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/bg_edittext_normal"
+                            android:padding="8dp"
+                            app:rippleColor="@color/button_gray_ripple"
+                            app:rippleDuration="250"
+                            app:rippleHover="true"
+                            app:rippleOverlay="true">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="进入播间"
+                                android:textColor="@color/small_text"
+                                android:textSize="10dp" />
+
+                        </com.zlf.appmaster.ui.RippleView>
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
 
         </RelativeLayout>
-    </com.zlf.appmaster.ui.RippleView>
 
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
