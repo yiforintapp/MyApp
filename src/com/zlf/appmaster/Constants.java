@@ -352,6 +352,7 @@ public class Constants {
     public static final String WORD_MYASK_MARK = "proname=text_zhibo_mysak&pp=";
     public static final String WORD_ZHIBO_TITLE_MARK = "proname=room_msg";
     public static final String WORD_ZHIBO_NEW_ADVICE_MARK = "proname=new_plan";
+    public static final String TEXT_ALIVE_ADVICE = "proname=text_alive_advice";
 
     public static final String CLIENT_PHONE = "075536914014";
 

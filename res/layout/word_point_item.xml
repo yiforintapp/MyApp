@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/word_point_time" />
+            android:src="@drawable/zlfpoint_time" />
 
         <TextView
             android:id="@+id/time"
@@ -39,7 +39,7 @@
             android:layout_marginLeft="40dp"
             android:layout_toRightOf="@+id/time"
             android:gravity="top"
-            android:textColor="@color/main_red"
+            android:textColor="@color/black"
             android:textSize="11sp" />
 
         <RelativeLayout

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:background="@color/home_tab_pressed">
+
+
+    <com.handmark.pulltorefresh.library.xlistview.XListView
+        android:id="@+id/text_live_msg_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="#00000000"
+        android:listSelector="@android:color/transparent"
+        android:overScrollMode="never"
+        android:scrollbars="none" />
+
+
+    <RelativeLayout
+        android:id="@+id/no_permission_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/home_tab_pressed"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
+
+            <ImageView
+                android:id="@+id/remind_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/remind_iv" />
+
+            <TextView
+                android:id="@+id/remind_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/remind_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="@string/zhibo_remind_info"
+                android:textColor="@color/login_hint"
+                android:textSize="@dimen/f3" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/remind_info"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zhibo_remind_info_call_title"
+                    android:textColor="@color/login_hint"
+                    android:textSize="@dimen/f3" />
+
+                <TextView
+                    android:id="@+id/remind_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zhibo_remind_info_call_content"
+                    android:textColor="@color/button_blue"
+                    android:textSize="@dimen/f3" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/app_nothing_show" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:text="@string/nothing_show"
+            android:textColor="@color/mc_empty_tips"
+            android:textSize="16sp" />
+
+        <com.zlf.appmaster.ui.RippleView
+            android:id="@+id/refresh_button"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/mc_empty_tv3_top_margin"
+            android:background="@drawable/blue_real_radius_btn_shape"
+            android:minWidth="120dp"
+            app:rippleColor="@color/button_blue_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/refresh_text"
+                android:textColor="@color/white"
+                android:textSize="17dp" />
+        </com.zlf.appmaster.ui.RippleView>
+
+    </LinearLayout>
+
+    <com.handmark.pulltorefresh.library.xlistview.CircularProgressView
+        android:id="@+id/content_loading"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:padding="0dp"
+        android:visibility="gone"
+        app:cpv_animAutostart="true"
+        app:cpv_color="@color/indicator_text_select_color"
+        app:cpv_indeterminate="true"
+        app:cpv_thickness="4dp" />
+
+</RelativeLayout>

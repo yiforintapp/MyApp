@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="45dp"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+
+    <TextView
+        android:id="@+id/tv_plan"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:text="@string/text_live_lv_title_one"
+        android:textColor="@color/tv_combination_gray"
+        android:textSize="11dp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:text="@string/text_live_lv_title_two"
+        android:textColor="@color/tv_combination_gray"
+        android:textSize="11dp" />
+
+    <TextView
+        android:id="@+id/tv_plantype"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:text="@string/text_live_lv_title_three"
+        android:textColor="@color/tv_combination_gray"
+        android:textSize="11dp" />
+
+    <TextView
+        android:id="@+id/tv_sendman"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:text="@string/text_live_lv_title_four"
+        android:textColor="@color/tv_combination_gray"
+        android:textSize="11dp" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="0.2">
+
+        <com.zlf.appmaster.ui.RippleView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/desc_click_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:rippleColor="@color/button_gray_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="@drawable/bg_edittext_normal"
+                android:text="@string/text_live_lv_title_five"
+                android:textColor="@color/tv_combination_gray"
+                android:textSize="11dp" />
+
+        </com.zlf.appmaster.ui.RippleView>
+
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>

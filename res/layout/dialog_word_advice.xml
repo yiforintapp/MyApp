@@ -27,7 +27,7 @@
         android:id="@+id/advice_close"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/advice_close"
+        android:src="@drawable/close_small"
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"/>

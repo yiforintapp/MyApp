@@ -25,9 +25,10 @@ public class WordLiveActivity extends BaseFragmentActivity {
     public static final String ZHIBO_TITLE = "zhibo_title";
     public static final String TYPE_ONE = "1";
     public static final String TYPE_TWO = "2";
+    public static final String TYPE_THREE = "3";
 
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[6];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[5];
     private PagerSlidingTabStrip mPagerSlidingTab;
     private WordZhiBoFragment mLiveFragment;
     private WordChatFragment mChatFragment;
@@ -36,7 +37,9 @@ public class WordLiveActivity extends BaseFragmentActivity {
     private WordNoticeFragment mNoticeFragment;
     private WordPointFragment mPointFragment;
     private WordMyAskFragment mMyAskFragment;
-    private WordNewAdviceFragment mNewAdviceFragment;
+
+    private TextAliveMsgFragment mNewAdviceFragment;
+
     private CommonToolbar mToolBar;
 
     private ScaleImageDialog mDialog;
@@ -83,8 +86,9 @@ public class WordLiveActivity extends BaseFragmentActivity {
 //        mHomeHolders[0] = holder;
 
         holder = new HomeTabHolder();
-        holder.title = this.getResources().getString(R.string.word_advice_title);
-        mNewAdviceFragment = new WordNewAdviceFragment();
+        holder.title = this.getResources().getString(R.string.text_live_title_one);
+//        mNewAdviceFragment = new WordNewAdviceFragment();
+        mNewAdviceFragment = new TextAliveMsgFragment();
         mNewAdviceFragment.setType(mType);
         holder.fragment = mNewAdviceFragment;
         mHomeHolders[0] = holder;
@@ -104,30 +108,17 @@ public class WordLiveActivity extends BaseFragmentActivity {
         mHomeHolders[2] = holder;
 
         holder = new HomeTabHolder();
-        holder.title = this.getResources().getString(R.string.word_chat_title);
-        mChatFragment = new WordChatFragment();
-        mChatFragment.setType(mType);
-        holder.fragment = mChatFragment;
-        mHomeHolders[3] = holder;
-
-//        holder = new HomeTabHolder();
-//        holder.title = this.getResources().getString(R.string.word_cream_title);
-//        mCreamFragment = new WordCreamFragment();
-//        holder.fragment = mCreamFragment;
-//        mHomeHolders[3] = holder;
-
-        holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.text_zhibo_mysak);
         mMyAskFragment = new WordMyAskFragment();
         holder.fragment = mMyAskFragment;
-        mHomeHolders[4] = holder;
+        mHomeHolders[3] = holder;
 
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.word_history_advice_title);
         mAdviceFragment = new WordAdviceFragment();
         mAdviceFragment.setType(mType);
         holder.fragment = mAdviceFragment;
-        mHomeHolders[5] = holder;
+        mHomeHolders[4] = holder;
 
         FragmentManager fm = getSupportFragmentManager();
         try {

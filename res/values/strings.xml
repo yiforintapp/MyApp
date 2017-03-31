@@ -410,4 +410,50 @@
 
     <string name="video_title">视频直播间</string>
     <string name="text_title">文字直播间</string>
+    <string name="enter_room">进入直播间</string>
+    <string name="video_title_name_font">当前课程-</string>
+    <string name="video_title_name">当前课程-陈老师：决战非农</string>
+    <string name="tec_c_online">分析师：陈老师【在线】</string>
+    <string name="tec_c_desc">点位为王道，均线控仓位，指标来帮助，趋势定方向何愁投资不成？</string>
+    <string name="tec_hu_online">分析师：胡老师【在线】</string>
+    <string name="tec_hu_desc">了解市场架构，分类当前走势，大道至简，顺势而为。</string>
+    <string name="tec_liao_online">分析师：廖老师【在线】</string>
+    <string name="tec_liao_desc">市场投资，短线为王。趋势交易，长线为尊。</string>
+    <string name="tec_liu_online">分析师：刘老师【在线】</string>
+    <string name="tec_liu_desc">趋势中把握市场脉搏，蝴蝶中寻找价格定位。</string>
+    <string name="tec_luo_online">分析师：骆老师【在线】</string>
+    <string name="tec_luo_desc">把握大势，因势而谋，应势而动，顺势唯盈！</string>
+    <string name="tec_xie_online">分析师：谢老师【在线】</string>
+    <string name="tec_xie_desc">势在必盈，认清趋势，把握市场脉搏，盈利顺其自然。</string>
+
+    <string name="tec_c_offline">分析师：陈老师【离线】</string>
+    <string name="tec_hu_offline">分析师：胡老师【离线】</string>
+    <string name="tec_liao_offline">分析师：廖老师【离线】</string>
+    <string name="tec_liu_offline">分析师：刘老师【离线】</string>
+    <string name="tec_luo_offline">分析师：骆老师【离线】</string>
+    <string name="tec_xie_offline">分析师：谢老师【离线】</string>
+
+    <string name="text_live_title_one">即时建议</string>
+    <string name="text_live_lv_title_one">操作计划</string>
+    <string name="text_live_lv_title_two">发布时间</string>
+    <string name="text_live_lv_title_three">计划品种</string>
+    <string name="text_live_lv_title_four">发布人</string>
+    <string name="text_live_lv_title_five">查看详情</string>
+    <string name="text_live_lv_deal_buy">多单</string>
+    <string name="text_live_lv_dialog_status">当前状态</string>
+
+    <string name="text_live_lv_status_time">时间</string>
+    <string name="text_live_lv_status_product">产品</string>
+    <string name="text_live_lv_status_direction">方向</string>
+    <string name="text_live_lv_status_status">状态</string>
+    <string name="text_live_lv_status_target">目标</string>
+    <string name="text_live_lv_status_point">点位</string>
+
+    <string name="text_live_lv_status_enter">入场点</string>
+    <string name="text_live_lv_status_f_profit">第一止盈位</string>
+    <string name="text_live_lv_status_s_profit">第二止盈位</string>
+    <string name="text_live_lv_status_t_profit">第三止盈位</string>
+    <string name="text_live_lv_status_lose">止损点</string>
+    <string name="text_live_lv_status_hold">持仓中</string>
+
 </resources>

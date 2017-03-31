@@ -19,6 +19,7 @@ import com.zlf.appmaster.zhibo.VideoLiveActivity;
 import com.zlf.appmaster.zhibo.WordLiveActivity;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -26,17 +27,24 @@ import org.json.JSONObject;
  */
 public class ZhiBoFragment extends BaseFragment implements View.OnClickListener {
 
-    private RippleView mRippleLayout;
-    private RippleView mWordRippleLayoutOne;
-    private RippleView mWordRippleLayoutTwo;
-    private TextView mTitleOne;
-    private TextView mNameOne;
-    private TextView mTitleTwo;
-    private TextView mNameTwo;
+    public static final String mOnline = "1";
+    public static final String mOffline = "0";
+    private RippleView mTecChenEnter;
+    private RippleView mTecHuEnter;
+    private RippleView mTecLiaoEnter;
+    private RippleView mTecLiuEnter;
+    private RippleView mTecLuoEnter;
+    private RippleView mTecXieEnter;
+    private TextView mTecChenStatusTv;
+    private TextView mTecHuStatusTv;
+    private TextView mTecLiaoStatusTv;
+    private TextView mTecLiuStatusTv;
+    private TextView mTecLuoStatusTv;
+    private TextView mTecXieStatusTv;
+
     private Toast mToast;
     private View mVideoArea;
 
-    public final static String ADMIN = "admin"; // 客户经理账号
     public static final String BASE_URL = Constants.WORD_DOMAIN +
             Constants.WORD_SERVLET + Constants.WORD_ZHIBO_TITLE_MARK;
 
@@ -47,62 +55,54 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
 
     @Override
     protected void onInitUI() {
-//        mRippleLayout = (RippleView) findViewById(R.id.zhibo_layout);
-//        mRippleLayout.setOnClickListener(this);
-//        mWordRippleLayoutOne = (RippleView) findViewById(R.id.word_zhibo_layout_one);
-//        mWordRippleLayoutOne.setOnClickListener(this);
-//        mWordRippleLayoutTwo = (RippleView) findViewById(R.id.word_zhibo_layout_two);
-//        mWordRippleLayoutTwo.setOnClickListener(this);
-//        mTitleOne = (TextView) findViewById(R.id.word_title);
-//        mNameOne = (TextView) findViewById(R.id.word_person);
-//        mTitleTwo = (TextView) findViewById(R.id.word_title_two);
-//        mNameTwo = (TextView) findViewById(R.id.word_person_two);
+
+        mTecChenEnter = (RippleView) findViewById(R.id.tec_c_enter);
+        mTecChenEnter.setOnClickListener(this);
+        mTecHuEnter = (RippleView) findViewById(R.id.tec_hu_enter);
+        mTecHuEnter.setOnClickListener(this);
+        mTecLiaoEnter = (RippleView) findViewById(R.id.tec_liao_enter);
+        mTecLiaoEnter.setOnClickListener(this);
+        mTecLiuEnter = (RippleView) findViewById(R.id.tec_liu_enter);
+        mTecLiuEnter.setOnClickListener(this);
+        mTecLuoEnter = (RippleView) findViewById(R.id.tec_luo_enter);
+        mTecLuoEnter.setOnClickListener(this);
+        mTecXieEnter = (RippleView) findViewById(R.id.tec_xie_enter);
+        mTecXieEnter.setOnClickListener(this);
+
+        mTecChenStatusTv = (TextView) findViewById(R.id.tec_name);
+        mTecHuStatusTv = (TextView) findViewById(R.id.tec_name2);
+        mTecLiaoStatusTv = (TextView) findViewById(R.id.tec_name3);
+        mTecLiuStatusTv = (TextView) findViewById(R.id.tec_name4);
+        mTecLuoStatusTv = (TextView) findViewById(R.id.tec_name5);
+        mTecXieStatusTv = (TextView) findViewById(R.id.tec_name6);
+
         mVideoArea = findViewById(R.id.video_area);
         mVideoArea.setOnClickListener(this);
 
-//        loadUI();
-//        requestData();
+        requestData();
     }
 
-//    private void requestData() {
-//        UniversalRequest.requestUrlWithTimeOut("Tag", mActivity, BASE_URL,
-//                new OnRequestListener() {
-//
-//                    @Override
-//                    public void onError(int errorCode, String errorString) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onDataFinish(Object object) {
-//
-//                        JSONObject object1 = (JSONObject) object;
-//                        try {
-//                            if (!object1.isNull("roomtec")) {
-//                                JSONArray jsonArray = object1.getJSONArray("roomtec");
-//                                StringBuilder roomOneTeacherBuilder = new StringBuilder();
-//                                StringBuilder roomTwoTeacherBuilder = new StringBuilder();
-//                                String name;
-//                                String online;
-//                                String room;
-//                                for (int i = 0; i < jsonArray.length(); i++) {
-//                                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-//                                    name = jsonObject.getString("name");
-//                                    online = jsonObject.getString("online");
-//                                    room = jsonObject.getString("room");
-//                                    if ("1".equals(room) && "1".equals(online)) {
-//                                        roomOneTeacherBuilder.append(name).append("、");
-//                                    } else if ("2".equals(room) && "1".equals(online)) {
-//                                        roomTwoTeacherBuilder.append(name).append(" 、");
-//                                    }
-//                                }
-//                                String roomOneTeacher = roomOneTeacherBuilder.toString();
-//                                String roomTwoTeacher = roomTwoTeacherBuilder.toString();
-//                                LeoSettings.setString(PrefConst.ZHIBO_ROOM_ONE_TEACHER,
-//                                        roomOneTeacher.substring(0, roomOneTeacher.length() - 1));
-//                                LeoSettings.setString(PrefConst.ZHIBO_ROOM_TWO_TEACHER,
-//                                        roomTwoTeacher.substring(0, roomTwoTeacher.length() - 1));
-//                            }
+    private void requestData() {
+        UniversalRequest.requestUrlWithTimeOut("Tag", mActivity, BASE_URL,
+                new OnRequestListener() {
+
+                    @Override
+                    public void onError(int errorCode, String errorString) {
+
+                    }
+
+                    @Override
+                    public void onDataFinish(Object object) {
+
+                        JSONObject object1 = (JSONObject) object;
+                        try {
+                            if (!object1.isNull("roomtec")) {
+                                JSONArray jsonArray = object1.getJSONArray("roomtec");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                                    setRoomStatus(jsonObject);
+                                }
+                            }
 //                            if (!object1.isNull("roomtop")) {
 //                                JSONArray jsonArray = object1.getJSONArray("roomtop");
 //                                for (int i = 0; i < jsonArray.length(); i++) {
@@ -114,70 +114,80 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
 //                                    }
 //                                }
 //                            }
-//                            loadUI();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, false, 0, false);
-//    }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
-//    private void loadUI() {
-//        mTitleOne.setText(getResources().getString(R.string.zhibo_room_one_topic));
-//        mTitleTwo.setText(getResources().getString(R.string.zhibo_room_two_topic));
-//        mNameOne.setText(LeoSettings.getString(PrefConst.ZHIBO_ROOM_ONE_TEACHER,
-//                getResources().getString(R.string.zhibo_room_one_teacher)));
-//        mNameTwo.setText(LeoSettings.getString(PrefConst.ZHIBO_ROOM_TWO_TEACHER,
-//                getResources().getString(R.string.zhibo_room_two_teacher)));
-//    }
+                    }
+                }, false, 0, false);
+    }
+
+    private void setRoomStatus(JSONObject jsonObject) {
+        try {
+            String name = jsonObject.getString("name");
+            String online = jsonObject.getString("online");
+
+            if(!name.isEmpty()){
+                if(name.equals("陈老师")){
+                    if(online.equals(mOffline)){
+                        mTecChenStatusTv.setText(getResources().getString(R.string.tec_c_offline));
+                    }
+                }else if(name.equals("胡老师")){
+                    if(online.equals(mOffline)){
+                        mTecHuStatusTv.setText(getResources().getString(R.string.tec_hu_offline));
+                    }
+                }else if(name.equals("廖老师")){
+                    if(online.equals(mOffline)){
+                        mTecLiaoStatusTv.setText(getResources().getString(R.string.tec_liao_offline));
+                    }
+                }else if(name.equals("刘老师")){
+                    if(online.equals(mOffline)){
+                        mTecLiuStatusTv.setText(getResources().getString(R.string.tec_liu_offline));
+                    }
+                }else if(name.equals("骆老师")){
+                    if(online.equals(mOffline)){
+                        mTecLuoStatusTv.setText(getResources().getString(R.string.tec_luo_offline));
+                    }
+                }else if(name.equals("谢老师")){
+                    if(online.equals(mOffline)){
+                        mTecXieStatusTv.setText(getResources().getString(R.string.tec_xie_offline));
+                    }
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-//            case R.id.zhibo_layout:
-//                if (AppUtil.isLogin()) {
-//                    intent = new Intent(mActivity, VideoLiveActivity.class);
-//                    startActivity(intent);
-//                } else {
-//                    intent = new Intent(mActivity, LoginActivity.class);
-//                    intent.putExtra(LoginActivity.FROM_LIVE_BTN, true);
-//                    startActivity(intent);
-//                }
-//                break;
-//            case R.id.word_zhibo_layout_one:
-//                String titleOne = getResources().getString(R.string.zhibo_room_one_topic);
-//                if (AppUtil.isLogin()) {
-//                    intent = new Intent(mActivity, WordLiveActivity.class);
-//                    intent.putExtra(WordLiveActivity.ZHIBO_TYPE, WordLiveActivity.TYPE_ONE);
-//                    intent.putExtra(WordLiveActivity.ZHIBO_TITLE, titleOne);
-//                    startActivity(intent);
-//                } else if (!AppUtil.isLogin()) {
-//                    intent = new Intent(mActivity, LoginActivity.class);
-//                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
-//                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TYPE, WordLiveActivity.TYPE_ONE);
-//                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TITLE, titleOne);
-//                    startActivity(intent);
-//                }
-//                break;
-//            case R.id.word_zhibo_layout_two:
-//                String titleTwo = getResources().getString(R.string.zhibo_room_two_topic);
-//                if (AppUtil.isLogin()) {
-//
-//                    intent = new Intent(mActivity, WordLiveActivity.class);
-//                    intent.putExtra(WordLiveActivity.ZHIBO_TYPE, WordLiveActivity.TYPE_TWO);
-//                    intent.putExtra(WordLiveActivity.ZHIBO_TITLE, titleTwo);
-//                    startActivity(intent);
-//
-//                } else if (!AppUtil.isLogin()) {
-//                    intent = new Intent(mActivity, LoginActivity.class);
-//                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
-//                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TYPE, WordLiveActivity.TYPE_TWO);
-//                    intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TITLE, titleTwo);
-//                    startActivity(intent);
-//                }
-//                break;
+            case R.id.tec_c_enter:
+                String titleOne = getResources().getString(R.string.zhibo_room_one_topic);
+                gotoDescPage(titleOne,WordLiveActivity.TYPE_ONE);
+                break;
+            case R.id.tec_hu_enter:
+                String titleOneTwo = getResources().getString(R.string.zhibo_room_one_topic);
+                gotoDescPage(titleOneTwo,WordLiveActivity.TYPE_ONE);
+                break;
+            case R.id.tec_liao_enter:
+                String titleTwo = getResources().getString(R.string.zhibo_room_two_topic);
+                gotoDescPage(titleTwo,WordLiveActivity.TYPE_TWO);
+                break;
+            case R.id.tec_liu_enter:
+                String titleTwoTwo= getResources().getString(R.string.zhibo_room_two_topic);
+                gotoDescPage(titleTwoTwo,WordLiveActivity.TYPE_TWO);
+                break;
+            case R.id.tec_luo_enter:
+                String titleThree= getResources().getString(R.string.zhibo_room_thr_topic);
+                gotoDescPage(titleThree,WordLiveActivity.TYPE_THREE);
+                break;
+            case R.id.tec_xie_enter:
+                String titleThreeTwo= getResources().getString(R.string.zhibo_room_thr_topic);
+                gotoDescPage(titleThreeTwo,WordLiveActivity.TYPE_THREE);
+                break;
             case R.id.video_area:
                 if (AppUtil.isLogin()) {
                     intent = new Intent(mActivity, VideoLiveActivity.class);
@@ -188,6 +198,22 @@ public class ZhiBoFragment extends BaseFragment implements View.OnClickListener 
                     startActivity(intent);
                 }
                 break;
+        }
+    }
+
+    private void gotoDescPage(String title, String type) {
+        Intent intent;
+        if (AppUtil.isLogin()) {
+            intent = new Intent(mActivity, WordLiveActivity.class);
+            intent.putExtra(WordLiveActivity.ZHIBO_TYPE, type);
+            intent.putExtra(WordLiveActivity.ZHIBO_TITLE, title);
+            startActivity(intent);
+        } else if (!AppUtil.isLogin()) {
+            intent = new Intent(mActivity, LoginActivity.class);
+            intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN, true);
+            intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TYPE, type);
+            intent.putExtra(LoginActivity.FROM_WORD_LIVE_BTN_TITLE, title);
+            startActivity(intent);
         }
     }
 

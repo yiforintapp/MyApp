@@ -86,10 +86,10 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
             }
             String result = "";
 
-            if (ERROR.equals(msg.obj.toString())){
+            if (ERROR.equals(msg.obj.toString())) {
                 result = activity.getResources().getString(R.string.login_error);
                 Toast.makeText(activity, result, Toast.LENGTH_SHORT).show();
-            } else if (WRONG.equals(msg.obj.toString())){
+            } else if (WRONG.equals(msg.obj.toString())) {
                 result = activity.getResources().getString(R.string.login_pwd_error);
                 Toast.makeText(activity, result, Toast.LENGTH_SHORT).show();
             } else {
@@ -106,16 +106,16 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
                     activity.startActivity(new Intent(activity, VideoLiveActivity.class));
                 }
                 if (activity.mFromWordLiveBtn) {
-                    if ((activity.mWordLiveType.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
-                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, "")))
-                            || "".equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
-                        Intent intent = new Intent(activity, WordLiveActivity.class);
-                        intent.putExtra(WordLiveActivity.ZHIBO_TYPE, activity.mWordLiveType);
-                        intent.putExtra(WordLiveActivity.ZHIBO_TITLE, activity.mWordLiveTitle);
-                        activity.startActivity(intent);
-                    } else {
-                        activity.showToast(activity.getResources().getString(R.string.zhibo_bangding_one_toast));
-                    }
+//                    if ((activity.mWordLiveType.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
+//                            || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, "")))
+//                            || "".equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
+                    Intent intent = new Intent(activity, WordLiveActivity.class);
+                    intent.putExtra(WordLiveActivity.ZHIBO_TYPE, activity.mWordLiveType);
+                    intent.putExtra(WordLiveActivity.ZHIBO_TITLE, activity.mWordLiveTitle);
+                    activity.startActivity(intent);
+//                    } else {
+//                        activity.showToast(activity.getResources().getString(R.string.zhibo_bangding_one_toast));
+//                    }
                 }
                 activity.finish();
             }
@@ -251,42 +251,42 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
         });
         mDialog.show();
         mProgressBarShow = true;
-        String password = StringUtil.retMd5Pwd( mPasswordEt.getText().toString().trim()).toLowerCase();
+        String password = StringUtil.retMd5Pwd(mPasswordEt.getText().toString().trim()).toLowerCase();
 //        LeoLog.d("check","password is 111111qqq , setMD5 later : " + StringUtil.retMd5Pwd("111111qqq").toLowerCase());
         try {
             // 发送请求
             LoginHttpUtil.sendLoginHttpRequest(this, Constants.ADDRESS + "work", Constants.LOGIN_TAG_NEW,
-                    mUserEt.getText().toString().trim(), password, "",  new HttpCallBackListener() {
-                @Override
-                public void onFinish(String response) {
-                    if (mProgressBarShow) {
-                        if (mDialog != null && mDialog.isShowing()) {
-                            mDialog.dismiss();
-                            mDialog = null;
+                    mUserEt.getText().toString().trim(), password, "", new HttpCallBackListener() {
+                        @Override
+                        public void onFinish(String response) {
+                            if (mProgressBarShow) {
+                                if (mDialog != null && mDialog.isShowing()) {
+                                    mDialog.dismiss();
+                                    mDialog = null;
+                                }
+                                Message message = new Message();
+                                message.obj = response;
+                                if (mHandler != null) {
+                                    mHandler.sendMessage(message);
+                                }
+                            }
                         }
-                        Message message = new Message();
-                        message.obj = response;
-                        if (mHandler != null) {
-                            mHandler.sendMessage(message);
-                        }
-                    }
-                }
 
-                @Override
-                public void onError(Exception e) {
-                    if (mProgressBarShow) {
-                        if (mDialog != null && mDialog.isShowing()) {
-                            mDialog.dismiss();
-                            mDialog = null;
+                        @Override
+                        public void onError(Exception e) {
+                            if (mProgressBarShow) {
+                                if (mDialog != null && mDialog.isShowing()) {
+                                    mDialog.dismiss();
+                                    mDialog = null;
+                                }
+                                Message message = new Message();
+                                message.obj = ERROR;
+                                if (mHandler != null) {
+                                    mHandler.sendMessage(message);
+                                }
+                            }
                         }
-                        Message message = new Message();
-                        message.obj = ERROR;
-                        if (mHandler != null) {
-                            mHandler.sendMessage(message);
-                        }
-                    }
-                }
-            });
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -326,7 +326,7 @@ public class LoginActivity extends BaseFragmentActivity implements View.OnClickL
             showToast(getResources().getString(
                     R.string.login_pwd_unlocal));
 
-            return  false;
+            return false;
         }
         return true;
     }

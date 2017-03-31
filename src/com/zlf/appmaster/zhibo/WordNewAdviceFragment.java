@@ -74,14 +74,14 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
         initViews();
         if (mType.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
                 || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
-            mRemindLayout.setVisibility(View.GONE);
-            initData();
+        mRemindLayout.setVisibility(View.GONE);
+        initData();
         }
     }
 
     private void initViews() {
 
-        mXListView = (PinnedHeaderExpandableListView)findViewById(R.id.explistview);
+        mXListView = (PinnedHeaderExpandableListView) findViewById(R.id.explistview);
         mCurrentBtn = (TextView) findViewById(R.id.current_btn);
         mWaitingBtn = (TextView) findViewById(R.id.waiting_btn);
         mRemindLayout = (RelativeLayout) findViewById(R.id.no_permission_layout);
@@ -131,7 +131,7 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
         requestData();
     }
 
-    public void setType (String type) {
+    public void setType(String type) {
         this.mType = type;
     }
 
@@ -151,7 +151,7 @@ public class WordNewAdviceFragment extends BaseFragment implements View.OnClickL
 //        mXListView.setOnGroupClickListener(new GroupClickListener());
     }
 
-    class GroupClickListener implements OnGroupClickListener{
+    class GroupClickListener implements OnGroupClickListener {
         @Override
         public boolean onGroupClick(ExpandableListView parent, View v,
                                     int groupPosition, long id) {
