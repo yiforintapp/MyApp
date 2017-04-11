@@ -456,4 +456,6 @@
     <string name="text_live_lv_status_lose">止损点</string>
     <string name="text_live_lv_status_hold">持仓中</string>
 
+    <string name="vedio_live_send_msg_done">发送成功，等待审核中&#8230;</string>
+
 </resources>

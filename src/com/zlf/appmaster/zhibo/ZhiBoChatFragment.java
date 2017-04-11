@@ -3,7 +3,9 @@ package com.zlf.appmaster.zhibo;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.model.ChatItem;
 import com.zlf.appmaster.model.stock.StockIndex;
 import com.zlf.appmaster.ui.RippleView;
+import com.zlf.appmaster.utils.KeyboardUtil;
 import com.zlf.appmaster.utils.LeoLog;
 import com.zlf.appmaster.utils.NetWorkUtil;
 import com.zlf.appmaster.utils.PostStringRequestUtil;
@@ -46,8 +49,10 @@ import java.util.Map;
 public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListener {
     public static final String SEVLET_TYPE = "proname";
     public static final String SEND = "sendmsg";
+    public static final String SENDNEW = "sendmsg_new";
     public static final String PARAMS_TEXT = "sendtext";
     public static final String PARAMS_NAME = "sendname";
+    public static final String PARAMS_ROOM = "sendroom";
     public static final String PARAMS_TIME = "sendtime";
 
     private static final int SHOW_NUM_PER_TIME = 20;
@@ -55,10 +60,10 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
     public static final int NORMAL_TYPE = 1;
     public static final int LOAD_DATA_TYPE = 1;
     public static final int LOAD_MORE_TYPE = 2;
-    public static final String BASE_URL = Constants.CHAT_DOMAIN +
+    public static final String BASE_URL = Constants.WORD_DOMAIN +
             Constants.CHAT_SERVLET + Constants.CHAT_MARK;
-    public static final String LOAD_DATA = BASE_URL + "chat_new";
-    public static final String LOAD_MORE = BASE_URL + "chat_more&page=";
+    public static final String LOAD_DATA = BASE_URL + "video_chat_new";
+    public static final String LOAD_MORE = BASE_URL + "video_chat_new&pp=";
     private int mNowPage = 1;
     private ChatFragmentAdapter chatAdapter;
     private List<StockIndex> mIndexData;
@@ -107,16 +112,23 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
     private void makeDeal(int code) {
         if (code == 1) {
             mEdText.setText("");
-            ChatItem item = new ChatItem();
-            item.setDate(time);
-            item.setText(text);
-            item.setName("APP_" + name);
-            mDataList.add(item);
-            Collections.sort(mDataList, COMPARATOR);
-            chatAdapter.setList(mDataList);
-            chatAdapter.notifyDataSetChanged();
-            mListView.setSelection(mDataList.size() - 1);
+//            ChatItem item = new ChatItem();
+//            item.setDate(time);
+//            item.setText(text);
+//            item.setName(name);
+//            mDataList.add(item);
+//            Collections.sort(mDataList, COMPARATOR);
+//            chatAdapter.setList(mDataList);
+//            chatAdapter.notifyDataSetChanged();
+//            mListView.setSelection(mDataList.size() - 1);
 
+            InputMethodManager imm =  (InputMethodManager)mActivity.getSystemService(mActivity.INPUT_METHOD_SERVICE);
+            if(imm != null) {
+                imm.hideSoftInputFromWindow(mActivity.getWindow().getDecorView().getWindowToken(),
+                        0);
+            }
+
+            showToast(mActivity.getString(R.string.vedio_live_send_msg_done));
         } else {
             showToast(mActivity.getString(R.string.can_not_send));
         }
@@ -204,7 +216,7 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
      * 请求数据
      */
     private void requestData(final int type) {
-        LeoLog.d("CHAT", "now page : " + mNowPage);
+        Log.d("CHAT", "now page : " + mNowPage);
         String url;
         if (type == LOAD_DATA_TYPE) {
             mNowPage = 1;
@@ -213,8 +225,8 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
             mNowPage += 1;
             url = LOAD_MORE + mNowPage;
         }
-        LeoLog.d("CHAT", "request page : " + mNowPage);
-        LeoLog.d("CHAT", "url : " + url);
+        Log.d("CHAT", "request page : " + mNowPage);
+        Log.d("CHAT", "url : " + url);
 
         UniversalRequest.requestNewUrlWithTimeOut("Tag", mActivity, url,
                 new OnRequestListener() {
@@ -235,7 +247,7 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
                                 ChatItem item = new ChatItem();
 
                                 JSONObject itemObject = array.getJSONObject(i);
-                                item.setDate(itemObject.getString("date"));
+                                item.setDate(switchTimeToData(itemObject.getString("date")));
                                 String content = itemObject.getString("content");
                                 item.setText(content);
                                 item.setName(itemObject.getString("name"));
@@ -299,6 +311,14 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
                 }, false, 0, false);
     }
 
+    private String switchTimeToData(String time) {
+        long millisecond = Long.valueOf(time+"000");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date(millisecond);
+        String dateStr = simpleDateFormat.format(date);
+        return dateStr;
+    }
+
 
     @Override
     public void onResume() {
@@ -320,7 +340,6 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void readySendMessage() {
-
         if (NetWorkUtil.isNetworkAvailable(mActivity)) {
             if (TextUtils.isEmpty(mEdText.getText().toString().trim())) {
                 showToast(mActivity.getString(R.string.pls_enter_text));
@@ -339,16 +358,9 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void sendMessage() {
-//        String url = Constants.ADDRESS + "work";
-//        LeoLog.d("FeedbackActivity", "url : " + url);
-//
-//        Map<String, String> params = new HashMap<String, String>();
-//        params.put(Constants.FEEDBACK_TYPE, "feedback");
-//        params.put(Constants.FEEDBACK_CONTENT, "我去 测试用的");
-//        params.put(Constants.FEEDBACK_CONTACT, "535666786@qq.com");
-        String url = Constants.CHAT_DOMAIN + "appwork";
+        String url = Constants.WORD_DOMAIN + "appwork";
         Map<String, String> params = new HashMap<String, String>();
-        params.put(SEVLET_TYPE, SEND);
+        params.put(SEVLET_TYPE, SENDNEW);
 
         text = mEdText.getText().toString().trim();
         name = LeoSettings.getString(PrefConst.USER_NAME, "");
@@ -356,12 +368,14 @@ public class ZhiBoChatFragment extends BaseFragment implements View.OnClickListe
 
         params.put(PARAMS_TEXT, text);
         params.put(PARAMS_NAME, name);
-        params.put(PARAMS_TIME, time);
+        String room = LeoSettings.getString(PrefConst.USER_ROOM,"");
+        params.put(PARAMS_ROOM, room);
 
-        LeoLog.d("CHAT", "url is : " + url);
-        LeoLog.d("CHAT", "text is : " + mEdText.getText().toString().trim());
-        LeoLog.d("CHAT", "name is : " + LeoSettings.getString(PrefConst.USER_NAME, ""));
-        LeoLog.d("CHAT", "time is : " + getNowDate());
+        Log.d("CHAT", "url is : " + url);
+        Log.d("CHAT", "text is : " + mEdText.getText().toString().trim());
+        Log.d("CHAT", "name is : " + LeoSettings.getString(PrefConst.USER_NAME, ""));
+//        Log.d("CHAT", "time is : " + nowString);
+
         int requestCode = PostStringRequestUtil.request(mActivity, url, params);
         Message message = new Message();
         message.obj = requestCode;

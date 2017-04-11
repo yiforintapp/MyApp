@@ -70,14 +70,14 @@ public class TextAliveMsgFragment extends BaseFragment implements View.OnClickLi
     @Override
     protected void onInitUI() {
         initViews();
-//        if (mType.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
-//                || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
-//            mNoPermissionLayout.setVisibility(View.GONE);
+        if (mType.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))
+                || ADMIN.equals(LeoSettings.getString(PrefConst.USER_ROOM, ""))) {
+            mNoPermissionLayout.setVisibility(View.GONE);
             initData();
-//        } else {
-//            mNoPermissionLayout.setVisibility(View.VISIBLE);
-//            mListView.setVisibility(View.GONE);
-//        }
+        } else {
+            mNoPermissionLayout.setVisibility(View.VISIBLE);
+            mListView.setVisibility(View.GONE);
+        }
     }
 
     private void initViews() {

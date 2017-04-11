@@ -68,7 +68,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
     private ImageView mRefreshIv;
     private HomeFragmentHolder[] mFragmentHolders = new HomeFragmentHolder[5];
 
-    private int mIndex = 0;
+    private int mIndex = 2;
 
     private RippleView mOneRipple;
 
@@ -119,7 +119,8 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
         mTradeTv = (TextView) findViewById(R.id.trade_tv);
         mPersonalTv = (TextView) findViewById(R.id.personal_tv);
 
-        mHomeTabTvReal.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
+//        mHomeTabTvReal.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
+        mUserTabTv.setTextColor(getResources().getColor(R.color.indicator_text_select_color));
 
         mOneRipple = (RippleView) findViewById(R.id.home_tab);
 
@@ -132,7 +133,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
         initFragment();
         mViewPager.setAdapter(new HomeTabAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2); //预加载2个
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(2);
         mViewPager.setOnPageChangeListener(this);
 
 //        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

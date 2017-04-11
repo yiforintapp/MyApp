@@ -268,8 +268,8 @@ public class Constants {
     public static final String COMEX_INFO_KLINE_PRONAME = "comex_detils_k";
 
 
-    public static final String ZHI_BO_ADDRESS = /*"http://sp2.18zhibo.com/d9067d28-41f6-4bad-a4ca-c43a88b617b6/stream.m3u8"*/"http://220.170.51.43:471/38699068_38699068_50020_0_0_50020.m3u8";
-
+//    public static final String ZHI_BO_ADDRESS = /*"http://sp2.18zhibo.com/d9067d28-41f6-4bad-a4ca-c43a88b617b6/stream.m3u8"*/"http://220.170.51.43:471/38699068_38699068_50020_0_0_50020.m3u8";
+public static final String ZHI_BO_ADDRESS = "http://125.88.150.74:536/38699068_38699068_50020_0_0_50020.m3u8";
 
     public static final String ADDRESS= "http://120.24.14.76:1688/";
     public static final String APPSERVLET= "appwork?";

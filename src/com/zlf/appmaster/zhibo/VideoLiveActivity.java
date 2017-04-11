@@ -42,7 +42,7 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
     private RelativeLayout mContactLayout;
     private boolean mIsFullScreen;
     private ViewPager mViewPager;
-    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[2];
+    private HomeTabHolder[] mHomeHolders = new HomeTabHolder[1];
     private PagerSlidingTabStrip mPagerSlidingTab;
     private ZhiBoChatFragment chatFragment;
     private ZhiBoDataFragment dataFragment;
@@ -153,11 +153,11 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
         holder.fragment = chatFragment;
         mHomeHolders[0] = holder;
 
-        holder = new HomeTabHolder();
-        holder.title = this.getResources().getString(R.string.zhibo_data);
-        dataFragment = new ZhiBoDataFragment();
-        holder.fragment = dataFragment;
-        mHomeHolders[1] = holder;
+//        holder = new HomeTabHolder();
+//        holder.title = this.getResources().getString(R.string.zhibo_data);
+//        dataFragment = new ZhiBoDataFragment();
+//        holder.fragment = dataFragment;
+//        mHomeHolders[1] = holder;
 
         FragmentManager fm = getSupportFragmentManager();
         try {
