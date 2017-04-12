@@ -468,7 +468,6 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void readySendMessage() {
-
         if (NetWorkUtil.isNetworkAvailable(mActivity)) {
             if (TextUtils.isEmpty(mEdText.getText().toString().trim())) {
                 showToast(mActivity.getString(R.string.pls_enter_text));
@@ -490,11 +489,11 @@ public class WordZhiBoFragment extends BaseFragment implements View.OnClickListe
         String url = Constants.WORD_DOMAIN + "appwork";
         Map<String, String> params = new HashMap<String, String>();
         params.put(SEVLET_TYPE, SEND);
-
+//        Toast.makeText(mActivity,"type is : " + mType,Toast.LENGTH_SHORT).show();
         String text = mEdText.getText().toString().trim();
         String name = LeoSettings.getString(PrefConst.USER_NAME, "");
         String phone = LeoSettings.getString(PrefConst.USER_PHONE, "");
-        String type = "1";
+        String type = mType;
         String c_type = mC_Type;
 
         params.put(PARAMS_TEXT, text);

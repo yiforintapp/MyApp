@@ -38,6 +38,8 @@ public class WordMyAskFragment extends BaseFragment {
     private View mEmptyView;
     private RippleView mRefreshView;
 
+    private String mType = "1";
+
     private static final int SHOW_NUM_PER_TIME = 20;
     public static final int ERROR_TYPE = -1;
     public static final int NORMAL_TYPE = 1;
@@ -118,7 +120,7 @@ public class WordMyAskFragment extends BaseFragment {
         }
 
         String phone = LeoSettings.getString(PrefConst.USER_PHONE, "");
-        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + "1" + "&phone=" + phone;
+        url = LOAD_DATA + mNowPage + Constants.WORD_TYPE + mType + "&phone=" + phone;
         LeoLog.d("CHAT","url is : " + url);
         UniversalRequest.requestNewUrlWithTimeOut("Tag", mActivity, url,
                 new OnRequestListener() {
@@ -245,5 +247,9 @@ public class WordMyAskFragment extends BaseFragment {
             mDialog.dismiss();
             mDialog = null;
         }
+    }
+
+    public void setType(String type) {
+        this.mType = type;
     }
 }

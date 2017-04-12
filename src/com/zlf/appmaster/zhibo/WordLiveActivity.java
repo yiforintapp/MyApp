@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.fragment.BaseFragment;
@@ -110,6 +111,7 @@ public class WordLiveActivity extends BaseFragmentActivity {
         holder = new HomeTabHolder();
         holder.title = this.getResources().getString(R.string.text_zhibo_mysak);
         mMyAskFragment = new WordMyAskFragment();
+        mMyAskFragment.setType(mType);
         holder.fragment = mMyAskFragment;
         mHomeHolders[3] = holder;
 

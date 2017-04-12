@@ -80,7 +80,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/icon_video"
-                        android:text="@string/video_title_name"
+                        android:text="@string/video_title_name2"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
                 </RelativeLayout>

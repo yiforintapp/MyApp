@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,8 +24,10 @@ import com.zlf.appmaster.ui.HomeToolbar;
 import com.zlf.appmaster.ui.MyViewPager;
 import com.zlf.appmaster.ui.RippleView;
 import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.zhibo.WordLiveActivity;
 
 import java.util.List;
+
 
 /**
  * Created by Administrator on 2016/7/14.
@@ -54,13 +58,13 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
     private HomeTabFragment mHomeTabFragment;
     private TradeTabFragment mTradeTabFragment;
     private UserTabFragment mUserTabFragment;
-//    private StockFavoriteFragment mStockFavoriteFragment;
+    //    private StockFavoriteFragment mStockFavoriteFragment;
     private ZhiBoFragment mZhiboFragment;
     private PersonalFragment mPersonalFragment;
 
-//    private DrawerLayout mDrawerLayout;
+    //    private DrawerLayout mDrawerLayout;
     private HomeToolbar mToolBar;
-//    private ListView mMenuList;
+    //    private ListView mMenuList;
 //    private List<MenuItem> mMenuItems;
 //    private MenuAdapter mMenuAdapter;
     private TextView mCenterTitle;
@@ -78,22 +82,42 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_main);
-
         init();
         setLister();
         handleIntent();
     }
 
     private void handleIntent() {
+
         Intent intent = getIntent();
         String value = intent.getStringExtra(Constants.PUSH_KEY);
         int page;
-        if(value != null && !value.isEmpty()){
+        if (value != null && !value.isEmpty()) {
             page = Integer.parseInt(value);
-            LeoLog.d("JPush","handle page = " + page);
+            LeoLog.d("JPush", "handle page = " + page);
             mViewPager.setCurrentItem(page);
             changeTabBg(page);
         }
+
+
+        String room = intent.getStringExtra(Constants.PUSH_ROOM);
+        Log.d("JPush","room222 is : " + room);
+        if (!TextUtils.isEmpty(room) && !room.equals("0")) {
+            Intent roomIntent = new Intent(this, WordLiveActivity.class);
+            String title = "";
+            if (room.equals("1")) {
+                title = getResources().getString(R.string.zhibo_room_one_topic);
+            } else if (room.equals("2")) {
+                title = getResources().getString(R.string.zhibo_room_two_topic);
+            } else if (room.equals("3")) {
+                title = getResources().getString(R.string.zhibo_room_thr_topic);
+            }
+
+            roomIntent.putExtra(WordLiveActivity.ZHIBO_TYPE, room);
+            roomIntent.putExtra(WordLiveActivity.ZHIBO_TITLE, title);
+            startActivity(roomIntent);
+        }
+
     }
 
     private void init() {
@@ -248,7 +272,9 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
         }
     }
 
-    /** 改变上次选中tab颜色为未选中 */
+    /**
+     * 改变上次选中tab颜色为未选中
+     */
     private void changeUnSelectBg(int position) {
         switch (position) {
             case 0:
@@ -380,7 +406,7 @@ public class HomeMainActivity extends BaseFragmentActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.home_tab_real:
-                if(mIndex == 0){
+                if (mIndex == 0) {
                     return;
                 }
                 mViewPager.setCurrentItem(0);

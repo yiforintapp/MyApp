@@ -5,11 +5,13 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -18,12 +20,32 @@ import android.widget.RelativeLayout;
 import com.zlf.appmaster.Constants;
 import com.zlf.appmaster.R;
 import com.zlf.appmaster.ThreadManager;
+import com.zlf.appmaster.client.OnRequestListener;
+import com.zlf.appmaster.client.UniversalRequest;
+import com.zlf.appmaster.db.LeoSettings;
 import com.zlf.appmaster.fragment.BaseFragment;
 import com.zlf.appmaster.home.BaseFragmentActivity;
+import com.zlf.appmaster.model.ChatItem;
 import com.zlf.appmaster.ui.PagerSlidingTabStrip;
+import com.zlf.appmaster.utils.LeoLog;
+import com.zlf.appmaster.utils.PrefConst;
 import com.zlf.appmaster.utils.Utilities;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.vov.vitamio.LibsChecker;
 import io.vov.vitamio.MediaPlayer;
@@ -32,7 +54,7 @@ import io.vov.vitamio.widget.VideoView;
 
 
 public class VideoLiveActivity extends BaseFragmentActivity implements View.OnClickListener {
-
+    public static final String GET_M3U8 = "getm3u8";
     private Context mContext;
 
     private static final String TAG = "MainActivity";
@@ -61,6 +83,14 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
         }
         setContentView(R.layout.activity_live_video);
         initViews();
+
+
+        ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+            @Override
+            public void run() {
+                requestData();
+            }
+        }, 1500);
 
         mContext = this;
     }
@@ -91,7 +121,9 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
         mVideoView.setMediaController(new MediaController(this));
         mVideoView.setIsFullScreen(false);
         mVideoView.setVisibility(View.VISIBLE);
-        path = Constants.ZHI_BO_ADDRESS;
+        path = LeoSettings.getString(PrefConst.M3U8, Constants.ZHI_BO_ADDRESS);
+        Log.d("testPath", "path is : " + path);
+//        path = Constants.ZHI_BO_ADDRESS;
         mVideoView.setVideoURI(Uri.parse(path));
         mVideoView.requestFocus();
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -216,7 +248,7 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
                     mVideoView.setIsFullScreen(true);
                     mIsFullScreen = true;//改变全屏/窗口的标记
                 } else {
-                    RelativeLayout.LayoutParams lp = new  RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                             RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 1 / 3);
                     mVideoView.setLayoutParams(lp);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -252,8 +284,8 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
-        if(mIsFullScreen) {
-            RelativeLayout.LayoutParams lp=new  RelativeLayout.LayoutParams(
+        if (mIsFullScreen) {
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.FILL_PARENT, mScreenHeight * 1 / 3);
             mVideoView.setLayoutParams(lp);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -280,11 +312,11 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
     protected void onRestart() {
         super.onRestart();
         if (mVideoView != null) {
-                    ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mVideoView.start();
-                        }
+            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mVideoView.start();
+                }
             }, 1500);
         }
     }
@@ -306,6 +338,106 @@ public class VideoLiveActivity extends BaseFragmentActivity implements View.OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    /*
+ * Function  :   封装请求体信息
+ * Param     :   params请求体内容，encode编码格式
+ */
+    public static StringBuffer getRequestData(Map<String, String> params, String encode) {
+        StringBuffer stringBuffer = new StringBuffer();        //存储封装好的请求体信息
+        try {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                stringBuffer.append(entry.getKey())
+                        .append("=")
+                        .append(URLEncoder.encode(entry.getValue(), encode))
+                        .append("&");
+            }
+            stringBuffer.deleteCharAt(stringBuffer.length() - 1);    //删除最后的一个"&"
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stringBuffer;
+    }
+
+    /*
+* Function  :   处理服务器的响应结果（将输入流转化成字符串）
+* Param     :   inputStream服务器的响应输入流
+*/
+    public static String dealResponseResult(InputStream inputStream) {
+        String resultData = null;      //存储处理结果
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] data = new byte[1024];
+        int len = 0;
+        try {
+            while ((len = inputStream.read(data)) != -1) {
+                byteArrayOutputStream.write(data, 0, len);
+            }
+            resultData = new String(byteArrayOutputStream.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (byteArrayOutputStream != null) {
+                    byteArrayOutputStream.flush();
+                    byteArrayOutputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultData;
+    }
+
+    private void requestData() {
+
+        String urlString = Constants.WORD_DOMAIN + "appwork";
+        LeoLog.d("FeedbackActivity", "url : " + urlString);
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.FEEDBACK_TYPE, GET_M3U8);
+
+        String encode = "utf-8";
+        byte[] data = getRequestData(params, encode).toString().getBytes();
+
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(urlString);
+            //使用HttpURLConnection
+            connection = (HttpURLConnection) url.openConnection();
+            //设置方法和参数
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);               //使用Post方式不能使用缓存
+
+            //设置请求体的类型是文本类型
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+            //设置请求体的长度
+            connection.setRequestProperty("Content-Length", String.valueOf(data.length));
+            //获得输出流，向服务器写入数据
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(data);
+
+            int response = connection.getResponseCode();            //获得服务器的响应码
+            if (response == HttpURLConnection.HTTP_OK) {
+
+                InputStream inptStream = connection.getInputStream();
+                String path = dealResponseResult(inptStream);
+                Log.d("testPath", "response path is : " + path);
+                LeoSettings.setString(PrefConst.M3U8,path);
+            }
+
+        } catch (Exception e) {
+
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+
     }
 
 }

@@ -76,7 +76,6 @@ public class JPushReceiver extends BroadcastReceiver {
         if (bundle != null) {
             for (String key : bundle.keySet()) {
                 if (key.equals(JPushInterface.EXTRA_EXTRA) && !bundle.getString(JPushInterface.EXTRA_EXTRA).isEmpty()) {
-
                     try {
                         JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                         Iterator<String> it = json.keys();
@@ -92,7 +91,11 @@ public class JPushReceiver extends BroadcastReceiver {
                     } catch (JSONException e) {
                         QLog.e(TAG, "Get message extra JSON error!");
                     }
-
+                }else{
+//                    Log.d("JPush","startActivity 2222");
+//                    Intent intent = new Intent(context, HomeMainActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    context.startActivity(intent);
                 }
 
             }
@@ -115,8 +118,11 @@ public class JPushReceiver extends BroadcastReceiver {
                 intent = new Intent(context, HomeMainActivity.class);
                 intent.putExtra(Constants.PUSH_KEY, "1");
             } else if (myKey.equals(Constants.PUSH_KEY_ZHIBO)) {
+
+                Log.d("JPush","Constants.PUSH_KEY_ZHIBO");
                 intent = new Intent(context, HomeMainActivity.class);
-                intent.putExtra(Constants.PUSH_KEY, "2");
+                intent.putExtra(Constants.PUSH_ROOM, myValue);
+
             } else if (myKey.equals(Constants.PUSH_KEY_CONSULT)) {
                 intent = new Intent(context, HomeMainActivity.class);
                 intent.putExtra(Constants.PUSH_KEY, "3");
@@ -127,6 +133,7 @@ public class JPushReceiver extends BroadcastReceiver {
             } else {
                 intent = new Intent(context, HomeMainActivity.class);
             }
+            Log.d("JPush","startActivity 111");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent);
         }

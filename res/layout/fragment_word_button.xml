@@ -3,6 +3,7 @@
     android:id="@+id/top_layout"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:visibility="gone"
     android:padding="10dp"
     android:orientation="horizontal">
 
